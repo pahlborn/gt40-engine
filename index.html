@@ -1023,9 +1023,29 @@
         document.getElementById('settingsModal').classList.remove('show');
     }
 
+    // Search for an existing Gist by filename
+    async function findExistingGist(token) {
+        try {
+            const res = await fetch('https://api.github.com/gists?per_page=100', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!res.ok) return null;
+            const gists = await res.json();
+            for (const gist of gists) {
+                if (gist.files && gist.files[GIST_FILENAME]) {
+                    return gist.id;
+                }
+            }
+            return null;
+        } catch (err) {
+            console.error('Gist search error:', err);
+            return null;
+        }
+    }
+
     async function saveSettings() {
         const token = document.getElementById('ghToken').value.trim();
-        const gistId = document.getElementById('ghGistId').value.trim();
+        let gistId = document.getElementById('ghGistId').value.trim();
 
         if (!token) {
             showToast('Bitte Token eingeben!');
@@ -1043,18 +1063,38 @@
             }
             const user = await res.json();
             localStorage.setItem('gh_token', token);
-            if (gistId) localStorage.setItem('gh_gist_id', gistId);
 
-            showToast('Verbunden als ' + user.login + '!');
-            updateSyncBadge();
-            updateConnectionStatus();
-            closeSettings();
+            showToast('Verbunden als ' + user.login + '! Suche Gist...');
 
-            // If no gist ID, save current data to create one
+            // If no gist ID provided, search for an existing one first
             if (!gistId) {
-                await saveToGist();
-            } else {
+                gistId = await findExistingGist(token);
+                if (gistId) {
+                    showToast('Bestehender Gist gefunden! Lade Daten...');
+                }
+            }
+
+            if (gistId) {
+                // Use existing Gist - load data from it
+                localStorage.setItem('gh_gist_id', gistId);
+                document.getElementById('ghGistId').value = gistId;
+                updateSyncBadge();
+                updateConnectionStatus();
+                closeSettings();
                 await loadFromGist();
+                showToast('Cloud-Daten geladen!');
+            } else {
+                // No existing Gist found - create new one with current data
+                updateSyncBadge();
+                updateConnectionStatus();
+                closeSettings();
+                await saveToGist();
+                // Update the gist ID field for visibility
+                const newId = localStorage.getItem('gh_gist_id');
+                if (newId) {
+                    document.getElementById('ghGistId').value = newId;
+                    showToast('Neuer Gist erstellt! ID: ' + newId.substring(0,12) + '...');
+                }
             }
         } catch (err) {
             showToast('Verbindungsfehler: ' + err.message);
