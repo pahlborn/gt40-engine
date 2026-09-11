@@ -559,10 +559,8 @@
             Berechtigung: <strong>Gists (Read and Write)</strong>
         </div>
 
-        <label for="ghGistId">Gist-ID (optional, wird automatisch erstellt)</label>
-        <input type="text" id="ghGistId" placeholder="z.B. abc123def456 (leer lassen beim ersten Mal)">
-        <div class="hint">
-            Wenn leer, wird beim ersten Speichern automatisch ein neuer Gist erstellt. Die ID wird dann hier angezeigt.
+        <div class="hint" style="margin-top:0.5rem; background:#f0fff4; padding:0.5rem; border-radius:6px; color:#276749;">
+            Gist-ID ist fest hinterlegt. Alle Ger&auml;te nutzen denselben Datenspeicher.
         </div>
 
         <div class="btn-row">
@@ -997,11 +995,15 @@
     // ==== GITHUB GIST CONFIG ====
     const GIST_FILENAME = 'engine-build-log-data.json';
     const GIST_DESCRIPTION = 'Engine Build Measurement Log - Ford 302 SBF';
+    // Fixed Gist ID - all devices use this one single Gist
+    const FIXED_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
+    // Flag to prevent auto-save during data loading
+    let isLoading = false;
 
     function getGistConfig() {
         return {
             token: localStorage.getItem('gh_token') || '',
-            gistId: localStorage.getItem('gh_gist_id') || ''
+            gistId: FIXED_GIST_ID
         };
     }
 
@@ -1023,29 +1025,8 @@
         document.getElementById('settingsModal').classList.remove('show');
     }
 
-    // Search for an existing Gist by filename
-    async function findExistingGist(token) {
-        try {
-            const res = await fetch('https://api.github.com/gists?per_page=100', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            if (!res.ok) return null;
-            const gists = await res.json();
-            for (const gist of gists) {
-                if (gist.files && gist.files[GIST_FILENAME]) {
-                    return gist.id;
-                }
-            }
-            return null;
-        } catch (err) {
-            console.error('Gist search error:', err);
-            return null;
-        }
-    }
-
     async function saveSettings() {
         const token = document.getElementById('ghToken').value.trim();
-        let gistId = document.getElementById('ghGistId').value.trim();
 
         if (!token) {
             showToast('Bitte Token eingeben!');
@@ -1064,37 +1045,17 @@
             const user = await res.json();
             localStorage.setItem('gh_token', token);
 
-            showToast('Verbunden als ' + user.login + '! Suche Gist...');
+            showToast('Verbunden als ' + user.login + '! Lade Cloud-Daten...');
+            updateSyncBadge();
+            updateConnectionStatus();
+            closeSettings();
 
-            // If no gist ID provided, search for an existing one first
-            if (!gistId) {
-                gistId = await findExistingGist(token);
-                if (gistId) {
-                    showToast('Bestehender Gist gefunden! Lade Daten...');
-                }
-            }
-
-            if (gistId) {
-                // Use existing Gist - load data from it
-                localStorage.setItem('gh_gist_id', gistId);
-                document.getElementById('ghGistId').value = gistId;
-                updateSyncBadge();
-                updateConnectionStatus();
-                closeSettings();
-                await loadFromGist();
+            // Always load from the fixed Gist
+            const ok = await loadFromGist();
+            if (ok) {
                 showToast('Cloud-Daten geladen!');
             } else {
-                // No existing Gist found - create new one with current data
-                updateSyncBadge();
-                updateConnectionStatus();
-                closeSettings();
-                await saveToGist();
-                // Update the gist ID field for visibility
-                const newId = localStorage.getItem('gh_gist_id');
-                if (newId) {
-                    document.getElementById('ghGistId').value = newId;
-                    showToast('Neuer Gist erstellt! ID: ' + newId.substring(0,12) + '...');
-                }
+                showToast('Verbunden, aber keine Cloud-Daten gefunden.');
             }
         } catch (err) {
             showToast('Verbindungsfehler: ' + err.message);
@@ -1103,9 +1064,7 @@
 
     function disconnectGist() {
         localStorage.removeItem('gh_token');
-        localStorage.removeItem('gh_gist_id');
         document.getElementById('ghToken').value = '';
-        document.getElementById('ghGistId').value = '';
         updateSyncBadge();
         updateConnectionStatus();
         showToast('GitHub-Verbindung getrennt.');
@@ -1117,7 +1076,7 @@
         const c = getGistConfig();
         if (c.token) {
             el.className = 'status-line connected';
-            el.innerHTML = 'Verbunden' + (c.gistId ? ' &mdash; Gist-ID: <code>' + c.gistId.substring(0,12) + '...</code>' : ' &mdash; Neuer Gist wird beim Speichern erstellt');
+            el.innerHTML = 'Verbunden &mdash; Gist-ID: <code>' + FIXED_GIST_ID.substring(0,12) + '...</code>';
         } else {
             el.className = 'status-line disconnected';
             el.textContent = 'Nicht verbunden - Daten werden nur lokal gespeichert';
@@ -1144,34 +1103,17 @@
         const content = JSON.stringify(data, null, 2);
 
         try {
-            let res;
-            if (c.gistId) {
-                // Update existing Gist
-                res = await fetch(`https://api.github.com/gists/${c.gistId}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Authorization': `Bearer ${c.token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        files: { [GIST_FILENAME]: { content } }
-                    })
-                });
-            } else {
-                // Create new Gist
-                res = await fetch('https://api.github.com/gists', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${c.token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        description: GIST_DESCRIPTION,
-                        public: false,
-                        files: { [GIST_FILENAME]: { content } }
-                    })
-                });
-            }
+            // Always update the fixed Gist - never create a new one
+            const res = await fetch(`https://api.github.com/gists/${FIXED_GIST_ID}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${c.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    files: { [GIST_FILENAME]: { content } }
+                })
+            });
 
             if (!res.ok) {
                 const errText = await res.text();
@@ -1180,9 +1122,6 @@
                 return false;
             }
 
-            const gist = await res.json();
-            // Save the Gist ID for future updates
-            localStorage.setItem('gh_gist_id', gist.id);
             return true;
         } catch (err) {
             console.error('Gist save error:', err);
@@ -1193,15 +1132,17 @@
 
     async function loadFromGist() {
         const c = getGistConfig();
-        if (!c.token || !c.gistId) return false;
+        if (!c.token) return false;
 
         try {
-            const res = await fetch(`https://api.github.com/gists/${c.gistId}`, {
+            isLoading = true;
+            const res = await fetch(`https://api.github.com/gists/${FIXED_GIST_ID}`, {
                 headers: { 'Authorization': `Bearer ${c.token}` }
             });
 
             if (!res.ok) {
                 showToast('Cloud-Laden fehlgeschlagen! (Status ' + res.status + ')');
+                isLoading = false;
                 return false;
             }
 
@@ -1209,6 +1150,7 @@
             const file = gist.files[GIST_FILENAME];
             if (!file) {
                 showToast('Keine Daten im Gist gefunden.');
+                isLoading = false;
                 return false;
             }
 
@@ -1216,10 +1158,12 @@
             applyData(data);
             // Also save to LocalStorage as cache
             localStorage.setItem('engineBuildLog', JSON.stringify(data));
+            isLoading = false;
             return true;
         } catch (err) {
             console.error('Gist load error:', err);
             showToast('Cloud-Fehler: ' + err.message);
+            isLoading = false;
             return false;
         }
     }
@@ -1353,6 +1297,8 @@
     }
 
     async function loadData() {
+        isLoading = true;
+
         // First, load from LocalStorage (fast, offline)
         const raw = localStorage.getItem('engineBuildLog');
         if (raw) {
@@ -1364,21 +1310,22 @@
             }
         }
 
-        // Then try to load from Gist (if configured) - cloud data wins
+        // Then try to load from Gist (if configured) - cloud data ALWAYS wins
         if (isGistConfigured()) {
-            const c = getGistConfig();
-            if (c.gistId) {
-                const ok = await loadFromGist();
-                if (ok) {
-                    console.log('Cloud-Daten geladen.');
-                }
+            const ok = await loadFromGist();
+            if (ok) {
+                console.log('Cloud-Daten geladen - lokale Daten ueberschrieben.');
             }
         }
+
+        isLoading = false;
         updateSaveStatus();
     }
 
     let autoSaveTimer = null;
     function autoSave() {
+        // Block auto-save while loading data (prevents overwriting cloud data)
+        if (isLoading) return;
         clearTimeout(autoSaveTimer);
         autoSaveTimer = setTimeout(() => {
             saveData();
