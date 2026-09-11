@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engine Build Measurement Log</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2b6cb0;
+            --accent: #ed8936;
+            --bg: #f7fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text: #2d3748;
+            --text-light: #718096;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --danger: #e53e3e;
+            --input-bg: #edf2f7;
+            --calc-bg: #ebf8ff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 0;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .header h1 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .header p { font-size: 0.85rem; opacity: 0.85; }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+        }
+        .toolbar button {
+            padding: 0.4rem 0.9rem;
+            border: 1px solid rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .toolbar button:hover { background: rgba(255,255,255,0.3); }
+        .toolbar button.save-btn { background: var(--success); border-color: var(--success); }
+        .toolbar button.save-btn:hover { background: #2f855a; }
+
+        /* Status indicator */
+        .save-status {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            margin-top: 0.4rem;
+            min-height: 1.2em;
+        }
+
+        /* Container */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Sections */
+        .section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--primary);
+        }
+        .section-header h2 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .section-icon {
+            font-size: 1.3rem;
+        }
+
+        /* Subsections */
+        .subsection { margin-bottom: 1.25rem; }
+        .subsection:last-child { margin-bottom: 0; }
+        .subsection h3 {
+            font-size: 0.95rem;
+            color: var(--primary-light);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Spec items (read-only info) */
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+        .spec-item:last-child { border-bottom: none; }
+        .spec-label { color: var(--text-light); flex-shrink: 0; margin-right: 0.5rem; }
+        .spec-value { font-weight: 600; text-align: right; }
+
+        /* Info box */
+        .info-box {
+            background: #fffbeb;
+            border-left: 4px solid var(--warning);
+            padding: 0.75rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.82rem;
+            margin: 0.75rem 0;
+            line-height: 1.5;
+        }
+        .info-box strong { color: var(--warning); }
+
+        /* Torque diagram */
+        .torque-diagram {
+            background: var(--input-bg);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            overflow-x: auto;
+            line-height: 1.8;
+            margin: 0.5rem 0;
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 0.75rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+        .form-group .tolerance {
+            font-size: 0.72rem;
+            color: var(--primary-light);
+            font-weight: 400;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 0.55rem 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: var(--input-bg);
+            color: var(--text);
+            transition: all 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.15);
+        }
+        input.calculated {
+            background: var(--calc-bg);
+            border-color: #90cdf4;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        input.calculated:focus {
+            border-color: var(--primary-light);
+            background: #bee3f8;
+        }
+
+        /* Measurement grid */
+        .measurement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 0.5rem;
+        }
+        .measurement-cell label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-bottom: 0.15rem;
+            display: block;
+        }
+        .measurement-cell input {
+            padding: 0.45rem 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        /* Quench table */
+        .quench-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .quench-table th {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 0.4rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.72rem;
+        }
+        .quench-table td {
+            padding: 0.35rem 0.3rem;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+            vertical-align: middle;
+        }
+        .quench-table tr:nth-child(even) { background: #f8fafc; }
+        .quench-table .cyl-label {
+            font-weight: 700;
+            color: var(--primary);
+            white-space: nowrap;
+        }
+        .quench-table input {
+            width: 100%;
+            min-width: 60px;
+            padding: 0.35rem 0.3rem;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        /* Responsive table wrapper */
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -0.25rem;
+            padding: 0 0.25rem;
+        }
+
+        /* Torque steps */
+        .torque-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .torque-step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: var(--input-bg);
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        .step-num {
+            background: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .step-value {
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Checkboxes */
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+        .check-item:last-child { border-bottom: none; }
+        .check-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--success);
+            flex-shrink: 0;
+        }
+
+        /* Status indicators for values */
+        .status-ok { border-color: var(--success) !important; }
+        .status-warn { border-color: var(--warning) !important; }
+        .status-error { border-color: var(--danger) !important; }
+
+        /* Notes textarea */
+        textarea {
+            width: 100%;
+            padding: 0.55rem 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            background: var(--input-bg);
+            color: var(--text);
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.15);
+        }
+
+        /* Print styles */
+        @media print {
+            .header { position: static; }
+            .toolbar, .save-status { display: none; }
+            .section { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+            body { padding: 0; background: white; }
+        }
+
+        /* Small screens */
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.1rem; }
+            .container { padding: 0.5rem; }
+            .section { padding: 1rem; }
+            .measurement-grid { grid-template-columns: repeat(2, 1fr); }
+            .quench-table { font-size: 0.7rem; }
+            .quench-table input { font-size: 0.72rem; padding: 0.25rem; }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 200;
+            transition: transform 0.3s ease;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Collapsible sections */
+        .section-toggle {
+            cursor: pointer;
+            user-select: none;
+        }
+        .section-toggle::after {
+            content: '\25BC';
+            font-size: 0.7rem;
+            margin-left: auto;
+            transition: transform 0.2s;
+        }
+        .section-toggle.collapsed::after {
+            transform: rotate(-90deg);
+        }
+        .section-body.collapsed {
+            display: none;
+        }
+
+        /* Sync indicator */
+        .sync-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.72rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .sync-badge.online { background: rgba(56,161,105,0.25); color: #c6f6d5; }
+        .sync-badge.offline { background: rgba(229,62,62,0.25); color: #fed7d7; }
+        .sync-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+        }
+        .sync-dot.online { background: #68d391; }
+        .sync-dot.offline { background: #fc8181; }
+
+        /* Settings Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .modal h3 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .modal label {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+        .modal input[type="text"],
+        .modal input[type="password"] {
+            width: 100%;
+            padding: 0.55rem 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: monospace;
+            background: var(--input-bg);
+            color: var(--text);
+            margin-bottom: 0.75rem;
+        }
+        .modal input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            background: white;
+        }
+        .modal .btn-row {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+        .modal button {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .modal .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .modal .btn-secondary {
+            background: var(--input-bg);
+            color: var(--text);
+        }
+        .modal .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        .modal .hint {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: -0.5rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+        .modal .status-line {
+            font-size: 0.8rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+        .modal .status-line.connected {
+            background: #f0fff4;
+            color: var(--success);
+            border: 1px solid #c6f6d5;
+        }
+        .modal .status-line.disconnected {
+            background: #fff5f5;
+            color: var(--danger);
+            border: 1px solid #fed7d7;
+        }
+
+        .toolbar button.settings-btn {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.5);
+        }
+        .toolbar button.sync-btn {
+            background: #2b6cb0;
+            border-color: #2b6cb0;
+        }
+        .toolbar button.sync-btn:hover { background: #2c5282; }
+        .toolbar button.sync-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <h1>Engine Build Measurement Log</h1>
+    <p>Ford 302 Small Block (Boss Block M-6009-302) &mdash; AFR 165 Renegade Heads</p>
+    <div class="toolbar">
+        <button class="save-btn" onclick="saveData()">Speichern</button>
+        <button class="sync-btn" id="syncBtn" onclick="syncFromCloud()" title="Daten aus GitHub Gist laden">Cloud Sync</button>
+        <button onclick="exportJSON()">Export JSON</button>
+        <button onclick="document.getElementById('importFile').click()">Import JSON</button>
+        <button onclick="clearAllData()">Zur&uuml;cksetzen</button>
+        <button onclick="window.print()">Drucken</button>
+        <button class="settings-btn" onclick="openSettings()">Einstellungen</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
+    </div>
+    <div class="save-status" id="saveStatus">
+        <span id="syncBadge"></span>
+    </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsModal">
+    <div class="modal">
+        <h3>GitHub-Einstellungen</h3>
+
+        <div class="status-line" id="connectionStatus"></div>
+
+        <label for="ghToken">GitHub Personal Access Token</label>
+        <input type="password" id="ghToken" placeholder="github_pat_...">
+        <div class="hint">
+            Erstellen unter: GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens<br>
+            Berechtigung: <strong>Gists (Read and Write)</strong>
+        </div>
+
+        <label for="ghGistId">Gist-ID (optional, wird automatisch erstellt)</label>
+        <input type="text" id="ghGistId" placeholder="z.B. abc123def456 (leer lassen beim ersten Mal)">
+        <div class="hint">
+            Wenn leer, wird beim ersten Speichern automatisch ein neuer Gist erstellt. Die ID wird dann hier angezeigt.
+        </div>
+
+        <div class="btn-row">
+            <button class="btn-danger" onclick="disconnectGist()">Trennen</button>
+            <button class="btn-secondary" onclick="closeSettings()">Abbrechen</button>
+            <button class="btn-primary" onclick="saveSettings()">Verbinden &amp; Speichern</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Section 1: Engine Component Specifications -->
+    <div class="section">
+        <div class="section-header section-toggle" onclick="toggleSection(this)">
+            <span class="section-icon">&#9881;</span>
+            <h2>1. Engine Component Specifications</h2>
+        </div>
+        <div class="section-body">
+
+            <!-- Cylinder Heads -->
+            <div class="subsection">
+                <h3>Zylinderk&ouml;pfe (Cylinder Heads)</h3>
+                <div class="spec-item">
+                    <span class="spec-label">Modell</span>
+                    <span class="spec-value">AFR 1399 SBF 165cc Renegade Street</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Brennraum-Volumen</span>
+                    <span class="spec-value">58cc (CNC)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Einlassventil</span>
+                    <span class="spec-value">1.900"</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Auslassventil</span>
+                    <span class="spec-value">1.600"</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Ventilfeder-Upgrade</span>
+                    <span class="spec-value">AFR 8605 Dual Valve Springs</span>
+                </div>
+                <div class="info-box">
+                    <strong>Hinweis:</strong> Perfekt ausgelegt f&uuml;r hydraulische Roller-Nockenwellen mit h&ouml;herem Hub (bis .650" Lift). Exzellente Drehzahlstabilit&auml;t f&uuml;r die XE274HR Welle.
+                </div>
+            </div>
+
+            <!-- Camshaft -->
+            <div class="subsection">
+                <h3>Nockenwelle (Camshaft)</h3>
+                <div class="spec-item">
+                    <span class="spec-label">Modell</span>
+                    <span class="spec-value">COMP Cams 35-518-8 (XE274HR-12)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Typ</span>
+                    <span class="spec-value">Hydraulic Roller</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Drehzahlband</span>
+                    <span class="spec-value">2.200 &ndash; 6.200 U/min</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Ventilhub (1.6 Kipphebel)</span>
+                    <span class="spec-value">Einl: 0.555" / Ausl: 0.565"</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Adv. Duration</span>
+                    <span class="spec-value">Einl: 274&deg; / Ausl: 282&deg;</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Duration @ 0.050"</span>
+                    <span class="spec-value">Einl: 224&deg; / Ausl: 232&deg;</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">LSA</span>
+                    <span class="spec-value">112&deg;</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: Torque Specs -->
+    <div class="section">
+        <div class="section-header section-toggle" onclick="toggleSection(this)">
+            <span class="section-icon">&#128295;</span>
+            <h2>2. Montage-Spezifikationen &amp; Drehmomente</h2>
+        </div>
+        <div class="section-body">
+
+            <!-- Cylinder Head Bolts -->
+            <div class="subsection">
+                <h3>A. Zylinderk&ouml;pfe (7/16" ARP-Schrauben)</h3>
+                <div class="info-box">
+                    <strong>Wichtig:</strong> Untere Schrauben ragen in den Wassermantel! Gewinde zwingend mit Dichtmittel (ARP Thread Sealant / Loctite 567) bestreichen. Obere Schrauben + Unterlegscheiben mit ARP Moly Lube schmieren.
+                </div>
+                <p style="font-size:0.85rem; font-weight:600; margin: 0.5rem 0 0.4rem;">Drehmoment-Stufen (3-Schritt-Verfahren):</p>
+                <div class="torque-steps">
+                    <div class="torque-step">
+                        <span class="step-num">1</span>
+                        Alle Schrauben in Reihenfolge auf <span class="step-value">35 ft-lbs</span>
+                    </div>
+                    <div class="torque-step">
+                        <span class="step-num">2</span>
+                        Alle Schrauben in Reihenfolge auf <span class="step-value">55 ft-lbs</span>
+                    </div>
+                    <div class="torque-step">
+                        <span class="step-num">3</span>
+                        Obere Reihe (1-5): <span class="step-value">80 ft-lbs</span> &nbsp;|&nbsp; Untere Reihe (6-10): <span class="step-value">70 ft-lbs</span>
+                    </div>
+                </div>
+                <div class="torque-diagram">
+                    <strong>Anzugsreihenfolge:</strong><br>
+                    &nbsp;&nbsp;( 9 )&nbsp;&nbsp;( 5 )&nbsp;&nbsp;( 1 )&nbsp;&nbsp;( 3 )&nbsp;&nbsp;( 7 )&nbsp;&nbsp;&larr; OBERE REIHE (80 ft-lbs)<br>
+                    &nbsp;&nbsp;(10)&nbsp;&nbsp;( 6 )&nbsp;&nbsp;( 2 )&nbsp;&nbsp;( 4 )&nbsp;&nbsp;( 8 )&nbsp;&nbsp;&larr; UNTERE REIHE (70 ft-lbs + Sealant)
+                </div>
+
+                <!-- Checkboxes for torque steps -->
+                <div style="margin-top: 0.75rem;">
+                    <p style="font-size:0.82rem; font-weight:600; margin-bottom:0.4rem;">Pr&uuml;fliste:</p>
+                    <div class="check-item">
+                        <input type="checkbox" data-field="chk_head_sealant" onchange="autoSave()">
+                        <span>Dichtmittel auf untere Schraubengewinde aufgetragen</span>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" data-field="chk_head_moly" onchange="autoSave()">
+                        <span>ARP Moly Lube auf obere Schrauben + Unterlegscheiben</span>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" data-field="chk_head_step1" onchange="autoSave()">
+                        <span>Schritt 1: 35 ft-lbs &mdash; erledigt</span>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" data-field="chk_head_step2" onchange="autoSave()">
+                        <span>Schritt 2: 55 ft-lbs &mdash; erledigt</span>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" data-field="chk_head_step3" onchange="autoSave()">
+                        <span>Schritt 3: 80/70 ft-lbs &mdash; erledigt</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Intake Manifold -->
+            <div class="subsection">
+                <h3>B. Ansaugspinne (Intake Manifold)</h3>
+                <div class="torque-steps">
+                    <div class="torque-step">
+                        <span class="step-num">1</span>
+                        <span class="step-value">5 ft-lbs</span>
+                    </div>
+                    <div class="torque-step">
+                        <span class="step-num">2</span>
+                        <span class="step-value">12 ft-lbs</span>
+                    </div>
+                    <div class="torque-step">
+                        <span class="step-num">3</span>
+                        Endwert: <span class="step-value">18 ft-lbs</span>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <strong>Praxistipp:</strong> Kork-Enddichtungen (vorn/hinten) weglassen. Stattdessen 5&ndash;6 mm RTV-Silikon (Permatex Ultra Black) auflegen.
+                </div>
+                <div class="torque-diagram">
+                    <strong>Anzugsreihenfolge Ansaugspinne:</strong><br>
+                    &nbsp;&nbsp;(11)&nbsp;&nbsp;( 1 )&nbsp;&nbsp;( 5 )&nbsp;&nbsp;( 9 )&nbsp;&nbsp;( 3 )<br>
+                    &nbsp;&nbsp;( 7 )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( 8 )&nbsp;&nbsp;&larr; Z&uuml;ndverteiler<br>
+                    &nbsp;&nbsp;( 4 )&nbsp;&nbsp;(10)&nbsp;&nbsp;( 6 )&nbsp;&nbsp;( 2 )&nbsp;&nbsp;(12)
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" data-field="chk_intake_rtv" onchange="autoSave()">
+                    <span>RTV-Silikon statt Kork-Enddichtungen verwendet</span>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" data-field="chk_intake_torqued" onchange="autoSave()">
+                    <span>Ansaugspinne auf 18 ft-lbs angezogen</span>
+                </div>
+            </div>
+
+            <!-- Spark Plugs -->
+            <div class="subsection">
+                <h3>C. Z&uuml;ndkerzen (Spark Plugs)</h3>
+                <div class="spec-item">
+                    <span class="spec-label">Typ</span>
+                    <span class="spec-value">Autolite 3924 / NGK FR5 / Champion RC9YC</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Gewinde</span>
+                    <span class="spec-value">14mm, 0.750" (Long Reach)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Sitz</span>
+                    <span class="spec-value">Dichtscheibe (Gasket Seat)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Gap</span>
+                    <span class="spec-value">0.045"</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Drehmoment</span>
+                    <span class="spec-value">15 &ndash; 22 ft-lbs</span>
+                </div>
+                <div class="info-box">
+                    <strong>Hinweis:</strong> In Aluk&ouml;pfen handfest eindrehen + Anti-Seize-Paste hauchdünn aufs Gewinde.
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" data-field="chk_spark_antiseize" onchange="autoSave()">
+                    <span>Anti-Seize auf Z&uuml;ndkerzengewinde aufgetragen</span>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox" data-field="chk_spark_torqued" onchange="autoSave()">
+                    <span>Z&uuml;ndkerzen angezogen (15&ndash;22 ft-lbs)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: Measurements -->
+    <div class="section">
+        <div class="section-header section-toggle" onclick="toggleSection(this)">
+            <span class="section-icon">&#128207;</span>
+            <h2>3. Messergebnisse &amp; Toleranzen</h2>
+        </div>
+        <div class="section-body">
+
+            <!-- Crankshaft & Block -->
+            <div class="subsection">
+                <h3>Kurbeltrieb &amp; Block</h3>
+
+                <div class="form-group">
+                    <label>Kurbelwelle Axialspiel (Crankshaft End Play) <span class="tolerance">Soll: 0.004" &ndash; 0.008"</span></label>
+                    <input type="text" data-field="crank_endplay" placeholder='z.B. 0.005"' oninput="validateRange(this, 0.004, 0.008); autoSave()">
+                </div>
+                <div class="form-group">
+                    <label>Nockenwelle Axialspiel (Camshaft End Play) <span class="tolerance">Soll: 0.004" &ndash; 0.009"</span></label>
+                    <input type="text" data-field="cam_endplay" placeholder='z.B. 0.006"' oninput="validateRange(this, 0.004, 0.009); autoSave()">
+                </div>
+
+                <div class="form-group">
+                    <label>Hauptlagerspiel (Main Bearing Clearance)</label>
+                    <div class="measurement-grid">
+                        <div class="measurement-cell">
+                            <label>Zyl. 1</label>
+                            <input type="text" data-field="main_1" placeholder="0.000" oninput="autoSave()">
+                        </div>
+                        <div class="measurement-cell">
+                            <label>Zyl. 2</label>
+                            <input type="text" data-field="main_2" placeholder="0.000" oninput="autoSave()">
+                        </div>
+                        <div class="measurement-cell">
+                            <label>Zyl. 3</label>
+                            <input type="text" data-field="main_3" placeholder="0.000" oninput="autoSave()">
+                        </div>
+                        <div class="measurement-cell">
+                            <label>Zyl. 4</label>
+                            <input type="text" data-field="main_4" placeholder="0.000" oninput="autoSave()">
+                        </div>
+                        <div class="measurement-cell">
+                            <label>Zyl. 5</label>
+                            <input type="text" data-field="main_5" placeholder="0.000" oninput="autoSave()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Pleuellagerspiel (Rod Bearing Clearance)</label>
+                    <div class="measurement-grid">
+                        <div class="measurement-cell">
+                            <label>Zyl. 1</label>
+                            <input type="text" data-field="rod_1" placeholder="0.000" oninput="autoSave()">
+                        </div>
+                        <div class="measurement-cell">
+                            <label>Zyl. 2</label>
+                            <input type="text" data-field="rod_2" placeholder="0.000" oninput="autoSave()">
+                        </div>
+                        <div class="measurement-cell">
+                            <label>Zyl. 3</label>
+                            <input type="text" data-field="rod_3" placeholder="0.000" oninput="autoSave()">
+                        </div>
+                        <div class="measurement-cell">
+                            <label>Zyl. 4</label>
+                            <input type="text" data-field="rod_4" placeholder="0.000" oninput="autoSave()">
+                        </div>
+                        <div class="measurement-cell">
+                            <label>Zyl. 5</label>
+                            <input type="text" data-field="rod_5" placeholder="0.000" oninput="autoSave()">
+                        </div>
+                        <div class="measurement-cell">
+                            <label>Zyl. 6</label>
+                            <input type="text" data-field="rod_6" placeholder="0.000" oninput="autoSave()">
+                        </div>
+                        <div class="measurement-cell">
+                            <label>Zyl. 7</label>
+                            <input type="text" data-field="rod_7" placeholder="0.000" oninput="autoSave()">
+                        </div>
+                        <div class="measurement-cell">
+                            <label>Zyl. 8</label>
+                            <input type="text" data-field="rod_8" placeholder="0.000" oninput="autoSave()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Piston Rings -->
+            <div class="subsection">
+                <h3>Kolbenringe &ndash; Sto&szlig;spiel (Ring End Gap)</h3>
+                <div class="form-group">
+                    <label>Top Ring (Oberer Kompressionsring)</label>
+                    <div class="measurement-grid">
+                        <div class="measurement-cell"><label>Zyl. 1</label><input type="text" data-field="topring_1" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 2</label><input type="text" data-field="topring_2" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 3</label><input type="text" data-field="topring_3" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 4</label><input type="text" data-field="topring_4" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 5</label><input type="text" data-field="topring_5" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 6</label><input type="text" data-field="topring_6" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 7</label><input type="text" data-field="topring_7" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 8</label><input type="text" data-field="topring_8" placeholder="0.000" oninput="autoSave()"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Second Ring (Zweiter Kompressionsring)</label>
+                    <div class="measurement-grid">
+                        <div class="measurement-cell"><label>Zyl. 1</label><input type="text" data-field="secring_1" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 2</label><input type="text" data-field="secring_2" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 3</label><input type="text" data-field="secring_3" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 4</label><input type="text" data-field="secring_4" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 5</label><input type="text" data-field="secring_5" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 6</label><input type="text" data-field="secring_6" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 7</label><input type="text" data-field="secring_7" placeholder="0.000" oninput="autoSave()"></div>
+                        <div class="measurement-cell"><label>Zyl. 8</label><input type="text" data-field="secring_8" placeholder="0.000" oninput="autoSave()"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4: Quench & Valve Clearance Table -->
+    <div class="section">
+        <div class="section-header section-toggle" onclick="toggleSection(this)">
+            <span class="section-icon">&#128200;</span>
+            <h2>4. Quench- &amp; Ventilfreiraum-Tabelle</h2>
+        </div>
+        <div class="section-body">
+            <div class="info-box">
+                <strong>Ziel-Quench:</strong> 0.035" &ndash; 0.045" &nbsp;|&nbsp;
+                <strong>Min. Ventilfreiraum:</strong> Einlass &ge; 0.080" / Auslass &ge; 0.100"<br>
+                <strong>Hinweis:</strong> Aufgrund des hohen Hubs der XE274HR zwingend mit Knete pr&uuml;fen!
+            </div>
+
+            <div class="table-wrapper">
+                <table class="quench-table">
+                    <thead>
+                        <tr>
+                            <th>Zyl.</th>
+                            <th>Kolbenunterstand (A)</th>
+                            <th>Dichtungsdicke (B)</th>
+                            <th>Quench (A+B)</th>
+                            <th>P-t-V Einlass<br>(&ge; 0.080")</th>
+                            <th>P-t-V Auslass<br>(&ge; 0.100")</th>
+                        </tr>
+                    </thead>
+                    <tbody id="quenchTableBody">
+                        <!-- Generated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top:0.75rem;">
+                <div class="check-item">
+                    <input type="checkbox" data-field="chk_clay_check" onchange="autoSave()">
+                    <span>Piston-to-Valve Clearance mit Modelliermasse (Knete) gepr&uuml;ft</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 5: Valvetrain Geometry -->
+    <div class="section">
+        <div class="section-header section-toggle" onclick="toggleSection(this)">
+            <span class="section-icon">&#9881;</span>
+            <h2>5. Ventiltrieb-Geometrie (Valvetrain)</h2>
+        </div>
+        <div class="section-body">
+            <div class="form-group">
+                <label>Ermittelte Sto&szlig;stangenlänge (Pushrod Length Checker) &ndash; Einlass</label>
+                <input type="text" data-field="pushrod_intake" placeholder='z.B. 7.100"' oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Ermittelte Sto&szlig;stangenlänge (Pushrod Length Checker) &ndash; Auslass</label>
+                <input type="text" data-field="pushrod_exhaust" placeholder='z.B. 7.100"' oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Tats&auml;chlich verbaute Sto&szlig;stangenl&auml;nge</label>
+                <input type="text" data-field="pushrod_actual" placeholder='z.B. 7.100"' oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Kipphebel-Vorspannung (Lifter Preload) <span class="tolerance">Empf.: 1/4 bis 3/4 Umdrehung nach Nullspiel</span></label>
+                <input type="text" data-field="lifter_preload" placeholder="z.B. 1/2 Umdrehung" oninput="autoSave()">
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 6: Notes -->
+    <div class="section">
+        <div class="section-header section-toggle" onclick="toggleSection(this)">
+            <span class="section-icon">&#128221;</span>
+            <h2>6. Notizen &amp; Anmerkungen</h2>
+        </div>
+        <div class="section-body">
+            <div class="form-group">
+                <label>Datum des Zusammenbaus</label>
+                <input type="text" data-field="build_date" placeholder="TT.MM.JJJJ" oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Mechaniker / Builder</label>
+                <input type="text" data-field="builder_name" placeholder="Name" oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Allgemeine Notizen</label>
+                <textarea data-field="notes" placeholder="Besonderheiten, Abweichungen, Beobachtungen..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+    // ==== GITHUB GIST CONFIG ====
+    const GIST_FILENAME = 'engine-build-log-data.json';
+    const GIST_DESCRIPTION = 'Engine Build Measurement Log - Ford 302 SBF';
+
+    function getGistConfig() {
+        return {
+            token: localStorage.getItem('gh_token') || '',
+            gistId: localStorage.getItem('gh_gist_id') || ''
+        };
+    }
+
+    function isGistConfigured() {
+        const c = getGistConfig();
+        return c.token.length > 0;
+    }
+
+    // ==== SETTINGS MODAL ====
+    function openSettings() {
+        const c = getGistConfig();
+        document.getElementById('ghToken').value = c.token;
+        document.getElementById('ghGistId').value = c.gistId;
+        updateConnectionStatus();
+        document.getElementById('settingsModal').classList.add('show');
+    }
+
+    function closeSettings() {
+        document.getElementById('settingsModal').classList.remove('show');
+    }
+
+    async function saveSettings() {
+        const token = document.getElementById('ghToken').value.trim();
+        const gistId = document.getElementById('ghGistId').value.trim();
+
+        if (!token) {
+            showToast('Bitte Token eingeben!');
+            return;
+        }
+
+        // Test the token
+        try {
+            const res = await fetch('https://api.github.com/user', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!res.ok) {
+                showToast('Token ungueltig! Bitte pruefen.');
+                return;
+            }
+            const user = await res.json();
+            localStorage.setItem('gh_token', token);
+            if (gistId) localStorage.setItem('gh_gist_id', gistId);
+
+            showToast('Verbunden als ' + user.login + '!');
+            updateSyncBadge();
+            updateConnectionStatus();
+            closeSettings();
+
+            // If no gist ID, save current data to create one
+            if (!gistId) {
+                await saveToGist();
+            } else {
+                await loadFromGist();
+            }
+        } catch (err) {
+            showToast('Verbindungsfehler: ' + err.message);
+        }
+    }
+
+    function disconnectGist() {
+        localStorage.removeItem('gh_token');
+        localStorage.removeItem('gh_gist_id');
+        document.getElementById('ghToken').value = '';
+        document.getElementById('ghGistId').value = '';
+        updateSyncBadge();
+        updateConnectionStatus();
+        showToast('GitHub-Verbindung getrennt.');
+        closeSettings();
+    }
+
+    function updateConnectionStatus() {
+        const el = document.getElementById('connectionStatus');
+        const c = getGistConfig();
+        if (c.token) {
+            el.className = 'status-line connected';
+            el.innerHTML = 'Verbunden' + (c.gistId ? ' &mdash; Gist-ID: <code>' + c.gistId.substring(0,12) + '...</code>' : ' &mdash; Neuer Gist wird beim Speichern erstellt');
+        } else {
+            el.className = 'status-line disconnected';
+            el.textContent = 'Nicht verbunden - Daten werden nur lokal gespeichert';
+        }
+    }
+
+    function updateSyncBadge() {
+        const badge = document.getElementById('syncBadge');
+        if (isGistConfigured()) {
+            badge.innerHTML = '<span class="sync-badge online"><span class="sync-dot online"></span>GitHub Sync aktiv</span>';
+            document.getElementById('syncBtn').disabled = false;
+        } else {
+            badge.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Nur lokal</span>';
+            document.getElementById('syncBtn').disabled = true;
+        }
+    }
+
+    // ==== GITHUB GIST API ====
+    async function saveToGist() {
+        const c = getGistConfig();
+        if (!c.token) return false;
+
+        const data = collectData();
+        const content = JSON.stringify(data, null, 2);
+
+        try {
+            let res;
+            if (c.gistId) {
+                // Update existing Gist
+                res = await fetch(`https://api.github.com/gists/${c.gistId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${c.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        files: { [GIST_FILENAME]: { content } }
+                    })
+                });
+            } else {
+                // Create new Gist
+                res = await fetch('https://api.github.com/gists', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${c.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        description: GIST_DESCRIPTION,
+                        public: false,
+                        files: { [GIST_FILENAME]: { content } }
+                    })
+                });
+            }
+
+            if (!res.ok) {
+                const errText = await res.text();
+                console.error('Gist save error:', res.status, errText);
+                showToast('Cloud-Speichern fehlgeschlagen! (Status ' + res.status + ')');
+                return false;
+            }
+
+            const gist = await res.json();
+            // Save the Gist ID for future updates
+            localStorage.setItem('gh_gist_id', gist.id);
+            return true;
+        } catch (err) {
+            console.error('Gist save error:', err);
+            showToast('Cloud-Fehler: ' + err.message);
+            return false;
+        }
+    }
+
+    async function loadFromGist() {
+        const c = getGistConfig();
+        if (!c.token || !c.gistId) return false;
+
+        try {
+            const res = await fetch(`https://api.github.com/gists/${c.gistId}`, {
+                headers: { 'Authorization': `Bearer ${c.token}` }
+            });
+
+            if (!res.ok) {
+                showToast('Cloud-Laden fehlgeschlagen! (Status ' + res.status + ')');
+                return false;
+            }
+
+            const gist = await res.json();
+            const file = gist.files[GIST_FILENAME];
+            if (!file) {
+                showToast('Keine Daten im Gist gefunden.');
+                return false;
+            }
+
+            const data = JSON.parse(file.content);
+            applyData(data);
+            // Also save to LocalStorage as cache
+            localStorage.setItem('engineBuildLog', JSON.stringify(data));
+            return true;
+        } catch (err) {
+            console.error('Gist load error:', err);
+            showToast('Cloud-Fehler: ' + err.message);
+            return false;
+        }
+    }
+
+    async function syncFromCloud() {
+        if (!isGistConfigured()) {
+            openSettings();
+            return;
+        }
+        showToast('Lade aus GitHub...');
+        const ok = await loadFromGist();
+        if (ok) {
+            showToast('Daten aus Cloud geladen!');
+            updateSaveStatus();
+        }
+    }
+
+    // ==== QUENCH TABLE ====
+    function generateQuenchTable() {
+        const tbody = document.getElementById('quenchTableBody');
+        tbody.innerHTML = '';
+        for (let i = 1; i <= 8; i++) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="cyl-label">Zyl. ${i}</td>
+                <td><input type="text" data-field="quench_a_${i}" placeholder="0.000" oninput="calcQuench(${i}); autoSave()"></td>
+                <td><input type="text" data-field="quench_b_${i}" placeholder="0.000" oninput="calcQuench(${i}); autoSave()"></td>
+                <td><input type="text" data-field="quench_total_${i}" class="calculated" readonly placeholder="auto"></td>
+                <td><input type="text" data-field="ptv_intake_${i}" placeholder="0.000" oninput="validateRange(this, 0.080, 9); autoSave()"></td>
+                <td><input type="text" data-field="ptv_exhaust_${i}" placeholder="0.000" oninput="validateRange(this, 0.100, 9); autoSave()"></td>
+            `;
+            tbody.appendChild(tr);
+        }
+    }
+
+    // ==== QUENCH CALCULATION ====
+    function calcQuench(cyl) {
+        const a = parseFloat(getFieldValue(`quench_a_${cyl}`)) || 0;
+        const b = parseFloat(getFieldValue(`quench_b_${cyl}`)) || 0;
+        const totalField = document.querySelector(`[data-field="quench_total_${cyl}"]`);
+        if (a > 0 || b > 0) {
+            const total = (a + b).toFixed(4);
+            totalField.value = total;
+            const t = parseFloat(total);
+            totalField.classList.remove('status-ok', 'status-warn', 'status-error');
+            if (t >= 0.035 && t <= 0.045) {
+                totalField.classList.add('status-ok');
+            } else if (t >= 0.030 && t <= 0.050) {
+                totalField.classList.add('status-warn');
+            } else {
+                totalField.classList.add('status-error');
+            }
+        } else {
+            totalField.value = '';
+            totalField.classList.remove('status-ok', 'status-warn', 'status-error');
+        }
+    }
+
+    // ==== RANGE VALIDATION ====
+    function validateRange(input, min, max) {
+        const val = parseFloat(input.value);
+        input.classList.remove('status-ok', 'status-warn', 'status-error');
+        if (!isNaN(val)) {
+            if (val >= min && val <= max) {
+                input.classList.add('status-ok');
+            } else {
+                input.classList.add('status-error');
+            }
+        }
+    }
+
+    // ==== HELPER ====
+    function getFieldValue(fieldName) {
+        const el = document.querySelector(`[data-field="${fieldName}"]`);
+        return el ? el.value : '';
+    }
+
+    // ==== SAVE / LOAD ====
+    function collectData() {
+        const data = {};
+        document.querySelectorAll('[data-field]').forEach(el => {
+            if (el.type === 'checkbox') {
+                data[el.dataset.field] = el.checked;
+            } else {
+                data[el.dataset.field] = el.value;
+            }
+        });
+        data._savedAt = new Date().toISOString();
+        return data;
+    }
+
+    function applyData(data) {
+        document.querySelectorAll('[data-field]').forEach(el => {
+            const val = data[el.dataset.field];
+            if (val !== undefined) {
+                if (el.type === 'checkbox') {
+                    el.checked = val;
+                } else {
+                    el.value = val;
+                }
+            }
+        });
+        for (let i = 1; i <= 8; i++) calcQuench(i);
+        document.querySelectorAll('[data-field="crank_endplay"]').forEach(el => validateRange(el, 0.004, 0.008));
+        document.querySelectorAll('[data-field="cam_endplay"]').forEach(el => validateRange(el, 0.004, 0.009));
+        for (let i = 1; i <= 8; i++) {
+            const ptvi = document.querySelector(`[data-field="ptv_intake_${i}"]`);
+            const ptve = document.querySelector(`[data-field="ptv_exhaust_${i}"]`);
+            if (ptvi && ptvi.value) validateRange(ptvi, 0.080, 9);
+            if (ptve && ptve.value) validateRange(ptve, 0.100, 9);
+        }
+    }
+
+    async function saveData() {
+        const data = collectData();
+        // Always save locally first (instant, works offline)
+        localStorage.setItem('engineBuildLog', JSON.stringify(data));
+        updateSaveStatus();
+
+        // Then sync to GitHub Gist if configured
+        if (isGistConfigured()) {
+            const ok = await saveToGist();
+            if (ok) {
+                showToast('Lokal + Cloud gespeichert!');
+            } else {
+                showToast('Lokal gespeichert (Cloud-Fehler)');
+            }
+        } else {
+            showToast('Lokal gespeichert');
+        }
+    }
+
+    async function loadData() {
+        // First, load from LocalStorage (fast, offline)
+        const raw = localStorage.getItem('engineBuildLog');
+        if (raw) {
+            try {
+                const data = JSON.parse(raw);
+                applyData(data);
+            } catch (e) {
+                console.error('Fehler beim Laden:', e);
+            }
+        }
+
+        // Then try to load from Gist (if configured) - cloud data wins
+        if (isGistConfigured()) {
+            const c = getGistConfig();
+            if (c.gistId) {
+                const ok = await loadFromGist();
+                if (ok) {
+                    console.log('Cloud-Daten geladen.');
+                }
+            }
+        }
+        updateSaveStatus();
+    }
+
+    let autoSaveTimer = null;
+    function autoSave() {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(() => {
+            saveData();
+        }, 2000);
+    }
+
+    function updateSaveStatus() {
+        const raw = localStorage.getItem('engineBuildLog');
+        const statusEl = document.getElementById('saveStatus');
+        if (raw) {
+            try {
+                const data = JSON.parse(raw);
+                const d = new Date(data._savedAt);
+                const badge = document.getElementById('syncBadge').outerHTML;
+                statusEl.innerHTML =
+                    `Zuletzt gespeichert: ${d.toLocaleDateString('de-DE')} ${d.toLocaleTimeString('de-DE')} ${badge}`;
+            } catch (e) { /* ignore */ }
+        }
+    }
+
+    // ==== EXPORT / IMPORT ====
+    function exportJSON() {
+        const data = collectData();
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `engine-build-log_${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('JSON exportiert!');
+    }
+
+    function importJSON(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                applyData(data);
+                saveData();
+                showToast('Daten importiert!');
+            } catch (err) {
+                showToast('Fehler beim Import!');
+            }
+        };
+        reader.readAsText(file);
+        event.target.value = '';
+    }
+
+    function clearAllData() {
+        if (confirm('Alle eingegebenen Daten wirklich loeschen?')) {
+            localStorage.removeItem('engineBuildLog');
+            document.querySelectorAll('[data-field]').forEach(el => {
+                if (el.type === 'checkbox') el.checked = false;
+                else el.value = '';
+                el.classList.remove('status-ok', 'status-warn', 'status-error');
+            });
+            document.getElementById('saveStatus').innerHTML = '<span id="syncBadge"></span>';
+            updateSyncBadge();
+            showToast('Alle Daten geloescht.');
+        }
+    }
+
+    // ==== TOGGLE SECTIONS ====
+    function toggleSection(header) {
+        header.classList.toggle('collapsed');
+        const body = header.nextElementSibling;
+        body.classList.toggle('collapsed');
+    }
+
+    // ==== TOAST ====
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ==== INIT ====
+    generateQuenchTable();
+    updateSyncBadge();
+    loadData();
+</script>
+
+</body>
+</html>
