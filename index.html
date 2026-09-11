@@ -2,7 +2,10 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Engine Build Measurement Log</title>
     <style>
         :root {
@@ -54,7 +57,8 @@
             margin-top: 0.75rem;
         }
         .toolbar button {
-            padding: 0.4rem 0.9rem;
+            padding: 0.6rem 1rem;
+            min-height: 44px;
             border: 1px solid rgba(255,255,255,0.4);
             background: rgba(255,255,255,0.15);
             color: white;
@@ -63,8 +67,10 @@
             font-size: 0.8rem;
             font-weight: 500;
             transition: all 0.2s;
+            -webkit-tap-highlight-color: rgba(255,255,255,0.3);
+            touch-action: manipulation;
         }
-        .toolbar button:hover { background: rgba(255,255,255,0.3); }
+        .toolbar button:hover, .toolbar button:active { background: rgba(255,255,255,0.3); }
         .toolbar button.save-btn { background: var(--success); border-color: var(--success); }
         .toolbar button.save-btn:hover { background: #2f855a; }
 
@@ -414,12 +420,19 @@
         .modal-overlay {
             display: none;
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0,0,0,0.5);
-            z-index: 300;
+            z-index: 9999;
             align-items: center;
             justify-content: center;
             padding: 1rem;
+            -webkit-overflow-scrolling: touch;
+            overflow-y: auto;
         }
         .modal-overlay.show { display: flex; }
         .modal {
@@ -429,6 +442,9 @@
             max-width: 480px;
             width: 100%;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .modal h3 {
             font-size: 1.1rem;
@@ -466,12 +482,15 @@
             margin-top: 1rem;
         }
         .modal button {
-            padding: 0.5rem 1rem;
+            padding: 0.65rem 1.1rem;
+            min-height: 44px;
             border-radius: 8px;
             border: none;
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
+            -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+            touch-action: manipulation;
         }
         .modal .btn-primary {
             background: var(--primary);
@@ -537,7 +556,7 @@
         <button onclick="document.getElementById('importFile').click()">Import JSON</button>
         <button onclick="clearAllData()">Zur&uuml;cksetzen</button>
         <button onclick="window.print()">Drucken</button>
-        <button class="settings-btn" onclick="openSettings()">Einstellungen</button>
+        <button class="settings-btn" onclick="openSettings()" ontouchend="openSettings()">Einstellungen</button>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
     </div>
     <div class="save-status" id="saveStatus">
@@ -1013,17 +1032,27 @@
     }
 
     // ==== SETTINGS MODAL ====
-    function openSettings() {
+    function openSettings(e) {
+        if (e) e.preventDefault();
         const c = getGistConfig();
         document.getElementById('ghToken').value = c.token;
-        document.getElementById('ghGistId').value = c.gistId;
         updateConnectionStatus();
-        document.getElementById('settingsModal').classList.add('show');
+        const modal = document.getElementById('settingsModal');
+        modal.classList.add('show');
+        // Scroll to top on iOS to prevent modal from being behind keyboard
+        window.scrollTo(0, 0);
     }
 
     function closeSettings() {
         document.getElementById('settingsModal').classList.remove('show');
     }
+
+    // Close modal when tapping outside
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('settingsModal').addEventListener('click', function(e) {
+            if (e.target === this) closeSettings();
+        });
+    });
 
     async function saveSettings() {
         const token = document.getElementById('ghToken').value.trim();
