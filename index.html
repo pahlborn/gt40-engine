@@ -223,6 +223,30 @@
         .comp-sub { font-size: 0.8rem; font-weight: 600; color: var(--primary); margin: 0.5rem 0 0.25rem; padding-top: 0.3rem; border-top: 1px solid #c3dafe; }
         .comp-sub:first-child { border-top: none; margin-top: 0; padding-top: 0; }
 
+        /* ---- Unit Converter ---- */
+        .converter-btn {
+            position: fixed; bottom: 80px; right: 16px; z-index: 900;
+            background: #38a169; color: #fff; border: none; border-radius: 50%;
+            width: 44px; height: 44px; font-size: 1.1rem; cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,.25); display: flex; align-items: center; justify-content: center;
+        }
+        .converter-panel {
+            display: none; position: fixed; bottom: 130px; right: 16px; z-index: 901;
+            background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.25);
+            padding: 1rem; width: 280px; font-size: 0.82rem;
+        }
+        .converter-panel.open { display: block; }
+        .converter-panel h4 { margin: 0 0 0.5rem; font-size: 0.9rem; color: var(--primary); }
+        .converter-row { display: flex; gap: 0.3rem; align-items: center; margin-bottom: 0.5rem; }
+        .converter-row input { flex: 1; padding: 0.35rem 0.4rem; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 0.82rem; }
+        .converter-row .conv-label { font-size: 0.7rem; color: #666; min-width: 38px; text-align: center; }
+        .converter-sep { border-top: 1px solid #e2e8f0; margin: 0.6rem 0; }
+
+        /* ---- Guide inline inputs ---- */
+        .guide-input-group { background: #f0f5ff; border: 1px solid #c3dafe; border-radius: 8px; padding: 0.6rem; margin: 0.6rem 0; }
+        .guide-input-group label { font-size: 0.75rem; font-weight: 600; color: var(--primary); display: block; margin-bottom: 0.2rem; }
+        .guide-input-group input { width: 100%; padding: 0.4rem; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 0.82rem; box-sizing: border-box; }
+
         /* ---- Glossary ---- */
         .glossary-search {
             position: sticky; top: 0; z-index: 502; background: var(--primary);
@@ -574,12 +598,13 @@
                     <div class="spec-item"><span class="spec-label">Einlassventil</span><span class="spec-value">1.900" x 4.900" O.A.L. (AFR #7249)</span></div>
                     <div class="spec-item"><span class="spec-label">Auslassventil</span><span class="spec-value">1.600" x 4.950" O.A.L. (AFR #7250)</span></div>
                     <div class="spec-item"><span class="spec-label">Ventilsitzbearbeitung</span><span class="spec-value">Competition 5-Angle Valve Job</span></div>
-                    <div class="comp-sub">Ventilfedern (Standard)</div>
-                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">PAC Racing Dual Spring, 1.290" OD (AFR #8017)</span></div>
-                    <div class="spec-item"><span class="spec-label">Sitzdruck</span><span class="spec-value">140 lbs (on seat)</span></div>
-                    <div class="spec-item"><span class="spec-label">Max. Ventilhub</span><span class="spec-value">.600" (max. RPM 6300&ndash;6500)</span></div>
-                    <div class="spec-item"><span class="spec-label">Duration-Limit</span><span class="spec-value">&lt; 235&deg; @ .050" &ndash; dar&uuml;ber: Upgrade #8019 empfohlen</span></div>
+                    <div class="comp-sub">Ventilfedern (Upgrade ab Werk verbaut!)</div>
+                    <div class="spec-item"><span class="spec-label">Verbaut</span><span class="spec-value"><strong>AFR #8605 Upgrade</strong> (.650" Lift / 7.000 RPM Hydraulic Roller)</span></div>
+                    <div class="spec-item"><span class="spec-label">Standard w&auml;re</span><span class="spec-value">PAC #8017 (140 lbs seat, max .600" &ndash; NICHT verbaut)</span></div>
                     <div class="spec-item"><span class="spec-label">Spring Pocket</span><span class="spec-value">1.460" OD (max. 1.625" nach Bearbeitung)</span></div>
+                    <div class="comp-sub">Weitere Upgrades (ab Werk verbaut)</div>
+                    <div class="spec-item"><span class="spec-label">Rocker Studs</span><span class="spec-value">AFR #6411 &ndash; 7/16" Screw-in Rocker Studs (Upgrade)</span></div>
+                    <div class="spec-item"><span class="spec-label">Retainer</span><span class="spec-value">AFR #8600 &ndash; 7&deg; Titanium Retainer (Upgrade)</span></div>
                     <div class="comp-sub">Kopfschrauben</div>
                     <div class="spec-item"><span class="spec-label">Schraubengr&ouml;&szlig;e</span><span class="spec-value"><strong>1/2" UNC</strong> (AFR #1399 = Ausnahme unter 165cc-K&ouml;pfen!)</span></div>
                     <div class="spec-item"><span class="spec-label">Empfohlen</span><span class="spec-value">M-6065-BOSS (Bolts) oder M-6014-BOSS (Studs)</span></div>
@@ -646,28 +671,81 @@
         <div class="section-body">
             <!-- Komponenten -->
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">Kipphebel (Rocker Arms)</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">Kipphebel &ndash; COMP Cams 1632-16 Ultra Pro Magnum</div>
                 <div class="comp-body">
-                    <div class="spec-item"><span class="spec-label">&Uuml;bersetzung (Ratio)</span><span class="spec-value">1.6:1</span></div>
-                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Stud-mounted, roller tip</span></div>
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Ultra Pro Magnum Roller Rocker Arms</span></div>
+                    <div class="spec-item"><span class="spec-label">&Uuml;bersetzung</span><span class="spec-value">1.6:1</span></div>
+                    <div class="spec-item"><span class="spec-label">Stud-Durchmesser</span><span class="spec-value">7/16" (Rocker Stud)</span></div>
+                    <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">8650 Chromoly, Investment Cast</span></div>
+                    <div class="spec-item"><span class="spec-label">Lagerung</span><span class="spec-value">&Uuml;berdimensionierte Trunnions, Pr&auml;zisions-Nadellager</span></div>
+                    <div class="spec-item"><span class="spec-label">Tip</span><span class="spec-value">Geh&auml;rtete Roller Tips</span></div>
+                    <div class="spec-item"><span class="spec-label">Finish</span><span class="spec-value">Black Oxide</span></div>
+                    <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">Set of 16 (kompletter V8-Satz)</span></div>
                 </div>
             </div>
 
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">Lifter &ndash; Hydraulic Roller</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">Polylocks &ndash; COMP Cams 4600-16</div>
                 <div class="comp-body">
-                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Hydraulic Roller Lifter (Tie-Bar oder Dog-Bone Retainer)</span></div>
-                    <div class="spec-item"><span class="spec-label">Preload Empfehlung</span><span class="spec-value">1/4 bis 3/4 Umdrehung nach Nullspiel</span></div>
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Polylock Adjusting Nuts</span></div>
+                    <div class="spec-item"><span class="spec-label">Stud-Gr&ouml;&szlig;e</span><span class="spec-value">7/16"</span></div>
+                    <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">16 St&uuml;ck</span></div>
+                    <div class="spec-item"><span class="spec-label">Funktion</span><span class="spec-value">Einstellmutter mit integrierter Kontermutter &ndash; h&auml;lt Preload-Einstellung sicher</span></div>
                 </div>
             </div>
 
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">Ventilfedern (Valve Springs)</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">Lifter &ndash; Morel 5327 HLT (Limited Travel)</div>
                 <div class="comp-body">
-                    <div class="spec-item"><span class="spec-label">Modell</span><span class="spec-value">AFR 8605 Dual Springs</span></div>
-                    <div class="spec-item"><span class="spec-label">Max. Ventilhub</span><span class="spec-value">bis .650"</span></div>
-                    <div class="spec-item"><span class="spec-label">Installed Height</span><span class="spec-value">Herstellerangabe pr&uuml;fen</span></div>
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Hydraulic Roller, HLT (Short Travel Plunger)</span></div>
+                    <div class="spec-item"><span class="spec-label">Plunger Travel</span><span class="spec-value">.015"&ndash;.030" vor Solid (Limited Travel)</span></div>
+                    <div class="spec-item"><span class="spec-label">Body OD</span><span class="spec-value">.875"</span></div>
+                    <div class="spec-item"><span class="spec-label">Roller OD</span><span class="spec-value">.700"</span></div>
+                    <div class="spec-item"><span class="spec-label">Bauform</span><span class="spec-value">Link Bar (Retro-Fit)</span></div>
+                    <div class="spec-item"><span class="spec-label">Max. Federdruck</span><span class="spec-value">Seat: 100&ndash;250 lbs | Open: 285&ndash;650 lbs</span></div>
+                    <div class="spec-item"><span class="spec-label">Max. Drehzahl</span><span class="spec-value">6.500&ndash;7.000+ U/min</span></div>
+                    <div class="spec-item"><span class="spec-label">Preload</span><span class="spec-value">1/4 bis 1/2 Umdrehung nach Nullspiel (HLT: weniger Preload!)</span></div>
+                    <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">16 St&uuml;ck</span></div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Bei 302-Blocks m&uuml;ssen die Zylinderkoepfe abgenommen werden, um die Lifter einzubauen!</div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Checking Pushrod &ndash; CNC Motorsports TC6878</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Verstellbereich</span><span class="spec-value">6.800" &ndash; 7.800"</span></div>
+                    <div class="spec-item"><span class="spec-label">Zweck</span><span class="spec-value">Ermittlung der korrekten Pushrod-L&auml;nge + Sweep-Pattern-Pr&uuml;fung</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Ventilfedern &ndash; AFR 8605 (Upgrade)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Hydraulic Roller Dual Springs (Upgrade ab Werk)</span></div>
+                    <div class="spec-item"><span class="spec-label">Max. Ventilhub</span><span class="spec-value">.650"</span></div>
+                    <div class="spec-item"><span class="spec-label">Max. Drehzahl</span><span class="spec-value">7.000 U/min</span></div>
                     <div class="spec-item"><span class="spec-label">Coil Bind pr&uuml;fen</span><span class="spec-value">Ja &ndash; bei max. Lift (.555"/.565") sicherstellen!</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Titanium Retainer &ndash; AFR 8600 (Upgrade)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">7&deg; Titanium Valve Spring Retainer</span></div>
+                    <div class="spec-item"><span class="spec-label">Vorteil</span><span class="spec-value">Leichter als Stahl &rarr; reduziert Ventiltrieb-Masse, h&ouml;here Drehzahlen m&ouml;glich</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Kopfschrauben &ndash; ARP 154-4003</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Professional Series Cylinder Head Studs</span></div>
+                    <div class="spec-item"><span class="spec-label">Gewinde</span><span class="spec-value">1/2-13 UNC (Block-Seite)</span></div>
+                    <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">8740 Chromoly, 200.000 PSI</span></div>
+                    <div class="spec-item"><span class="spec-label">Finish</span><span class="spec-value">Black Oxide</span></div>
+                    <div class="spec-item"><span class="spec-label">Muttern</span><span class="spec-value">6-Point (Hex) Nuts + geh&auml;rtete Unterlegscheiben</span></div>
+                    <div class="spec-item"><span class="spec-label">Innen (lang)</span><span class="spec-value">5.000" Gesamtl&auml;nge</span></div>
+                    <div class="spec-item"><span class="spec-label">Au&szlig;en (kurz)</span><span class="spec-value">3.250" Gesamtl&auml;nge</span></div>
                 </div>
             </div>
 
@@ -1003,12 +1081,24 @@
         <!-- Werkzeuge -->
         <h3>Ben&ouml;tigte Werkzeuge &amp; Arbeitsmittel</h3>
         <ul>
-            <li><strong>Plastigage</strong> (gr&uuml;n = 0.001"&ndash;0.003" oder rot = 0.002"&ndash;0.006")</li>
-            <li><strong>Drehmomentschl&uuml;ssel</strong> (ft-lbs, passender Bereich)</li>
-            <li><strong>Messuhr</strong> (Dial Indicator) mit Magnetst&auml;nder</li>
-            <li><strong>F&uuml;hlerlehre</strong></li>
+            <li><strong>Plastigage</strong> &ndash; d&uuml;nner Kunststofffaden, der beim Zusammendr&uuml;cken zwischen Zapfen und Lagerschale breit gedr&uuml;ckt wird. Die Breite des gequetschten Streifens zeigt das Lagerspiel an (Skala auf der Verpackung). <a href="#" onclick="openGlossary('Plastigage');return false;" style="color:var(--primary-light);">&rarr; Glossar</a>
+                <ul style="font-size:0.82rem;margin-top:0.2rem;">
+                    <li><strong style="color:#38a169;">Gr&uuml;n (PG-1)</strong>: Messbereich 0.001"&ndash;0.003" (0.025&ndash;0.076 mm) &ndash; f&uuml;r enge Spiele</li>
+                    <li><strong style="color:#e53e3e;">Rot (PR-1)</strong>: Messbereich 0.002"&ndash;0.006" (0.051&ndash;0.152 mm) &ndash; f&uuml;r weitere Spiele</li>
+                    <li><em>Empfehlung:</em> Beide Farben bereithalten</li>
+                </ul>
+            </li>
+            <li><strong>Drehmomentschl&uuml;ssel</strong> &ndash; Bereich bis mind. 100 ft-lbs (135 Nm), kalibriert</li>
+            <li><strong>Messuhr (Dial Indicator)</strong> mit Magnetst&auml;nder &ndash; Aufl&ouml;sung mind. 0.001" (0.025 mm)</li>
+            <li><strong>F&uuml;hlerlehre (Feeler Gauge)</strong> &ndash; inch-Satz, Bl&auml;tter ben&ouml;tigt: 0.001"&ndash;0.010" (0.025&ndash;0.254 mm). F&uuml;r Axialspiel: 0.004"&ndash;0.010" (0.10&ndash;0.25 mm)</li>
             <li><strong>Gro&szlig;er Schraubendreher</strong> oder Hebel (zum Bewegen der Kurbelwelle axial)</li>
-            <li><strong>Assembly Lube</strong> (Montagepaste f&uuml;r Lager)</li>
+            <li><strong>Assembly Lube</strong> (Montagepaste f&uuml;r Lager) &ndash; empfohlen:
+                <ul style="font-size:0.82rem;margin-top:0.2rem;">
+                    <li><strong>COMP Cams Cam &amp; Lifter Install Lube (#153)</strong> &ndash; speziell f&uuml;r Nockenwelle/Lifter</li>
+                    <li><strong>Lucas Oil Assembly Lube (#10153)</strong> &ndash; universell f&uuml;r Lager, Kolben, Ringe</li>
+                    <li><strong>Red Line Assembly Lube</strong> &ndash; Premium-Alternative</li>
+                </ul>
+            </li>
             <li><strong>Saubere, fusselfreie T&uuml;cher</strong></li>
         </ul>
 
@@ -1037,6 +1127,14 @@
         <div class="info-box">
             <strong>Tipp:</strong> Falls das Spiel au&szlig;erhalb der Toleranz liegt, andere Lagerschalenst&auml;rke (Standard / 0.001" / 0.002" Undersize) verwenden. Niemals an der Lagerschale feilen oder schleifen!
         </div>
+        <div class="guide-input-group">
+            <label>&#9998; Hauptlagerspiel hier eintragen (Soll: 0.001"&ndash;0.003")</label>
+            <input type="text" data-field="main_bearing_1" placeholder='#1: z.B. 0.002"' oninput="autoSave()">
+            <input type="text" data-field="main_bearing_2" placeholder='#2: z.B. 0.0025"' oninput="autoSave()" style="margin-top:0.25rem;">
+            <input type="text" data-field="main_bearing_3" placeholder='#3: z.B. 0.002"' oninput="autoSave()" style="margin-top:0.25rem;">
+            <input type="text" data-field="main_bearing_4" placeholder='#4: z.B. 0.002"' oninput="autoSave()" style="margin-top:0.25rem;">
+            <input type="text" data-field="main_bearing_5" placeholder='#5: z.B. 0.0025"' oninput="autoSave()" style="margin-top:0.25rem;">
+        </div>
 
         <!-- Kurbelwellen-Axialspiel -->
         <h3>B) Kurbelwellen-Axialspiel messen (Crankshaft Endplay)</h3>
@@ -1048,7 +1146,11 @@
             <div class="torque-step"><span class="step-num">5</span>Kurbelwelle <strong>ganz nach hinten</strong> dr&uuml;cken (Richtung Schwungrad).</div>
             <div class="torque-step"><span class="step-num">6</span>Messuhr ablesen &rarr; ergibt das Axialspiel.</div>
         </div>
-        <div class="info-box"><strong>Sollwert:</strong> 0.004" &ndash; 0.008". Gesteuert durch die Thrust Bearing Schale (Position 3 beim SBF 302).</div>
+        <div class="info-box"><strong>Sollwert:</strong> 0.004"&ndash;0.008" (0.10&ndash;0.20 mm). Gesteuert durch die Thrust Bearing Schale (Position 3 beim SBF 302).</div>
+        <div class="guide-input-group">
+            <label>&#9998; Kurbelwellen-Axialspiel</label>
+            <input type="text" data-field="crank_endplay" placeholder='z.B. 0.006"' oninput="autoSave()">
+        </div>
 
         <!-- Nockenwellen-Axialspiel -->
         <h3>C) Nockenwellen-Axialspiel messen (Camshaft Endplay)</h3>
@@ -1058,7 +1160,11 @@
             <div class="torque-step"><span class="step-num">3</span>Nockenwelle ganz nach vorne und nach hinten bewegen.</div>
             <div class="torque-step"><span class="step-num">4</span>Differenz ablesen &rarr; Axialspiel.</div>
         </div>
-        <div class="info-box"><strong>Sollwert:</strong> 0.004" &ndash; 0.009". Gesteuert durch die Thrust Plate.</div>
+        <div class="info-box"><strong>Sollwert:</strong> 0.004"&ndash;0.009" (0.10&ndash;0.23 mm). Gesteuert durch die Thrust Plate.</div>
+        <div class="guide-input-group">
+            <label>&#9998; Nockenwellen-Axialspiel</label>
+            <input type="text" data-field="cam_endplay" placeholder='z.B. 0.005"' oninput="autoSave()">
+        </div>
     </div>
 </div>
 
@@ -1074,14 +1180,14 @@
 
         <h3>Ben&ouml;tigte Werkzeuge &amp; Arbeitsmittel</h3>
         <ul>
-            <li><strong>Plastigage</strong> (gr&uuml;n oder rot, passend zum erwarteten Spiel)</li>
-            <li><strong>Drehmomentschl&uuml;ssel</strong> (ft-lbs)</li>
-            <li><strong>F&uuml;hlerlehre</strong> (Feeler Gauge)</li>
-            <li><strong>Piston Ring File</strong> (Ring-Feilger&auml;t) &ndash; zum Anpassen der Ring End Gaps</li>
-            <li><strong>Ring Compressor</strong> (Kolbenringspannband)</li>
-            <li><strong>Kolben</strong> als F&uuml;hrung zum Einsetzen der Ringe in den Zylinder</li>
+            <li><strong>Plastigage</strong> (siehe <a href="#" onclick="openGlossary('Plastigage');return false;" style="color:var(--primary-light);">Glossar</a>) &ndash; gr&uuml;n (0.001"&ndash;0.003") und/oder rot (0.002"&ndash;0.006")</li>
+            <li><strong>Drehmomentschl&uuml;ssel</strong> &ndash; Bereich passend zu den Pleuel-Schrauben (z.B. 35&ndash;45 ft-lbs / 47&ndash;61 Nm)</li>
+            <li><strong>F&uuml;hlerlehre (Feeler Gauge)</strong> &ndash; Bereich 0.010"&ndash;0.035" (0.25&ndash;0.89 mm) f&uuml;r Ring End Gaps</li>
+            <li><strong>Piston Ring File</strong> (Ring-Feilger&auml;t) &ndash; zum Anpassen der Ring End Gaps, z.B. von Hastings oder Total Seal</li>
+            <li><strong>Ring Compressor</strong> (Kolbenringspannband) &ndash; passend f&uuml;r 4.000" Bore</li>
+            <li><strong>Kolben</strong> als F&uuml;hrung zum Einsetzen der Ringe gerade in den Zylinder</li>
             <li><strong>Saubere, fusselfreie T&uuml;cher</strong></li>
-            <li><strong>Assembly Lube</strong></li>
+            <li><strong>Assembly Lube</strong> &ndash; z.B. Lucas Oil #10153 oder Red Line Assembly Lube (auf Ringe: d&uuml;nne Schicht Motor&ouml;l gen&uuml;gt)</li>
         </ul>
 
         <h3>Vorbereitung</h3>
@@ -1099,8 +1205,19 @@
             <div class="torque-step"><span class="step-num">2</span>Plastigage-Streifen auf den Pleuellagerzapfen der Kurbelwelle legen &ndash; quer &uuml;ber die volle Zapfenbreite.</div>
             <div class="torque-step"><span class="step-num">3</span>Pleueldeckel aufsetzen und Schrauben <strong>auf Soll-Drehmoment</strong> anziehen. <strong>Kurbelwelle dabei NICHT drehen!</strong></div>
             <div class="torque-step"><span class="step-num">4</span>Deckel abnehmen. Plastigage-Breite mit Skala vergleichen &rarr; Lagerspiel.</div>
-            <div class="torque-step"><span class="step-num">5</span>Messwert notieren. Plastigage-Reste entfernen.</div>
+            <div class="torque-step"><span class="step-num">5</span>Messwert unten eintragen. Plastigage-Reste vollst&auml;ndig entfernen.</div>
             <div class="torque-step"><span class="step-num">6</span>F&uuml;r alle 8 Zylinder wiederholen.</div>
+        </div>
+        <div class="guide-input-group">
+            <label>&#9998; Pleuellagerspiel (Soll: 0.001"&ndash;0.003")</label>
+            <input type="text" data-field="rod_bearing_1" placeholder='#1: z.B. 0.002"' oninput="autoSave()">
+            <input type="text" data-field="rod_bearing_2" placeholder='#2' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="rod_bearing_3" placeholder='#3' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="rod_bearing_4" placeholder='#4' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="rod_bearing_5" placeholder='#5' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="rod_bearing_6" placeholder='#6' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="rod_bearing_7" placeholder='#7' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="rod_bearing_8" placeholder='#8' oninput="autoSave()" style="margin-top:0.2rem;">
         </div>
 
         <!-- Ring End Gap -->
@@ -1109,7 +1226,29 @@
             <div class="torque-step"><span class="step-num">1</span>Ring (ohne Kolben) in den Zylinder einsetzen, f&uuml;r den er vorgesehen ist.</div>
             <div class="torque-step"><span class="step-num">2</span>Ring mit einem umgedrehten Kolben gerade in den Zylinder dr&uuml;cken (ca. 1" unter Oberkante, wo die Bohrung am repr&auml;sentativsten ist).</div>
             <div class="torque-step"><span class="step-num">3</span>Mit der <strong>F&uuml;hlerlehre</strong> den Spalt zwischen den Ringenden messen.</div>
-            <div class="torque-step"><span class="step-num">4</span>Messwert notieren. F&uuml;r jeden Ring (Top Ring + Second Ring) in jedem Zylinder einzeln messen.</div>
+            <div class="torque-step"><span class="step-num">4</span>Messwert unten eintragen. F&uuml;r jeden Ring (Top Ring + Second Ring) in jedem Zylinder einzeln messen.</div>
+        </div>
+        <div class="guide-input-group">
+            <label>&#9998; Ring End Gap Top Ring (Soll: Herstellerangabe, typ. 0.016"&ndash;0.022")</label>
+            <input type="text" data-field="ring_gap_top_1" placeholder='#1' oninput="autoSave()">
+            <input type="text" data-field="ring_gap_top_2" placeholder='#2' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="ring_gap_top_3" placeholder='#3' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="ring_gap_top_4" placeholder='#4' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="ring_gap_top_5" placeholder='#5' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="ring_gap_top_6" placeholder='#6' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="ring_gap_top_7" placeholder='#7' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="ring_gap_top_8" placeholder='#8' oninput="autoSave()" style="margin-top:0.2rem;">
+        </div>
+        <div class="guide-input-group">
+            <label>&#9998; Ring End Gap Second Ring (Soll: typ. 0.018"&ndash;0.028")</label>
+            <input type="text" data-field="ring_gap_2nd_1" placeholder='#1' oninput="autoSave()">
+            <input type="text" data-field="ring_gap_2nd_2" placeholder='#2' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="ring_gap_2nd_3" placeholder='#3' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="ring_gap_2nd_4" placeholder='#4' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="ring_gap_2nd_5" placeholder='#5' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="ring_gap_2nd_6" placeholder='#6' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="ring_gap_2nd_7" placeholder='#7' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="ring_gap_2nd_8" placeholder='#8' oninput="autoSave()" style="margin-top:0.2rem;">
         </div>
 
         <h3>C) Ring End Gap anpassen (bei Bedarf)</h3>
@@ -1211,6 +1350,17 @@
             <div class="torque-step"><span class="step-num">4</span>F&uuml;r alle 8 Zylinder wiederholen (Kopf muss daf&uuml;r jedes Mal abgenommen und wieder montiert werden, oder alle Zylinder einer Seite gleichzeitig messen).</div>
         </div>
         <div class="info-box"><strong>Alternative:</strong> Piston-to-Deck mit Messuhr messen (ohne Kopf) und die compressed Gasket Thickness addieren. Weniger genau, aber zerst&ouml;rungsfrei.</div>
+        <div class="guide-input-group">
+            <label>&#9998; Quench-Abstand (Soll: 0.035"&ndash;0.045" / 0.89&ndash;1.14 mm)</label>
+            <input type="text" data-field="quench_1" placeholder='#1' oninput="autoSave()">
+            <input type="text" data-field="quench_2" placeholder='#2' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="quench_3" placeholder='#3' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="quench_4" placeholder='#4' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="quench_5" placeholder='#5' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="quench_6" placeholder='#6' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="quench_7" placeholder='#7' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="quench_8" placeholder='#8' oninput="autoSave()" style="margin-top:0.2rem;">
+        </div>
 
         <!-- Schritt 6: P-t-V -->
         <h3>Schritt 6: Piston-to-Valve Clearance pr&uuml;fen (Knete-Methode)</h3>
@@ -1226,6 +1376,11 @@
             <div class="torque-step"><span class="step-num">7</span>Knete am d&uuml;nnsten Punkt mit dem <strong>Messschieber</strong> messen &rarr; ergibt den Mindestabstand Kolben&ndash;Ventil.</div>
         </div>
         <div class="info-box"><strong>Falls Clearance zu gering:</strong> Ventiltaschen vertiefen lassen, dickere Dichtung, oder Nockenwellensteuerzeiten anpassen. <strong>Niemals</strong> mit zu wenig Clearance fahren!</div>
+        <div class="guide-input-group">
+            <label>&#9998; Piston-to-Valve Clearance (Min: Einl. &ge; 0.080" / Ausl. &ge; 0.100")</label>
+            <input type="text" data-field="ptv_intake" placeholder='Einlass: z.B. 0.120"' oninput="autoSave()">
+            <input type="text" data-field="ptv_exhaust" placeholder='Auslass: z.B. 0.140"' oninput="autoSave()" style="margin-top:0.2rem;">
+        </div>
 
         <h3>Referenz: Nockenwelle (Daten siehe Sektion 2)</h3>
         <div class="spec-item"><span class="spec-label">Ventilhub (1.6 Kipphebel)</span><span class="spec-value">Einl: 0.555" / Ausl: 0.565"</span></div>
@@ -2489,6 +2644,38 @@
 </div><!-- /guide-glossary -->
 
 <!-- ===== TOAST ===== -->
+<!-- Unit Converter -->
+<button class="converter-btn" onclick="document.getElementById('convPanel').classList.toggle('open')" title="Einheiten-Umrechner">&#8644;</button>
+<div class="converter-panel" id="convPanel">
+    <h4>&#8644; Einheiten-Umrechner</h4>
+    <strong style="font-size:0.75rem;">Drehmoment</strong>
+    <div class="converter-row">
+        <input type="number" id="convFtlbs" placeholder="ft-lbs" oninput="document.getElementById('convNm').value=this.value?(this.value*1.3558).toFixed(1):''">
+        <span class="conv-label">ft-lbs</span>
+        <span>&harr;</span>
+        <input type="number" id="convNm" placeholder="Nm" oninput="document.getElementById('convFtlbs').value=this.value?(this.value/1.3558).toFixed(1):''">
+        <span class="conv-label">Nm</span>
+    </div>
+    <div class="converter-sep"></div>
+    <strong style="font-size:0.75rem;">L&auml;nge / Spalt</strong>
+    <div class="converter-row">
+        <input type="number" id="convInch" placeholder="inch" step="0.001" oninput="document.getElementById('convMm').value=this.value?(this.value*25.4).toFixed(3):''">
+        <span class="conv-label">inch</span>
+        <span>&harr;</span>
+        <input type="number" id="convMm" placeholder="mm" step="0.001" oninput="document.getElementById('convInch').value=this.value?(this.value/25.4).toFixed(4):''">
+        <span class="conv-label">mm</span>
+    </div>
+    <div class="converter-sep"></div>
+    <strong style="font-size:0.75rem;">Volumen (Brennraum)</strong>
+    <div class="converter-row">
+        <input type="number" id="convCc" placeholder="cc" oninput="document.getElementById('convCi').value=this.value?(this.value/16.387).toFixed(2):''">
+        <span class="conv-label">cc</span>
+        <span>&harr;</span>
+        <input type="number" id="convCi" placeholder="ci" step="0.01" oninput="document.getElementById('convCc').value=this.value?(this.value*16.387).toFixed(1):''">
+        <span class="conv-label">ci</span>
+    </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <!-- ===== JAVASCRIPT ===== -->
@@ -2510,6 +2697,11 @@
     function hideGuide(id) { document.getElementById(id).classList.remove('show'); document.body.style.overflow = ''; }
 
     // ==== GLOSSARY ====
+    function openGlossary(term) {
+        showGuide('guide-glossary');
+        const search = document.getElementById('glossarySearch');
+        if (search && term) { search.value = term; filterGlossary(); }
+    }
     let activeCategory = '';
     function filterGlossary() {
         const q = (document.getElementById('glossarySearch').value || '').toLowerCase().trim();
