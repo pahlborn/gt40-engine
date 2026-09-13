@@ -200,6 +200,52 @@
         .modal .status-line.connected { background: #f0fff4; color: var(--success); border: 1px solid #c6f6d5; }
         .modal .status-line.disconnected { background: #fff5f5; color: var(--danger); border: 1px solid #fed7d7; }
 
+        /* ---- Glossary ---- */
+        .glossary-search {
+            position: sticky; top: 0; z-index: 502; background: var(--primary);
+            padding: 0.6rem 1rem 0.5rem; display: flex; flex-direction: column; gap: 0.4rem;
+        }
+        .glossary-search-row {
+            display: flex; align-items: center; gap: 0.6rem;
+        }
+        .glossary-search input[type="search"] {
+            flex: 1; padding: 0.5rem 0.75rem; border: none; border-radius: 8px;
+            font-size: 0.88rem; background: rgba(255,255,255,0.95); color: var(--text);
+            min-height: 40px;
+        }
+        .glossary-search input[type="search"]:focus { outline: none; box-shadow: 0 0 0 3px rgba(255,255,255,0.4); }
+        .glossary-search input[type="search"]::placeholder { color: var(--text-light); }
+        .glossary-cat-nav {
+            display: flex; gap: 0.3rem; overflow-x: auto; -webkit-overflow-scrolling: touch;
+            padding-bottom: 0.2rem; scrollbar-width: none;
+        }
+        .glossary-cat-nav::-webkit-scrollbar { display: none; }
+        .glossary-cat-btn {
+            white-space: nowrap; padding: 0.3rem 0.6rem; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.15);
+            color: white; font-size: 0.68rem; font-weight: 600; cursor: pointer;
+            touch-action: manipulation; flex-shrink: 0;
+        }
+        .glossary-cat-btn.active { background: white; color: var(--primary); border-color: white; }
+        .glossary-count { font-size: 0.7rem; color: rgba(255,255,255,0.7); padding-left: 0.2rem; }
+        .glossary-body { max-width: 800px; margin: 0 auto; padding: 0.75rem; }
+        .glossary-category { margin-bottom: 1.25rem; }
+        .glossary-category-title {
+            font-size: 0.92rem; font-weight: 700; color: var(--primary);
+            padding: 0.5rem 0; border-bottom: 2px solid var(--primary); margin-bottom: 0.5rem;
+        }
+        .glossary-entry {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
+            padding: 0.75rem; margin-bottom: 0.5rem;
+        }
+        .glossary-entry.hidden { display: none; }
+        .glossary-term { font-size: 0.92rem; font-weight: 700; color: var(--primary); margin-bottom: 0.1rem; }
+        .glossary-deutsch { font-size: 0.78rem; color: var(--accent); font-weight: 600; margin-bottom: 0.35rem; }
+        .glossary-field { margin-bottom: 0.3rem; font-size: 0.8rem; line-height: 1.5; }
+        .glossary-field-label { font-weight: 600; color: var(--text-light); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        .glossary-related { font-size: 0.72rem; color: var(--primary-light); font-style: italic; }
+        .glossary-no-results { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.88rem; }
+
         /* ---- Toast ---- */
         .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: white; padding: 0.65rem 1.3rem; border-radius: 10px; font-size: 0.82rem; font-weight: 500; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10000; transition: transform 0.3s ease; }
         .toast.show { transform: translateX(-50%) translateY(0); }
@@ -235,6 +281,7 @@
         <button onclick="document.getElementById('importFile').click()">Import</button>
         <button onclick="clearAllData()">Reset</button>
         <button onclick="window.print()">Drucken</button>
+        <button style="background:#ed8936;border-color:#ed8936;" onclick="showGuide('guide-glossary')">Glossar</button>
         <button class="settings-btn" onclick="openSettings()">Einstellungen</button>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
     </div>
@@ -599,6 +646,891 @@
     </div>
 </div>
 
+<!-- ===== GLOSSARY OVERLAY ===== -->
+<div class="guide-overlay" id="guide-glossary">
+    <div class="glossary-search">
+        <div class="glossary-search-row">
+            <button class="guide-back" onclick="hideGuide('guide-glossary')">&larr;</button>
+            <input type="search" id="glossarySearch" placeholder="Begriff suchen..." oninput="filterGlossary()">
+            <span class="glossary-count" id="glossaryCount"></span>
+        </div>
+        <div class="glossary-cat-nav" id="glossaryCatNav">
+            <button class="glossary-cat-btn active" onclick="filterCategory(this,'')" data-cat="">Alle</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-grund')" data-cat="cat-grund">Grundbegriffe</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-block')" data-cat="cat-block">Block &amp; Deck</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-verdichtung')" data-cat="cat-verdichtung">Verdichtung</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-kurbel')" data-cat="cat-kurbel">Kurbeltrieb</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-kolben')" data-cat="cat-kolben">Kolben &amp; Ringe</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-kopf')" data-cat="cat-kopf">Zylinderkopf</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-federn')" data-cat="cat-federn">Ventilfedern</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-nocken')" data-cat="cat-nocken">Nockenwelle</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-steuer')" data-cat="cat-steuer">Steuertrieb</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-lifter')" data-cat="cat-lifter">Hyd. Roller Lifter</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-pushrod')" data-cat="cat-pushrod">Pushrods &amp; Rocker</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-vsteuer')" data-cat="cat-vsteuer">Ventilsteuerung</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-oel')" data-cat="cat-oel">&Ouml;lsystem</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-messen')" data-cat="cat-messen">Messen &amp; Pr&uuml;fen</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-montage')" data-cat="cat-montage">Montage</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-zusammen')" data-cat="cat-zusammen">Zusammenh&auml;nge</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-abk')" data-cat="cat-abk">Abk&uuml;rzungen</button>
+        </div>
+    </div>
+    <div class="glossary-body" id="glossaryBody">
+
+        <!-- 1. Grundbegriffe -->
+        <div class="glossary-category" data-cat="cat-grund">
+            <div class="glossary-category-title">1. Grundbegriffe des Motors</div>
+
+            <div class="glossary-entry" data-search="bore zylinderbohrung innendurchmesser zylinder kolben hubraum">
+                <div class="glossary-term">Bore &ndash; Zylinderbohrung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Innendurchmesser des Zylinders.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Die Breite des Lochs, in dem der Kolben auf und ab l&auml;uft.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Zusammen mit dem Hub bestimmt die Bohrung den Hubraum.</div>
+                <div class="glossary-related">Verwandt: Stroke, Displacement, Piston-to-Wall Clearance</div>
+            </div>
+
+            <div class="glossary-entry" data-search="stroke hub kolbenhub weg kolben ot ut hubraum">
+                <div class="glossary-term">Stroke &ndash; Kolbenhub</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Weg, den der Kolben zwischen OT und UT zur&uuml;cklegt.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Wie weit der Kolben bei einer vollst&auml;ndigen Bewegung nach oben und wieder nach unten l&auml;uft.</div>
+                <div class="glossary-related">Verwandt: Bore, TDC, BDC, Crankshaft</div>
+            </div>
+
+            <div class="glossary-entry" data-search="displacement hubraum volumen kolben verdraengt">
+                <div class="glossary-term">Displacement &ndash; Hubraum</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Volumen, das der Kolben zwischen OT und UT verdr&auml;ngt.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Der Raum, den der Kolben bei seiner Bewegung im Zylinder &bdquo;durchf&auml;hrt&ldquo;.</div>
+                <div class="glossary-related">Verwandt: Bore, Stroke, Compression Ratio</div>
+            </div>
+
+            <div class="glossary-entry" data-search="tdc top dead center oberer totpunkt ot kolben oben referenz">
+                <div class="glossary-term">TDC &ndash; Top Dead Center (Oberer Totpunkt)</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Position, bei der der Kolben ganz oben steht.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> OT ist eine wichtige Referenz f&uuml;r nahezu alle Messungen am Motor.</div>
+                <div class="glossary-related">Verwandt: BDC, Piston-to-Deck, Degreeing</div>
+            </div>
+
+            <div class="glossary-entry" data-search="bdc bottom dead center unterer totpunkt ut kolben unten">
+                <div class="glossary-term">BDC &ndash; Bottom Dead Center (Unterer Totpunkt)</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Position, bei der der Kolben ganz unten steht.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> OT und UT bestimmen zusammen den Hub.</div>
+            </div>
+        </div>
+
+        <!-- 2. Block und Deck -->
+        <div class="glossary-category" data-cat="cat-block">
+            <div class="glossary-category-title">2. Block und Deck</div>
+
+            <div class="glossary-entry" data-search="engine block motorblock hauptgehaeuse zylinder kurbelwellenlager">
+                <div class="glossary-term">Engine Block &ndash; Motorblock</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Hauptgeh&auml;use des Motors mit Zylindern, Kurbelwellenlagern und Lifterbohrungen.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Das Grundger&uuml;st des Motors.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="deck surface blockdeck blockoberflaeche zylinderkopfdichtung">
+                <div class="glossary-term">Deck / Deck Surface &ndash; Blockdeck</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die bearbeitete obere Fl&auml;che des Motorblocks, auf der die Zylinderkopfdichtung liegt.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Die Lage dieser Fl&auml;che beeinflusst Quench und Verdichtung.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="deck height deckhoehe kurbelwelle blockdeckflaeche hub pleuellaenge">
+                <div class="glossary-term">Deck Height &ndash; Deckh&ouml;he</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Lage der Blockdeckfl&auml;che relativ zur Mitte der Kurbelwelle.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Zusammen mit Hub, Pleuell&auml;nge und Kolbenh&ouml;he bestimmt sie, wo der Kolben bei OT steht.</div>
+                <div class="glossary-related">Verwandt: Piston Deck Height, Stroke, Rod Length, Compression Height</div>
+            </div>
+
+            <div class="glossary-entry" data-search="piston-to-deck clearance kolben deck abstand ot">
+                <div class="glossary-term">Piston-to-Deck Clearance &ndash; Kolben-Deck-Abstand</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Abstand zwischen Kolbenoberseite und Blockdeckfl&auml;che bei OT.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Ob der Kolben bei OT genau auf Blockh&ouml;he steht, darunter liegt oder dar&uuml;ber hinausragt.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Beeinflusst direkt Quench und Verdichtung.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="piston deck height kolbenposition position kolben relativ block">
+                <div class="glossary-term">Piston Deck Height &ndash; Kolbenposition zum Deck</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die tats&auml;chliche Position der Kolbenoberseite relativ zur Blockdeckfl&auml;che bei OT.</div>
+            </div>
+        </div>
+
+        <!-- 3. Verdichtung und Quench -->
+        <div class="glossary-category" data-cat="cat-verdichtung">
+            <div class="glossary-category-title">3. Verdichtung und Quench</div>
+
+            <div class="glossary-entry" data-search="compression ratio verdichtungsverhaeltnis zylindervolumen verbrennung leistung">
+                <div class="glossary-term">Compression Ratio &ndash; Verdichtungsverh&auml;ltnis</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Verh&auml;ltnis zwischen dem gesamten Zylindervolumen bei UT und dem verbleibenden Volumen bei OT.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Ein Motor mit 10:1 hat bei OT nur noch ein Zehntel des Volumens, das bei UT vorhanden war.</div>
+                <div class="glossary-related">Verwandt: Combustion Chamber Volume, Piston Dish, Gasket Volume</div>
+            </div>
+
+            <div class="glossary-entry" data-search="static compression ratio statisches verdichtungsverhaeltnis geometrisch">
+                <div class="glossary-term">Static Compression Ratio &ndash; Statisches Verdichtungsverh&auml;ltnis</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die geometrisch berechnete Verdichtung, die sich allein aus den tats&auml;chlichen Volumina ergibt.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="dynamic compression ratio dynamisches verdichtungsverhaeltnis einlassventil schliesst">
+                <div class="glossary-term">Dynamic Compression Ratio &ndash; Dynamisches Verdichtungsverh&auml;ltnis</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Ber&uuml;cksichtigt zus&auml;tzlich, wann das Einlassventil tats&auml;chlich schlie&szlig;t.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Solange das Einlassventil noch offen ist, kann ein Teil des Gemisches zur&uuml;ckstr&ouml;men &ndash; die effektive Verdichtung ist daher geringer.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="combustion chamber volume brennraumvolumen zylinderkopf verbrennung">
+                <div class="glossary-term">Combustion Chamber Volume &ndash; Brennraumvolumen</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Volumen des Brennraums im Zylinderkopf, in dem die Verbrennung stattfindet.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Wesentlicher Bestandteil der Compression-Ratio-Berechnung.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="piston dish kolbenmulde kolbenvertiefung vertiefung verdichtung geringer">
+                <div class="glossary-term">Piston Dish &ndash; Kolbenmulde</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Eine Vertiefung im Kolbenboden, die zus&auml;tzlichen Raum schafft.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Auswirkung:</span> Mehr Volumen &rarr; geringere Verdichtung.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="piston dome kolbenwoelbung erhoehung verdichtung hoeher">
+                <div class="glossary-term">Piston Dome &ndash; Kolbenw&ouml;lbung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Eine Erh&ouml;hung auf dem Kolbenboden.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Auswirkung:</span> Weniger Restvolumen &rarr; h&ouml;here Verdichtung.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="gasket thickness dichtungsdicke zylinderkopfdichtung abstand verdichtung">
+                <div class="glossary-term">Gasket Thickness &ndash; Dichtungsdicke</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Dicke der Zylinderkopfdichtung. Beeinflusst Kolben-Kopf-Abstand und Verdichtung.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="compressed gasket thickness einbaudicke zylinderkopfdichtung drehmoment montiert">
+                <div class="glossary-term">Compressed Gasket Thickness &ndash; Einbaudicke</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Dicke der Dichtung nach Montage mit vorgeschriebenem Drehmoment.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wichtig:</span> F&uuml;r Berechnungen ist die Einbaudicke relevant, nicht die unmontierte Dicke.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="quench quetschbereich quetschspalt abstand kolben zylinderkopf gemisch">
+                <div class="glossary-term">Quench &ndash; Quetschbereich</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der sehr kleine Abstand zwischen Kolben und Zylinderkopf in einem daf&uuml;r vorgesehenen Bereich.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Wenn der Kolben nach oben kommt, wird das Gemisch in diesem engen Bereich herausgedr&uuml;ckt.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Verbessert die Gemischbewegung im Brennraum.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="quench distance quetschabstand piston-to-deck gasket abstand">
+                <div class="glossary-term">Quench Distance &ndash; Quetschabstand</div>
+                <div class="glossary-field"><span class="glossary-field-label">Berechnung:</span> Piston-to-Deck + Compressed Gasket Thickness</div>
+            </div>
+
+            <div class="glossary-entry" data-search="quench area quetschflaeche kolbenboden zylinderkopf nah">
+                <div class="glossary-term">Quench Area &ndash; Quetschfl&auml;che</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Bereich des Kolbenbodens, der dem Zylinderkopf bei OT besonders nahe kommt.</div>
+            </div>
+        </div>
+
+        <!-- 4. Kurbeltrieb -->
+        <div class="glossary-category" data-cat="cat-kurbel">
+            <div class="glossary-category-title">4. Kurbeltrieb</div>
+
+            <div class="glossary-entry" data-search="crankshaft kurbelwelle drehbewegung kolben">
+                <div class="glossary-term">Crankshaft &ndash; Kurbelwelle</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Wandelt die Auf-und-ab-Bewegung der Kolben in eine Drehbewegung um.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="connecting rod pleuel verbindung kolben kurbelwelle">
+                <div class="glossary-term">Connecting Rod &ndash; Pleuel</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Verbindet den Kolben mit der Kurbelwelle.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="rod length pleuellaenge abstand pleuelauge">
+                <div class="glossary-term">Rod Length &ndash; Pleuell&auml;nge</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Abstand zwischen den Mittelpunkten des kleinen und gro&szlig;en Pleuelauges.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Zusammen mit Hub und Deck Height bestimmt sie die Position des Kolbens im Zylinder.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="rod ratio pleuelverhaeltnis pleuellaenge hub">
+                <div class="glossary-term">Rod Ratio &ndash; Pleuelverh&auml;ltnis</div>
+                <div class="glossary-field"><span class="glossary-field-label">Berechnung:</span> Rod Length / Stroke</div>
+            </div>
+
+            <div class="glossary-entry" data-search="main journal hauptlagerzapfen kurbelwelle hauptlager block">
+                <div class="glossary-term">Main Journal &ndash; Hauptlagerzapfen</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Teil der Kurbelwelle, der im Hauptlager des Blocks l&auml;uft.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="rod journal pleuellagerzapfen hubzapfen kurbelwelle pleuel">
+                <div class="glossary-term">Rod Journal &ndash; Pleuellagerzapfen</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Teil der Kurbelwelle, auf dem das Pleuel gelagert ist.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="main bearing hauptlager kurbelwelle motorblock lager">
+                <div class="glossary-term">Main Bearing &ndash; Hauptlager</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Lager, in dem die Kurbelwelle im Motorblock l&auml;uft.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="rod bearing pleuellager lager pleuel kurbelwellenzapfen">
+                <div class="glossary-term">Rod Bearing &ndash; Pleuellager</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Lager zwischen Pleuel und Kurbelwellenzapfen.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="main bearing clearance hauptlagerspiel abstand oelfilm kurbelwelle">
+                <div class="glossary-term">Main Bearing Clearance &ndash; Hauptlagerspiel</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der kleine Abstand zwischen Kurbelwellen-Hauptlagerzapfen und Hauptlager.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Zwischen Kurbelwelle und Lager muss ein definierter Raum f&uuml;r den &Ouml;lfilm vorhanden sein.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="rod bearing clearance pleuellagerspiel abstand oelfilm">
+                <div class="glossary-term">Rod Bearing Clearance &ndash; Pleuellagerspiel</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Abstand zwischen Pleuellager und Kurbelwellenzapfen.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Bestimmt, wie sich der tragende &Ouml;lfilm bildet.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="crankshaft endplay kurbelwellen axialspiel laengsrichtung wandern">
+                <div class="glossary-term">Crankshaft Endplay &ndash; Kurbelwellen-Axialspiel</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Wie weit sich die Kurbelwelle in L&auml;ngsrichtung vor und zur&uuml;ck bewegen kann.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="internal balance innenauswuchtung kurbeltrieb ausgleichsmassen">
+                <div class="glossary-term">Internal Balance &ndash; Innenauswuchtung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Ausgleichsmassen sind innerhalb der Kurbelwellen-Konfiguration ber&uuml;cksichtigt.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Bestimmt, welche Ausf&uuml;hrung von Balancer und Schwungrad verwendet werden muss.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="zero balance nullwuchtung balancer schwungrad flexplate">
+                <div class="glossary-term">Zero Balance &ndash; Nullwuchtung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Balancer und Schwungrad/Flexplate ben&ouml;tigen keine zus&auml;tzliche Ausgleichsmasse.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="harmonic balancer schwingungsdaempfer torsionsschwingungen kurbelwelle">
+                <div class="glossary-term">Harmonic Balancer &ndash; Schwingungsd&auml;mpfer</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Bauteil am vorderen Kurbelwellenende, das Torsionsschwingungen d&auml;mpft.</div>
+            </div>
+        </div>
+
+        <!-- 5. Kolben und Ringe -->
+        <div class="glossary-category" data-cat="cat-kolben">
+            <div class="glossary-category-title">5. Kolben und Kolbenringe</div>
+
+            <div class="glossary-entry" data-search="piston kolben zylinder ot ut">
+                <div class="glossary-term">Piston &ndash; Kolben</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Kolben bewegt sich im Zylinder zwischen OT und UT.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="piston-to-wall clearance kolben zylinder spiel klemmen kippen">
+                <div class="glossary-term">Piston-to-Wall Clearance &ndash; Kolben-Zylinder-Spiel</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Abstand zwischen Kolben und Zylinderwand.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Darf nicht klemmen, aber auch nicht zu viel Spiel haben.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="compression height kompressionshoehe kolbenbolzenmitte kolbenoberseite">
+                <div class="glossary-term">Compression Height &ndash; Kompressionsh&ouml;he</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Abstand zwischen Kolbenbolzenmitte und Kolbenoberseite.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Zusammen mit Pleuell&auml;nge, Hub und Deck Height bestimmt sie die Kolbenposition bei OT.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="valve relief ventiltasche aussparung kolbenboden ventil platz">
+                <div class="glossary-term">Valve Relief &ndash; Ventiltasche</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Aussparung im Kolbenboden f&uuml;r das Ventil.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="piston-to-valve clearance kolben ventil abstand freiraum beruehren">
+                <div class="glossary-term">Piston-to-Valve Clearance &ndash; Kolben-Ventil-Abstand</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der kleinste Abstand zwischen Kolben und Ventil w&auml;hrend des Motorzyklus.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Kolben und Ventil d&uuml;rfen sich niemals ber&uuml;hren!</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum besonders wichtig?</span> H&auml;ngt von Nockenwellensteuerzeiten, Ventilhub, Deckh&ouml;he, Dichtung und Ventiltrieb ab.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="piston-to-head clearance kolben kopf abstand">
+                <div class="glossary-term">Piston-to-Head Clearance &ndash; Kolben-Kopf-Abstand</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der kleinste Abstand zwischen Kolben und Zylinderkopf. Nicht dasselbe wie Piston-to-Valve Clearance!</div>
+            </div>
+
+            <div class="glossary-entry" data-search="top ring oberster kolbenring abdichtung verbrennungsdruck">
+                <div class="glossary-term">Top Ring &ndash; Oberster Kolbenring</div>
+                <div class="glossary-field"><span class="glossary-field-label">Aufgabe:</span> &Uuml;bernimmt den wesentlichen Teil der Abdichtung gegen Verbrennungsdruck.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="second ring zweiter kolbenring abdichtung oelregulierung">
+                <div class="glossary-term">Second Ring &ndash; Zweiter Kolbenring</div>
+                <div class="glossary-field"><span class="glossary-field-label">Aufgabe:</span> Unterst&uuml;tzt Abdichtung und beeinflusst &Ouml;lregulierung.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="oil ring oelabstreifring unterster ring oelmenge zylinderwand">
+                <div class="glossary-term">Oil Ring &ndash; &Ouml;labstreifring</div>
+                <div class="glossary-field"><span class="glossary-field-label">Aufgabe:</span> Kontrolliert die &Ouml;lmenge auf der Zylinderwand.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="ring end gap kolbenringstoss spalt enden ausdehnung erwaermung">
+                <div class="glossary-term">Ring End Gap &ndash; Kolbenringsto&szlig;</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Spalt zwischen den beiden Enden eines Kolbenrings.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Der Ring dehnt sich bei Erw&auml;rmung aus. Ohne Spalt k&ouml;nnten die Enden aneinanderstossen.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="ring groove kolbenringnut nut kolben ring sitzt">
+                <div class="glossary-term">Ring Groove &ndash; Kolbenringnut</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Nut im Kolben, in der der Ring sitzt.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="ring land ringsteg bereich kolben ringnuten">
+                <div class="glossary-term">Ring Land &ndash; Ringsteg</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Bereich des Kolbens zwischen zwei Ringnuten.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="ring clocking anordnung ringstoesse winkelpositionen">
+                <div class="glossary-term">Ring Clocking &ndash; Anordnung der Ringst&ouml;&szlig;e</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Winkelpositionen der Ringst&ouml;&szlig;e zueinander auf dem Kolben.</div>
+            </div>
+        </div>
+
+        <!-- 6. Zylinderkopf -->
+        <div class="glossary-category" data-cat="cat-kopf">
+            <div class="glossary-category-title">6. Zylinderkopf</div>
+
+            <div class="glossary-entry" data-search="cylinder head zylinderkopf brennraum ventile ventilsitze">
+                <div class="glossary-term">Cylinder Head &ndash; Zylinderkopf</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Bildet zusammen mit Kolben und Zylinder den Brennraum. Enth&auml;lt Ventile, Ventilf&uuml;hrungen und Ventilsitze.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="intake port einlasskanal kanal frischgas einlassventil">
+                <div class="glossary-term">Intake Port &ndash; Einlasskanal</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Kanal, durch den das Frischgas zum Einlassventil gelangt.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="exhaust port auslasskanal kanal abgase auslassventil auspuff">
+                <div class="glossary-term">Exhaust Port &ndash; Auslasskanal</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Kanal, durch den die Abgase zum Auspuff gelangen.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="port volume kanalvolumen einlass auslass groesse drehzahl luftbedarf">
+                <div class="glossary-term">Port Volume &ndash; Kanalvolumen</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Volumen eines Einlass- oder Auslasskanals.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wichtig:</span> Gr&ouml;&szlig;er ist nicht automatisch besser. Die Kanalgr&ouml;&szlig;e muss zum Motor und Drehzahlbereich passen.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="valve ventil gaswechsel oeffnen schliessen ansaug abgas">
+                <div class="glossary-term">Valve &ndash; Ventil</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> &Ouml;ffnet und schlie&szlig;t den Gaswechsel zwischen Zylinder und Ansaug-/Abgassystem.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="intake valve einlassventil frischgas zylinder">
+                <div class="glossary-term">Intake Valve &ndash; Einlassventil</div>
+                <div class="glossary-field"><span class="glossary-field-label">Aufgabe:</span> L&auml;sst das Frischgas in den Zylinder.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="exhaust valve auslassventil abgase zylinder">
+                <div class="glossary-term">Exhaust Valve &ndash; Auslassventil</div>
+                <div class="glossary-field"><span class="glossary-field-label">Aufgabe:</span> L&auml;sst die Abgase aus dem Zylinder.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="valve stem ventilschaft duenn fuehrung">
+                <div class="glossary-term">Valve Stem &ndash; Ventilschaft</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der d&uuml;nne Teil des Ventils, der in der Ventilf&uuml;hrung l&auml;uft.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="valve face ventilteller ventilflaeche sitz abdichtet">
+                <div class="glossary-term">Valve Face &ndash; Ventilteller</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Fl&auml;che des Ventils, die auf dem Ventilsitz aufliegt und abdichtet.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="valve seat ventilsitz sitzflaeche zylinderkopf abdichtet">
+                <div class="glossary-term">Valve Seat &ndash; Ventilsitz</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die bearbeitete Sitzfl&auml;che im Zylinderkopf, gegen die das Ventil abdichtet.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="valve guide ventilfuehrung ventilschaft position fuehrt">
+                <div class="glossary-term">Valve Guide &ndash; Ventilf&uuml;hrung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> F&uuml;hrt den Ventilschaft und h&auml;lt das Ventil in der richtigen Position.</div>
+            </div>
+        </div>
+
+        <!-- 7. Ventilfedern -->
+        <div class="glossary-category" data-cat="cat-federn">
+            <div class="glossary-category-title">7. Ventilfedern</div>
+
+            <div class="glossary-entry" data-search="valve spring ventilfeder feder ventil schliesst oeffnen">
+                <div class="glossary-term">Valve Spring &ndash; Ventilfeder</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Sorgt daf&uuml;r, dass das Ventil nach dem &Ouml;ffnen wieder geschlossen wird.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="installed spring height ventilfeder einbauhoehe abstand sitz federteller">
+                <div class="glossary-term">Installed Spring Height &ndash; Ventilfeder-Einbauh&ouml;he</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Abstand zwischen Federsitz und Federteller bei eingebauter Feder.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Die Federkraft h&auml;ngt stark von der Einbauh&ouml;he ab.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="seat pressure sitzdruck kraft ventilfeder geschlossen belastet">
+                <div class="glossary-term">Seat Pressure &ndash; Sitzdruck</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Kraft, mit der die Feder das Ventil bei geschlossenem Ventil belastet.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="open pressure oeffnungsdruck federkraft ventilhub">
+                <div class="glossary-term">Open Pressure &ndash; &Ouml;ffnungsdruck</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Federkraft bei einem bestimmten Ventilhub.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wichtig:</span> Ohne Angabe des Ventilhubs nicht eindeutig!</div>
+            </div>
+
+            <div class="glossary-entry" data-search="coil bind federblock windungen aufeinanderliegen maximum">
+                <div class="glossary-term">Coil Bind &ndash; Federblock</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Windungen der Feder liegen vollst&auml;ndig aufeinander.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum kritisch?</span> Die Feder darf bei maximalem Ventilhub nicht in Coil Bind kommen!</div>
+            </div>
+
+            <div class="glossary-entry" data-search="retainer federteller oben ventilfeder ventilkeile">
+                <div class="glossary-term">Retainer &ndash; Federteller</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Sitzt oben auf der Ventilfeder und wird &uuml;ber die Ventilkeile am Ventil gehalten.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="valve locks keepers ventilkeile federteller ventilschaft halten">
+                <div class="glossary-term">Valve Locks / Keepers &ndash; Ventilkeile</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Kleine Keile, die den Federteller am Ventilschaft halten.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="retainer-to-seal clearance abstand federteller ventilschaftdichtung">
+                <div class="glossary-term">Retainer-to-Seal Clearance</div>
+                <div class="glossary-deutsch">Abstand Federteller&ndash;Ventilschaftdichtung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum wichtig?</span> Der Federteller darf die Dichtung bei maximalem Hub nicht ber&uuml;hren!</div>
+            </div>
+
+            <div class="glossary-entry" data-search="valve float ventilflattern drehzahl ventiltrieb instabil">
+                <div class="glossary-term">Valve Float &ndash; Ventilflattern</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Ventil folgt bei hoher Drehzahl nicht mehr zuverl&auml;ssig dem Ventiltrieb.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum kritisch?</span> Kann zu mechanischen Sch&auml;den f&uuml;hren!</div>
+            </div>
+        </div>
+
+        <!-- 8. Nockenwelle -->
+        <div class="glossary-category" data-cat="cat-nocken">
+            <div class="glossary-category-title">8. Nockenwelle</div>
+
+            <div class="glossary-entry" data-search="camshaft cam nockenwelle ventile oeffnen steuerung">
+                <div class="glossary-term">Camshaft &ndash; Nockenwelle</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Bestimmt, wann und wie weit die Ventile ge&ouml;ffnet werden.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="cam lobe nocken erhebung lifter angehoben">
+                <div class="glossary-term">Cam Lobe &ndash; Nocken</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Erhebung auf der Nockenwelle, die den Lifter nach oben bewegt.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="base circle grundkreis nocken rund lifter nicht angehoben">
+                <div class="glossary-term">Base Circle &ndash; Grundkreis</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der runde, niedrigere Teil des Nockens, bei dem der Lifter nicht angehoben wird.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Folge:</span> Lifter unten &rarr; Pushrod unten &rarr; Ventil geschlossen.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="lobe lift cam lift nockenhub lifter anhebt">
+                <div class="glossary-term">Lobe Lift / Cam Lift &ndash; Nockenhub</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Wie weit die Nocke den Lifter anhebt.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="valve lift ventilhub oeffnet kipphebel uebersetzt">
+                <div class="glossary-term">Valve Lift &ndash; Ventilhub</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Wie weit sich das Ventil tats&auml;chlich &ouml;ffnet.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum gr&ouml;&szlig;er als Cam Lift?</span> Der Kipphebel &uuml;bersetzt die Bewegung.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="rocker ratio kipphebeluebersetzung verhaeltnis stoessel ventil bewegung">
+                <div class="glossary-term">Rocker Ratio &ndash; Kipphebelübers.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Beispiel:</span> Bei 1,6:1 bewegt sich das Ventil ca. 1,6-mal so weit wie der Lifter.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="duration oeffnungsdauer ventil geoeffnet motorzyklus">
+                <div class="glossary-term">Duration &ndash; &Ouml;ffnungsdauer</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Wie lange ein Ventil w&auml;hrend eines Motorzyklus ge&ouml;ffnet ist.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wichtig:</span> Nur sinnvoll zusammen mit der Messmethode (z.B. Duration @ 0.050").</div>
+            </div>
+
+            <div class="glossary-entry" data-search="duration 0.050 oeffnungsdauer hub vergleich nockenwellen">
+                <div class="glossary-term">Duration @ 0.050"</div>
+                <div class="glossary-deutsch">&Ouml;ffnungsdauer bei 0,050 Zoll Hub</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum wichtig?</span> Erm&ouml;glicht sinnvolleren Vergleich verschiedener Nockenwellen als Advertised Duration.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="lobe separation angle lsa nockenspreizwinkel einlass auslass mittellinie">
+                <div class="glossary-term">LSA &ndash; Lobe Separation Angle</div>
+                <div class="glossary-deutsch">Nockenspreizwinkel</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Winkel zwischen den Mittellinien des Einlass- und Auslassnockens.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="camshaft centerline nocken mittellinie kurbelwellenwinkel geometrische mitte">
+                <div class="glossary-term">Camshaft Centerline &ndash; Nocken-Mittellinie</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Kurbelwellenwinkel, bei dem ein Nocken seine geometrische Mitte erreicht.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="cam advance vorverstellung nockenwelle frueher">
+                <div class="glossary-term">Cam Advance &ndash; Vorverstellung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Nockenwelle wird gegen&uuml;ber der Grundstellung fr&uuml;her positioniert.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="cam retard rueckverstellung nockenwelle spaeter">
+                <div class="glossary-term">Cam Retard &ndash; R&uuml;ckverstellung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Nockenwelle wird gegen&uuml;ber der Grundstellung sp&auml;ter positioniert.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="degreeing cam nockenwelle einmessen gradscheibe messuhr position vermessen">
+                <div class="glossary-term">Degreeing the Cam &ndash; Nockenwelle einmessen</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die tats&auml;chliche Position der Nockenwelle wird mit Gradscheibe und Messuhr exakt vermessen.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Wir verlassen uns nicht nur auf die Kettenmarkierungen, sondern messen nach.</div>
+            </div>
+        </div>
+
+        <!-- 9. Steuertrieb -->
+        <div class="glossary-category" data-cat="cat-steuer">
+            <div class="glossary-category-title">9. Steuertrieb</div>
+
+            <div class="glossary-entry" data-search="timing set steuertrieb steuerkettensatz kurbelwellenrad nockenwellenrad">
+                <div class="glossary-term">Timing Set &ndash; Steuertrieb</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Kurbelwellenrad, Nockenwellenrad und Steuerkette.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="timing chain steuerkette kurbelwelle nockenwelle verhaeltnis drehen">
+                <div class="glossary-term">Timing Chain &ndash; Steuerkette</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Verbindet Kurbelwelle und Nockenwelle f&uuml;r korrektes Drehverh&auml;ltnis.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="crank gear sprocket kurbelwellenrad zahnrad steuerkette antreibt">
+                <div class="glossary-term">Crank Gear / Sprocket &ndash; Kurbelwellenrad</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Zahnrad auf der Kurbelwelle, das die Steuerkette antreibt.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="cam gear sprocket nockenwellenrad zahnrad steuerkette angetrieben">
+                <div class="glossary-term">Cam Gear / Sprocket &ndash; Nockenwellenrad</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Zahnrad auf der Nockenwelle, angetrieben von der Steuerkette.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="timing mark steuerzeitmarkierung markierung zahnraeder positionierung">
+                <div class="glossary-term">Timing Mark &ndash; Steuerzeitmarkierung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Markierung auf den Zahnr&auml;dern zur Positionierung von Kurbel- und Nockenwelle.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wichtig:</span> Eine Markierung ersetzt nicht zwingend das Degreeing!</div>
+            </div>
+        </div>
+
+        <!-- 10. Hydraulic Roller Lifter -->
+        <div class="glossary-category" data-cat="cat-lifter">
+            <div class="glossary-category-title">10. Hydraulic Roller Lifter</div>
+
+            <div class="glossary-entry" data-search="hydraulic roller lifter hydraulischer rollenstoessel rollenrad nockenwelle ventilspiel">
+                <div class="glossary-term">Hydraulic Roller Lifter &ndash; Hyd. Rollenst&ouml;&szlig;el</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Ein Lifter mit Rollenrad zur Nockenwelle und hydraulischem Mechanismus zum Ausgleich des Ventilspiels.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="roller wheel lifter rolle rollenrad nocke oberflaeche rollt">
+                <div class="glossary-term">Roller Wheel &ndash; Lifter-Rolle</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Rollenrad am unteren Ende des Lifters, das direkt auf der Nocke rollt.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="plunger hydraulischer kolben lifter innere ventilspiel ausgleich">
+                <div class="glossary-term">Plunger &ndash; Hydraulischer Kolben</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Ein kleiner Kolben im Lifter-Inneren, der sich bewegen kann und das Ventilspiel automatisch ausgleicht.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="plunger preload vorspannung hineingedrueckt arbeitsbereich einstellen">
+                <div class="glossary-term">Plunger Preload &ndash; Plunger-Vorspannung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Wie weit der Plunger nach dem Einstellen in den Lifter hineingedr&uuml;ckt ist.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Der Plunger soll nicht ganz oben und nicht am Ende seines Weges stehen &ndash; er steht in einer definierten Position innerhalb seines Arbeitsbereichs.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="lifter body liftergehaeuse aeussere gehaeuse">
+                <div class="glossary-term">Lifter Body &ndash; Liftergeh&auml;use</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das &auml;u&szlig;ere Geh&auml;use des Lifters.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="lifter bore lifterbohrung bohrung motorblock lifter laeuft">
+                <div class="glossary-term">Lifter Bore &ndash; Lifterbohrung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Bohrung im Motorblock, in der der Lifter auf und ab l&auml;uft.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="lifter retainer halterung roller lifter position haelt">
+                <div class="glossary-term">Lifter Retainer &ndash; Lifter-Halterung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> H&auml;lt die Roller-Lifter in ihrer korrekten Position.</div>
+            </div>
+        </div>
+
+        <!-- 11. Pushrods & Rocker -->
+        <div class="glossary-category" data-cat="cat-pushrod">
+            <div class="glossary-category-title">11. Pushrods und Rocker Arms</div>
+
+            <div class="glossary-entry" data-search="pushrod stoessel stange lifter kipphebel verbindung">
+                <div class="glossary-term">Pushrod &ndash; Sto&szlig;elstange</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Stange zwischen Lifter und Kipphebel. Der Lifter wird von der Nocke angehoben, schiebt die Pushrod nach oben, die wiederum den Kipphebel bewegt.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="checking pushrod mess stoessel stange verstellbar laenge ermittelt einstell">
+                <div class="glossary-term">Checking Pushrod &ndash; Mess-Sto&szlig;elstange</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Eine verstellbare Sto&szlig;elstange, mit der die korrekte endg&uuml;ltige L&auml;nge ermittelt wird.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Wir kaufen nicht einfach eine beliebige L&auml;nge, sondern messen die richtige L&auml;nge erst aus.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="pushrod length stoessel stange laenge geometrie kipphebel ventil">
+                <div class="glossary-term">Pushrod Length &ndash; Sto&szlig;elstangenl&auml;nge</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum wichtig?</span> Eine falsche L&auml;nge ver&auml;ndert die Stellung des Kipphebels auf dem Ventil.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="rocker arm kipphebel uebertraegt pushrod ventil bewegung">
+                <div class="glossary-term">Rocker Arm &ndash; Kipphebel</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> &Uuml;bertr&auml;gt die Bewegung der Pushrod auf das Ventil.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="rocker tip kipphebelkontaktflaeche bereich ventilspitze laeuft">
+                <div class="glossary-term">Rocker Tip &ndash; Kipphebelkontaktfl&auml;che</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Bereich des Kipphebels, der auf der Ventilspitze l&auml;uft.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="sweep pattern laufspur kipphebel ventilspitze geometrie korrekt">
+                <div class="glossary-term">Sweep Pattern &ndash; Laufspur</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die Spur, die der Kipphebel auf der Ventilspitze hinterl&auml;sst.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum wichtig?</span> Zeigt, ob die Ventiltrieb-Geometrie korrekt ist.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="valve train geometry ventiltrieb geometrie lifter pushrod kipphebel ventil zusammenspiel">
+                <div class="glossary-term">Valve Train Geometry &ndash; Ventiltrieb-Geometrie</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Zusammenspiel von Lifter, Pushrod, Kipphebel und Ventil &uuml;ber den gesamten Bewegungsablauf.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="valve lash ventilspiel abstand kontaktflaechen hydraulisch preload">
+                <div class="glossary-term">Valve Lash &ndash; Ventilspiel</div>
+                <div class="glossary-field"><span class="glossary-field-label">Bei hydraulischem Lifter:</span> Das Spiel wird durch die Einstellung und die Plunger-Vorspannung aufgenommen.</div>
+            </div>
+        </div>
+
+        <!-- 12. Ventilsteuerung -->
+        <div class="glossary-category" data-cat="cat-vsteuer">
+            <div class="glossary-category-title">12. Ventilsteuerung</div>
+
+            <div class="glossary-entry" data-search="intake opening io einlassventil oeffnet kurbelwellenwinkel">
+                <div class="glossary-term">IO &ndash; Intake Opening (Einlass &ouml;ffnet)</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Kurbelwellenwinkel, bei dem das Einlassventil zu &ouml;ffnen beginnt.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="intake closing ic einlassventil schliesst verdichtung drehzahl">
+                <div class="glossary-term">IC &ndash; Intake Closing (Einlass schlie&szlig;t)</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum wichtig?</span> Beeinflusst unter anderem die effektive Verdichtung und das Drehzahlverhalten.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="exhaust opening eo auslassventil oeffnet kurbelwellenwinkel">
+                <div class="glossary-term">EO &ndash; Exhaust Opening (Auslass &ouml;ffnet)</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Kurbelwellenwinkel, bei dem das Auslassventil zu &ouml;ffnen beginnt.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="exhaust closing ec auslassventil schliesst kurbelwellenwinkel">
+                <div class="glossary-term">EC &ndash; Exhaust Closing (Auslass schlie&szlig;t)</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Kurbelwellenwinkel, bei dem das Auslassventil schlie&szlig;t.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="valve overlap ventilueberschneidung einlass auslass gleichzeitig geoeffnet">
+                <div class="glossary-term">Valve Overlap &ndash; Ventil&uuml;berschneidung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Zeitraum, in dem Einlass- und Auslassventil gleichzeitig ge&ouml;ffnet sind.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Am Ende des Aussto&szlig;ens ist das Auslassventil noch offen, w&auml;hrend das Einlassventil bereits &ouml;ffnet.</div>
+            </div>
+        </div>
+
+        <!-- 13. Oelsystem -->
+        <div class="glossary-category" data-cat="cat-oel">
+            <div class="glossary-category-title">13. &Ouml;lsystem</div>
+
+            <div class="glossary-entry" data-search="oil pump oelpumpe foerdert motoroel oelwanne motor">
+                <div class="glossary-term">Oil Pump &ndash; &Ouml;lpumpe</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> F&ouml;rdert Motor&ouml;l aus der &Ouml;lwanne durch den Motor.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="oil pickup oelansaugrohr rohr oelpumpe oel oelwanne ansaugt">
+                <div class="glossary-term">Oil Pickup &ndash; &Ouml;lansaugrohr</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Rohr, &uuml;ber das die &Ouml;lpumpe das &Ouml;l aus der &Ouml;lwanne ansaugt.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="pickup-to-pan clearance abstand oelansaugrohr oelwannenboden entfernt beruehren">
+                <div class="glossary-term">Pickup-to-Pan Clearance</div>
+                <div class="glossary-deutsch">Abstand &Ouml;lansaugrohr&ndash;&Ouml;lwannenboden</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum wichtig?</span> Darf weder zu weit vom &Ouml;l entfernt sein noch den Boden ber&uuml;hren.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="oil pan sump oelwanne oelvorrat behaelter motor unten">
+                <div class="glossary-term">Oil Pan / Sump &ndash; &Ouml;lwanne</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der &Ouml;lvorratsbeh&auml;lter am unteren Ende des Motors.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="baffle schwallblech oel schwappt beschleunigung kurvenfahrt ansaugstelle">
+                <div class="glossary-term">Baffle &ndash; Schwallblech</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Verhindert, dass &Ouml;l bei Beschleunigung oder Kurvenfahrt von der Ansaugstelle wegschwappt.</div>
+                <div class="glossary-field"><span class="glossary-field-label">F&uuml;r uns:</span> Besonders relevant bei Trackdays und hohen Querbeschleunigungen.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="windage tray blech kurbelwelle oelwanne aufgewirbelt oelmenge">
+                <div class="glossary-term">Windage Tray &ndash; Windage-Blech</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Reduziert die &Ouml;lmenge, die von der drehenden Kurbelwelle aufgewirbelt wird.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="oil pressure oeldruck druck schmierkreislauf motor">
+                <div class="glossary-term">Oil Pressure &ndash; &Ouml;ldruck</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Druck im Schmierkreislauf des Motors.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="high volume oil pump hochvolumen oelpumpe umdrehung mehr oel standard">
+                <div class="glossary-term">High Volume Oil Pump &ndash; Hochvolumen-&Ouml;lpumpe</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wichtig:</span> High Volume bedeutet nicht automatisch h&ouml;heren &Ouml;ldruck. Der Druck h&auml;ngt von Motor, Lagern, Drehzahl und Druckbegrenzungsventil ab.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="pressure relief valve druckbegrenzungsventil oeldruck bereich steigt">
+                <div class="glossary-term">Pressure Relief Valve &ndash; Druckbegrenzungsventil</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Verhindert, dass der &Ouml;ldruck &uuml;ber den vorgesehenen Bereich steigt.</div>
+            </div>
+        </div>
+
+        <!-- 14. Messen und Pruefen -->
+        <div class="glossary-category" data-cat="cat-messen">
+            <div class="glossary-category-title">14. Messen und Pr&uuml;fen</div>
+
+            <div class="glossary-entry" data-search="clearance spiel abstand bauteile definiert piston-to-wall">
+                <div class="glossary-term">Clearance &ndash; Spiel / Abstand</div>
+                <div class="glossary-field"><span class="glossary-field-label">Beispiel:</span> Piston-to-Wall Clearance = Abstand Kolben&ndash;Zylinderwand.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="tolerance toleranz bereich mass liegen darf">
+                <div class="glossary-term">Tolerance &ndash; Toleranz</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Bereich, innerhalb dessen ein Ma&szlig; liegen darf.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="interference unerlaubte beruehrung kollision naeher zulaessig">
+                <div class="glossary-term">Interference &ndash; Kollision</div>
+                <div class="glossary-field"><span class="glossary-field-label">Beispiel:</span> Piston-to-Valve Interference = Kolben und Ventil ber&uuml;hren sich.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="runout rundlaufabweichung drehen kreisbahn eiert">
+                <div class="glossary-term">Runout &ndash; Rundlaufabweichung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Ob etwas beim Drehen &bdquo;eiert&ldquo;.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="endplay axialspiel bewegung laengsachse crankshaft">
+                <div class="glossary-term">Endplay &ndash; Axialspiel</div>
+                <div class="glossary-field"><span class="glossary-field-label">Beispiel:</span> Crankshaft Endplay = Bewegung der Kurbelwelle vor und zur&uuml;ck.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="backlash flankenspiel abstand zahnflanken zahnraeder">
+                <div class="glossary-term">Backlash &ndash; Flankenspiel</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Abstand zwischen den Zahnflanken zweier Zahnr&auml;der.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="dial indicator messuhr praezisionsmessgeraet kleine bewegungen endplay rundlauf degreeing">
+                <div class="glossary-term">Dial Indicator &ndash; Messuhr</div>
+                <div class="glossary-field"><span class="glossary-field-label">Verwendung:</span> Kurbelwellen-Endplay, Rundlauf, Degreeing der Nockenwelle.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="feeler gauge fuehlerlehre metallblaetter dicken spalte messen">
+                <div class="glossary-term">Feeler Gauge &ndash; F&uuml;hlerlehre</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Satz d&uuml;nner Metallbl&auml;tter mit definierten Dicken. Zum Messen kleiner Spalte.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="micrometer buegelmessschraube praezision aussenmasse kurbelwellenzapfen">
+                <div class="glossary-term">Micrometer &ndash; B&uuml;gelmessschraube</div>
+                <div class="glossary-field"><span class="glossary-field-label">Verwendung:</span> Pr&auml;zise Au&szlig;enma&szlig;e, z.B. Kurbelwellenzapfen.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="bore gauge innenmessgeraet innendurchmesser zylinderbohrungen lagerbohrungen">
+                <div class="glossary-term">Bore Gauge &ndash; Innenmessger&auml;t</div>
+                <div class="glossary-field"><span class="glossary-field-label">Verwendung:</span> Zylinderbohrungen, Lagerbohrungen.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="plastigage messstreifen kunststofffaden lager welle plattgedrueckt lagerspiel breite">
+                <div class="glossary-term">Plastigage &ndash; Messstreifen</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Die Breite des plattgedr&uuml;ckten Kunststoffstreifens zeigt das Lagerspiel.</div>
+            </div>
+        </div>
+
+        <!-- 15. Montage -->
+        <div class="glossary-category" data-cat="cat-montage">
+            <div class="glossary-category-title">15. Montage</div>
+
+            <div class="glossary-entry" data-search="torque anzugsdrehmoment drehkraft schraube angezogen">
+                <div class="glossary-term">Torque &ndash; Anzugsdrehmoment</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die vorgeschriebene Drehkraft, mit der eine Schraube angezogen wird.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="torque sequence anzugsreihenfolge reihenfolge schrauben gleichmaessig verzogen">
+                <div class="glossary-term">Torque Sequence &ndash; Anzugsreihenfolge</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum wichtig?</span> Damit sich das Bauteil gleichm&auml;&szlig;ig setzt und nicht verzogen wird.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="torque angle drehwinkelanzug anfangsdrehmoment winkel weitergedreht">
+                <div class="glossary-term">Torque Angle &ndash; Drehwinkelanzug</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Nach einem definierten Anfangsdrehmoment wird die Schraube um einen bestimmten Winkel weitergedreht.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="threadlocker schraubensicherung gewinde vibrationen loest">
+                <div class="glossary-term">Threadlocker &ndash; Schraubensicherung</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wichtig:</span> Nur verwenden, wenn es f&uuml;r die betreffende Verschraubung vorgesehen ist!</div>
+            </div>
+
+            <div class="glossary-entry" data-search="assembly lubricant montageoel montagepaste schmiermittel montage lagerstellen nockenwelle">
+                <div class="glossary-term">Assembly Lubricant &ndash; Montage&ouml;l</div>
+                <div class="glossary-field"><span class="glossary-field-label">Verwendung:</span> Lagerstellen, Nockenwellenmontage.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="blueprinting praeziser motoraufbau messwerte messen vergleichen einstellen dokumentieren">
+                <div class="glossary-term">Blueprinting &ndash; Pr&auml;ziser Motoraufbau</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Nicht &bdquo;soll ungef&auml;hr passen&ldquo;, sondern <strong>messen &rarr; vergleichen &rarr; einstellen &rarr; dokumentieren</strong>.</div>
+            </div>
+        </div>
+
+        <!-- 16. Zusammenhaenge -->
+        <div class="glossary-category" data-cat="cat-zusammen">
+            <div class="glossary-category-title">16. Wichtige Zusammenh&auml;nge</div>
+
+            <div class="glossary-entry" data-search="kolbenposition ot deck height stroke rod length compression height piston-to-deck">
+                <div class="glossary-term">Kolbenposition bei OT</div>
+                <div class="glossary-field">Bestimmt durch: Deck Height, Stroke, Rod Length, Compression Height &rarr; ergibt die <strong>Piston-to-Deck Position</strong>.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="quench berechnung piston-to-deck compressed gasket thickness quench distance">
+                <div class="glossary-term">Quench Distance</div>
+                <div class="glossary-field"><strong>Quench Distance = Piston-to-Deck + Compressed Gasket Thickness</strong></div>
+            </div>
+
+            <div class="glossary-entry" data-search="compression ratio berechnung bore stroke combustion chamber piston dish gasket bore">
+                <div class="glossary-term">Compression Ratio &ndash; Berechnung</div>
+                <div class="glossary-field">Ben&ouml;tigt: Bore, Stroke, Combustion Chamber Volume, Piston Dish/Dome, Piston-to-Deck, Gasket Bore, Compressed Gasket Thickness.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="valve train geometry pushrod length lifter plunger rocker arm ratio sweep pattern">
+                <div class="glossary-term">Valve Train Geometry &ndash; Pushrod Length</div>
+                <div class="glossary-field">Abh&auml;ngig von: Lifter, Plunger Position, Pushrod Length, Rocker Arm, Rocker Ratio, Valve Stem Height, Sweep Pattern.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="piston-to-valve clearance camshaft timing lift duration rocker ratio valve size relief deck gasket">
+                <div class="glossary-term">Piston-to-Valve Clearance</div>
+                <div class="glossary-field">Beeinflusst durch: Camshaft Timing, Lift, Duration, Rocker Ratio, Valve Size, Piston Valve Relief, Piston-to-Deck, Head Gasket Thickness.</div>
+            </div>
+
+            <div class="glossary-entry" data-search="ventilfeder pruefung installed spring height seat pressure open pressure maximum valve lift coil bind retainer-to-seal">
+                <div class="glossary-term">Ventilfedern &ndash; Pr&uuml;fung</div>
+                <div class="glossary-field">Relevant: Installed Spring Height, Seat Pressure, Open Pressure, Maximum Valve Lift, Coil Bind, Retainer-to-Seal Clearance.</div>
+            </div>
+        </div>
+
+        <!-- 17. Abkuerzungen -->
+        <div class="glossary-category" data-cat="cat-abk">
+            <div class="glossary-category-title">17. Abk&uuml;rzungen</div>
+
+            <div class="glossary-entry" data-search="tdc bdc cr scr dcr lsa io ic eo ec hv rpm cc inch lb-ft psi abkuerzungen">
+                <div class="glossary-field" style="font-size:0.82rem; line-height:2;">
+                    <strong>TDC</strong> &ndash; Top Dead Center (OT) &nbsp;|&nbsp;
+                    <strong>BDC</strong> &ndash; Bottom Dead Center (UT)<br>
+                    <strong>CR</strong> &ndash; Compression Ratio &nbsp;|&nbsp;
+                    <strong>SCR</strong> &ndash; Static Compression Ratio<br>
+                    <strong>DCR</strong> &ndash; Dynamic Compression Ratio &nbsp;|&nbsp;
+                    <strong>LSA</strong> &ndash; Lobe Separation Angle<br>
+                    <strong>IO</strong> &ndash; Intake Opening &nbsp;|&nbsp;
+                    <strong>IC</strong> &ndash; Intake Closing<br>
+                    <strong>EO</strong> &ndash; Exhaust Opening &nbsp;|&nbsp;
+                    <strong>EC</strong> &ndash; Exhaust Closing<br>
+                    <strong>HV</strong> &ndash; High Volume &nbsp;|&nbsp;
+                    <strong>RPM</strong> &ndash; Revolutions Per Minute<br>
+                    <strong>cc</strong> &ndash; Kubikzentimeter &nbsp;|&nbsp;
+                    <strong>in. / "</strong> &ndash; Zoll (inch)<br>
+                    <strong>lb-ft</strong> &ndash; Drehmoment-Einheit &nbsp;|&nbsp;
+                    <strong>psi</strong> &ndash; Druckeinheit
+                </div>
+            </div>
+        </div>
+
+        <div class="glossary-no-results" id="glossaryNoResults" style="display:none;">Kein Begriff gefunden.</div>
+
+    </div><!-- /glossary-body -->
+</div><!-- /guide-glossary -->
+
 <!-- ===== TOAST ===== -->
 <div class="toast" id="toast"></div>
 
@@ -613,8 +1545,45 @@
     function isGistConfigured() { return getGistConfig().token.length > 0; }
 
     // ==== GUIDE OVERLAYS ====
-    function showGuide(id) { document.getElementById(id).classList.add('show'); document.body.style.overflow = 'hidden'; }
+    function showGuide(id) {
+        document.getElementById(id).classList.add('show');
+        document.body.style.overflow = 'hidden';
+        if (id === 'guide-glossary') { updateGlossaryCount(); }
+    }
     function hideGuide(id) { document.getElementById(id).classList.remove('show'); document.body.style.overflow = ''; }
+
+    // ==== GLOSSARY ====
+    let activeCategory = '';
+    function filterGlossary() {
+        const q = (document.getElementById('glossarySearch').value || '').toLowerCase().trim();
+        const entries = document.querySelectorAll('#glossaryBody .glossary-entry');
+        const cats = document.querySelectorAll('#glossaryBody .glossary-category');
+        let visible = 0;
+        entries.forEach(e => {
+            const searchText = (e.getAttribute('data-search') || '') + ' ' + (e.textContent || '');
+            const catMatch = !activeCategory || e.closest('.glossary-category').getAttribute('data-cat') === activeCategory;
+            const textMatch = !q || searchText.toLowerCase().indexOf(q) !== -1;
+            const show = catMatch && textMatch;
+            e.classList.toggle('hidden', !show);
+            if (show) visible++;
+        });
+        cats.forEach(c => {
+            const catEntries = c.querySelectorAll('.glossary-entry:not(.hidden)');
+            c.style.display = catEntries.length === 0 ? 'none' : '';
+        });
+        document.getElementById('glossaryNoResults').style.display = visible === 0 ? '' : 'none';
+        document.getElementById('glossaryCount').textContent = visible + ' Begriffe';
+    }
+    function filterCategory(btn, cat) {
+        activeCategory = cat;
+        document.querySelectorAll('.glossary-cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filterGlossary();
+    }
+    function updateGlossaryCount() {
+        const total = document.querySelectorAll('#glossaryBody .glossary-entry').length;
+        document.getElementById('glossaryCount').textContent = total + ' Begriffe';
+    }
 
     // ==== SETTINGS ====
     function openSettings() {
