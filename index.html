@@ -397,6 +397,8 @@
                 </div>
             </div>
 
+            <a class="guide-link" onclick="showGuide('guide-block')">&#128214; Anleitung: Lagerspiel &amp; Axialspiel messen</a>
+
             <!-- Messwerte -->
             <div class="form-group">
                 <label>Kurbelwelle Axialspiel (Crankshaft End Play) <span class="tolerance">Soll: 0.004" &ndash; 0.008"</span></label>
@@ -455,6 +457,8 @@
                     <div class="spec-item"><span class="spec-label">Sto&szlig;spiel pr&uuml;fen</span><span class="spec-value">Jeden Ring im jeweiligen Zylinder messen!</span></div>
                 </div>
             </div>
+
+            <a class="guide-link" onclick="showGuide('guide-pistons')">&#128214; Anleitung: Lagerspiel &amp; Ring End Gap messen</a>
 
             <!-- Messwerte -->
             <div class="form-group">
@@ -601,6 +605,8 @@
                 </div>
             </div>
 
+            <a class="guide-link" onclick="showGuide('guide-valvetrain')">&#128214; Anleitung: Pushrod-L&auml;nge &amp; Lifter Preload einstellen</a>
+
             <!-- Messwerte -->
             <div class="form-group">
                 <label>Sto&szlig;stangenl&auml;nge (Pushrod Checker) &ndash; Einlass</label>
@@ -707,94 +713,409 @@
 
 <!-- ===== GUIDE OVERLAYS ===== -->
 
-<!-- Guide: Zylinderkoepfe -->
-<div class="guide-overlay" id="guide-heads">
+<!-- ============================================================ -->
+<!-- Guide: Block & Kurbeltrieb                                    -->
+<!-- ============================================================ -->
+<div class="guide-overlay" id="guide-block">
     <div class="guide-header">
-        <button class="guide-back" onclick="hideGuide('guide-heads')">&larr; Zur&uuml;ck</button>
-        <h2>Zylinderkopf-Montage</h2>
+        <button class="guide-back" onclick="hideGuide('guide-block')">&larr; Zur&uuml;ck</button>
+        <h2>Block &amp; Kurbeltrieb &ndash; Messanleitung</h2>
     </div>
     <div class="guide-content">
-        <h3>Komponenten</h3>
-        <div class="spec-item"><span class="spec-label">Zylinderk&ouml;pfe</span><span class="spec-value">AFR 1399 SBF 165cc Renegade Street</span></div>
-        <div class="spec-item"><span class="spec-label">Brennraum</span><span class="spec-value">58cc (CNC)</span></div>
-        <div class="spec-item"><span class="spec-label">Einlassventil</span><span class="spec-value">1.900"</span></div>
-        <div class="spec-item"><span class="spec-label">Auslassventil</span><span class="spec-value">1.600"</span></div>
-        <div class="spec-item"><span class="spec-label">Ventilfedern</span><span class="spec-value">AFR 8605 Dual Springs (bis .650" Lift)</span></div>
 
-        <h3>Referenz: Nockenwelle (Daten siehe Sektion 2)</h3>
-        <div class="spec-item"><span class="spec-label">Ventilhub (1.6 Kipphebel)</span><span class="spec-value">Einl: 0.555" / Ausl: 0.565"</span></div>
-        <div class="info-box"><strong>Hinweis:</strong> Aufgrund des hohen Hubs der XE274HR Piston-to-Valve Clearance <strong>zwingend mit Knete pr&uuml;fen!</strong></div>
-
-        <h3>Kopfschrauben (7/16" ARP)</h3>
-        <div class="info-box">
-            <strong>Wichtig:</strong> Untere Schrauben ragen in den Wassermantel! Gewinde mit Dichtmittel (ARP Thread Sealant / Loctite 567) bestreichen. Obere Schrauben + Unterlegscheiben mit ARP Moly Lube schmieren.
-        </div>
-        <p><strong>Drehmoment (3-Schritt-Verfahren):</strong></p>
-        <div class="torque-steps">
-            <div class="torque-step"><span class="step-num">1</span>Alle Schrauben auf <span class="step-value">35 ft-lbs</span></div>
-            <div class="torque-step"><span class="step-num">2</span>Alle Schrauben auf <span class="step-value">55 ft-lbs</span></div>
-            <div class="torque-step"><span class="step-num">3</span>Obere (1-5): <span class="step-value">80 ft-lbs</span> | Untere (6-10): <span class="step-value">70 ft-lbs</span></div>
-        </div>
-        <div class="torque-diagram">
-            <strong>Anzugsreihenfolge:</strong><br>
-            &nbsp;&nbsp;( 9 )&nbsp;&nbsp;( 5 )&nbsp;&nbsp;( 1 )&nbsp;&nbsp;( 3 )&nbsp;&nbsp;( 7 )&nbsp;&nbsp;&larr; OBERE REIHE (80 ft-lbs)<br>
-            &nbsp;&nbsp;(10)&nbsp;&nbsp;( 6 )&nbsp;&nbsp;( 2 )&nbsp;&nbsp;( 4 )&nbsp;&nbsp;( 8 )&nbsp;&nbsp;&larr; UNTERE REIHE (70 ft-lbs + Sealant)
-        </div>
-
-        <h3>Sollwerte Quench &amp; Ventilfreiraum</h3>
+        <!-- Werkzeuge -->
+        <h3>Ben&ouml;tigte Werkzeuge &amp; Arbeitsmittel</h3>
         <ul>
-            <li><strong>Ziel-Quench:</strong> 0.035" &ndash; 0.045"</li>
-            <li><strong>Min. Ventilfreiraum Einlass:</strong> &ge; 0.080"</li>
-            <li><strong>Min. Ventilfreiraum Auslass:</strong> &ge; 0.100"</li>
+            <li><strong>Plastigage</strong> (gr&uuml;n = 0.001"&ndash;0.003" oder rot = 0.002"&ndash;0.006")</li>
+            <li><strong>Drehmomentschl&uuml;ssel</strong> (ft-lbs, passender Bereich)</li>
+            <li><strong>Messuhr</strong> (Dial Indicator) mit Magnetst&auml;nder</li>
+            <li><strong>F&uuml;hlerlehre</strong></li>
+            <li><strong>Gro&szlig;er Schraubendreher</strong> oder Hebel (zum Bewegen der Kurbelwelle axial)</li>
+            <li><strong>Assembly Lube</strong> (Montagepaste f&uuml;r Lager)</li>
+            <li><strong>Saubere, fusselfreie T&uuml;cher</strong></li>
+        </ul>
+
+        <!-- Vorbereitung -->
+        <h3>Vorbereitung</h3>
+        <ul>
+            <li>Block komplett gereinigt, alle &Ouml;lkan&auml;le durchgeblasen</li>
+            <li>Lagergassen (Main Bores) sauber, trocken, fettfrei</li>
+            <li>Lagerschalen bereitgelegt und den Positionen zugeordnet</li>
+            <li>Kurbelwelle gereinigt, Zapfen inspiziert (keine Riefen, Ma&szlig;e gepr&uuml;ft)</li>
+            <li>Nockenwelle und Steuertrieb bereitgelegt</li>
+        </ul>
+
+        <!-- Hauptlagerspiel -->
+        <h3>A) Hauptlagerspiel messen (Plastigage)</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Untere Lagerschalen in die Main Caps einlegen (Nase in die Nut, <strong>kein &Ouml;l</strong> auf die Lagerfl&auml;che).</div>
+            <div class="torque-step"><span class="step-num">2</span>Obere Lagerschalen in den Block einlegen.</div>
+            <div class="torque-step"><span class="step-num">3</span>Kurbelwelle vorsichtig auf die oberen Schalen legen.</div>
+            <div class="torque-step"><span class="step-num">4</span><strong>Plastigage-Streifen</strong> auf den Hauptlagerzapfen legen &ndash; quer zur Kurbelwelle, &uuml;ber die volle Breite des Zapfens. Nicht auf den &Ouml;lkanal!</div>
+            <div class="torque-step"><span class="step-num">5</span>Main Cap aufsetzen und Schrauben <strong>auf Soll-Drehmoment</strong> anziehen. <strong>Kurbelwelle dabei NICHT drehen!</strong></div>
+            <div class="torque-step"><span class="step-num">6</span>Cap wieder abnehmen. Die Breite des gequetschten Plastigage-Streifens mit der Skala auf der Verpackung vergleichen &rarr; ergibt das Lagerspiel.</div>
+            <div class="torque-step"><span class="step-num">7</span>Messwert notieren. Plastigage-Reste vollst&auml;ndig entfernen.</div>
+            <div class="torque-step"><span class="step-num">8</span>F&uuml;r jedes der 5 Hauptlager wiederholen.</div>
+        </div>
+        <div class="info-box">
+            <strong>Tipp:</strong> Falls das Spiel au&szlig;erhalb der Toleranz liegt, andere Lagerschalenst&auml;rke (Standard / 0.001" / 0.002" Undersize) verwenden. Niemals an der Lagerschale feilen oder schleifen!
+        </div>
+
+        <!-- Kurbelwellen-Axialspiel -->
+        <h3>B) Kurbelwellen-Axialspiel messen (Crankshaft Endplay)</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Kurbelwelle montiert, alle Main Caps auf Drehmoment. Lagerstellen mit Assembly Lube geschmiert.</div>
+            <div class="torque-step"><span class="step-num">2</span>Messuhr am Block befestigen (Magnetst&auml;nder), Taster axial gegen die Kurbelwellenflange oder ein Gegengewicht anlegen.</div>
+            <div class="torque-step"><span class="step-num">3</span>Kurbelwelle mit dem Schraubendreher <strong>ganz nach vorne</strong> dr&uuml;cken (Richtung Steuerkettenrad).</div>
+            <div class="torque-step"><span class="step-num">4</span>Messuhr auf Null stellen.</div>
+            <div class="torque-step"><span class="step-num">5</span>Kurbelwelle <strong>ganz nach hinten</strong> dr&uuml;cken (Richtung Schwungrad).</div>
+            <div class="torque-step"><span class="step-num">6</span>Messuhr ablesen &rarr; ergibt das Axialspiel.</div>
+        </div>
+        <div class="info-box"><strong>Sollwert:</strong> 0.004" &ndash; 0.008". Gesteuert durch die Thrust Bearing Schale (Position 3 beim SBF 302).</div>
+
+        <!-- Nockenwellen-Axialspiel -->
+        <h3>C) Nockenwellen-Axialspiel messen (Camshaft Endplay)</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Nockenwelle eingebaut, Thrust Plate montiert und verschraubt.</div>
+            <div class="torque-step"><span class="step-num">2</span>Messuhr am Block, Taster axial gegen das vordere Nockenwellenende.</div>
+            <div class="torque-step"><span class="step-num">3</span>Nockenwelle ganz nach vorne und nach hinten bewegen.</div>
+            <div class="torque-step"><span class="step-num">4</span>Differenz ablesen &rarr; Axialspiel.</div>
+        </div>
+        <div class="info-box"><strong>Sollwert:</strong> 0.004" &ndash; 0.009". Gesteuert durch die Thrust Plate.</div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Guide: Kolben & Pleuel                                        -->
+<!-- ============================================================ -->
+<div class="guide-overlay" id="guide-pistons">
+    <div class="guide-header">
+        <button class="guide-back" onclick="hideGuide('guide-pistons')">&larr; Zur&uuml;ck</button>
+        <h2>Kolben &amp; Pleuel &ndash; Messanleitung</h2>
+    </div>
+    <div class="guide-content">
+
+        <h3>Ben&ouml;tigte Werkzeuge &amp; Arbeitsmittel</h3>
+        <ul>
+            <li><strong>Plastigage</strong> (gr&uuml;n oder rot, passend zum erwarteten Spiel)</li>
+            <li><strong>Drehmomentschl&uuml;ssel</strong> (ft-lbs)</li>
+            <li><strong>F&uuml;hlerlehre</strong> (Feeler Gauge)</li>
+            <li><strong>Piston Ring File</strong> (Ring-Feilger&auml;t) &ndash; zum Anpassen der Ring End Gaps</li>
+            <li><strong>Ring Compressor</strong> (Kolbenringspannband)</li>
+            <li><strong>Kolben</strong> als F&uuml;hrung zum Einsetzen der Ringe in den Zylinder</li>
+            <li><strong>Saubere, fusselfreie T&uuml;cher</strong></li>
+            <li><strong>Assembly Lube</strong></li>
+        </ul>
+
+        <h3>Vorbereitung</h3>
+        <ul>
+            <li>Zylinder gereinigt, gehont (Kreuzschliff sichtbar), trocken gewischt</li>
+            <li>Kolben, Pleuel und Ringe den jeweiligen Zylindern zugeordnet und beschriftet</li>
+            <li>Lagerschalen bereitgelegt (Pleuel-Seite + Cap-Seite)</li>
+            <li>Ring End Gaps werden <strong>vor dem Einbau</strong> der Kolben gemessen</li>
+        </ul>
+
+        <!-- Pleuellagerspiel -->
+        <h3>A) Pleuellagerspiel messen (Rod Bearing Clearance)</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Lagerschale in den Pleuelfu&szlig; und in den Pleueldeckel einlegen (Nase in die Nut, <strong>kein &Ouml;l</strong>).</div>
+            <div class="torque-step"><span class="step-num">2</span>Plastigage-Streifen auf den Pleuellagerzapfen der Kurbelwelle legen &ndash; quer &uuml;ber die volle Zapfenbreite.</div>
+            <div class="torque-step"><span class="step-num">3</span>Pleueldeckel aufsetzen und Schrauben <strong>auf Soll-Drehmoment</strong> anziehen. <strong>Kurbelwelle dabei NICHT drehen!</strong></div>
+            <div class="torque-step"><span class="step-num">4</span>Deckel abnehmen. Plastigage-Breite mit Skala vergleichen &rarr; Lagerspiel.</div>
+            <div class="torque-step"><span class="step-num">5</span>Messwert notieren. Plastigage-Reste entfernen.</div>
+            <div class="torque-step"><span class="step-num">6</span>F&uuml;r alle 8 Zylinder wiederholen.</div>
+        </div>
+
+        <!-- Ring End Gap -->
+        <h3>B) Ring End Gap messen</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Ring (ohne Kolben) in den Zylinder einsetzen, f&uuml;r den er vorgesehen ist.</div>
+            <div class="torque-step"><span class="step-num">2</span>Ring mit einem umgedrehten Kolben gerade in den Zylinder dr&uuml;cken (ca. 1" unter Oberkante, wo die Bohrung am repr&auml;sentativsten ist).</div>
+            <div class="torque-step"><span class="step-num">3</span>Mit der <strong>F&uuml;hlerlehre</strong> den Spalt zwischen den Ringenden messen.</div>
+            <div class="torque-step"><span class="step-num">4</span>Messwert notieren. F&uuml;r jeden Ring (Top Ring + Second Ring) in jedem Zylinder einzeln messen.</div>
+        </div>
+
+        <h3>C) Ring End Gap anpassen (bei Bedarf)</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Ist der Gap zu klein: Ring in die <strong>Ring File</strong> einspannen und Material gleichm&auml;&szlig;ig von <strong>beiden Enden</strong> abnehmen.</div>
+            <div class="torque-step"><span class="step-num">2</span>Nur wenig auf einmal feilen &ndash; immer wieder im Zylinder nachmessen.</div>
+            <div class="torque-step"><span class="step-num">3</span>Nach dem Feilen: Grat an den Ringenden mit feinem Schleifpapier (400er) vorsichtig entfernen.</div>
+        </div>
+        <div class="info-box">
+            <strong>Achtung:</strong> Ring End Gaps werden <strong>immer im tats&auml;chlichen Zylinder</strong> gemessen, nicht au&szlig;erhalb! Jeder Zylinder kann ein minimal anderes Ma&szlig; haben. Zu kleiner Gap &rarr; Ring kann bei Betriebstemperatur auf Sto&szlig; gehen und brechen. Zu gro&szlig;er Gap &rarr; erh&ouml;hter Blowby.
+        </div>
+
+        <h3>D) Ring Clocking beim Einbau</h3>
+        <p>Die Ringst&ouml;&szlig;e werden <strong>versetzt</strong> zueinander positioniert, um den Gasdurchlass zu minimieren. Herstellerangaben beachten &ndash; typisch:</p>
+        <ul>
+            <li>Top Ring: Sto&szlig; auf ca. 1 Uhr</li>
+            <li>Second Ring: Sto&szlig; auf ca. 11 Uhr (gegen&uuml;berliegend zum Top Ring)</li>
+            <li>Oil Ring: Rails und Expander zueinander versetzt, keiner direkt &uuml;ber dem Kolbenbolzen</li>
         </ul>
     </div>
 </div>
 
-<!-- Guide: Ansaugspinne -->
-<div class="guide-overlay" id="guide-intake">
+<!-- ============================================================ -->
+<!-- Guide: Zylinderkoepfe (komplett)                              -->
+<!-- ============================================================ -->
+<div class="guide-overlay" id="guide-heads">
     <div class="guide-header">
-        <button class="guide-back" onclick="hideGuide('guide-intake')">&larr; Zur&uuml;ck</button>
-        <h2>Ansaugspinne Montage</h2>
+        <button class="guide-back" onclick="hideGuide('guide-heads')">&larr; Zur&uuml;ck</button>
+        <h2>Zylinderkopf-Montage &ndash; Vollst&auml;ndige Anleitung</h2>
     </div>
     <div class="guide-content">
-        <h3>Drehmoment (Aluminium-Ansaugspinne)</h3>
-        <div class="torque-steps">
-            <div class="torque-step"><span class="step-num">1</span><span class="step-value">5 ft-lbs</span></div>
-            <div class="torque-step"><span class="step-num">2</span><span class="step-value">12 ft-lbs</span></div>
-            <div class="torque-step"><span class="step-num">3</span>Endwert: <span class="step-value">18 ft-lbs</span></div>
-        </div>
 
+        <h3>Ben&ouml;tigte Werkzeuge &amp; Arbeitsmittel</h3>
+        <ul>
+            <li><strong>Drehmomentschl&uuml;ssel</strong> (Bereich bis mind. 80 ft-lbs)</li>
+            <li><strong>ARP Moly Lube</strong> (oder gleichwertiges Schmiermittel f&uuml;r Kopfschrauben)</li>
+            <li><strong>ARP Thread Sealant</strong> oder Loctite 567 (f&uuml;r Schrauben, die in den Wassermantel ragen)</li>
+            <li><strong>L&ouml;tdraht</strong> (Solder Wire, ca. 0.060"&ndash;0.090" Durchmesser, bleifrei) &ndash; f&uuml;r Quench-Messung</li>
+            <li><strong>Modelliermasse / Knete</strong> (z.B. Plastilin, nicht h&auml;rtend) &ndash; f&uuml;r Piston-to-Valve Pr&uuml;fung</li>
+            <li><strong>Messschieber</strong> (digital, 0.001" Aufl&ouml;sung) oder <strong>B&uuml;gelmessschraube</strong></li>
+            <li><strong>Saubere, fusselfreie T&uuml;cher</strong></li>
+            <li><strong>Zylinderkopfdichtung(en)</strong> (neu, korrekte Ausf&uuml;hrung f&uuml;r 4.000" Bore)</li>
+            <li><strong>Kopfschrauben</strong> (ARP 7/16", korrekte L&auml;nge und Anzahl)</li>
+            <li><strong>Unterlegscheiben</strong> (passend zu den ARP-Schrauben)</li>
+        </ul>
+
+        <h3>Vorbereitung</h3>
+        <ul>
+            <li>Blockdeck <strong>absolut sauber</strong> &ndash; keine Dichtungsreste, kein &Ouml;l, kein Schmutz</li>
+            <li>Gewindebohrungen im Block <strong>sauber und trocken</strong> (Reste von altem Dichtmittel entfernen, mit Druckluft ausblasen)</li>
+            <li>Zylinderkopf-Dichtfl&auml;che gereinigt und auf Ebenheit gepr&uuml;ft</li>
+            <li>Kolben eingebaut, Kurbelwelle drehbar</li>
+            <li>Ventile, Federn, Retainer im Kopf vormontiert</li>
+            <li>Nockenwelle eingebaut (f&uuml;r P-t-V Pr&uuml;fung werden die Ventile sp&auml;ter ge&ouml;ffnet)</li>
+        </ul>
+
+        <!-- Schritt 1: Dichtung -->
+        <h3>Schritt 1: Zylinderkopfdichtung auflegen</h3>
+        <ul>
+            <li>Dichtung trocken auflegen (kein Dichtmittel auf die Dichtung!)</li>
+            <li>Korrekte Seite beachten (oft markiert mit &bdquo;TOP&ldquo; oder &bdquo;FRONT&ldquo;)</li>
+            <li>&Ouml;l- und Wasserkan&auml;le m&uuml;ssen exakt &uuml;bereinstimmen</li>
+        </ul>
+
+        <!-- Schritt 2: Kopf aufsetzen -->
+        <h3>Schritt 2: Zylinderkopf aufsetzen</h3>
+        <ul>
+            <li>Kopf vorsichtig und gerade auf die D&uuml;bel und Dichtung setzen</li>
+            <li>Nicht verschieben oder verkanten &ndash; Dichtung darf nicht verrutschen</li>
+        </ul>
+
+        <!-- Schritt 3: Schrauben vorbereiten -->
+        <h3>Schritt 3: Kopfschrauben vorbereiten</h3>
         <div class="info-box">
-            <strong>Praxistipp:</strong> Kork-Enddichtungen (vorn/hinten am Block) weglassen. Stattdessen 5&ndash;6 mm RTV-Silikon (z.B. Permatex Ultra Black) auflegen.
+            <strong>Wichtig:</strong> Untere Schrauben (Position 6&ndash;10) ragen in den Wassermantel! Diese Gewinde mit <strong>ARP Thread Sealant</strong> oder Loctite 567 bestreichen. Obere Schrauben (Position 1&ndash;5) + Unterlegscheiben mit <strong>ARP Moly Lube</strong> schmieren (Gewinde + Auflagfl&auml;che unter dem Kopf).
         </div>
 
-        <h3>Anzugsreihenfolge</h3>
+        <!-- Schritt 4: Drehmoment -->
+        <h3>Schritt 4: Kopfschrauben anziehen (3-Stufen-Verfahren)</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Alle Schrauben in der vorgeschriebenen Reihenfolge auf <span class="step-value">35 ft-lbs</span></div>
+            <div class="torque-step"><span class="step-num">2</span>Alle Schrauben in derselben Reihenfolge auf <span class="step-value">55 ft-lbs</span></div>
+            <div class="torque-step"><span class="step-num">3</span>Obere (1&ndash;5): <span class="step-value">80 ft-lbs</span> &nbsp;|&nbsp; Untere (6&ndash;10): <span class="step-value">70 ft-lbs</span></div>
+        </div>
         <div class="torque-diagram">
-            <strong>Draufsicht Ansaugspinne:</strong><br>
-            &nbsp;&nbsp;(11)&nbsp;&nbsp;( 1 )&nbsp;&nbsp;( 5 )&nbsp;&nbsp;( 9 )&nbsp;&nbsp;( 3 )<br>
-            &nbsp;&nbsp;( 7 )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( 8 )&nbsp;&nbsp;&larr; Z&uuml;ndverteiler<br>
-            &nbsp;&nbsp;( 4 )&nbsp;&nbsp;(10)&nbsp;&nbsp;( 6 )&nbsp;&nbsp;( 2 )&nbsp;&nbsp;(12)
+            <strong>Anzugsreihenfolge (Draufsicht, Auslassseite oben):</strong><br><br>
+            &nbsp;&nbsp;( 9 )&nbsp;&nbsp;( 5 )&nbsp;&nbsp;( 1 )&nbsp;&nbsp;( 3 )&nbsp;&nbsp;( 7 )&nbsp;&nbsp;&larr; OBERE REIHE (80 ft-lbs)<br>
+            &nbsp;&nbsp;(10)&nbsp;&nbsp;( 6 )&nbsp;&nbsp;( 2 )&nbsp;&nbsp;( 4 )&nbsp;&nbsp;( 8 )&nbsp;&nbsp;&larr; UNTERE REIHE (70 ft-lbs + Sealant)<br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VORNE &rarr;&rarr;&rarr; HINTEN
+        </div>
+
+        <!-- Schritt 5: Quench messen -->
+        <h3>Schritt 5: Quench-Abstand messen (L&ouml;tdraht-Methode)</h3>
+        <div class="info-box"><strong>Ziel:</strong> 0.035" &ndash; 0.045"</div>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>2&ndash;3 kurze St&uuml;cke L&ouml;tdraht (ca. 1" lang) mit etwas Fett auf den <strong>Quench-Bereich</strong> des Kolbenbodens kleben (flacher Bereich, nicht in der Ventiltasche).</div>
+            <div class="torque-step"><span class="step-num">2</span>Kurbelwelle langsam &uuml;ber OT drehen &ndash; der L&ouml;tdraht wird zwischen Kolben und Kopf gequetscht.</div>
+            <div class="torque-step"><span class="step-num">3</span>Kopf abnehmen. Gequetschten L&ouml;tdraht mit <strong>B&uuml;gelmessschraube</strong> oder Messschieber messen &rarr; ergibt den tats&auml;chlichen Quench-Abstand.</div>
+            <div class="torque-step"><span class="step-num">4</span>F&uuml;r alle 8 Zylinder wiederholen (Kopf muss daf&uuml;r jedes Mal abgenommen und wieder montiert werden, oder alle Zylinder einer Seite gleichzeitig messen).</div>
+        </div>
+        <div class="info-box"><strong>Alternative:</strong> Piston-to-Deck mit Messuhr messen (ohne Kopf) und die compressed Gasket Thickness addieren. Weniger genau, aber zerst&ouml;rungsfrei.</div>
+
+        <!-- Schritt 6: P-t-V -->
+        <h3>Schritt 6: Piston-to-Valve Clearance pr&uuml;fen (Knete-Methode)</h3>
+        <div class="info-box"><strong>Mindestwerte:</strong> Einlass &ge; 0.080" &nbsp;|&nbsp; Auslass &ge; 0.100"<br>
+        <strong>Zwingend erforderlich</strong> bei XE274HR (hoher Ventilhub: 0.555"/0.565")</div>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Leichte Ventilfedern einbauen (Checking Springs) oder die Federn ohne Shims/mit weniger Vorspannung montieren. Die Federn m&uuml;ssen die Ventile schlie&szlig;en, aber wenig Kraft haben.</div>
+            <div class="torque-step"><span class="step-num">2</span><strong>Modelliermasse</strong> (ca. 8&ndash;10mm dick) auf den Kolbenboden legen &ndash; jeweils &uuml;ber den Einlass- und Auslass-Ventiltaschen.</div>
+            <div class="torque-step"><span class="step-num">3</span>Zylinderkopf mit Dichtung montieren, Schrauben leicht anziehen (muss nicht auf volles Drehmoment).</div>
+            <div class="torque-step"><span class="step-num">4</span>Kipphebel und Pushrods montieren.</div>
+            <div class="torque-step"><span class="step-num">5</span>Kurbelwelle <strong>mindestens 2 volle Umdrehungen</strong> von Hand drehen. Die Ventile dr&uuml;cken in die Knete und hinterlassen einen Abdruck.</div>
+            <div class="torque-step"><span class="step-num">6</span>Alles wieder demontieren. Knete vorsichtig entnehmen.</div>
+            <div class="torque-step"><span class="step-num">7</span>Knete am d&uuml;nnsten Punkt mit dem <strong>Messschieber</strong> messen &rarr; ergibt den Mindestabstand Kolben&ndash;Ventil.</div>
+        </div>
+        <div class="info-box"><strong>Falls Clearance zu gering:</strong> Ventiltaschen vertiefen lassen, dickere Dichtung, oder Nockenwellensteuerzeiten anpassen. <strong>Niemals</strong> mit zu wenig Clearance fahren!</div>
+
+        <h3>Referenz: Nockenwelle (Daten siehe Sektion 2)</h3>
+        <div class="spec-item"><span class="spec-label">Ventilhub (1.6 Kipphebel)</span><span class="spec-value">Einl: 0.555" / Ausl: 0.565"</span></div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Guide: Ventiltrieb                                            -->
+<!-- ============================================================ -->
+<div class="guide-overlay" id="guide-valvetrain">
+    <div class="guide-header">
+        <button class="guide-back" onclick="hideGuide('guide-valvetrain')">&larr; Zur&uuml;ck</button>
+        <h2>Ventiltrieb &ndash; Einstellanleitung</h2>
+    </div>
+    <div class="guide-content">
+
+        <h3>Ben&ouml;tigte Werkzeuge &amp; Arbeitsmittel</h3>
+        <ul>
+            <li><strong>Checking Pushrod</strong> (verstellbare Mess-Sto&szlig;elstange)</li>
+            <li><strong>Filzstift</strong> (Edding / Sharpie) &ndash; f&uuml;r Sweep-Pattern-Pr&uuml;fung</li>
+            <li><strong>Gabelschl&uuml;ssel</strong> oder Poly-Lock-Schl&uuml;ssel (passend zur Kipphebel-Einstell-Mutter)</li>
+            <li><strong>Drehmomentschl&uuml;ssel</strong> (kleiner Bereich, z.B. inch-lbs oder niedrige ft-lbs)</li>
+            <li><strong>Kurzer Schraubendreher</strong> oder Dreher zum Drehen der Pushrod von Hand</li>
+            <li><strong>Kipphebel, Pushrod-Guideplates, Rocker Studs</strong> (vormontiert oder bereitgelegt)</li>
+        </ul>
+
+        <h3>Vorbereitung</h3>
+        <ul>
+            <li>Zylinderk&ouml;pfe montiert, auf Drehmoment angezogen</li>
+            <li>Nockenwelle, Lifter und Steuertrieb eingebaut</li>
+            <li>Lifter sitzen korrekt auf dem Grundkreis (Base Circle) des Nockens</li>
+            <li>Motor so drehen, dass der zu pr&uuml;fende Zylinder auf dem Grundkreis steht (Ventile geschlossen)</li>
+        </ul>
+
+        <!-- Pushrod-Laenge -->
+        <h3>A) Pushrod-L&auml;nge ermitteln (Checking Pushrod)</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Motor so drehen, dass der betreffende Lifter auf dem <strong>Grundkreis</strong> steht (Ventil geschlossen).</div>
+            <div class="torque-step"><span class="step-num">2</span><strong>Checking Pushrod</strong> auf eine gesch&auml;tzte L&auml;nge einstellen und einsetzen.</div>
+            <div class="torque-step"><span class="step-num">3</span>Kipphebel montieren, Einstellmutter leicht anziehen &ndash; gerade so, dass kein F&uuml;hlbares Spiel mehr vorhanden ist (Nullspiel / Zero Lash).</div>
+            <div class="torque-step"><span class="step-num">4</span><strong>Ventilspitze</strong> mit Filzstift einf&auml;rben.</div>
+            <div class="torque-step"><span class="step-num">5</span>Motor einmal von Hand &uuml;ber den vollen Hub des Nockens drehen.</div>
+            <div class="torque-step"><span class="step-num">6</span><strong>Sweep Pattern</strong> auf der Ventilspitze pr&uuml;fen:</div>
+        </div>
+        <ul>
+            <li><strong>Spur zu weit zur Einlassseite:</strong> Pushrod zu kurz &rarr; l&auml;nger einstellen</li>
+            <li><strong>Spur zu weit zur Auslassseite:</strong> Pushrod zu lang &rarr; k&uuml;rzer einstellen</li>
+            <li><strong>Spur mittig, leicht zur Auslassseite wandernd:</strong> Korrekt!</li>
+        </ul>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">7</span>Checking Pushrod anpassen und Schritte 4&ndash;6 wiederholen, bis das Sweep Pattern stimmt.</div>
+            <div class="torque-step"><span class="step-num">8</span>L&auml;nge der Checking Pushrod ablesen und notieren.</div>
+            <div class="torque-step"><span class="step-num">9</span>F&uuml;r Einlass und Auslass getrennt ermitteln &ndash; die L&auml;ngen k&ouml;nnen unterschiedlich sein!</div>
+        </div>
+        <div class="info-box"><strong>Tipp:</strong> Die korrekte Pushrod-L&auml;nge ergibt sich aus Lifter, Block Deck, Kopf, Dichtung, Kipphebel und Ventil. Es gibt keinen &bdquo;Standardwert&ldquo; &ndash; <strong>immer messen!</strong></div>
+
+        <!-- Lifter Preload -->
+        <h3>B) Lifter Preload einstellen (Hydraulic Roller)</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Motor so drehen, dass der Lifter auf dem <strong>Grundkreis</strong> steht.</div>
+            <div class="torque-step"><span class="step-num">2</span>Endg&uuml;ltige Pushrod einsetzen. Kipphebel montieren.</div>
+            <div class="torque-step"><span class="step-num">3</span>Einstellmutter langsam anziehen und dabei die <strong>Pushrod mit den Fingern drehen</strong>.</div>
+            <div class="torque-step"><span class="step-num">4</span>Sobald sich die Pushrod nicht mehr drehen l&auml;sst &rarr; <strong>Nullspiel</strong> (Zero Lash) ist erreicht.</div>
+            <div class="torque-step"><span class="step-num">5</span>Ab diesem Punkt die Einstellmutter <strong>1/4 bis 3/4 Umdrehung</strong> weiterdrehen &rarr; das ist die Plunger-Vorspannung (Preload).</div>
+            <div class="torque-step"><span class="step-num">6</span>Kontermutter oder Poly-Lock festziehen (Einstellmutter dabei nicht verdrehen!).</div>
+            <div class="torque-step"><span class="step-num">7</span>F&uuml;r alle 16 Ventile wiederholen (jeweils auf Grundkreis drehen!).</div>
+        </div>
+        <div class="info-box">
+            <strong>Einfache Methode &ndash; EO/IC:</strong> Statt f&uuml;r jeden Zylinder einzeln auf den Grundkreis zu drehen, kann man die &bdquo;EO/IC&ldquo;-Methode nutzen: Wenn das Auslassventil gerade &ouml;ffnet (Exhaust Opening), den Einlass einstellen. Wenn das Einlassventil gerade schlie&szlig;t (Intake Closing), den Auslass einstellen.
         </div>
     </div>
 </div>
 
-<!-- Guide: Zuendkerzen -->
+<!-- ============================================================ -->
+<!-- Guide: Ansaugspinne                                           -->
+<!-- ============================================================ -->
+<div class="guide-overlay" id="guide-intake">
+    <div class="guide-header">
+        <button class="guide-back" onclick="hideGuide('guide-intake')">&larr; Zur&uuml;ck</button>
+        <h2>Ansaugspinne &ndash; Montageanleitung</h2>
+    </div>
+    <div class="guide-content">
+
+        <h3>Ben&ouml;tigte Werkzeuge &amp; Arbeitsmittel</h3>
+        <ul>
+            <li><strong>Drehmomentschl&uuml;ssel</strong> (Bereich bis ca. 25 ft-lbs)</li>
+            <li><strong>RTV-Silikon</strong> (z.B. Permatex Ultra Black)</li>
+            <li><strong>Ansaugspinnen-Dichtungen</strong> (Port-Dichtungen links/rechts)</li>
+            <li><strong>Saubere, fusselfreie T&uuml;cher</strong></li>
+            <li><strong>Bremsenreiniger</strong> (zum Entfetten der Dichtfl&auml;chen)</li>
+        </ul>
+
+        <h3>Vorbereitung</h3>
+        <ul>
+            <li>Zylinderk&ouml;pfe montiert, Ventiltrieb eingestellt</li>
+            <li>Dichtfl&auml;chen an Block und K&ouml;pfen absolut sauber und trocken</li>
+            <li>Alte Dichtungsreste vollst&auml;ndig entfernt</li>
+        </ul>
+
+        <h3>Montage</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Port-Dichtungen (links/rechts) trocken auflegen.</div>
+            <div class="torque-step"><span class="step-num">2</span><strong>Vordere und hintere Enddichtung:</strong> Kork-Dichtungen weglassen! Stattdessen eine <strong>5&ndash;6 mm Raupe RTV-Silikon</strong> auf den Block auftragen.</div>
+            <div class="torque-step"><span class="step-num">3</span>An den &Uuml;berg&auml;ngen Port-Dichtung / RTV eine kleine Menge RTV zus&auml;tzlich auftragen (Eckbereiche).</div>
+            <div class="torque-step"><span class="step-num">4</span>Ansaugspinne vorsichtig und gerade aufsetzen. Nicht verschieben!</div>
+            <div class="torque-step"><span class="step-num">5</span>Alle Schrauben handfest eindrehen.</div>
+        </div>
+
+        <h3>Drehmoment (3-Stufen-Verfahren)</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Alle Schrauben in Reihenfolge auf <span class="step-value">5 ft-lbs</span></div>
+            <div class="torque-step"><span class="step-num">2</span>Alle Schrauben in Reihenfolge auf <span class="step-value">12 ft-lbs</span></div>
+            <div class="torque-step"><span class="step-num">3</span>Endwert: alle Schrauben auf <span class="step-value">18 ft-lbs</span></div>
+        </div>
+
+        <h3>Anzugsreihenfolge</h3>
+        <div class="torque-diagram">
+            <strong>Draufsicht (vorne = links):</strong><br><br>
+            &nbsp;&nbsp;(11)&nbsp;&nbsp;( 1 )&nbsp;&nbsp;( 5 )&nbsp;&nbsp;( 9 )&nbsp;&nbsp;( 3 )<br>
+            &nbsp;&nbsp;( 7 )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( 8 )&nbsp;&nbsp;&larr; Z&uuml;ndverteiler<br>
+            &nbsp;&nbsp;( 4 )&nbsp;&nbsp;(10)&nbsp;&nbsp;( 6 )&nbsp;&nbsp;( 2 )&nbsp;&nbsp;(12)
+        </div>
+        <div class="info-box"><strong>Praxistipp:</strong> RTV ben&ouml;tigt ca. 15&ndash;20 Minuten Ablüftzeit bevor die Spinne aufgesetzt wird (Herstellerangaben beachten). Nach der Montage 24 Stunden aush&auml;rten lassen, bevor K&uuml;hlmittel eingef&uuml;llt wird.</div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Guide: Zuendkerzen                                            -->
+<!-- ============================================================ -->
 <div class="guide-overlay" id="guide-spark">
     <div class="guide-header">
         <button class="guide-back" onclick="hideGuide('guide-spark')">&larr; Zur&uuml;ck</button>
-        <h2>Z&uuml;ndkerzen Spezifikationen</h2>
+        <h2>Z&uuml;ndkerzen &ndash; Einbauanleitung</h2>
     </div>
     <div class="guide-content">
-        <h3>Empfohlene Z&uuml;ndkerzen</h3>
-        <div class="spec-item"><span class="spec-label">Basis-Typ</span><span class="spec-value">Autolite 3924</span></div>
+
+        <h3>Ben&ouml;tigte Werkzeuge &amp; Arbeitsmittel</h3>
+        <ul>
+            <li><strong>Z&uuml;ndkerzenschl&uuml;ssel</strong> (5/8" bzw. 16mm, mit Gummieinsatz oder Magnet)</li>
+            <li><strong>Drehmomentschl&uuml;ssel</strong> (Bereich bis ca. 25 ft-lbs)</li>
+            <li><strong>F&uuml;hlerlehre</strong> (f&uuml;r Elektrodenabstand: 0.045")</li>
+            <li><strong>Anti-Seize-Paste</strong> (z.B. Permatex Anti-Seize)</li>
+            <li><strong>Saubere T&uuml;cher</strong></li>
+        </ul>
+
+        <h3>Spezifikation</h3>
+        <div class="spec-item"><span class="spec-label">Empfohlen</span><span class="spec-value">Autolite 3924</span></div>
         <div class="spec-item"><span class="spec-label">Alternativen</span><span class="spec-value">NGK FR5 / Champion RC9YC</span></div>
         <div class="spec-item"><span class="spec-label">Gewinde</span><span class="spec-value">14mm, 0.750" (Long Reach)</span></div>
         <div class="spec-item"><span class="spec-label">Sitzform</span><span class="spec-value">Dichtscheibe (Gasket Seat) &ndash; kein konischer Sitz!</span></div>
         <div class="spec-item"><span class="spec-label">Elektrodenabstand</span><span class="spec-value">0.045"</span></div>
         <div class="spec-item"><span class="spec-label">Drehmoment</span><span class="spec-value">15 &ndash; 22 ft-lbs</span></div>
 
+        <h3>Vorbereitung</h3>
+        <ul>
+            <li>Z&uuml;ndkerzenbohrungen im Kopf sauber (mit Druckluft ausblasen)</li>
+            <li>Elektrodenabstand jeder Kerze mit F&uuml;hlerlehre pr&uuml;fen und ggf. korrigieren</li>
+        </ul>
+
+        <h3>Einbau</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span><strong>Anti-Seize</strong> hauchdünn auf die ersten 2&ndash;3 Gewindeg&auml;nge der Z&uuml;ndkerze auftragen. Nicht auf die Elektrode oder Dichtfl&auml;che!</div>
+            <div class="torque-step"><span class="step-num">2</span>Z&uuml;ndkerze <strong>von Hand</strong> eindrehen (mit Verl&auml;ngerung und Gummischlauch, falls schwer zug&auml;nglich). Mindestens 3&ndash;4 volle Umdrehungen von Hand, um Quereindrehen auszuschlie&szlig;en.</div>
+            <div class="torque-step"><span class="step-num">3</span>Mit Drehmomentschl&uuml;ssel auf <strong>15&ndash;22 ft-lbs</strong> anziehen.</div>
+        </div>
         <div class="info-box">
-            <strong>Hinweis:</strong> In Aluminiumk&ouml;pfen handfest eindrehen und mit Gef&uuml;hl anziehen. Anti-Seize-Paste hauchdünn auf das Gewinde auftragen.
+            <strong>Achtung Aluminiumgewinde:</strong> Z&uuml;ndkerzen immer in den <strong>kalten</strong> Kopf eindrehen. Niemals mit Gewalt &ndash; bei Widerstand zur&uuml;ckdrehen und erneut versuchen. Besch&auml;digte Gewinde in Aluminium sind aufwendig zu reparieren (HeliCoil).
         </div>
     </div>
 </div>
