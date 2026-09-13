@@ -200,6 +200,29 @@
         .modal .status-line.connected { background: #f0fff4; color: var(--success); border: 1px solid #c6f6d5; }
         .modal .status-line.disconnected { background: #fff5f5; color: var(--danger); border: 1px solid #fed7d7; }
 
+        /* ---- Component Details (collapsible) ---- */
+        .comp-box {
+            background: #f0f5ff; border: 1px solid #c3dafe; border-radius: 8px;
+            margin-bottom: 0.75rem; overflow: hidden;
+        }
+        .comp-toggle {
+            display: flex; align-items: center; gap: 0.4rem;
+            padding: 0.5rem 0.7rem; cursor: pointer; user-select: none;
+            font-size: 0.78rem; font-weight: 600; color: var(--primary-light);
+            touch-action: manipulation; min-height: 36px;
+        }
+        .comp-toggle::before { content: '\25B6'; font-size: 0.55rem; transition: transform 0.2s; }
+        .comp-toggle.open::before { transform: rotate(90deg); }
+        .comp-body {
+            display: none; padding: 0 0.7rem 0.6rem;
+        }
+        .comp-body.open { display: block; }
+        .comp-body .spec-item { font-size: 0.78rem; padding: 0.25rem 0; }
+        .comp-body .spec-label { font-size: 0.75rem; }
+        .comp-body .spec-value { font-size: 0.75rem; }
+        .comp-sub { font-size: 0.8rem; font-weight: 600; color: var(--primary); margin: 0.5rem 0 0.25rem; padding-top: 0.3rem; border-top: 1px solid #c3dafe; }
+        .comp-sub:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+
         /* ---- Glossary ---- */
         .glossary-search {
             position: sticky; top: 0; z-index: 502; background: var(--primary);
@@ -333,6 +356,48 @@
             <h2>2. Block &amp; Kurbeltrieb</h2>
         </div>
         <div class="section-body">
+            <!-- Komponenten -->
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Motorblock &ndash; Ford Performance M-6009-302</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Gusseisen V8 (Boss 302)</span></div>
+                    <div class="spec-item"><span class="spec-label">Bohrung (Bore)</span><span class="spec-value">4.000" (max. 4.040")</span></div>
+                    <div class="spec-item"><span class="spec-label">Deck Height</span><span class="spec-value">8.200"</span></div>
+                    <div class="spec-item"><span class="spec-label">Hauptlager (Main Caps)</span><span class="spec-value">4-Bolt, alle 5 Positionen</span></div>
+                    <div class="spec-item"><span class="spec-label">Hauptlagerzapfen</span><span class="spec-value">2.249" (Windsor)</span></div>
+                    <div class="spec-item"><span class="spec-label">Pleuellagerzapfen</span><span class="spec-value">2.123"</span></div>
+                    <div class="spec-item"><span class="spec-label">Nockenwelle</span><span class="spec-value">Hydraulic Roller kompatibel</span></div>
+                    <div class="spec-item"><span class="spec-label">Auswuchtung</span><span class="spec-value">28.2 oz External (Std. 302) oder Zero Balance</span></div>
+                    <div class="spec-item"><span class="spec-label">Rear Main Seal</span><span class="spec-value">2-Piece</span></div>
+                    <div class="spec-item"><span class="spec-label">Priority Main Oiling</span><span class="spec-value">Ja</span></div>
+                    <div class="spec-item"><span class="spec-label">Freeze Plugs</span><span class="spec-value">Standard SBF</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Kurbelwelle (Crankshaft)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Hub (Stroke)</span><span class="spec-value">3.000"</span></div>
+                    <div class="spec-item"><span class="spec-label">Hauptlagerzapfen</span><span class="spec-value">2.249"</span></div>
+                    <div class="spec-item"><span class="spec-label">Pleuellagerzapfen</span><span class="spec-value">2.123"</span></div>
+                    <div class="spec-item"><span class="spec-label">Hubraum</span><span class="spec-value">302 ci (4.942 L)</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Nockenwelle &ndash; COMP Cams 35-518-8 (XE274HR-12)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Hydraulic Roller</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehzahlband</span><span class="spec-value">2.200 &ndash; 6.200 U/min</span></div>
+                    <div class="spec-item"><span class="spec-label">Ventilhub (1.6 Kipphebel)</span><span class="spec-value">Einl: 0.555" / Ausl: 0.565"</span></div>
+                    <div class="spec-item"><span class="spec-label">Adv. Duration</span><span class="spec-value">Einl: 274&deg; / Ausl: 282&deg;</span></div>
+                    <div class="spec-item"><span class="spec-label">Duration @ 0.050"</span><span class="spec-value">Einl: 224&deg; / Ausl: 232&deg;</span></div>
+                    <div class="spec-item"><span class="spec-label">LSA</span><span class="spec-value">112&deg;</span></div>
+                    <div class="spec-item"><span class="spec-label">Axialspiel Soll</span><span class="spec-value">0.004" &ndash; 0.009"</span></div>
+                </div>
+            </div>
+
+            <!-- Messwerte -->
             <div class="form-group">
                 <label>Kurbelwelle Axialspiel (Crankshaft End Play) <span class="tolerance">Soll: 0.004" &ndash; 0.008"</span></label>
                 <input type="text" data-field="crank_endplay" placeholder='z.B. 0.005"' oninput="validateRange(this, 0.004, 0.008); autoSave()">
@@ -365,6 +430,33 @@
             <h2>3. Kolben &amp; Pleuel</h2>
         </div>
         <div class="section-body">
+            <!-- Komponenten -->
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Kolben (Pistons)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Bohrung</span><span class="spec-value">4.000" (passend zum M-6009-302)</span></div>
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Flat Top / Dish (je nach Verdichtungsziel)</span></div>
+                    <div class="spec-item"><span class="spec-label">Valve Reliefs</span><span class="spec-value">Ja (f&uuml;r Roller Cam / hohen Ventilhub)</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Pleuel (Connecting Rods)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Rod Journal</span><span class="spec-value">2.123" (Std. 302 SBF)</span></div>
+                    <div class="spec-item"><span class="spec-label">Kolbenbolzen</span><span class="spec-value">0.912" (Std. SBF) oder press/floating je nach Ausf&uuml;hrung</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Kolbenringe (Piston Rings)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Konfiguration</span><span class="spec-value">3-Ring (Top, Second, Oil)</span></div>
+                    <div class="spec-item"><span class="spec-label">Sto&szlig;spiel pr&uuml;fen</span><span class="spec-value">Jeden Ring im jeweiligen Zylinder messen!</span></div>
+                </div>
+            </div>
+
+            <!-- Messwerte -->
             <div class="form-group">
                 <label>Pleuellagerspiel (Rod Bearing Clearance)</label>
                 <div class="measurement-grid">
@@ -418,6 +510,26 @@
             <h2>4. Zylinderk&ouml;pfe, Quench &amp; Ventilfreiraum</h2>
         </div>
         <div class="section-body">
+            <!-- Komponenten -->
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Zylinderk&ouml;pfe &ndash; AFR 1399 SBF 165cc Renegade Street</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Brennraum</span><span class="spec-value">58cc (CNC)</span></div>
+                    <div class="spec-item"><span class="spec-label">Einlassventil</span><span class="spec-value">1.900"</span></div>
+                    <div class="spec-item"><span class="spec-label">Auslassventil</span><span class="spec-value">1.600"</span></div>
+                    <div class="spec-item"><span class="spec-label">Ventilfedern</span><span class="spec-value">AFR 8605 Dual Springs (bis .650" Lift)</span></div>
+                    <div class="spec-item"><span class="spec-label">Einlasskanal</span><span class="spec-value">165cc Runner</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Zylinderkopfdichtung (Head Gasket)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Einbaudicke (compressed)</span><span class="spec-value">Herstellerangabe pr&uuml;fen</span></div>
+                    <div class="spec-item"><span class="spec-label">Bohrungsdurchmesser</span><span class="spec-value">passend zu 4.000" Bore</span></div>
+                </div>
+            </div>
+
             <a class="guide-link" onclick="showGuide('guide-heads')">&#128214; Anleitung: Zylinderkopf-Montage &amp; Drehmomente</a>
 
             <div class="info-box">
@@ -462,6 +574,34 @@
             <h2>5. Ventiltrieb (Valvetrain)</h2>
         </div>
         <div class="section-body">
+            <!-- Komponenten -->
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Kipphebel (Rocker Arms)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">&Uuml;bersetzung (Ratio)</span><span class="spec-value">1.6:1</span></div>
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Stud-mounted, roller tip</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Lifter &ndash; Hydraulic Roller</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Hydraulic Roller Lifter (Tie-Bar oder Dog-Bone Retainer)</span></div>
+                    <div class="spec-item"><span class="spec-label">Preload Empfehlung</span><span class="spec-value">1/4 bis 3/4 Umdrehung nach Nullspiel</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Ventilfedern (Valve Springs)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Modell</span><span class="spec-value">AFR 8605 Dual Springs</span></div>
+                    <div class="spec-item"><span class="spec-label">Max. Ventilhub</span><span class="spec-value">bis .650"</span></div>
+                    <div class="spec-item"><span class="spec-label">Installed Height</span><span class="spec-value">Herstellerangabe pr&uuml;fen</span></div>
+                    <div class="spec-item"><span class="spec-label">Coil Bind pr&uuml;fen</span><span class="spec-value">Ja &ndash; bei max. Lift (.555"/.565") sicherstellen!</span></div>
+                </div>
+            </div>
+
+            <!-- Messwerte -->
             <div class="form-group">
                 <label>Sto&szlig;stangenl&auml;nge (Pushrod Checker) &ndash; Einlass</label>
                 <input type="text" data-field="pushrod_intake" placeholder='z.B. 7.100"' oninput="autoSave()">
@@ -492,6 +632,14 @@
             <h2>6. Ansaugspinne (Intake Manifold)</h2>
         </div>
         <div class="section-body">
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Ansaugspinne (Intake Manifold)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Aluminium Dual-Plane / Single-Plane</span></div>
+                    <div class="spec-item"><span class="spec-label">Enddichtungen</span><span class="spec-value">RTV-Silikon statt Kork empfohlen</span></div>
+                    <div class="spec-item"><span class="spec-label">Endwert Drehmoment</span><span class="spec-value">18 ft-lbs (3 Stufen)</span></div>
+                </div>
+            </div>
             <a class="guide-link" onclick="showGuide('guide-intake')">&#128214; Anleitung: Ansaugspinne Montage &amp; Drehmomente</a>
             <div class="check-item">
                 <input type="checkbox" data-field="chk_intake_rtv" onchange="autoSave()">
@@ -515,7 +663,18 @@
             <h2>7. Z&uuml;ndkerzen (Spark Plugs)</h2>
         </div>
         <div class="section-body">
-            <a class="guide-link" onclick="showGuide('guide-spark')">&#128214; Anleitung: Z&uuml;ndkerzen Spezifikationen</a>
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Z&uuml;ndkerzen-Spezifikation</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Empfohlen</span><span class="spec-value">Autolite 3924</span></div>
+                    <div class="spec-item"><span class="spec-label">Alternativen</span><span class="spec-value">NGK FR5 / Champion RC9YC</span></div>
+                    <div class="spec-item"><span class="spec-label">Gewinde</span><span class="spec-value">14mm, 0.750" (Long Reach)</span></div>
+                    <div class="spec-item"><span class="spec-label">Sitzform</span><span class="spec-value">Dichtscheibe (Gasket Seat)</span></div>
+                    <div class="spec-item"><span class="spec-label">Elektrodenabstand</span><span class="spec-value">0.045"</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehmoment</span><span class="spec-value">15 &ndash; 22 ft-lbs</span></div>
+                </div>
+            </div>
+            <a class="guide-link" onclick="showGuide('guide-spark')">&#128214; Anleitung: Z&uuml;ndkerzen Details</a>
             <div class="check-item">
                 <input type="checkbox" data-field="chk_spark_antiseize" onchange="autoSave()">
                 <span>Anti-Seize auf Z&uuml;ndkerzengewinde aufgetragen</span>
@@ -562,14 +721,9 @@
         <div class="spec-item"><span class="spec-label">Auslassventil</span><span class="spec-value">1.600"</span></div>
         <div class="spec-item"><span class="spec-label">Ventilfedern</span><span class="spec-value">AFR 8605 Dual Springs (bis .650" Lift)</span></div>
 
-        <h3>Nockenwelle</h3>
-        <div class="spec-item"><span class="spec-label">Modell</span><span class="spec-value">COMP Cams 35-518-8 (XE274HR-12)</span></div>
-        <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Hydraulic Roller</span></div>
-        <div class="spec-item"><span class="spec-label">Drehzahlband</span><span class="spec-value">2.200 &ndash; 6.200 U/min</span></div>
+        <h3>Referenz: Nockenwelle (Daten siehe Sektion 2)</h3>
         <div class="spec-item"><span class="spec-label">Ventilhub (1.6 Kipphebel)</span><span class="spec-value">Einl: 0.555" / Ausl: 0.565"</span></div>
-        <div class="spec-item"><span class="spec-label">Adv. Duration</span><span class="spec-value">Einl: 274&deg; / Ausl: 282&deg;</span></div>
-        <div class="spec-item"><span class="spec-label">Duration @ 0.050"</span><span class="spec-value">Einl: 224&deg; / Ausl: 232&deg;</span></div>
-        <div class="spec-item"><span class="spec-label">LSA</span><span class="spec-value">112&deg;</span></div>
+        <div class="info-box"><strong>Hinweis:</strong> Aufgrund des hohen Hubs der XE274HR Piston-to-Valve Clearance <strong>zwingend mit Knete pr&uuml;fen!</strong></div>
 
         <h3>Kopfschrauben (7/16" ARP)</h3>
         <div class="info-box">
@@ -587,12 +741,11 @@
             &nbsp;&nbsp;(10)&nbsp;&nbsp;( 6 )&nbsp;&nbsp;( 2 )&nbsp;&nbsp;( 4 )&nbsp;&nbsp;( 8 )&nbsp;&nbsp;&larr; UNTERE REIHE (70 ft-lbs + Sealant)
         </div>
 
-        <h3>Quench &amp; Ventilfreiraum</h3>
+        <h3>Sollwerte Quench &amp; Ventilfreiraum</h3>
         <ul>
             <li><strong>Ziel-Quench:</strong> 0.035" &ndash; 0.045"</li>
             <li><strong>Min. Ventilfreiraum Einlass:</strong> &ge; 0.080"</li>
             <li><strong>Min. Ventilfreiraum Auslass:</strong> &ge; 0.100"</li>
-            <li>Aufgrund des hohen Hubs der XE274HR <strong>zwingend mit Knete pr&uuml;fen!</strong></li>
         </ul>
     </div>
 </div>
@@ -1791,6 +1944,7 @@
     }
 
     // ==== UI ====
+    function toggleComp(el) { el.classList.toggle('open'); el.nextElementSibling.classList.toggle('open'); }
     function toggleSection(h) { h.classList.toggle('collapsed'); h.nextElementSibling.classList.toggle('collapsed'); }
     function showToast(msg) {
         const t = document.getElementById('toast'); t.textContent = msg;
