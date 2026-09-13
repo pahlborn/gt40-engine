@@ -370,6 +370,128 @@
                 <label>Mechaniker / Builder</label>
                 <input type="text" data-field="builder_name" placeholder="Name" oninput="autoSave()">
             </div>
+            <div class="form-group">
+                <label>Projekt / Fahrzeug</label>
+                <input type="text" data-field="project_vehicle" placeholder="z.B. GT40 Kit Car, Mustang, ..." oninput="autoSave()">
+            </div>
+        </div>
+    </div>
+
+    <!-- 1b. Build-Ziele & Leistungsschaetzung -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#127919;</span>
+            <h2>Build-Ziele &amp; Leistungssch&auml;tzung</h2>
+        </div>
+        <div class="section-body">
+
+            <!-- Build-Philosophie -->
+            <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#276749;">Build-Philosophie &amp; Komponenten-Strategie</div>
+                <div class="comp-body">
+                    <p style="font-size:0.82rem;color:#333;margin:0.3rem 0;">
+                        Die Kombination aus <strong>Ford Performance M-6009-302 Short Block</strong> (komplett geschmiedet),
+                        <strong>AFR 1399 165cc CNC-K&ouml;pfen</strong> (mit Spring/Retainer-Upgrade) und
+                        <strong>COMP Cams XE274HR Hydraulic Roller</strong> Nockenwelle ergibt einen
+                        <strong>zuverl&auml;ssigen Street/Strip-Motor</strong> mit folgenden Eigenschaften:
+                    </p>
+                    <ul style="font-size:0.82rem;color:#333;">
+                        <li><strong>Breites Drehmomentband</strong> &ndash; dank 165cc-K&ouml;pfen (hohe Port-Geschwindigkeit bei kleinem Hubraum)</li>
+                        <li><strong>Solide Dauerhaltbarkeit</strong> &ndash; alle geschmiedeten Internals, keine &uuml;bertriebene Verdichtung</li>
+                        <li><strong>Hydraulisch &ndash; wartungsfrei</strong> &ndash; kein Ventilspiel-Einstellen n&ouml;tig (Morel HLT f&uuml;r Pr&auml;zision bei hohen Drehzahlen)</li>
+                        <li><strong>Drehzahlfest bis ~6.500 U/min</strong> &ndash; dank AFR 8605 Springs (.650" Lift) + Titanium Retainer + HLT Lifter</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Verdichtungsrechner -->
+            <div class="comp-box" style="background:#fffff0;border-color:#fefcbf;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#975a16;">&#128290; Verdichtungsrechner (Compression Ratio)</div>
+                <div class="comp-body">
+                    <p style="font-size:0.78rem;color:#666;margin:0 0 0.5rem;">Werte anpassen &ndash; CR berechnet sich automatisch. Werte werden gespeichert.</p>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 0.8rem;font-size:0.82rem;">
+                        <label style="font-weight:600;">Bohrung (Bore)</label>
+                        <input type="number" id="crBore" data-field="cr_bore" value="4.000" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                        <label style="font-weight:600;">Hub (Stroke)</label>
+                        <input type="number" id="crStroke" data-field="cr_stroke" value="3.000" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                        <label style="font-weight:600;">Brennraum (cc)</label>
+                        <input type="number" id="crChamber" data-field="cr_chamber" value="58" step="0.5" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                        <label style="font-weight:600;">Kopfdichtung Dicke (inch)</label>
+                        <input type="number" id="crGasket" data-field="cr_gasket" value="0.041" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                        <label style="font-weight:600;">Kopfdichtung Bore (inch)</label>
+                        <input type="number" id="crGasketBore" data-field="cr_gasket_bore" value="4.100" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                        <label style="font-weight:600;">Piston-to-Deck (inch)</label>
+                        <input type="number" id="crDeck" data-field="cr_deck" value="0.000" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                        <label style="font-weight:600;">Kolbenvolumen (cc, + = Dome, &ndash; = Dish)</label>
+                        <input type="number" id="crPiston" data-field="cr_piston" value="0" step="0.5" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                    </div>
+                    <div style="margin-top:0.7rem;padding:0.6rem;background:#fff;border:2px solid #975a16;border-radius:8px;text-align:center;">
+                        <span style="font-size:0.75rem;color:#975a16;font-weight:600;">BERECHNETE VERDICHTUNG</span><br>
+                        <span id="crResult" style="font-size:1.8rem;font-weight:700;color:#975a16;">--</span>
+                        <span style="font-size:0.9rem;color:#975a16;font-weight:600;"> : 1</span>
+                    </div>
+                    <div style="margin-top:0.4rem;display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.72rem;color:#666;">
+                        <span>Hubvolumen/Zyl.: <span id="crSwept">--</span> cc</span>
+                        <span>Restvolumen: <span id="crClearance">--</span> cc</span>
+                        <span>Gasket Vol.: <span id="crGasketVol">--</span> cc</span>
+                        <span>Deck Vol.: <span id="crDeckVol">--</span> cc</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leistungsschaetzung -->
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#9889; Gesch&auml;tzte Motorleistung</div>
+                <div class="comp-body">
+                    <div class="info-box"><strong>Hinweis:</strong> Sch&auml;tzwerte basierend auf der Komponentenauswahl. Tats&auml;chliche Leistung h&auml;ngt stark von Ansaugung, Abgasanlage, Abstimmung und Verdichtung ab.</div>
+                    <div class="spec-item"><span class="spec-label">Gesch. Leistung</span><span class="spec-value"><strong>330 &ndash; 360 HP</strong> (abh. von Intake/Exhaust/Tuning)</span></div>
+                    <div class="spec-item"><span class="spec-label">Gesch. Drehmoment</span><span class="spec-value"><strong>330 &ndash; 350 ft-lbs</strong> (447&ndash;475 Nm)</span></div>
+                    <div class="spec-item"><span class="spec-label">Peak Power RPM</span><span class="spec-value">5.500 &ndash; 6.000 U/min</span></div>
+                    <div class="spec-item"><span class="spec-label">Peak Torque RPM</span><span class="spec-value">3.500 &ndash; 4.500 U/min</span></div>
+                    <div class="spec-item"><span class="spec-label">Nutzbares Drehzahlband</span><span class="spec-value">2.200 &ndash; 6.200 U/min (Cam-Range)</span></div>
+                    <div class="spec-item"><span class="spec-label">Max. sichere Drehzahl</span><span class="spec-value">~6.500 U/min (Springs + Lifter + Ti-Retainer)</span></div>
+
+                    <div class="comp-sub">Einflussfaktoren auf die Leistung</div>
+                    <table style="width:100%;font-size:0.78rem;border-collapse:collapse;">
+                        <tr style="background:#f0f5ff;"><th style="text-align:left;padding:0.3rem;">Komponente</th><th style="text-align:left;padding:0.3rem;">Einfluss</th><th style="text-align:left;padding:0.3rem;">Tendenz</th></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Ansaugspinne (Single/Dual Plane)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Leistungskurve</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Single = mehr Spitze, Dual = mehr unten</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Vergaser-Gr&ouml;&szlig;e (cfm)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Topend vs. Response</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">600 cfm = Ansprechverh., 750 = mehr Power oben</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">F&auml;cherkr&uuml;mmer (Headers)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">+15&ndash;30 HP vs. Gusskr&uuml;mmer</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">1-5/8" Primary f&uuml;r 302</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndzeitpunkt</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Leistung + Detonation</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">32&ndash;36&deg; total (je nach CR + Benzin)</td></tr>
+                        <tr><td style="padding:0.25rem;">Verdichtung</td><td style="padding:0.25rem;">Effizienz + Drehmoment</td><td style="padding:0.25rem;">9.5&ndash;10.0:1 ideal f&uuml;r Premium-Benzin</td></tr>
+                    </table>
+
+                    <div class="comp-sub">Antriebsstrang-Empfehlung (lt. COMP Cams)</div>
+                    <div class="spec-item"><span class="spec-label">Hinterachse</span><span class="spec-value">3.55 &ndash; 3.73 Gears (Pflicht f&uuml;r XE274HR)</span></div>
+                    <div class="spec-item"><span class="spec-label">Wandler (Automatik)</span><span class="spec-value">Min. 2.500 RPM Stall Converter</span></div>
+                </div>
+            </div>
+
+            <!-- Leistungsziele -->
+            <div class="form-group">
+                <label>Angestrebte Leistung (HP)</label>
+                <input type="text" data-field="target_hp" placeholder='z.B. 350 HP' oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Angestrebtes Drehmoment (ft-lbs)</label>
+                <input type="text" data-field="target_torque" placeholder='z.B. 340 ft-lbs' oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Ziel-Verdichtung</label>
+                <input type="text" data-field="target_cr" placeholder='z.B. 9.7:1' oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Einsatzzweck</label>
+                <input type="text" data-field="target_use" placeholder='z.B. Street/Strip, Kit Car, Cruiser' oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Kraftstoff</label>
+                <input type="text" data-field="target_fuel" placeholder='z.B. Super Plus (98 ROZ), E10, Race Gas' oninput="autoSave()">
+            </div>
+            <div class="section-comment">
+                <label>Notizen zu Build-Zielen</label>
+                <textarea data-field="comment_targets" placeholder="Gedanken, Alternativkonfigurationen, Erfahrungswerte..." oninput="autoSave()"></textarea>
+            </div>
         </div>
     </div>
 
@@ -2878,6 +3000,7 @@
             if (a && a.value) validateRange(a, 0.080, 9);
             if (b && b.value) validateRange(b, 0.100, 9);
         }
+        if (typeof calcCR === 'function') calcCR();
     }
     async function saveData() {
         const data = collectData();
@@ -2896,6 +3019,46 @@
         isLoading = false; updateSaveStatus();
     }
     let autoSaveTimer = null;
+    // ==== COMPRESSION RATIO CALCULATOR ====
+    function calcCR() {
+        const bore = parseFloat(document.getElementById('crBore').value) || 0;
+        const stroke = parseFloat(document.getElementById('crStroke').value) || 0;
+        const chamber = parseFloat(document.getElementById('crChamber').value) || 0;
+        const gasketT = parseFloat(document.getElementById('crGasket').value) || 0;
+        const gasketB = parseFloat(document.getElementById('crGasketBore').value) || bore;
+        const deckC = parseFloat(document.getElementById('crDeck').value) || 0;
+        const pistonVol = parseFloat(document.getElementById('crPiston').value) || 0;
+
+        if (bore <= 0 || stroke <= 0 || chamber <= 0) {
+            document.getElementById('crResult').textContent = '--';
+            return;
+        }
+
+        // Swept volume per cylinder in cc
+        const swept = (Math.PI / 4) * Math.pow(bore, 2) * stroke * 16.387064;
+        // Gasket volume in cc
+        const gasketVol = (Math.PI / 4) * Math.pow(gasketB, 2) * gasketT * 16.387064;
+        // Deck clearance volume in cc (piston below deck = positive)
+        const deckVol = (Math.PI / 4) * Math.pow(bore, 2) * Math.abs(deckC) * 16.387064 * (deckC >= 0 ? 1 : -1);
+        // Clearance volume = chamber + gasket + deck - piston dome (+ dome adds, - dish subtracts)
+        const clearance = chamber + gasketVol + deckVol - pistonVol;
+
+        if (clearance <= 0) {
+            document.getElementById('crResult').textContent = 'ERR';
+            return;
+        }
+
+        const cr = (swept + clearance) / clearance;
+        document.getElementById('crResult').textContent = cr.toFixed(2);
+        document.getElementById('crSwept').textContent = swept.toFixed(1);
+        document.getElementById('crClearance').textContent = clearance.toFixed(1);
+        document.getElementById('crGasketVol').textContent = gasketVol.toFixed(1);
+        document.getElementById('crDeckVol').textContent = deckVol.toFixed(1);
+    }
+
+    // Run CR calc on page load
+    setTimeout(calcCR, 500);
+
     function autoSave() {
         if (isLoading) return;
         clearTimeout(autoSaveTimer);
