@@ -696,11 +696,222 @@
         </div>
     </div>
 
-    <!-- 8. Allgemeine Notizen -->
+    <!-- 8. Oelsystem -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#128167;</span>
+            <h2>8. &Ouml;lsystem (Oiling System)</h2>
+        </div>
+        <div class="section-body">
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">&Ouml;lpumpe (Oil Pump)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">High Volume (HV) &ndash; Standard Pressure</span></div>
+                    <div class="spec-item"><span class="spec-label">Antrieb</span><span class="spec-value">&Uuml;ber Verteiler-/Pumpenwelle vom Nockenwellenrad</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehmoment Pickup-Rohr</span><span class="spec-value">Herstellerangabe pr&uuml;fen</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">&Ouml;lansaugrohr (Oil Pickup)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Abstand zum Wannenboden</span><span class="spec-value">3/8" &ndash; 1/2" (Pickup-to-Pan Clearance)</span></div>
+                    <div class="spec-item"><span class="spec-label">Befestigung</span><span class="spec-value">Press-Fit oder verschraubt (je nach Ausf&uuml;hrung)</span></div>
+                    <div class="spec-item"><span class="spec-label">Wichtig</span><span class="spec-value">Muss zur Wanne passen &ndash; Pickup und Pan als Set w&auml;hlen!</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">&Ouml;lwanne (Oil Pan)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Passend zum Chassis (Straights, Lenkung, Rahmen pr&uuml;fen!)</span></div>
+                    <div class="spec-item"><span class="spec-label">Dichtung</span><span class="spec-value">Kork/Neopren-Dichtungssatz oder RTV</span></div>
+                    <div class="spec-item"><span class="spec-label">Windage Tray</span><span class="spec-value">Empfohlen f&uuml;r Track Use</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehmoment Wannenschrauben</span><span class="spec-value">10 &ndash; 12 ft-lbs (Aluminium-Wanne)</span></div>
+                    <div class="spec-item"><span class="spec-label">Ablassschraube</span><span class="spec-value">15 &ndash; 25 ft-lbs (je nach Ausf&uuml;hrung)</span></div>
+                </div>
+            </div>
+
+            <a class="guide-link" onclick="showGuide('guide-oil')">&#128214; Anleitung: &Ouml;lsystem Montage</a>
+
+            <div class="form-group">
+                <label>&Ouml;ldruck bei Erststart (Oil Pressure)</label>
+                <input type="text" data-field="oil_pressure_initial" placeholder='z.B. 60 psi @ 2000 rpm' oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Pickup-to-Pan Clearance</label>
+                <input type="text" data-field="pickup_to_pan" placeholder='z.B. 3/8"' oninput="autoSave()">
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_oil_pump" onchange="autoSave()">
+                <span>&Ouml;lpumpe vormontiert, Pumpenantriebswelle eingesetzt</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_oil_pickup" onchange="autoSave()">
+                <span>Pickup montiert, Abstand zum Wannenboden gepr&uuml;ft</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_oil_pan" onchange="autoSave()">
+                <span>&Ouml;lwanne montiert, Dichtung/RTV korrekt, Schrauben auf Drehmoment</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_oil_primed" onchange="autoSave()">
+                <span>Motor vor Erststart mit Pumpenantrieb vor&ouml;lt (Priming)</span>
+            </div>
+            <div class="section-comment">
+                <label>Kommentar zu &Ouml;lsystem</label>
+                <textarea data-field="comment_oil" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. Steuerkettendeckel & Harmonic Balancer -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#9881;</span>
+            <h2>9. Timing Cover &amp; Harmonic Balancer</h2>
+        </div>
+        <div class="section-body">
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Steuerkettendeckel (Timing Chain Cover)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">Aluminium oder Stahlblech (je nach Ausf&uuml;hrung)</span></div>
+                    <div class="spec-item"><span class="spec-label">Dichtung</span><span class="spec-value">Kork/Gummi-Dichtung + RTV an den &Uuml;berg&auml;ngen Block/&Ouml;lwanne</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehmoment</span><span class="spec-value">12 &ndash; 18 ft-lbs</span></div>
+                    <div class="spec-item"><span class="spec-label">Kurbelwellen-Simmerring</span><span class="spec-value">Im Timing Cover &ndash; vor Montage einpressen!</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Harmonic Balancer (Schwingungsd&auml;mpfer)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Auswuchtung</span><span class="spec-value">Passend zur Kurbelwelle (28.2 oz oder Zero Balance)</span></div>
+                    <div class="spec-item"><span class="spec-label">Montage</span><span class="spec-value">Mit Balancer-Einpresswerkzeug &ndash; NIEMALS mit Hammer!</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehmoment Zentralschraube</span><span class="spec-value">70 &ndash; 90 ft-lbs (Herstellerangabe beachten)</span></div>
+                    <div class="spec-item"><span class="spec-label">Timing Mark</span><span class="spec-value">Muss mit TDC-Markierung am Cover &uuml;bereinstimmen</span></div>
+                </div>
+            </div>
+
+            <a class="guide-link" onclick="showGuide('guide-timing-cover')">&#128214; Anleitung: Timing Cover &amp; Balancer Montage</a>
+
+            <div class="check-item">
+                <input type="checkbox" data-field="check_front_seal" onchange="autoSave()">
+                <span>Kurbelwellen-Simmerring im Cover eingesetzt</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_timing_cover" onchange="autoSave()">
+                <span>Timing Cover montiert, Dichtung + RTV, Schrauben auf Drehmoment</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_balancer" onchange="autoSave()">
+                <span>Harmonic Balancer mit Einpresswerkzeug montiert, Schraube auf Drehmoment</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_timing_mark" onchange="autoSave()">
+                <span>Timing Mark am Balancer auf TDC gepr&uuml;ft</span>
+            </div>
+            <div class="section-comment">
+                <label>Kommentar zu Timing Cover &amp; Balancer</label>
+                <textarea data-field="comment_timing_cover" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. Wasserpumpe -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#128166;</span>
+            <h2>10. Wasserpumpe (Water Pump)</h2>
+        </div>
+        <div class="section-body">
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Wasserpumpe</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Standard- oder High-Flow (Drehrichtung beachten!)</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehrichtung</span><span class="spec-value">Abh&auml;ngig vom Riementrieb: Standard Rotation vs. Reverse Rotation</span></div>
+                    <div class="spec-item"><span class="spec-label">Dichtung</span><span class="spec-value">Papier-/Verbunddichtung + d&uuml;nne Schicht Dichtmittel</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehmoment</span><span class="spec-value">15 &ndash; 22 ft-lbs</span></div>
+                    <div class="spec-item"><span class="spec-label">K&uuml;hlmittel</span><span class="spec-value">50/50 Mischung Frostschutz/Wasser</span></div>
+                </div>
+            </div>
+
+            <a class="guide-link" onclick="showGuide('guide-waterpump')">&#128214; Anleitung: Wasserpumpe Montage</a>
+
+            <div class="check-item">
+                <input type="checkbox" data-field="check_waterpump_gasket" onchange="autoSave()">
+                <span>Dichtfl&auml;chen gereinigt, neue Dichtung aufgelegt</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_waterpump_torque" onchange="autoSave()">
+                <span>Wasserpumpe montiert, Schrauben auf Drehmoment (15&ndash;22 ft-lbs)</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_waterpump_rotation" onchange="autoSave()">
+                <span>Drehrichtung gepr&uuml;ft (passend zum Riementrieb)</span>
+            </div>
+            <div class="section-comment">
+                <label>Kommentar zu Wasserpumpe</label>
+                <textarea data-field="comment_waterpump" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. Vergaser / Kraftstoffsystem -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#9981;</span>
+            <h2>11. Vergaser &amp; Kraftstoffsystem (Carburetor)</h2>
+        </div>
+        <div class="section-body">
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Vergaser (Carburetor)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">4-Barrel (z.B. Holley 600&ndash;750 cfm)</span></div>
+                    <div class="spec-item"><span class="spec-label">Dichtung</span><span class="spec-value">Vergaser-Fuss-Dichtung (Carburetor Base Gasket)</span></div>
+                    <div class="spec-item"><span class="spec-label">Kraftstoffdruck</span><span class="spec-value">5.5 &ndash; 7.0 psi (mechanische Pumpe) &ndash; Herstellerangabe!</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehmoment Befestigung</span><span class="spec-value">Handfest + 1/4 Umdrehung (nicht &uuml;berziehen!)</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Kraftstoffpumpe (Fuel Pump)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Mechanisch (Block-mounted) oder elektrisch</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehmoment Befestigung</span><span class="spec-value">18 &ndash; 22 ft-lbs (mechanisch, am Block)</span></div>
+                    <div class="spec-item"><span class="spec-label">Pushrod</span><span class="spec-value">Fuel Pump Pushrod (Excenter-Antrieb von Nockenwelle)</span></div>
+                </div>
+            </div>
+
+            <a class="guide-link" onclick="showGuide('guide-fuel')">&#128214; Anleitung: Vergaser &amp; Kraftstoffsystem</a>
+
+            <div class="check-item">
+                <input type="checkbox" data-field="check_fuel_pump" onchange="autoSave()">
+                <span>Kraftstoffpumpe montiert, Dichtung + Drehmoment</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_fuel_filter" onchange="autoSave()">
+                <span>Kraftstofffilter eingebaut (vor dem Vergaser)</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_carb_gasket" onchange="autoSave()">
+                <span>Vergaser-Fu&szlig;dichtung aufgelegt, Vergaser montiert</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_fuel_lines" onchange="autoSave()">
+                <span>Kraftstoffleitungen angeschlossen, auf Dichtheit gepr&uuml;ft</span>
+            </div>
+            <div class="section-comment">
+                <label>Kommentar zu Vergaser &amp; Kraftstoff</label>
+                <textarea data-field="comment_fuel" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. Allgemeine Notizen -->
     <div class="section">
         <div class="section-header" onclick="toggleSection(this)">
             <span class="section-icon">&#128221;</span>
-            <h2>8. Allgemeine Notizen</h2>
+            <h2>12. Allgemeine Notizen</h2>
         </div>
         <div class="section-body">
             <div class="form-group">
@@ -1117,6 +1328,212 @@
         <div class="info-box">
             <strong>Achtung Aluminiumgewinde:</strong> Z&uuml;ndkerzen immer in den <strong>kalten</strong> Kopf eindrehen. Niemals mit Gewalt &ndash; bei Widerstand zur&uuml;ckdrehen und erneut versuchen. Besch&auml;digte Gewinde in Aluminium sind aufwendig zu reparieren (HeliCoil).
         </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Guide: Oelsystem                                              -->
+<!-- ============================================================ -->
+<div class="guide-overlay" id="guide-oil">
+    <div class="guide-header">
+        <button class="guide-back" onclick="hideGuide('guide-oil')">&larr; Zur&uuml;ck</button>
+        <h2>&Ouml;lsystem &ndash; Montageanleitung</h2>
+    </div>
+    <div class="guide-content">
+
+        <h3>Ben&ouml;tigte Werkzeuge &amp; Arbeitsmittel</h3>
+        <ul>
+            <li><strong>Drehmomentschl&uuml;ssel</strong> (kleiner Bereich f&uuml;r Wannenschrauben)</li>
+            <li><strong>RTV-Silikon</strong> (z.B. Permatex Ultra Black oder Right Stuff)</li>
+            <li><strong>&Ouml;lwannen-Dichtungssatz</strong> (Seitendichtungen + Enddichtungen, oder RTV-only)</li>
+            <li><strong>Priming Tool</strong> (Pumpenantriebsstab &ndash; alter Verteiler ohne Zahnrad, oder spezieller Priming Shaft)</li>
+            <li><strong>Bohrmaschine</strong> (zum Antrieb des Priming Tools)</li>
+            <li><strong>Lineal / Draht</strong> (zum Pr&uuml;fen des Pickup-to-Pan Abstands)</li>
+            <li><strong>Assembly Lube</strong></li>
+            <li><strong>Motor&ouml;l</strong> (korrekte Viskosit&auml;t)</li>
+        </ul>
+
+        <h3>Vorbereitung</h3>
+        <ul>
+            <li>Kurbelwelle, Nockenwelle und alle Lager montiert</li>
+            <li>Rear Main Seal eingesetzt</li>
+            <li>Dichtfl&auml;chen am Block und an der Wanne sauber, trocken und fettfrei</li>
+        </ul>
+
+        <h3>A) &Ouml;lpumpe montieren</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>&Ouml;lpumpe auf die Befestigungsstelle am Block / Hauptlagerdeckel setzen.</div>
+            <div class="torque-step"><span class="step-num">2</span>Pumpenantriebswelle (Intermediate Shaft) einsetzen &ndash; muss korrekt in die Nockenwellen-Verzahnung greifen.</div>
+            <div class="torque-step"><span class="step-num">3</span>Befestigungsschraube(n) auf Drehmoment anziehen.</div>
+            <div class="torque-step"><span class="step-num">4</span>Pumpendrehung von Hand pr&uuml;fen &ndash; muss sich leicht drehen lassen.</div>
+        </div>
+
+        <h3>B) Pickup montieren</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Pickup-Rohr an die Pumpe montieren (Press-Fit oder verschraubt).</div>
+            <div class="torque-step"><span class="step-num">2</span><strong>Pickup-to-Pan Clearance pr&uuml;fen:</strong> &Ouml;lwanne trocken auflegen und den Abstand zwischen Pickup-Sieb und Wannenboden messen. <strong>Soll: 3/8" &ndash; 1/2"</strong>.</div>
+            <div class="torque-step"><span class="step-num">3</span>Bei falschem Abstand: Pickup nachjustieren (vorsichtig biegen oder Shims verwenden).</div>
+        </div>
+        <div class="info-box"><strong>Wichtig:</strong> Zu weit weg = Pumpe saugt Luft bei niedrigem &Ouml;lstand oder hoher Querbeschleunigung. Zu nah = Pumpe kann &Ouml;l nicht frei ansaugen.</div>
+
+        <h3>C) &Ouml;lwanne montieren</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Seitendichtungen auflegen (oder durchgehend RTV verwenden).</div>
+            <div class="torque-step"><span class="step-num">2</span>Vordere und hintere Enddichtungen: <strong>RTV-Raupe</strong> auf den Block auftragen, &Uuml;berg&auml;nge zu den Seitendichtungen ebenfalls mit RTV versiegeln.</div>
+            <div class="torque-step"><span class="step-num">3</span>&Ouml;lwanne vorsichtig aufsetzen und alle Schrauben handfest eindrehen.</div>
+            <div class="torque-step"><span class="step-num">4</span>Schrauben im <strong>Kreuzverfahren</strong> (von der Mitte nach au&szlig;en) auf <strong>10&ndash;12 ft-lbs</strong> anziehen.</div>
+        </div>
+
+        <h3>D) Motor vor&ouml;len (Priming)</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Motor&ouml;l einf&uuml;llen (korrekte Menge und Viskosit&auml;t).</div>
+            <div class="torque-step"><span class="step-num">2</span>Z&uuml;ndverteiler entfernen (oder Priming Tool direkt einsetzen).</div>
+            <div class="torque-step"><span class="step-num">3</span>Priming Shaft in die Pumpenwellenbohrung einsetzen.</div>
+            <div class="torque-step"><span class="step-num">4</span>Mit <strong>Bohrmaschine</strong> (im Uhrzeigersinn, SBF) drehen, bis &Ouml;ldruck aufgebaut ist und &Ouml;l an allen Kipphebeln austritt.</div>
+            <div class="torque-step"><span class="step-num">5</span>Kurbelwelle dabei mehrfach 90&deg; weiterdrehen, damit alle Lagerkan&auml;le versorgt werden.</div>
+        </div>
+        <div class="info-box"><strong>Niemals den Motor ohne Vor&ouml;lung starten!</strong> Die Lagerstellen, Lifter und der Ventiltrieb brauchen &Ouml;ldruck bevor der Motor z&uuml;ndet.</div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Guide: Timing Cover & Harmonic Balancer                       -->
+<!-- ============================================================ -->
+<div class="guide-overlay" id="guide-timing-cover">
+    <div class="guide-header">
+        <button class="guide-back" onclick="hideGuide('guide-timing-cover')">&larr; Zur&uuml;ck</button>
+        <h2>Timing Cover &amp; Balancer &ndash; Montageanleitung</h2>
+    </div>
+    <div class="guide-content">
+
+        <h3>Ben&ouml;tigte Werkzeuge &amp; Arbeitsmittel</h3>
+        <ul>
+            <li><strong>Drehmomentschl&uuml;ssel</strong> (Bereiche bis 18 ft-lbs und bis 90 ft-lbs)</li>
+            <li><strong>Balancer-Einpresswerkzeug</strong> (Harmonic Balancer Installer) &ndash; Gewindestange + Druckscheibe</li>
+            <li><strong>RTV-Silikon</strong> (f&uuml;r die &Uuml;berg&auml;nge Block/&Ouml;lwanne)</li>
+            <li><strong>Timing Cover Dichtung</strong></li>
+            <li><strong>Kurbelwellen-Simmerring</strong> (Front Seal, passend zum Timing Cover)</li>
+            <li><strong>Simmerring-Einpresswerkzeug</strong> oder passende Nuss</li>
+        </ul>
+
+        <h3>Vorbereitung</h3>
+        <ul>
+            <li>Steuerkette und Zahnr&auml;der montiert, Timing Marks ausgerichtet</li>
+            <li>&Ouml;lwanne montiert (Timing Cover &uuml;berlappt die &Ouml;lwanne!)</li>
+            <li>Dichtfl&auml;chen an Block und Cover sauber und trocken</li>
+        </ul>
+
+        <h3>A) Timing Cover montieren</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span><strong>Simmerring</strong> in das Timing Cover einpressen (bündig, nicht schief). Lippe muss nach innen zeigen (zum Motor).</div>
+            <div class="torque-step"><span class="step-num">2</span>Dichtung trocken auf den Block legen oder d&uuml;nn mit Dichtmittel fixieren.</div>
+            <div class="torque-step"><span class="step-num">3</span>An den <strong>&Uuml;berg&auml;ngen zur &Ouml;lwanne</strong> eine RTV-Raupe auftragen.</div>
+            <div class="torque-step"><span class="step-num">4</span>Cover vorsichtig &uuml;ber die Kurbelwellennase schieben und gleichm&auml;&szlig;ig andr&uuml;cken.</div>
+            <div class="torque-step"><span class="step-num">5</span>Schrauben auf <strong>12&ndash;18 ft-lbs</strong> anziehen.</div>
+        </div>
+        <div class="info-box"><strong>Tipp:</strong> Beim Aufschieben des Covers den Simmerring mit etwas &Ouml;l benetzen und darauf achten, dass die Dichtlippe nicht umklappt.</div>
+
+        <h3>B) Harmonic Balancer montieren</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Kurbelwellennase und Balancer-Bohrung leicht ein&ouml;len.</div>
+            <div class="torque-step"><span class="step-num">2</span>Balancer auf die Kurbelwelle setzen &ndash; Keilnut (Woodruff Key) muss ausgerichtet sein.</div>
+            <div class="torque-step"><span class="step-num">3</span><strong>Mit dem Einpresswerkzeug</strong> den Balancer gleichm&auml;&szlig;ig auf die Kurbelwelle ziehen. <strong>NIEMALS mit dem Hammer aufschlagen!</strong></div>
+            <div class="torque-step"><span class="step-num">4</span>Zentralschraube mit <strong>70&ndash;90 ft-lbs</strong> anziehen (Herstellerangabe beachten).</div>
+            <div class="torque-step"><span class="step-num">5</span><strong>Timing Mark</strong> am Balancer pr&uuml;fen: Muss mit der TDC-Markierung am Timing Cover &uuml;bereinstimmen, wenn Zylinder 1 auf OT steht.</div>
+        </div>
+        <div class="info-box"><strong>Achtung:</strong> Ein Hammerschlag kann den Schwingungsd&auml;mpfer besch&auml;digen (Gummischicht zwischen Nabe und &auml;u&szlig;erem Ring) und die Kurbelwelle / Hauptlager belasten.</div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Guide: Wasserpumpe                                            -->
+<!-- ============================================================ -->
+<div class="guide-overlay" id="guide-waterpump">
+    <div class="guide-header">
+        <button class="guide-back" onclick="hideGuide('guide-waterpump')">&larr; Zur&uuml;ck</button>
+        <h2>Wasserpumpe &ndash; Montageanleitung</h2>
+    </div>
+    <div class="guide-content">
+
+        <h3>Ben&ouml;tigte Werkzeuge &amp; Arbeitsmittel</h3>
+        <ul>
+            <li><strong>Drehmomentschl&uuml;ssel</strong> (Bereich bis ca. 25 ft-lbs)</li>
+            <li><strong>Wasserpumpendichtung(en)</strong> (meist 2 St&uuml;ck &ndash; links/rechts)</li>
+            <li><strong>Dichtmittel</strong> (d&uuml;nne Schicht Permatex Aviation Form-A-Gasket oder &auml;hnlich)</li>
+            <li><strong>K&uuml;hlmittel</strong> (50/50 Frostschutz/Wasser)</li>
+            <li><strong>Schl&auml;uche und Schellen</strong> (Thermostat-Housing, Bypass, Heizung)</li>
+        </ul>
+
+        <h3>Vorbereitung</h3>
+        <ul>
+            <li>Timing Cover montiert</li>
+            <li>Dichtfl&auml;chen an Block/Timing Cover sauber und trocken</li>
+            <li><strong>Drehrichtung der Pumpe pr&uuml;fen:</strong> Standard Rotation (im Uhrzeigersinn von vorne gesehen) ist Standard f&uuml;r die meisten SBF mit V-Belt. Bei Serpentine-Riemen kann Reverse Rotation erforderlich sein!</li>
+        </ul>
+
+        <h3>Montage</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>D&uuml;nne Schicht Dichtmittel auf beide Seiten der Dichtung auftragen.</div>
+            <div class="torque-step"><span class="step-num">2</span>Dichtung(en) auf die Anschraubfl&auml;che legen.</div>
+            <div class="torque-step"><span class="step-num">3</span>Wasserpumpe aufsetzen und alle Schrauben handfest eindrehen.</div>
+            <div class="torque-step"><span class="step-num">4</span>Schrauben im Kreuzverfahren auf <strong>15&ndash;22 ft-lbs</strong> anziehen.</div>
+            <div class="torque-step"><span class="step-num">5</span>K&uuml;hlschl&auml;uche anschlie&szlig;en, Schellen festziehen.</div>
+        </div>
+        <div class="info-box"><strong>Tipp:</strong> Schraubenl&auml;ngen k&ouml;nnen unterschiedlich sein! Vorher Positionen markieren oder die Schrauben auf einem Karton in der richtigen Anordnung sortieren.</div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Guide: Vergaser & Kraftstoff                                  -->
+<!-- ============================================================ -->
+<div class="guide-overlay" id="guide-fuel">
+    <div class="guide-header">
+        <button class="guide-back" onclick="hideGuide('guide-fuel')">&larr; Zur&uuml;ck</button>
+        <h2>Vergaser &amp; Kraftstoffsystem &ndash; Montageanleitung</h2>
+    </div>
+    <div class="guide-content">
+
+        <h3>Ben&ouml;tigte Werkzeuge &amp; Arbeitsmittel</h3>
+        <ul>
+            <li><strong>Schraubenschl&uuml;ssel</strong> (passend f&uuml;r Vergaser-Befestigung und Kraftstoffleitungen)</li>
+            <li><strong>Drehmomentschl&uuml;ssel</strong> (kleiner Bereich)</li>
+            <li><strong>Vergaser-Fu&szlig;dichtung</strong> (Carburetor Base Gasket)</li>
+            <li><strong>Kraftstoffpumpen-Dichtung</strong></li>
+            <li><strong>Kraftstofffilter</strong></li>
+            <li><strong>Teflon-Band</strong> (f&uuml;r Rohranschl&uuml;sse, NICHT f&uuml;r Flare-Fittings)</li>
+            <li><strong>Kraftstoffdruckpr&uuml;fer</strong> (optional, aber empfohlen)</li>
+        </ul>
+
+        <h3>Vorbereitung</h3>
+        <ul>
+            <li>Ansaugspinne montiert und auf Drehmoment</li>
+            <li>Dichtfl&auml;chen sauber</li>
+        </ul>
+
+        <h3>A) Mechanische Kraftstoffpumpe montieren</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Fuel Pump Pushrod (Excenter-St&ouml;&szlig;el) in die Bohrung im Block einsetzen.</div>
+            <div class="torque-step"><span class="step-num">2</span>Neue Dichtung auf die Pumpe oder den Block legen.</div>
+            <div class="torque-step"><span class="step-num">3</span>Pumpe ansetzen &ndash; dabei den Pushrod beim Einsetzen leicht nach oben halten (Hilfsperson oder Fett zum Fixieren).</div>
+            <div class="torque-step"><span class="step-num">4</span>Befestigungsschrauben auf <strong>18&ndash;22 ft-lbs</strong> anziehen.</div>
+        </div>
+        <div class="info-box"><strong>Tipp:</strong> Kurbelwelle so drehen, dass der Fuel-Pump-Excenter auf der Nockenwelle auf dem Grundkreis steht &ndash; dann l&auml;sst sich die Pumpe leichter montieren.</div>
+
+        <h3>B) Vergaser montieren</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Fu&szlig;dichtung trocken auf die Ansaugspinne legen.</div>
+            <div class="torque-step"><span class="step-num">2</span>Vergaser aufsetzen, Befestigungsmuttern/schrauben <strong>gleichm&auml;&szlig;ig &uuml;ber Kreuz</strong> anziehen.</div>
+            <div class="torque-step"><span class="step-num">3</span><strong>Nicht &uuml;berziehen!</strong> Handfest + max. 1/4 Umdrehung. Der Vergaser-Flansch ist empfindlich.</div>
+            <div class="torque-step"><span class="step-num">4</span>Kraftstoffleitung, Gaszug und Choke-Mechanismus anschlie&szlig;en.</div>
+            <div class="torque-step"><span class="step-num">5</span>Kraftstofffilter zwischen Pumpe und Vergaser einbauen.</div>
+        </div>
+
+        <h3>C) Kraftstoffdruck pr&uuml;fen</h3>
+        <ul>
+            <li>Kraftstoffdruckpr&uuml;fer zwischen Pumpe und Vergaser anschlie&szlig;en</li>
+            <li><strong>Soll bei mechanischer Pumpe:</strong> 5.5&ndash;7.0 psi</li>
+            <li>Zu hoher Druck: Vergaser kann &uuml;berfluten &ndash; ggf. Druckregler einbauen</li>
+        </ul>
     </div>
 </div>
 
