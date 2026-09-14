@@ -506,7 +506,11 @@
             </div>
             <div class="form-group">
                 <label>Einsatzzweck</label>
-                <input type="text" data-field="target_use" placeholder='z.B. Street/Strip, Kit Car, Cruiser' oninput="autoSave()">
+                <input type="text" data-field="target_use" value="Trackdays Only &ndash; TSC GT40 Kit Car" placeholder='z.B. Trackdays, Kit Car' oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Strecken</label>
+                <input type="text" data-field="target_tracks" value="Pannoniaring, Slovakiaring, Brno (Masaryk), Spa-Francorchamps" placeholder='Strecken...' oninput="autoSave()">
             </div>
             <div class="form-group">
                 <label>Kraftstoff</label>
@@ -1675,7 +1679,159 @@
         </div>
     </div>
 
-    <!-- 15. Teilekatalog & Kostenuebersicht -->
+    <!-- 15. Streckenanalyse -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#127937;</span>
+            <h2>15. Streckenanalyse &amp; Fahrzeugeinsch&auml;tzung</h2>
+        </div>
+        <div class="section-body">
+            <div class="info-box" style="margin-bottom:0.5rem;"><strong>Fahrzeug:</strong> TSC GT40 Kit Car | ~1.050 kg | ~340&ndash;360 HP | ~324&ndash;343 HP/t | Crossply-Reifen (Avon A24) | Kein ABS/TC/ESP | Schaltgetriebe UN1-13</div>
+
+            <!-- Pannoniaring -->
+            <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#276749;">&#127469;&#127482; Pannoniaring (Ostffyasszonyfa, Ungarn)</div>
+                <div class="comp-body">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.78rem;">
+                        <div class="spec-item"><span class="spec-label">L&auml;nge</span><span class="spec-value">4.740 m</span></div>
+                        <div class="spec-item"><span class="spec-label">Kurven</span><span class="spec-value">18 (11R / 7L)</span></div>
+                        <div class="spec-item"><span class="spec-label">Breite</span><span class="spec-value">11&ndash;13 m</span></div>
+                        <div class="spec-item"><span class="spec-label">L&auml;ngste Gerade</span><span class="spec-value">700 m (Start/Ziel)</span></div>
+                        <div class="spec-item"><span class="spec-label">H&ouml;hendifferenz</span><span class="spec-value">Gering (flaches Gel&auml;nde)</span></div>
+                        <div class="spec-item"><span class="spec-label">Fahrtrichtung</span><span class="spec-value">Uhrzeigersinn</span></div>
+                    </div>
+                    <div class="comp-sub" style="margin-top:0.4rem;">Einsch&auml;tzung f&uuml;r den GT40</div>
+                    <table style="width:100%;font-size:0.76rem;border-collapse:collapse;">
+                        <tr style="background:#e6ffed;"><th style="text-align:left;padding:0.25rem;">Aspekt</th><th style="text-align:left;padding:0.25rem;">Bewertung</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">V-max auf Geraden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>~220&ndash;235 km/h</strong> (4. Gang, kurz 5.)</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Vorherrschende G&auml;nge</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">2.&ndash;4. Gang (kurvenreich)</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Bremsbelastung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Mittel &ndash; viele Brems-/Beschleunigungszyklen</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Motoranforderung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Gute Gasannahme, Drehmoment aus Teillast (DellOrto-St&auml;rke)</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Reifen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Crossply ertr&auml;glich &ndash; kein extremes Tempo in Kurven</td></tr>
+                        <tr><td style="padding:0.2rem;">K&uuml;hlung</td><td style="padding:0.2rem;">Unkritisch &ndash; flach, kurze Volllast-Phasen</td></tr>
+                    </table>
+                    <div style="background:#c6f6d5;padding:0.4rem;border-radius:6px;margin-top:0.3rem;font-size:0.78rem;"><strong>Gesamtbewertung: Ideal zum Einfahren.</strong> 18 Kurven auf 4,7 km = technisch anspruchsvoll, aber moderate Geschwindigkeiten. Gro&szlig;z&uuml;gige Gravel Traps. Perfekte Strecke, um Motor, Getriebe und Bremsen unter kontrollierten Bedingungen zu testen. Empfohlen als <strong>erste Strecke</strong> nach dem Aufbau.</div>
+                </div>
+            </div>
+
+            <!-- Slovakiaring -->
+            <div class="comp-box" style="background:#fefcbf;border-color:#f6e05e;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#975a16;">&#127480;&#127472; Slovakiaring (Orechov&aacute; Pot&ocirc;&#328;, Slowakei)</div>
+                <div class="comp-body">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.78rem;">
+                        <div class="spec-item"><span class="spec-label">L&auml;nge</span><span class="spec-value">5.922 m (Grand Prix Circuit)</span></div>
+                        <div class="spec-item"><span class="spec-label">Kurven</span><span class="spec-value">14&ndash;16 (je nach Layout)</span></div>
+                        <div class="spec-item"><span class="spec-label">Breite</span><span class="spec-value">12 m</span></div>
+                        <div class="spec-item"><span class="spec-label">L&auml;ngste Gerade</span><span class="spec-value">900 m (Start/Ziel)</span></div>
+                        <div class="spec-item"><span class="spec-label">Drag Strip</span><span class="spec-value">1.144 m (separater Bereich)</span></div>
+                        <div class="spec-item"><span class="spec-label">H&ouml;hendifferenz</span><span class="spec-value">4 k&uuml;nstliche Kuppen</span></div>
+                    </div>
+                    <div class="comp-sub" style="margin-top:0.4rem;">Einsch&auml;tzung f&uuml;r den GT40</div>
+                    <table style="width:100%;font-size:0.76rem;border-collapse:collapse;">
+                        <tr style="background:#fefcbf;"><th style="text-align:left;padding:0.25rem;">Aspekt</th><th style="text-align:left;padding:0.25rem;">Bewertung</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">V-max auf Geraden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>~240&ndash;260 km/h</strong> (5. Gang auf 900m-Gerade)</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Vorherrschende G&auml;nge</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">3.&ndash;5. Gang (schneller Charakter)</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Bremsbelastung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Hoch</strong> &ndash; harte Verz&ouml;gerung aus Hochgeschwindigkeit</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Motoranforderung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Volle Leistung gefragt, lange Vollgasphasen</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Reifen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;"><strong>Kritisch!</strong> Kuppen bei Hochgeschwindigkeit destabilisieren Crossply-Reifen</td></tr>
+                        <tr><td style="padding:0.2rem;">K&uuml;hlung</td><td style="padding:0.2rem;color:#975a16;"><strong>Erh&ouml;ht</strong> &ndash; lange Volllast, &Ouml;ltemperatur &uuml;berwachen</td></tr>
+                    </table>
+                    <div style="background:#fefcbf;padding:0.4rem;border-radius:6px;margin-top:0.3rem;font-size:0.78rem;"><strong>Gesamtbewertung: Schnelle Strecke, anspruchsvoll.</strong> Die 900m-Gerade nutzt die volle Motorleistung. Aber die 4 k&uuml;nstlichen Kuppen bei hohen Geschwindigkeiten (Hinterachse wird leicht &ndash; Reifenverlust!) sind mit Crossply-Reifen <strong>ernst zu nehmen</strong>. Bremsk&uuml;hlung muss stimmen. Erh&ouml;hte Aufmerksamkeit bei der &Ouml;ltemperatur (Getriebe&ouml;lk&uuml;hler hier besonders wertvoll). Empfohlen: <strong>konservativ starten</strong>, Kuppen mit Respekt.</div>
+                </div>
+            </div>
+
+            <!-- Brno -->
+            <div class="comp-box" style="background:#fed7d7;border-color:#fc8181;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#c53030;">&#127464;&#127487; Brno / Masaryk Circuit (Tschechien)</div>
+                <div class="comp-body">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.78rem;">
+                        <div class="spec-item"><span class="spec-label">L&auml;nge</span><span class="spec-value">5.403 m</span></div>
+                        <div class="spec-item"><span class="spec-label">Kurven</span><span class="spec-value">14 (8R / 6L)</span></div>
+                        <div class="spec-item"><span class="spec-label">Breite</span><span class="spec-value">15 m</span></div>
+                        <div class="spec-item"><span class="spec-label">L&auml;ngste Gerade</span><span class="spec-value">636 m</span></div>
+                        <div class="spec-item"><span class="spec-label">H&ouml;hendifferenz</span><span class="spec-value"><strong>73,75 m (!)</strong></span></div>
+                        <div class="spec-item"><span class="spec-label">Max. Steigung</span><span class="spec-value">7,5% &uuml;ber 917 m</span></div>
+                        <div class="spec-item"><span class="spec-label">Max. Gef&auml;lle</span><span class="spec-value">5% &uuml;ber 410 m</span></div>
+                        <div class="spec-item"><span class="spec-label">Belag</span><span class="spec-value">Neu asphaltiert 2025 (High-Grip)</span></div>
+                    </div>
+                    <div class="comp-sub" style="margin-top:0.4rem;">Einsch&auml;tzung f&uuml;r den GT40</div>
+                    <table style="width:100%;font-size:0.76rem;border-collapse:collapse;">
+                        <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.25rem;">Aspekt</th><th style="text-align:left;padding:0.25rem;">Bewertung</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">V-max auf Geraden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>~210&ndash;230 km/h</strong> (4. Gang, Gerade bergauf begrenzt)</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Vorherrschende G&auml;nge</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">2.&ndash;4. Gang (st&auml;ndiger Wechsel wg. H&ouml;henprofil)</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Bremsbelastung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;"><strong>Sehr hoch!</strong> Lange Gef&auml;llstrecken + harte Verz&ouml;gerung</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Motoranforderung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Drehmoment bergauf entscheidend &ndash; 302 mit XE274HR ideal</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Reifen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;"><strong>Herausfordernd!</strong> Gewichtsverlagerung bergab/bergauf + Crossply = sp&uuml;rbares Eigenlenkverhalten</td></tr>
+                        <tr><td style="padding:0.2rem;">K&uuml;hlung</td><td style="padding:0.2rem;color:#c53030;"><strong>Kritisch!</strong> Bremstemperatur + Motor&ouml;l bergauf unter Volllast</td></tr>
+                    </table>
+                    <div style="background:#fed7d7;padding:0.4rem;border-radius:6px;margin-top:0.3rem;font-size:0.78rem;"><strong>Gesamtbewertung: Die Entwicklungsstrecke.</strong> 73,75 m H&ouml;henunterschied testen alles: Bremsen (Fading-Risiko bergab!), Motorschmierung (&Ouml;ldruck in Kurven pr&uuml;fen &ndash; Windage Tray empfohlen), K&uuml;hlung, Reifenmanagement. Der drehmomentstarke 302 profitiert bergauf massiv. <strong>Bremsk&uuml;hlung und &Ouml;ltemperatur-&Uuml;berwachung sind Pflicht.</strong> Neuer High-Grip-Belag (2025) hilft den Crossply-Reifen. Exzellent zum Feintuning des Setups.</div>
+                </div>
+            </div>
+
+            <!-- Spa -->
+            <div class="comp-box" style="background:#e9d8fd;border-color:#b794f4;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#553c9a;">&#127463;&#127466; Spa-Francorchamps (Stavelot, Belgien)</div>
+                <div class="comp-body">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.78rem;">
+                        <div class="spec-item"><span class="spec-label">L&auml;nge</span><span class="spec-value">7.004 m</span></div>
+                        <div class="spec-item"><span class="spec-label">Kurven</span><span class="spec-value">19 (10L / 9R)</span></div>
+                        <div class="spec-item"><span class="spec-label">L&auml;ngste Gerade</span><span class="spec-value">~1.050 m (Kemmel Straight)</span></div>
+                        <div class="spec-item"><span class="spec-label">H&ouml;hendifferenz</span><span class="spec-value"><strong>102 m (!)</strong></span></div>
+                        <div class="spec-item"><span class="spec-label">Schl&uuml;sselstelle</span><span class="spec-value">Eau Rouge / Raidillon (17% Steigung!)</span></div>
+                        <div class="spec-item"><span class="spec-label">Wetter</span><span class="spec-value">Legendaer unberechenbar (Ardennen)</span></div>
+                    </div>
+                    <div class="comp-sub" style="margin-top:0.4rem;">Einsch&auml;tzung f&uuml;r den GT40</div>
+                    <table style="width:100%;font-size:0.76rem;border-collapse:collapse;">
+                        <tr style="background:#e9d8fd;"><th style="text-align:left;padding:0.25rem;">Aspekt</th><th style="text-align:left;padding:0.25rem;">Bewertung</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">V-max Kemmel Straight</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>~245&ndash;260 km/h</strong> (5. Gang, GT-Niveau ~280 km/h m&ouml;glich)</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Vorherrschende G&auml;nge</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Alle 5 G&auml;nge &ndash; La Source (2.) bis Kemmel (5.)</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Eau Rouge/Raidillon</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;"><strong>Schl&uuml;ssel!</strong> Voller Commitment n&ouml;tig. 17% bergauf, Kompression am Fu&szlig;. Crossply verlieren hier Grip durch Gewichtsverlagerung.</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Bremsbelastung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;"><strong>Extrem</strong> &ndash; Les Combes nach Kemmel, Bus Stop Chicane</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Reifen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;"><strong>Gr&ouml;&szlig;te Herausforderung!</strong> Blanchimont bei ~220 km/h mit Crossply = volles Vertrauen n&ouml;tig</td></tr>
+                        <tr><td style="padding:0.2rem;">Wetter</td><td style="padding:0.2rem;color:#975a16;">Es kann in einem Streckenteil regnen und im anderen trocken sein (Mikroklima Ardennen)</td></tr>
+                    </table>
+                    <div style="background:#e9d8fd;padding:0.4rem;border-radius:6px;margin-top:0.3rem;font-size:0.78rem;"><strong>Gesamtbewertung: Das Ziel.</strong> Spa ist die K&ouml;nigsdisziplin. 7 km, 102 m H&ouml;henunterschied, Eau Rouge, Blanchimont &ndash; hier wird der GT40 zu dem, wof&uuml;r er gebaut wurde. Die 1.050 m Kemmel Straight fordern die volle Motorleistung im 5. Gang. Alle K&uuml;hlungssysteme m&uuml;ssen perfekt funktionieren. Crossply-Reifen in Eau Rouge und Blanchimont erfordern <strong>Erfahrung und Steigerung &uuml;ber mehrere Sessions</strong>. Spa-Wetter: <strong>immer Regenreifen im Gep&auml;ck</strong>.</div>
+                </div>
+            </div>
+
+            <!-- Zusammenfassung -->
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Streckenvergleich &amp; Empfohlene Reihenfolge</div>
+                <div class="comp-body">
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="padding:0.25rem;">Strecke</th><th style="text-align:center;padding:0.25rem;">L&auml;nge</th><th style="text-align:center;padding:0.25rem;">Kurven</th><th style="text-align:center;padding:0.25rem;">H&ouml;he &Delta;</th><th style="text-align:center;padding:0.25rem;">V-max</th><th style="text-align:center;padding:0.25rem;">Schwierigkeit</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pannoniaring</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">4.740 m</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">18</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">gering</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">~230</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">&#9733;&#9733;&#9734;&#9734;&#9734;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Slovakiaring</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">5.922 m</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">14&ndash;16</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kuppen</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">~255</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;">&#9733;&#9733;&#9733;&#9734;&#9734;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Brno</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">5.403 m</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">14</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">73,75 m</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">~225</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;">&#9733;&#9733;&#9733;&#9733;&#9734;</td></tr>
+                        <tr><td style="padding:0.2rem;">Spa</td><td style="text-align:center;padding:0.2rem;">7.004 m</td><td style="text-align:center;padding:0.2rem;">19</td><td style="text-align:center;padding:0.2rem;">102 m</td><td style="text-align:center;padding:0.2rem;">~255</td><td style="text-align:center;padding:0.2rem;color:#c53030;">&#9733;&#9733;&#9733;&#9733;&#9733;</td></tr>
+                    </table>
+
+                    <div class="comp-sub" style="margin-top:0.4rem;">Empfohlene Steigerung</div>
+                    <div style="font-size:0.78rem;line-height:1.6;">
+                        <strong>1. Pannoniaring</strong> &rarr; Einfahren, Systeme pr&uuml;fen, Grundvertrauen aufbauen<br>
+                        <strong>2. Slovakiaring</strong> &rarr; Hochgeschwindigkeits-Erfahrung, Bremsen unter Last<br>
+                        <strong>3. Brno</strong> &rarr; H&ouml;henprofil-Erfahrung, Setup-Feintuning, Bremsmanagement<br>
+                        <strong>4. Spa</strong> &rarr; K&ouml;nigsdisziplin, alle Systeme bew&auml;hrt
+                    </div>
+
+                    <div class="comp-sub" style="margin-top:0.4rem;">Kritische Punkte f&uuml;r alle Strecken</div>
+                    <div style="font-size:0.78rem;line-height:1.6;">
+                        <strong>Crossply-Reifen:</strong> Der gr&ouml;&szlig;te limitierende Faktor. Crossply-Reifen bauen langsamer Grip auf, verlieren ihn abrupter und haben weniger laterale Steifigkeit als Radialreifen. Bei Hochgeschwindigkeitskurven und Kuppen besonders sp&uuml;rbar. <strong>Immer vom Limit her steigern, nie umgekehrt.</strong><br>
+                        <strong>Bremsen:</strong> Ohne ABS muss der Bremsdruck dosiert werden. Brake Fading bei Gef&auml;llstrecken (Brno, Spa) vorbeugen: hochwertige Bremsbel&auml;ge, Bremsk&uuml;hlung, Bremsfl&uuml;ssigkeit DOT 5.1 oder Racing.<br>
+                        <strong>&Ouml;lversorgung:</strong> Hohe Querbeschleunigung in langen Kurven kann &Ouml;ldruck-Schwankungen verursachen. Windage Tray und &Ouml;lstandskontrolle vor jeder Session.<br>
+                        <strong>Getriebe&ouml;l:</strong> UN1-13 wird hei&szlig; &ndash; Getriebe&ouml;lk&uuml;hler <strong>vor Spa unbedingt installieren</strong>.
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-comment">
+                <label>Strecken-Notizen</label>
+                <textarea data-field="comment_tracks" placeholder="Rundenzeiten, Setup-Notizen, Beobachtungen pro Strecke..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 16. Teilekatalog & Kostenuebersicht -->
     <div class="section">
         <div class="section-header" onclick="toggleSection(this)">
             <span class="section-icon">&#128176;</span>
@@ -1781,11 +1937,11 @@
         </div>
     </div>
 
-    <!-- 16. Allgemeine Notizen -->
+    <!-- 17. Allgemeine Notizen -->
     <div class="section">
         <div class="section-header" onclick="toggleSection(this)">
             <span class="section-icon">&#128221;</span>
-            <h2>16. Allgemeine Notizen</h2>
+            <h2>17. Allgemeine Notizen</h2>
         </div>
         <div class="section-body">
             <div class="form-group">
