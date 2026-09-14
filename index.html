@@ -304,6 +304,94 @@
             .section { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
             body { background: white; }
         }
+        /* ---- Section Groups & Navigation ---- */
+        .nav-bar {
+            display: flex; gap: 0; justify-content: center;
+            margin-top: 0.5rem; border-radius: 6px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .nav-bar button {
+            flex: 1; padding: 0.45rem 0.3rem; border: none;
+            background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8);
+            font-size: 0.72rem; font-weight: 600; cursor: pointer;
+            border-right: 1px solid rgba(255,255,255,0.15);
+            transition: background 0.15s;
+        }
+        .nav-bar button:last-child { border-right: none; }
+        .nav-bar button:hover, .nav-bar button.active { background: rgba(255,255,255,0.25); color: white; }
+        .group-divider {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.6rem 0.2rem 0.3rem; margin-top: 0.5rem; cursor: pointer; user-select: none;
+        }
+        .group-divider span {
+            font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--primary); white-space: nowrap;
+        }
+        .group-divider::after {
+            content: ''; flex: 1; height: 2px;
+            background: linear-gradient(90deg, var(--primary) 0%, transparent 100%);
+        }
+        .group-divider .group-toggle {
+            font-size: 0.65rem; color: var(--text-light); cursor: pointer;
+            background: var(--input-bg); border: 1px solid var(--border); border-radius: 4px;
+            padding: 0.15rem 0.5rem; white-space: nowrap;
+        }
+
+        /* ---- Praxis-Tipp ---- */
+        .tip-box {
+            background: #fffff0; border: 1px solid #ecc94b; border-left: 4px solid #d69e2e;
+            border-radius: 8px; padding: 0.6rem 0.7rem; margin: 0.6rem 0; font-size: 0.78rem;
+        }
+        .tip-box summary {
+            cursor: pointer; font-weight: 700; color: #744210; list-style: none;
+            display: flex; align-items: center; gap: 0.3rem;
+        }
+        .tip-box summary::before { content: '\1F527'; font-size: 0.9rem; }
+        .tip-box summary::after { content: '\25BC'; font-size: 0.55rem; margin-left: auto; transition: transform 0.2s; color: #d69e2e; }
+        .tip-box[open] summary::after { transform: rotate(180deg); }
+        .tip-box ul { margin: 0.4rem 0 0 1.2rem; padding: 0; }
+        .tip-box li { margin-bottom: 0.3rem; line-height: 1.45; color: #5a4a00; }
+
+        /* ---- Photo Gallery ---- */
+        .photo-gallery { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+        .photo-thumb {
+            width: 80px; height: 80px; border-radius: 6px; object-fit: cover;
+            border: 2px solid var(--border); cursor: pointer; transition: border-color 0.15s;
+        }
+        .photo-thumb:hover { border-color: var(--primary-light); }
+        .photo-add-btn {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-size: 0.75rem; color: var(--primary-light); font-weight: 600;
+            cursor: pointer; padding: 0.3rem 0.6rem; border-radius: 6px;
+            background: #ebf4ff; border: 1px dashed #90cdf4; margin-top: 0.4rem;
+        }
+        .photo-add-btn:hover { background: #bee3f8; }
+        .photo-caption { font-size: 0.7rem; color: var(--text-light); margin-top: 0.15rem; text-align: center; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .photo-item { display: inline-flex; flex-direction: column; align-items: center; }
+        .photo-lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 1000; display: none;
+            justify-content: center; align-items: center; flex-direction: column;
+        }
+        .photo-lightbox.show { display: flex; }
+        .photo-lightbox img { max-width: 95%; max-height: 80vh; border-radius: 8px; }
+        .photo-lightbox .caption { color: white; font-size: 0.85rem; margin-top: 0.5rem; }
+        .photo-lightbox .close-lb { position: absolute; top: 1rem; right: 1rem; color: white; font-size: 1.5rem; cursor: pointer; background: none; border: none; }
+        .photo-lightbox .delete-lb { position: absolute; top: 1rem; left: 1rem; color: #fc8181; font-size: 0.8rem; cursor: pointer; background: rgba(0,0,0,0.5); border: 1px solid #fc8181; border-radius: 4px; padding: 0.3rem 0.6rem; }
+
+        /* ---- Build Phase ---- */
+        .phase-header {
+            display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.7rem;
+            border-radius: 8px; margin-bottom: 0.5rem; cursor: pointer; user-select: none;
+        }
+        .phase-header.phase1 { background: #ebf8ff; border: 1px solid #90cdf4; }
+        .phase-header.phase2 { background: #fefcbf; border: 1px solid #ecc94b; }
+        .phase-header.phase3 { background: #fed7d7; border: 1px solid #fc8181; }
+        .phase-header.phase4 { background: #c6f6d5; border: 1px solid #68d391; }
+        .phase-num { font-size: 1.1rem; font-weight: 800; }
+        .phase-title { font-size: 0.85rem; font-weight: 700; }
+        .phase-status { margin-left: auto; font-size: 0.7rem; color: var(--text-light); }
+
         /* ---- Search ---- */
         .search-bar {
             display: flex; align-items: center; gap: 0.4rem;
@@ -356,6 +444,12 @@
         <button class="settings-btn" onclick="openSettings()">Einstellungen</button>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
     </div>
+    <div class="nav-bar">
+        <button onclick="scrollToGroup('grp-overview')" id="nav-overview">&#128202; &Uuml;bersicht</button>
+        <button onclick="scrollToGroup('grp-specs')" id="nav-specs">&#128295; Spezifikationen</button>
+        <button onclick="scrollToGroup('grp-build')" id="nav-build">&#128736; Aufbau</button>
+        <button onclick="scrollToGroup('grp-ref')" id="nav-ref">&#128218; Referenz</button>
+    </div>
     <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Suchen... (z.B. Drehmoment, Oelpumpe, ARP)" oninput="doSearch()" onkeydown="searchKeyHandler(event)">
         <div class="search-nav" id="searchNav" style="display:none;">
@@ -387,6 +481,12 @@
 
 <!-- ===== MAIN CONTENT ===== -->
 <div class="container" id="mainContent">
+
+    <!-- ===== GROUP: UEBERSICHT ===== -->
+    <div class="group-divider" id="grp-overview">
+        <span>&#128202; &Uuml;bersicht</span>
+        <button class="group-toggle" onclick="toggleGroup(this, 'grp-overview')">Alles einklappen</button>
+    </div>
 
     <!-- 1. Projektdaten -->
     <div class="section">
@@ -831,6 +931,12 @@
         </div>
     </div>
 
+    <!-- ===== GROUP: SPEZIFIKATIONEN ===== -->
+    <div class="group-divider" id="grp-specs">
+        <span>&#128295; Spezifikationen</span>
+        <button class="group-toggle" onclick="toggleGroup(this, 'grp-specs')">Alles einklappen</button>
+    </div>
+
     <!-- 2. Block & Kurbeltrieb -->
     <div class="section">
         <div class="section-header" onclick="toggleSection(this)">
@@ -963,6 +1069,18 @@
             <div class="section-comment">
                 <label>Kommentar zu Block &amp; Kurbeltrieb</label>
                 <textarea data-field="comment_block" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
+            </div>
+            <details class="tip-box">
+                <summary>Praxis-Tipp: Block &amp; Kurbeltrieb</summary>
+                <ul>
+                    <li><strong>Alle Gewindebohrungen mit Tap durchjagen</strong> &ndash; alte Dichtmasse und Schmutz verf&auml;lschen das Drehmoment um bis zu 20%.</li>
+                    <li><strong>Sacklochbohrungen mit Druckluft trockenblasen</strong> &ndash; &Ouml;l wirkt hydraulisch und kann den Block sprengen.</li>
+                    <li><strong>Kurbelwelle von Hand drehen</strong> vor dem Schlie&szlig;en: sie muss sich gleichm&auml;&szlig;ig und ohne Klemmstellen drehen.</li>
+                    <li><strong>BOSS 302 Block:</strong> Hat 351W-Hauptlagergewinde, aber 302-Kopfgeometrie. Stehbolzenl&auml;nge pr&uuml;fen!</li>
+                </ul>
+            </details>
+            <div class="photo-gallery" data-photo-group="block"></div>
+            <label class="photo-add-btn" onclick="addPhoto('block')">&#128247; Foto hinzuf&uuml;gen</label>
             </div>
         </div>
     </div>
@@ -1142,6 +1260,18 @@
                 <label>Kommentar zu Zylinderk&ouml;pfe &amp; Quench</label>
                 <textarea data-field="comment_heads" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
             </div>
+            <details class="tip-box">
+                <summary>Praxis-Tipp: Zylinderk&ouml;pfe</summary>
+                <ul>
+                    <li><strong>Head Gasket hat &quot;FRONT&quot; aufgedruckt</strong> &ndash; r&uuml;ckw&auml;rts montiert = K&uuml;hlung unterbrochen an einer Bank = Motorschaden. H&auml;ufigster SBF-Fehler.</li>
+                    <li><strong>Kupfer-Kopfdichtung CP331 ist ein Einwegteil</strong> &ndash; niemals f&uuml;r Mock-up verwenden! Die Fel-Pro 1011-x reicht daf&uuml;r.</li>
+                    <li><strong>Keine Stahldichtung auf Alu-K&ouml;pfen final!</strong> Stahlringe hinterlassen bleibende Abdr&uuml;cke. Die CP331 ist f&uuml;r Alu ausgelegt.</li>
+                    <li><strong>AFR-K&ouml;pfe haben leicht nach innen gestellte Rockergeometrie</strong> &ndash; Pushrod-L&auml;nge unbedingt mit Checking Pushrod ermitteln, nicht sch&auml;tzen.</li>
+                </ul>
+            </details>
+            <div class="photo-gallery" data-photo-group="heads"></div>
+            <label class="photo-add-btn" onclick="addPhoto('heads')">&#128247; Foto hinzuf&uuml;gen</label>
+            </div>
         </div>
     </div>
 
@@ -1296,6 +1426,16 @@
                 <label>Kommentar zu Ansaugspinne</label>
                 <textarea data-field="comment_intake" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
             </div>
+            <details class="tip-box">
+                <summary>Praxis-Tipp: Ansaugbr&uuml;cke</summary>
+                <ul>
+                    <li><strong>18 ft-lbs NICHT &uuml;berschreiten!</strong> &Uuml;berdrehte Ansaugschrauben sind der #1-Fehler am SBF &ndash; verursacht Kopfdichtungsprobleme.</li>
+                    <li><strong>RTV nur an den 4 Ecken</strong> (Block-zu-Wanne-&Uuml;bergang). D&uuml;nne Raupe, 10&ndash;15 Min. anziehen lassen VOR Montage.</li>
+                    <li><strong>Intake Gasket nicht port-matchen</strong> &ndash; die Dichtfl&auml;che wird gebraucht. Die Ports der Fel-Pro 1250 passen zur AFR-1399.</li>
+                    <li><strong>Kreuzmuster von innen nach au&szlig;en:</strong> 3 Stufen (5 &rarr; 12 &rarr; 18 ft-lbs).</li>
+                </ul>
+            </details>
+            </div>
         </div>
     </div>
 
@@ -1418,6 +1558,17 @@
             <div class="section-comment">
                 <label>Kommentar zu &Ouml;lsystem</label>
                 <textarea data-field="comment_oil" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
+            </div>
+            <details class="tip-box">
+                <summary>Praxis-Tipp: &Ouml;lsystem</summary>
+                <ul>
+                    <li><strong>IMMER vor&ouml;len vor dem Erststart!</strong> Melling PT11 + Bohrmaschine, bis &Ouml;l an allen Rockern austritt. Kurbelwelle dabei 90&deg; weiterdrehen.</li>
+                    <li><strong>Pickup-Abstand zum Wannenboden:</strong> 1/4"&ndash;3/8". Zu nah = Kavitation, zu weit = Luft ansaugen.</li>
+                    <li><strong>Pickup verschrauben, nicht nur stecken!</strong> Unter Vibration kann er sich l&ouml;sen.</li>
+                    <li><strong>&Ouml;lpumpe vor Montage mit Assembly Lube f&uuml;llen</strong> &ndash; die Pumpe braucht F&uuml;llung zum Ansaugen, trocken baut sie keinen Druck auf.</li>
+                    <li><strong>Wire-Mesh-Sieb bevorzugen</strong> &ndash; perforiertes Blech kann bis zu 75% Durchfluss kosten.</li>
+                </ul>
+            </details>
             </div>
         </div>
     </div>
@@ -1887,6 +2038,207 @@
                 <textarea data-field="comment_drivetrain" placeholder="Getriebe-Zustand, Modifikationen, Kupplungsscheibe, Getriebeoel..." oninput="autoSave()"></textarea>
             </div>
         </div>
+    </div>
+
+    <!-- ===== GROUP: AUFBAU ===== -->
+    <div class="group-divider" id="grp-build">
+        <span>&#128736; Aufbau-Log</span>
+        <button class="group-toggle" onclick="toggleGroup(this, 'grp-build')">Alles einklappen</button>
+    </div>
+
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#128221;</span>
+            <h2>Phase 1 &ndash; Eingangsr&uuml;fung</h2>
+        </div>
+        <div class="section-body">
+            <div class="phase-header phase1"><span class="phase-num">1</span><span class="phase-title">Teile pr&uuml;fen &amp; messen &ndash; ohne bestellte Teile m&ouml;glich</span></div>
+            <p style="font-size:0.8rem;color:#718096;margin-bottom:0.6rem;">Diese Pr&uuml;fungen brauchen kein einziges Zukaufteil. Sie liefern die Werte, die Phase 2 steuern.</p>
+
+            <div class="check-item"><input type="checkbox" data-field="p1_chamber_vol" onchange="autoSave()"><span>AFR 1399 &ndash; Brennraumvolumen stichprobenartig pr&uuml;fen (Soll: 58 cc)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_deck_flat" onchange="autoSave()"><span>AFR 1399 &ndash; Dichtfl&auml;chen / Planheit mit Haarlineal (Sichtpr&uuml;fung)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_springs" onchange="autoSave()"><span>Federn #8605 und Retainer #8600 Titan best&auml;tigen gegen Rechnung</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_studs" onchange="autoSave()"><span>Rocker Studs 7/16" (Upgrade #6411) verbaut best&auml;tigen</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_spring_height" onchange="autoSave()"><span>Installed Spring Height, alle 16 &ndash; AFR-Spec &plusmn;0.015"</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_coilbind" onchange="autoSave()"><span>Coil-Bind-Reserve rechnerisch min. 0.060" &uuml;ber max. Hub</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_spring_open" onchange="autoSave()"><span>Federdruck open bei 0.565" pr&uuml;fen (Morel-Grenze beachten)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_keepers" onchange="autoSave()"><span>Ventilkeile 7&deg; passend zu #8600-Retainern best&auml;tigen</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_cam_visual" onchange="autoSave()"><span>XE274HR &ndash; Nocken- und Lagerfl&auml;chen sichtpr&uuml;fen (keine Riefen, kein Rost)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_cam_journals" onchange="autoSave()"><span>Alle 5 Nockenzapfen einzeln messen (gestuft oder gleich?)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_cam_bearing_type" onchange="autoSave()"><span>Verbauten Cam-Lagertyp bestimmen (R351 oder J351?)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_lifters" onchange="autoSave()"><span>Morel 5327 &ndash; 16 St&uuml;ck, Rollen leichtg&auml;ngig, 0.875" K&ouml;rper</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_rockers" onchange="autoSave()"><span>COMP 1632-16 &ndash; Trunnion ohne Spiel, 1.6:1 best&auml;tigen</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_arp_length" onchange="autoSave()"><span>ARP-Stehbolzen: L&auml;nge beider Typen messen gegen Kopfh&ouml;he + Gewindetiefe</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_deck_height" onchange="autoSave()"><span>Short Block &ndash; Deckh&ouml;he messen (Soll: 8.215" &plusmn; 0.005")</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_piston_deck" onchange="autoSave()"><span>Kolbenstand OT, alle 8 &ndash; ca. 0.010" unter Deck (Zyl. 1 + 5 zuerst!)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_oil_plug" onchange="autoSave()"><span>Silbernen -4 &Ouml;lkanalstopfen pr&uuml;fen (hinter Verteiler, 8&ndash;10 ft-lbs)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_threads" onchange="autoSave()"><span>Gewindeg&auml;nge Kopfbohrungen sauber, Sacklochbohrungen ausgeblasen</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_crank_turn" onchange="autoSave()"><span>Kurbelwelle von Hand gleichm&auml;&szlig;ig drehbar (kein Klemmen)</span></div>
+
+            <details class="tip-box">
+                <summary>Praxis-Tipp: Eingangskontrolle</summary>
+                <ul>
+                    <li><strong>Kolbenstand ist die wertvollste Messung:</strong> Die dokumentierte Verdichtung von 9,68:1 beruht auf einem angenommenen Kolbenstand von 0.010" unter Deck. Der reale Wert entscheidet &uuml;ber Verdichtung, Quench und ob die 0.040"-Kopfdichtung richtig ist.</li>
+                    <li><strong>Mess an Zylinder 1 UND 5</strong> &ndash; die Streuung zeigt, wie pr&auml;zise der Block gefertigt ist.</li>
+                    <li><strong>Sacklochbohrungen mit Druckluft trockenblasen</strong> &ndash; &Ouml;l in Sacklochbohrungen wirkt hydraulisch und verf&auml;lscht das Drehmoment oder sprengt den Block!</li>
+                </ul>
+            </details>
+
+            <div class="photo-gallery" data-photo-group="phase1"></div>
+            <label class="photo-add-btn" onclick="addPhoto('phase1')">&#128247; Foto hinzuf&uuml;gen</label>
+
+            <div class="section-comment">
+                <label>Notizen Phase 1</label>
+                <textarea data-field="comment_phase1" placeholder="Messergebnisse, Auffaelligkeiten..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#128295;</span>
+            <h2>Phase 2 &ndash; Mock-up &amp; Degree</h2>
+        </div>
+        <div class="section-body">
+            <div class="phase-header phase2"><span class="phase-num">2</span><span class="phase-title">Trockenlauf &ndash; alles zusammenbauen, nichts verbrauchen</span></div>
+            <p style="font-size:0.8rem;color:#718096;margin-bottom:0.6rem;">Motor einmal komplett zusammenbauen ohne Dichtmasse oder Einwegdichtungen. Am Ende kennst du jede L&auml;nge, jedes Spiel und jeden Freigang. <strong>Mock-up-Dichtung: Fel-Pro 1011-x</strong> &ndash; die M-6051-CP331 ist ein Kupferring-Einwegteil und bleibt bis Phase 3 in der Verpackung!</p>
+
+            <div class="check-item"><input type="checkbox" data-field="p2_cam_bearings" onchange="autoSave()"><span>Cam-Lager: nur bei Typkonflikt tauschen (&Ouml;lbohrungen ausrichten!)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_cam_install" onchange="autoSave()"><span>Nockenwelle einsetzen (Lagerzapfen &ouml;len, Nocken mit Assembly Lube)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_thrust_plate" onchange="autoSave()"><span>Thrust Plate &amp; Timing Set montieren &ndash; Axialspiel messen (0.001"&ndash;0.007")</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_degree" onchange="autoSave()"><span>Nockenwelle degreen &ndash; Intake Centerline gegen COMP Cam Card</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_lifters" onchange="autoSave()"><span>Morel 5327 einsetzen (vorher 24h in &Ouml;l! Link-Bars parallel zur Cam)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_mockup_head" onchange="autoSave()"><span>Mock-up-Dichtung + Kopf auflegen (handfest, kein Drehmoment)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_guideplates" onchange="autoSave()"><span>Guideplates montieren</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_pushrod" onchange="autoSave()"><span>Pushrod-L&auml;nge ermitteln (Ein- und Auslass getrennt, min. 2 Zylinder)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_sweep" onchange="autoSave()"><span>Rocker Sweep Pattern pr&uuml;fen (Filzstift-Methode)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_ptv" onchange="autoSave()"><span>P-V Clearance messen (Einlass &ge; 0.080" / Auslass &ge; 0.100")</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_ret_seal" onchange="autoSave()"><span>Retainer zu Schaftdichtung bei max. Hub (min. 0.060")</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_intake_dry" onchange="autoSave()"><span>Ansaugbr&uuml;cke trocken auflegen &ndash; Witness Marks, Versatz dokumentieren</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_valvecover" onchange="autoSave()"><span>Ventildeckel trocken auflegen &ndash; Freigang zu Rockern pr&uuml;fen</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_distributor" onchange="autoSave()"><span>Verteiler trocken einsetzen &ndash; Freigang zur Ansaugbr&uuml;cke</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_oilpan" onchange="autoSave()"><span>&Ouml;lwanne trocken anlegen &ndash; min. 0.150" zu Hauptlagerdeckeln</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_pickup" onchange="autoSave()"><span>Pickup zu Wannenboden: 1/2" &plusmn; 1/16"</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_pushrods_order" onchange="autoSave()"><span>Finale Pushrods bestellen (gemessene L&auml;nge, geh&auml;rtet, 5/16")</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_teardown" onchange="autoSave()"><span>Zerlegen, Teile beschriften und lagern (Lifter positionsrichtig!)</span></div>
+
+            <details class="tip-box">
+                <summary>Praxis-Tipp: Mock-up</summary>
+                <ul>
+                    <li><strong>Pushrod-L&auml;nge:</strong> Cam auf Grundkreis drehen, Pr&uuml;fst&ouml;&szlig;el einbauen, Rocker montieren, Polylock auf Nullspiel + 1/2 Umdrehung. L&auml;nge abnehmen. Auf 0.025"-Raster runden &ndash; feiner werden Pushrods nicht angeboten.</li>
+                    <li><strong>Rocker Sweep:</strong> Ventilschaftende mit Filzstift schw&auml;rzen, Ventil von Hand &uuml;ber vollen Hub fahren. Schmales Band mittig = richtig. Zu weit au&szlig;en = Pushrod zu lang. Breite Spur = falsche L&auml;nge &ndash; kostet Ventilf&uuml;hrungen!</li>
+                    <li><strong>P-V Clearance:</strong> Knetmasse ~3mm dick auf Kolbenboden. Leichte Pr&uuml;ffedern statt der 8605er einsetzen! Kurbelwelle 2 volle Umdrehungen durchdrehen. Knete aufschneiden, d&uuml;nnste Stelle messen.</li>
+                </ul>
+            </details>
+
+            <div class="photo-gallery" data-photo-group="phase2"></div>
+            <label class="photo-add-btn" onclick="addPhoto('phase2')">&#128247; Foto hinzuf&uuml;gen</label>
+
+            <div class="section-comment">
+                <label>Notizen Phase 2</label>
+                <textarea data-field="comment_phase2" placeholder="Pushrod-Laenge, Sweep-Ergebnis, P-V Messung..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#128297;</span>
+            <h2>Phase 3 &ndash; Endmontage</h2>
+        </div>
+        <div class="section-body">
+            <div class="phase-header phase3"><span class="phase-num">3</span><span class="phase-title">Startbedingung: P-V freigegeben, Pushrods fix, Sweep sauber, Stehbolzen best&auml;tigt</span></div>
+
+            <div class="check-item"><input type="checkbox" data-field="p3_clean" onchange="autoSave()"><span>Dichtfl&auml;chen reinigen (Bremsenreiniger, keine Drahtb&uuml;rste auf Aluminium!)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_blowout" onchange="autoSave()"><span>Kopfbohrungen ausblasen (&Ouml;l in Sacklochbohrungen = hydraulisch!)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_headgasket" onchange="autoSave()"><span>M-6051-CP331 auflegen, Wasserkanaele pruefen (Dichtung einzeln auf Block UND Kopf)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_studs" onchange="autoSave()"><span>Stehbolzen von Hand einsetzen (handfest, Gewindesicherung nur in Wassermantel-Bohrungen)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_arp_lube" onchange="autoSave()"><span>ARP Ultra-Torque auf Gewinde UND Mutterauflage</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_heads_on" onchange="autoSave()"><span>K&ouml;pfe aufsetzen (Passh&uuml;lsen beachten, nicht auf Dichtung verschieben!)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_heads_torque" onchange="autoSave()"><span>K&ouml;pfe anziehen: 3 Stufen, Kreuzmuster innen nach au&szlig;en</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_guideplates" onchange="autoSave()"><span>Guideplates + finale Pushrods &ndash; freien Lauf kontrollieren</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_rockers" onchange="autoSave()"><span>Rocker montieren, Preload einstellen (nur auf Grundkreis!)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_oilpump" onchange="autoSave()"><span>&Ouml;lpumpe + ARP-Welle + Pickup (Pickup verschrauben, nicht nur stecken!)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_oilpan" onchange="autoSave()"><span>&Ouml;lwanne, Ecken mit RTV (d&uuml;nne Raupe, 20 min abl&uuml;ften)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_timing" onchange="autoSave()"><span>Timing Cover + Balancer (0 oz Balancer, Spacer nicht vergessen!)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_intake" onchange="autoSave()"><span>Ansaugbr&uuml;cke mit Fel-Pro 1250 (Ecken RTV)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_sparkplugs" onchange="autoSave()"><span>Z&uuml;ndkerzen mit Anti-Seize (Gap 0.040")</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_dist_gear" onchange="autoSave()"><span>Verteilerritzel einsetzen (melonisiert f&uuml;r Roller Cam!)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_distributor" onchange="autoSave()"><span>Verteiler: OT Zyl. 1 im Verdichtungstakt, Rotor auf Kappenkerbe</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_valvecovers" onchange="autoSave()"><span>Ventildeckel (sehr wenig Moment &ndash; Aluminiumgewinde!)</span></div>
+
+            <details class="tip-box">
+                <summary>Praxis-Tipp: Endmontage</summary>
+                <ul>
+                    <li><strong>Head Gasket FRONT beachten!</strong> R&uuml;ckw&auml;rts montiert = K&uuml;hlung unterbrochen = Motorschaden. H&auml;ufigster SBF-Fehler!</li>
+                    <li><strong>Kupfer-Kopfdichtung CP331 ist ein Einwegteil</strong> &ndash; erst in Phase 3 auspacken. F&uuml;r Mock-up die Fel-Pro 1011-x verwenden.</li>
+                    <li><strong>Ansaugbr&uuml;cke NICHT &uuml;berdrehen!</strong> 18 ft-lbs reicht. Das ist der #1-Fehler am SBF.</li>
+                    <li><strong>0 oz Balancer!</strong> Das Rotating Assembly ist neutral gewuchtet &ndash; ein 28-oz-Teil passt zu einem anderen Motor.</li>
+                </ul>
+            </details>
+
+            <div class="photo-gallery" data-photo-group="phase3"></div>
+            <label class="photo-add-btn" onclick="addPhoto('phase3')">&#128247; Foto hinzuf&uuml;gen</label>
+
+            <div class="section-comment">
+                <label>Notizen Phase 3</label>
+                <textarea data-field="comment_phase3" placeholder="Montage-Notizen, Besonderheiten..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#127937;</span>
+            <h2>Phase 4 &ndash; Erststart &amp; Einfahren</h2>
+        </div>
+        <div class="section-body">
+            <div class="phase-header phase4"><span class="phase-num">4</span><span class="phase-title">Hydraulic Roller braucht KEIN 20-Min-Break-in &ndash; Rollen laufen sofort richtig</span></div>
+
+            <div class="check-item"><input type="checkbox" data-field="p4_preoil" onchange="autoSave()"><span>Vor&ouml;len mit Melling PT11 &ndash; bis &Ouml;l an allen Rockern austritt, Kurbelwelle 90&deg; weiterdrehen</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_oilpressure_prime" onchange="autoSave()"><span>&Ouml;ldruck beim Vor&ouml;len ablesen (baut Druck auf = gr&uuml;nes Licht)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_breakin_oil" onchange="autoSave()"><span>Break-in-&Ouml;l einf&uuml;llen (ZDDP-haltig, Menge nach Wannen-Spec + Filter)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_coolant" onchange="autoSave()"><span>K&uuml;hlsystem f&uuml;llen und entl&uuml;ften</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_fuel" onchange="autoSave()"><span>Kraftstoffsystem pr&uuml;fen (Facet-Pumpen, max. 0,45 bar)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_timing_static" onchange="autoSave()"><span>Z&uuml;ndzeitpunkt statisch voreinstellen (~12&deg; vor OT)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_revlimiter" onchange="autoSave()"><span>Rev-Limiter MSD 6AL auf 6.500 RPM (Chip einsetzen)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_preload_recheck" onchange="autoSave()"><span>Preload aller 16 Ventile nochmals pr&uuml;fen</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_wiring" onchange="autoSave()"><span>Leitungen, Kabel, Massepunkte pr&uuml;fen</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_safety" onchange="autoSave()"><span style="color:#c53030;font-weight:700;">Feuerl&ouml;scher bereit, Helfer dabei!</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_start" onchange="autoSave()"><span>START &ndash; sofort 2.000&ndash;2.500 RPM bis Betriebstemperatur (Drehzahl variieren!)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_oil_idle" onchange="autoSave()"><span>&Ouml;ldruck warm im Leerlauf: 25&ndash;35 psi</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_oil_part" onchange="autoSave()"><span>&Ouml;ldruck Teillast: 45&ndash;55 psi</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_oil_full" onchange="autoSave()"><span>&Ouml;ldruck Volllast 6.500 RPM: 60&ndash;70 psi</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_timing_final" onchange="autoSave()"><span>Z&uuml;ndzeitpunkt final: 34&ndash;36&deg; gesamt, voll bei ~3.000 RPM</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_retorque" onchange="autoSave()"><span>Kopfschrauben nach erstem W&auml;rmezyklus nachziehen (Motor kalt!)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_oilchange" onchange="autoSave()"><span>&Ouml;lwechsel, Filter aufschneiden und begutachten</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_sparkread" onchange="autoSave()"><span>Kerzenbild lesen (ggf. W&auml;rmebereich anpassen)</span></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_sync" onchange="autoSave()"><span>DellOrto synchronisieren, Lambda beide B&auml;nke loggen</span></div>
+
+            <details class="tip-box">
+                <summary>Praxis-Tipp: Erststart</summary>
+                <ul>
+                    <li><strong>Kein &Ouml;ldruck nach 10 Sekunden = SOFORT abstellen!</strong> Nochmals vor&ouml;len, Ursache suchen.</li>
+                    <li><strong>NICHT im Standgas laufen lassen</strong> &ndash; sofort auf 2.000&ndash;2.500 RPM, leicht variieren. Hydraulic Roller braucht kein Flachst&ouml;&szlig;el-Einlaufritual.</li>
+                    <li><strong>&Ouml;lfilter aufschneiden:</strong> Sauberes Filterpapier = bestandene Pr&uuml;fung. Metallsp&auml;ne = Problem finden!</li>
+                    <li><strong>Kerzenbild:</strong> Heller Porzellanfu&szlig; = zu mager. Ru&szlig;ig schwarz = zu fett. Rehbraun = perfekt.</li>
+                </ul>
+            </details>
+
+            <div class="photo-gallery" data-photo-group="phase4"></div>
+            <label class="photo-add-btn" onclick="addPhoto('phase4')">&#128247; Foto hinzuf&uuml;gen</label>
+
+            <div class="section-comment">
+                <label>Notizen Phase 4</label>
+                <textarea data-field="comment_phase4" placeholder="Erststart-Protokoll, Oeldruck, Zuendzeitpunkt, Kerzenbild..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== GROUP: REFERENZ ===== -->
+    <div class="group-divider" id="grp-ref">
+        <span>&#128218; Referenz</span>
+        <button class="group-toggle" onclick="toggleGroup(this, 'grp-ref')">Alles einklappen</button>
     </div>
 
     <!-- 15. Ford Performance Installation & Tuning Tips -->
@@ -4057,6 +4409,14 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- Photo Lightbox -->
+<div class="photo-lightbox" id="photoLightbox" onclick="closeLightbox()">
+    <button class="close-lb" onclick="closeLightbox()">&times;</button>
+    <button class="delete-lb" onclick="event.stopPropagation();deleteLightboxPhoto()">&#128465; L&ouml;schen</button>
+    <img src="" alt="Foto" onclick="event.stopPropagation()">
+    <div class="caption"></div>
+</div>
+
 <!-- ===== JAVASCRIPT ===== -->
 <script>
     // ==== CONFIG ====
@@ -4959,6 +5319,152 @@
         t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500);
     }
 
+    // ==== NAVIGATION ====
+    function scrollToGroup(id) {
+        const el = document.getElementById(id);
+        if (el) {
+            const headerH = document.querySelector('.header').offsetHeight;
+            const y = el.getBoundingClientRect().top + window.scrollY - headerH - 10;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+        document.querySelectorAll('.nav-bar button').forEach(b => b.classList.remove('active'));
+        const btn = document.getElementById('nav-' + id.replace('grp-', ''));
+        if (btn) btn.classList.add('active');
+    }
+
+    function toggleGroup(btn, groupId) {
+        const groupDiv = document.getElementById(groupId);
+        let el = groupDiv.nextElementSibling;
+        const isCollapsing = btn.textContent.includes('einklappen');
+        while (el && !el.classList.contains('group-divider')) {
+            if (el.classList.contains('section')) {
+                const header = el.querySelector('.section-header');
+                const body = el.querySelector('.section-body');
+                if (header && body) {
+                    if (isCollapsing) {
+                        header.classList.add('collapsed');
+                        body.classList.add('collapsed');
+                    } else {
+                        header.classList.remove('collapsed');
+                        body.classList.remove('collapsed');
+                    }
+                }
+            }
+            el = el.nextElementSibling;
+        }
+        btn.textContent = isCollapsing ? 'Alles aufklappen' : 'Alles einklappen';
+    }
+
+    // scroll spy for nav bar
+    let scrollSpyTimeout;
+    window.addEventListener('scroll', function() {
+        if (scrollSpyTimeout) return;
+        scrollSpyTimeout = setTimeout(function() {
+            scrollSpyTimeout = null;
+            const groups = ['grp-overview', 'grp-specs', 'grp-build', 'grp-ref'];
+            const headerH = document.querySelector('.header').offsetHeight + 20;
+            let active = groups[0];
+            for (const id of groups) {
+                const el = document.getElementById(id);
+                if (el && el.getBoundingClientRect().top < headerH + 50) active = id;
+            }
+            document.querySelectorAll('.nav-bar button').forEach(b => b.classList.remove('active'));
+            const btn = document.getElementById('nav-' + active.replace('grp-', ''));
+            if (btn) btn.classList.add('active');
+        }, 100);
+    });
+
+    // ==== PHOTOS ====
+    let photoData = {};
+
+    function addPhoto(group) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.capture = 'environment';
+        input.onchange = function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxW = 1200;
+                    let w = img.width, h = img.height;
+                    if (w > maxW) { h = h * maxW / w; w = maxW; }
+                    canvas.width = w; canvas.height = h;
+                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    const caption = prompt('Bildbeschreibung (optional):') || '';
+                    if (!photoData[group]) photoData[group] = [];
+                    photoData[group].push({
+                        data: dataUrl,
+                        caption: caption,
+                        time: new Date().toLocaleString('de-DE')
+                    });
+                    renderPhotos(group);
+                    savePhotoData();
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+        input.click();
+    }
+
+    function renderPhotos(group) {
+        const gallery = document.querySelector('[data-photo-group="' + group + '"]');
+        if (!gallery) return;
+        const photos = photoData[group] || [];
+        gallery.innerHTML = photos.map(function(p, i) {
+            return '<div class="photo-item">' +
+                '<img class="photo-thumb" src="' + p.data + '" onclick="openLightbox(\'' + group + '\',' + i + ')" alt="' + (p.caption || 'Build-Foto') + '">' +
+                '<div class="photo-caption">' + (p.caption || p.time) + '</div></div>';
+        }).join('');
+    }
+
+    function openLightbox(group, idx) {
+        const photos = photoData[group] || [];
+        if (!photos[idx]) return;
+        const lb = document.getElementById('photoLightbox');
+        lb.querySelector('img').src = photos[idx].data;
+        lb.querySelector('.caption').textContent = (photos[idx].caption ? photos[idx].caption + ' — ' : '') + photos[idx].time;
+        lb.dataset.group = group;
+        lb.dataset.idx = idx;
+        lb.classList.add('show');
+    }
+
+    function closeLightbox() { document.getElementById('photoLightbox').classList.remove('show'); }
+
+    function deleteLightboxPhoto() {
+        const lb = document.getElementById('photoLightbox');
+        const group = lb.dataset.group;
+        const idx = parseInt(lb.dataset.idx);
+        if (confirm('Foto wirklich loeschen?')) {
+            photoData[group].splice(idx, 1);
+            renderPhotos(group);
+            savePhotoData();
+            closeLightbox();
+        }
+    }
+
+    function savePhotoData() {
+        try { localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData)); } catch(e) {
+            showToast('Foto-Speicher voll! Aeltere Fotos loeschen.');
+        }
+    }
+
+    function loadPhotoData() {
+        try {
+            const d = localStorage.getItem('engineBuildPhotos');
+            if (d) photoData = JSON.parse(d);
+        } catch(e) {}
+        document.querySelectorAll('[data-photo-group]').forEach(function(g) {
+            renderPhotos(g.dataset.photoGroup);
+        });
+    }
+
     // ==== SEARCH ====
     let searchMarks = [];
     let searchIdx = -1;
@@ -5057,7 +5563,7 @@
     });
 
     // ==== INIT ====
-    generateQuenchTable(); updateSyncBadge(); loadData();
+    generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData();
 </script>
 </body>
 </html>
