@@ -5165,93 +5165,389 @@
     // ==== i18n LANGUAGE TOGGLE ====
     var currentLang = localStorage.getItem('engineBuildLang') || 'de';
 
-    // Dictionary: DE text -> EN text. Only UI strings, not technical terms.
+    // Comprehensive DE->EN dictionary for full page translation
     var i18nDict = {
-        // -- Header & Nav --
-        'Overview': 'Overview', 'Specs': 'Specs', 'Build Log': 'Build Log', 'Reference': 'Reference',
-        // -- Gear Menu --
-        'Save': 'Save', 'Cloud Sync': 'Cloud Sync', 'Export': 'Export', 'Import': 'Import',
-        'Print': 'Print', 'Settings': 'Settings', 'Reset': 'Reset', 'Torque Card': 'Torque Card',
-        // -- Section Headers --
-        '\u00dcbersicht': 'Overview', 'Spezifikationen': 'Specifications', 'Referenz': 'Reference',
-        'Projektdaten': 'Project Data', 'Zielkonfiguration': 'Target Configuration',
-        'Verdichtungsrechner': 'Compression Calculator', 'Quench-Kalkulator': 'Quench Calculator',
-        'Block & Kurbeltrieb': 'Block & Crankshaft', 'Kolben & Pleuel': 'Pistons & Connecting Rods',
-        'Zylinderk\u00f6pfe': 'Cylinder Heads', 'Ventiltrieb': 'Valvetrain',
-        'Ansaugbr\u00fccke': 'Intake Manifold', 'Z\u00fcndkerzen': 'Spark Plugs',
-        '\u00d6lsystem': 'Oil System', 'Timing Cover & Balancer': 'Timing Cover & Balancer',
-        'Wasserpumpe': 'Water Pump', 'Z\u00fcndsystem': 'Ignition System',
-        'Kupplung & Antrieb': 'Clutch & Drivetrain', 'Antriebsstrang': 'Drivetrain',
-        'Streckenanalyse & Fahrzeugeinsch\u00e4tzung': 'Track Analysis & Vehicle Assessment',
-        // -- Group headers --
-        'Alles einklappen': 'Collapse all', 'Alles aufklappen': 'Expand all',
-        // -- Labels --
-        'Baubezeichnung': 'Build Designation', 'Baudatum': 'Build Date', 'Motorenbauer': 'Engine Builder',
-        'Fahrzeug': 'Vehicle', 'Ziel-Leistung': 'Target Power', 'Ziel-Drehmoment': 'Target Torque',
-        'Ziel-Verdichtung': 'Target CR', 'Einsatzzweck': 'Intended Use', 'Strecken': 'Tracks',
-        'Kraftstoff': 'Fuel', 'Kommentar': 'Comment', 'Anmerkungen': 'Notes',
-        // -- Common UI --
-        'Gespeichert': 'Saved', 'Exportiert': 'Exported', 'Importiert': 'Imported',
-        'Treffer': 'matches', 'keine': 'none', 'Suchen...': 'Search...',
-        'Vorbereitung': 'Preparation', 'Werkzeuge': 'Tools', 'Betriebsmittel': 'Consumables',
-        'F\u00fcllmengen': 'Fill Quantities', 'Anzugswerte': 'Torque Values',
-        'Mess- & Pr\u00fcfwerte': 'Measurements & Specs', 'Freigabekriterien': 'Release Criteria',
-        'Praxis-Tipps': 'Practical Tips', 'Fotodokumentation': 'Photo Documentation',
-        'Zeitbedarf': 'Time Required',
-        // -- Ford Performance --
-        'Herstellerhinweise': 'Manufacturer Notes', 'Unser Build': 'Our Build', 'Status': 'Status',
-        'Ford Performance Vorgabe': 'Ford Performance Requirement',
-        'Allgemeine Warnungen': 'General Warnings',
-        // -- Drivetrain --
-        'Drehmomentgrenze': 'Torque Limit', 'Getriebe': 'Transmission',
-        'Differential': 'Differential', 'Bereifung': 'Tires',
-        // -- Converter --
-        'Einheiten-Umrechner': 'Unit Converter', 'Drehmoment': 'Torque',
-        'L\u00e4nge / Spalt': 'Length / Gap', 'Volumen (Brennraum)': 'Volume (Chamber)',
-        // -- Settings --
-        'Verbinden': 'Connect', 'Trennen': 'Disconnect', 'Abbrechen': 'Cancel',
-        // -- Misc --
-        'Anleitung': 'Guide', 'Pr\u00fcfen': 'Check', 'Bestellen': 'Order',
-        'Dokumentiert': 'Documented', 'Achtsamkeit': 'Caution',
-        'Gesamtbewertung': 'Overall Assessment',
+        // == NAV & UI ==
+        '\u00dcbersicht':'Overview', 'Spezifikationen':'Specifications', 'Referenz':'Reference',
+        'Alles einklappen':'Collapse all', 'Alles aufklappen':'Expand all',
+        'Gespeichert':'Saved', 'Exportiert':'Exported', 'Importiert':'Imported',
+        'Treffer':'matches', 'keine':'none', 'Suchen...':'Search...',
+        'Einheiten-Umrechner':'Unit Converter', 'Verbinden':'Connect', 'Trennen':'Disconnect', 'Abbrechen':'Cancel',
+        'Speichern':'Save', 'Drucken':'Print', 'Einstellungen':'Settings', 'Zur\u00fccksetzen':'Reset',
+        'Zur\u00fcck':'Back',
+
+        // == SECTION HEADERS (h2) ==
+        'Projektdaten':'Project Data',
+        'Build-Ziele & Leistungssch\u00e4tzung':'Build Targets & Power Estimate',
+        'Motor-Simulator & Kraftstoffempfehlung':'Engine Simulator & Fuel Recommendation',
+        'Build Log \u2013 Progress Dashboard':'Build Log \u2013 Progress Dashboard',
+        'Block & Kurbeltrieb':'Block & Crankshaft',
+        'Kolben & Pleuel':'Pistons & Connecting Rods',
+        'Zylinderk\u00f6pfe, Quench & Ventilfreiraum':'Cylinder Heads, Quench & Piston-to-Valve',
+        'Ventiltrieb (Valvetrain)':'Valvetrain',
+        'Ansaugspinne (Intake Manifold)':'Intake Manifold',
+        'Z\u00fcndkerzen (Spark Plugs)':'Spark Plugs',
+        '\u00d6lsystem (Oiling System)':'Oil System',
+        'Timing Cover & Harmonic Balancer':'Timing Cover & Harmonic Balancer',
+        'Wasserpumpe (Water Pump)':'Water Pump',
+        'Vergaser & Kraftstoffsystem (Carburetor)':'Carburetor & Fuel System',
+        'Z\u00fcndanlage (MSD Ignition)':'Ignition System (MSD)',
+        'Anlasser (Starter Motor)':'Starter Motor',
+        'Nebenaggregate (Accessory Drive)':'Accessory Drive',
+        'Kupplung & Antrieb (Clutch)':'Clutch & Drive',
+        'Antriebsstrang (Drivetrain)':'Drivetrain',
+        'Ford Performance Installationshinweise':'Ford Performance Installation Notes',
+        'Streckenanalyse & Fahrzeugeinsch\u00e4tzung':'Track Analysis & Vehicle Assessment',
+        'Teilekatalog & Kosten\u00fcbersicht':'Parts Catalog & Cost Summary',
+        'Allgemeine Notizen':'General Notes',
+        'Torque Quick-Reference (Drehmoment-Schnellkarte)':'Torque Quick-Reference Card',
+
+        // == COMP-TOGGLE HEADERS ==
+        'Teilewahl & Komponenten-Strategie (Begr\u00fcndung)':'Parts Selection & Component Strategy (Rationale)',
+        'Verdichtungsrechner (Compression Ratio)':'Compression Ratio Calculator',
+        'Gesch\u00e4tzte Motorleistung':'Estimated Engine Power',
+        'Pr\u00fcfstands-Korrekturfaktoren (SAE J1349 vs. J607)':'Dyno Correction Factors (SAE J1349 vs. J607)',
+        'Drehzahl-Limits: Das schw\u00e4chste Glied bestimmt':'RPM Limits: The Weakest Link Rules',
+        'Ma\u00dfeinheiten in diesem Dokument':'Units of Measurement in This Document',
+        'Kraftstoff-Empfehlung & Oktanzahl':'Fuel Recommendation & Octane Rating',
+        'Kraftstoff-Guide nach Tankketten & L\u00e4ndern':'Fuel Guide by Supply Chain & Country',
+        'Wechselwirkung: Z\u00fcndung \u2194 Oktan \u2194 Verdichtung':'Interaction: Ignition \u2194 Octane \u2194 Compression',
+        'Warnung: E10 & DellOrto-Vergaser':'Warning: E10 & DellOrto Carburetors',
+        'MSD 8479 \u2013 Advance Springs & Bushings (Quelle: MSD 8479.pdf)':'MSD 8479 \u2013 Advance Springs & Bushings (Source: MSD 8479.pdf)',
+        'Allgemeine Warnungen \u2013 Herstellerhinweise':'General Warnings \u2013 Manufacturer Notes',
+        'Z\u00fcndsystem \u2013 Herstellerhinweise':'Ignition System \u2013 Manufacturer Notes',
+        'Kraftstoffversorgung \u2013 Herstellerhinweise':'Fuel Supply \u2013 Manufacturer Notes',
+        '\u00d6lsystem \u2013 Herstellerhinweise':'Oil System \u2013 Manufacturer Notes',
+        'K\u00fchlsystem \u2013 Herstellerhinweise':'Cooling System \u2013 Manufacturer Notes',
+        'Schwungrad & Getriebe \u2013 Herstellerhinweise':'Flywheel & Transmission \u2013 Manufacturer Notes',
+        'Streckenvergleich & Empfohlene Reihenfolge':'Track Comparison & Recommended Order',
+        'Motorkomponenten (Summit Racing Bestellung)':'Engine Components (Summit Racing Order)',
+        'Mess- & Montagewerkzeuge (Summit Racing Bestellung)':'Measurement & Assembly Tools (Summit Racing Order)',
+        'Zylinderkoepfe & Ventiltrieb (CNC Motorsports) \u2013 geliefert':'Cylinder Heads & Valvetrain (CNC Motorsports) \u2013 delivered',
+        'Kostenneutral (wiederverwendet vom alten Motor)':'Cost-neutral (reused from old engine)',
+        'Build-Philosophie & Komponenten-Strategie':'Build Philosophy & Component Strategy',
+        'Pulleys & Riementrieb':'Pulleys & Belt Drive',
+        'Lichtmaschine (Alternator)':'Alternator',
+        'Motorlager (Engine Mounts)':'Engine Mounts',
+        'Alternative: 4-Barrel (Holley 600\u2013750 cfm)':'Alternative: 4-Barrel (Holley 600\u2013750 cfm)',
+        'Checking Pushrod \u2013 CNC Motorsports TC6878':'Checking Pushrod \u2013 CNC Motorsports TC6878',
+
+        // == COMP-TOGGLE: Parts ==
+        'Basis-Motor (Short Block)':'Base Engine (Short Block)',
+        'Nockenwelle \u2013 COMP Cams 35-518-8 (XE274HR-12)':'Camshaft \u2013 COMP Cams 35-518-8 (XE274HR-12)',
+        'Nockenwellenschraube \u2013 ARP 254-1001':'Cam Bolt \u2013 ARP 254-1001',
+        'Steuerkette \u2013 Ford Perf. M-6268-A302 Double Roller':'Timing Chain \u2013 Ford Perf. M-6268-A302 Double Roller',
+        'Zylinderk\u00f6pfe \u2013 AFR 1399 SBF 165cc Renegade':'Cylinder Heads \u2013 AFR 1399 SBF 165cc Renegade',
+        'Zylinderkopfdichtung \u2013 Ford M-6051-CP331':'Head Gasket \u2013 Ford M-6051-CP331',
+        'Kopfschrauben \u2013 ARP 154-4003':'Head Bolts \u2013 ARP 154-4003',
+        'Ventilfedern \u2013 AFR 8605 (Upgrade)':'Valve Springs \u2013 AFR 8605 (Upgrade)',
+        'Titanium Retainer \u2013 AFR 8600 (Upgrade)':'Titanium Retainer \u2013 AFR 8600 (Upgrade)',
+        'Lifter \u2013 Morel 5327 HLT (Limited Travel)':'Lifter \u2013 Morel 5327 HLT (Limited Travel)',
+        'Kipphebel \u2013 COMP Cams 1632-16 Ultra Pro Magnum':'Rocker Arms \u2013 COMP Cams 1632-16 Ultra Pro Magnum',
+        'Polylocks \u2013 COMP Cams 4600-16':'Polylocks \u2013 COMP Cams 4600-16',
+        'Ansaugkr\u00fcmmer-Dichtung \u2013 Fel-Pro 1250':'Intake Manifold Gasket \u2013 Fel-Pro 1250',
+        'Ansaugspinne (Intake Manifold)':'Intake Manifold',
+        'Vergaser \u2013 DellOrto DRLA 45 Downdraft (4 St\u00fcck)':'Carburetor \u2013 DellOrto DRLA 45 Downdraft (4 pcs)',
+        'Kraftstoffpumpe \u2013 Facet Red Top 480532 (2 St\u00fcck)':'Fuel Pump \u2013 Facet Red Top 480532 (2 pcs)',
+        'Z\u00fcndkerzen-Spezifikation':'Spark Plug Specification',
+        '\u00d6lpumpe \u2013 Ford Performance M-6600-D2 High Volume':'Oil Pump \u2013 Ford Performance M-6600-D2 High Volume',
+        '\u00d6lpumpen-Antriebswelle \u2013 Ford Perf. M-6605-B302':'Oil Pump Drive Shaft \u2013 Ford Perf. M-6605-B302',
+        '\u00d6lansaugrohr (Oil Pickup) \u2013 mit Wanne zu bestellen':'Oil Pickup \u2013 order with oil pan',
+        '\u00d6lwanne \u2013 noch zu bestimmen':'Oil Pan \u2013 TBD',
+        'Steuerkettendeckel (Timing Chain Cover)':'Timing Chain Cover',
+        'Harmonic Balancer \u2013 Ford Perf. M-6316-D302':'Harmonic Balancer \u2013 Ford Perf. M-6316-D302',
+        'Wasserpumpe \u2013 Milodon 16230 High Volume Aluminium':'Water Pump \u2013 Milodon 16230 High Volume Aluminum',
+        'MSD 6AL Z\u00fcndbox (PN 6420)':'MSD 6AL Ignition Box (PN 6420)',
+        'Z\u00fcndverteiler \u2013 MSD 8479 Street Pro-Billet':'Distributor \u2013 MSD 8479 Street Pro-Billet',
+        'Z\u00fcndspule (Ignition Coil)':'Ignition Coil',
+        'Kappe & Rotor \u2013 MSD 84315 Kit':'Cap & Rotor \u2013 MSD 84315 Kit',
+        'Unterdruckverstellung \u2013 MSD 8463':'Vacuum Advance \u2013 MSD 8463',
+        'Advance Kit \u2013 MSD 8464':'Advance Kit \u2013 MSD 8464',
+        'Druckplatten-Schrauben \u2013 Ford Perf. M-6397-A302':'Pressure Plate Bolts \u2013 Ford Perf. M-6397-A302',
+        'Getriebe \u2013 Renault UN1-13 Transaxle':'Transmission \u2013 Renault UN1-13 Transaxle',
+        'Differential \u2013 Quaife LSD':'Differential \u2013 Quaife LSD',
+        'Bereifung \u2013 Avon Historic Crossply':'Tires \u2013 Avon Historic Crossply',
+        'Mini-Torque Starter (aus dem Vorg\u00e4ngermotor)':'Mini-Torque Starter (from predecessor engine)',
+        'Motorblock \u2013 Ford Performance M-6010-BOSS302':'Engine Block \u2013 Ford Performance M-6010-BOSS302',
+        'Short Block \u2013 Ford Performance M-6009-302':'Short Block \u2013 Ford Performance M-6009-302',
+        'Kolben & Pleuel (aus M-6009-302 Short Block)':'Pistons & Rods (from M-6009-302 Short Block)',
+
+        // == SPEC-LABELS ==
+        'Typ':'Type', 'Bauart':'Design', 'Bauform':'Configuration', 'Material':'Material',
+        'Gewicht':'Weight', 'Gewinde':'Thread', 'Dichtung':'Gasket', 'Montage':'Assembly',
+        'Befestigung':'Mounting', 'Halterung':'Bracket', 'Funktion':'Function',
+        'Bohrung':'Bore', 'Hubraum':'Displacement', 'Bohrung x Hub':'Bore x Stroke',
+        'Bohrung ab Werk':'Factory Bore', 'Hauptlagerzapfen':'Main Journal',
+        'Pleuellagerzapfen':'Rod Journal', 'Kurbelwelle':'Crankshaft',
+        'Auswuchtung':'Balancing', 'Axialspiel Soll':'Target End Play',
+        'Kolben':'Piston', 'Pleuel':'Connecting Rod', 'Verdichtung (nominal)':'Compression (nominal)',
+        'Verdichtung mit AFR 58cc':'Compression with AFR 58cc',
+        'Brennraumvolumen':'Chamber Volume', 'Nockenhub (Lobe Lift)':'Lobe Lift',
+        'Nockenwellenlager':'Cam Bearings', 'Nockenwellenrad':'Cam Sprocket',
+        'Kurbelwellenrad':'Crank Sprocket', 'Kette':'Chain',
+        'Antriebszahnrad':'Drive Gear', 'Befestigung Zahnrad':'Gear Mounting',
+        'Ventilfedern':'Valve Springs', 'Ventilwinkel':'Valve Angle',
+        'Ventilsitzbearbeitung':'Valve Seat Machining',
+        'Einlassventil':'Intake Valve', 'Auslassventil':'Exhaust Valve',
+        'Einlasskanal':'Intake Port', 'Auslasskanal':'Exhaust Port',
+        'Einlass':'Intake', 'Au\u00dfendurchmesser':'Outer Diameter',
+        'Durchmesser':'Diameter', 'L\u00e4nge':'Length', 'Breite':'Width',
+        'Drehmoment':'Torque', 'Drehmomentgrenze':'Torque Limit',
+        'Drehrichtung':'Rotation Direction', 'Drehzahlband':'RPM Range',
+        'Nutzbares Drehzahlband':'Usable RPM Range', 'Max. Drehzahl':'Max. RPM',
+        'Max. Ventilhub':'Max. Valve Lift', 'Max. Federdruck':'Max. Spring Pressure',
+        'Max. Bohrung':'Max. Bore', 'Max. Hub':'Max. Stroke',
+        'Max. Hubraum':'Max. Displacement', 'Max. Kraftstoffdruck':'Max. Fuel Pressure',
+        'Max. sichere Drehzahl':'Max. Safe RPM',
+        'F\u00f6rdermenge':'Flow Rate', 'Druck':'Pressure', 'Kraftstoffdruck':'Fuel Pressure',
+        'Kapazit\u00e4t':'Capacity', 'Impeller':'Impeller',
+        'K\u00fchlmittel':'Coolant', 'Bel\u00fcftung':'Ventilation',
+        'Anschluss':'Connection', 'Anschl\u00fcsse':'Connections',
+        'Choke (Venturi)':'Choke (Venturi)', 'Drosseldurchmesser':'Throttle Bore',
+        'Mischung':'Mixture', 'Abstimmung':'Tuning',
+        'Elektrodenabstand':'Electrode Gap', 'Sitzform':'Seat Type',
+        'Funkenenergie':'Spark Energy', 'Spannung':'Voltage',
+        'Zylinder-Select':'Cylinder Select', 'Trigger':'Trigger',
+        'Lagerung':'Bearing', 'Welle':'Shaft', 'Wellenaufnahme':'Shaft Mount',
+        'Fliehkraftverstellung':'Centrifugal Advance', 'Unterdruckverstellung':'Vacuum Advance',
+        'Verstellbereich':'Adjustment Range', 'Verstellpositionen':'Adjustment Positions',
+        'Max. Advance':'Max. Advance', 'Federn':'Springs', 'Bushings':'Bushings',
+        'Farbe':'Color', 'Sperrwirkung':'Locking Effect',
+        'Gesch. Leistung':'Est. Power', 'Gesch. Drehmoment':'Est. Torque',
+        'Nominale Verdichtung':'Nominal Compression',
+        'Profil':'Profile', 'Finish':'Finish', 'Felge':'Wheel Rim',
+        'Kandidaten':'Candidates', 'Alternativen':'Alternatives',
+        'Empfohlen':'Recommended', 'Verbaut':'Installed', 'Noch offen':'Pending',
+        'Passend f\u00fcr':'Fits', 'Passt f\u00fcr':'Fits', 'Passend':'Matching',
+        'Kompatibel':'Compatible', 'Kompatibilit\u00e4t':'Compatibility',
+        'Teilenummer':'Part Number', 'Hersteller':'Manufacturer',
+        'Hersteller-PDF':'Manufacturer PDF', 'Archivierte Kopie':'Archived Copy',
+        'Herkunft':'Origin', 'Status':'Status', 'Menge':'Quantity', 'Anzahl':'Count',
+        'Inhalt':'Contents', 'Inklusive':'Includes', 'Kit enth\u00e4lt':'Kit Includes',
+        '\u00dcbersetzung':'Gear Ratio', 'Achsantrieb':'Final Drive',
+        'Konfiguration':'Configuration', 'Modifikation':'Modification',
+        'Vorteil':'Advantage', 'Zweck':'Purpose', 'Anforderung':'Requirement',
+        'Voraussetzung':'Prerequisite', 'Hinweis':'Note', 'Wichtig':'Important',
+        'Drehmoment Wannenschrauben':'Oil Pan Bolt Torque',
+        'Drehmoment Zentralschraube':'Center Bolt Torque',
+        'Endwert Drehmoment':'Final Torque Value',
+        'Abstand zum Wannenboden':'Clearance to Pan Floor',
+        'Sieb-Typ':'Screen Type', 'Schwallbleche':'Baffles',
+        'Ablassschraube':'Drain Plug', 'Pickup':'Pickup',
+        'Ab Werk':'Factory', 'Gasket-Durchmesser':'Gasket Bore',
+        'Timing-Markierung':'Timing Mark', 'Kurbelwellen-Simmerring':'Crank Seal',
+        'Naben-H\u00f6he':'Hub Height', 'Pulley-Montage':'Pulley Mounting',
+        'Fahrtrichtung':'Direction of Travel',
+        'Schl\u00fcsselstelle':'Key Corner', 'Kurven':'Corners',
+        'L\u00e4ngste Gerade':'Longest Straight', 'Wetter':'Weather',
+        'H\u00f6hendifferenz':'Elevation Change', 'Max. Steigung':'Max. Gradient',
+        'Max. Gef\u00e4lle':'Max. Descent',
+        'Empf. \u00d6lpumpe':'Rec. Oil Pump', 'Empf. Balancer':'Rec. Balancer',
+        'Kopfschrauben':'Head Bolts', 'Kopfdichtungen':'Head Gaskets',
+        'Enddichtungen':'End Seals', 'Belag':'Surface',
+        'Schraubengr\u00f6\u00dfe':'Bolt Size', 'Stud-Durchmesser':'Stud Diameter',
+        'Stud-Gr\u00f6\u00dfe':'Stud Size', 'Muttern':'Nuts',
+        'Trockensaugh\u00f6he':'Dry Suction Head', 'Ma\u00dfe / Gewicht':'Dimensions / Weight',
+        'Gewicht (Block)':'Weight (Block)', 'Gewicht (Short Block)':'Weight (Short Block)',
+        'Dimension':'Dimension', 'Zylinderdesign':'Cylinder Design',
+        'Ventilwinkel-Kompatibilit\u00e4t':'Valve Angle Compatibility',
+        'Geh\u00e4use':'Housing', 'Keilriemen':'V-Belt',
+        'Kurbel-Pulley':'Crank Pulley', 'Wasserpumpe-Pulley':'Water Pump Pulley',
+        'Lichtmaschine-Pulley':'Alternator Pulley',
+        'Shims':'Shims', 'Kostennotizen':'Cost Notes',
+        'Strecken-Notizen':'Track Notes',
+
+        // == FORM LABELS ==
+        'Datum des Zusammenbaus':'Build Date',
+        'Mechaniker / Builder':'Mechanic / Builder',
+        'Projekt / Fahrzeug':'Project / Vehicle',
+        'Angestrebte Leistung (BHP an Kurbelwelle)':'Target Power (BHP at Crankshaft)',
+        'Angestrebtes Drehmoment (ft-lbs)':'Target Torque (ft-lbs)',
+        'Ziel-Verdichtung':'Target Compression Ratio',
+        'Einsatzzweck':'Intended Use', 'Strecken':'Tracks', 'Kraftstoff':'Fuel',
+        'Notizen zu Build-Zielen':'Build Target Notes',
+        'Kommentar zu Block & Kurbeltrieb':'Comment on Block & Crankshaft',
+        'Kommentar zu Kolben & Pleuel':'Comment on Pistons & Rods',
+        'Kommentar zu Zylinderk\u00f6pfe & Quench':'Comment on Heads & Quench',
+        'Kommentar zu Ventiltrieb':'Comment on Valvetrain',
+        'Kommentar zu Ansaugspinne':'Comment on Intake Manifold',
+        'Kommentar zu Z\u00fcndkerzen':'Comment on Spark Plugs',
+        'Kommentar zu \u00d6lsystem':'Comment on Oil System',
+        'Kommentar zu Timing Cover & Balancer':'Comment on Timing Cover & Balancer',
+        'Kommentar zu Wasserpumpe':'Comment on Water Pump',
+        'Kommentar zu Vergaser & Kraftstoff':'Comment on Carburetor & Fuel',
+        'Kommentar zur Z\u00fcndeinstellung':'Comment on Ignition Setup',
+        'Kommentar Starter':'Starter Comment',
+        'Kommentar Nebenaggregate':'Accessory Drive Comment',
+        'Kommentar Kupplung/Antrieb':'Clutch/Drive Comment',
+        'Kommentar Antriebsstrang':'Drivetrain Comment',
+        'Bohrung (Bore)':'Bore',
+        'Hub (Stroke)':'Stroke',
+        'Bohrung (inch)':'Bore (inch)', 'Hub (inch)':'Stroke (inch)',
+        'Verdichtung (CR)':'Compression (CR)',
+        'Ventilhub Einlass (inch)':'Intake Valve Lift (inch)',
+        'Ventilhub Auslass (inch)':'Exhaust Valve Lift (inch)',
+        'Max. Drehzahl (RPM)':'Max. RPM',
+        'Kolbenvolumen (cc, + = Dome, \u2013 = Dish)':'Piston Volume (cc, + = Dome, \u2013 = Dish)',
+        'Kolbenring-Sto\u00dfspiel \u2013 Top Ring (Oberer Kompressionsring)':'Ring End Gap \u2013 Top Ring',
+        'Kolbenring-Sto\u00dfspiel \u2013 Second Ring (Zweiter Kompressionsring)':'Ring End Gap \u2013 Second Ring',
+        'Initial Timing (Grundeinstellung) \u2013 Ziel: 10\u201314\u00b0 BTDC':'Initial Timing \u2013 Target: 10\u201314\u00b0 BTDC',
+        'Total Timing (Initial + Centrifugal) \u2013 Ziel: 32\u201336\u00b0 @ 3.000+ RPM':'Total Timing (Initial + Centrifugal) \u2013 Target: 32\u201336\u00b0 @ 3,000+ RPM',
+        'Starter-Typ / Hersteller':'Starter Type / Manufacturer',
+        'Ansaugung':'Intake Type', 'Auspuff':'Exhaust',
+
+        // == CHECK-ITEMS ==
+        '\u00d6lpumpe vormontiert, Pumpenantriebswelle eingesetzt':'Oil pump pre-installed, drive shaft inserted',
+        '\u00d6lwanne montiert, Dichtung/RTV korrekt, Schrauben auf Drehmoment':'Oil pan mounted, gasket/RTV correct, bolts torqued',
+        'Drehrichtung gepr\u00fcft (passend zum Riementrieb)':'Rotation direction verified (matching belt drive)',
+        'Druckplatte montiert, Dowels eingesetzt, Drehmoment 12\u201324 ft-lbs':'Pressure plate mounted, dowels inserted, torqued 12\u201324 ft-lbs',
+        'Harmonic Balancer mit Einpresswerkzeug montiert, Schraube auf Drehmoment':'Harmonic balancer installed with press tool, bolt torqued',
+        'Kraftstoffleitungen angeschlossen, auf Dichtheit gepr\u00fcft':'Fuel lines connected, leak-tested',
+        'Kraftstoffpumpe montiert, Dichtung + Drehmoment':'Fuel pump mounted, gasket + torque applied',
+        'Kurbelwellen-Simmerring im Cover eingesetzt':'Crank seal installed in cover',
+        'Lichtmaschine vorhanden + min. 65A':'Alternator present + min. 65A',
+        'Motorlager vorhanden + Ausrichtung gepr\u00fcft':'Engine mounts present + alignment checked',
+        'Pickup montiert, Abstand zum Wannenboden gepr\u00fcft':'Pickup installed, clearance to pan floor checked',
+        'Piston-to-Valve Clearance mit Knete gepr\u00fcft':'Piston-to-valve clearance checked with clay',
+        'Pulleys (Kurbel, Wapump, Lima) vorhanden + passend':'Pulleys (crank, water pump, alt.) present + matching',
+        'Starter visuell gepr\u00fcft, Ritzel OK, Kabel OK':'Starter visually inspected, pinion OK, cables OK',
+        'Timing Cover montiert, Dichtung + RTV, Schrauben auf Drehmoment':'Timing cover mounted, gasket + RTV, bolts torqued',
+        'Timing Mark am Balancer auf TDC gepr\u00fcft':'Timing mark on balancer verified at TDC',
+        'Vergaser-Fu\u00dfdichtung aufgelegt, Vergaser montiert':'Carb base gasket placed, carb mounted',
+        'Wasserpumpe montiert, Schrauben auf Drehmoment (15\u201322 ft-lbs)':'Water pump mounted, bolts torqued (15\u201322 ft-lbs)',
+        'Zahnspiel Starter/Schwungrad gepr\u00fcft (ggf. Shims eingesetzt)':'Starter/flywheel gear mesh checked (shims if needed)',
+        'Keilriemen richtige L\u00e4nge + Breite':'V-belt correct length + width',
+        'Axialspiel messen (Messfeld vorhanden)':'Measure end play (input field available)',
+        'Bei Montage pr\u00fcfen':'Check during assembly',
+
+        // == SIMULATOR LABELS ==
+        'Geschwindigkeits-Simulator':'Speed Simulator',
+        'Motordaten vom Simulator \u00fcbernehmen':'Pull engine data from simulator',
+        'Daten vom Build \u00fcbernehmen':'Pull data from build',
+        'Reifendurchm. hinten (inch)':'Rear tire diameter (inch)',
+        'Achsantrieb (Final Drive)':'Final Drive Ratio',
+        'Fahrzeuggewicht (kg)':'Vehicle weight (kg)',
+        'Stirnfl\u00e4che':'Frontal area',
+        'Rad-Kraft max':'Max wheel force',
+        'Alle Cross-Checks OK':'All cross-checks OK',
+        'kein Getriebe/RPM/Reifen-Limit \u00fcberschritten':'no transmission/RPM/tire limit exceeded',
+        '\u00fcberschreitet UN1-13 Limit':'exceeds UN1-13 limit',
+        'Simulator-Redline':'Simulator redline',
+        'liegt \u00fcber dem Rev Limiter':'exceeds the rev limiter',
+        'Unrealistisch':'Unrealistic',
+        'Theoretische V-max':'Theoretical V-max',
+        'sind f\u00fcr solche Geschwindigkeiten nicht ausgelegt':'are not rated for such speeds',
+        'Geschwindigkeit (km/h)':'Speed (km/h)',
+        'Radkraft (N)':'Wheel Force (N)',
+        'Luftwiderstand':'Air Drag',
+
+        // == TRACK SECTION ==
+        'Gesamtbewertung':'Overall Assessment',
+        'Einfahren, Systeme pr\u00fcfen, Grundvertrauen aufbauen':'Break-in, check systems, build confidence',
+        'H\u00f6henprofil-Erfahrung, Setup-Feintuning, Bremsmanagement':'Elevation experience, setup fine-tuning, brake management',
+        'Hochgeschwindigkeits-Erfahrung, Bremsen unter Last':'High-speed experience, braking under load',
+        'K\u00f6nigsdisziplin, alle Systeme bew\u00e4hrt':'Ultimate challenge, all systems proven',
+
+        // == GLOSSARY / REFERENCE ==
+        'Anleitung':'Guide', 'Herstellerhinweise':'Manufacturer Notes',
+        'Allgemeine Warnungen':'General Warnings',
+        'Vorbereitung':'Preparation', 'Werkzeuge':'Tools', 'Betriebsmittel':'Consumables',
+        'F\u00fcllmengen':'Fill Quantities', 'Anzugswerte':'Torque Values',
+        'Mess- & Pr\u00fcfwerte':'Measurements & Specs', 'Freigabekriterien':'Release Criteria',
+        'Praxis-Tipps':'Practical Tips', 'Fotodokumentation':'Photo Documentation',
+        'Zeitbedarf':'Time Required', 'Pr\u00fcfen':'Check', 'Bestellen':'Order',
+        'Dokumentiert':'Documented', 'Achtsamkeit':'Caution',
+        'Ford Performance Vorgabe':'Ford Performance Requirement',
+        'Unser Build':'Our Build',
+        'L\u00e4nge / Spalt':'Length / Gap', 'Volumen (Brennraum)':'Volume (Chamber)',
+
+        // == COMMON GERMAN WORDS IN CONTEXT ==
+        'vorhanden':'available', 'noch zu bestimmen':'TBD',
+        'geliefert':'delivered', 'bestellt':'ordered', 'montiert':'mounted',
+        'gepr\u00fcft':'checked', 'eingesetzt':'installed', 'korrekt':'correct',
+        'gleichm\u00e4\u00dfig':'evenly', 'kreisf\u00f6rmig':'in a star pattern',
+        'je nach':'depending on', 'lt.':'per', 'bzw.':'resp.',
+        'erforderlich':'required', 'empfohlen':'recommended',
+        'nicht':'not', 'oder':'or', 'und':'and', 'bei':'at',
+        'aus':'from', 'mit':'with', 'ohne':'without', 'nach':'after',
+        'vor':'before', 'nur':'only', 'auch':'also', 'hier':'here',
+        'noch':'still', 'sehr':'very', 'mehr':'more',
+        'kann':'can', 'muss':'must', 'darf':'may', 'soll':'should',
+        'wird':'is', 'hat':'has', 'sind':'are',
+        'trocken':'dry', 'geschmiert':'lubricated', 'geteilt':'divided',
+        'Trockenlauf':'Dry running', 'Erstmontage':'Initial assembly',
+        'Dichtfl\u00e4che':'Sealing surface', 'Gewindeloch':'Threaded hole',
+        'Schrauben':'Bolts', 'Studs':'Studs', 'Muttern':'Nuts',
+        'Passend':'Matching', 'Standard':'Standard',
+        'Lieferumfang':'Scope of delivery',
+        'Hinweise':'Notes', 'Wichtig':'Important', 'Achtung':'Caution',
+        'Warnung':'Warning', 'Empfehlung':'Recommendation',
+        'Anmerkungen':'Notes', 'Notizen':'Notes', 'Kommentar':'Comment',
+        'Zielkonfiguration':'Target Configuration',
+        'Antriebsstrang-Empfehlung':'Drivetrain Recommendation',
+        'Riemenscheiben: Richtige Gr\u00f6\u00dfe (Underdrive = zu wenig Durchfluss)':'Pulleys: Correct size (underdrive = insufficient flow)',
+        'Serien-Ratio oder leichtes Overdrive':'Stock ratio or slight overdrive',
+        'K\u00fchler-Position: Luftstrom bei verschiedenen Geschwindigkeiten':'Radiator position: Airflow at various speeds',
+        'GT40: Heck-K\u00fchler, Luftf\u00fchrung pr\u00fcfen':'GT40: Rear radiator, check air ducting',
+
+        // == INFO-BOX KEY PHRASES ==
+        'Empfehlung f\u00fcr diesen Build':'Recommendation for this build',
+        'Pr\u00fcfstands-Korrektur':'Dyno Correction',
+        'Unser Simulator berechnet':'Our simulator calculates',
+        'Pr\u00fcfpunkte vor Einbau':'Pre-installation checks',
+        'Ritzelzustand pr\u00fcfen':'Check pinion condition',
+        'Riemenspannung':'Belt tension',
+        'Underdrive-Pulleys reduzieren Wasserpumpen-Durchfluss':'Underdrive pulleys reduce water pump flow',
+        'Dowel Pins verhindern Kupplungsrattern':'Dowel pins prevent clutch chatter',
+        'Schrauben nacheinander je 1 Umdrehung anziehen':'Tighten bolts one turn each in sequence',
+        'Darf nicht klemmen, aber auch nicht zu viel Spiel haben':'Must not bind, but must not have too much play either',
+
+        // == COST TABLE ==
+        'Teilekatalog & Kosten\u00fcbersicht':'Parts Catalog & Cost Summary',
+        'Allgemeine Notizen':'General Notes',
     };
 
     // Build reverse dict for EN->DE
     var i18nReverse = {};
     Object.keys(i18nDict).forEach(function(k) { if (i18nDict[k] !== k) i18nReverse[i18nDict[k]] = k; });
+    // Sort keys longest-first to avoid partial replacements
+    var i18nKeysSorted = Object.keys(i18nDict).sort(function(a,b) { return b.length - a.length; });
+    var i18nRevKeysSorted = Object.keys(i18nReverse).sort(function(a,b) { return b.length - a.length; });
+
+    // Store original text for clean round-trip DE<->EN
+    var _origTexts = new WeakMap();
+    var _origPlaceholders = new WeakMap();
 
     function setLang(lang) {
         currentLang = lang;
         localStorage.setItem('engineBuildLang', lang);
         document.documentElement.lang = lang === 'de' ? 'de' : 'en';
-        // Update flag button
         var btn = document.getElementById('langToggle');
         if (btn) btn.textContent = lang === 'de' ? '\uD83C\uDDE9\uD83C\uDDEA' : '\uD83C\uDDFA\uD83C\uDDF8';
-        // Walk DOM and translate text nodes
+        var keys = lang === 'en' ? i18nKeysSorted : i18nRevKeysSorted;
         var dict = lang === 'en' ? i18nDict : i18nReverse;
-        var keys = Object.keys(dict);
-        if (keys.length === 0) return;
-        var container = document.body;
-        var walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+        // Walk all text nodes
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
         while (walker.nextNode()) {
             var node = walker.currentNode;
-            if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE' || node.parentElement.tagName === 'TEXTAREA' || node.parentElement.tagName === 'INPUT')) continue;
-            var text = node.textContent;
+            var p = node.parentElement;
+            if (p && (p.tagName === 'SCRIPT' || p.tagName === 'STYLE' || p.tagName === 'TEXTAREA' || p.tagName === 'INPUT')) continue;
+            // Store original on first encounter
+            if (!_origTexts.has(node)) _origTexts.set(node, node.textContent);
+            // Always start from original when switching back to DE
+            var text = lang === 'de' ? _origTexts.get(node) : node.textContent;
+            if (lang === 'de') { node.textContent = text; continue; }
             var changed = false;
-            keys.forEach(function(k) {
-                if (text.indexOf(k) >= 0) {
-                    text = text.split(k).join(dict[k]);
-                    changed = true;
-                }
-            });
+            keys.forEach(function(k) { if (text.indexOf(k) >= 0) { text = text.split(k).join(dict[k]); changed = true; } });
             if (changed) node.textContent = text;
         }
-        // Translate placeholders
+        // Translate placeholders (store originals)
         document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(function(el) {
+            if (!_origPlaceholders.has(el)) _origPlaceholders.set(el, el.placeholder);
+            if (lang === 'de') { el.placeholder = _origPlaceholders.get(el); return; }
             var ph = el.placeholder;
-            keys.forEach(function(k) {
-                if (ph.indexOf(k) >= 0) el.placeholder = ph.split(k).join(dict[k]);
-            });
+            keys.forEach(function(k) { if (ph.indexOf(k) >= 0) ph = ph.split(k).join(dict[k]); });
+            el.placeholder = ph;
         });
     }
 

@@ -1414,17 +1414,60 @@
     // ==== i18n LANGUAGE TOGGLE ====
     var currentLang = localStorage.getItem('engineBuildLang') || 'de';
     var i18nDict = {
-        'Vorbereitung': 'Preparation', 'Werkzeuge': 'Tools', 'Betriebsmittel': 'Consumables',
-        'Füllmengen': 'Fill Quantities', 'Anzugswerte': 'Torque Values',
-        'Mess- & Prüfwerte': 'Measurements & Specs', 'Freigabekriterien': 'Release Criteria',
-        'Praxis-Tipps': 'Practical Tips', 'Fotodokumentation': 'Photo Documentation',
-        'Zeitbedarf': 'Time Required', 'Anleitung': 'Guide', 'Fortschritt': 'Progress',
-        'Eingangskontrolle': 'Incoming Inspection', 'Mock-up & Degree': 'Mock-up & Degree',
-        'Alles einklappen': 'Collapse all', 'Alles aufklappen': 'Expand all',
-        'Suchen': 'Search', 'Hauptseite': 'Main Page', 'Übersicht': 'Overview',
+        // Phase titles
+        'Eingangskontrolle':'Incoming Inspection', 'Endmontage':'Final Assembly',
+        'Erststart & Einfahren':'First Start & Break-In', 'Gesamtfortschritt':'Overall Progress',
+        // UI
+        'Alles einklappen':'Collapse all', 'Alles aufklappen':'Expand all',
+        'Fortschritt':'Progress', 'Hauptseite':'Main Page', 'Suchen':'Search',
+        'Speichern':'Save', 'Gespeichert':'Saved',
+        // Guide block headers
+        'Vorbereitung':'Preparation', 'Werkzeuge':'Tools', 'Betriebsmittel':'Consumables',
+        'F\u00fcllmengen':'Fill Quantities', 'Anzugswerte':'Torque Values',
+        'Mess- & Pr\u00fcfwerte':'Measurements & Specs', 'Freigabekriterien':'Release Criteria',
+        'Praxis-Tipps':'Practical Tips', 'Fotodokumentation':'Photo Documentation',
+        'Zeitbedarf':'Time Required', 'Anleitung':'Guide', 'Sollwerte':'Target Values',
+        'Messwerte':'Measured Values', 'Pr\u00fcfpunkte':'Inspection Points',
+        'Voraussetzungen':'Prerequisites', 'Vorgehensweise':'Procedure',
+        'Messverfahren':'Measurement Procedure', 'Empfehlung':'Recommendation',
+        'Spezifikation':'Specification', 'Berechnung':'Calculation',
+        'Freigabe':'Release', 'Einbau-Hinweise':'Installation Notes',
+        // Subphase German parts  
+        'Steuertrieb':'Timing Drive', 'Reinigung & Vorbereitung':'Cleaning & Preparation',
+        'Zylinderk\u00f6pfe & Ventiltrieb':'Cylinder Heads & Valvetrain',
+        'Obere Anbauteile':'Upper Accessories', 'Vor dem Start':'Before Start',
+        'Erststart':'First Start', 'Nach Erststart':'After First Start',
+        'Nockenwelle & Ventiltrieb \u2013 Werkbank':'Camshaft & Valvetrain \u2013 Bench',
+        'Zylinderk\u00f6pfe \u2013 Werkbank':'Cylinder Heads \u2013 Bench',
+        'Kolben & Pleuel \u2013 Werkbank':'Pistons & Rods \u2013 Bench',
+        'Trockenpassung Anbauteile':'Dry Fit Accessories',
+        'Befestigungsmaterial':'Fasteners', 'K\u00f6pfe & Ventiltrieb':'Heads & Valvetrain',
+        'Abschluss':'Conclusion',
+        // Pure German sentences that need translation
+        'Bei 302-Blocks m\u00fcssen die Zylinderk\u00f6pfe abgenommen werden, um die Lifter einzubauen!':'On 302 blocks, cylinder heads must be removed to install lifters!',
+        'Kurbelwelle von Hand drehen vor dem Schlie\u00dfen:':'Rotate crankshaft by hand before closing:',
+        '\u00d6lpumpe vor Montage mit Assembly Lube f\u00fcllen':'Fill oil pump with assembly lube before installation',
+        'r\u00fcckw\u00e4rts montiert = K\u00fchlung unterbrochen':'installed backwards = cooling interrupted',
+        'Keine Stahldichtung auf Alu-K\u00f6pfen final!':'No steel gasket on aluminum heads for final assembly!',
+        '18 ft-lbs NICHT \u00fcberschreiten!':'Do NOT exceed 18 ft-lbs!',
+        'IMMER vor\u00f6len vor dem Erststart!':'ALWAYS pre-oil before first start!',
+        'Bei Klopfen sofort Timing zur\u00fccknehmen!':'If knocking occurs, retard timing immediately!',
+        'Nicht \u00fcberziehen! Handfest + max 1/4 Umdrehung.':'Do not overtighten! Hand-tight + max 1/4 turn.',
+        // Common spec labels
+        'Drehmoment':'Torque', 'Dichtung':'Gasket', 'Typ':'Type',
+        'Material':'Material', 'Bohrung':'Bore', 'Gewinde':'Thread',
+        'Durchmesser':'Diameter', 'L\u00e4nge':'Length', 'Druck':'Pressure',
+        'Kraftstoffdruck':'Fuel Pressure', 'F\u00f6rdermenge':'Flow Rate',
+        'Drehrichtung':'Rotation Direction', 'Montage':'Assembly',
+        'erforderlich':'required', 'empfohlen':'recommended',
+        'vorhanden':'available', 'gepr\u00fcft':'checked', 'montiert':'mounted',
+        'eingesetzt':'installed', 'korrekt':'correct',
+        'Hinweis':'Note', 'Wichtig':'Important', 'Achtung':'Caution', 'Warnung':'Warning',
     };
     var i18nReverse = {};
     Object.keys(i18nDict).forEach(function(k) { if (i18nDict[k] !== k) i18nReverse[i18nDict[k]] = k; });
+    // Store original text nodes for clean round-trip
+    var _origTexts = new WeakMap();
     function setLang(lang) {
         currentLang = lang;
         localStorage.setItem('engineBuildLang', lang);
@@ -1432,16 +1475,27 @@
         if (btn) btn.textContent = lang === 'de' ? '\uD83C\uDDE9\uD83C\uDDEA' : '\uD83C\uDDFA\uD83C\uDDF8';
         var dict = lang === 'en' ? i18nDict : i18nReverse;
         var keys = Object.keys(dict);
-        if (keys.length === 0) return;
+        // Walk all text nodes
         var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
         while (walker.nextNode()) {
             var node = walker.currentNode;
-            if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE' || node.parentElement.tagName === 'TEXTAREA' || node.parentElement.tagName === 'INPUT')) continue;
-            var text = node.textContent;
+            var p = node.parentElement;
+            if (p && (p.tagName === 'SCRIPT' || p.tagName === 'STYLE' || p.tagName === 'TEXTAREA' || p.tagName === 'INPUT')) continue;
+            // Store original on first pass
+            if (!_origTexts.has(node)) _origTexts.set(node, node.textContent);
+            var text = lang === 'de' ? _origTexts.get(node) : node.textContent;
+            if (lang === 'de') { node.textContent = text; continue; }
             var changed = false;
+            // Dictionary replacement
             keys.forEach(function(k) { if (text.indexOf(k) >= 0) { text = text.split(k).join(dict[k]); changed = true; } });
+            // Remove parenthetical German: " (German text)" pattern
+            var cleaned = text.replace(/\s*\([^)]*[\u00e4\u00f6\u00fc\u00c4\u00d6\u00dc\u00df][^)]*\)/g, '');
+            if (cleaned !== text) { text = cleaned; changed = true; }
+            // Also remove HTML-entity encoded German in parentheses won't work in textContent, but
+            // handle common patterns like "(Ölpumpe)" etc
             if (changed) node.textContent = text;
         }
+        // Translate placeholders
         document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(function(el) {
             var ph = el.placeholder;
             keys.forEach(function(k) { if (ph.indexOf(k) >= 0) el.placeholder = ph.split(k).join(dict[k]); });
