@@ -710,6 +710,9 @@
                 </div>
             </div>
 
+            <!-- RPM Cross-Check Warnbereich -->
+            <div id="simRpmWarnings" style="display:none;margin:0.3rem 0;"></div>
+
             <!-- Masseinheiten-Hinweis -->
             <div class="comp-box" style="margin:0.3rem 0;background:#f0f5ff;border-color:#90cdf4;">
                 <div class="comp-toggle" onclick="toggleComp(this)" style="font-size:0.78rem;color:#2b6cb0;">&#128207; Ma&szlig;einheiten in diesem Dokument</div>
@@ -1969,7 +1972,8 @@
             </div>
             <div class="form-group">
                 <label>Rev Limiter Einstellung</label>
-                <input type="text" data-field="rev_limiter" placeholder='z.B. 6.500 RPM' oninput="autoSave()">
+                <input type="text" data-field="rev_limiter" placeholder='z.B. 6.500 RPM' oninput="autoSave();checkRevLimiterInput(this)">
+                <div id="revLimiterWarning" style="display:none;margin-top:0.2rem;"></div>
             </div>
             <div class="section-comment">
                 <label>Kommentar zur Z&uuml;ndeinstellung</label>
@@ -4069,6 +4073,9 @@
         // Store data for drivetrain sim
         lastSimData = data;
 
+        // ==== RPM CROSS-CHECKS (Motor-Simulator) ====
+        checkSimRpmLimits(peakHPrpm, peakTQrpm, peakTQ);
+
         // Draw chart
         drawSimChart(data, peakHP, peakTQ);
 
@@ -4077,6 +4084,73 @@
 
         // Auto-update drivetrain sim if it exists
         if (document.getElementById('dsChart')) setTimeout(runDriveSim, 100);
+    }
+
+    // Central RPM limit: weakest link = camshaft (COMP XE274HR)
+    var SYSTEM_RPM_LIMIT = 6200;
+    var SYSTEM_RPM_LABEL = 'Nockenwelle COMP XE274HR';
+
+    function checkSimRpmLimits(peakHPrpm, peakTQrpm, peakTQ) {
+        var warnDiv = document.getElementById('simRpmWarnings');
+        if (!warnDiv) return;
+        var warnings = [];
+
+        // 1. Peak HP RPM vs system limit
+        if (peakHPrpm > SYSTEM_RPM_LIMIT) {
+            warnings.push({type:'warning', text:'<strong>Peak Power @ ' + peakHPrpm + ' RPM</strong> liegt &uuml;ber dem Systemlimit <strong>' + SYSTEM_RPM_LIMIT + ' RPM</strong> (' + SYSTEM_RPM_LABEL + '). Die berechnete Spitzenleistung wird im Betrieb durch den Rev Limiter begrenzt.'});
+        }
+
+        // 2. Peak TQ RPM check (usually fine, but warn if close)
+        if (peakTQrpm > SYSTEM_RPM_LIMIT) {
+            warnings.push({type:'danger', text:'<strong>Peak Torque @ ' + peakTQrpm + ' RPM</strong> liegt &uuml;ber dem Systemlimit <strong>' + SYSTEM_RPM_LIMIT + ' RPM</strong>. Das Drehmoment-Maximum ist im Betrieb nicht erreichbar!'});
+        }
+
+        // 3. Torque vs gearbox (UN1-13 = 315 Nm)
+        var peakTQnm = Math.round(peakTQ * 1.3558);
+        if (peakTQnm > 315) {
+            warnings.push({type:'danger', text:'<strong>Berechnetes Drehmoment ' + peakTQnm + ' Nm</strong> &uuml;berschreitet UN1-13 Getriebe-Limit (315 Nm) um <strong>' + Math.round((peakTQnm/315-1)*100) + '%</strong>. Getriebeoel-K&uuml;hler + Quaife erforderlich!'});
+        }
+
+        // 4. Rev Limiter field vs system limit
+        var revLimField = document.querySelector('[data-field="rev_limiter"]');
+        if (revLimField && revLimField.value) {
+            var revLimVal = parseInt(revLimField.value.replace(/[^\d]/g, ''));
+            if (revLimVal > 0 && revLimVal > SYSTEM_RPM_LIMIT + 500) {
+                warnings.push({type:'warning', text:'<strong>Rev Limiter (' + revLimVal + ' RPM)</strong> liegt weit &uuml;ber dem Systemlimit (' + SYSTEM_RPM_LIMIT + ' RPM). Empfehlung: max. ' + (SYSTEM_RPM_LIMIT + 300) + ' RPM.'});
+            }
+        }
+
+        if (warnings.length > 0) {
+            var html = '<div style="font-size:0.72rem;font-weight:700;color:#c53030;margin-bottom:0.2rem;">&#9888; RPM Cross-Checks:</div>';
+            warnings.forEach(function(w) {
+                var bg = w.type === 'danger' ? '#fff5f5' : '#fffff0';
+                var border = w.type === 'danger' ? '#fc8181' : '#fefcbf';
+                var color = w.type === 'danger' ? '#c53030' : '#975a16';
+                html += '<div style="background:'+bg+';border:1px solid '+border+';border-radius:6px;padding:0.4rem 0.6rem;margin-bottom:0.2rem;font-size:0.74rem;color:'+color+';">'+w.text+'</div>';
+            });
+            warnDiv.innerHTML = html;
+            warnDiv.style.display = 'block';
+        } else {
+            warnDiv.innerHTML = '';
+            warnDiv.style.display = 'none';
+        }
+    }
+
+    function checkRevLimiterInput(el) {
+        var warnDiv = document.getElementById('revLimiterWarning');
+        if (!warnDiv) return;
+        var val = parseInt((el.value || '').replace(/[^\d]/g, ''));
+        if (!val || val <= 0) { warnDiv.style.display = 'none'; return; }
+        var html = '';
+        if (val > SYSTEM_RPM_LIMIT + 500) {
+            html += '<div style="background:#fff5f5;border:1px solid #fc8181;border-radius:6px;padding:0.3rem 0.5rem;font-size:0.74rem;color:#c53030;">&#9888; <strong>' + val + ' RPM</strong> liegt deutlich &uuml;ber dem Systemlimit <strong>' + SYSTEM_RPM_LIMIT + ' RPM</strong> (' + SYSTEM_RPM_LABEL + '). Empfehlung: max. <strong>' + (SYSTEM_RPM_LIMIT + 300) + ' RPM</strong>.</div>';
+        } else if (val > SYSTEM_RPM_LIMIT) {
+            html += '<div style="background:#fffff0;border:1px solid #fefcbf;border-radius:6px;padding:0.3rem 0.5rem;font-size:0.74rem;color:#975a16;">&#9888; Rev Limiter (' + val + ' RPM) liegt &uuml;ber dem Cam-Betriebsbereich (' + SYSTEM_RPM_LIMIT + ' RPM). Das ist als Sicherheitsmarge OK, solange der Motor nicht dauerhaft im &Uuml;berdrehzahlbereich betrieben wird.</div>';
+        } else if (val < 4000) {
+            html += '<div style="background:#fffff0;border:1px solid #fefcbf;border-radius:6px;padding:0.3rem 0.5rem;font-size:0.74rem;color:#975a16;">&#9888; Rev Limiter (' + val + ' RPM) ist sehr niedrig. Nutzbare Cam-Range beginnt bei 2.200 RPM.</div>';
+        }
+        if (html) { warnDiv.innerHTML = html; warnDiv.style.display = 'block'; }
+        else { warnDiv.style.display = 'none'; }
     }
 
     function drawSimChart(data, peakHP, peakTQ) {
@@ -4425,12 +4499,16 @@
             }
         }
 
-        // 2. RPM vs Rev Limiter
+        // 2. RPM vs System limit (weakest link)
+        if (redline > SYSTEM_RPM_LIMIT) {
+            warnings.push({type:'warning', text:'<strong>Drehzahl:</strong> Simulator-Redline (' + redline + ' RPM) &uuml;berschreitet Systemlimit <strong>' + SYSTEM_RPM_LIMIT + ' RPM</strong> (' + SYSTEM_RPM_LABEL + '). Empf. Rev Limiter: ' + (SYSTEM_RPM_LIMIT + 300) + ' RPM.'});
+        }
+        // 2b. RPM vs Rev Limiter field
         var revLimField = document.querySelector('[data-field="rev_limiter"]');
         if (revLimField && revLimField.value) {
             var revLimVal = parseInt(revLimField.value.replace(/[^\d]/g, ''));
             if (revLimVal > 0 && redline > revLimVal) {
-                warnings.push({type:'warning', text:'<strong>Drehzahl:</strong> Simulator-Redline (' + redline + ' RPM) liegt &uuml;ber dem Rev Limiter (' + revLimVal + ' RPM). Unrealistisch.'});
+                warnings.push({type:'warning', text:'<strong>Drehzahl:</strong> Simulator-Redline (' + redline + ' RPM) liegt &uuml;ber dem eingetragenen Rev Limiter (' + revLimVal + ' RPM).'});
             }
         }
 
