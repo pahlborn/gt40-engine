@@ -416,10 +416,10 @@
                         <input type="number" id="crStroke" data-field="cr_stroke" value="3.000" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
                         <label style="font-weight:600;">Brennraum (cc)</label>
                         <input type="number" id="crChamber" data-field="cr_chamber" value="58" step="0.5" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
-                        <label style="font-weight:600;">Kopfdichtung Dicke (inch)</label>
-                        <input type="number" id="crGasket" data-field="cr_gasket" value="0.041" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
-                        <label style="font-weight:600;">Kopfdichtung Bore (inch)</label>
-                        <input type="number" id="crGasketBore" data-field="cr_gasket_bore" value="4.100" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                        <label style="font-weight:600;">Kopfdichtung Dicke (inch) <span style="font-size:0.65rem;color:#666;">M-6051-CP331: 0.040"</span></label>
+                        <input type="number" id="crGasket" data-field="cr_gasket" value="0.040" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                        <label style="font-weight:600;">Kopfdichtung Bore (inch) <span style="font-size:0.65rem;color:#666;">BOSS-Version: 4.160"</span></label>
+                        <input type="number" id="crGasketBore" data-field="cr_gasket_bore" value="4.160" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
                         <label style="font-weight:600;">Piston-to-Deck (inch)</label>
                         <input type="number" id="crDeck" data-field="cr_deck" value="0.000" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
                         <label style="font-weight:600;">Kolbenvolumen (cc, + = Dome, &ndash; = Dish)</label>
@@ -439,6 +439,30 @@
                 </div>
             </div>
 
+            <!-- Drehzahl-Analyse: Schwaechstes Glied -->
+            <div class="comp-box" style="background:#fff5f5;border-color:#fed7d7;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#c53030;">&#9888; Drehzahl-Limits: Das schw&auml;chste Glied bestimmt</div>
+                <div class="comp-body">
+                    <p style="font-size:0.82rem;color:#333;margin:0 0 0.5rem;">Jede Komponente hat ein eigenes Drehzahl-Limit. Die <strong>niedrigste Grenze</strong> bestimmt die maximale Drehzahl des Motors.</p>
+                    <table style="width:100%;font-size:0.78rem;border-collapse:collapse;">
+                        <tr style="background:#fff5f5;"><th style="text-align:left;padding:0.3rem;">Komponente</th><th style="text-align:center;padding:0.3rem;">Max. RPM</th><th style="text-align:left;padding:0.3rem;">Begr&uuml;ndung</th></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">COMP Cams XE274HR</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong style="color:#c53030;">6.200</strong></td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">COMP Cams empf. Betriebsbereich 2.200&ndash;6.200</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Morel 5327 HLT Lifter</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">6.500&ndash;7.000+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">HLT (Limited Travel) f&uuml;r High-RPM ausgelegt</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">AFR 8605 Ventilfedern</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.000</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">AFR Upgrade-Feder, .650" Lift / 7.000 RPM</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">AFR 8600 Ti-Retainer</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.000+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Titan = leichter als Stahl, reduziert Ventiltrieb-Tr&auml;gheit</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">COMP 1632-16 Roller Rockers</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.000+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">8650 Chromoly, Nadellager, Ultra Pro Magnum</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">BOSS302 Block (4-Bolt)</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.500+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Race-Block, 4-Bolt Mains auf Pos. 2/3/4</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Geschmiedete Internals</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.500+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Kurbel, Pleuel, Kolben &ndash; alle geschmiedet</td></tr>
+                        <tr><td style="padding:0.25rem;"><strong>MSD 6AL Rev Limiter</strong></td><td style="text-align:center;padding:0.25rem;"><strong>einstellbar</strong></td><td style="padding:0.25rem;">2.000&ndash;11.000 RPM in 100er-Schritten</td></tr>
+                    </table>
+                    <div style="margin-top:0.5rem;padding:0.5rem;background:#c53030;color:#fff;border-radius:8px;text-align:center;font-size:0.85rem;">
+                        <strong>SCHW&Auml;CHSTES GLIED: Nockenwelle &rarr; 6.200 RPM</strong><br>
+                        <span style="font-size:0.75rem;">Empf. Rev-Limiter-Einstellung: <strong>6.500 RPM</strong> (Sicherheitsmarge f&uuml;r Ventiltrieb)</span>
+                    </div>
+                    <div class="info-box" style="margin-top:0.4rem;"><strong>Erkl&auml;rung:</strong> Die Nockenwelle bestimmt, bis zu welcher Drehzahl der Motor <em>effizient</em> arbeitet. Die mechanischen Komponenten (Federn, Lifter, Retainer) k&ouml;nnen h&ouml;her &ndash; daher setzt man den Rev Limiter etwas &uuml;ber die Cam-Range, um einen kurzen &Uuml;berdrehschutz zu haben, ohne die Hardware zu gef&auml;hrden.</div>
+                </div>
+            </div>
+
             <!-- Leistungsschaetzung -->
             <div class="comp-box">
                 <div class="comp-toggle" onclick="toggleComp(this)">&#9889; Gesch&auml;tzte Motorleistung</div>
@@ -448,17 +472,17 @@
                     <div class="spec-item"><span class="spec-label">Gesch. Drehmoment</span><span class="spec-value"><strong>330 &ndash; 350 ft-lbs</strong> (447&ndash;475 Nm)</span></div>
                     <div class="spec-item"><span class="spec-label">Peak Power RPM</span><span class="spec-value">5.500 &ndash; 6.000 U/min</span></div>
                     <div class="spec-item"><span class="spec-label">Peak Torque RPM</span><span class="spec-value">3.500 &ndash; 4.500 U/min</span></div>
-                    <div class="spec-item"><span class="spec-label">Nutzbares Drehzahlband</span><span class="spec-value">2.200 &ndash; 6.200 U/min (Cam-Range)</span></div>
-                    <div class="spec-item"><span class="spec-label">Max. sichere Drehzahl</span><span class="spec-value">~6.500 U/min (Springs + Lifter + Ti-Retainer)</span></div>
+                    <div class="spec-item"><span class="spec-label">Nutzbares Drehzahlband</span><span class="spec-value">2.200 &ndash; 6.200 U/min (Cam-Range lt. COMP Cams)</span></div>
+                    <div class="spec-item"><span class="spec-label">Max. sichere Drehzahl</span><span class="spec-value">~6.500 U/min (Rev Limiter)</span></div>
 
                     <div class="comp-sub">Einflussfaktoren auf die Leistung</div>
                     <table style="width:100%;font-size:0.78rem;border-collapse:collapse;">
                         <tr style="background:#f0f5ff;"><th style="text-align:left;padding:0.3rem;">Komponente</th><th style="text-align:left;padding:0.3rem;">Einfluss</th><th style="text-align:left;padding:0.3rem;">Tendenz</th></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Ansaugspinne (Single/Dual Plane)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Leistungskurve</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Single = mehr Spitze, Dual = mehr unten</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Vergaser-Gr&ouml;&szlig;e (cfm)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Topend vs. Response</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">600 cfm = Ansprechverh., 750 = mehr Power oben</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">DellOrto DRLA 45 (4x Downdraft)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Direktes Ansprechverhalten</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Einzeldrosselklappen &rarr; sofortige Response</td></tr>
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">F&auml;cherkr&uuml;mmer (Headers)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">+15&ndash;30 HP vs. Gusskr&uuml;mmer</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">1-5/8" Primary f&uuml;r 302</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndung (MSD 6AL)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Kapazitiv &rarr; st&auml;rkerer Funke</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Advance-Kurve abstimmen f&uuml;r max. Leistung</td></tr>
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndzeitpunkt</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Leistung + Detonation</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">32&ndash;36&deg; total (je nach CR + Benzin)</td></tr>
-                        <tr><td style="padding:0.25rem;">Verdichtung</td><td style="padding:0.25rem;">Effizienz + Drehmoment</td><td style="padding:0.25rem;">9.5&ndash;10.0:1 ideal f&uuml;r Premium-Benzin</td></tr>
+                        <tr><td style="padding:0.25rem;">Verdichtung</td><td style="padding:0.25rem;">Effizienz + Drehmoment</td><td style="padding:0.25rem;">9.5&ndash;10.0:1 ideal f&uuml;r Super Plus (98 ROZ)</td></tr>
                     </table>
 
                     <div class="comp-sub">Antriebsstrang-Empfehlung (lt. COMP Cams)</div>
@@ -739,11 +763,20 @@
             </div>
 
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">Zylinderkopfdichtung (Head Gasket)</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">Zylinderkopfdichtung &ndash; Ford M-6051-CP331</div>
                 <div class="comp-body">
-                    <div class="spec-item"><span class="spec-label">Empfohlen (Ford Perf.)</span><span class="spec-value">M-6051-CP331 oder M-6051-S331</span></div>
-                    <div class="spec-item"><span class="spec-label">Alternativ (Fel-Pro)</span><span class="spec-value">Fel-Pro #1011-1 (f&uuml;r 1962&ndash;95 SBF, lt. AFR)</span></div>
-                    <div class="spec-item"><span class="spec-label">Einbaudicke (compressed)</span><span class="spec-value">Herstellerangabe pr&uuml;fen &ndash; relevant f&uuml;r Quench!</span></div>
+                    <div class="comp-sub">Empfohlen f&uuml;r BOSS302 Block (lt. Ford Performance)</div>
+                    <div class="spec-item"><span class="spec-label">Teilenummer</span><span class="spec-value">M-6051-CP331 (BOSS-Block-Version)</span></div>
+                    <div class="spec-item"><span class="spec-label">Bore-Anwendung</span><span class="spec-value">bis 4.125" (BOSS302 Block)</span></div>
+                    <div class="spec-item"><span class="spec-label">Gasket-Durchmesser</span><span class="spec-value">4.160"</span></div>
+                    <div class="spec-item"><span class="spec-label">Compressed Thickness</span><span class="spec-value"><strong>0.040"</strong> (1.02 mm)</span></div>
+                    <div class="spec-item"><span class="spec-label">Compressed Volume</span><span class="spec-value"><strong>9.0 cc</strong></span></div>
+                    <div class="spec-item"><span class="spec-label">Bauart</span><span class="spec-value">Pre-flattened Copper Wire Combustion Ring</span></div>
+                    <div class="spec-item"><span class="spec-label">Auspuff-Seite</span><span class="spec-value">Gerade &ndash; f&uuml;r FPP-Block Wasserdurchg&auml;nge</span></div>
+                    <div class="comp-sub">Alternative Dichtungen (Standard-302 Bore)</div>
+                    <div class="spec-item"><span class="spec-label">M-6051-CP331 (Std.)</span><span class="spec-value">4.100" Gasket-Bore, 0.042", 9.1 cc (f&uuml;r Prod.-Blocks)</span></div>
+                    <div class="spec-item"><span class="spec-label">Fel-Pro #1011-1</span><span class="spec-value">Alternative lt. AFR, f&uuml;r 1962&ndash;95 SBF</span></div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Die Compressed Thickness beeinflusst direkt den Quench-Abstand und die Verdichtung! F&uuml;r den CR-Rechner: 0.040" und 4.160" sind voreingestellt.</div>
                 </div>
             </div>
 
@@ -1129,22 +1162,43 @@
             <h2>11. Vergaser &amp; Kraftstoffsystem (Carburetor)</h2>
         </div>
         <div class="section-body">
-            <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">Vergaser (Carburetor)</div>
+            <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#276749;">Vergaser &ndash; DellOrto DRLA 45 Downdraft (4 St&uuml;ck)</div>
                 <div class="comp-body">
-                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">4-Barrel (z.B. Holley 600&ndash;750 cfm)</span></div>
-                    <div class="spec-item"><span class="spec-label">Dichtung</span><span class="spec-value">Vergaser-Fuss-Dichtung (Carburetor Base Gasket)</span></div>
-                    <div class="spec-item"><span class="spec-label">Kraftstoffdruck</span><span class="spec-value">5.5 &ndash; 7.0 psi (mechanische Pumpe) &ndash; Herstellerangabe!</span></div>
-                    <div class="spec-item"><span class="spec-label">Drehmoment Befestigung</span><span class="spec-value">Handfest + 1/4 Umdrehung (nicht &uuml;berziehen!)</span></div>
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">DellOrto DRLA 45 &ndash; Doppel-Downdraft (Twin-Choke)</span></div>
+                    <div class="spec-item"><span class="spec-label">Drosseldurchmesser</span><span class="spec-value">45 mm (je 2 Drosselklappen pro Vergaser)</span></div>
+                    <div class="spec-item"><span class="spec-label">Anzahl</span><span class="spec-value">4 St&uuml;ck &rarr; 8 Drosselklappen (eine pro Zylinder)</span></div>
+                    <div class="spec-item"><span class="spec-label">Choke (Venturi)</span><span class="spec-value">Verf&uuml;gbar: 32, 34, 36, 38, 39 mm &ndash; Abstimmung nach Bedarf</span></div>
+                    <div class="spec-item"><span class="spec-label">Max. Kraftstoffdruck</span><span class="spec-value"><strong>3.5 psi (0.25 Bar)</strong> &ndash; Druckregler erforderlich!</span></div>
+                    <div class="spec-item"><span class="spec-label">Ansaugbr&uuml;cke</span><span class="spec-value">Spezial-Downdraft-Manifold (Hersteller noch offen)</span></div>
+                    <div class="spec-item"><span class="spec-label">Abstimmung</span><span class="spec-value">Hauptd&uuml;se, Leerlaufd&uuml;se, Luftkorrekturd&uuml;se, Emulsionsrohr, Pumpend&uuml;se &ndash; alle von oben zug&auml;nglich</span></div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Vorteil:</strong> Einzeldrosselklappen pro Zylinder = sofortiges Ansprechverhalten. Typisch f&uuml;r GT40-Kit-Cars und europ&auml;ische Sportmotoren.</div>
                 </div>
             </div>
 
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">Kraftstoffpumpe (Fuel Pump)</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">Alternative: 4-Barrel (Holley 600&ndash;750 cfm)</div>
                 <div class="comp-body">
-                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Mechanisch (Block-mounted) oder elektrisch</span></div>
-                    <div class="spec-item"><span class="spec-label">Drehmoment Befestigung</span><span class="spec-value">18 &ndash; 22 ft-lbs (mechanisch, am Block)</span></div>
-                    <div class="spec-item"><span class="spec-label">Pushrod</span><span class="spec-value">Fuel Pump Pushrod (Excenter-Antrieb von Nockenwelle)</span></div>
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">4-Barrel Carburetor (z.B. Holley 600&ndash;750 cfm)</span></div>
+                    <div class="spec-item"><span class="spec-label">Dichtung</span><span class="spec-value">Vergaser-Fu&szlig;-Dichtung (Carburetor Base Gasket)</span></div>
+                    <div class="spec-item"><span class="spec-label">Kraftstoffdruck</span><span class="spec-value">5.5&ndash;7.0 psi</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehmoment</span><span class="spec-value">Handfest + 1/4 Umdrehung</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#276749;">Kraftstoffpumpe &ndash; Facet Red Top 480532 (2 St&uuml;ck)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Elektrische Kraftstoffpumpe (Solid-State, kontaktlos)</span></div>
+                    <div class="spec-item"><span class="spec-label">Anzahl</span><span class="spec-value">2 St&uuml;ck (je eine pro Tank)</span></div>
+                    <div class="spec-item"><span class="spec-label">Druck</span><span class="spec-value">6.0&ndash;8.0 psi (0.4&ndash;0.55 Bar)</span></div>
+                    <div class="spec-item"><span class="spec-label">F&ouml;rdermenge</span><span class="spec-value">170 l/h (45 US gal/h) pro Pumpe</span></div>
+                    <div class="spec-item"><span class="spec-label">Spannung</span><span class="spec-value">12V DC (nur Minus-Masse!)</span></div>
+                    <div class="spec-item"><span class="spec-label">Anschl&uuml;sse</span><span class="spec-value">1/4" NPT Innengewinde</span></div>
+                    <div class="spec-item"><span class="spec-label">Trockensaugh&ouml;he</span><span class="spec-value">610 mm (24")</span></div>
+                    <div class="spec-item"><span class="spec-label">Ma&szlig;e / Gewicht</span><span class="spec-value">140 &times; 54 mm, 700 g pro Pumpe</span></div>
+                    <div class="spec-item"><span class="spec-label">MTBF</span><span class="spec-value">6.000 Betriebsstunden</span></div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Facet Red Top liefert <strong>6&ndash;8 psi</strong> &ndash; DellOrto DRLA braucht max. <strong>3.5 psi</strong>! <strong>Druckregler zwingend erforderlich!</strong> Empfehlung: Malpassi Filter King. Pumpen m&ouml;glichst tanknahe, vertikal mit Auslass nach oben montieren.</div>
                 </div>
             </div>
 
@@ -1173,11 +1227,121 @@
         </div>
     </div>
 
-    <!-- 12. Allgemeine Notizen -->
+    <!-- 12. Zuendanlage -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#9889;</span>
+            <h2>12. Z&uuml;ndanlage (MSD Ignition)</h2>
+        </div>
+        <div class="section-body">
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">MSD 6AL Z&uuml;ndbox (PN 6420)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Capacitive Discharge Ignition (CDI)</span></div>
+                    <div class="spec-item"><span class="spec-label">Funkenenergie</span><span class="spec-value">Mehrfachfunken bis 3.000 RPM, Einzelfunke dar&uuml;ber</span></div>
+                    <div class="spec-item"><span class="spec-label">Rev Limiter</span><span class="spec-value">Eingebaut &ndash; Soft Touch, einstellbar mit Steckmodulen (100er-Schritte)</span></div>
+                    <div class="spec-item"><span class="spec-label">Mitgelieferte Module</span><span class="spec-value">3.000, 6.000, 7.000, 8.000 RPM</span></div>
+                    <div class="spec-item"><span class="spec-label">Spannung</span><span class="spec-value">12V &ndash; Direkt an Batterie (Plus UND Minus!)</span></div>
+                    <div class="spec-item"><span class="spec-label">Zylinder-Select</span><span class="spec-value">Werksseitig auf 8-Zylinder eingestellt</span></div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Keine Massivkern-Z&uuml;ndkabel verwenden! Nur Spiral-Core oder Suppression-Type. Empf. Rev Limiter f&uuml;r diesen Build: <strong>6.500 RPM</strong>.</div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">MSD Pro-Billet Verteiler, Small Diameter (Ford 302)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Passend</span><span class="spec-value">Ford 289/302 &ndash; Small Diameter (5/8" kleiner als Serie)</span></div>
+                    <div class="spec-item"><span class="spec-label">Geh&auml;use</span><span class="spec-value">CNC-gefr&auml;stes Billet-Aluminium</span></div>
+                    <div class="spec-item"><span class="spec-label">Welle</span><span class="spec-value">Polierter Stahl, QPQ-beschichtet, Kugellager oben</span></div>
+                    <div class="spec-item"><span class="spec-label">Trigger</span><span class="spec-value">Magnetischer Pickup + Pr&auml;zisions-Reluctor</span></div>
+                    <div class="spec-item"><span class="spec-label">Fliehkraftverstellung</span><span class="spec-value">Einstellbar (Federn + Stop-Bushings)</span></div>
+                    <div class="spec-item"><span class="spec-label">Antriebszahnrad</span><span class="spec-value">Stahl-Zahnrad f&uuml;r Hydraulic Roller Cam (Pflicht!)</span></div>
+                    <div class="spec-item"><span class="spec-label">Voraussetzung</span><span class="spec-value">Erfordert MSD 6/7/8-Series Z&uuml;ndbox</span></div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Teilenummer nachreichen!</strong> Wahrscheinlich PN 8579 (302, Iron Gear) oder 857951 (302, Steel Gear). Steel Gear ist Pflicht f&uuml;r Hydraulic Roller Cam!</div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Kappe &amp; Rotor &ndash; MSD 84315 Kit</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Kit enth&auml;lt</span><span class="spec-value">Small Diameter Cap (PN 8431) + Race Rotor (PN 8467)</span></div>
+                    <div class="spec-item"><span class="spec-label">Anschl&uuml;sse</span><span class="spec-value">HEI-Style Z&uuml;ndkerzenstecker-Anschl&uuml;sse (Messing)</span></div>
+                    <div class="spec-item"><span class="spec-label">Befestigung</span><span class="spec-value">Screw-Down (verschraubt, nicht geclipst)</span></div>
+                    <div class="spec-item"><span class="spec-label">Bel&uuml;ftung</span><span class="spec-value">Bel&uuml;ftete Kappe (Vented) f&uuml;r W&auml;rmeabfuhr</span></div>
+                    <div class="spec-item"><span class="spec-label">Farbe</span><span class="spec-value">Rot</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Advance Kit &ndash; MSD 8464</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Inhalt</span><span class="spec-value">Sortiment aus Advance-Federn + Advance-Stop-Bushings</span></div>
+                    <div class="spec-item"><span class="spec-label">Passt f&uuml;r</span><span class="spec-value">Alle MSD Billet &amp; Pro-Billet Verteiler</span></div>
+                    <div class="spec-item"><span class="spec-label">Federn</span><span class="spec-value">Leicht / Mittel / Schwer &ndash; bestimmen Advance-Rate</span></div>
+                    <div class="spec-item"><span class="spec-label">Bushings</span><span class="spec-value">5 Gr&ouml;&szlig;en &ndash; begrenzen den max. Fliehkraft-Advance</span></div>
+                    <div class="spec-item"><span class="spec-label">Ab Werk</span><span class="spec-value">Schwere (langsame) Federn + Blue Bushing (21&deg;)</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Unterdruckverstellung &ndash; MSD 8463</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Vacuum Advance Mechanism (Ersatz-Unterdruckdose)</span></div>
+                    <div class="spec-item"><span class="spec-label">Max. Advance</span><span class="spec-value">bis 10&deg; bei 15" Hg Unterdruck</span></div>
+                    <div class="spec-item"><span class="spec-label">Anschluss</span><span class="spec-value">Ported Vacuum &ndash; oberhalb der Drosselklappe!</span></div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Bei DellOrto-Vergasern: Unterdruckanschluss ist am Vergaserkoerper vorhanden. Vakuumschlauch zum Verteiler f&uuml;hren.</div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Z&uuml;ndspule (Ignition Coil)</div>
+                <div class="comp-body">
+                    <div class="info-box"><strong>Teilenummer nachreichen!</strong> Typisch f&uuml;r MSD 6AL: MSD Blaster 2 (PN 8202) oder Blaster SS (PN 8207).</div>
+                </div>
+            </div>
+
+            <a class="guide-link" onclick="showGuide('guide-ignition')">&#128214; Anleitung: Z&uuml;ndeinstellung &amp; Advance-Federn-Tuning</a>
+
+            <div class="check-item">
+                <input type="checkbox" data-field="check_ign_distributor" onchange="autoSave()">
+                <span>Verteiler eingebaut, Grundeinstellung (Initial Timing)</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_ign_box" onchange="autoSave()">
+                <span>MSD 6AL Box verkabelt, an Batterie angeschlossen</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_ign_advance" onchange="autoSave()">
+                <span>Advance-Kurve eingestellt (Federn + Bushings)</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_ign_revlimiter" onchange="autoSave()">
+                <span>Rev Limiter gesetzt (empfohlen: 6.500 RPM)</span>
+            </div>
+            <div class="form-group">
+                <label>Initial Timing (Grundeinstellung)</label>
+                <input type="text" data-field="initial_timing" placeholder='z.B. 12&deg; BTDC' oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Total Timing (Initial + Centrifugal)</label>
+                <input type="text" data-field="total_timing" placeholder='z.B. 34&deg; total @ 3.000 RPM' oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Rev Limiter Einstellung</label>
+                <input type="text" data-field="rev_limiter" placeholder='z.B. 6.500 RPM' oninput="autoSave()">
+            </div>
+            <div class="section-comment">
+                <label>Kommentar zur Z&uuml;ndeinstellung</label>
+                <textarea data-field="comment_ignition" placeholder="Advance-Kombination, Timing-Erfahrungen, Klopfneigung..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 13. Allgemeine Notizen -->
     <div class="section">
         <div class="section-header" onclick="toggleSection(this)">
             <span class="section-icon">&#128221;</span>
-            <h2>12. Allgemeine Notizen</h2>
+            <h2>13. Allgemeine Notizen</h2>
         </div>
         <div class="section-body">
             <div class="form-group">
@@ -1877,6 +2041,102 @@
             <li><strong>Soll bei mechanischer Pumpe:</strong> 5.5&ndash;7.0 psi</li>
             <li>Zu hoher Druck: Vergaser kann &uuml;berfluten &ndash; ggf. Druckregler einbauen</li>
         </ul>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Guide: Zuendeinstellung & Advance-Federn-Tuning              -->
+<!-- ============================================================ -->
+<div class="guide-overlay" id="guide-ignition">
+    <div class="guide-header">
+        <button class="guide-back" onclick="hideGuide('guide-ignition')">&larr; Zur&uuml;ck</button>
+        <h2>Z&uuml;ndeinstellung &amp; Advance-Federn-Tuning</h2>
+    </div>
+    <div class="guide-content">
+
+        <h3>Ben&ouml;tigte Werkzeuge &amp; Arbeitsmittel</h3>
+        <ul>
+            <li><strong>Stroboskoplampe (Timing Light)</strong> &ndash; KEIN digitales oder Dial-Back Light mit MSD verwenden!</li>
+            <li><strong>Schraubenschl&uuml;ssel</strong> f&uuml;r Verteiler-Klemmschraube</li>
+            <li><strong>Kleine Zange</strong> zum Wechseln der Advance-Federn</li>
+            <li><strong>MSD Advance Kit 8464</strong> (Federn + Stop-Bushings)</li>
+            <li><strong>Inbus-Schl&uuml;ssel</strong> (f&uuml;r Stop-Bushing-Schraube)</li>
+        </ul>
+
+        <h3>Grundbegriffe</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">!</span><strong>Initial Timing</strong> = Grundeinstellung bei Leerlauf (z.B. 10&ndash;14&deg; BTDC). Wird durch Drehen des Verteilers eingestellt.</div>
+            <div class="torque-step"><span class="step-num">!</span><strong>Centrifugal Advance</strong> = Fliehkraftverstellung. Gewichte im Verteiler dr&uuml;cken bei steigender Drehzahl den Reluctor vor &rarr; fr&uuml;here Z&uuml;ndung. Gesteuert durch Federn (Rate) und Bushings (Maximum).</div>
+            <div class="torque-step"><span class="step-num">!</span><strong>Total Timing</strong> = Initial + Centrifugal. Beispiel: 12&deg; Initial + 22&deg; Centrifugal = <strong>34&deg; Total</strong>.</div>
+            <div class="torque-step"><span class="step-num">!</span><strong>Vacuum Advance</strong> = Unterdruckverstellung. Zus&auml;tzliche 5&ndash;10&deg; bei Teillast &rarr; besserer Verbrauch. Bei Vollgas kein Unterdruck &rarr; kein Effekt.</div>
+        </div>
+
+        <h3>A) Advance-Stop-Bushing w&auml;hlen (Max. Centrifugal Advance)</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Verteilerkappe und Rotor abnehmen.</div>
+            <div class="torque-step"><span class="step-num">2</span>Die Advance-Platte ist sichtbar. Die Stop-Bushing sitzt in der Mitte auf der Advance-Welle.</div>
+            <div class="torque-step"><span class="step-num">3</span>Schraube der Stop-Bushing l&ouml;sen und Bushing wechseln.</div>
+        </div>
+        <table style="width:100%;font-size:0.78rem;border-collapse:collapse;margin:0.5rem 0;">
+            <tr style="background:#f0f5ff;"><th style="text-align:left;padding:0.3rem;">Bushing-Farbe</th><th style="text-align:center;padding:0.3rem;">Max. Centrifugal Advance</th></tr>
+            <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Silber (gr&ouml;&szlig;te)</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">25&deg;</td></tr>
+            <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong style="color:#3182ce;">Blau (ab Werk)</strong></td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>21&deg;</strong></td></tr>
+            <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Rot</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">18&deg;</td></tr>
+            <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Schwarz</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">15&deg;</td></tr>
+            <tr><td style="padding:0.25rem;">Gold (kleinste)</td><td style="text-align:center;padding:0.25rem;">11&deg;</td></tr>
+        </table>
+        <div class="info-box"><strong>F&uuml;r diesen Build:</strong> Bei 12&deg; Initial Timing + 22&deg; Centrifugal = 34&deg; Total &rarr; <strong>Blaue Bushing (21&deg;)</strong> oder <strong>Silberne (25&deg;)</strong> mit angepasstem Initial.</div>
+
+        <h3>B) Advance-Federn w&auml;hlen (Advance-Rate)</h3>
+        <p style="font-size:0.82rem;">Die Federn bestimmen, <strong>wie schnell</strong> der Advance einsetzt. Ab Werk: 2x Schwere (Silber) = langsamster Advance.</p>
+        <table style="width:100%;font-size:0.78rem;border-collapse:collapse;margin:0.5rem 0;">
+            <tr style="background:#f0f5ff;"><th style="text-align:left;padding:0.3rem;">Federkombination</th><th style="text-align:left;padding:0.3rem;">Advance-Verhalten</th><th style="text-align:left;padding:0.3rem;">Empfehlung</th></tr>
+            <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">2x Schwer (Silber)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Langsamster Advance</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Ab Werk, konservativ</td></tr>
+            <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">1x Schwer + 1x Mittel</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">M&auml;&szlig;ig schnell</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Guter Kompromiss Street/Strip</td></tr>
+            <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">2x Mittel</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Moderater Advance</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Street Performance</td></tr>
+            <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">1x Mittel + 1x Leicht</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Schnell</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">F&uuml;r milde Nockenwellen</td></tr>
+            <tr><td style="padding:0.25rem;">2x Leicht</td><td style="padding:0.25rem;">Schnellster Advance</td><td style="padding:0.25rem;">Vorsicht &ndash; kann Klopfen verursachen!</td></tr>
+        </table>
+
+        <h3>C) Initial Timing einstellen</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Motor auf Betriebstemperatur bringen.</div>
+            <div class="torque-step"><span class="step-num">2</span>Falls vorhanden: Unterdruck-Schlauch vom Verteiler abziehen und Anschluss verschlie&szlig;en.</div>
+            <div class="torque-step"><span class="step-num">3</span>Stroboskoplampe an Z&uuml;ndkabel Zylinder #1 anklemmen.</div>
+            <div class="torque-step"><span class="step-num">4</span>Stroboskoplampe auf Timing-Markierung am Harmonic Balancer / Timing Cover richten.</div>
+            <div class="torque-step"><span class="step-num">5</span>Verteiler-Klemmschraube l&ouml;sen. Verteiler langsam drehen, bis die gew&uuml;nschte Gradzahl angezeigt wird (z.B. 12&deg; BTDC).</div>
+            <div class="torque-step"><span class="step-num">6</span>Klemmschraube anziehen. Erneut pr&uuml;fen &ndash; manchmal verschiebt sich das Timing beim Klemmen.</div>
+        </div>
+
+        <h3>D) Total Timing pr&uuml;fen</h3>
+        <div class="torque-steps">
+            <div class="torque-step"><span class="step-num">1</span>Motor l&auml;uft, Unterdruck weiterhin abgezogen.</div>
+            <div class="torque-step"><span class="step-num">2</span>Drehzahl langsam auf ca. 3.000&ndash;3.500 RPM erh&ouml;hen.</div>
+            <div class="torque-step"><span class="step-num">3</span>Mit der Stroboskoplampe die Timing-Markierung ablesen &rarr; dies ist das <strong>Total Timing</strong>.</div>
+            <div class="torque-step"><span class="step-num">4</span>Ab diesem Punkt sollte die Markierung nicht mehr weiterwandern (Advance voll eingezogen).</div>
+        </div>
+        <div class="guide-input-group">
+            <label>&#9998; Z&uuml;ndeinstellung dokumentieren</label>
+            <input type="text" data-field="initial_timing" placeholder='Initial Timing: z.B. 12&deg; BTDC' oninput="autoSave()">
+            <input type="text" data-field="total_timing" placeholder='Total Timing: z.B. 34&deg; @ 3.000 RPM' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="advance_springs" placeholder='Federn: z.B. 1x Schwer + 1x Mittel' oninput="autoSave()" style="margin-top:0.2rem;">
+            <input type="text" data-field="advance_bushing" placeholder='Bushing: z.B. Blau (21&deg;)' oninput="autoSave()" style="margin-top:0.2rem;">
+        </div>
+
+        <h3>E) Timing-Richtwerte nach Motorkonfiguration</h3>
+        <table style="width:100%;font-size:0.78rem;border-collapse:collapse;margin:0.5rem 0;">
+            <tr style="background:#f0f5ff;"><th style="text-align:left;padding:0.3rem;">Faktor</th><th style="text-align:center;padding:0.3rem;">Mehr Advance</th><th style="text-align:center;padding:0.3rem;">Weniger Advance</th></tr>
+            <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Verdichtung</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">Niedrig (&lt;9.5:1)</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">Hoch (&gt;10:1)</td></tr>
+            <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Brennraum</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">Open Chamber</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">Closed/CNC (wie AFR)</td></tr>
+            <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Benzin</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">98+ ROZ / Race Gas</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">91 ROZ / E10</td></tr>
+            <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndenergie</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">Standard-Z&uuml;ndung</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">MSD CDI (st&auml;rkerer Funke)</td></tr>
+            <tr><td style="padding:0.25rem;">Temperatur</td><td style="text-align:center;padding:0.25rem;">K&uuml;hl</td><td style="text-align:center;padding:0.25rem;">Hei&szlig;</td></tr>
+        </table>
+        <div class="info-box">
+            <strong>Empfehlung f&uuml;r diesen Build (~9.7:1 CR, CNC-Koepfe, MSD CDI, 98 ROZ):</strong><br>
+            Initial: <strong>10&ndash;14&deg;</strong> | Total: <strong>32&ndash;36&deg;</strong> | Vacuum: <strong>+8&ndash;10&deg;</strong> bei Teillast<br>
+            <span style="color:#c53030;">Bei Klopfen sofort Timing zur&uuml;cknehmen! Erst mit konservativem Timing starten.</span>
+        </div>
     </div>
 </div>
 
