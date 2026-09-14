@@ -609,40 +609,7 @@
                 </div>
             </div>
 
-            <!-- Verdichtungsrechner -->
-            <div class="comp-box" style="background:#fffff0;border-color:#fefcbf;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#975a16;">&#128290; Verdichtungsrechner (Compression Ratio)</div>
-                <div class="comp-body">
-                    <p style="font-size:0.78rem;color:#666;margin:0 0 0.5rem;">Werte anpassen &ndash; CR berechnet sich automatisch. Werte werden gespeichert.</p>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 0.8rem;font-size:0.82rem;">
-                        <label style="font-weight:600;">Bohrung (Bore)</label>
-                        <input type="number" id="crBore" data-field="cr_bore" value="4.000" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
-                        <label style="font-weight:600;">Hub (Stroke)</label>
-                        <input type="number" id="crStroke" data-field="cr_stroke" value="3.000" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
-                        <label style="font-weight:600;">Brennraum (cc)</label>
-                        <input type="number" id="crChamber" data-field="cr_chamber" value="58" step="0.5" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
-                        <label style="font-weight:600;">Kopfdichtung Dicke (inch) <span style="font-size:0.65rem;color:#666;">M-6051-CP331: 0.040"</span></label>
-                        <input type="number" id="crGasket" data-field="cr_gasket" value="0.040" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
-                        <label style="font-weight:600;">Kopfdichtung Bore (inch) <span style="font-size:0.65rem;color:#666;">BOSS-Version: 4.160"</span></label>
-                        <input type="number" id="crGasketBore" data-field="cr_gasket_bore" value="4.160" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
-                        <label style="font-weight:600;">Piston-to-Deck (inch)</label>
-                        <input type="number" id="crDeck" data-field="cr_deck" value="0.000" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
-                        <label style="font-weight:600;">Kolbenvolumen (cc, + = Dome, &ndash; = Dish)</label>
-                        <input type="number" id="crPiston" data-field="cr_piston" value="0" step="0.5" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
-                    </div>
-                    <div style="margin-top:0.7rem;padding:0.6rem;background:#fff;border:2px solid #975a16;border-radius:8px;text-align:center;">
-                        <span style="font-size:0.75rem;color:#975a16;font-weight:600;">BERECHNETE VERDICHTUNG</span><br>
-                        <span id="crResult" style="font-size:1.8rem;font-weight:700;color:#975a16;">--</span>
-                        <span style="font-size:0.9rem;color:#975a16;font-weight:600;"> : 1</span>
-                    </div>
-                    <div style="margin-top:0.4rem;display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.72rem;color:#666;">
-                        <span>Hubvolumen/Zyl.: <span id="crSwept">--</span> cc</span>
-                        <span>Restvolumen: <span id="crClearance">--</span> cc</span>
-                        <span>Gasket Vol.: <span id="crGasketVol">--</span> cc</span>
-                        <span>Deck Vol.: <span id="crDeckVol">--</span> cc</span>
-                    </div>
-                </div>
-            </div>
+            <!-- Verdichtungsrechner: verschoben nach Sektion 4 (Zylinderkoepfe) -->
 
             <!-- Drehzahl-Analyse: Schwaechstes Glied -->
             <div class="comp-box" style="background:#fff5f5;border-color:#fed7d7;">
@@ -1341,6 +1308,46 @@
 
             <div class="photo-gallery" data-photo-group="heads"></div>
             <label class="photo-add-btn" onclick="addPhoto('heads')">&#128247; Foto hinzuf&uuml;gen</label>
+        </div>
+    </div>
+
+    <!-- 4b. Verdichtungsrechner (nach Block, Kolben, Koepfe - jetzt sind alle Daten bekannt) -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#128290;</span>
+            <h2>4b. Verdichtungsrechner (Compression Calculator)</h2>
+        </div>
+        <div class="section-body">
+            <div class="info-box" style="background:#fffff0;border-color:#fefcbf;margin-bottom:0.5rem;">
+                <strong style="color:#975a16;">Alle Eingangsdaten verfuegbar:</strong> Block (Bore, Stroke), Kolben (Dish/Dome), Zylinderkoepfe (Brennraumvolumen), Kopfdichtung (Dicke, Bore). Werte anpassen &ndash; CR berechnet sich automatisch.
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 0.8rem;font-size:0.82rem;">
+                <label style="font-weight:600;">Bohrung (Bore)</label>
+                <input type="number" id="crBore" data-field="cr_bore" value="4.000" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                <label style="font-weight:600;">Hub (Stroke)</label>
+                <input type="number" id="crStroke" data-field="cr_stroke" value="3.000" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                <label style="font-weight:600;">Brennraum (cc)</label>
+                <input type="number" id="crChamber" data-field="cr_chamber" value="58" step="0.5" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                <label style="font-weight:600;">Kopfdichtung Dicke (inch) <span style="font-size:0.65rem;color:#666;">M-6051-CP331: 0.040"</span></label>
+                <input type="number" id="crGasket" data-field="cr_gasket" value="0.040" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                <label style="font-weight:600;">Kopfdichtung Bore (inch) <span style="font-size:0.65rem;color:#666;">BOSS-Version: 4.160"</span></label>
+                <input type="number" id="crGasketBore" data-field="cr_gasket_bore" value="4.160" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                <label style="font-weight:600;">Piston-to-Deck (inch)</label>
+                <input type="number" id="crDeck" data-field="cr_deck" value="0.000" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                <label style="font-weight:600;">Kolbenvolumen (cc, + = Dome, &ndash; = Dish)</label>
+                <input type="number" id="crPiston" data-field="cr_piston" value="0" step="0.5" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+            </div>
+            <div style="margin-top:0.7rem;padding:0.6rem;background:#fff;border:2px solid #975a16;border-radius:8px;text-align:center;">
+                <span style="font-size:0.75rem;color:#975a16;font-weight:600;">BERECHNETE VERDICHTUNG</span><br>
+                <span id="crResult" style="font-size:1.8rem;font-weight:700;color:#975a16;">--</span>
+                <span style="font-size:0.9rem;color:#975a16;font-weight:600;"> : 1</span>
+            </div>
+            <div style="margin-top:0.4rem;display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.72rem;color:#666;">
+                <span>Hubvolumen/Zyl.: <span id="crSwept">--</span> cc</span>
+                <span>Restvolumen: <span id="crClearance">--</span> cc</span>
+                <span>Gasket Vol.: <span id="crGasketVol">--</span> cc</span>
+                <span>Deck Vol.: <span id="crDeckVol">--</span> cc</span>
+            </div>
         </div>
     </div>
 
