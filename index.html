@@ -5294,13 +5294,20 @@
     }
 
     function toggleGroup(btn, groupId) {
-        const groupDiv = document.getElementById(groupId);
-        let el = groupDiv.nextElementSibling;
-        const isCollapsing = btn.textContent.includes('einklappen');
-        while (el && !el.classList.contains('group-divider')) {
+        var groupDiv = document.getElementById(groupId);
+        if (!groupDiv) return;
+        var isCollapsing = btn.textContent.indexOf('einklappen') !== -1;
+        // Collect ALL elements between this group-divider and the next one
+        var container = document.getElementById('mainContent');
+        var allChildren = Array.from(container.children);
+        var groupIdx = allChildren.indexOf(groupDiv);
+        var count = 0;
+        for (var i = groupIdx + 1; i < allChildren.length; i++) {
+            var el = allChildren[i];
+            if (el.classList.contains('group-divider')) break;
             if (el.classList.contains('section')) {
-                const header = el.querySelector('.section-header');
-                const body = el.querySelector('.section-body');
+                var header = el.querySelector(':scope > .section-header');
+                var body = el.querySelector(':scope > .section-body');
                 if (header && body) {
                     if (isCollapsing) {
                         header.classList.add('collapsed');
@@ -5309,9 +5316,9 @@
                         header.classList.remove('collapsed');
                         body.classList.remove('collapsed');
                     }
+                    count++;
                 }
             }
-            el = el.nextElementSibling;
         }
         btn.textContent = isCollapsing ? 'Alles aufklappen' : 'Alles einklappen';
     }
