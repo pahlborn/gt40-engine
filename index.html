@@ -4482,35 +4482,15 @@
 
         // ==== CROSS-CHECKS ====
         var warnings = [];
+        var sysRpmLimit = (typeof SYSTEM_RPM_LIMIT !== 'undefined') ? SYSTEM_RPM_LIMIT : 6200;
+        var sysRpmLabel = (typeof SYSTEM_RPM_LABEL !== 'undefined') ? SYSTEM_RPM_LABEL : 'Nockenwelle';
 
-        // 1. Engine torque vs gearbox input rating
-        // UN1-13 Katalog-Dauerlast: 315 Nm. Praxiserfahrung zeigt jedoch,
-        // dass das Getriebe Motoren mit ~475 Nm Peak problemlos auf Trackdays
-        // ueberlebt. Die 315 Nm sind konservative Serien-Dauerlast-Angabe.
-        var peakEngineTq = 0;
-        for (var rpm = 1000; rpm <= redline; rpm += 50) {
-            var tq = getTorqueAtRPM(rpm);
-            if (tq > peakEngineTq) peakEngineTq = tq;
-        }
-        var peakEngineTqNm = Math.round(peakEngineTq * 1.3558);
-        var gearboxContRating = 315; // UN1-13 Katalog-Dauerlast
-        if (peakEngineTqNm > gearboxContRating) {
-            var pct = Math.round((peakEngineTqNm / gearboxContRating - 1) * 100);
-            var infoText = '<strong>Getriebe-Info:</strong> Motor-Spitzendrehmoment <strong>' + peakEngineTqNm + ' Nm</strong> liegt ' + pct + '% &uuml;ber der UN1-13 Katalog-Dauerlast (' + gearboxContRating + ' Nm).';
-            if (peakEngineTqNm > 550) {
-                infoText += ' <strong>Empfehlung:</strong> Getriebeoelk&uuml;hler + Quaife-LSD + regelm&auml;&szlig;ige Inspektion.';
-                warnings.push({type:'warning', text: infoText});
-            } else {
-                infoText += ' Praxiserfahrung zeigt, dass das Getriebe diese Belastung auf Trackdays bew&auml;ltigt. Empfohlen: Getriebeoelk&uuml;hler + regelm&auml;&szlig;ige &Ouml;lwechsel.';
-                warnings.push({type:'info', text: infoText});
-            }
+        // 1. RPM vs System limit (weakest link) - IMMER pruefen
+        if (redline > sysRpmLimit) {
+            warnings.push({type:'warning', text:'<strong>Drehzahl:</strong> Simulator-Redline (' + redline + ' RPM) &uuml;berschreitet Systemlimit <strong>' + sysRpmLimit + ' RPM</strong> (' + sysRpmLabel + '). Empf. Rev Limiter: ' + (sysRpmLimit + 300) + ' RPM.'});
         }
 
-        // 2. RPM vs System limit (weakest link)
-        if (redline > SYSTEM_RPM_LIMIT) {
-            warnings.push({type:'warning', text:'<strong>Drehzahl:</strong> Simulator-Redline (' + redline + ' RPM) &uuml;berschreitet Systemlimit <strong>' + SYSTEM_RPM_LIMIT + ' RPM</strong> (' + SYSTEM_RPM_LABEL + '). Empf. Rev Limiter: ' + (SYSTEM_RPM_LIMIT + 300) + ' RPM.'});
-        }
-        // 2b. RPM vs Rev Limiter field
+        // 2. RPM vs Rev Limiter field
         var revLimField = document.querySelector('[data-field="rev_limiter"]');
         if (revLimField && revLimField.value) {
             var revLimVal = parseInt(revLimField.value.replace(/[^\d]/g, ''));
@@ -4519,7 +4499,29 @@
             }
         }
 
-        // 3. V-max vs tire speed rating (Crossply ~200 km/h dauerhaft)
+        // 3. Engine torque vs gearbox input rating
+        try {
+            var peakEngineTq = 0;
+            for (var rpm = 1000; rpm <= redline; rpm += 50) {
+                var tq = getTorqueAtRPM(rpm);
+                if (tq > peakEngineTq) peakEngineTq = tq;
+            }
+            var peakEngineTqNm = Math.round(peakEngineTq * 1.3558);
+            var gearboxContRating = 315;
+            if (peakEngineTqNm > gearboxContRating) {
+                var pct = Math.round((peakEngineTqNm / gearboxContRating - 1) * 100);
+                var infoText = '<strong>Getriebe-Info:</strong> Motor-Spitzendrehmoment <strong>' + peakEngineTqNm + ' Nm</strong> liegt ' + pct + '% &uuml;ber der UN1-13 Katalog-Dauerlast (' + gearboxContRating + ' Nm).';
+                if (peakEngineTqNm > 550) {
+                    infoText += ' <strong>Empfehlung:</strong> Getriebeoelk&uuml;hler + Quaife-LSD + regelm&auml;&szlig;ige Inspektion.';
+                    warnings.push({type:'warning', text: infoText});
+                } else {
+                    infoText += ' Praxiserfahrung zeigt, dass das Getriebe diese Belastung auf Trackdays bew&auml;ltigt. Empfohlen: Getriebeoelk&uuml;hler + regelm&auml;&szlig;ige &Ouml;lwechsel.';
+                    warnings.push({type:'info', text: infoText});
+                }
+            }
+        } catch(e) { console.log('Torque cross-check error:', e); }
+
+        // 4. V-max vs tire speed rating (Crossply ~200 km/h dauerhaft)
         if (vTheorMax > 250) {
             warnings.push({type:'warning', text:'<strong>Reifen:</strong> Theoretische V-max ' + vTheorMax + ' km/h. Avon Crossply-Reifen sind f&uuml;r solche Geschwindigkeiten nicht ausgelegt. Max. empfohlen: ~220 km/h.'});
         }
