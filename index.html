@@ -5229,21 +5229,47 @@
         r.readAsText(file); event.target.value = '';
     }
     function clearAllData() {
-        if (confirm('ALLE Daten loeschen?\n\nDas betrifft:\n- Alle Messwerte und Eingaben\n- Alle Build-Log-Checklisten\n- Alle Fotos (Hauptseite + Build-Log)\n\nDieser Schritt kann nicht rueckgaengig gemacht werden!')) {
-            localStorage.removeItem('engineBuildLog');
-            localStorage.removeItem('engineBuildPhotos');
-            ['phase1','phase2','phase3','phase4'].forEach(function(g) {
-                localStorage.removeItem('buildPhotos_' + g);
-            });
-            photoData = {};
-            document.querySelectorAll('[data-field]').forEach(el => {
-                if (el.type === 'checkbox') el.checked = false; else el.value = '';
-                el.classList.remove('status-ok','status-warn','status-error');
-            });
-            document.querySelectorAll('[data-photo-group]').forEach(function(g) { g.innerHTML = ''; });
-            document.getElementById('saveStatus').innerHTML = '<span id="syncBadge"></span>';
-            updateSyncBadge(); showToast('Alle Daten geloescht (Hauptseite + Build-Log + Fotos).');
+        // Stufe 1: Warnung
+        if (!confirm('ALLE Daten loeschen?\n\nDas betrifft:\n- Alle Messwerte und Eingaben\n- Alle Build-Log-Checklisten\n- Alle Fotos (Hauptseite + Build-Log)\n\nDieser Schritt kann nicht rueckgaengig gemacht werden!')) return;
+        // Stufe 2: Sicherheitscode eingeben
+        var code = Math.floor(1000 + Math.random() * 9000).toString();
+        var input = prompt('Sicherheitsabfrage:\n\nBitte geben Sie den Code  ' + code + '  ein, um das Loeschen zu bestaetigen.\n\n(Abbrechen = Daten bleiben erhalten)');
+        if (input !== code) {
+            showToast('Loeschen abgebrochen.');
+            return;
         }
+        // Automatischer Export vor dem Loeschen
+        try {
+            var backup = {
+                fields: JSON.parse(localStorage.getItem('engineBuildLog') || '{}'),
+                photos_main: JSON.parse(localStorage.getItem('engineBuildPhotos') || '{}'),
+                photos_buildlog: {},
+                _backupBeforeReset: new Date().toISOString()
+            };
+            ['phase1','phase2','phase3','phase4'].forEach(function(g) {
+                var d = localStorage.getItem('buildPhotos_' + g);
+                if (d) backup.photos_buildlog[g] = JSON.parse(d);
+            });
+            var blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'engine-build-log_BACKUP_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') + '.json';
+            a.click(); URL.revokeObjectURL(a.href);
+        } catch(e) {}
+        // Jetzt loeschen
+        localStorage.removeItem('engineBuildLog');
+        localStorage.removeItem('engineBuildPhotos');
+        ['phase1','phase2','phase3','phase4'].forEach(function(g) {
+            localStorage.removeItem('buildPhotos_' + g);
+        });
+        photoData = {};
+        document.querySelectorAll('[data-field]').forEach(el => {
+            if (el.type === 'checkbox') el.checked = false; else el.value = '';
+            el.classList.remove('status-ok','status-warn','status-error');
+        });
+        document.querySelectorAll('[data-photo-group]').forEach(function(g) { g.innerHTML = ''; });
+        document.getElementById('saveStatus').innerHTML = '<span id="syncBadge"></span>';
+        updateSyncBadge(); showToast('Alle Daten geloescht. Backup wurde heruntergeladen.');
     }
 
     // ==== UI ====
