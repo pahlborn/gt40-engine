@@ -379,6 +379,17 @@
         .photo-lightbox .close-lb { position: absolute; top: 1rem; right: 1rem; color: white; font-size: 1.5rem; cursor: pointer; background: none; border: none; }
         .photo-lightbox .delete-lb { position: absolute; top: 1rem; left: 1rem; color: #fc8181; font-size: 0.8rem; cursor: pointer; background: rgba(0,0,0,0.5); border: 1px solid #fc8181; border-radius: 4px; padding: 0.3rem 0.6rem; }
 
+        /* ---- Check-Item Inline Note ---- */
+        .check-item { flex-wrap: wrap; }
+        .check-note {
+            width: 100%; margin-top: 0.15rem; padding: 0.25rem 0.5rem;
+            border: 1px dashed var(--border); border-radius: 4px;
+            font-size: 0.72rem; background: transparent; color: var(--text-light);
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .check-note:focus { border-color: var(--primary-light); background: white; color: var(--text); border-style: solid; }
+        .check-note::placeholder { color: #cbd5e0; font-style: italic; }
+
         /* ---- Build Phase ---- */
         .phase-header {
             display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.7rem;
@@ -2042,41 +2053,54 @@
         <button class="group-toggle" onclick="toggleGroup(this, 'grp-build')">Alles einklappen</button>
     </div>
 
+    <!-- ====== PHASE 1 ====== -->
     <div class="section">
         <div class="section-header" onclick="toggleSection(this)">
             <span class="section-icon">&#128221;</span>
-            <h2>Phase 1 &ndash; Eingangsr&uuml;fung</h2>
+            <h2>Phase 1 &ndash; Eingangskontrolle</h2>
         </div>
         <div class="section-body">
-            <div class="phase-header phase1"><span class="phase-num">1</span><span class="phase-title">Teile pr&uuml;fen &amp; messen &ndash; ohne bestellte Teile m&ouml;glich</span></div>
-            <p style="font-size:0.8rem;color:#718096;margin-bottom:0.6rem;">Diese Pr&uuml;fungen brauchen kein einziges Zukaufteil. Sie liefern die Werte, die Phase 2 steuern.</p>
+            <div class="phase-header phase1"><span class="phase-num">1</span><span class="phase-title">Alle Teile pr&uuml;fen &amp; messen &ndash; VOR dem ersten Zusammenbau</span></div>
+            <p style="font-size:0.8rem;color:#718096;margin-bottom:0.6rem;">Die Eingangskontrolle liefert die Werte, die Phase 2 steuern. Ohne diese Messungen ist kein Mock-up sinnvoll.</p>
 
-            <div class="check-item"><input type="checkbox" data-field="p1_chamber_vol" onchange="autoSave()"><span>AFR 1399 &ndash; Brennraumvolumen stichprobenartig pr&uuml;fen (Soll: 58 cc)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_deck_flat" onchange="autoSave()"><span>AFR 1399 &ndash; Dichtfl&auml;chen / Planheit mit Haarlineal (Sichtpr&uuml;fung)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_springs" onchange="autoSave()"><span>Federn #8605 und Retainer #8600 Titan best&auml;tigen gegen Rechnung</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_studs" onchange="autoSave()"><span>Rocker Studs 7/16" (Upgrade #6411) verbaut best&auml;tigen</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_spring_height" onchange="autoSave()"><span>Installed Spring Height, alle 16 &ndash; AFR-Spec &plusmn;0.015"</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_coilbind" onchange="autoSave()"><span>Coil-Bind-Reserve rechnerisch min. 0.060" &uuml;ber max. Hub</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_spring_open" onchange="autoSave()"><span>Federdruck open bei 0.565" pr&uuml;fen (Morel-Grenze beachten)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_keepers" onchange="autoSave()"><span>Ventilkeile 7&deg; passend zu #8600-Retainern best&auml;tigen</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_cam_visual" onchange="autoSave()"><span>XE274HR &ndash; Nocken- und Lagerfl&auml;chen sichtpr&uuml;fen (keine Riefen, kein Rost)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_cam_journals" onchange="autoSave()"><span>Alle 5 Nockenzapfen einzeln messen (gestuft oder gleich?)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_cam_bearing_type" onchange="autoSave()"><span>Verbauten Cam-Lagertyp bestimmen (R351 oder J351?)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_lifters" onchange="autoSave()"><span>Morel 5327 &ndash; 16 St&uuml;ck, Rollen leichtg&auml;ngig, 0.875" K&ouml;rper</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_rockers" onchange="autoSave()"><span>COMP 1632-16 &ndash; Trunnion ohne Spiel, 1.6:1 best&auml;tigen</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_arp_length" onchange="autoSave()"><span>ARP-Stehbolzen: L&auml;nge beider Typen messen gegen Kopfh&ouml;he + Gewindetiefe</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_deck_height" onchange="autoSave()"><span>Short Block &ndash; Deckh&ouml;he messen (Soll: 8.215" &plusmn; 0.005")</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_piston_deck" onchange="autoSave()"><span>Kolbenstand OT, alle 8 &ndash; ca. 0.010" unter Deck (Zyl. 1 + 5 zuerst!)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_oil_plug" onchange="autoSave()"><span>Silbernen -4 &Ouml;lkanalstopfen pr&uuml;fen (hinter Verteiler, 8&ndash;10 ft-lbs)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_threads" onchange="autoSave()"><span>Gewindeg&auml;nge Kopfbohrungen sauber, Sacklochbohrungen ausgeblasen</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p1_crank_turn" onchange="autoSave()"><span>Kurbelwelle von Hand gleichm&auml;&szlig;ig drehbar (kein Klemmen)</span></div>
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">Short Block (auf dem St&auml;nder)</p>
+            <div class="check-item"><input type="checkbox" data-field="p1_block_visual" onchange="autoSave()"><span>Block Sichtpr&uuml;fung &ndash; keine Risse, saubere Lauffl&auml;chen</span><input type="text" class="check-note" data-field="p1_block_visual_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_threads" onchange="autoSave()"><span>Alle Gewindebohrungen mit Tap durchjagen, Sacklochbohrungen ausblasen</span><input type="text" class="check-note" data-field="p1_threads_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_deck_height" onchange="autoSave()"><span>Deckh&ouml;he messen (Soll: 8.206" bei 0.010" piston deck)</span><input type="text" class="check-note" data-field="p1_deck_height_n" placeholder="Messwert..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_piston_deck" onchange="autoSave()"><span>Kolbenstand OT, alle 8 Zylinder (Zyl. 1 + 5 zuerst!)</span><input type="text" class="check-note" data-field="p1_piston_deck_n" placeholder="Zyl.1:___ 2:___ 3:___ 4:___ 5:___ 6:___ 7:___ 8:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_crank_turn" onchange="autoSave()"><span>Kurbelwelle von Hand gleichm&auml;&szlig;ig drehbar (kein Klemmen)</span><input type="text" class="check-note" data-field="p1_crank_turn_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_oil_plug" onchange="autoSave()"><span>&Ouml;lkanalstopfen -4 AN pr&uuml;fen (hinter Verteileranschluss, 8&ndash;10 ft-lbs)</span><input type="text" class="check-note" data-field="p1_oil_plug_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_cam_bearing_type" onchange="autoSave()"><span>Verbauten Cam-Lagertyp bestimmen (R351 oder J351?)</span><input type="text" class="check-note" data-field="p1_cam_bearing_type_n" placeholder="Typ:..." oninput="autoSave()"></div>
+
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">Nockenwelle &amp; Ventiltrieb (auf der Werkbank)</p>
+            <div class="check-item"><input type="checkbox" data-field="p1_cam_visual" onchange="autoSave()"><span>XE274HR &ndash; Nocken und Lagerfl&auml;chen sichtpr&uuml;fen (Riefen, Rost, Verpackungsschaden)</span><input type="text" class="check-note" data-field="p1_cam_visual_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_cam_journals" onchange="autoSave()"><span>Alle 5 Nockenwellenzapfen messen (gestuft oder gleich?)</span><input type="text" class="check-note" data-field="p1_cam_journals_n" placeholder="#1:___ #2:___ #3:___ #4:___ #5:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_lifters" onchange="autoSave()"><span>Morel 5327 &ndash; 16 St&uuml;ck z&auml;hlen, Rollen leichtg&auml;ngig, 0.875" K&ouml;rperdurchmesser</span><input type="text" class="check-note" data-field="p1_lifters_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_rockers" onchange="autoSave()"><span>COMP 1632-16 &ndash; 16 St&uuml;ck, Trunnion ohne Spiel, 1.6:1 Verh&auml;ltnis</span><input type="text" class="check-note" data-field="p1_rockers_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_polylocks" onchange="autoSave()"><span>COMP 4600-16 Polylocks &ndash; 16 St&uuml;ck, Gewinde g&auml;ngig</span><input type="text" class="check-note" data-field="p1_polylocks_n" placeholder="Befund..." oninput="autoSave()"></div>
+
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">Zylinderk&ouml;pfe AFR 1399 (auf der Werkbank)</p>
+            <div class="check-item"><input type="checkbox" data-field="p1_deck_flat" onchange="autoSave()"><span>Dichtfl&auml;chen / Planheit mit Haarlineal (Sichtpr&uuml;fung)</span><input type="text" class="check-note" data-field="p1_deck_flat_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_chamber_vol" onchange="autoSave()"><span>Brennraumvolumen stichprobenartig pr&uuml;fen (Soll: 58 cc)</span><input type="text" class="check-note" data-field="p1_chamber_vol_n" placeholder="Messwert cc..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_studs" onchange="autoSave()"><span>Rocker Studs 7/16" (Upgrade #6411) verbaut best&auml;tigen</span><input type="text" class="check-note" data-field="p1_studs_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_springs" onchange="autoSave()"><span>Federn #8605 und Retainer #8600 Titan gegen Rechnung best&auml;tigen</span><input type="text" class="check-note" data-field="p1_springs_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_spring_height" onchange="autoSave()"><span>Installed Spring Height alle 16 messen (AFR-Spec &plusmn; 0.015")</span><input type="text" class="check-note" data-field="p1_spring_height_n" placeholder="Min:___ Max:___ Durchschnitt:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_coilbind" onchange="autoSave()"><span>Coil-Bind-Reserve rechnerisch: min. 0.060" &uuml;ber max. Hub (0.565")</span><input type="text" class="check-note" data-field="p1_coilbind_n" placeholder="Reserve:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_spring_open" onchange="autoSave()"><span>Federdruck open bei 0.565" Hub pr&uuml;fen (Morel-Grenze beachten)</span><input type="text" class="check-note" data-field="p1_spring_open_n" placeholder="Druck lbs:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_keepers" onchange="autoSave()"><span>Ventilkeile 7&deg; passend zu Titan-Retainern #8600</span><input type="text" class="check-note" data-field="p1_keepers_n" placeholder="Befund..." oninput="autoSave()"></div>
+
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">Befestigungsmaterial</p>
+            <div class="check-item"><input type="checkbox" data-field="p1_arp_length" onchange="autoSave()"><span>ARP 154-4003 Stehbolzen: L&auml;nge beider Typen messen gegen Kopfh&ouml;he + Gewindetiefe</span><input type="text" class="check-note" data-field="p1_arp_length_n" placeholder="Kurz:___ Lang:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_arp_cam" onchange="autoSave()"><span>ARP 254-1001 Cam-Bolt &ndash; Gewinde sauber, Flansch plan</span><input type="text" class="check-note" data-field="p1_arp_cam_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p1_timing_set" onchange="autoSave()"><span>M-6268-A302 Timing Set &ndash; Kette straff, Kettenr&auml;der unbeschaedigt</span><input type="text" class="check-note" data-field="p1_timing_set_n" placeholder="Befund..." oninput="autoSave()"></div>
 
             <details class="tip-box">
                 <summary>Praxis-Tipp: Eingangskontrolle</summary>
                 <ul>
-                    <li><strong>Kolbenstand ist die wertvollste Messung:</strong> Die dokumentierte Verdichtung von 9,68:1 beruht auf einem angenommenen Kolbenstand von 0.010" unter Deck. Der reale Wert entscheidet &uuml;ber Verdichtung, Quench und ob die 0.040"-Kopfdichtung richtig ist.</li>
-                    <li><strong>Mess an Zylinder 1 UND 5</strong> &ndash; die Streuung zeigt, wie pr&auml;zise der Block gefertigt ist.</li>
-                    <li><strong>Sacklochbohrungen mit Druckluft trockenblasen</strong> &ndash; &Ouml;l in Sacklochbohrungen wirkt hydraulisch und verf&auml;lscht das Drehmoment oder sprengt den Block!</li>
+                    <li><strong>Kolbenstand ist die wertvollste Messung:</strong> Die berechnete Verdichtung beruht auf einem angenommenen Kolbenstand. Der reale Wert entscheidet &uuml;ber Verdichtung, Quench und ob die Kopfdichtung passt.</li>
+                    <li><strong>Messen an Zyl. 1 UND 5</strong> &ndash; die Streuung zeigt, wie pr&auml;zise der Block gefertigt ist.</li>
+                    <li><strong>Sacklochbohrungen mit Druckluft trockenblasen</strong> &ndash; &Ouml;l in Sacklochbohrungen wirkt hydraulisch und sprengt den Block!</li>
+                    <li><strong>Morel 5327 in &Ouml;l einlegen</strong> &ndash; mindestens 24h vor Phase 2.</li>
                 </ul>
             </details>
 
@@ -2090,6 +2114,7 @@
         </div>
     </div>
 
+    <!-- ====== PHASE 2 ====== -->
     <div class="section">
         <div class="section-header" onclick="toggleSection(this)">
             <span class="section-icon">&#128295;</span>
@@ -2097,33 +2122,45 @@
         </div>
         <div class="section-body">
             <div class="phase-header phase2"><span class="phase-num">2</span><span class="phase-title">Trockenlauf &ndash; alles zusammenbauen, nichts verbrauchen</span></div>
-            <p style="font-size:0.8rem;color:#718096;margin-bottom:0.6rem;">Motor einmal komplett zusammenbauen ohne Dichtmasse oder Einwegdichtungen. Am Ende kennst du jede L&auml;nge, jedes Spiel und jeden Freigang. <strong>Mock-up-Dichtung: Fel-Pro 1011-x</strong> &ndash; die M-6051-CP331 ist ein Kupferring-Einwegteil und bleibt bis Phase 3 in der Verpackung!</p>
+            <p style="font-size:0.8rem;color:#718096;margin-bottom:0.6rem;">Motor komplett zusammenbauen ohne Dichtmasse oder Einwegteile. Am Ende steht jede L&auml;nge, jedes Spiel, jeder Freigang fest. <strong>Mock-up-Kopfdichtung: Fel-Pro 1011-x verwenden!</strong> Die CP331 ist Einweg und bleibt bis Phase 3 in der Verpackung.</p>
 
-            <div class="check-item"><input type="checkbox" data-field="p2_cam_bearings" onchange="autoSave()"><span>Cam-Lager: nur bei Typkonflikt tauschen (&Ouml;lbohrungen ausrichten!)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_cam_install" onchange="autoSave()"><span>Nockenwelle einsetzen (Lagerzapfen &ouml;len, Nocken mit Assembly Lube)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_thrust_plate" onchange="autoSave()"><span>Thrust Plate &amp; Timing Set montieren &ndash; Axialspiel messen (0.001"&ndash;0.007")</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_degree" onchange="autoSave()"><span>Nockenwelle degreen &ndash; Intake Centerline gegen COMP Cam Card</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_lifters" onchange="autoSave()"><span>Morel 5327 einsetzen (vorher 24h in &Ouml;l! Link-Bars parallel zur Cam)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_mockup_head" onchange="autoSave()"><span>Mock-up-Dichtung + Kopf auflegen (handfest, kein Drehmoment)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_guideplates" onchange="autoSave()"><span>Guideplates montieren</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_pushrod" onchange="autoSave()"><span>Pushrod-L&auml;nge ermitteln (Ein- und Auslass getrennt, min. 2 Zylinder)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_sweep" onchange="autoSave()"><span>Rocker Sweep Pattern pr&uuml;fen (Filzstift-Methode)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_ptv" onchange="autoSave()"><span>P-V Clearance messen (Einlass &ge; 0.080" / Auslass &ge; 0.100")</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_ret_seal" onchange="autoSave()"><span>Retainer zu Schaftdichtung bei max. Hub (min. 0.060")</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_intake_dry" onchange="autoSave()"><span>Ansaugbr&uuml;cke trocken auflegen &ndash; Witness Marks, Versatz dokumentieren</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_valvecover" onchange="autoSave()"><span>Ventildeckel trocken auflegen &ndash; Freigang zu Rockern pr&uuml;fen</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_distributor" onchange="autoSave()"><span>Verteiler trocken einsetzen &ndash; Freigang zur Ansaugbr&uuml;cke</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_oilpan" onchange="autoSave()"><span>&Ouml;lwanne trocken anlegen &ndash; min. 0.150" zu Hauptlagerdeckeln</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_pickup" onchange="autoSave()"><span>Pickup zu Wannenboden: 1/2" &plusmn; 1/16"</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_pushrods_order" onchange="autoSave()"><span>Finale Pushrods bestellen (gemessene L&auml;nge, geh&auml;rtet, 5/16")</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p2_teardown" onchange="autoSave()"><span>Zerlegen, Teile beschriften und lagern (Lifter positionsrichtig!)</span></div>
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">Cam &amp; Steuertrieb</p>
+            <div class="check-item"><input type="checkbox" data-field="p2_cam_bearings" onchange="autoSave()"><span>Cam-Lager: Typ gegen Phase-1-Messung pr&uuml;fen, nur bei Typkonflikt tauschen</span><input type="text" class="check-note" data-field="p2_cam_bearings_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_cam_install" onchange="autoSave()"><span>Nockenwelle einsetzen (Zapfen &ouml;len, Nocken mit Assembly Lube)</span><input type="text" class="check-note" data-field="p2_cam_install_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_thrust_plate" onchange="autoSave()"><span>Thrust Plate + Timing Set M-6268-A302 montieren</span><input type="text" class="check-note" data-field="p2_thrust_plate_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_endplay" onchange="autoSave()"><span>Cam-Axialspiel messen (Soll: 0.001"&ndash;0.007")</span><input type="text" class="check-note" data-field="p2_endplay_n" placeholder="Messwert:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_lifter1" onchange="autoSave()"><span>Lifter auf Pr&uuml;fzylinder #1 einsetzen (f&uuml;r Degree-Messung)</span><input type="text" class="check-note" data-field="p2_lifter1_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_degree" onchange="autoSave()"><span>Nockenwelle degreen &ndash; Intake Centerline gegen COMP Cam Card pr&uuml;fen</span><input type="text" class="check-note" data-field="p2_degree_n" placeholder="ICL Soll:___ Ist:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_lifters_all" onchange="autoSave()"><span>Alle 16 Lifter einsetzen (Link-Bars parallel zur Cam, Flachseite zum Valley)</span><input type="text" class="check-note" data-field="p2_lifters_all_n" placeholder="Befund..." oninput="autoSave()"></div>
+
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">K&ouml;pfe &amp; Valvetrain (Mock-up)</p>
+            <div class="check-item"><input type="checkbox" data-field="p2_mockup_head" onchange="autoSave()"><span>Mock-up-Dichtung Fel-Pro 1011 + Kopf auflegen (handfest, KEIN Drehmoment)</span><input type="text" class="check-note" data-field="p2_mockup_head_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_guideplates" onchange="autoSave()"><span>Guideplates montieren (Schlitz nach au&szlig;en)</span><input type="text" class="check-note" data-field="p2_guideplates_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_pushrod" onchange="autoSave()"><span>Checking Pushrod CNC-TC6878 &ndash; L&auml;nge Ein- UND Auslass ermitteln (min. 2 Zylinder)</span><input type="text" class="check-note" data-field="p2_pushrod_n" placeholder="Einlass:___ Auslass:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_sweep" onchange="autoSave()"><span>Rocker Sweep pr&uuml;fen (Filzstift auf Ventilschaft, Band muss mittig + schmal sein)</span><input type="text" class="check-note" data-field="p2_sweep_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_ptv" onchange="autoSave()"><span>P-V Clearance &ndash; Knetmasse auf Kolben, leichte Federn, 2 Umdrehungen</span><input type="text" class="check-note" data-field="p2_ptv_n" placeholder="Einlass:___ Auslass:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_ret_seal" onchange="autoSave()"><span>Retainer-zu-Schaftdichtung bei max. Hub pr&uuml;fen (min. 0.060")</span><input type="text" class="check-note" data-field="p2_ret_seal_n" placeholder="Messwert:___" oninput="autoSave()"></div>
+
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">Trockenpassung Anbauteile</p>
+            <div class="check-item"><input type="checkbox" data-field="p2_intake_dry" onchange="autoSave()"><span>Ansaugbr&uuml;cke trocken auflegen &ndash; Port-Alignment, Witness Marks dokumentieren</span><input type="text" class="check-note" data-field="p2_intake_dry_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_oilpump_dry" onchange="autoSave()"><span>&Ouml;lpumpe + Welle trocken einsetzen &ndash; Welle greift in Pumpenantrieb?</span><input type="text" class="check-note" data-field="p2_oilpump_dry_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_timing_cover_dry" onchange="autoSave()"><span>Timing Cover trocken anlegen &ndash; Dichtfl&auml;che zum Block pr&uuml;fen</span><input type="text" class="check-note" data-field="p2_timing_cover_dry_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_oilpan" onchange="autoSave()"><span>&Ouml;lwanne trocken anlegen &ndash; Freigang Hauptlagerdeckel, passt zu Timing Cover?</span><input type="text" class="check-note" data-field="p2_oilpan_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_pickup" onchange="autoSave()"><span>Pickup-Abstand zum Wannenboden: 1/4"&ndash;3/8"</span><input type="text" class="check-note" data-field="p2_pickup_n" placeholder="Messwert:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_valvecover" onchange="autoSave()"><span>Ventildeckel trocken auflegen &ndash; Freigang zu Rockern</span><input type="text" class="check-note" data-field="p2_valvecover_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_distributor" onchange="autoSave()"><span>Verteiler trocken einsetzen &ndash; Freigang zur Ansaugbr&uuml;cke</span><input type="text" class="check-note" data-field="p2_distributor_n" placeholder="Befund..." oninput="autoSave()"></div>
+
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">Abschluss Mock-up</p>
+            <div class="check-item"><input type="checkbox" data-field="p2_pushrods_order" onchange="autoSave()"><span>Finale Pushrods bestellen (gemessene L&auml;nge, geh&auml;rtet, 5/16")</span><input type="text" class="check-note" data-field="p2_pushrods_order_n" placeholder="Bestellt: Einlass:___ Auslass:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p2_teardown" onchange="autoSave()"><span>Komplett zerlegen &ndash; Teile beschriften und lagern (Lifter positionsrichtig!)</span><input type="text" class="check-note" data-field="p2_teardown_n" placeholder="Befund..." oninput="autoSave()"></div>
 
             <details class="tip-box">
                 <summary>Praxis-Tipp: Mock-up</summary>
                 <ul>
-                    <li><strong>Pushrod-L&auml;nge:</strong> Cam auf Grundkreis drehen, Pr&uuml;fst&ouml;&szlig;el einbauen, Rocker montieren, Polylock auf Nullspiel + 1/2 Umdrehung. L&auml;nge abnehmen. Auf 0.025"-Raster runden &ndash; feiner werden Pushrods nicht angeboten.</li>
-                    <li><strong>Rocker Sweep:</strong> Ventilschaftende mit Filzstift schw&auml;rzen, Ventil von Hand &uuml;ber vollen Hub fahren. Schmales Band mittig = richtig. Zu weit au&szlig;en = Pushrod zu lang. Breite Spur = falsche L&auml;nge &ndash; kostet Ventilf&uuml;hrungen!</li>
-                    <li><strong>P-V Clearance:</strong> Knetmasse ~3mm dick auf Kolbenboden. Leichte Pr&uuml;ffedern statt der 8605er einsetzen! Kurbelwelle 2 volle Umdrehungen durchdrehen. Knete aufschneiden, d&uuml;nnste Stelle messen.</li>
+                    <li><strong>Pushrod-L&auml;nge:</strong> Cam auf Grundkreis drehen, Checking Pushrod einbauen, Rocker montieren, Polylock auf Nullspiel + 1/2 Umdrehung. L&auml;nge abnehmen. Auf 0.025"-Raster runden.</li>
+                    <li><strong>Rocker Sweep:</strong> Ventilschaftende mit Filzstift schw&auml;rzen, Ventil von Hand &uuml;ber vollen Hub fahren. Schmales Band mittig = richtig. Breite Spur = falsche L&auml;nge &ndash; kostet Ventilf&uuml;hrungen!</li>
+                    <li><strong>P-V Clearance:</strong> Knetmasse ~3mm dick auf Kolbenboden. Leichte Pr&uuml;ffedern statt der 8605er! Kurbelwelle 2 volle Umdrehungen. Knete aufschneiden, d&uuml;nnste Stelle messen.</li>
+                    <li><strong>Mock-up-Dichtung NICHT wiederverwenden</strong> f&uuml;r die Endmontage &ndash; sie ist danach gequetscht und dichtet nicht mehr zuverl&auml;ssig.</li>
                 </ul>
             </details>
 
@@ -2137,39 +2174,59 @@
         </div>
     </div>
 
+    <!-- ====== PHASE 3 ====== -->
     <div class="section">
         <div class="section-header" onclick="toggleSection(this)">
             <span class="section-icon">&#128297;</span>
             <h2>Phase 3 &ndash; Endmontage</h2>
         </div>
         <div class="section-body">
-            <div class="phase-header phase3"><span class="phase-num">3</span><span class="phase-title">Startbedingung: P-V freigegeben, Pushrods fix, Sweep sauber, Stehbolzen best&auml;tigt</span></div>
+            <div class="phase-header phase3"><span class="phase-num">3</span><span class="phase-title">Startbedingung: Pushrods geliefert, P-V freigegeben, Sweep OK</span></div>
 
-            <div class="check-item"><input type="checkbox" data-field="p3_clean" onchange="autoSave()"><span>Dichtfl&auml;chen reinigen (Bremsenreiniger, keine Drahtb&uuml;rste auf Aluminium!)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_blowout" onchange="autoSave()"><span>Kopfbohrungen ausblasen (&Ouml;l in Sacklochbohrungen = hydraulisch!)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_headgasket" onchange="autoSave()"><span>M-6051-CP331 auflegen, Wasserkanaele pruefen (Dichtung einzeln auf Block UND Kopf)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_studs" onchange="autoSave()"><span>Stehbolzen von Hand einsetzen (handfest, Gewindesicherung nur in Wassermantel-Bohrungen)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_arp_lube" onchange="autoSave()"><span>ARP Ultra-Torque auf Gewinde UND Mutterauflage</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_heads_on" onchange="autoSave()"><span>K&ouml;pfe aufsetzen (Passh&uuml;lsen beachten, nicht auf Dichtung verschieben!)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_heads_torque" onchange="autoSave()"><span>K&ouml;pfe anziehen: 3 Stufen, Kreuzmuster innen nach au&szlig;en</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_guideplates" onchange="autoSave()"><span>Guideplates + finale Pushrods &ndash; freien Lauf kontrollieren</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_rockers" onchange="autoSave()"><span>Rocker montieren, Preload einstellen (nur auf Grundkreis!)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_oilpump" onchange="autoSave()"><span>&Ouml;lpumpe + ARP-Welle + Pickup (Pickup verschrauben, nicht nur stecken!)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_oilpan" onchange="autoSave()"><span>&Ouml;lwanne, Ecken mit RTV (d&uuml;nne Raupe, 20 min abl&uuml;ften)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_timing" onchange="autoSave()"><span>Timing Cover + Balancer (0 oz Balancer, Spacer nicht vergessen!)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_intake" onchange="autoSave()"><span>Ansaugbr&uuml;cke mit Fel-Pro 1250 (Ecken RTV)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_sparkplugs" onchange="autoSave()"><span>Z&uuml;ndkerzen mit Anti-Seize (Gap 0.040")</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_dist_gear" onchange="autoSave()"><span>Verteilerritzel einsetzen (melonisiert f&uuml;r Roller Cam!)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_distributor" onchange="autoSave()"><span>Verteiler: OT Zyl. 1 im Verdichtungstakt, Rotor auf Kappenkerbe</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p3_valvecovers" onchange="autoSave()"><span>Ventildeckel (sehr wenig Moment &ndash; Aluminiumgewinde!)</span></div>
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">3a &ndash; Reinigung &amp; Vorbereitung</p>
+            <div class="check-item"><input type="checkbox" data-field="p3_clean" onchange="autoSave()"><span>Alle Dichtfl&auml;chen reinigen (Bremsenreiniger, KEINE Drahtb&uuml;rste auf Alu!)</span><input type="text" class="check-note" data-field="p3_clean_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_blowout" onchange="autoSave()"><span>Kopfbohrungen ausblasen &ndash; &Ouml;l in Sacklochbohrungen = hydraulisch!</span><input type="text" class="check-note" data-field="p3_blowout_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_all_parts" onchange="autoSave()"><span>Alle Teile griffbereit: Dichtungen, ARP Lube, RTV, Assembly Lube, Anti-Seize</span><input type="text" class="check-note" data-field="p3_all_parts_n" placeholder="Befund..." oninput="autoSave()"></div>
+
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">3b &ndash; Cam, Lifter &amp; &Ouml;lpumpe (Reihenfolge kritisch!)</p>
+            <div class="check-item"><input type="checkbox" data-field="p3_cam_lube" onchange="autoSave()"><span>Nockenwelle: Assembly Lube auf ALLE Nocken + Zapfen</span><input type="text" class="check-note" data-field="p3_cam_lube_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_cam_install" onchange="autoSave()"><span>Cam einsetzen (langer Bolzen als Griff, Nocken ber&uuml;hren nie die Lagerschalen)</span><input type="text" class="check-note" data-field="p3_cam_install_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_timing_set" onchange="autoSave()"><span>Thrust Plate + Timing Set M-6268-A302 + ARP Cam-Bolt (40&ndash;45 ft-lbs, ARP Lube)</span><input type="text" class="check-note" data-field="p3_timing_set_n" placeholder="Drehmoment:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_lifters" onchange="autoSave()"><span>Alle 16 Lifter einsetzen (Assembly Lube auf Rollen und K&ouml;rper)</span><input type="text" class="check-note" data-field="p3_lifters_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_oilpump" onchange="autoSave()"><span>&Ouml;lpumpe M-6600-D2 mit Assembly Lube f&uuml;llen und montieren (22&ndash;25 ft-lbs)</span><input type="text" class="check-note" data-field="p3_oilpump_n" placeholder="Drehmoment:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_oilshaft" onchange="autoSave()"><span>&Ouml;lpumpenwelle M-6605-B302 von oben einsetzen (greift in Pumpenantrieb)</span><input type="text" class="check-note" data-field="p3_oilshaft_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_pickup" onchange="autoSave()"><span>Pickup montieren und VERSCHRAUBEN (nicht nur stecken!)</span><input type="text" class="check-note" data-field="p3_pickup_n" placeholder="Befund..." oninput="autoSave()"></div>
+
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">3c &ndash; Zylinderk&ouml;pfe &amp; Valvetrain</p>
+            <div class="check-item"><input type="checkbox" data-field="p3_headgasket" onchange="autoSave()"><span>Kopfdichtung M-6051-CP331 auflegen &ndash; &quot;FRONT&quot; nach vorne!</span><input type="text" class="check-note" data-field="p3_headgasket_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_studs" onchange="autoSave()"><span>ARP 154-4003 Stehbolzen von Hand einsetzen (handfest, kein Werkzeug)</span><input type="text" class="check-note" data-field="p3_studs_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_arp_lube" onchange="autoSave()"><span>ARP Ultra-Torque auf Gewinde UND Mutterauflage beider Seiten</span><input type="text" class="check-note" data-field="p3_arp_lube_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_heads_on" onchange="autoSave()"><span>K&ouml;pfe aufsetzen (Passh&uuml;lsen! Nicht auf Dichtung verschieben!)</span><input type="text" class="check-note" data-field="p3_heads_on_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_heads_torque" onchange="autoSave()"><span>K&ouml;pfe anziehen: 3 Stufen (35 &rarr; 55 &rarr; 80/70 ft-lbs) Kreuz innen&rarr;au&szlig;en</span><input type="text" class="check-note" data-field="p3_heads_torque_n" placeholder="Stufe 1:___ 2:___ 3:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_guideplates" onchange="autoSave()"><span>Guideplates + finale Pushrods einsetzen &ndash; freien Lauf pr&uuml;fen</span><input type="text" class="check-note" data-field="p3_guideplates_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_rockers" onchange="autoSave()"><span>Rocker montieren, Preload einstellen (NUR auf Grundkreis! 1/4&ndash;1/2 Umdrehung)</span><input type="text" class="check-note" data-field="p3_rockers_n" placeholder="Befund..." oninput="autoSave()"></div>
+
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">3d &ndash; Abdichten (Reihenfolge: Cover &rarr; Wanne &rarr; Wasserpumpe)</p>
+            <div class="check-item"><input type="checkbox" data-field="p3_timing_cover" onchange="autoSave()"><span>Timing Cover + Dichtung + RTV (12&ndash;18 ft-lbs)</span><input type="text" class="check-note" data-field="p3_timing_cover_n" placeholder="Drehmoment:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_balancer" onchange="autoSave()"><span>Harmonic Balancer M-6316-D302 mit Einpresswerkzeug (70&ndash;90 ft-lbs, 0-oz!)</span><input type="text" class="check-note" data-field="p3_balancer_n" placeholder="Drehmoment:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_oilpan" onchange="autoSave()"><span>&Ouml;lwanne + Dichtung, RTV an 4 Ecken (10&ndash;12 ft-lbs, 20 min abl&uuml;ften!)</span><input type="text" class="check-note" data-field="p3_oilpan_n" placeholder="Drehmoment:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_waterpump" onchange="autoSave()"><span>Wasserpumpe MIL-16230 (15&ndash;22 ft-lbs, Std. Rotation)</span><input type="text" class="check-note" data-field="p3_waterpump_n" placeholder="Drehmoment:___" oninput="autoSave()"></div>
+
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">3e &ndash; Obere Anbauteile</p>
+            <div class="check-item"><input type="checkbox" data-field="p3_intake" onchange="autoSave()"><span>Ansaugbr&uuml;cke + Fel-Pro 1250 + RTV Ecken (5&rarr;12&rarr;18 ft-lbs, NICHT &uuml;berdrehen!)</span><input type="text" class="check-note" data-field="p3_intake_n" placeholder="Drehmoment:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_distributor" onchange="autoSave()"><span>Verteiler: OT Zyl. 1 Verdichtungstakt, Rotor zeigt auf Kappenkerbe Zyl. 1</span><input type="text" class="check-note" data-field="p3_distributor_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_sparkplugs" onchange="autoSave()"><span>Z&uuml;ndkerzen Autolite 3924 mit Anti-Seize (Gap 0.040", 15&ndash;22 ft-lbs)</span><input type="text" class="check-note" data-field="p3_sparkplugs_n" placeholder="Drehmoment:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_valvecovers" onchange="autoSave()"><span>Ventildeckel (4&ndash;6 ft-lbs, Alu-Gewinde!)</span><input type="text" class="check-note" data-field="p3_valvecovers_n" placeholder="Drehmoment:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p3_fuelpump" onchange="autoSave()"><span>Kraftstoffpumpen-Blockoff oder mech. Pumpe (handfest + 1/4 Umdrehung)</span><input type="text" class="check-note" data-field="p3_fuelpump_n" placeholder="Befund..." oninput="autoSave()"></div>
 
             <details class="tip-box">
                 <summary>Praxis-Tipp: Endmontage</summary>
                 <ul>
-                    <li><strong>Head Gasket FRONT beachten!</strong> R&uuml;ckw&auml;rts montiert = K&uuml;hlung unterbrochen = Motorschaden. H&auml;ufigster SBF-Fehler!</li>
-                    <li><strong>Kupfer-Kopfdichtung CP331 ist ein Einwegteil</strong> &ndash; erst in Phase 3 auspacken. F&uuml;r Mock-up die Fel-Pro 1011-x verwenden.</li>
-                    <li><strong>Ansaugbr&uuml;cke NICHT &uuml;berdrehen!</strong> 18 ft-lbs reicht. Das ist der #1-Fehler am SBF.</li>
-                    <li><strong>0 oz Balancer!</strong> Das Rotating Assembly ist neutral gewuchtet &ndash; ein 28-oz-Teil passt zu einem anderen Motor.</li>
+                    <li><strong>Head Gasket FRONT nach vorne!</strong> R&uuml;ckw&auml;rts = K&uuml;hlung unterbrochen = Motorschaden. H&auml;ufigster SBF-Fehler.</li>
+                    <li><strong>Kupfer-Dichtung CP331 ist Einweg</strong> &ndash; nie wiederverwenden, nie f&uuml;r Mock-up.</li>
+                    <li><strong>Timing Cover VOR &Ouml;lwanne!</strong> Die Wanne dichtet gegen die Unterkante des Covers.</li>
+                    <li><strong>Ansaugbr&uuml;cke 18 ft-lbs reicht!</strong> &Uuml;berdrehen zerst&ouml;rt die Kopfdichtung.</li>
+                    <li><strong>0-oz Balancer!</strong> Neutral gewuchtet &ndash; 28-oz passt zu einem anderen Motor.</li>
                 </ul>
             </details>
 
@@ -2178,11 +2235,12 @@
 
             <div class="section-comment">
                 <label>Notizen Phase 3</label>
-                <textarea data-field="comment_phase3" placeholder="Montage-Notizen, Besonderheiten..." oninput="autoSave()"></textarea>
+                <textarea data-field="comment_phase3" placeholder="Montage-Notizen, Drehmomente, Besonderheiten..." oninput="autoSave()"></textarea>
             </div>
         </div>
     </div>
 
+    <!-- ====== PHASE 4 ====== -->
     <div class="section">
         <div class="section-header" onclick="toggleSection(this)">
             <span class="section-icon">&#127937;</span>
@@ -2191,33 +2249,41 @@
         <div class="section-body">
             <div class="phase-header phase4"><span class="phase-num">4</span><span class="phase-title">Hydraulic Roller braucht KEIN 20-Min-Break-in &ndash; Rollen laufen sofort richtig</span></div>
 
-            <div class="check-item"><input type="checkbox" data-field="p4_preoil" onchange="autoSave()"><span>Vor&ouml;len mit Melling PT11 &ndash; bis &Ouml;l an allen Rockern austritt, Kurbelwelle 90&deg; weiterdrehen</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_oilpressure_prime" onchange="autoSave()"><span>&Ouml;ldruck beim Vor&ouml;len ablesen (baut Druck auf = gr&uuml;nes Licht)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_breakin_oil" onchange="autoSave()"><span>Break-in-&Ouml;l einf&uuml;llen (ZDDP-haltig, Menge nach Wannen-Spec + Filter)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_coolant" onchange="autoSave()"><span>K&uuml;hlsystem f&uuml;llen und entl&uuml;ften</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_fuel" onchange="autoSave()"><span>Kraftstoffsystem pr&uuml;fen (Facet-Pumpen, max. 0,45 bar)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_timing_static" onchange="autoSave()"><span>Z&uuml;ndzeitpunkt statisch voreinstellen (~12&deg; vor OT)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_revlimiter" onchange="autoSave()"><span>Rev-Limiter MSD 6AL auf 6.500 RPM (Chip einsetzen)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_preload_recheck" onchange="autoSave()"><span>Preload aller 16 Ventile nochmals pr&uuml;fen</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_wiring" onchange="autoSave()"><span>Leitungen, Kabel, Massepunkte pr&uuml;fen</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_safety" onchange="autoSave()"><span style="color:#c53030;font-weight:700;">Feuerl&ouml;scher bereit, Helfer dabei!</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_start" onchange="autoSave()"><span>START &ndash; sofort 2.000&ndash;2.500 RPM bis Betriebstemperatur (Drehzahl variieren!)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_oil_idle" onchange="autoSave()"><span>&Ouml;ldruck warm im Leerlauf: 25&ndash;35 psi</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_oil_part" onchange="autoSave()"><span>&Ouml;ldruck Teillast: 45&ndash;55 psi</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_oil_full" onchange="autoSave()"><span>&Ouml;ldruck Volllast 6.500 RPM: 60&ndash;70 psi</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_timing_final" onchange="autoSave()"><span>Z&uuml;ndzeitpunkt final: 34&ndash;36&deg; gesamt, voll bei ~3.000 RPM</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_retorque" onchange="autoSave()"><span>Kopfschrauben nach erstem W&auml;rmezyklus nachziehen (Motor kalt!)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_oilchange" onchange="autoSave()"><span>&Ouml;lwechsel, Filter aufschneiden und begutachten</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_sparkread" onchange="autoSave()"><span>Kerzenbild lesen (ggf. W&auml;rmebereich anpassen)</span></div>
-            <div class="check-item"><input type="checkbox" data-field="p4_sync" onchange="autoSave()"><span>DellOrto synchronisieren, Lambda beide B&auml;nke loggen</span></div>
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">4a &ndash; Vor dem Start</p>
+            <div class="check-item"><input type="checkbox" data-field="p4_preoil" onchange="autoSave()"><span>Vor&ouml;len (Melling PT11 + Bohrmaschine) bis &Ouml;l an allen 16 Rockern austritt</span><input type="text" class="check-note" data-field="p4_preoil_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_preoil_crank" onchange="autoSave()"><span>W&auml;hrend Vor&ouml;len Kurbelwelle 4x 90&deg; weiterdrehen (alle Lager versorgen)</span><input type="text" class="check-note" data-field="p4_preoil_crank_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_oilpressure_prime" onchange="autoSave()"><span>&Ouml;ldruck beim Vor&ouml;len kontrollieren (Manometer zeigt Druck = OK)</span><input type="text" class="check-note" data-field="p4_oilpressure_prime_n" placeholder="Druck:___ psi" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_breakin_oil" onchange="autoSave()"><span>Break-in-&Ouml;l einf&uuml;llen (ZDDP-haltig, z.B. Brad Penn, Driven BR30)</span><input type="text" class="check-note" data-field="p4_breakin_oil_n" placeholder="Produkt + Menge:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_coolant" onchange="autoSave()"><span>K&uuml;hlsystem f&uuml;llen und entl&uuml;ften</span><input type="text" class="check-note" data-field="p4_coolant_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_fuel" onchange="autoSave()"><span>Kraftstoffsystem pr&uuml;fen &ndash; Facet-Pumpen schalten, max. 0,45 bar</span><input type="text" class="check-note" data-field="p4_fuel_n" placeholder="Druck:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_timing_static" onchange="autoSave()"><span>Z&uuml;ndzeitpunkt statisch voreinstellen (~12&deg; vor OT)</span><input type="text" class="check-note" data-field="p4_timing_static_n" placeholder="Einstellung:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_revlimiter" onchange="autoSave()"><span>MSD 6AL Rev-Limiter auf 6.500 RPM (Chip einsetzen)</span><input type="text" class="check-note" data-field="p4_revlimiter_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_preload_recheck" onchange="autoSave()"><span>Preload aller 16 Ventile nochmals pr&uuml;fen (auf Grundkreis!)</span><input type="text" class="check-note" data-field="p4_preload_recheck_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_wiring" onchange="autoSave()"><span>Kabel, Leitungen, Massepunkte, Z&uuml;ndfolge kontrollieren</span><input type="text" class="check-note" data-field="p4_wiring_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_safety" onchange="autoSave()"><span style="color:#c53030;font-weight:700;">Feuerl&ouml;scher bereit! Helfer dabei! Abgasabfuhr sichergestellt!</span><input type="text" class="check-note" data-field="p4_safety_n" placeholder="Befund..." oninput="autoSave()"></div>
+
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">4b &ndash; Erststart</p>
+            <div class="check-item"><input type="checkbox" data-field="p4_start" onchange="autoSave()"><span>START &ndash; sofort auf 2.000&ndash;2.500 RPM, Drehzahl variieren!</span><input type="text" class="check-note" data-field="p4_start_n" placeholder="Uhrzeit:___ Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_oil_running" onchange="autoSave()"><span>&Ouml;ldruck bei 2.000 RPM warm: 40&ndash;55 psi</span><input type="text" class="check-note" data-field="p4_oil_running_n" placeholder="Druck:___ psi" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_leaks" onchange="autoSave()"><span>Sichtpr&uuml;fung: &Ouml;l, K&uuml;hlmittel, Kraftstoff &ndash; keine Leckagen</span><input type="text" class="check-note" data-field="p4_leaks_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_temp" onchange="autoSave()"><span>K&uuml;hlmitteltemperatur steigt gleichm&auml;&szlig;ig, Thermostat &ouml;ffnet</span><input type="text" class="check-note" data-field="p4_temp_n" placeholder="Temp:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_timing_warm" onchange="autoSave()"><span>Z&uuml;ndzeitpunkt warm pr&uuml;fen (Stroboskop, Vakuumschlauch ab)</span><input type="text" class="check-note" data-field="p4_timing_warm_n" placeholder="Grad:___" oninput="autoSave()"></div>
+
+            <p style="font-size:0.75rem;font-weight:700;color:var(--primary);margin:0.6rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">4c &ndash; Nach dem Erststart</p>
+            <div class="check-item"><input type="checkbox" data-field="p4_oil_idle" onchange="autoSave()"><span>&Ouml;ldruck warm Leerlauf: 25&ndash;35 psi</span><input type="text" class="check-note" data-field="p4_oil_idle_n" placeholder="Druck:___ psi" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_timing_final" onchange="autoSave()"><span>Z&uuml;ndzeitpunkt final einstellen: 34&ndash;36&deg; gesamt, voll bei ~3.000 RPM</span><input type="text" class="check-note" data-field="p4_timing_final_n" placeholder="Grad:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_retorque" onchange="autoSave()"><span>Motor kalt: Kopfmuttern nachziehen (ARP: gleiches Drehmoment nochmals)</span><input type="text" class="check-note" data-field="p4_retorque_n" placeholder="Befund..." oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_oilchange" onchange="autoSave()"><span>&Ouml;lwechsel nach 30&ndash;50 km &ndash; Filter aufschneiden und begutachten</span><input type="text" class="check-note" data-field="p4_oilchange_n" placeholder="Befund Filterpapier:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_sparkread" onchange="autoSave()"><span>Kerzenbild lesen (rehbraun = OK, hell = mager, schwarz = fett)</span><input type="text" class="check-note" data-field="p4_sparkread_n" placeholder="Befund:___" oninput="autoSave()"></div>
+            <div class="check-item"><input type="checkbox" data-field="p4_sync" onchange="autoSave()"><span>DellOrto synchronisieren, Lambda beide B&auml;nke loggen</span><input type="text" class="check-note" data-field="p4_sync_n" placeholder="Lambda L:___ R:___" oninput="autoSave()"></div>
 
             <details class="tip-box">
                 <summary>Praxis-Tipp: Erststart</summary>
                 <ul>
-                    <li><strong>Kein &Ouml;ldruck nach 10 Sekunden = SOFORT abstellen!</strong> Nochmals vor&ouml;len, Ursache suchen.</li>
-                    <li><strong>NICHT im Standgas laufen lassen</strong> &ndash; sofort auf 2.000&ndash;2.500 RPM, leicht variieren. Hydraulic Roller braucht kein Flachst&ouml;&szlig;el-Einlaufritual.</li>
-                    <li><strong>&Ouml;lfilter aufschneiden:</strong> Sauberes Filterpapier = bestandene Pr&uuml;fung. Metallsp&auml;ne = Problem finden!</li>
-                    <li><strong>Kerzenbild:</strong> Heller Porzellanfu&szlig; = zu mager. Ru&szlig;ig schwarz = zu fett. Rehbraun = perfekt.</li>
+                    <li><strong>Kein &Ouml;ldruck nach 10 Sek. = SOFORT abstellen!</strong> Nochmals vor&ouml;len, Ursache suchen (Welle nicht eingegriffen? Pumpe trocken?).</li>
+                    <li><strong>NICHT im Standgas laufen lassen</strong> &ndash; sofort 2.000&ndash;2.500 RPM, variieren. Hydraulic Roller braucht kein Flachst&ouml;&szlig;el-Ritual.</li>
+                    <li><strong>&Ouml;lfilter aufschneiden:</strong> Sauberes Papier = Pr&uuml;fung bestanden. Metallsp&auml;ne = Problem finden, nicht ignorieren.</li>
+                    <li><strong>Kerzenbild:</strong> Porzellanfu&szlig; rehbraun = perfekt. Hell = zu mager (gef&auml;hrlich!). Ru&szlig;ig = zu fett.</li>
                 </ul>
             </details>
 
