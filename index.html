@@ -469,6 +469,7 @@
         <button class="nav-item" onclick="scrollToGroup('grp-specs')" id="nav-specs">&#128295; Specs</button>
         <a class="nav-item" href="build-log.html" id="nav-build">&#128736; Build Log</a>
         <button class="nav-item" onclick="scrollToGroup('grp-ref')" id="nav-ref">&#128218; Reference</button>
+        <button id="langToggle" onclick="toggleLang()" style="width:36px;min-width:36px;height:44px;border:none;background:none;cursor:pointer;font-size:1.1rem;border-left:1px solid rgba(255,255,255,0.15);" title="DE / EN">&#127465;&#127466;</button>
         <div style="position:relative;">
             <button class="header-gear" onclick="toggleToolMenu()" id="toolMenuBtn">&#9881;</button>
             <div id="toolMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:2px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:180px;z-index:200;overflow:hidden;">
@@ -5005,8 +5006,106 @@
         if (pctEl) pctEl.textContent = totalPct + '%';
     }
 
+    // ==== i18n LANGUAGE TOGGLE ====
+    var currentLang = localStorage.getItem('engineBuildLang') || 'de';
+
+    // Dictionary: DE text -> EN text. Only UI strings, not technical terms.
+    var i18nDict = {
+        // -- Header & Nav --
+        'Overview': 'Overview', 'Specs': 'Specs', 'Build Log': 'Build Log', 'Reference': 'Reference',
+        // -- Gear Menu --
+        'Save': 'Save', 'Cloud Sync': 'Cloud Sync', 'Export': 'Export', 'Import': 'Import',
+        'Print': 'Print', 'Settings': 'Settings', 'Reset': 'Reset', 'Torque Card': 'Torque Card',
+        // -- Section Headers --
+        '\u00dcbersicht': 'Overview', 'Spezifikationen': 'Specifications', 'Referenz': 'Reference',
+        'Projektdaten': 'Project Data', 'Zielkonfiguration': 'Target Configuration',
+        'Verdichtungsrechner': 'Compression Calculator', 'Quench-Kalkulator': 'Quench Calculator',
+        'Block & Kurbeltrieb': 'Block & Crankshaft', 'Kolben & Pleuel': 'Pistons & Connecting Rods',
+        'Zylinderk\u00f6pfe': 'Cylinder Heads', 'Ventiltrieb': 'Valvetrain',
+        'Ansaugbr\u00fccke': 'Intake Manifold', 'Z\u00fcndkerzen': 'Spark Plugs',
+        '\u00d6lsystem': 'Oil System', 'Timing Cover & Balancer': 'Timing Cover & Balancer',
+        'Wasserpumpe': 'Water Pump', 'Z\u00fcndsystem': 'Ignition System',
+        'Kupplung & Antrieb': 'Clutch & Drivetrain', 'Antriebsstrang': 'Drivetrain',
+        'Streckenanalyse & Fahrzeugeinsch\u00e4tzung': 'Track Analysis & Vehicle Assessment',
+        // -- Group headers --
+        'Alles einklappen': 'Collapse all', 'Alles aufklappen': 'Expand all',
+        // -- Labels --
+        'Baubezeichnung': 'Build Designation', 'Baudatum': 'Build Date', 'Motorenbauer': 'Engine Builder',
+        'Fahrzeug': 'Vehicle', 'Ziel-Leistung': 'Target Power', 'Ziel-Drehmoment': 'Target Torque',
+        'Ziel-Verdichtung': 'Target CR', 'Einsatzzweck': 'Intended Use', 'Strecken': 'Tracks',
+        'Kraftstoff': 'Fuel', 'Kommentar': 'Comment', 'Anmerkungen': 'Notes',
+        // -- Common UI --
+        'Gespeichert': 'Saved', 'Exportiert': 'Exported', 'Importiert': 'Imported',
+        'Treffer': 'matches', 'keine': 'none', 'Suchen...': 'Search...',
+        'Vorbereitung': 'Preparation', 'Werkzeuge': 'Tools', 'Betriebsmittel': 'Consumables',
+        'F\u00fcllmengen': 'Fill Quantities', 'Anzugswerte': 'Torque Values',
+        'Mess- & Pr\u00fcfwerte': 'Measurements & Specs', 'Freigabekriterien': 'Release Criteria',
+        'Praxis-Tipps': 'Practical Tips', 'Fotodokumentation': 'Photo Documentation',
+        'Zeitbedarf': 'Time Required',
+        // -- Ford Performance --
+        'Herstellerhinweise': 'Manufacturer Notes', 'Unser Build': 'Our Build', 'Status': 'Status',
+        'Ford Performance Vorgabe': 'Ford Performance Requirement',
+        'Allgemeine Warnungen': 'General Warnings',
+        // -- Drivetrain --
+        'Drehmomentgrenze': 'Torque Limit', 'Getriebe': 'Transmission',
+        'Differential': 'Differential', 'Bereifung': 'Tires',
+        // -- Converter --
+        'Einheiten-Umrechner': 'Unit Converter', 'Drehmoment': 'Torque',
+        'L\u00e4nge / Spalt': 'Length / Gap', 'Volumen (Brennraum)': 'Volume (Chamber)',
+        // -- Settings --
+        'Verbinden': 'Connect', 'Trennen': 'Disconnect', 'Abbrechen': 'Cancel',
+        // -- Misc --
+        'Anleitung': 'Guide', 'Pr\u00fcfen': 'Check', 'Bestellen': 'Order',
+        'Dokumentiert': 'Documented', 'Achtsamkeit': 'Caution',
+        'Gesamtbewertung': 'Overall Assessment',
+    };
+
+    // Build reverse dict for EN->DE
+    var i18nReverse = {};
+    Object.keys(i18nDict).forEach(function(k) { if (i18nDict[k] !== k) i18nReverse[i18nDict[k]] = k; });
+
+    function setLang(lang) {
+        currentLang = lang;
+        localStorage.setItem('engineBuildLang', lang);
+        document.documentElement.lang = lang === 'de' ? 'de' : 'en';
+        // Update flag button
+        var btn = document.getElementById('langToggle');
+        if (btn) btn.textContent = lang === 'de' ? '\uD83C\uDDE9\uD83C\uDDEA' : '\uD83C\uDDFA\uD83C\uDDF8';
+        // Walk DOM and translate text nodes
+        var dict = lang === 'en' ? i18nDict : i18nReverse;
+        var keys = Object.keys(dict);
+        if (keys.length === 0) return;
+        var container = document.body;
+        var walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+        while (walker.nextNode()) {
+            var node = walker.currentNode;
+            if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE' || node.parentElement.tagName === 'TEXTAREA' || node.parentElement.tagName === 'INPUT')) continue;
+            var text = node.textContent;
+            var changed = false;
+            keys.forEach(function(k) {
+                if (text.indexOf(k) >= 0) {
+                    text = text.split(k).join(dict[k]);
+                    changed = true;
+                }
+            });
+            if (changed) node.textContent = text;
+        }
+        // Translate placeholders
+        document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(function(el) {
+            var ph = el.placeholder;
+            keys.forEach(function(k) {
+                if (ph.indexOf(k) >= 0) el.placeholder = ph.split(k).join(dict[k]);
+            });
+        });
+    }
+
+    function toggleLang() {
+        setLang(currentLang === 'de' ? 'en' : 'de');
+    }
+
     // ==== INIT ====
     generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData(); loadSubPages(); updateBuildDashboard(); setTimeout(runCrossChecks, 500);
+    if (currentLang === 'en') setTimeout(function() { setLang('en'); }, 100);
 </script>
 </body>
 </html>
