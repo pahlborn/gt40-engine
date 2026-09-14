@@ -4777,8 +4777,38 @@
     }
 
     // ==== UI ====
-    function toggleComp(el) { el.classList.toggle('open'); el.nextElementSibling.classList.toggle('open'); }
-    function toggleSection(h) { h.classList.toggle('collapsed'); h.nextElementSibling.classList.toggle('collapsed'); }
+    function toggleComp(el) { el.classList.toggle('open'); el.nextElementSibling.classList.toggle('open'); saveCollapseState(); }
+    function toggleSection(h) { h.classList.toggle('collapsed'); h.nextElementSibling.classList.toggle('collapsed'); saveCollapseState(); }
+
+    function saveCollapseState() {
+        var state = {};
+        document.querySelectorAll('.section-header').forEach(function(h, i) {
+            if (h.classList.contains('collapsed')) state['s' + i] = 1;
+        });
+        document.querySelectorAll('.comp-toggle').forEach(function(t, i) {
+            if (t.classList.contains('open')) state['c' + i] = 1;
+        });
+        localStorage.setItem('engineBuildLog_collapse', JSON.stringify(state));
+    }
+    function restoreCollapseState() {
+        var raw = localStorage.getItem('engineBuildLog_collapse');
+        if (!raw) return;
+        try {
+            var state = JSON.parse(raw);
+            document.querySelectorAll('.section-header').forEach(function(h, i) {
+                if (state['s' + i]) {
+                    h.classList.add('collapsed');
+                    if (h.nextElementSibling) h.nextElementSibling.classList.add('collapsed');
+                }
+            });
+            document.querySelectorAll('.comp-toggle').forEach(function(t, i) {
+                if (state['c' + i]) {
+                    t.classList.add('open');
+                    if (t.nextElementSibling) t.nextElementSibling.classList.add('open');
+                }
+            });
+        } catch(e) {}
+    }
     function showToast(msg) {
         const t = document.getElementById('toast'); t.textContent = msg;
         t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500);
@@ -5661,7 +5691,7 @@
     }
 
     // ==== INIT ====
-    generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData(); loadSubPages(); updateBuildDashboard(); setTimeout(runCrossChecks, 500);
+    generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData(); loadSubPages(); updateBuildDashboard(); restoreCollapseState(); setTimeout(runCrossChecks, 500);
     if (currentLang === 'en') setTimeout(function() { setLang('en'); }, 100);
 </script>
 </body>
