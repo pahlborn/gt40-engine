@@ -409,12 +409,12 @@
             margin-top: 0.5rem; max-width: 500px; margin-left: auto; margin-right: auto;
         }
         .search-bar input {
-            flex: 1; padding: 0.45rem 0.7rem; border: 1px solid rgba(255,255,255,0.4);
-            background: rgba(255,255,255,0.15); color: white; border-radius: 6px;
+            flex: 1; padding: 0.45rem 0.7rem; border: 1px solid rgba(255,255,255,0.5);
+            background: white; color: var(--text); border-radius: 6px;
             font-size: 0.82rem; outline: none;
         }
-        .search-bar input::placeholder { color: rgba(255,255,255,0.55); }
-        .search-bar input:focus { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.7); }
+        .search-bar input::placeholder { color: #a0aec0; }
+        .search-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(237,137,54,0.3); }
         .search-nav { display: flex; align-items: center; gap: 0.2rem; }
         .search-nav button {
             padding: 0.3rem 0.5rem; min-height: 32px; border: none;
@@ -464,18 +464,26 @@
 
 <!-- ===== HEADER ===== -->
 <div class="header">
-    <h1>Engine Build Measurement Log</h1>
-    <p>Ford 302 SBF (Boss Block M-6009-302) &mdash; AFR 165 Renegade</p>
+    <h1>Engine Build &amp; Measurement Log</h1>
+    <p>Ford 302ci BOSS (M-6009-302) &bull; COMP XE274HR</p>
     <div class="toolbar">
-        <button class="save-btn" onclick="saveData()">Speichern</button>
-        <button class="sync-btn" id="syncBtn" onclick="syncFromCloud()">Cloud Sync</button>
-        <button onclick="exportJSON()">Export</button>
-        <button onclick="document.getElementById('importFile').click()">Import</button>
-        <button onclick="clearAllData()">Reset</button>
-        <button onclick="window.print()">Drucken</button>
-        <button style="background:#c53030;border-color:#c53030;" onclick="showGuide('guide-torque')">Drehmomente</button>
+        <button style="background:#2c5282;border-color:#2c5282;" onclick="showGuide('guide-torque')">Torque Card</button>
         <button style="background:#ed8936;border-color:#ed8936;" onclick="showGuide('guide-glossary')">Glossar</button>
-        <button class="settings-btn" onclick="openSettings()">Einstellungen</button>
+        <div style="position:relative;display:inline-block;">
+            <button class="settings-btn" onclick="toggleToolMenu()" id="toolMenuBtn">&#9881; Men&uuml;</button>
+            <div id="toolMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:4px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.2);min-width:160px;z-index:200;overflow:hidden;">
+                <button onclick="saveData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128190; Speichern</button>
+                <button onclick="syncFromCloud();closeToolMenu()" id="syncBtn" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud Sync</button>
+                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
+                <button onclick="exportJSON();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
+                <button onclick="document.getElementById('importFile').click();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
+                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
+                <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Drucken</button>
+                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Einstellungen</button>
+                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
+                <button onclick="clearAllData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--danger);font-size:0.78rem;cursor:pointer;">&#128465; Reset</button>
+            </div>
+        </div>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
     </div>
     <div class="nav-bar">
@@ -1910,13 +1918,46 @@
                 <input type="checkbox" data-field="check_ign_revlimiter" onchange="autoSave()">
                 <span>Rev Limiter gesetzt (empfohlen: 6.500 RPM)</span>
             </div>
+
+            <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#276749;">&#128295; MSD 8479 &ndash; Advance Springs &amp; Bushings (Quelle: MSD 8479.pdf)</div>
+                <div class="comp-body">
+                    <p style="font-size:0.76rem;margin-bottom:0.4rem;">Die Advance-Kurve bestimmt, wie schnell der Z&uuml;ndzeitpunkt von Initial auf Total steigt. Langsame Kurve = weniger Klopfneigung. MSD liefert 2x Heavy Silver (langsamste Kurve). Kombinationen:</p>
+                    <table style="width:100%;font-size:0.76rem;border-collapse:collapse;margin-bottom:0.5rem;">
+                        <tr style="background:#c6f6d5;"><th style="padding:0.3rem;text-align:left;">Kombination</th><th style="padding:0.3rem;">Federn</th><th style="padding:0.3rem;">Kurve</th></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>A (Werks)</strong></td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">2&times; Heavy Silver</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">Langsamste</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>B</strong></td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">1&times; Heavy Silver + 1&times; Light Blue</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">Mittel-langsam</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>C</strong></td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">1&times; Heavy Silver + 1&times; Light Silver</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">Mittel</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>D</strong></td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">2&times; Light Blue</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">Mittel-schnell</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>E</strong></td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">1&times; Light Silver + 1&times; Light Blue</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">Schnell</td></tr>
+                        <tr><td style="padding:0.25rem;"><strong>F</strong></td><td style="padding:0.25rem;text-align:center;">2&times; Light Silver</td><td style="padding:0.25rem;text-align:center;">Schnellste</td></tr>
+                    </table>
+                    <p style="font-size:0.76rem;margin-bottom:0.3rem;"><strong>Advance Stop Bushings</strong> begrenzen den mechanischen Verstellwinkel:</p>
+                    <table style="width:100%;font-size:0.76rem;border-collapse:collapse;margin-bottom:0.5rem;">
+                        <tr style="background:#c6f6d5;"><th style="padding:0.3rem;text-align:left;">Bushing-Farbe</th><th style="padding:0.3rem;">Mech. Advance</th><th style="padding:0.3rem;">Bei 12&deg; Initial = Total</th></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Silber (Werks)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">21&deg;</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">33&deg;</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Blau</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">25&deg;</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">37&deg;</td></tr>
+                        <tr><td style="padding:0.25rem;">Schwarz (kein)</td><td style="padding:0.25rem;text-align:center;">28&deg;</td><td style="padding:0.25rem;text-align:center;">40&deg;</td></tr>
+                    </table>
+                    <div class="info-box" style="font-size:0.74rem;"><strong>Empfehlung f&uuml;r diesen Build (~9.7:1 CR, 98 ROZ):</strong> Start mit Werks-Kurve (2&times; Heavy Silver, Silber-Bushing = 21&deg;). Initial: 10&ndash;14&deg;. Ergibt 31&ndash;35&deg; total. Erst nach Testlauf auf Klopfneigung optimieren. <strong>MSD-Hinweis:</strong> &bdquo;Use as much initial advance as possible without encountering excessive starter load. Start the centrifugal advance just above idle RPM.&ldquo;</div>
+                </div>
+            </div>
+
             <div class="form-group">
-                <label>Initial Timing (Grundeinstellung)</label>
+                <label>Initial Timing (Grundeinstellung) &ndash; Ziel: 10&ndash;14&deg; BTDC</label>
                 <input type="text" data-field="initial_timing" placeholder='z.B. 12&deg; BTDC' oninput="autoSave()">
             </div>
             <div class="form-group">
-                <label>Total Timing (Initial + Centrifugal)</label>
+                <label>Total Timing (Initial + Centrifugal) &ndash; Ziel: 32&ndash;36&deg; @ 3.000+ RPM</label>
                 <input type="text" data-field="total_timing" placeholder='z.B. 34&deg; total @ 3.000 RPM' oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Advance Springs (installierte Kombination)</label>
+                <input type="text" data-field="advance_springs" placeholder='z.B. Kombi B: 1x Heavy Silver + 1x Light Blue' oninput="autoSave()">
+            </div>
+            <div class="form-group">
+                <label>Advance Stop Bushing (installiert)</label>
+                <input type="text" data-field="advance_bushing" placeholder='z.B. Silber (21&deg;)' oninput="autoSave()">
             </div>
             <div class="form-group">
                 <label>Rev Limiter Einstellung</label>
@@ -2126,11 +2167,22 @@
                         <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Total Timing 5.0L (302): <strong>36&ndash;38&deg;</strong></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Empf. 32&ndash;36&deg; (9.8:1 CR, konservativer)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Vacuum Advance an <strong>Ported Vacuum</strong> (nicht Manifold!)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MSD 8479 + Ported Vacuum dokumentiert</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndkabel-Routing: Inductive Crossfire vermeiden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;"><strong>Noch nicht dokumentiert</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;font-weight:700;">&#10060; Erg&auml;nzen</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndkabel-Routing: Inductive Crossfire vermeiden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Dokumentiert</strong> (s.u.)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Verteilerzahnrad: Material passend zur Nockenwelle</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MSD 8479: Iron Gear f&uuml;r Hyd. Roller &#10004;</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
                         <tr><td style="padding:0.2rem;">Falsche H&ouml;he des Verteilerzahnrads vermeiden</td><td style="padding:0.2rem;">MSD Werks-Einstellung, nicht ver&auml;ndert</td><td style="text-align:center;padding:0.2rem;color:#276749;font-weight:700;">&#10004;</td></tr>
                     </table>
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>Crossfire-Vermeidung (Z&uuml;ndkabel-Routing):</strong> Kabel von Z&uuml;ndfolge-benachbarten Zylindern <strong>nicht nebeneinander verlegen!</strong> SBF-Z&uuml;ndfolge: 1-5-4-2-6-3-7-8. Kabel von Zylinder 5 und 4 (bzw. 3 und 7) m&uuml;ssen getrennt gef&uuml;hrt werden. Kreuzungen im 90&deg;-Winkel minimieren induktive Kopplung.</div>
+                    <div style="background:#fff5f5;padding:0.5rem;border-radius:6px;margin-top:0.3rem;font-size:0.76rem;border:1px solid #fed7d7;">
+                        <strong style="color:#c53030;">&#9888; KRITISCH &ndash; Z&uuml;ndfolge / Firing Order:</strong><br>
+                        COMP XE274HR = Teilenr. <strong>35</strong>-518-8. Der &bdquo;35&ldquo;-Prefix bedeutet <strong>351W/HO-Zuendfolge</strong>:<br>
+                        <span style="font-size:1rem;font-weight:800;color:#2c5282;">1 &ndash; 3 &ndash; 7 &ndash; 2 &ndash; 6 &ndash; 5 &ndash; 4 &ndash; 8</span><br>
+                        <span style="color:#c53030;">NICHT die Standard-302-Folge (1-5-4-2-6-3-7-8)!</span><br>
+                        Quelle: COMP Cams &ndash; Cams mit Prefix &bdquo;31&ldquo; = Standard 302, Prefix &bdquo;35&ldquo; = 351W/HO.<br>
+                        <strong>Verteilerkappe + Z&uuml;ndkabel m&uuml;ssen entsprechend verdrahtet werden.</strong>
+                    </div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Crossfire-Vermeidung (Z&uuml;ndkabel-Routing):</strong> Kabel von Z&uuml;ndfolge-benachbarten Zylindern <strong>nicht nebeneinander verlegen!</strong> Z&uuml;ndfolge dieses Builds: <strong>1-3-7-2-6-5-4-8</strong>. Kabel von Zylinder 3 und 7 (bzw. 5 und 4) m&uuml;ssen getrennt gef&uuml;hrt werden. Kreuzungen im 90&deg;-Winkel minimieren induktive Kopplung.<br>
+                    <strong>Zylinderanordnung (Blick von vorne):</strong><br>
+                    Beifahrerseite (RH): 1-2-3-4 | Fahrerseite (LH): 5-6-7-8<br>
+                    Verteiler dreht <strong>gegen den Uhrzeigersinn</strong> (CCW).</div>
                 </div>
             </div>
 
@@ -2141,7 +2193,7 @@
                     <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
                         <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoffdruck bei Peak HP aufrechterhalten</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">2x Facet Red Top + Druckregler</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Druckregler: DellOrto max. 3.5 psi, Facet liefert 6&ndash;8 psi</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Druckregler-Warnung dokumentiert</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoffdruck Dell&rsquo;Orto DHLA 45: <strong>2.5&ndash;3.5 psi (0.17&ndash;0.24 bar)</strong><br><span style="font-size:0.68rem;color:#718096;">Facet Red Top liefert 7.5 psi &rarr; Druckregler PFLICHT (z.B. Malpassi Filter King)</span></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Druckregler dokumentiert</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pumpe schwerkraftgespeist montieren (nicht saugend)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Facet: vertikal, tanknahe, Auslass oben</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoff durch Filter dr&uuml;cken, nicht saugen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Filter nach Pumpe, vor Druckregler</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">BSFC ~0.5 lb/HP f&uuml;r Dimensionierung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">2x Facet = ~120 l/h total, ausreichend</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
@@ -2185,15 +2237,16 @@
 
             <!-- MISC -->
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#128295; Allgemeine Warnungen &ndash; Herstellerhinweise</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">&#128295; Allgemeine Warnungen &ndash; Herstellerhinweise <span style="font-size:0.68rem;color:#718096;">(Details im Build-Log)</span></div>
                 <div class="comp-body">
+                    <p style="font-size:0.76rem;margin-bottom:0.4rem;">Diese Warnungen sind als kontextuelle Hinweise in den jeweiligen Build-Log-Schritten eingearbeitet:</p>
                     <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Keine Fremdteile in den Ansaugtrakt fallen lassen!</strong></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Ansaug&ouml;ffnungen abdecken</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Achtsamkeit</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Gebrauchte Ansaugbr&uuml;cke NICHT wiederverwenden (Bruchst&uuml;cke!)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Neuer Aufbau, alle Teile neu</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Ansaugbr&uuml;cken-Schrauben NICHT &uuml;berdrehen!</strong> 302/351W: Kopfdichtungsprobleme</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Drehmoment-Anleitung vorhanden</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Verteiler-Zahnrad: Iron Gear f&uuml;r Flat Tappet, <strong>Steel/Iron f&uuml;r Hyd. Roller</strong></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MSD 8479: Iron Gear f&uuml;r Roller &#10004;</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;">Kein Sandstrahlen von EFI-Ansaugbr&uuml;cken</td><td style="padding:0.2rem;">Nicht relevant (DellOrto-Vergaser)</td><td style="text-align:center;padding:0.2rem;color:#718096;">n/a</td></tr>
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Build-Log Schritt</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Keine Fremdteile in den Ansaugtrakt!</strong></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><a href="build-log-phase3.html#step1" style="color:var(--primary-light);">Phase 3, Step 1</a></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Ansaugbr&uuml;cke max. <strong>18 ft-lbs (24 Nm)</strong>!</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><a href="build-log-phase3.html#step22" style="color:var(--primary-light);">Phase 3, Step 22</a></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Verteiler-Zahnrad: Iron f&uuml;r Hyd. Roller</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><a href="build-log-phase3.html#step23" style="color:var(--primary-light);">Phase 3, Step 23</a></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Schwungrad: Zero-Balance Pflicht!</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><a href="build-log-phase4.html#step9" style="color:var(--primary-light);">Phase 4, Step 9</a></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;">Getriebewelle darf KW nicht nach vorn dr&uuml;cken!</td><td style="padding:0.2rem;"><a href="build-log-phase4.html#step10" style="color:var(--primary-light);">Phase 4, Step 10</a></td><td style="text-align:center;padding:0.2rem;color:#276749;font-weight:700;">&#10004;</td></tr>
                     </table>
                 </div>
             </div>
@@ -2493,57 +2546,60 @@
 
 <!-- ===== TORQUE QUICK-REFERENCE OVERLAY ===== -->
 <div class="guide-overlay" id="guide-torque">
-    <div class="guide-header" style="background:linear-gradient(135deg,#c53030,#e53e3e);">
+    <div class="guide-header" style="background:linear-gradient(135deg,#2c5282,#2b6cb0);">
         <button class="guide-back" onclick="hideGuide('guide-torque')">&larr; Zur&uuml;ck</button>
-        <h2>Drehmoment-Schnellkarte</h2>
+        <h2>Torque Quick-Reference (Drehmoment-Schnellkarte)</h2>
     </div>
     <div class="guide-content">
-        <p style="font-size:0.8rem;color:#718096;margin-bottom:0.8rem;">Alle Drehmomente in Montagereihenfolge. Zum Ausdrucken: <strong>Strg+P</strong> w&auml;hrend diese Karte ge&ouml;ffnet ist.</p>
+        <p style="font-size:0.8rem;color:#718096;margin-bottom:0.8rem;">All torque values in assembly order. Print: <strong>Ctrl+P</strong> while this card is open.</p>
 
-        <h3 style="color:#c53030;">Short Block (bereits montiert)</h3>
+        <h3 style="color:#2c5282;">Short Block (pre-assembled)</h3>
         <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
-            <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.35rem;">Verbindung</th><th style="text-align:right;padding:0.35rem;">Drehmoment</th><th style="text-align:left;padding:0.35rem;">Schmierstoff</th></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Hauptlager obere Reihe (1&ndash;5)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">80 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">30wt &Ouml;l</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Hauptlager untere Reihe (6&ndash;10)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">70 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">30wt &Ouml;l + Sealant</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&Ouml;lkanalstopfen -4 AN</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">8&ndash;10 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
+            <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.35rem;">Connection</th><th style="text-align:right;padding:0.35rem;">Torque</th><th style="text-align:left;padding:0.35rem;">Lubricant</th></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Main Caps upper row (1&ndash;5)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">80 ft-lbs (108 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">30wt Oil</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Main Caps lower row (6&ndash;10)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">70 ft-lbs (95 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">30wt Oil + Thread Sealant</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Oil Gallery Plugs -4 AN</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">8&ndash;10 ft-lbs (11&ndash;14 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Teflon Tape</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Thrust Plate</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">9&ndash;12 ft-lbs (12&ndash;16 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
         </table>
 
-        <h3 style="color:#c53030;">Phase 2: Nockenwelle &amp; Steuertrieb</h3>
+        <h3 style="color:#2c5282;">Cam &amp; Timing</h3>
         <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
-            <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.35rem;">Verbindung</th><th style="text-align:right;padding:0.35rem;">Drehmoment</th><th style="text-align:left;padding:0.35rem;">Schmierstoff</th></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Nockenwellenschraube (ARP 254-1001)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">40&ndash;45 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Lube</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&Ouml;lpumpe an Block</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">22&ndash;25 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Motor&ouml;l</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&Ouml;lwanne</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">10&ndash;12 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&Ouml;lwanne Ablassschraube</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">15&ndash;25 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Timing Cover</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">12&ndash;18 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Harmonic Balancer Zentralschraube</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">70&ndash;90 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
+            <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.35rem;">Connection</th><th style="text-align:right;padding:0.35rem;">Torque</th><th style="text-align:left;padding:0.35rem;">Lubricant</th></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Cam Bolt (ARP 254-1001)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">25&ndash;30 ft-lbs (34&ndash;41 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Oil Pump to Block</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">22&ndash;25 ft-lbs (30&ndash;34 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Engine Oil</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Timing Cover</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">12&ndash;18 ft-lbs (16&ndash;24 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Harmonic Balancer Center Bolt</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">70&ndash;90 ft-lbs (95&ndash;122 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
         </table>
 
-        <h3 style="color:#c53030;">Phase 3: Zylinderk&ouml;pfe</h3>
+        <h3 style="color:#2c5282;">Cylinder Heads (Zylinderk&ouml;pfe)</h3>
         <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
-            <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.35rem;">Verbindung</th><th style="text-align:right;padding:0.35rem;">Drehmoment</th><th style="text-align:left;padding:0.35rem;">Schmierstoff</th></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Kopfstehbolzen ARP 154-4003<br><span style="font-size:0.72rem;color:#718096;">3 Stufen: 35 &rarr; 55 &rarr; 80/70 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">80 / 70 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;font-size:0.72rem;color:#718096;" colspan="3">Obere Reihe (1-5): 80 ft-lbs &nbsp;|&nbsp; Untere Reihe (6-10): 70 ft-lbs &nbsp;|&nbsp; Kreuzmuster innen &rarr; au&szlig;en</td></tr>
+            <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.35rem;">Connection</th><th style="text-align:right;padding:0.35rem;">Torque</th><th style="text-align:left;padding:0.35rem;">Lubricant</th></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Head Studs ARP 154-4003 &ndash; Upper (1-5, blind)<br><span style="font-size:0.72rem;color:#718096;">3 stages: 35 &rarr; 55 &rarr; 80 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">80 ft-lbs (108 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Head Studs ARP 154-4003 &ndash; Lower (6-10, water)<br><span style="font-size:0.72rem;color:#718096;">3 stages: 35 &rarr; 55 &rarr; 70 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">70 ft-lbs (95 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque + Thread Sealant</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;font-size:0.72rem;color:#718096;" colspan="3">Cross pattern center &rarr; outward</td></tr>
         </table>
 
-        <h3 style="color:#c53030;">Phase 3: Ansaugung &amp; Z&uuml;ndung</h3>
+        <h3 style="color:#2c5282;">Intake, Ignition &amp; Accessories</h3>
         <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
-            <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.35rem;">Verbindung</th><th style="text-align:right;padding:0.35rem;">Drehmoment</th><th style="text-align:left;padding:0.35rem;">Schmierstoff</th></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Ansaugbr&uuml;cke (Fel-Pro 1250)<br><span style="font-size:0.72rem;color:#718096;">3 Stufen: 5 &rarr; 12 &rarr; 18 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">18 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Motor&ouml;l</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndkerzen (Alu-Kopf)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">15&ndash;22 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Anti-Seize</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Wasserpumpe</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">15&ndash;22 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Ventildeckel</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">4&ndash;6 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
+            <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.35rem;">Connection</th><th style="text-align:right;padding:0.35rem;">Torque</th><th style="text-align:left;padding:0.35rem;">Lubricant</th></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Intake Manifold (Fel-Pro 1250)<br><span style="font-size:0.72rem;color:#718096;">3 stages: 5 &rarr; 12 &rarr; 18 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">18 ft-lbs (24 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Engine Oil</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Spark Plugs (Aluminum Head)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">15&ndash;22 ft-lbs (20&ndash;30 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Anti-Seize (threads only)</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Water Pump (Wasserpumpe)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">15&ndash;22 ft-lbs (20&ndash;30 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Oil Pan (Oelwanne)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">10&ndash;12 ft-lbs (14&ndash;16 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Oil Pan Drain Plug</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">15&ndash;25 ft-lbs (20&ndash;34 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Valve Covers (Ventildeckel)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">4&ndash;6 ft-lbs (5&ndash;8 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Fuel Pump (Kraftstoffpumpe)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">18&ndash;22 ft-lbs (24&ndash;30 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
         </table>
 
-        <h3 style="color:#c53030;">Antriebsstrang</h3>
+        <h3 style="color:#2c5282;">Drivetrain (Antriebsstrang)</h3>
         <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
-            <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.35rem;">Verbindung</th><th style="text-align:right;padding:0.35rem;">Drehmoment</th><th style="text-align:left;padding:0.35rem;">Schmierstoff</th></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Druckplatte / Kupplung</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">12&ndash;24 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Kraftstoffpumpe</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">handfest + 1/4</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
+            <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.35rem;">Connection</th><th style="text-align:right;padding:0.35rem;">Torque</th><th style="text-align:left;padding:0.35rem;">Lubricant</th></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Pressure Plate / Clutch (Kupplung)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">12&ndash;24 ft-lbs (16&ndash;33 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Flywheel Bolts (Schwungrad)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">75&ndash;85 ft-lbs (102&ndash;115 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
         </table>
 
-        <div style="background:#fff5f5;padding:0.6rem;border-radius:8px;border:1px solid #fed7d7;font-size:0.78rem;margin-top:0.5rem;">
-            <strong style="color:#c53030;">Wichtig:</strong> ARP-Schrauben erfordern <strong>ARP Ultra-Torque</strong> (100-9908). Die Drehmomente gelten NUR mit diesem Schmierstoff! Ohne ARP Lube = andere Vorspannung bei gleichem Drehmoment.
+        <div style="background:#ebf4ff;padding:0.6rem;border-radius:8px;border:1px solid #bee3f8;font-size:0.78rem;margin-top:0.5rem;">
+            <strong style="color:#2c5282;">Important:</strong> ARP fasteners require <strong>ARP Ultra-Torque</strong> (100-9908). Torque values are ONLY valid with this lubricant! Without ARP Lube = different clamp load at the same torque reading.
         </div>
     </div>
 </div>
@@ -3485,6 +3541,26 @@
 
     function getGistConfig() { return { token: localStorage.getItem('gh_token') || '' }; }
     function isGistConfigured() { return getGistConfig().token.length > 0; }
+
+    // ==== TOOL MENU ====
+    function toggleToolMenu() {
+        var m = document.getElementById('toolMenu');
+        m.style.display = m.style.display === 'none' ? 'block' : 'none';
+    }
+    function closeToolMenu() { document.getElementById('toolMenu').style.display = 'none'; }
+    document.addEventListener('click', function(e) {
+        var menu = document.getElementById('toolMenu');
+        var btn = document.getElementById('toolMenuBtn');
+        if (menu && menu.style.display !== 'none' && !menu.contains(e.target) && e.target !== btn) {
+            closeToolMenu();
+        }
+        // Close sub-results when clicking outside search bar
+        var subRes = document.getElementById('subResults');
+        var searchBar = document.querySelector('.search-bar');
+        if (subRes && subRes.style.display !== 'none' && searchBar && !searchBar.contains(e.target)) {
+            subRes.style.display = 'none';
+        }
+    });
 
     // ==== GUIDE OVERLAYS ====
     function showGuide(id) {
@@ -4713,6 +4789,40 @@
 
     function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+    // ==== GLOSSARY INLINE SEARCH ====
+    function searchGlossaryInline(q) {
+        var results = document.getElementById('subResults');
+        var qLower = q.toLowerCase();
+        if (q.length < 2) return;
+        var entries = document.querySelectorAll('#guide-glossary .glossary-entry');
+        var glossaryHits = [];
+        entries.forEach(function(entry) {
+            var searchData = (entry.getAttribute('data-search') || '').toLowerCase();
+            var termEl = entry.querySelector('.glossary-term');
+            var term = termEl ? termEl.textContent : '';
+            if (searchData.indexOf(qLower) >= 0 || term.toLowerCase().indexOf(qLower) >= 0) {
+                var defEl = entry.querySelector('.glossary-field');
+                var def = defEl ? defEl.textContent.replace(/^Was ist das\?\s*/, '').replace(/^Einfach gesagt:\s*/, '') : '';
+                glossaryHits.push({ term: term, definition: def.substring(0, 120) + (def.length > 120 ? '...' : '') });
+            }
+        });
+        if (glossaryHits.length > 0) {
+            var html = '<div class="sub-header" style="color:#ed8936;">Glossar (' + glossaryHits.length + ' Treffer)</div>';
+            glossaryHits.slice(0, 5).forEach(function(h) {
+                html += '<div class="sub-hit" style="cursor:pointer;" onclick="openGlossary(\'' + escHtml(h.term.split(' ')[0]) + '\')">'
+                    + '<span class="sub-page" style="color:#ed8936;">' + escHtml(h.term) + '</span>'
+                    + '<span class="sub-context" style="font-size:0.72rem;color:var(--text-light);display:block;margin-top:0.1rem;">' + escHtml(h.definition) + '</span></div>';
+            });
+            if (glossaryHits.length > 5) {
+                html += '<div class="sub-hit" style="cursor:pointer;font-style:italic;color:#ed8936;" onclick="openGlossary(\'' + escHtml(q) + '\')">'
+                    + '... und ' + (glossaryHits.length - 5) + ' weitere &rarr; im Glossar</div>';
+            }
+            // Prepend glossary results before sub-page results
+            results.innerHTML = html + results.innerHTML;
+            results.style.display = 'block';
+        }
+    }
+
     function doSearch() {
         if (searchTimeout) clearTimeout(searchTimeout);
         searchTimeout = setTimeout(_doSearch, 200);
@@ -4751,6 +4861,8 @@
         document.getElementById('searchNav').style.display = searchMarks.length ? 'flex' : 'none';
         document.getElementById('searchCount').textContent = searchMarks.length ? searchMarks.length + ' Treffer' : 'keine';
         if (searchMarks.length) { searchIdx = 0; jumpToMark(0); }
+        // Search glossary inline
+        searchGlossaryInline(q);
         // Search sub-pages
         searchSubPages(q);
     }
