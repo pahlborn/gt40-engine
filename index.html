@@ -4894,8 +4894,6 @@
 
     function searchSubPages(q) {
         var results = document.getElementById('subResults');
-        results.innerHTML = '';
-        results.style.display = 'none';
         if (!subPageCache || q.length < 2) return;
         var qLower = q.toLowerCase();
         var hits = [];
@@ -5031,10 +5029,13 @@
         document.getElementById('searchNav').style.display = searchMarks.length ? 'flex' : 'none';
         document.getElementById('searchCount').textContent = searchMarks.length ? searchMarks.length + ' Treffer' : 'keine';
         if (searchMarks.length) { searchIdx = 0; jumpToMark(0); }
-        // Search glossary inline
-        searchGlossaryInline(q);
-        // Search sub-pages
+        // Clear sub-results container, then fill: glossary first, sub-pages second
+        document.getElementById('subResults').innerHTML = '';
+        document.getElementById('subResults').style.display = 'none';
+        // Search sub-pages first (appends to subResults)
         searchSubPages(q);
+        // Search glossary inline (prepends to subResults - must come AFTER subPages)
+        searchGlossaryInline(q);
     }
 
     function jumpToMark(idx) {
