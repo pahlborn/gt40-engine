@@ -557,9 +557,42 @@
         </div>
         <div class="section-body">
 
-            <!-- Build-Philosophie -->
+            <!-- Zielkonfiguration - kommt zuerst -->
+            <div style="background:#f0f5ff;border:1px solid #bee3f8;border-radius:10px;padding:0.75rem;margin-bottom:0.75rem;">
+                <div style="font-weight:700;font-size:0.88rem;color:#2b6cb0;margin-bottom:0.5rem;">&#127919; Zielkonfiguration</div>
+                <div class="form-group" style="margin-bottom:0.4rem;">
+                    <label>Angestrebte Leistung (BHP an Kurbelwelle)</label>
+                    <input type="text" data-field="target_hp" placeholder='z.B. 350 BHP (261 kW / 355 PS)' oninput="autoSave()">
+                </div>
+                <div class="form-group" style="margin-bottom:0.4rem;">
+                    <label>Angestrebtes Drehmoment (ft-lbs)</label>
+                    <input type="text" data-field="target_torque" placeholder='z.B. 340 ft-lbs (461 Nm)' oninput="autoSave()">
+                </div>
+                <div class="form-group" style="margin-bottom:0.4rem;">
+                    <label>Ziel-Verdichtung</label>
+                    <input type="text" data-field="target_cr" placeholder='z.B. 9.7:1' oninput="autoSave()">
+                </div>
+                <div class="form-group" style="margin-bottom:0.4rem;">
+                    <label>Einsatzzweck</label>
+                    <input type="text" data-field="target_use" value="Trackdays Only &ndash; TSC GT40 Kit Car" placeholder='z.B. Trackdays, Kit Car' oninput="autoSave()">
+                </div>
+                <div class="form-group" style="margin-bottom:0.4rem;">
+                    <label>Strecken</label>
+                    <input type="text" data-field="target_tracks" value="Pannoniaring, Slovakiaring, Brno (Masaryk), Spa-Francorchamps" placeholder='Strecken...' oninput="autoSave()">
+                </div>
+                <div class="form-group" style="margin-bottom:0.4rem;">
+                    <label>Kraftstoff</label>
+                    <input type="text" data-field="target_fuel" placeholder='z.B. Super Plus (98 ROZ), E10, Race Gas' oninput="autoSave()">
+                </div>
+                <div class="section-comment">
+                    <label>Notizen zu Build-Zielen</label>
+                    <textarea data-field="comment_targets" placeholder="Gedanken, Alternativkonfigurationen, Erfahrungswerte..." oninput="autoSave()"></textarea>
+                </div>
+            </div>
+
+            <!-- Build-Philosophie: Warum diese Teile? -->
             <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#276749;">Build-Philosophie &amp; Komponenten-Strategie</div>
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#276749;">Teilewahl &amp; Komponenten-Strategie (Begr&uuml;ndung)</div>
                 <div class="comp-body">
                     <p style="font-size:0.82rem;color:#333;margin:0.3rem 0;">
                         Die Kombination aus <strong>Ford Performance M-6009-302 Short Block</strong> (komplett geschmiedet),
@@ -663,35 +696,7 @@
                 </div>
             </div>
 
-            <!-- Leistungsziele -->
-            <div class="form-group">
-                <label>Angestrebte Leistung (BHP an Kurbelwelle)</label>
-                <input type="text" data-field="target_hp" placeholder='z.B. 350 BHP (261 kW / 355 PS)' oninput="autoSave()">
-            </div>
-            <div class="form-group">
-                <label>Angestrebtes Drehmoment (ft-lbs)</label>
-                <input type="text" data-field="target_torque" placeholder='z.B. 340 ft-lbs' oninput="autoSave()">
-            </div>
-            <div class="form-group">
-                <label>Ziel-Verdichtung</label>
-                <input type="text" data-field="target_cr" placeholder='z.B. 9.7:1' oninput="autoSave()">
-            </div>
-            <div class="form-group">
-                <label>Einsatzzweck</label>
-                <input type="text" data-field="target_use" value="Trackdays Only &ndash; TSC GT40 Kit Car" placeholder='z.B. Trackdays, Kit Car' oninput="autoSave()">
-            </div>
-            <div class="form-group">
-                <label>Strecken</label>
-                <input type="text" data-field="target_tracks" value="Pannoniaring, Slovakiaring, Brno (Masaryk), Spa-Francorchamps" placeholder='Strecken...' oninput="autoSave()">
-            </div>
-            <div class="form-group">
-                <label>Kraftstoff</label>
-                <input type="text" data-field="target_fuel" placeholder='z.B. Super Plus (98 ROZ), E10, Race Gas' oninput="autoSave()">
-            </div>
-            <div class="section-comment">
-                <label>Notizen zu Build-Zielen</label>
-                <textarea data-field="comment_targets" placeholder="Gedanken, Alternativkonfigurationen, Erfahrungswerte..." oninput="autoSave()"></textarea>
-            </div>
+            <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Leistungsberechnung und Drehmoment-/Leistungskurven werden im <strong>Motor-Simulator</strong> (Sektion 1c unten) berechnet. Die Zielwerte oben sind die <em>angestrebten</em> Werte, der Simulator zeigt die <em>berechneten</em> Werte basierend auf den tats&auml;chlichen Komponenten.</div>
         </div>
     </div>
 
@@ -1966,6 +1971,101 @@
         </div>
     </div>
 
+    <!-- 12b. Starter Motor -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#9889;</span>
+            <h2>12b. Anlasser (Starter Motor)</h2>
+        </div>
+        <div class="section-body">
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Mini-Torque Starter (aus dem Vorg&auml;ngermotor)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Mini High-Torque Starter (Bestand)</span></div>
+                    <div class="spec-item"><span class="spec-label">Herkunft</span><span class="spec-value">&Uuml;bernommen vom vorherigen 302-Motor</span></div>
+                    <div class="spec-item"><span class="spec-label">Kompatibilit&auml;t</span><span class="spec-value">164-Tooth Flywheel, SBF Small Block Ford</span></div>
+                    <div class="spec-item"><span class="spec-label">Shims</span><span class="spec-value">Starter Shim Kit ggf. erforderlich f&uuml;r Zahnspiel</span></div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Pr&uuml;fpunkte vor Einbau:</strong> Ritzelzustand pr&uuml;fen (Zahnkanten nicht abgerundet?), Kabelquerschnitt + Zustand (mind. 4 AWG / 25 mm&sup2;), Masseband Motorblock &rarr; Chassis pr&uuml;fen. Bei erh&ouml;hter Verdichtung (9.7:1) muss der Starter das Anlassdrehmoment sicher aufbringen k&ouml;nnen.</div>
+                </div>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_starter_inspected" onchange="autoSave()">
+                <span>Starter visuell gepr&uuml;ft, Ritzel OK, Kabel OK</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_starter_shims" onchange="autoSave()">
+                <span>Zahnspiel Starter/Schwungrad gepr&uuml;ft (ggf. Shims eingesetzt)</span>
+            </div>
+            <div class="form-group">
+                <label>Starter-Typ / Hersteller</label>
+                <input type="text" data-field="starter_type" placeholder='z.B. Powermaster 9162, Tilton 40000' oninput="autoSave()">
+            </div>
+            <div class="section-comment">
+                <label>Kommentar Starter</label>
+                <textarea data-field="comment_starter" placeholder="Zustand, Shims, Kabel..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12c. Nebenaggregate (Accessory Drive) -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#9881;</span>
+            <h2>12c. Nebenaggregate (Accessory Drive)</h2>
+        </div>
+        <div class="section-body">
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Pulleys &amp; Riementrieb</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Kurbel-Pulley</span><span class="spec-value">Am Harmonic Balancer (3- oder 4-Bolt)</span></div>
+                    <div class="spec-item"><span class="spec-label">Wasserpumpe-Pulley</span><span class="spec-value">Passend zur Drehrichtung (Reverse/Standard)</span></div>
+                    <div class="spec-item"><span class="spec-label">Lichtmaschine-Pulley</span><span class="spec-value">Standard-Ratio oder leichtes Overdrive</span></div>
+                    <div class="spec-item"><span class="spec-label">Keilriemen</span><span class="spec-value">V-Belt, Breite + L&auml;nge nach Konfiguration</span></div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Achtung:</strong> Underdrive-Pulleys reduzieren Wasserpumpen-Durchfluss &ndash; bei Trackday-Einsatz ist Standard-Ratio oder leichtes Overdrive empfohlen! Riemenspannung: ca. 10 mm Durchbiegung bei Daumendruck auf l&auml;ngster freier Spannweite.</div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Lichtmaschine (Alternator)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Noch zu bestimmen (Bestand / Neu)</span></div>
+                    <div class="spec-item"><span class="spec-label">Leistung</span><span class="spec-value">Min. 65A f&uuml;r MSD + Z&uuml;ndung + Kraftstoffpumpe</span></div>
+                    <div class="spec-item"><span class="spec-label">Halterung</span><span class="spec-value">SBF Standard oder Custom-Bracket</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Motorlager (Engine Mounts)</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">GT40 Kit Car spezifisch &ndash; abh&auml;ngig von Chassis-Hersteller (TSC)</span></div>
+                    <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">Polyurethan oder Solid Mount (Trackday)</span></div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Motor muss vibrationsfrei und spannungsfrei im Chassis sitzen. Falsche Ausrichtung f&uuml;hrt zu Getriebewellen-Problemen (Axiallager!). Bei UN1-Transaxle: Stack-Up Height penibel einhalten.</div>
+                </div>
+            </div>
+
+            <div class="check-item">
+                <input type="checkbox" data-field="check_pulleys" onchange="autoSave()">
+                <span>Pulleys (Kurbel, Wapump, Lima) vorhanden + passend</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_vbelt" onchange="autoSave()">
+                <span>Keilriemen richtige L&auml;nge + Breite</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_alternator" onchange="autoSave()">
+                <span>Lichtmaschine vorhanden + min. 65A</span>
+            </div>
+            <div class="check-item">
+                <input type="checkbox" data-field="check_mounts" onchange="autoSave()">
+                <span>Motorlager vorhanden + Ausrichtung gepr&uuml;ft</span>
+            </div>
+            <div class="section-comment">
+                <label>Kommentar Nebenaggregate</label>
+                <textarea data-field="comment_accessories" placeholder="Riemen-Teilenummern, Lager-Typ, Lima-Modell..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
     <!-- 13. Kupplung -->
     <div class="section">
         <div class="section-header" onclick="toggleSection(this)">
@@ -2099,6 +2199,9 @@
                         <div id="dsFmax" style="font-size:1.1rem;font-weight:800;color:#975a16;">--</div>
                     </div>
                 </div>
+
+                <!-- Cross-Check Warnings -->
+                <div id="dsWarnings" style="display:none;"></div>
 
                 <!-- Canvas Gangdiagramm -->
                 <canvas id="dsChart" width="700" height="360" style="width:100%;height:auto;border:1px solid #e2e8f0;border-radius:8px;background:#fff;"></canvas>
@@ -4293,6 +4396,59 @@
         document.getElementById('dsVmax').textContent = vTheorMax + ' km/h';
         document.getElementById('dsVpeak').textContent = Math.round(vAtPeak) + ' km/h';
         document.getElementById('dsFmax').textContent = Math.round(maxWheelForce) + ' N';
+
+        // ==== CROSS-CHECKS ====
+        var warnings = [];
+        var gearboxLimitNm = 315; // UN1-13 Serien-Spec
+
+        // 1. Torque through gearbox at each gear
+        for (var g = 0; g < 5; g++) {
+            // Find peak engine torque in this gear's usable RPM range
+            var peakTq = 0;
+            for (var rpm = 1000; rpm <= redline; rpm += 50) {
+                var tq = getTorqueAtRPM(rpm);
+                if (tq > peakTq) peakTq = tq;
+            }
+            var gearboxTorque = peakTq * 1.3558 * gears[g]; // Nm at gearbox input
+            if (gearboxTorque > gearboxLimitNm) {
+                warnings.push({
+                    type: 'danger',
+                    text: '<strong>' + gearNames[g] + ' Gang:</strong> Getriebe-Eingangsdrehmoment <strong>' + Math.round(gearboxTorque) + ' Nm</strong> &uuml;berschreitet UN1-13 Limit (' + gearboxLimitNm + ' Nm) um <strong>' + Math.round((gearboxTorque/gearboxLimitNm-1)*100) + '%</strong>!'
+                });
+            }
+        }
+
+        // 2. RPM vs Rev Limiter
+        var revLimField = document.querySelector('[data-field="rev_limiter"]');
+        if (revLimField && revLimField.value) {
+            var revLimVal = parseInt(revLimField.value.replace(/[^\d]/g, ''));
+            if (revLimVal > 0 && redline > revLimVal) {
+                warnings.push({type:'warning', text:'<strong>Drehzahl:</strong> Simulator-Redline (' + redline + ' RPM) liegt &uuml;ber dem Rev Limiter (' + revLimVal + ' RPM). Unrealistisch.'});
+            }
+        }
+
+        // 3. V-max vs tire speed rating (Crossply ~200 km/h dauerhaft)
+        if (vTheorMax > 250) {
+            warnings.push({type:'warning', text:'<strong>Reifen:</strong> Theoretische V-max ' + vTheorMax + ' km/h. Avon Crossply-Reifen sind f&uuml;r solche Geschwindigkeiten nicht ausgelegt. Max. empfohlen: ~220 km/h.'});
+        }
+
+        // Render warnings
+        var warnDiv = document.getElementById('dsWarnings');
+        if (warnings.length > 0) {
+            var html = '';
+            warnings.forEach(function(w) {
+                var bg = w.type === 'danger' ? '#fff5f5' : '#fffff0';
+                var border = w.type === 'danger' ? '#fc8181' : '#fefcbf';
+                var icon = w.type === 'danger' ? '&#9888;' : '&#9888;';
+                var color = w.type === 'danger' ? '#c53030' : '#975a16';
+                html += '<div style="background:'+bg+';border:1px solid '+border+';border-radius:6px;padding:0.4rem 0.6rem;margin-bottom:0.3rem;font-size:0.76rem;color:'+color+';">'+icon+' '+w.text+'</div>';
+            });
+            warnDiv.innerHTML = html;
+            warnDiv.style.display = 'block';
+        } else {
+            warnDiv.innerHTML = '<div style="background:#e6ffed;border:1px solid #c6f6d5;border-radius:6px;padding:0.4rem 0.6rem;font-size:0.76rem;color:#276749;">&#10004; Alle Cross-Checks OK &ndash; kein Getriebe/RPM/Reifen-Limit &uuml;berschritten.</div>';
+            warnDiv.style.display = 'block';
+        }
 
         // Draw chart
         drawDriveChart(gears, gearColors, gearNames, finalDrive, tireDiam, tireCirc, redline, torqueCurve, cw, area, weight, vTheorMax);
