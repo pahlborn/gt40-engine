@@ -4892,16 +4892,14 @@
         });
     }
 
-    function searchSubPages(q) {
-        var results = document.getElementById('subResults');
-        if (!subPageCache || q.length < 2) return;
+    function getSubPageResultsHtml(q) {
+        if (!subPageCache || q.length < 2) return '';
         var qLower = q.toLowerCase();
         var hits = [];
         subPageCache.forEach(function(page) {
             page.lines.forEach(function(line) {
                 var idx = line.text.toLowerCase().indexOf(qLower);
                 if (idx >= 0) {
-                    // Extract context around the hit (max 100 chars)
                     var start = Math.max(0, idx - 30);
                     var end = Math.min(line.text.length, idx + q.length + 50);
                     var before = (start > 0 ? '...' : '') + escHtml(line.text.substring(start, idx));
@@ -4911,15 +4909,13 @@
                 }
             });
         });
-        // Deduplicate similar contexts per page
         var seen = {};
         var unique = [];
         hits.forEach(function(h) {
             var key = h.page.url + ':' + h.context.substring(0, 60);
             if (!seen[key]) { seen[key] = true; unique.push(h); }
         });
-        if (unique.length === 0) return;
-        // Group by page
+        if (unique.length === 0) return '';
         var grouped = {};
         unique.forEach(function(h) {
             if (!grouped[h.page.url]) grouped[h.page.url] = { page: h.page, hits: [] };
@@ -4930,7 +4926,6 @@
             var g = grouped[url];
             var count = g.hits.length;
             html += '<div class="sub-header">' + escHtml(g.page.title) + ' (' + count + ' Treffer)</div>';
-            // Show max 5 per page
             g.hits.slice(0, 5).forEach(function(h) {
                 html += '<a class="sub-hit" href="' + h.page.url + '" target="_blank">'
                     + '<span class="sub-context">' + h.context + '</span></a>';
@@ -4940,17 +4935,15 @@
                     + '... und ' + (count - 5) + ' weitere Treffer &rarr;</a>';
             }
         });
-        results.innerHTML = html;
-        results.style.display = 'block';
+        return html;
     }
 
     function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
     // ==== GLOSSARY INLINE SEARCH ====
-    function searchGlossaryInline(q) {
-        var results = document.getElementById('subResults');
+    function getGlossaryResultsHtml(q) {
         var qLower = q.toLowerCase();
-        if (q.length < 2) return;
+        if (q.length < 2) return '';
         var entries = document.querySelectorAll('#guide-glossary .glossary-entry');
         var glossaryHits = [];
         entries.forEach(function(entry) {
@@ -4958,7 +4951,6 @@
             var termEl = entry.querySelector('.glossary-term');
             var term = termEl ? termEl.textContent : '';
             if (searchData.indexOf(qLower) >= 0 || term.toLowerCase().indexOf(qLower) >= 0) {
-                // Collect all fields from the glossary entry
                 var fields = entry.querySelectorAll('.glossary-field');
                 var related = entry.querySelector('.glossary-related');
                 var fieldTexts = [];
@@ -4967,28 +4959,24 @@
                 glossaryHits.push({ term: term, fields: fieldTexts });
             }
         });
-        if (glossaryHits.length > 0) {
-            var html = '<div class="sub-header" style="color:#ed8936;border-bottom:2px solid #ed8936;padding-bottom:4px;margin-bottom:4px;">'
-                + '\uD83D\uDCD6 Glossar (' + glossaryHits.length + ' Treffer)</div>';
-            glossaryHits.slice(0, 3).forEach(function(h) {
-                html += '<div class="sub-hit" style="cursor:pointer;padding:8px 10px;border-left:3px solid #ed8936;margin-bottom:6px;background:rgba(237,137,54,0.06);" '
-                    + 'onclick="openGlossary(\'' + escHtml(h.term.split(' ')[0]) + '\')">'
-                    + '<span style="font-weight:700;color:#ed8936;font-size:0.85rem;">' + escHtml(h.term) + '</span>';
-                h.fields.forEach(function(f) {
-                    html += '<div style="font-size:0.75rem;color:var(--text-light);margin-top:2px;line-height:1.35;">' + escHtml(f) + '</div>';
-                });
-                html += '</div>';
+        if (glossaryHits.length === 0) return '';
+        var html = '<div class="sub-header" style="color:#ed8936;border-bottom:2px solid #ed8936;padding-bottom:4px;margin-bottom:4px;">'
+            + '\uD83D\uDCD6 Glossar (' + glossaryHits.length + ' Treffer)</div>';
+        glossaryHits.slice(0, 3).forEach(function(h) {
+            html += '<div class="sub-hit" style="cursor:pointer;padding:8px 10px;border-left:3px solid #ed8936;margin-bottom:6px;background:rgba(237,137,54,0.06);" '
+                + 'onclick="openGlossary(\'' + escHtml(h.term.split(' ')[0]) + '\')">'
+                + '<span style="font-weight:700;color:#ed8936;font-size:0.85rem;">' + escHtml(h.term) + '</span>';
+            h.fields.forEach(function(f) {
+                html += '<div style="font-size:0.75rem;color:var(--text-light);margin-top:2px;line-height:1.35;">' + escHtml(f) + '</div>';
             });
-            if (glossaryHits.length > 3) {
-                html += '<div class="sub-hit" style="cursor:pointer;font-style:italic;color:#ed8936;" onclick="openGlossary(\'' + escHtml(q) + '\')">'
-                    + '... und ' + (glossaryHits.length - 3) + ' weitere &rarr; im Glossar</div>';
-            }
-            // Separator line between glossary and other results
-            html += '<div style="border-top:1px solid #e2e8f0;margin:6px 0;"></div>';
-            // Prepend glossary results before sub-page results
-            results.innerHTML = html + results.innerHTML;
-            results.style.display = 'block';
+            html += '</div>';
+        });
+        if (glossaryHits.length > 3) {
+            html += '<div class="sub-hit" style="cursor:pointer;font-style:italic;color:#ed8936;" onclick="openGlossary(\'' + escHtml(q) + '\')">'
+                + '... und ' + (glossaryHits.length - 3) + ' weitere &rarr; im Glossar</div>';
         }
+        html += '<div style="border-top:1px solid #e2e8f0;margin:6px 0;"></div>';
+        return html;
     }
 
     function doSearch() {
@@ -5029,13 +5017,18 @@
         document.getElementById('searchNav').style.display = searchMarks.length ? 'flex' : 'none';
         document.getElementById('searchCount').textContent = searchMarks.length ? searchMarks.length + ' Treffer' : 'keine';
         if (searchMarks.length) { searchIdx = 0; jumpToMark(0); }
-        // Clear sub-results container, then fill: glossary first, sub-pages second
-        document.getElementById('subResults').innerHTML = '';
-        document.getElementById('subResults').style.display = 'none';
-        // Search sub-pages first (appends to subResults)
-        searchSubPages(q);
-        // Search glossary inline (prepends to subResults - must come AFTER subPages)
-        searchGlossaryInline(q);
+        // Build combined dropdown: glossary first, then sub-page results
+        var subEl = document.getElementById('subResults');
+        var glossaryHtml = getGlossaryResultsHtml(q);
+        var subPageHtml = getSubPageResultsHtml(q);
+        var combinedHtml = glossaryHtml + subPageHtml;
+        if (combinedHtml) {
+            subEl.innerHTML = combinedHtml;
+            subEl.style.display = 'block';
+        } else {
+            subEl.innerHTML = '';
+            subEl.style.display = 'none';
+        }
     }
 
     function jumpToMark(idx) {
