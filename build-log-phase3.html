@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Phase 3 &ndash; Final Assembly (Endmontage) &ndash; 302ci BOSS Build</title>
+    <style>
+        :root {
+            --primary: #1a365d; --primary-light: #2b6cb0; --accent: #ed8936;
+            --bg: #f7fafc; --card-bg: #ffffff; --border: #e2e8f0;
+            --text: #2d3748; --text-light: #718096;
+            --success: #38a169; --warning: #d69e2e; --danger: #e53e3e;
+            --input-bg: #edf2f7;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white; padding: 1rem; text-align: center;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .header h1 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.1rem; }
+        .header p { font-size: 0.78rem; opacity: 0.85; }
+        .header-nav { display: flex; gap: 0.3rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem; }
+        .header-nav a, .header-nav button {
+            padding: 0.4rem 0.7rem; border: 1px solid rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.15); color: white; border-radius: 6px;
+            cursor: pointer; font-size: 0.72rem; font-weight: 500; text-decoration: none;
+            min-height: 36px; display: inline-flex; align-items: center;
+        }
+        .header-nav a:hover, .header-nav button:hover { background: rgba(255,255,255,0.25); }
+        .header-nav .active { background: rgba(255,255,255,0.35); border-color: rgba(255,255,255,0.8); font-weight: 700; }
+        .header-nav .save-btn { background: var(--success); border-color: var(--success); }
+        .save-status { font-size: 0.68rem; opacity: 0.8; margin-top: 0.25rem; min-height: 1em; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0.75rem; }
+
+        /* Phase Banner - clickable/collapsible */
+        .phase-banner {
+            background: linear-gradient(135deg, #276749, #38a169);
+            color: white; padding: 1rem; border-radius: 12px; margin-bottom: 0.75rem;
+            display: flex; align-items: center; gap: 0.75rem; cursor: pointer; user-select: none;
+        }
+        .phase-banner:hover { filter: brightness(1.08); }
+        .phase-banner .phase-num {
+            background: rgba(255,255,255,0.2); width: 48px; height: 48px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; font-weight: 800; flex-shrink: 0;
+        }
+        .phase-banner .phase-info { flex: 1; }
+        .phase-banner .phase-info h2 { font-size: 1rem; font-weight: 700; }
+        .phase-banner .phase-info p { font-size: 0.78rem; opacity: 0.85; }
+        .phase-banner .phase-toggle { font-size: 1.2rem; transition: transform 0.3s; }
+        .phase-banner .phase-toggle.collapsed { transform: rotate(-90deg); }
+
+        .phase-body { transition: max-height 0.3s ease; overflow: hidden; }
+        .phase-body.collapsed { display: none; }
+
+        .subphase { font-size: 0.82rem; font-weight: 700; color: var(--primary); margin: 0.75rem 0 0.4rem; padding: 0.4rem 0; border-bottom: 2px solid var(--primary); }
+
+        /* Step Card */
+        .step-card {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
+            margin-bottom: 0.5rem; overflow: hidden;
+        }
+        .step-header {
+            display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .step-header input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--success); flex-shrink: 0; }
+        .step-header .step-title { flex: 1; font-size: 0.85rem; font-weight: 600; }
+        .step-header .guide-toggle {
+            background: #ebf4ff; border: 1px solid #bee3f8; color: var(--primary-light);
+            padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer;
+            font-size: 0.7rem; font-weight: 600; white-space: nowrap; min-height: 32px;
+        }
+        .step-header .guide-toggle:hover { background: #bee3f8; }
+        .step-header .guide-toggle.open { background: var(--primary-light); color: white; border-color: var(--primary-light); }
+        .step-note {
+            width: 100%; padding: 0.4rem 0.75rem; border: none; border-bottom: 1px dashed var(--border);
+            font-size: 0.78rem; background: transparent; color: var(--text-light);
+        }
+        .step-note:focus { background: white; color: var(--text); border-bottom-style: solid; border-bottom-color: var(--primary-light); outline: none; }
+        .step-note::placeholder { color: #cbd5e0; font-style: italic; }
+
+        /* Guide Content */
+        .step-guide { display: none; padding: 0.75rem; background: #f8fafc; border-top: 2px solid var(--primary-light); }
+        .step-guide.open { display: block; }
+        .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        @media (max-width: 640px) { .guide-grid { grid-template-columns: 1fr; } }
+        .guide-block {
+            background: white; border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem;
+        }
+        .guide-block h4 {
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+            margin-bottom: 0.35rem; padding-bottom: 0.2rem; border-bottom: 1px solid var(--border);
+        }
+        .guide-block h4.tools { color: #2b6cb0; border-color: #bee3f8; }
+        .guide-block h4.consumables { color: #975a16; border-color: #fefcbf; }
+        .guide-block h4.torque { color: #c53030; border-color: #fed7d7; }
+        .guide-block h4.measure { color: #276749; border-color: #c6f6d5; }
+        .guide-block h4.prereq { color: #553c9a; border-color: #e9d8fd; }
+        .guide-block h4.release { color: #38a169; border-color: #c6f6d5; }
+        .guide-block h4.tips { color: #d69e2e; border-color: #fefcbf; }
+        .guide-block h4.photo { color: #e53e3e; border-color: #fed7d7; }
+        .guide-block h4.time { color: #718096; border-color: #e2e8f0; }
+        .guide-block h4.fill { color: #2b6cb0; border-color: #bee3f8; }
+        .guide-block ul { padding-left: 1rem; margin: 0; }
+        .guide-block li { font-size: 0.78rem; line-height: 1.5; margin-bottom: 0.15rem; }
+        .guide-block li strong { color: var(--text); }
+        .guide-block .spec-line { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 0.15rem 0; border-bottom: 1px dotted var(--border); }
+        .guide-block .spec-line:last-child { border-bottom: none; }
+        .guide-block .spec-val { font-weight: 700; color: var(--accent); }
+        .guide-full { grid-column: 1 / -1; }
+        .warning-box { background: #fff5f5; border: 1px solid #fc8181; border-radius: 8px; padding: 0.5rem 0.65rem; font-size: 0.78rem; color: #c53030; grid-column: 1 / -1; }
+        .warning-box strong { color: #9b2c2c; }
+
+        /* Inline measurement input in guides */
+        .guide-input { width: 100%; padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.78rem; background: var(--input-bg); margin-top: 0.3rem; }
+        .guide-input:focus { border-color: var(--primary-light); background: white; outline: none; }
+        .guide-input-row { display: flex; gap: 0.3rem; margin-top: 0.3rem; flex-wrap: wrap; }
+        .guide-input-row label { font-size: 0.7rem; color: var(--text-light); }
+        .guide-input-row input { flex: 1; min-width: 60px; padding: 0.3rem 0.4rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.75rem; background: var(--input-bg); }
+        .guide-input-row input:focus { border-color: var(--primary-light); background: white; outline: none; }
+
+        /* Photo Gallery inline */
+        .photo-gallery { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+        .photo-gallery img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid var(--border); }
+        .photo-add-btn { display: inline-block; padding: 0.35rem 0.7rem; font-size: 0.75rem; background: #ebf4ff; border: 1px dashed #bee3f8; border-radius: 6px; cursor: pointer; color: var(--primary-light); margin-top: 0.3rem; }
+
+        /* Progress Bar */
+        .progress-bar { background: var(--border); border-radius: 10px; height: 8px; margin-top: 0.4rem; overflow: hidden; }
+        .progress-fill { background: var(--success); height: 100%; border-radius: 10px; transition: width 0.3s; }
+        .progress-text { font-size: 0.68rem; color: var(--text-light); margin-top: 0.15rem; }
+
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1a202c; color: white; padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 0.82rem; opacity: 0; transition: all 0.3s; z-index: 9999; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        .lightbox { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 8000; align-items: center; justify-content: center; flex-direction: column; padding: 1rem; }
+        .lightbox.show { display: flex; }
+        .lightbox img { max-width: 95%; max-height: 80vh; border-radius: 8px; }
+        .lightbox .caption { color: white; font-size: 0.85rem; margin-top: 0.5rem; text-align: center; }
+        .lightbox .lb-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 1.5rem; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; }
+
+        /* Torque diagram */
+        .torque-diagram { background: #1a202c; color: #e2e8f0; border-radius: 8px; padding: 0.75rem; font-family: 'Courier New', Courier, monospace; font-size: 0.72rem; line-height: 1.7; overflow-x: auto; white-space: pre; grid-column: 1 / -1; }
+        .torque-diagram .diagram-title { color: var(--accent); font-weight: 700; font-size: 0.78rem; margin-bottom: 0.3rem; display: block; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .torque-diagram .td-upper { color: #90cdf4; }
+        .torque-diagram .td-lower { color: #fc8181; }
+        .torque-diagram .td-label { color: #a0aec0; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Phase 3 &ndash; Final Assembly (Endmontage)</h1>
+    <p>Ford M-6009-302 &bull; AFR 1399 &bull; COMP XE274HR</p>
+    <div class="header-nav">
+        <a href="./">&larr; Main</a>
+        <a href="build-log.html">Hub</a>
+        <a href="build-log-phase1.html">P1</a>
+        <a href="build-log-phase2.html">&larr; P2</a>
+        <a href="build-log-phase3.html" class="active">P3</a>
+        <a href="build-log-phase4.html">P4 &rarr;</a>
+        <button class="save-btn" onclick="saveData()">Save (Speichern)</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.3rem;margin-top:0.4rem;max-width:400px;margin-left:auto;margin-right:auto;position:relative;">
+        <input type="text" id="searchInput" placeholder="Search... (Suchen...)" oninput="doBuildSearch()" onkeydown="if(event.key==='Escape'){clearBuildSearch();event.target.blur();}" style="flex:1;padding:0.4rem 0.65rem;border:1px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);color:white;border-radius:6px;font-size:0.8rem;outline:none;">
+        <span id="buildSearchCount" style="font-size:0.68rem;color:rgba(255,255,255,0.8);min-width:2.5rem;text-align:center;"></span>
+        <button onclick="buildSearchJump(-1)" style="padding:0.25rem 0.4rem;border:none;background:rgba(255,255,255,0.2);color:white;border-radius:4px;cursor:pointer;font-size:0.72rem;">&#9650;</button>
+        <button onclick="buildSearchJump(1)" style="padding:0.25rem 0.4rem;border:none;background:rgba(255,255,255,0.2);color:white;border-radius:4px;cursor:pointer;font-size:0.72rem;">&#9660;</button>
+    </div>
+    <div class="save-status" id="saveStatus"></div>
+</div>
+
+<div class="container">
+
+<!-- ============================================================ -->
+<!--  PHASE 3 - FINAL ASSEMBLY (ENDMONTAGE)                        -->
+<!-- ============================================================ -->
+<div id="phase3">
+<div class="phase-banner" onclick="togglePhase('phase3body')">
+    <div class="phase-num">3</div>
+    <div class="phase-info">
+        <h2>Final Assembly (Endmontage)</h2>
+        <p>Prerequisites: pushrods delivered, P-V released, sweep OK. Irreversible from here!</p>
+    </div>
+    <span class="phase-toggle" id="toggle_phase3body">&#9660;</span>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="prog3" style="width:0%"></div></div>
+<div class="progress-text" id="progText3">0 / 0</div>
+
+<div class="phase-body" id="phase3body">
+
+<!-- ======================================== -->
+<!-- SUBPHASE 3a - Cleaning & Preparation     -->
+<!-- ======================================== -->
+<div class="subphase">3a &ndash; Cleaning &amp; Preparation (Reinigung &amp; Vorbereitung)</div>
+
+<!-- Step 1: Clean Sealing Surfaces -->
+<div class="step-card" id="p3_clean">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_clean" onchange="autoSave()">
+        <span class="step-title">1. Clean Sealing Surfaces (Dichtfl&auml;chen reinigen)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_clean_n" placeholder="Findings... (Befund...)" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="consumables">Consumables (Betriebsmittel)</h4><ul>
+            <li>Brake cleaner (acetone-based / acetonbasiert)</li>
+            <li>Clean, lint-free cloths (fusselfreie T&uuml;cher)</li>
+            <li>Plastic scraper (Kunststoffschaber) &ndash; <strong>NO wire brush on aluminum!</strong> (KEIN Drahtb&uuml;rste auf Aluminium!)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="release">Release Criteria (Freigabe)</h4><ul>
+            <li>All surfaces oil- and grease-free (&ouml;l-/fettfrei)</li>
+            <li>No abrasion residue visible (keine R&uuml;ckst&auml;nde)</li>
+            <li>Blind holes dry (Sacklochbohrungen trocken) &ndash; compressed air!</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<!-- Step 2: Blow Out Head Bolt Holes -->
+<div class="step-card" id="p3_blowout">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_blowout" onchange="autoSave()">
+        <span class="step-title">2. Blow Out Head Bolt Holes (Kopfbohrungen ausblasen)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p3_blowout_n" placeholder="Findings..." oninput="autoSave()">
+</div>
+
+<!-- Step 3: All Parts + Consumables Ready -->
+<div class="step-card" id="p3_all_parts">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_all_parts" onchange="autoSave()">
+        <span class="step-title">3. All Parts + Consumables Ready (Teile &amp; Material griffbereit)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_all_parts_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block guide-full"><h4 class="consumables">Consumables Checklist (Betriebsmittel-Checkliste)</h4><ul>
+            <li>&#9744; ARP Ultra-Torque lubricant (included in stud kit / im Stehbolzen-Kit enthalten)</li>
+            <li>&#9744; Assembly lube (COMP 159 or equivalent / Montagepaste)</li>
+            <li>&#9744; RTV silicone (Permatex Ultra Black or Grey)</li>
+            <li>&#9744; Clean engine oil (for lubrication / sauberes Motor&ouml;l)</li>
+            <li>&#9744; Anti-seize (for spark plugs / f&uuml;r Z&uuml;ndkerzen)</li>
+            <li>&#9744; Thread sealant / Teflon tape (for water-jacket bolts / Gewindedichtmittel)</li>
+            <li>&#9744; Brake cleaner + clean lint-free cloths (Bremsenreiniger + T&uuml;cher)</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<!-- ======================================== -->
+<!-- SUBPHASE 3b - Cam, Lifters & Oil Pump    -->
+<!-- ======================================== -->
+<div class="subphase">3b &ndash; Cam, Lifters &amp; Oil Pump (Cam, Lifter &amp; &Ouml;lpumpe)</div>
+
+<!-- Step 4: Cam lube -->
+<div class="step-card" id="p3_cam_lube">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_cam_lube" onchange="autoSave()">
+        <span class="step-title">4. Camshaft: assembly lube on ALL lobes + journals (Montagepaste auf ALLE Nocken + Lagerzapfen)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p3_cam_lube_n" placeholder="Done / Findings..." oninput="autoSave()">
+</div>
+
+<!-- Step 5: Install Cam -->
+<div class="step-card" id="p3_cam_install">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_cam_install" onchange="autoSave()">
+        <span class="step-title">5. Install Cam (long bolt as handle / langer Bolzen als Griff)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p3_cam_install_n" placeholder="Done / Findings..." oninput="autoSave()">
+</div>
+
+<!-- Step 6: Timing Set + ARP Cam Bolt -->
+<div class="step-card" id="p3_timing_set">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_timing_set" onchange="autoSave()">
+        <span class="step-title">6. Timing Set + ARP 254-1001 Cam Bolt (Steuerkettensatz + Nockenwellenschraube)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_timing_set_n" placeholder="Torque:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="torque">Torque Values (Anzugswerte)</h4>
+            <div class="spec-line"><span>ARP 254-1001 Cam Bolt</span><span class="spec-val">25&ndash;30 ft-lbs (34&ndash;41 Nm)</span></div>
+            <div class="spec-line"><span>Lubricant</span><span class="spec-val">ARP Ultra-Torque</span></div>
+            <div class="spec-line"><span>Thrust Plate Bolts (Druckplatte)</span><span class="spec-val">9&ndash;12 ft-lbs (12&ndash;16 Nm)</span></div>
+        </div>
+        <div class="guide-block"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
+            <li>Timing marks must point toward each other (dot-to-dot) at TDC #1 (Steuermarken Punkt-zu-Punkt bei OT #1)</li>
+            <li>Cam sprocket on cam, crank sprocket on crank &ndash; route chain over both (Kette &uuml;ber beide Zahnr&auml;der f&uuml;hren)</li>
+            <li>Use ARP hardened washer (included) under cam bolt (geh&auml;rtete Scheibe verwenden)</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<!-- Step 7: Install All 16 Lifters -->
+<div class="step-card" id="p3_lifters">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_lifters" onchange="autoSave()">
+        <span class="step-title">7. Install All 16 Lifters (alle 16 Lifter mit Montagepaste einsetzen)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p3_lifters_n" placeholder="Done / Findings..." oninput="autoSave()">
+</div>
+
+<!-- Step 8: Oil Pump M-6600-D2 -->
+<div class="step-card" id="p3_oilpump">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_oilpump" onchange="autoSave()">
+        <span class="step-title">8. Oil Pump M-6600-D2 &ndash; install (&Ouml;lpumpe montieren)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_oilpump_n" placeholder="Torque:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="consumables">Consumables (Betriebsmittel)</h4><ul>
+            <li><strong>Fill pump COMPLETELY with assembly lube BEFORE installation!</strong> (Pumpe VOR Montage KOMPLETT mit Montagepaste f&uuml;llen!)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="torque">Torque Value (Anzugswert)</h4>
+            <div class="spec-line"><span>Oil Pump to Block (&Ouml;lpumpe an Block)</span><span class="spec-val">22&ndash;25 ft-lbs (30&ndash;34 Nm)</span></div>
+        </div>
+        <div class="guide-block guide-full"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1.</strong> Pre-fill pump completely with assembly lube (Pumpe komplett mit Montagepaste bef&uuml;llen)</li>
+            <li><strong>2.</strong> Set pump on mounting pad (Pumpe auf Montageflansch setzen)</li>
+            <li><strong>3.</strong> Insert intermediate shaft &ndash; must engage cam gear (Zwischenwelle einsetzen &ndash; muss in Cam-Antriebszahnrad greifen)</li>
+            <li><strong>4.</strong> Torque mounting bolt (Befestigungsschraube anziehen)</li>
+            <li><strong>5.</strong> Check rotation by hand &ndash; shaft must turn freely (Drehung pr&uuml;fen &ndash; Welle muss frei drehen)</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
+            <li><strong>&Ouml;lpumpe vor Montage mit Assembly Lube f&uuml;llen</strong> &ndash; die Pumpe braucht F&uuml;llung zum Ansaugen (dry pump cannot build pressure / trockene Pumpe baut keinen Druck auf!)</li>
+            <li>Verify alignment &ndash; pump tends to rotate during installation (Ausrichtung pr&uuml;fen &ndash; Pumpe dreht sich beim Einbau)</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<!-- Step 9: Oil Pump Drive Shaft -->
+<div class="step-card" id="p3_oilshaft">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_oilshaft" onchange="autoSave()">
+        <span class="step-title">9. Oil Pump Drive Shaft M-6605-B302 &ndash; install (&Ouml;lpumpen-Antriebswelle)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p3_oilshaft_n" placeholder="Done / Findings..." oninput="autoSave()">
+</div>
+
+<!-- Step 10: Pickup -->
+<div class="step-card" id="p3_pickup">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_pickup" onchange="autoSave()">
+        <span class="step-title">10. Pickup &ndash; install and BOLT (verschrauben, nicht nur stecken!)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_pickup_n" placeholder="Clearance:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="measure">Pickup-to-Pan Clearance (Abstand Pickup&ndash;Wannenboden)</h4>
+            <div class="spec-line"><span>Target Clearance (Sollabstand)</span><span class="spec-val">1/4"&ndash;3/8" (6.4&ndash;9.5 mm)</span></div>
+            <div class="guide-input-row" style="margin-top:0.4rem;">
+                <div><label>Measured (Gemessen):</label><input type="text" data-field="p3_pickup_clr" placeholder='e.g. 5/16"' oninput="autoSave()"></div>
+            </div>
+        </div>
+        <div class="guide-block"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
+            <li>Too far from pan bottom = air ingestion under acceleration (zu weit = Luft ansaugen bei Beschleunigung)</li>
+            <li>Too close to pan bottom = cavitation (zu nah = Kavitation)</li>
+            <li><strong>Pickup verschrauben, nicht nur stecken!</strong> Unter Vibration kann er sich l&ouml;sen. (Bolt the pickup &ndash; do not just press-fit! Vibration can loosen it.)</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<!-- ======================================== -->
+<!-- SUBPHASE 3c - Cylinder Heads & Valvetrain -->
+<!-- ======================================== -->
+<div class="subphase">3c &ndash; Cylinder Heads &amp; Valvetrain (Zylinderk&ouml;pfe &amp; Ventiltrieb)</div>
+
+<!-- Step 11: Head Gasket CP331 -->
+<div class="step-card" id="p3_headgasket">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_headgasket" onchange="autoSave()">
+        <span class="step-title">11. Head Gasket CP331 &ndash; FRONT marking forward! (Kopfdichtung &ndash; FRONT-Markierung nach vorne!)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_headgasket_n" placeholder="FRONT verified / Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="warning-box"><strong>&#9888; HEAD GASKET HAS &quot;FRONT&quot; PRINTED ON IT!</strong> Installed backwards = cooling of one bank blocked = engine damage. Most common SBF mistake! (R&uuml;ckw&auml;rts montiert = K&uuml;hlung einer Bankseite unterbrochen = Motorschaden. H&auml;ufigster SBF-Fehler!)</div>
+        <div class="guide-block"><h4 class="measure">Gasket Data M-6051-CP331 (Dichtungsdaten)</h4>
+            <div class="spec-line"><span>Type (Typ)</span><span class="spec-val">Copper ring, single-use (Kupferring, Einweg)</span></div>
+            <div class="spec-line"><span>Compressed Thickness (Pressdicke)</span><span class="spec-val">0.040" (1.02 mm)</span></div>
+        </div>
+        <div class="guide-block"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+            <li>Lay gasket <strong>dry</strong> (no sealant! / ohne Dichtmittel!)</li>
+            <li>Correct side up: &quot;TOP&quot; or &quot;FRONT&quot; must face upward/forward (richtige Seite oben: &quot;TOP&quot; oder &quot;FRONT&quot;)</li>
+            <li>Oil/water channels must align with block and head (Wasser-/&Ouml;lkan&auml;le m&uuml;ssen fluchten)</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
+            <li><strong>Head Gasket hat &quot;FRONT&quot; aufgedruckt</strong> &ndash; r&uuml;ckw&auml;rts montiert = K&uuml;hlung unterbrochen</li>
+            <li><strong>Keine Stahldichtung auf Alu-K&ouml;pfen final!</strong> Die CP331 ist f&uuml;r Alu ausgelegt. (No steel gasket on aluminum heads! The CP331 is designed for aluminum.)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="photo">Photo Documentation (Fotodokumentation)</h4><ul>
+            <li>Photograph &quot;FRONT&quot; marking visible (proof of correct installation / Nachweis korrekte Einbaulage)</li>
+        </ul>
+        <div class="photo-gallery" data-photo-group="p3_gasket_photos"></div>
+        <label class="photo-add-btn" onclick="addPhoto('p3_gasket_photos')">&#128247; Add Photo</label>
+        </div>
+    </div></div>
+</div>
+
+<!-- Step 12: ARP Head Studs -->
+<div class="step-card" id="p3_studs">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_studs" onchange="autoSave()">
+        <span class="step-title">12. ARP 154-4003 Head Studs &ndash; hand-tight into block (Stehbolzen handfest eindrehen)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_studs_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block guide-full"><h4 class="prereq">Stud Installation Info (Einbau-Hinweise)</h4><ul>
+            <li><strong>BOSS-Block + AFR #1399</strong> use 1/2" (12.7 mm) head bolts (verwenden 1/2"-Kopfschrauben)</li>
+            <li><strong>Lower bolts (position 6&ndash;10)</strong> go into water jacket (gehen in den Wassermantel) &rarr; use <strong>ARP Thread Sealant</strong> or <strong>Loctite 567</strong> on threads!</li>
+            <li><strong>Upper bolts (position 1&ndash;5)</strong> go into blind holes (gehen in Sacklochbohrungen) + washers with <strong>ARP Moly Lube</strong> on threads + under nut face</li>
+        </ul></div>
+        <div class="warning-box"><strong>&#9888; Water-jacket bolts WITHOUT sealant = coolant leak into oil!</strong> (Wasserbohrungen OHNE Dichtmittel = K&uuml;hlmittel im &Ouml;l!)</div>
+    </div></div>
+</div>
+
+<!-- Step 13: ARP Ultra-Torque lube -->
+<div class="step-card" id="p3_arp_lube">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_arp_lube" onchange="autoSave()">
+        <span class="step-title">13. ARP Ultra-Torque on threads + nut face (Gewinde + Mutterauflage)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p3_arp_lube_n" placeholder="Done / Findings..." oninput="autoSave()">
+</div>
+
+<!-- Step 14: Set Heads on Dowels -->
+<div class="step-card" id="p3_heads_on">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_heads_on" onchange="autoSave()">
+        <span class="step-title">14. Set Heads on Dowels (K&ouml;pfe auf Passh&uuml;lsen setzen)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p3_heads_on_n" placeholder="Done / Findings..." oninput="autoSave()">
+</div>
+
+<!-- Step 15: Torque Heads -->
+<div class="step-card" id="p3_heads_torque">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_heads_torque" onchange="autoSave()">
+        <span class="step-title">15. Torque Heads &ndash; 3 stages, cross pattern (K&ouml;pfe anziehen &ndash; 3 Stufen, Kreuzschema)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_heads_torque_n" placeholder="Stage 1:___ 2:___ 3:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="torque">Torque Values ARP 154-4003 (Anzugswerte)</h4>
+            <div class="spec-line"><span>Stage 1 (Stufe 1)</span><span class="spec-val">35 ft-lbs (47 Nm)</span></div>
+            <div class="spec-line"><span>Stage 2 (Stufe 2)</span><span class="spec-val">55 ft-lbs (75 Nm)</span></div>
+            <div class="spec-line"><span>Stage 3 Long/Blind (Stufe 3 Lang/Sack)</span><span class="spec-val">80 ft-lbs (108 Nm)</span></div>
+            <div class="spec-line"><span>Stage 3 Short/Water (Stufe 3 Kurz/Wasser)</span><span class="spec-val">70 ft-lbs (95 Nm)</span></div>
+            <div class="spec-line"><span>Lubricant (Schmiermittel)</span><span class="spec-val">ARP Ultra-Torque (included / beiliegend)</span></div>
+        </div>
+        <div class="guide-block"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
+            <li>Cross pattern from center outward! (Kreuzschema von der Mitte nach au&szlig;en!)</li>
+            <li>Wait 5 min between stages (gasket settles / Dichtung setzt sich)</li>
+            <li>Long studs (blind hole) and short studs (water hole) have <strong>different final torque values</strong></li>
+        </ul></div>
+        <div class="torque-diagram">
+            <span class="diagram-title">&#9881; TORQUE SEQUENCE (Anzugsreihenfolge) &ndash; Top View, Exhaust Side Up (Draufsicht, Auslassseite oben)</span>
+<span class="td-upper">  ( 9 )    ( 5 )    ( 1 )    ( 3 )    ( 7 )     &larr; UPPER ROW / Obere Reihe: 80 ft-lbs (108 Nm) &ndash; Blind Holes</span>
+<span class="td-lower">  (10)     ( 6 )    ( 2 )    ( 4 )    ( 8 )     &larr; LOWER ROW / Untere Reihe: 70 ft-lbs (95 Nm) &ndash; Water + Sealant</span>
+<span class="td-label">               FRONT  &rarr;&rarr;&rarr;  REAR</span>
+        </div>
+        <div class="guide-block guide-full">
+            <div class="guide-input-row">
+                <div><label>Stage 1 done (Stufe 1):</label><input type="text" data-field="p3_ht_s1" placeholder="35 ft-lbs" oninput="autoSave()" style="width:75px;"></div>
+                <div><label>Stage 2 done (Stufe 2):</label><input type="text" data-field="p3_ht_s2" placeholder="55 ft-lbs" oninput="autoSave()" style="width:75px;"></div>
+                <div><label>Stage 3 long (Stufe 3 lang):</label><input type="text" data-field="p3_ht_s3l" placeholder="80 ft-lbs" oninput="autoSave()" style="width:75px;"></div>
+                <div><label>Stage 3 short (Stufe 3 kurz):</label><input type="text" data-field="p3_ht_s3s" placeholder="70 ft-lbs" oninput="autoSave()" style="width:75px;"></div>
+            </div>
+        </div>
+    </div></div>
+</div>
+
+<!-- Step 16: Guide Plates + Pushrods -->
+<div class="step-card" id="p3_guideplates">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_guideplates" onchange="autoSave()">
+        <span class="step-title">16. Guide Plates + Final Pushrods &ndash; install (F&uuml;hrungsplatten + finale Pushrods)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p3_guideplates_n" placeholder="Done / Findings..." oninput="autoSave()">
+</div>
+
+<!-- Step 17: Rockers + Preload -->
+<div class="step-card" id="p3_rockers">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_rockers" onchange="autoSave()">
+        <span class="step-title">17. Rockers + Preload (1/4&ndash;1/2 turn, on base circle! / Kipphebel + Vorspannung, auf Grundkreis!)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_rockers_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block guide-full"><h4 class="prereq">Preload Procedure (Vorspannungs-Prozedur) &ndash; 7 Steps</h4><ul>
+            <li><strong>1.</strong> Rotate crank so this valve&rsquo;s lifter sits on base circle (Grundkreis) &ndash; lobe pointing away from lifter (Nocken zeigt weg vom Lifter)</li>
+            <li><strong>2.</strong> Thread polylock onto rocker stud by hand (Polylock handfest auf Kipphebel-Stehbolzen drehen)</li>
+            <li><strong>3.</strong> Spin pushrod with one hand while tightening polylock with the other (Pushrod drehen w&auml;hrend Polylock angezogen wird)</li>
+            <li><strong>4.</strong> Zero lash = pushrod just stops spinning (Nullspiel = Pushrod stoppt gerade)</li>
+            <li><strong>5.</strong> From zero lash: <strong>1/4 to 1/2 turn further = preload</strong> (Ab Nullspiel: 1/4 bis 1/2 Umdrehung weiter = Vorspannung)</li>
+            <li><strong>6.</strong> Tighten lock nut &ndash; polylock holds position (Kontermutter anziehen &ndash; Polylock h&auml;lt Position)</li>
+            <li><strong>7.</strong> Repeat for all 16 valves (F&uuml;r alle 16 Ventile wiederholen)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="measure">Target Value (Sollwert)</h4>
+            <div class="spec-line"><span>Preload Morel 5327 HLT (Vorspannung)</span><span class="spec-val">1/4&ndash;1/2 turn (Umdrehung)</span></div>
+        </div>
+        <div class="guide-block"><h4 class="tips">EO/IC Method (EO/IC-Methode)</h4><ul>
+            <li><strong>When exhaust valve opens (EO)</strong>, set intake preload on same cylinder (Wenn Auslassventil &ouml;ffnet, Einlass-Vorspannung einstellen)</li>
+            <li><strong>When intake valve closes (IC)</strong>, set exhaust preload on same cylinder (Wenn Einlassventil schlie&szlig;t, Auslass-Vorspannung einstellen)</li>
+        </ul></div>
+        <div class="warning-box"><strong>&#9888; Only set preload on base circle!</strong> If the lifter is on the lobe, the measurement is wrong and the valve stays open. (Nur auf Grundkreis einstellen! Auf dem Nocken ist die Messung falsch und das Ventil bleibt offen.)</div>
+    </div></div>
+</div>
+
+<!-- ======================================== -->
+<!-- SUBPHASE 3d - Sealing                     -->
+<!-- ======================================== -->
+<div class="subphase">3d &ndash; Sealing (Abdichten): Cover &rarr; Balancer &rarr; Pan &rarr; Water Pump</div>
+
+<!-- Step 18: Timing Cover -->
+<div class="step-card" id="p3_timing_cover">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_timing_cover" onchange="autoSave()">
+        <span class="step-title">18. Timing Cover + Gasket + RTV (Steuerkettendeckel + Dichtung + RTV)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_timing_cover_n" placeholder="Torque:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>Torque wrench (Drehmomentschl&uuml;ssel)</li>
+            <li>Timing cover gasket (Steuerkettendeckel-Dichtung)</li>
+            <li>RTV silicone (Permatex Ultra Black)</li>
+            <li>Front crank seal (vorderer Kurbelwellen-Simmerring)</li>
+            <li>Seal installation tool (Simmerring-Einpresswerkzeug)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="prereq">Prerequisites (Voraussetzungen)</h4><ul>
+            <li>Timing chain mounted (Steuerkette montiert)</li>
+            <li>Oil pan <strong>NOT</strong> yet mounted &ndash; cover overlaps pan rail (&Ouml;lwanne NOCH NICHT montiert &ndash; Deckel &uuml;berlappt Wannenschiene)</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="prereq">Procedure (Vorgehensweise) &ndash; 5 Steps</h4><ul>
+            <li><strong>1.</strong> Press front seal into timing cover &ndash; flush, lip faces inward toward motor (Simmerring einpressen &ndash; b&uuml;ndig, Dichtlippe nach innen/zum Motor)</li>
+            <li><strong>2.</strong> Gasket dry or with thin sealant layer (Dichtung trocken oder mit d&uuml;nner Dichtmasse)</li>
+            <li><strong>3.</strong> RTV at transitions to oil pan area (RTV an &Uuml;berg&auml;ngen zum &Ouml;lwannenbereich)</li>
+            <li><strong>4.</strong> Slide cover over crank nose, press evenly (Deckel &uuml;ber Kurbelwellenstumpf schieben, gleichm&auml;&szlig;ig andr&uuml;cken)</li>
+            <li><strong>5.</strong> Torque bolts (Schrauben anziehen)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="torque">Torque Value (Anzugswert)</h4>
+            <div class="spec-line"><span>Timing Cover Bolts (Deckelschrauben)</span><span class="spec-val">12&ndash;18 ft-lbs (16&ndash;24 Nm)</span></div>
+        </div>
+        <div class="guide-block"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
+            <li>Oil the seal lip before installation &ndash; do not fold it! (Dichtlippe &ouml;len &ndash; nicht umknicken!)</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<!-- Step 19: Balancer -->
+<div class="step-card" id="p3_balancer">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_balancer" onchange="autoSave()">
+        <span class="step-title">19. Balancer M-6316-D302 (0-oz, press-on tool! / 0-oz, Aufpresswerkzeug!)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_balancer_n" placeholder="Torque:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="warning-box"><strong>&#9888; 0-oz balancer (neutral balanced / neutralgewuchtet)!</strong> A 28-oz balancer fits a different rotating assembly and creates vibrations that destroy bearings. (Ein 28-oz-Balancer geh&ouml;rt zu einer anderen Kurbelwelle und erzeugt Vibrationen, die Lager zerst&ouml;ren.)</div>
+        <div class="guide-block"><h4 class="torque">Torque Value (Anzugswert)</h4>
+            <div class="spec-line"><span>Balancer Bolt (Balancer-Schraube)</span><span class="spec-val">70&ndash;90 ft-lbs (95&ndash;122 Nm)</span></div>
+        </div>
+        <div class="guide-block guide-full"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1.</strong> Oil crank nose + balancer bore (Kurbelwellenstumpf + Balancer-Bohrung &ouml;len)</li>
+            <li><strong>2.</strong> Align Woodruff key (Passfeder ausrichten)</li>
+            <li><strong>3.</strong> Use press-on tool to pull evenly &ndash; threaded rod through crank (Aufpresswerkzeug verwenden &ndash; Gewindestange durch Kurbelwelle)</li>
+            <li><strong>4.</strong> Check timing mark at TDC (Steuermarke bei OT pr&uuml;fen)</li>
+        </ul></div>
+        <div class="warning-box"><strong>&#9888; NEVER hammer!</strong> Hammer blows damage the damper rubber layer and stress crank/main bearings. (NIEMALS h&auml;mmern! Hammerschl&auml;ge besch&auml;digen die D&auml;mpfer-Gummischicht und belasten Kurbelwelle/Hauptlager.)</div>
+    </div></div>
+</div>
+
+<!-- Step 20: Oil Pan -->
+<div class="step-card" id="p3_oilpan">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_oilpan" onchange="autoSave()">
+        <span class="step-title">20. Oil Pan + Gasket + RTV corners (&Ouml;lwanne + Dichtung + RTV-Ecken)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_oilpan_n" placeholder="Torque:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="torque">Torque Value (Anzugswert)</h4>
+            <div class="spec-line"><span>Oil Pan Bolts (&Ouml;lwannenschrauben)</span><span class="spec-val">10&ndash;12 ft-lbs (14&ndash;16 Nm)</span></div>
+            <div class="spec-line"><span>RTV Cure Time (RTV-Ablüftzeit)</span><span class="spec-val">15&ndash;20 min. before assembly (vor Montage)</span></div>
+        </div>
+        <div class="guide-block"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1.</strong> Install side gaskets (Seitendichtungen einlegen)</li>
+            <li><strong>2.</strong> RTV at 4 corners &ndash; front/rear seal joints (RTV an 4 Ecken &ndash; vordere/hintere Dichtungsstöße)</li>
+            <li><strong>3.</strong> Set pan on block, hand-start all bolts (Wanne aufsetzen, alle Schrauben handfest)</li>
+            <li><strong>4.</strong> Cross-pattern torque (Kreuzweise anziehen)</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
+            <li>RTV only at 4 corners (Block-to-Timing-Cover and Block-to-Rear-Seal joints / nur an den 4 Ecksto&szlig;stellen)</li>
+            <li>Thin bead &ndash; too much RTV squeezes into oil passages! (D&uuml;nne Raupe &ndash; zu viel RTV dr&uuml;ckt in &Ouml;lkan&auml;le!)</li>
+            <li>Pan seals against timing cover bottom edge &ndash; that&rsquo;s why cover goes on FIRST (Wanne dichtet gegen Steuerkettendeckel-Unterkante &ndash; deshalb Deckel ZUERST)</li>
+            <li><strong>Wire-Mesh-Sieb bevorzugen</strong> &ndash; perforiertes Blech kann bis zu 75% Durchfluss kosten (Prefer wire mesh screen &ndash; perforated sheet can cost up to 75% flow)</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<!-- Step 21: Water Pump -->
+<div class="step-card" id="p3_waterpump">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_waterpump" onchange="autoSave()">
+        <span class="step-title">21. Water Pump MIL-16230 (Wasserpumpe)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_waterpump_n" placeholder="Torque:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>Torque wrench (Drehmomentschl&uuml;ssel)</li>
+            <li>Water pump gaskets &ndash; 2 pcs (Wasserpumpen-Dichtungen &ndash; 2 St&uuml;ck)</li>
+            <li>Sealant: Permatex Aviation (Dichtmittel)</li>
+            <li>Coolant 50/50 (K&uuml;hlmittel 50/50)</li>
+            <li>Hoses + clamps (Schl&auml;uche + Schellen)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="prereq">Prerequisites (Voraussetzungen)</h4><ul>
+            <li>Timing cover mounted (Steuerkettendeckel montiert)</li>
+            <li>Check rotation direction: standard = clockwise from front for V-belt (Drehrichtung pr&uuml;fen: Standard = im Uhrzeigersinn von vorne f&uuml;r Keilriemen)</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1.</strong> Thin sealant on both sides of gasket (D&uuml;nn Dichtmasse auf beide Dichtungsseiten)</li>
+            <li><strong>2.</strong> Place pump on block, align bolt holes (Pumpe aufsetzen, Schraubenl&ouml;cher ausrichten)</li>
+            <li><strong>3.</strong> Cross-pattern torque (Kreuzweise anziehen)</li>
+            <li><strong>4.</strong> Connect hoses (Schl&auml;uche anschlie&szlig;en)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="torque">Torque Value (Anzugswert)</h4>
+            <div class="spec-line"><span>Water Pump Bolts (Wasserpumpen-Schrauben)</span><span class="spec-val">15&ndash;22 ft-lbs (20&ndash;30 Nm)</span></div>
+        </div>
+        <div class="guide-block"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
+            <li>Bolt lengths may vary &ndash; mark positions before removal! (Schraubenl&auml;ngen k&ouml;nnen variieren &ndash; Positionen vor Demontage markieren!)</li>
+            <li>Milodon 16230 is a high-flow pump &ndash; verify rotation matches belt routing (Hochleistungspumpe &ndash; Drehrichtung muss zum Riementrieb passen)</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<!-- ======================================== -->
+<!-- SUBPHASE 3e - Upper Accessories           -->
+<!-- ======================================== -->
+<div class="subphase">3e &ndash; Upper Accessories (Obere Anbauteile)</div>
+
+<!-- Step 22: Intake Manifold -->
+<div class="step-card" id="p3_intake">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_intake" onchange="autoSave()">
+        <span class="step-title">22. Intake Manifold + Fel-Pro 1250 (Ansaugbr&uuml;cke + Dichtungen)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_intake_n" placeholder="Torque:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>Torque wrench (Drehmomentschl&uuml;ssel)</li>
+            <li>RTV silicone (Permatex Ultra Black)</li>
+            <li>Port gaskets Fel-Pro 1250 (Portdichtungen)</li>
+            <li>Brake cleaner (Bremsenreiniger)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="prereq">Prerequisites (Voraussetzungen)</h4><ul>
+            <li>Heads mounted and torqued (K&ouml;pfe montiert und angezogen)</li>
+            <li>Valvetrain set (Ventiltrieb eingestellt)</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1.</strong> Port gaskets dry on heads (Portdichtungen trocken auf K&ouml;pfe)</li>
+            <li><strong>2.</strong> RTV at front/rear &ndash; <strong>NO cork end seals &ndash; RTV only!</strong> (RTV vorne/hinten &ndash; KEINE Kork-Enddichtungen &ndash; nur RTV!)</li>
+            <li><strong>3.</strong> Extra RTV at transitions where port gaskets meet end seals (Extra RTV an &Uuml;berg&auml;ngen)</li>
+            <li><strong>4.</strong> Place manifold straight, hand-tight all bolts (Ansaugbr&uuml;cke gerade aufsetzen, alle Schrauben handfest)</li>
+            <li><strong>5.</strong> Torque in 3 stages, cross pattern center&rarr;outward (3 Stufen anziehen, Kreuzschema von Mitte nach au&szlig;en)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="torque">Torque Values &ndash; 3 Stages (Anzugswerte &ndash; 3 Stufen)</h4>
+            <div class="spec-line"><span>Stage 1 (Stufe 1)</span><span class="spec-val">5 ft-lbs (7 Nm)</span></div>
+            <div class="spec-line"><span>Stage 2 (Stufe 2)</span><span class="spec-val">12 ft-lbs (16 Nm)</span></div>
+            <div class="spec-line"><span>Stage 3 final (Stufe 3 final)</span><span class="spec-val">18 ft-lbs (24 Nm)</span></div>
+            <div class="spec-line"><span>Pattern (Schema)</span><span class="spec-val">Cross, center &rarr; outward (Kreuz, Mitte &rarr; au&szlig;en)</span></div>
+        </div>
+        <div class="torque-diagram">
+            <span class="diagram-title">&#9881; INTAKE TORQUE SEQUENCE (Ansaugbr&uuml;cke-Anzugsreihenfolge) &ndash; Top View (Draufsicht)</span>
+<span class="td-upper">  (11)    ( 1 )    ( 5 )    ( 9 )    ( 3 )</span>
+<span class="td-label">  ( 7 )                                ( 8 )    &larr; Distributor Side (Verteilerseite)</span>
+<span class="td-lower">  ( 4 )   (10)     ( 6 )    ( 2 )    (12)</span>
+<span class="td-label">             FRONT  &rarr;&rarr;&rarr;  REAR</span>
+        </div>
+        <div class="warning-box"><strong>&#9888; DO NOT exceed 18 ft-lbs (24 Nm)!</strong> Over-torqued intake bolts are the #1 SBF mistake and cause head gasket problems. (18 ft-lbs NICHT &uuml;berschreiten! &Uuml;berzogene Ansaugschrauben sind der #1 SBF-Fehler.)</div>
+        <div class="guide-block guide-full"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
+            <li><strong>18 ft-lbs NICHT &uuml;berschreiten!</strong> (DO NOT exceed 18 ft-lbs!)</li>
+            <li><strong>RTV nur an den 4 Ecken</strong> (RTV only at the 4 corners)</li>
+            <li><strong>Intake Gasket nicht port-matchen</strong> &ndash; Fel-Pro 1250 passt ab Werk (Do not port-match the intake gasket &ndash; Fel-Pro 1250 fits as delivered)</li>
+            <li>RTV needs 15&ndash;20 min flash time before placing manifold (RTV braucht 15&ndash;20 Min. Abl&uuml;ftzeit vor Auflegen der Br&uuml;cke)</li>
+            <li>24h cure before adding coolant (24 Std. aush&auml;rten lassen vor K&uuml;hlmittel)</li>
+        </ul></div>
+        <div class="guide-block guide-full">
+            <div class="guide-input-row">
+                <div><label>Stage 1 done (Stufe 1):</label><input type="text" data-field="p3_int_s1" placeholder="5 ft-lbs" oninput="autoSave()" style="width:70px;"></div>
+                <div><label>Stage 2 done (Stufe 2):</label><input type="text" data-field="p3_int_s2" placeholder="12 ft-lbs" oninput="autoSave()" style="width:70px;"></div>
+                <div><label>Stage 3 done (Stufe 3):</label><input type="text" data-field="p3_int_s3" placeholder="18 ft-lbs" oninput="autoSave()" style="width:70px;"></div>
+            </div>
+        </div>
+    </div></div>
+</div>
+
+<!-- Step 23: Distributor -->
+<div class="step-card" id="p3_distributor">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_distributor" onchange="autoSave()">
+        <span class="step-title">23. Distributor &ndash; TDC #1 compression stroke (Verteiler &ndash; OT #1 Kompressionstakt)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p3_distributor_n" placeholder="Done / Findings..." oninput="autoSave()">
+</div>
+
+<!-- Step 24: Spark Plugs -->
+<div class="step-card" id="p3_sparkplugs">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_sparkplugs" onchange="autoSave()">
+        <span class="step-title">24. Spark Plugs Autolite 3924 &ndash; Gap 0.040" (1.02 mm) (Z&uuml;ndkerzen)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_sparkplugs_n" placeholder="Torque:___ Gap verified:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>Spark plug socket 5/8" / 16 mm (Z&uuml;ndkerzennuss)</li>
+            <li>Torque wrench (Drehmomentschl&uuml;ssel)</li>
+            <li>Feeler gauge 0.040" (F&uuml;hlerlehre 1.02 mm)</li>
+            <li>Anti-seize compound (Montagepaste)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="measure">Specification (Spezifikation)</h4>
+            <div class="spec-line"><span>Plug (Kerze)</span><span class="spec-val">Autolite 3924</span></div>
+            <div class="spec-line"><span>Alternatives</span><span class="spec-val">NGK FR5 / Champion RC9YC</span></div>
+            <div class="spec-line"><span>Thread</span><span class="spec-val">14 mm &times; 0.750" (19.1 mm) long reach</span></div>
+            <div class="spec-line"><span>Seat Type (Sitztyp)</span><span class="spec-val">Gasket seat (Dichtring) &ndash; NOT conical!</span></div>
+            <div class="spec-line"><span>Gap (Elektrodenabstand)</span><span class="spec-val">0.040" (1.02 mm)</span></div>
+        </div>
+        <div class="guide-block guide-full"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1.</strong> Anti-seize on first 2&ndash;3 threads only &ndash; NOT on electrode! (Anti-Seize auf die ersten 2&ndash;3 Gewindeg&auml;nge &ndash; NICHT auf Elektrode!)</li>
+            <li><strong>2.</strong> Hand-start min. 3&ndash;4 turns before using wrench (Handfest min. 3&ndash;4 Umdrehungen vor Schl&uuml;sseleinsatz)</li>
+            <li><strong>3.</strong> Torque to spec (auf Drehmoment anziehen)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="torque">Torque Value (Anzugswert)</h4>
+            <div class="spec-line"><span>Spark Plugs (aluminum heads)</span><span class="spec-val">15&ndash;22 ft-lbs (20&ndash;30 Nm)</span></div>
+            <div class="spec-line"><span>Thread Lubricant</span><span class="spec-val">Anti-seize on threads</span></div>
+        </div>
+        <div class="warning-box"><strong>&#9888; Always install in COLD head!</strong> Cross-threaded aluminum = expensive HeliCoil repair. (Immer im KALTEN Kopf montieren! Quergedr&uuml;cktes Gewinde in Alu = teure HeliCoil-Reparatur.)</div>
+    </div></div>
+</div>
+
+<!-- Step 25: Valve Covers -->
+<div class="step-card" id="p3_valvecovers">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_valvecovers" onchange="autoSave()">
+        <span class="step-title">25. Valve Covers &ndash; 4&ndash;6 ft-lbs (5&ndash;8 Nm), aluminum! (Ventildeckel)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p3_valvecovers_n" placeholder="Torque:___" oninput="autoSave()">
+</div>
+
+<!-- Step 26: Fuel Pump -->
+<div class="step-card" id="p3_fuelpump">
+    <div class="step-header">
+        <input type="checkbox" data-field="p3_fuelpump" onchange="autoSave()">
+        <span class="step-title">26. Fuel Pump Block-Off or Mechanical Pump (Benzinpumpe / Blinddeckel)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p3_fuelpump_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block guide-full"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1.</strong> Fuel pump pushrod into block bore (Benzinpumpen-Sto&szlig;stange in Blockbohrung)</li>
+            <li><strong>2.</strong> New gasket (neue Dichtung)</li>
+            <li><strong>3.</strong> Mount pump &ndash; hold pushrod up while inserting (Pumpe montieren &ndash; Sto&szlig;stange w&auml;hrend Montage oben halten)</li>
+            <li><strong>4.</strong> Torque mounting bolts (Befestigungsschrauben anziehen)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="torque">Torque Value (Anzugswert)</h4>
+            <div class="spec-line"><span>Fuel Pump Bolts</span><span class="spec-val">18&ndash;22 ft-lbs (24&ndash;30 Nm)</span></div>
+        </div>
+        <div class="guide-block"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
+            <li>Rotate crank so fuel pump eccentric on cam is on base circle &ndash; easier to mount (Kurbelwelle drehen, damit Exzenter auf Grundkreis steht &ndash; erleichtert Montage)</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<!-- ======================================== -->
+<!-- Phase 3 Photos + Progress                -->
+<!-- ======================================== -->
+<div style="margin-top: 1rem;">
+    <div class="photo-gallery" data-photo-group="phase3"></div>
+    <label class="photo-add-btn" onclick="addPhoto('phase3')">&#128247; Add Phase 3 Photos (Phase-3-Fotos hinzuf&uuml;gen)</label>
+</div>
+
+</div><!-- /phase3body -->
+</div><!-- /phase3 -->
+
+</div><!-- /container -->
+
+<div class="toast" id="toast"></div>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('show')">
+    <button class="lb-close" onclick="event.stopPropagation();this.parentElement.classList.remove('show')">&times;</button>
+    <img src="" alt="Photo" onclick="event.stopPropagation()">
+    <div class="caption"></div>
+</div>
+
+<script>
+    // ==== CONFIG ====
+    var GIST_FILENAME = 'engine-build-log-data.json';
+    var FIXED_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
+    var isLoading = false;
+    var autoSaveTimer = null;
+
+    function getGistConfig() { return { token: localStorage.getItem('gh_token') || '' }; }
+    function isGistConfigured() { return getGistConfig().token.length > 0; }
+
+    // ==== PHASE TOGGLE (collapsible) ====
+    function togglePhase(bodyId) {
+        var body = document.getElementById(bodyId);
+        var toggle = document.getElementById('toggle_' + bodyId);
+        if (body.classList.contains('collapsed')) {
+            body.classList.remove('collapsed');
+            if (toggle) toggle.classList.remove('collapsed');
+        } else {
+            body.classList.add('collapsed');
+            if (toggle) toggle.classList.add('collapsed');
+        }
+    }
+
+    // ==== GUIDE TOGGLE ====
+    function toggleGuide(btn) {
+        var guide = btn.closest('.step-card').querySelector('.step-guide');
+        if (guide) {
+            var open = guide.classList.toggle('open');
+            btn.classList.toggle('open', open);
+            btn.textContent = open ? 'Close' : 'Guide';
+        }
+    }
+
+    // ==== PROGRESS ====
+    function updateProgress() {
+        var phase = document.getElementById('phase3');
+        if (!phase) return;
+        var checks = phase.querySelectorAll('input[type="checkbox"][data-field]');
+        var done = Array.from(checks).filter(function(c) { return c.checked; }).length;
+        var bar = document.getElementById('prog3');
+        var text = document.getElementById('progText3');
+        if (bar) bar.style.width = (checks.length ? (done / checks.length * 100) : 0) + '%';
+        if (text) text.textContent = done + ' / ' + checks.length + ' completed';
+    }
+
+    // ==== DATA ====
+    function collectData() {
+        var data = {};
+        document.querySelectorAll('[data-field]').forEach(function(el) {
+            data[el.dataset.field] = el.type === 'checkbox' ? el.checked : el.value;
+        });
+        return data;
+    }
+
+    function applyData(data) {
+        // Migration: initial_timing -> p4_timing_static (framework placeholder)
+        if (data.initial_timing !== undefined && data.p4_timing_static === undefined) {
+            data.p4_timing_static = data.initial_timing;
+        }
+        document.querySelectorAll('[data-field]').forEach(function(el) {
+            var v = data[el.dataset.field];
+            if (v !== undefined) { if (el.type === 'checkbox') el.checked = v; else el.value = v; }
+        });
+        updateProgress();
+    }
+
+    async function saveData() {
+        var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+        var myData = collectData();
+        var merged = Object.assign({}, existing, myData);
+        merged._savedAt = new Date().toISOString();
+        localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+        updateSaveStatus();
+
+        if (isGistConfigured()) {
+            try {
+                var t = getGistConfig().token;
+                // Fetch existing gist data first for merge
+                var getRes = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
+                    headers: { 'Authorization': 'Bearer ' + t }
+                });
+                if (getRes.ok) {
+                    var gist = await getRes.json();
+                    var file = gist.files && gist.files[GIST_FILENAME];
+                    if (file) {
+                        try {
+                            var cloudData = JSON.parse(file.content);
+                            merged = Object.assign({}, cloudData, myData);
+                            merged._savedAt = new Date().toISOString();
+                        } catch(e) {}
+                    }
+                }
+                var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(merged, null, 2) } } })
+                });
+                if (res.ok) {
+                    localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+                    showToast('Saved (local + cloud / lokal + Cloud)');
+                }
+                else showToast('Saved locally (cloud error / lokaler Cloud-Fehler)');
+            } catch (e) { showToast('Saved locally (cloud error)'); }
+        } else { showToast('Saved locally (lokal gespeichert)'); }
+    }
+
+    function loadData() {
+        isLoading = true;
+        var raw = localStorage.getItem('engineBuildLog');
+        if (raw) { try { applyData(JSON.parse(raw)); } catch(e) {} }
+
+        if (isGistConfigured()) {
+            fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
+                headers: { 'Authorization': 'Bearer ' + getGistConfig().token }
+            }).then(function(r) { return r.json(); }).then(function(gist) {
+                var file = gist.files && gist.files[GIST_FILENAME];
+                if (file) {
+                    var data = JSON.parse(file.content);
+                    applyData(data);
+                    localStorage.setItem('engineBuildLog', JSON.stringify(data));
+                }
+                isLoading = false; updateSaveStatus();
+            }).catch(function() { isLoading = false; });
+        } else { isLoading = false; updateSaveStatus(); }
+    }
+
+    function autoSave() {
+        if (isLoading) return;
+        updateProgress();
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(function() { saveData(); }, 2000);
+    }
+
+    function updateSaveStatus() {
+        var raw = localStorage.getItem('engineBuildLog');
+        if (raw) {
+            try {
+                var d = new Date(JSON.parse(raw)._savedAt);
+                document.getElementById('saveStatus').textContent =
+                    'Saved: ' + d.toLocaleDateString('de-DE') + ' ' + d.toLocaleTimeString('de-DE') +
+                    (isGistConfigured() ? ' (Cloud Sync)' : ' (Local)');
+            } catch(e) {}
+        }
+    }
+
+    function showToast(msg) {
+        var t = document.getElementById('toast'); t.textContent = msg;
+        t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); }, 2500);
+    }
+
+    // ==== PHOTOS ====
+    function addPhoto(group) {
+        var input = document.createElement('input');
+        input.type = 'file'; input.accept = 'image/*'; input.capture = 'environment';
+        input.onchange = function(e) {
+            var file = e.target.files[0]; if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function(ev) {
+                var img = new Image();
+                img.onload = function() {
+                    var canvas = document.createElement('canvas');
+                    var maxW = 1200;
+                    var scale = img.width > maxW ? maxW / img.width : 1;
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                    var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    var photos = JSON.parse(localStorage.getItem('buildPhotos_' + group) || '[]');
+                    photos.push({ src: dataUrl, caption: '', time: new Date().toISOString() });
+                    localStorage.setItem('buildPhotos_' + group, JSON.stringify(photos));
+                    renderPhotos(group);
+                    showToast('Photo saved (Foto gespeichert)');
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+        input.click();
+    }
+
+    function renderPhotos(group) {
+        var galleries = document.querySelectorAll('.photo-gallery[data-photo-group="' + group + '"]');
+        galleries.forEach(function(gallery) {
+            var photos = JSON.parse(localStorage.getItem('buildPhotos_' + group) || '[]');
+            gallery.innerHTML = '';
+            photos.forEach(function(p, i) {
+                var img = document.createElement('img');
+                img.src = p.src; img.alt = p.caption || 'Photo ' + (i+1);
+                img.onclick = function() {
+                    var lb = document.getElementById('lightbox');
+                    lb.querySelector('img').src = p.src;
+                    lb.querySelector('.caption').textContent = p.caption || new Date(p.time).toLocaleString('de-DE');
+                    lb.classList.add('show');
+                };
+                gallery.appendChild(img);
+            });
+        });
+    }
+
+    // ==== BUILD-LOG SEARCH ====
+    var bsMarks = [], bsIdx = -1, bsTimer = null;
+    function doBuildSearch() {
+        clearTimeout(bsTimer);
+        bsTimer = setTimeout(_doBuildSearch, 200);
+    }
+    function _doBuildSearch() {
+        clearBuildHighlights();
+        var q = document.getElementById('searchInput').value.trim();
+        if (q.length < 2) { document.getElementById('buildSearchCount').textContent = ''; return; }
+        var walker = document.createTreeWalker(document.querySelector('.container'), NodeFilter.SHOW_TEXT, null);
+        var matches = [], qLower = q.toLowerCase();
+        while (walker.nextNode()) {
+            var node = walker.currentNode;
+            if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE')) continue;
+            var idx = node.textContent.toLowerCase().indexOf(qLower);
+            if (idx >= 0) matches.push({ node: node, idx: idx, len: q.length });
+        }
+        for (var i = matches.length - 1; i >= 0; i--) {
+            var m = matches[i];
+            var range = document.createRange();
+            range.setStart(m.node, m.idx); range.setEnd(m.node, m.idx + m.len);
+            var mark = document.createElement('mark');
+            mark.style.cssText = 'background:#fefcbf;color:#744210;padding:0 1px;border-radius:2px;';
+            mark.className = 'bs-hl';
+            range.surroundContents(mark);
+        }
+        bsMarks = Array.from(document.querySelectorAll('mark.bs-hl'));
+        document.getElementById('buildSearchCount').textContent = bsMarks.length ? bsMarks.length + ' hits' : 'none';
+        if (bsMarks.length) { bsIdx = 0; buildJumpTo(0); }
+    }
+    function buildJumpTo(idx) {
+        bsMarks.forEach(function(m) { m.style.background = '#fefcbf'; });
+        if (!bsMarks.length) return;
+        bsIdx = ((idx % bsMarks.length) + bsMarks.length) % bsMarks.length;
+        var mark = bsMarks[bsIdx];
+        // Open parent guide if collapsed
+        var el = mark;
+        while (el) {
+            if (el.classList && el.classList.contains('step-guide') && !el.classList.contains('open')) {
+                el.classList.add('open');
+                var btn = el.closest('.step-card').querySelector('.guide-toggle');
+                if (btn) { btn.classList.add('open'); btn.textContent = 'Close'; }
+            }
+            // Also expand collapsed phase
+            if (el.classList && el.classList.contains('phase-body') && el.classList.contains('collapsed')) {
+                el.classList.remove('collapsed');
+                var toggle = document.getElementById('toggle_' + el.id);
+                if (toggle) toggle.classList.remove('collapsed');
+            }
+            el = el.parentElement;
+        }
+        mark.style.background = '#ed8936'; mark.style.color = 'white';
+        mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById('buildSearchCount').textContent = (bsIdx + 1) + ' / ' + bsMarks.length;
+    }
+    function buildSearchJump(dir) { if (bsMarks.length) buildJumpTo(bsIdx + dir); }
+    function clearBuildHighlights() {
+        document.querySelectorAll('mark.bs-hl').forEach(function(m) {
+            var p = m.parentNode; p.replaceChild(document.createTextNode(m.textContent), m); p.normalize();
+        });
+        bsMarks = []; bsIdx = -1;
+    }
+    function clearBuildSearch() {
+        document.getElementById('searchInput').value = '';
+        clearBuildHighlights();
+        document.getElementById('buildSearchCount').textContent = '';
+    }
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+            e.preventDefault();
+            document.getElementById('searchInput').focus();
+            document.getElementById('searchInput').select();
+        }
+    });
+
+    // ==== SCROLL TO HASH ====
+    function scrollToHash() {
+        if (window.location.hash) {
+            var id = window.location.hash.substring(1);
+            var el = document.getElementById(id);
+            if (el) {
+                // Expand phase body if collapsed
+                var body = document.getElementById('phase3body');
+                if (body && body.classList.contains('collapsed')) {
+                    body.classList.remove('collapsed');
+                    var toggle = document.getElementById('toggle_phase3body');
+                    if (toggle) toggle.classList.remove('collapsed');
+                }
+                // Open guide if the target is inside one
+                var guide = el.querySelector('.step-guide') || el.closest('.step-guide');
+                if (guide && !guide.classList.contains('open')) {
+                    guide.classList.add('open');
+                    var btn = guide.closest('.step-card').querySelector('.guide-toggle');
+                    if (btn) { btn.classList.add('open'); btn.textContent = 'Close'; }
+                }
+                setTimeout(function() {
+                    var headerH = document.querySelector('.header').offsetHeight;
+                    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - headerH - 10, behavior: 'smooth' });
+                }, 300);
+            }
+        }
+    }
+
+    // ==== INIT ====
+    document.addEventListener('DOMContentLoaded', function() {
+        loadData();
+        // Render all photo galleries
+        document.querySelectorAll('.photo-gallery[data-photo-group]').forEach(function(g) {
+            renderPhotos(g.dataset.photoGroup);
+        });
+        // Scroll to hash if present
+        scrollToHash();
+    });
+</script>
+
+</body>
+</html>

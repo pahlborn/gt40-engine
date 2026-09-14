@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Phase 4 &ndash; First Start &amp; Break-In &ndash; 302ci BOSS Build</title>
+    <style>
+        :root {
+            --primary: #1a365d; --primary-light: #2b6cb0; --accent: #ed8936;
+            --bg: #f7fafc; --card-bg: #ffffff; --border: #e2e8f0;
+            --text: #2d3748; --text-light: #718096;
+            --success: #38a169; --warning: #d69e2e; --danger: #e53e3e;
+            --input-bg: #edf2f7;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white; padding: 1rem; text-align: center;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .header h1 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.1rem; }
+        .header p { font-size: 0.78rem; opacity: 0.85; }
+        .header-nav { display: flex; gap: 0.3rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem; }
+        .header-nav a, .header-nav button {
+            padding: 0.4rem 0.7rem; border: 1px solid rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.15); color: white; border-radius: 6px;
+            cursor: pointer; font-size: 0.72rem; font-weight: 500; text-decoration: none;
+            min-height: 36px; display: inline-flex; align-items: center;
+        }
+        .header-nav a:hover, .header-nav button:hover { background: rgba(255,255,255,0.25); }
+        .header-nav .active { background: rgba(255,255,255,0.35); border-color: rgba(255,255,255,0.7); font-weight: 700; }
+        .header-nav .save-btn { background: var(--success); border-color: var(--success); }
+        .save-status { font-size: 0.68rem; opacity: 0.8; margin-top: 0.25rem; min-height: 1em; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0.75rem; }
+
+        /* Phase Banner - clickable/collapsible */
+        .phase-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, #4a5568 100%);
+            color: white; padding: 1rem; border-radius: 12px; margin-bottom: 0.75rem;
+            display: flex; align-items: center; gap: 0.75rem; cursor: pointer; user-select: none;
+        }
+        .phase-banner:hover { filter: brightness(1.08); }
+        .phase-banner .phase-num {
+            background: rgba(255,255,255,0.2); width: 48px; height: 48px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; font-weight: 800; flex-shrink: 0;
+        }
+        .phase-banner .phase-info { flex: 1; }
+        .phase-banner .phase-info h2 { font-size: 1rem; font-weight: 700; }
+        .phase-banner .phase-info p { font-size: 0.78rem; opacity: 0.85; }
+        .phase-banner .phase-toggle { font-size: 1.2rem; transition: transform 0.3s; }
+        .phase-banner .phase-toggle.collapsed { transform: rotate(-90deg); }
+        .phase-banner.p1 { background: linear-gradient(135deg, #2c5282, #2b6cb0); }
+        .phase-banner.p2 { background: linear-gradient(135deg, #975a16, #d69e2e); }
+        .phase-banner.p3 { background: linear-gradient(135deg, #276749, #38a169); }
+        .phase-banner.p4 { background: linear-gradient(135deg, #9b2c2c, #e53e3e); }
+
+        .phase-body { transition: max-height 0.3s ease; overflow: hidden; }
+        .phase-body.collapsed { display: none; }
+
+        .subphase { font-size: 0.82rem; font-weight: 700; color: var(--primary); margin: 0.75rem 0 0.4rem; padding: 0.4rem 0; border-bottom: 2px solid var(--primary); }
+
+        /* Step Card */
+        .step-card {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
+            margin-bottom: 0.5rem; overflow: hidden;
+        }
+        .step-header {
+            display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .step-header input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--success); flex-shrink: 0; }
+        .step-header .step-title { flex: 1; font-size: 0.85rem; font-weight: 600; }
+        .step-header .guide-toggle {
+            background: #ebf4ff; border: 1px solid #bee3f8; color: var(--primary-light);
+            padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer;
+            font-size: 0.7rem; font-weight: 600; white-space: nowrap; min-height: 32px;
+        }
+        .step-header .guide-toggle:hover { background: #bee3f8; }
+        .step-header .guide-toggle.open { background: var(--primary-light); color: white; border-color: var(--primary-light); }
+        .step-note {
+            width: 100%; padding: 0.4rem 0.75rem; border: none; border-bottom: 1px dashed var(--border);
+            font-size: 0.78rem; background: transparent; color: var(--text-light);
+        }
+        .step-note:focus { background: white; color: var(--text); border-bottom-style: solid; border-bottom-color: var(--primary-light); outline: none; }
+        .step-note::placeholder { color: #cbd5e0; font-style: italic; }
+
+        /* Guide Content */
+        .step-guide { display: none; padding: 0.75rem; background: #f8fafc; border-top: 2px solid var(--primary-light); }
+        .step-guide.open { display: block; }
+        .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        @media (max-width: 640px) { .guide-grid { grid-template-columns: 1fr; } }
+        .guide-block {
+            background: white; border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem;
+        }
+        .guide-block h4 {
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+            margin-bottom: 0.35rem; padding-bottom: 0.2rem; border-bottom: 1px solid var(--border);
+        }
+        .guide-block h4.tools { color: #2b6cb0; border-color: #bee3f8; }
+        .guide-block h4.consumables { color: #975a16; border-color: #fefcbf; }
+        .guide-block h4.torque { color: #c53030; border-color: #fed7d7; }
+        .guide-block h4.measure { color: #276749; border-color: #c6f6d5; }
+        .guide-block h4.prereq { color: #553c9a; border-color: #e9d8fd; }
+        .guide-block h4.release { color: #38a169; border-color: #c6f6d5; }
+        .guide-block h4.tips { color: #d69e2e; border-color: #fefcbf; }
+        .guide-block h4.photo { color: #e53e3e; border-color: #fed7d7; }
+        .guide-block h4.time { color: #718096; border-color: #e2e8f0; }
+        .guide-block h4.fill { color: #2b6cb0; border-color: #bee3f8; }
+        .guide-block ul { padding-left: 1rem; margin: 0; }
+        .guide-block li { font-size: 0.78rem; line-height: 1.5; margin-bottom: 0.15rem; }
+        .guide-block li strong { color: var(--text); }
+        .guide-block .spec-line { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 0.15rem 0; border-bottom: 1px dotted var(--border); }
+        .guide-block .spec-line:last-child { border-bottom: none; }
+        .guide-block .spec-val { font-weight: 700; color: var(--accent); }
+        .guide-full { grid-column: 1 / -1; }
+        .warning-box { background: #fff5f5; border: 1px solid #fc8181; border-radius: 8px; padding: 0.5rem 0.65rem; font-size: 0.78rem; color: #c53030; grid-column: 1 / -1; }
+        .warning-box strong { color: #9b2c2c; }
+
+        /* Inline measurement input in guides */
+        .guide-input { width: 100%; padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.78rem; background: var(--input-bg); margin-top: 0.3rem; }
+        .guide-input:focus { border-color: var(--primary-light); background: white; outline: none; }
+        .guide-input-row { display: flex; gap: 0.3rem; margin-top: 0.3rem; flex-wrap: wrap; }
+        .guide-input-row label { font-size: 0.7rem; color: var(--text-light); }
+        .guide-input-row input { flex: 1; min-width: 60px; padding: 0.3rem 0.4rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.75rem; background: var(--input-bg); }
+        .guide-input-row input:focus { border-color: var(--primary-light); background: white; outline: none; }
+
+        /* Photo Gallery inline */
+        .photo-gallery { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+        .photo-gallery img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid var(--border); }
+        .photo-add-btn { display: inline-block; padding: 0.35rem 0.7rem; font-size: 0.75rem; background: #ebf4ff; border: 1px dashed #bee3f8; border-radius: 6px; cursor: pointer; color: var(--primary-light); margin-top: 0.3rem; }
+
+        /* Progress Bar */
+        .progress-bar { background: var(--border); border-radius: 10px; height: 8px; margin-top: 0.4rem; overflow: hidden; }
+        .progress-fill { background: var(--success); height: 100%; border-radius: 10px; transition: width 0.3s; }
+        .progress-text { font-size: 0.68rem; color: var(--text-light); margin-top: 0.15rem; }
+
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1a202c; color: white; padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 0.82rem; opacity: 0; transition: all 0.3s; z-index: 9999; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        .lightbox { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 8000; align-items: center; justify-content: center; flex-direction: column; padding: 1rem; }
+        .lightbox.show { display: flex; }
+        .lightbox img { max-width: 95%; max-height: 80vh; border-radius: 8px; }
+        .lightbox .caption { color: white; font-size: 0.85rem; margin-top: 0.5rem; text-align: center; }
+        .lightbox .lb-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 1.5rem; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; }
+
+        /* Guide tables */
+        .guide-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 0.3rem; }
+        .guide-table th, .guide-table td { padding: 0.3rem 0.5rem; border: 1px solid var(--border); text-align: left; }
+        .guide-table th { background: var(--input-bg); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.02em; }
+        .guide-table td { font-size: 0.76rem; }
+        .guide-table tr:nth-child(even) { background: #f7fafc; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Phase 4 &ndash; First Start &amp; Break-In (Erststart &amp; Einfahren)</h1>
+    <p>Ford M-6009-302 &bull; AFR 1399 &bull; COMP XE274HR</p>
+    <div class="header-nav">
+        <a href="./">&larr; Main</a>
+        <a href="build-log.html">Hub</a>
+        <a href="build-log-phase1.html">P1</a>
+        <a href="build-log-phase2.html">P2</a>
+        <a href="build-log-phase3.html">&larr; P3</a>
+        <a href="build-log-phase4.html" class="active">P4</a>
+        <button class="save-btn" onclick="saveData()">Save (Speichern)</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.3rem;margin-top:0.4rem;max-width:400px;margin-left:auto;margin-right:auto;position:relative;">
+        <input type="text" id="searchInput" placeholder="Search... (Suchen...)" oninput="doBuildSearch()" onkeydown="if(event.key==='Escape'){clearBuildSearch();event.target.blur();}" style="flex:1;padding:0.4rem 0.65rem;border:1px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);color:white;border-radius:6px;font-size:0.8rem;outline:none;">
+        <span id="buildSearchCount" style="font-size:0.68rem;color:rgba(255,255,255,0.8);min-width:2.5rem;text-align:center;"></span>
+        <button onclick="buildSearchJump(-1)" style="padding:0.25rem 0.4rem;border:none;background:rgba(255,255,255,0.2);color:white;border-radius:4px;cursor:pointer;font-size:0.72rem;">&#9650;</button>
+        <button onclick="buildSearchJump(1)" style="padding:0.25rem 0.4rem;border:none;background:rgba(255,255,255,0.2);color:white;border-radius:4px;cursor:pointer;font-size:0.72rem;">&#9660;</button>
+    </div>
+    <div class="save-status" id="saveStatus"></div>
+</div>
+
+<div class="container">
+
+<!-- ============================================================ -->
+<!--  PHASE 4 - FIRST START & BREAK-IN                            -->
+<!-- ============================================================ -->
+<div id="phase4">
+<div class="phase-banner p4" onclick="togglePhase('phase4body')">
+    <div class="phase-num">4</div>
+    <div class="phase-info">
+        <h2>First Start &amp; Break-In (Erststart &amp; Einfahren)</h2>
+        <p>Hydraulic roller does NOT need 20-min break-in &ndash; rollers run correctly from start</p>
+    </div>
+    <span class="phase-toggle" id="toggle_phase4body">&#9660;</span>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="prog4" style="width:0%"></div></div>
+<div class="progress-text" id="progText4">0 / 0</div>
+
+<div class="phase-body" id="phase4body">
+
+<!-- ===== Subphase 4a – Before Start ===== -->
+<div class="subphase">4a &ndash; Before Start (Vor dem Start)</div>
+
+<!-- 1. Pre-Oil -->
+<div class="step-card" id="p4_preoil_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_preoil" onchange="autoSave()">
+        <span class="step-title">1. Pre-Oil (Vor&ouml;len) until oil at all 16 rockers</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p4_preoil_n" placeholder="Findings... (Befund...)" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+                <li>Priming tool (Melling PT11 or long hex bit in drill)</li>
+                <li>Drill (slow speed, clockwise rotation!)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+                <li><strong>1.</strong> Remove distributor (access to oil pump drive)</li>
+                <li><strong>2.</strong> Insert priming tool, spin with drill</li>
+                <li><strong>3.</strong> Watch oil pressure gauge &ndash; must show pressure</li>
+                <li><strong>4.</strong> Rotate crankshaft 4&times; 90&deg; during priming (supply all bearings)</li>
+                <li><strong>5.</strong> Remove valve covers &ndash; oil must appear at all 16 rockers</li>
+            </ul></div>
+            <div class="warning-box"><strong>WARNING (WARNUNG):</strong> No oil pressure after 30 sec = STOP! Investigate (shaft not engaged, pump empty, plug missing). &ndash; Kein &Ouml;ldruck nach 30 Sek. = STOPP! Ursache suchen.</div>
+            <div class="guide-block guide-full"><h4 class="tips">Practical Tip (Praxis-Tipp)</h4><ul>
+                <li><strong>IMMER vor&ouml;len vor dem Erststart!</strong> Melling PT11 + Bohrmaschine, bis &Ouml;l an allen Rockern austritt. (ALWAYS pre-oil before first start! Melling PT11 + drill until oil appears at all rockers.)</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<!-- 2. Rotate Crank 4× 90° -->
+<div class="step-card" id="p4_preoil_crank_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_preoil_crank" onchange="autoSave()">
+        <span class="step-title">2. Rotate Crank 4&times; 90&deg; during pre-oiling (Kurbelwelle drehen beim Vor&ouml;len)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_preoil_crank_n" placeholder="Done / Findings..." oninput="autoSave()">
+</div>
+
+<!-- 3. Oil Pressure during Pre-Oil -->
+<div class="step-card" id="p4_oilpressure_prime_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_oilpressure_prime" onchange="autoSave()">
+        <span class="step-title">3. Oil Pressure during Pre-Oil (&Ouml;ldruck beim Vor&ouml;len)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_oilpressure_prime_n" placeholder="Pressure:___ psi (___ bar)" oninput="autoSave()">
+</div>
+
+<!-- 4. Fill Break-In Oil (ZDDP!) -->
+<div class="step-card" id="p4_breakin_oil_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_breakin_oil" onchange="autoSave()">
+        <span class="step-title">4. Fill Break-In Oil (ZDDP!) &ndash; &Ouml;l einf&uuml;llen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p4_breakin_oil_n" placeholder="Product + qty:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="fill">Fill Quantity (F&uuml;llmenge)</h4>
+                <div class="spec-line"><span>Oil quantity (depends on pan)</span><span class="spec-val">5&ndash;7 quarts (4.7&ndash;6.6 L)</span></div>
+                <div class="spec-line"><span>Viscosity (Viskosit&auml;t)</span><span class="spec-val">10W-30 or 15W-40</span></div>
+            </div>
+            <div class="guide-block"><h4 class="consumables">Recommended Products (Empfohlene Produkte)</h4><ul>
+                <li>Brad Penn 10W-30 (high ZDDP content)</li>
+                <li>Driven BR30 Break-In Oil</li>
+                <li>Lucas Hot Rod &amp; Classic</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
+                <li>ZDDP (zinc dialkyldithiophosphate) protects cam lobes &amp; lifters during break-in</li>
+                <li>Modern oil (API SN+) has reduced ZDDP &ndash; <strong>not suitable</strong> for break-in</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<!-- 5. Fill & Bleed Cooling System -->
+<div class="step-card" id="p4_coolant_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_coolant" onchange="autoSave()">
+        <span class="step-title">5. Fill &amp; Bleed Cooling System (K&uuml;hlsystem f&uuml;llen &amp; entl&uuml;ften)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_coolant_n" placeholder="Findings..." oninput="autoSave()">
+</div>
+
+<!-- 6. Check Fuel System -->
+<div class="step-card" id="p4_fuel_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_fuel" onchange="autoSave()">
+        <span class="step-title">6. Check Fuel System (Kraftstoffsystem pr&uuml;fen)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p4_fuel_n" placeholder="Pressure:___ psi" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="measure">Fuel Pressure (Kraftstoffdruck)</h4>
+                <div class="spec-line"><span>Mechanical pump (mechanische Pumpe)</span><span class="spec-val">5.5&ndash;7.0 psi (0.38&ndash;0.48 bar)</span></div>
+            </div>
+            <div class="guide-block"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
+                <li>Too high = carburetor floods (Vergaser l&auml;uft &uuml;ber) &ndash; may need pressure regulator</li>
+                <li>Check all connections for leaks before start!</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<!-- 7. Static Ignition Timing -->
+<div class="step-card" id="p4_timing_static_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_timing_static" onchange="autoSave()">
+        <span class="step-title">7. Static Ignition Timing ~12&deg; BTDC (Z&uuml;ndzeitpunkt statisch einstellen)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_timing_static_n" placeholder="Setting:___&deg; BTDC" oninput="autoSave()">
+</div>
+
+<!-- 8. MSD 6AL Rev Limiter -->
+<div class="step-card" id="p4_revlimiter_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_revlimiter" onchange="autoSave()">
+        <span class="step-title">8. MSD 6AL Rev Limiter: 6,500 RPM (Drehzahlbegrenzer)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_revlimiter_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
+</div>
+
+<!-- 9. Recheck Preload -->
+<div class="step-card" id="p4_preload_recheck_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_preload_recheck" onchange="autoSave()">
+        <span class="step-title">9. Recheck Preload all 16 valves (Preload nochmals pr&uuml;fen)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_preload_recheck_n" placeholder="Done / Findings..." oninput="autoSave()">
+</div>
+
+<!-- 10. Wiring, Lines, Ground, Firing Order -->
+<div class="step-card" id="p4_wiring_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_wiring" onchange="autoSave()">
+        <span class="step-title">10. Wiring, Lines, Ground, Firing Order (Kabel, Leitungen, Masse, Z&uuml;ndfolge)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_wiring_n" placeholder="Findings..." oninput="autoSave()">
+</div>
+
+<!-- 11. FIRE EXTINGUISHER! HELPER! EXHAUST VENTILATION! -->
+<div class="step-card" id="p4_safety_card" style="border-color: var(--danger);">
+    <div class="step-header" style="background: #fff5f5;">
+        <input type="checkbox" data-field="p4_safety" onchange="autoSave()">
+        <span class="step-title" style="color: var(--danger);">11. FIRE EXTINGUISHER! HELPER! EXHAUST VENTILATION! (Feuerl&ouml;scher! Helfer! Abgasabsaugung!)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_safety_n" placeholder="Confirmed..." oninput="autoSave()">
+</div>
+
+<!-- ===== Subphase 4b – First Start ===== -->
+<div class="subphase">4b &ndash; First Start (Erststart)</div>
+
+<!-- 12. START -->
+<div class="step-card" id="p4_start_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_start" onchange="autoSave()">
+        <span class="step-title">12. START &ndash; immediately 2,000&ndash;2,500 RPM! (Sofort auf 2.000&ndash;2.500 U/min!)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_start_n" placeholder="Time:___ Findings..." oninput="autoSave()">
+</div>
+
+<!-- 13. Oil Pressure at 2,000 RPM -->
+<div class="step-card" id="p4_oil_running_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_oil_running" onchange="autoSave()">
+        <span class="step-title">13. Oil Pressure at 2,000 RPM warm: 40&ndash;55 psi (2.8&ndash;3.8 bar)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_oil_running_n" placeholder="Pressure:___ psi (___ bar)" oninput="autoSave()">
+</div>
+
+<!-- 14. Visual Inspection: no leaks -->
+<div class="step-card" id="p4_leaks_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_leaks" onchange="autoSave()">
+        <span class="step-title">14. Visual Inspection: no leaks (Sichtkontrolle: keine Leckagen)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_leaks_n" placeholder="Findings..." oninput="autoSave()">
+</div>
+
+<!-- 15. Coolant Temperature -->
+<div class="step-card" id="p4_temp_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_temp" onchange="autoSave()">
+        <span class="step-title">15. Coolant Temperature &ndash; thermostat opens (K&uuml;hlmitteltemp. &ndash; Thermostat &ouml;ffnet)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_temp_n" placeholder="Temp:___&deg;F (___&deg;C)" oninput="autoSave()">
+</div>
+
+<!-- 16. Check Timing Warm -->
+<div class="step-card" id="p4_timing_warm_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_timing_warm" onchange="autoSave()">
+        <span class="step-title">16. Check Timing Warm (Z&uuml;ndung warm pr&uuml;fen &ndash; Stroboskop)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p4_timing_warm_n" placeholder="Degrees:___&deg; BTDC" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+                <li>Timing light (NO digital/dial-back with MSD! &ndash; KEIN digitales R&uuml;ckstell-Stroboskop mit MSD!)</li>
+                <li>Wrench for distributor clamp (Verteiler-Klemmschraube)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+                <li><strong>1.</strong> Engine at operating temperature (Betriebstemperatur)</li>
+                <li><strong>2.</strong> Disconnect vacuum advance hose, plug port (Unterdruckschlauch ab, Anschluss verschlie&szlig;en)</li>
+                <li><strong>3.</strong> Timing light on #1 spark plug wire (Stroboskop an Z&uuml;ndkabel Zyl. 1)</li>
+                <li><strong>4.</strong> Point at timing marks on harmonic balancer / timing cover (Markierungen am D&auml;mpfer / Steuerdeckel)</li>
+                <li><strong>5.</strong> Loosen distributor clamp, rotate slowly to desired degree (e.g. 12&deg; BTDC)</li>
+                <li><strong>6.</strong> Tighten clamp, recheck (timing can shift during clamping &ndash; Z&uuml;ndung kann sich beim Festziehen verschieben)</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Subphase 4c – After First Start ===== -->
+<div class="subphase">4c &ndash; After First Start (Nach Erststart)</div>
+
+<!-- 17. Oil Pressure Idle Warm -->
+<div class="step-card" id="p4_oil_idle_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_oil_idle" onchange="autoSave()">
+        <span class="step-title">17. Oil Pressure Idle Warm: 25&ndash;35 psi (1.7&ndash;2.4 bar)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_oil_idle_n" placeholder="Pressure:___ psi (___ bar)" oninput="autoSave()">
+</div>
+
+<!-- 18. Final Timing: 34-36° total advance -->
+<div class="step-card" id="p4_timing_final_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_timing_final" onchange="autoSave()">
+        <span class="step-title">18. Final Timing: 34&ndash;36&deg; total advance (Gesamt-Z&uuml;ndzeitpunkt)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p4_timing_final_n" placeholder="Initial:___&deg; / Total:___&deg;" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+
+            <!-- Basics -->
+            <div class="guide-block guide-full"><h4 class="prereq">Basics &ndash; Ignition Advance System (Grundlagen &ndash; Z&uuml;ndverstellung)</h4><ul>
+                <li><strong>Initial Timing (Grundz&uuml;ndung):</strong> Set with timing light at idle, vacuum disconnected &ndash; e.g. 10&ndash;14&deg; BTDC</li>
+                <li><strong>Centrifugal Advance (Fliehkraftverstellung):</strong> Mechanical advance via weights &amp; springs inside distributor &ndash; adds degrees as RPM rises</li>
+                <li><strong>Total Timing (Gesamtz&uuml;ndung):</strong> Initial + Centrifugal &ndash; all-in by ~3,000&ndash;3,500 RPM. Target: 32&ndash;36&deg; total</li>
+                <li><strong>Vacuum Advance (Unterdruckverstellung):</strong> Additional advance at part-load cruise for economy &amp; lower cylinder temps &ndash; +8&ndash;10&deg;</li>
+            </ul></div>
+
+            <!-- A) Advance-Stop-Bushing -->
+            <div class="guide-block guide-full"><h4 class="measure">A) Advance-Stop-Bushing &ndash; Max Centrifugal (Fliehkraft-Begrenzungsh&uuml;lse)</h4>
+                <table class="guide-table">
+                    <thead><tr><th>Bushing Color (Farbe)</th><th>Max Centrifugal Advance</th></tr></thead>
+                    <tbody>
+                        <tr><td>Silver (largest / gr&ouml;&szlig;te)</td><td>25&deg;</td></tr>
+                        <tr><td>Blue (factory / Werk)</td><td>21&deg;</td></tr>
+                        <tr><td>Red (Rot)</td><td>18&deg;</td></tr>
+                        <tr><td>Black (Schwarz)</td><td>15&deg;</td></tr>
+                        <tr><td>Gold (smallest / kleinste)</td><td>11&deg;</td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size:0.76rem;margin-top:0.4rem;"><strong>This build:</strong> 12&deg; Initial + 22&deg; Centrifugal = 34&deg; Total &rarr; Blue (21&deg;) or Silver (25&deg;) with adjusted initial timing</p>
+            </div>
+
+            <!-- B) Advance Springs -->
+            <div class="guide-block guide-full"><h4 class="tools">B) Advance Springs &ndash; Rate (Verstellfedern &ndash; Verstellgeschwindigkeit)</h4>
+                <table class="guide-table">
+                    <thead><tr><th>Spring Combination</th><th>Rate</th><th>Application</th></tr></thead>
+                    <tbody>
+                        <tr><td>2&times; Heavy (Silver)</td><td>Slowest (Langsamste)</td><td>Factory, conservative</td></tr>
+                        <tr><td>1&times; Heavy + 1&times; Medium</td><td>Moderate</td><td>Good street/strip compromise</td></tr>
+                        <tr><td>2&times; Medium</td><td>Moderate</td><td>Street performance</td></tr>
+                        <tr><td>1&times; Medium + 1&times; Light</td><td>Fast (Schnell)</td><td>Mild cams</td></tr>
+                        <tr><td>2&times; Light</td><td>Fastest (Schnellste)</td><td>Caution &ndash; can cause knock! (Vorsicht &ndash; Klopfgefahr!)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- D) Total Timing check -->
+            <div class="guide-block"><h4 class="measure">D) Total Timing Check (Gesamt-Timing pr&uuml;fen)</h4><ul>
+                <li>Run engine at 3,000&ndash;3,500 RPM</li>
+                <li>Read timing light &ndash; advance should stop increasing</li>
+                <li>This is your total mechanical advance</li>
+                <li>If still climbing above 3,500 RPM &ndash; springs too light or bushing too large</li>
+            </ul></div>
+
+            <!-- Tools for advance setup -->
+            <div class="guide-block"><h4 class="tools">Tools for Advance Setup</h4><ul>
+                <li>MSD Advance Kit 8464 (springs + bushings)</li>
+                <li>Small pliers (Spitzzange)</li>
+                <li>Allen key (Inbusschl&uuml;ssel)</li>
+                <li>Timing light</li>
+            </ul></div>
+
+            <!-- E) Timing Reference Table -->
+            <div class="guide-block guide-full"><h4 class="tips">E) Timing Reference Table (Z&uuml;ndungs-Referenztabelle)</h4>
+                <table class="guide-table">
+                    <thead><tr><th>Factor (Faktor)</th><th>More Advance (Mehr Vorverstellen)</th><th>Less Advance (Weniger Vorverstellen)</th></tr></thead>
+                    <tbody>
+                        <tr><td>Compression (Verdichtung)</td><td>Low (&lt; 9.5:1)</td><td>High (&gt; 10:1)</td></tr>
+                        <tr><td>Chamber (Brennraum)</td><td>Open (Offen)</td><td>Closed / CNC (AFR)</td></tr>
+                        <tr><td>Fuel (Kraftstoff)</td><td>98+ ROZ / Race</td><td>91 ROZ / E10</td></tr>
+                        <tr><td>Ignition (Z&uuml;ndung)</td><td>Standard</td><td>MSD CDI (stronger spark)</td></tr>
+                        <tr><td>Temperature (Temperatur)</td><td>Cool (K&uuml;hl)</td><td>Hot (Hei&szlig;)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Recommendation for this build -->
+            <div class="guide-block guide-full"><h4 class="release">Recommendation &ndash; This Build (Empfehlung f&uuml;r diesen Motor)</h4><ul>
+                <li><strong>Build specs:</strong> ~9.7:1 CR, CNC heads (AFR 1399), MSD CDI, 98 ROZ fuel</li>
+                <li><strong>Initial Timing (Grundz&uuml;ndung):</strong> 10&ndash;14&deg; BTDC</li>
+                <li><strong>Total Timing (Gesamtvorverstellen):</strong> 32&ndash;36&deg;</li>
+                <li><strong>Vacuum Advance (Unterdruck):</strong> +8&ndash;10&deg; at part load (Teillast)</li>
+            </ul></div>
+
+            <div class="warning-box"><strong>Bei Klopfen sofort Timing zur&uuml;cknehmen!</strong> (If detonation/knock occurs, immediately retard timing!)</div>
+
+            <!-- Measurement inputs -->
+            <div class="guide-block guide-full"><h4 class="measure">Measured Values (Messwerte)</h4>
+                <div class="guide-input-row">
+                    <div><label>Initial Timing (Grundz&uuml;ndung):</label><input type="text" data-field="p4_initial_timing" placeholder="e.g. 12&deg;" oninput="autoSave()"></div>
+                    <div><label>Total Timing (Gesamtvorverstellen):</label><input type="text" data-field="p4_total_timing" placeholder="e.g. 34&deg;" oninput="autoSave()"></div>
+                </div>
+                <div class="guide-input-row">
+                    <div><label>Advance Springs (Federn):</label><input type="text" data-field="p4_advance_springs" placeholder="e.g. 1× Heavy + 1× Medium" oninput="autoSave()"></div>
+                    <div><label>Advance Bushing (H&uuml;lse):</label><input type="text" data-field="p4_advance_bushing" placeholder="e.g. Blue (21&deg;)" oninput="autoSave()"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 19. Re-Torque Head Nuts -->
+<div class="step-card" id="p4_retorque_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_retorque" onchange="autoSave()">
+        <span class="step-title">19. Re-Torque Head Nuts (engine cold! / Motor kalt nachziehen!)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_retorque_n" placeholder="Done / Findings..." oninput="autoSave()">
+</div>
+
+<!-- 20. Oil Change – Cut Filter Open -->
+<div class="step-card" id="p4_oilchange_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_oilchange" onchange="autoSave()">
+        <span class="step-title">20. Oil Change &ndash; Cut Filter Open (Filter aufschneiden)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p4_oilchange_n" placeholder="Filter paper findings:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+                <li><strong>1.</strong> After 30&ndash;50 km (20&ndash;30 mi) or 1 hour runtime, drain oil warm (&Ouml;l warm ablassen)</li>
+                <li><strong>2.</strong> Cut filter open with flange cutter or band saw (Filter mit Flanschschneider oder Bands&auml;ge aufschneiden)</li>
+                <li><strong>3.</strong> Unfold filter paper and hold against light (Filterpapier auseinanderfalten, gegen Licht halten)</li>
+                <li><strong>4.</strong> Clean paper = inspection passed (Sauberes Papier = Pr&uuml;fung bestanden)</li>
+                <li><strong>5.</strong> Metal particles = find the cause, do not ignore! (Metallpartikel = Ursache finden!)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="photo">Photo Documentation (Fotodokumentation)</h4><ul>
+                <li>Filter paper (clean = reference for future comparisons)</li>
+                <li>If particles: close-up + determine material (aluminum, steel, copper)</li>
+            </ul>
+            <div class="photo-gallery" data-photo-group="p4_filter_photos"></div>
+            <label class="photo-add-btn" onclick="addPhoto('p4_filter_photos')">&#128247; Add Photo</label>
+            </div>
+            <div class="guide-block"><h4 class="time">Time Estimate (Zeitbedarf)</h4><ul><li>~30 min. incl. drain &amp; inspection</li></ul></div>
+        </div>
+    </div>
+</div>
+
+<!-- 21. Read Spark Plugs -->
+<div class="step-card" id="p4_sparkread_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_sparkread" onchange="autoSave()">
+        <span class="step-title">21. Read Spark Plugs (Kerzenbild lesen)</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_sparkread_n" placeholder="Color / Findings:___" oninput="autoSave()">
+</div>
+
+<!-- 22. Synchronize DellOrto, Log Lambda -->
+<div class="step-card" id="p4_sync_card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p4_sync" onchange="autoSave()">
+        <span class="step-title">22. Synchronize DellOrto, Log Lambda (DellOrto synchronisieren, Lambda loggen)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+    </div>
+    <input type="text" class="step-note" data-field="p4_sync_n" placeholder="Lambda L:___ R:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="prereq">Procedure &ndash; Carburetor Mounting (Vergaser-Montage)</h4><ul>
+                <li><strong>1.</strong> Carburetor base gasket dry &ndash; no sealant (Vergaser-Fu&szlig;dichtung trocken &ndash; kein Dichtmittel)</li>
+                <li><strong>2.</strong> Mount evenly in cross-pattern (Gleichm&auml;&szlig;ig &uuml;ber Kreuz anziehen)</li>
+                <li><strong>3.</strong> Connect fuel line + throttle linkage + choke cable (Kraftstoffleitung + Gasgestänge + Choke anschlie&szlig;en)</li>
+                <li><strong>4.</strong> Install fuel filter between pump and carburetor (Kraftstofffilter zwischen Pumpe und Vergaser)</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="tips">Practical Tip (Praxis-Tipp)</h4><ul>
+                <li><strong>Nicht &uuml;berziehen! Handfest + max 1/4 Umdrehung.</strong> Vergaser-Flansch ist empfindlich. (Do not overtighten! Hand-tight + max 1/4 turn. Carburetor flange is delicate.)</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<!-- Phase Photos -->
+<div style="margin-top: 1rem;">
+<div class="photo-gallery" data-photo-group="phase4"></div>
+<label class="photo-add-btn" onclick="addPhoto('phase4')">&#128247; Add Phase 4 Photos</label>
+</div>
+
+</div><!-- /phase4body -->
+</div><!-- /phase4 -->
+
+</div><!-- /container -->
+
+<div class="toast" id="toast"></div>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('show')">
+    <button class="lb-close" onclick="event.stopPropagation();this.parentElement.classList.remove('show')">&times;</button>
+    <img src="" alt="Photo" onclick="event.stopPropagation()">
+    <div class="caption"></div>
+</div>
+
+<script>
+    // ==== CONFIG ====
+    var GIST_FILENAME = 'engine-build-log-data.json';
+    var FIXED_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
+    var isLoading = false;
+    var autoSaveTimer = null;
+
+    // ==== FIELD MIGRATION ====
+    var FIELD_MIGRATIONS = {
+        'initial_timing': 'p4_initial_timing',
+        'total_timing': 'p4_total_timing',
+        'advance_springs': 'p4_advance_springs',
+        'advance_bushing': 'p4_advance_bushing'
+    };
+
+    function migrateFields(data) {
+        var changed = false;
+        for (var oldKey in FIELD_MIGRATIONS) {
+            var newKey = FIELD_MIGRATIONS[oldKey];
+            if (data[oldKey] !== undefined && data[newKey] === undefined) {
+                data[newKey] = data[oldKey];
+                delete data[oldKey];
+                changed = true;
+            }
+        }
+        return changed;
+    }
+
+    function getGistConfig() { return { token: localStorage.getItem('gh_token') || '' }; }
+    function isGistConfigured() { return getGistConfig().token.length > 0; }
+
+    // ==== PHASE TOGGLE (collapsible) ====
+    function togglePhase(bodyId) {
+        var body = document.getElementById(bodyId);
+        var toggle = document.getElementById('toggle_' + bodyId);
+        if (body.classList.contains('collapsed')) {
+            body.classList.remove('collapsed');
+            if (toggle) toggle.classList.remove('collapsed');
+        } else {
+            body.classList.add('collapsed');
+            if (toggle) toggle.classList.add('collapsed');
+        }
+    }
+
+    // ==== GUIDE TOGGLE ====
+    function toggleGuide(btn) {
+        var guide = btn.closest('.step-card').querySelector('.step-guide');
+        if (guide) {
+            var open = guide.classList.toggle('open');
+            btn.classList.toggle('open', open);
+            btn.textContent = open ? 'Close' : 'Guide';
+        }
+    }
+
+    // ==== PROGRESS ====
+    function updateProgress() {
+        var phase = document.getElementById('phase4');
+        if (!phase) return;
+        var checks = phase.querySelectorAll('input[type="checkbox"][data-field]');
+        var done = Array.from(checks).filter(function(c) { return c.checked; }).length;
+        var bar = document.getElementById('prog4');
+        var text = document.getElementById('progText4');
+        if (bar) bar.style.width = (checks.length ? (done / checks.length * 100) : 0) + '%';
+        if (text) text.textContent = done + ' / ' + checks.length + ' completed';
+    }
+
+    // ==== DATA ====
+    function collectData() {
+        var data = {};
+        document.querySelectorAll('[data-field]').forEach(function(el) {
+            data[el.dataset.field] = el.type === 'checkbox' ? el.checked : el.value;
+        });
+        return data;
+    }
+
+    function applyData(data) {
+        migrateFields(data);
+        document.querySelectorAll('[data-field]').forEach(function(el) {
+            var v = data[el.dataset.field];
+            if (v !== undefined) { if (el.type === 'checkbox') el.checked = v; else el.value = v; }
+        });
+        updateProgress();
+    }
+
+    async function saveData() {
+        var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+        var myData = collectData();
+        var merged = Object.assign({}, existing, myData);
+        migrateFields(merged);
+        merged._savedAt = new Date().toISOString();
+        localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+        updateSaveStatus();
+
+        if (isGistConfigured()) {
+            try {
+                var t = getGistConfig().token;
+                var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(merged, null, 2) } } })
+                });
+                if (res.ok) showToast('Saved (local + cloud)');
+                else showToast('Saved locally (cloud error)');
+            } catch (e) { showToast('Saved locally (cloud error)'); }
+        } else { showToast('Saved locally'); }
+    }
+
+    function loadData() {
+        isLoading = true;
+        var raw = localStorage.getItem('engineBuildLog');
+        if (raw) { try { applyData(JSON.parse(raw)); } catch(e) {} }
+
+        if (isGistConfigured()) {
+            fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
+                headers: { 'Authorization': 'Bearer ' + getGistConfig().token }
+            }).then(function(r) { return r.json(); }).then(function(gist) {
+                var file = gist.files && gist.files[GIST_FILENAME];
+                if (file) {
+                    var data = JSON.parse(file.content);
+                    applyData(data);
+                    localStorage.setItem('engineBuildLog', JSON.stringify(data));
+                }
+                isLoading = false; updateSaveStatus();
+            }).catch(function() { isLoading = false; });
+        } else { isLoading = false; updateSaveStatus(); }
+    }
+
+    function autoSave() {
+        if (isLoading) return;
+        updateProgress();
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(function() { saveData(); }, 2000);
+    }
+
+    function updateSaveStatus() {
+        var raw = localStorage.getItem('engineBuildLog');
+        if (raw) {
+            try {
+                var d = new Date(JSON.parse(raw)._savedAt);
+                document.getElementById('saveStatus').textContent =
+                    'Saved: ' + d.toLocaleDateString('de-DE') + ' ' + d.toLocaleTimeString('de-DE') +
+                    (isGistConfigured() ? ' (Cloud Sync)' : ' (Local)');
+            } catch(e) {}
+        }
+    }
+
+    function showToast(msg) {
+        var t = document.getElementById('toast'); t.textContent = msg;
+        t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); }, 2500);
+    }
+
+    // ==== PHOTOS ====
+    function addPhoto(group) {
+        var input = document.createElement('input');
+        input.type = 'file'; input.accept = 'image/*'; input.capture = 'environment';
+        input.onchange = function(e) {
+            var file = e.target.files[0]; if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function(ev) {
+                var img = new Image();
+                img.onload = function() {
+                    var canvas = document.createElement('canvas');
+                    var maxW = 1200;
+                    var scale = img.width > maxW ? maxW / img.width : 1;
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                    var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    var photos = JSON.parse(localStorage.getItem('buildPhotos_' + group) || '[]');
+                    photos.push({ src: dataUrl, caption: '', time: new Date().toISOString() });
+                    localStorage.setItem('buildPhotos_' + group, JSON.stringify(photos));
+                    renderPhotos(group);
+                    showToast('Photo saved');
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+        input.click();
+    }
+
+    function renderPhotos(group) {
+        var galleries = document.querySelectorAll('.photo-gallery[data-photo-group="' + group + '"]');
+        galleries.forEach(function(gallery) {
+            var photos = JSON.parse(localStorage.getItem('buildPhotos_' + group) || '[]');
+            gallery.innerHTML = '';
+            photos.forEach(function(p, i) {
+                var img = document.createElement('img');
+                img.src = p.src; img.alt = p.caption || 'Photo ' + (i+1);
+                img.onclick = function() {
+                    var lb = document.getElementById('lightbox');
+                    lb.querySelector('img').src = p.src;
+                    lb.querySelector('.caption').textContent = p.caption || new Date(p.time).toLocaleString('de-DE');
+                    lb.classList.add('show');
+                };
+                gallery.appendChild(img);
+            });
+        });
+    }
+
+    // ==== BUILD-LOG SEARCH ====
+    var bsMarks = [], bsIdx = -1, bsTimer = null;
+    function doBuildSearch() {
+        clearTimeout(bsTimer);
+        bsTimer = setTimeout(_doBuildSearch, 200);
+    }
+    function _doBuildSearch() {
+        clearBuildHighlights();
+        var q = document.getElementById('searchInput').value.trim();
+        if (q.length < 2) { document.getElementById('buildSearchCount').textContent = ''; return; }
+        var walker = document.createTreeWalker(document.querySelector('.container'), NodeFilter.SHOW_TEXT, null);
+        var matches = [], qLower = q.toLowerCase();
+        while (walker.nextNode()) {
+            var node = walker.currentNode;
+            if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE')) continue;
+            var idx = node.textContent.toLowerCase().indexOf(qLower);
+            if (idx >= 0) matches.push({ node: node, idx: idx, len: q.length });
+        }
+        for (var i = matches.length - 1; i >= 0; i--) {
+            var m = matches[i];
+            var range = document.createRange();
+            range.setStart(m.node, m.idx); range.setEnd(m.node, m.idx + m.len);
+            var mark = document.createElement('mark');
+            mark.style.cssText = 'background:#fefcbf;color:#744210;padding:0 1px;border-radius:2px;';
+            mark.className = 'bs-hl';
+            range.surroundContents(mark);
+        }
+        bsMarks = Array.from(document.querySelectorAll('mark.bs-hl'));
+        document.getElementById('buildSearchCount').textContent = bsMarks.length ? bsMarks.length + ' hits' : 'none';
+        if (bsMarks.length) { bsIdx = 0; buildJumpTo(0); }
+    }
+    function buildJumpTo(idx) {
+        bsMarks.forEach(function(m) { m.style.background = '#fefcbf'; });
+        if (!bsMarks.length) return;
+        bsIdx = ((idx % bsMarks.length) + bsMarks.length) % bsMarks.length;
+        var mark = bsMarks[bsIdx];
+        // Open parent guide if collapsed
+        var el = mark;
+        while (el) {
+            if (el.classList && el.classList.contains('step-guide') && !el.classList.contains('open')) {
+                el.classList.add('open');
+                var btn = el.closest('.step-card').querySelector('.guide-toggle');
+                if (btn) { btn.classList.add('open'); btn.textContent = 'Close'; }
+            }
+            // Also expand collapsed phase
+            if (el.classList && el.classList.contains('phase-body') && el.classList.contains('collapsed')) {
+                el.classList.remove('collapsed');
+                var toggle = document.getElementById('toggle_' + el.id);
+                if (toggle) toggle.classList.remove('collapsed');
+            }
+            el = el.parentElement;
+        }
+        mark.style.background = '#ed8936'; mark.style.color = 'white';
+        mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById('buildSearchCount').textContent = (bsIdx + 1) + ' / ' + bsMarks.length;
+    }
+    function buildSearchJump(dir) { if (bsMarks.length) buildJumpTo(bsIdx + dir); }
+    function clearBuildHighlights() {
+        document.querySelectorAll('mark.bs-hl').forEach(function(m) {
+            var p = m.parentNode; p.replaceChild(document.createTextNode(m.textContent), m); p.normalize();
+        });
+        bsMarks = []; bsIdx = -1;
+    }
+    function clearBuildSearch() {
+        document.getElementById('searchInput').value = '';
+        clearBuildHighlights();
+        document.getElementById('buildSearchCount').textContent = '';
+    }
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+            e.preventDefault();
+            document.getElementById('searchInput').focus();
+            document.getElementById('searchInput').select();
+        }
+    });
+
+    // ==== SCROLL TO HASH ====
+    function scrollToHash() {
+        if (window.location.hash) {
+            var id = window.location.hash.substring(1);
+            var el = document.getElementById(id);
+            if (el) {
+                // Expand phase body if collapsed
+                var body = document.getElementById('phase4body');
+                if (body && body.classList.contains('collapsed')) {
+                    body.classList.remove('collapsed');
+                    var toggle = document.getElementById('toggle_phase4body');
+                    if (toggle) toggle.classList.remove('collapsed');
+                }
+                // Open guide if target is inside one
+                var parent = el.closest('.step-guide');
+                if (parent && !parent.classList.contains('open')) {
+                    parent.classList.add('open');
+                    var btn = parent.closest('.step-card').querySelector('.guide-toggle');
+                    if (btn) { btn.classList.add('open'); btn.textContent = 'Close'; }
+                }
+                var headerH = document.querySelector('.header').offsetHeight;
+                setTimeout(function() {
+                    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - headerH - 10, behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+
+    // ==== INIT ====
+    document.addEventListener('DOMContentLoaded', function() {
+        loadData();
+        // Render all photo galleries
+        document.querySelectorAll('.photo-gallery[data-photo-group]').forEach(function(g) {
+            renderPhotos(g.dataset.photoGroup);
+        });
+        scrollToHash();
+    });
+</script>
+
+</body>
+</html>

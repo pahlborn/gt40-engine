@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Build Log &ndash; 302ci BOSS Build</title>
+    <title>Build Log Hub &ndash; 302ci BOSS Build</title>
     <style>
         :root {
             --primary: #1a365d; --primary-light: #2b6cb0; --accent: #ed8936;
@@ -24,128 +24,76 @@
         .header h1 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.1rem; }
         .header p { font-size: 0.78rem; opacity: 0.85; }
         .header-nav { display: flex; gap: 0.3rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem; }
-        .header-nav a, .header-nav button {
+        .header-nav a {
             padding: 0.4rem 0.7rem; border: 1px solid rgba(255,255,255,0.4);
             background: rgba(255,255,255,0.15); color: white; border-radius: 6px;
             cursor: pointer; font-size: 0.72rem; font-weight: 500; text-decoration: none;
             min-height: 36px; display: inline-flex; align-items: center;
         }
-        .header-nav a:hover, .header-nav button:hover { background: rgba(255,255,255,0.25); }
-        .header-nav .save-btn { background: var(--success); border-color: var(--success); }
-        .save-status { font-size: 0.68rem; opacity: 0.8; margin-top: 0.25rem; min-height: 1em; }
+        .header-nav a:hover { background: rgba(255,255,255,0.25); }
+        .header-nav a.active { background: rgba(255,255,255,0.35); font-weight: 700; }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 0.75rem; }
+        .container { max-width: 900px; margin: 0 auto; padding: 1rem; }
 
-        /* Phase Banner - clickable/collapsible */
-        .phase-banner {
-            background: linear-gradient(135deg, var(--primary) 0%, #4a5568 100%);
-            color: white; padding: 1rem; border-radius: 12px; margin-bottom: 0.75rem;
-            display: flex; align-items: center; gap: 0.75rem; cursor: pointer; user-select: none;
+        /* Total Progress */
+        .total-progress {
+            background: var(--card-bg); border-radius: 12px; padding: 1.25rem;
+            margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid var(--border); text-align: center;
         }
-        .phase-banner:hover { filter: brightness(1.08); }
-        .phase-banner .phase-num {
-            background: rgba(255,255,255,0.2); width: 48px; height: 48px; border-radius: 50%;
+        .total-progress h2 { font-size: 1rem; color: var(--primary); margin-bottom: 0.5rem; }
+        .total-bar { height: 24px; background: #e2e8f0; border-radius: 12px; overflow: hidden; margin-bottom: 0.4rem; position: relative; }
+        .total-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary-light), var(--success)); border-radius: 12px; transition: width 0.5s ease; min-width: 2px; }
+        .total-bar-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 0.78rem; font-weight: 700; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+        .total-stats { font-size: 0.82rem; color: var(--text-light); }
+
+        /* Phase Cards */
+        .phase-card {
+            display: block; text-decoration: none; color: white;
+            border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12); transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .phase-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+        .phase-card.p1 { background: linear-gradient(135deg, #2c5282, #2b6cb0); }
+        .phase-card.p2 { background: linear-gradient(135deg, #975a16, #d69e2e); }
+        .phase-card.p3 { background: linear-gradient(135deg, #276749, #38a169); }
+        .phase-card.p4 { background: linear-gradient(135deg, #9b2c2c, #e53e3e); }
+        .phase-card-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
+        .phase-num {
+            background: rgba(255,255,255,0.2); width: 44px; height: 44px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; font-weight: 800; flex-shrink: 0;
+            font-size: 1.3rem; font-weight: 800; flex-shrink: 0;
         }
-        .phase-banner .phase-info { flex: 1; }
-        .phase-banner .phase-info h2 { font-size: 1rem; font-weight: 700; }
-        .phase-banner .phase-info p { font-size: 0.78rem; opacity: 0.85; }
-        .phase-banner .phase-toggle { font-size: 1.2rem; transition: transform 0.3s; }
-        .phase-banner .phase-toggle.collapsed { transform: rotate(-90deg); }
-        .phase-banner.p1 { background: linear-gradient(135deg, #2c5282, #2b6cb0); }
-        .phase-banner.p2 { background: linear-gradient(135deg, #975a16, #d69e2e); }
-        .phase-banner.p3 { background: linear-gradient(135deg, #276749, #38a169); }
-        .phase-banner.p4 { background: linear-gradient(135deg, #9b2c2c, #e53e3e); }
+        .phase-card h3 { font-size: 0.95rem; font-weight: 700; }
+        .phase-card .phase-desc { font-size: 0.78rem; opacity: 0.85; margin-top: 0.1rem; }
+        .phase-card .phase-arrow { margin-left: auto; font-size: 1.3rem; opacity: 0.7; }
+        .phase-bar { height: 8px; background: rgba(255,255,255,0.25); border-radius: 4px; overflow: hidden; margin-bottom: 0.3rem; }
+        .phase-bar-fill { height: 100%; background: rgba(255,255,255,0.85); border-radius: 4px; transition: width 0.5s; }
+        .phase-stats { font-size: 0.72rem; opacity: 0.8; display: flex; justify-content: space-between; }
 
-        .phase-body { transition: max-height 0.3s ease; overflow: hidden; }
-        .phase-body.collapsed { display: none; }
-
-        .subphase { font-size: 0.82rem; font-weight: 700; color: var(--primary); margin: 0.75rem 0 0.4rem; padding: 0.4rem 0; border-bottom: 2px solid var(--primary); }
-
-        /* Step Card */
-        .step-card {
-            background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
-            margin-bottom: 0.5rem; overflow: hidden;
+        /* Steps List */
+        .steps-preview { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.2); }
+        .steps-preview summary {
+            font-size: 0.72rem; opacity: 0.8; cursor: pointer; font-weight: 600;
+            list-style: none; display: flex; align-items: center; gap: 0.3rem;
         }
-        .step-header {
-            display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.75rem;
-            border-bottom: 1px solid var(--border);
+        .steps-preview summary::before { content: '\25B6'; font-size: 0.55rem; transition: transform 0.2s; }
+        .steps-preview[open] summary::before { transform: rotate(90deg); }
+        .steps-preview ul { margin: 0.3rem 0 0 1rem; padding: 0; }
+        .steps-preview li { font-size: 0.72rem; opacity: 0.75; margin-bottom: 0.15rem; }
+        .steps-preview li.done { text-decoration: line-through; opacity: 0.5; }
+
+        /* Info */
+        .info-section {
+            background: var(--card-bg); border-radius: 12px; padding: 1rem;
+            margin-top: 1rem; border: 1px solid var(--border);
+            font-size: 0.82rem; color: var(--text-light);
         }
-        .step-header input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--success); flex-shrink: 0; }
-        .step-header .step-title { flex: 1; font-size: 0.85rem; font-weight: 600; }
-        .step-header .guide-toggle {
-            background: #ebf4ff; border: 1px solid #bee3f8; color: var(--primary-light);
-            padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer;
-            font-size: 0.7rem; font-weight: 600; white-space: nowrap; min-height: 32px;
-        }
-        .step-header .guide-toggle:hover { background: #bee3f8; }
-        .step-header .guide-toggle.open { background: var(--primary-light); color: white; border-color: var(--primary-light); }
-        .step-note {
-            width: 100%; padding: 0.4rem 0.75rem; border: none; border-bottom: 1px dashed var(--border);
-            font-size: 0.78rem; background: transparent; color: var(--text-light);
-        }
-        .step-note:focus { background: white; color: var(--text); border-bottom-style: solid; border-bottom-color: var(--primary-light); outline: none; }
-        .step-note::placeholder { color: #cbd5e0; font-style: italic; }
+        .info-section h3 { font-size: 0.88rem; color: var(--primary); margin-bottom: 0.4rem; }
+        .info-section ul { margin: 0.3rem 0 0 1.2rem; }
+        .info-section li { margin-bottom: 0.2rem; }
 
-        /* Guide Content */
-        .step-guide { display: none; padding: 0.75rem; background: #f8fafc; border-top: 2px solid var(--primary-light); }
-        .step-guide.open { display: block; }
-        .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-        @media (max-width: 640px) { .guide-grid { grid-template-columns: 1fr; } }
-        .guide-block {
-            background: white; border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem;
-        }
-        .guide-block h4 {
-            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
-            margin-bottom: 0.35rem; padding-bottom: 0.2rem; border-bottom: 1px solid var(--border);
-        }
-        .guide-block h4.tools { color: #2b6cb0; border-color: #bee3f8; }
-        .guide-block h4.consumables { color: #975a16; border-color: #fefcbf; }
-        .guide-block h4.torque { color: #c53030; border-color: #fed7d7; }
-        .guide-block h4.measure { color: #276749; border-color: #c6f6d5; }
-        .guide-block h4.prereq { color: #553c9a; border-color: #e9d8fd; }
-        .guide-block h4.release { color: #38a169; border-color: #c6f6d5; }
-        .guide-block h4.tips { color: #d69e2e; border-color: #fefcbf; }
-        .guide-block h4.photo { color: #e53e3e; border-color: #fed7d7; }
-        .guide-block h4.time { color: #718096; border-color: #e2e8f0; }
-        .guide-block h4.fill { color: #2b6cb0; border-color: #bee3f8; }
-        .guide-block ul { padding-left: 1rem; margin: 0; }
-        .guide-block li { font-size: 0.78rem; line-height: 1.5; margin-bottom: 0.15rem; }
-        .guide-block li strong { color: var(--text); }
-        .guide-block .spec-line { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 0.15rem 0; border-bottom: 1px dotted var(--border); }
-        .guide-block .spec-line:last-child { border-bottom: none; }
-        .guide-block .spec-val { font-weight: 700; color: var(--accent); }
-        .guide-full { grid-column: 1 / -1; }
-        .warning-box { background: #fff5f5; border: 1px solid #fc8181; border-radius: 8px; padding: 0.5rem 0.65rem; font-size: 0.78rem; color: #c53030; grid-column: 1 / -1; }
-        .warning-box strong { color: #9b2c2c; }
-
-        /* Inline measurement input in guides */
-        .guide-input { width: 100%; padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.78rem; background: var(--input-bg); margin-top: 0.3rem; }
-        .guide-input:focus { border-color: var(--primary-light); background: white; outline: none; }
-        .guide-input-row { display: flex; gap: 0.3rem; margin-top: 0.3rem; flex-wrap: wrap; }
-        .guide-input-row label { font-size: 0.7rem; color: var(--text-light); }
-        .guide-input-row input { flex: 1; min-width: 60px; padding: 0.3rem 0.4rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.75rem; background: var(--input-bg); }
-        .guide-input-row input:focus { border-color: var(--primary-light); background: white; outline: none; }
-
-        /* Photo Gallery inline */
-        .photo-gallery { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
-        .photo-gallery img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid var(--border); }
-        .photo-add-btn { display: inline-block; padding: 0.35rem 0.7rem; font-size: 0.75rem; background: #ebf4ff; border: 1px dashed #bee3f8; border-radius: 6px; cursor: pointer; color: var(--primary-light); margin-top: 0.3rem; }
-
-        /* Progress Bar */
-        .progress-bar { background: var(--border); border-radius: 10px; height: 8px; margin-top: 0.4rem; overflow: hidden; }
-        .progress-fill { background: var(--success); height: 100%; border-radius: 10px; transition: width 0.3s; }
-        .progress-text { font-size: 0.68rem; color: var(--text-light); margin-top: 0.15rem; }
-
-        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1a202c; color: white; padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 0.82rem; opacity: 0; transition: all 0.3s; z-index: 9999; }
-        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-        .lightbox { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 8000; align-items: center; justify-content: center; flex-direction: column; padding: 1rem; }
-        .lightbox.show { display: flex; }
-        .lightbox img { max-width: 95%; max-height: 80vh; border-radius: 8px; }
-        .lightbox .caption { color: white; font-size: 0.85rem; margin-top: 0.5rem; text-align: center; }
-        .lightbox .lb-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 1.5rem; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; }
+        @media print { .header-nav { display: none; } }
     </style>
 </head>
 <body>
@@ -154,1856 +102,255 @@
     <h1>Build Log &ndash; 302ci BOSS Build</h1>
     <p>Ford M-6009-302 &bull; AFR 1399 &bull; COMP XE274HR</p>
     <div class="header-nav">
-        <a href="./">&larr; Main Page (Hauptseite)</a>
-        <button onclick="scrollToPhase('phase1')">Phase 1</button>
-        <button onclick="scrollToPhase('phase2')">Phase 2</button>
-        <button onclick="scrollToPhase('phase3')">Phase 3</button>
-        <button onclick="scrollToPhase('phase4')">Phase 4</button>
-        <button class="save-btn" onclick="saveData()">Save (Speichern)</button>
+        <a href="./">&larr; Main Page</a>
+        <a class="active">Hub</a>
+        <a href="build-log-phase1.html">P1</a>
+        <a href="build-log-phase2.html">P2</a>
+        <a href="build-log-phase3.html">P3</a>
+        <a href="build-log-phase4.html">P4</a>
     </div>
-    <div style="display:flex;align-items:center;gap:0.3rem;margin-top:0.4rem;max-width:400px;margin-left:auto;margin-right:auto;position:relative;">
-        <input type="text" id="searchInput" placeholder="Search... (Suchen...)" oninput="doBuildSearch()" onkeydown="if(event.key==='Escape'){clearBuildSearch();event.target.blur();}" style="flex:1;padding:0.4rem 0.65rem;border:1px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);color:white;border-radius:6px;font-size:0.8rem;outline:none;">
-        <span id="buildSearchCount" style="font-size:0.68rem;color:rgba(255,255,255,0.8);min-width:2.5rem;text-align:center;"></span>
-        <button onclick="buildSearchJump(-1)" style="padding:0.25rem 0.4rem;border:none;background:rgba(255,255,255,0.2);color:white;border-radius:4px;cursor:pointer;font-size:0.72rem;">&#9650;</button>
-        <button onclick="buildSearchJump(1)" style="padding:0.25rem 0.4rem;border:none;background:rgba(255,255,255,0.2);color:white;border-radius:4px;cursor:pointer;font-size:0.72rem;">&#9660;</button>
-    </div>
-    <div class="save-status" id="saveStatus"></div>
 </div>
 
 <div class="container">
 
-<!-- ============================================================ -->
-<!--  PHASE 1 - INCOMING INSPECTION (EINGANGSKONTROLLE)            -->
-<!-- ============================================================ -->
-<div id="phase1">
-<div class="phase-banner p1" onclick="togglePhase('phase1body')">
-    <div class="phase-num">1</div>
-    <div class="phase-info">
-        <h2>Incoming Inspection (Eingangskontrolle)</h2>
-        <p>Inspect &amp; measure all parts &ndash; BEFORE first assembly (Alle Teile pr&uuml;fen &amp; messen)</p>
+    <!-- Total Progress -->
+    <div class="total-progress">
+        <h2>Overall Build Progress (Gesamtfortschritt)</h2>
+        <div class="total-bar">
+            <div class="total-bar-fill" id="totalBarFill" style="width:0%"></div>
+            <div class="total-bar-text" id="totalBarText">0%</div>
+        </div>
+        <div class="total-stats" id="totalStats">Loading&hellip;</div>
     </div>
-    <span class="phase-toggle" id="toggle_phase1body">&#9660;</span>
-</div>
-<div class="progress-bar"><div class="progress-fill" id="prog1" style="width:0%"></div></div>
-<div class="progress-text" id="progText1">0 / 0</div>
 
-<div class="phase-body" id="phase1body">
-
-<!-- === Short Block on Engine Stand === -->
-<div class="subphase">Short Block on Stand (Short Block auf dem St&auml;nder)</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_block_visual" onchange="autoSave()">
-        <span class="step-title">Block Visual Inspection (Sichtpr&uuml;fung)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_block_visual_n" placeholder="Findings... (Befund...)" oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
-                <li>Lift short block from crate (2 persons, ~155 lbs / 70 kg)</li>
-                <li>Mount on engine stand (adapter for 302/351W pattern)</li>
-                <li>Remove preservation / shipping oil</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
-                <li>Work light / LED inspection lamp</li>
-                <li>Inspection mirror (dental or telescoping)</li>
-                <li>Magnifying glass for hairline cracks (Haarrisse)</li>
-            </ul></div>
-            <div class="guide-block guide-full"><h4 class="measure">Inspection Points (Pr&uuml;fpunkte)</h4><ul>
-                <li><strong>Cylinder Bores (Lauffl&auml;chen):</strong> No scoring, no ridge at TDC</li>
-                <li><strong>Sealing Surfaces (Dichtfl&auml;chen):</strong> Deck, intake rails, timing cover face &ndash; no nicks or burrs</li>
-                <li><strong>Threaded Holes (Gewindebohrungen):</strong> No damaged threads, no debris in blind holes</li>
-                <li><strong>Freeze Plugs (Froststopfen):</strong> All tight, no rust</li>
-                <li><strong>Oil Galleries (&Ouml;lkan&auml;le):</strong> Gallery plugs present and sealed</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="photo">Photo Documentation (Fotodokumentation)</h4><ul>
-                <li>Deck surface both banks</li>
-                <li>ID plate / casting number</li>
-                <li>Any anomalies (casting flaws, scratches)</li>
+    <!-- Phase 1 -->
+    <a href="build-log-phase1.html" class="phase-card p1" id="card-p1">
+        <div class="phase-card-top">
+            <div class="phase-num">1</div>
+            <div>
+                <h3>Incoming Inspection (Eingangskontrolle)</h3>
+                <div class="phase-desc">Block, Cam, Heads, Bearings, Rings, Studs &ndash; measure &amp; document</div>
+            </div>
+            <div class="phase-arrow">&rarr;</div>
+        </div>
+        <div class="phase-bar"><div class="phase-bar-fill" id="bar-p1" style="width:0%"></div></div>
+        <div class="phase-stats"><span id="stats-p1">0 / 0</span><span id="pct-p1">0%</span></div>
+        <details class="steps-preview">
+            <summary>Steps</summary>
+            <ul>
+                <li>Block Visual Inspection</li>
+                <li>Chase Threads &amp; Blow Out Blind Holes</li>
+                <li>Measure Deck Height</li>
+                <li>Piston Deck Clearance (all 8 cylinders)</li>
+                <li>Rotate Crankshaft by Hand</li>
+                <li>Oil Gallery Plugs</li>
+                <li>Cam Bearing Type</li>
+                <li>Main Bearing Clearance (Plastigage)</li>
+                <li>Crankshaft Endplay</li>
+                <li>XE274HR Lobe &amp; Journal Inspection</li>
+                <li>Cam Journal Measurement (5 journals)</li>
+                <li>Morel 5327 Lifters (16 pcs)</li>
+                <li>COMP 1632-16 Rockers</li>
+                <li>COMP 4600-16 Polylocks</li>
+                <li>Head Flatness</li>
+                <li>Chamber Volume (58 cc target)</li>
+                <li>Rocker Studs confirm</li>
+                <li>Springs &amp; Retainers confirm</li>
+                <li>Installed Spring Height</li>
+                <li>Coil Bind Clearance</li>
+                <li>Open Spring Pressure</li>
+                <li>Valve Keepers</li>
+                <li>Rod Bearing Clearance (Plastigage)</li>
+                <li>Ring End Gap (Top + 2nd)</li>
+                <li>ARP 154-4003 Head Studs</li>
+                <li>ARP 254-1001 Cam Bolt</li>
+                <li>M-6268-A302 Timing Set</li>
             </ul>
-            <div class="photo-gallery" data-photo-group="p1_block_photos"></div>
-            <label class="photo-add-btn" onclick="addPhoto('p1_block_photos')">&#128247; Add Photo</label>
-            </div>
-            <div class="guide-block"><h4 class="time">Time Estimate (Zeitbedarf)</h4><ul><li>~30 min. incl. unpacking &amp; mounting</li></ul></div>
-        </div>
-    </div>
-</div>
+        </details>
+    </a>
 
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_threads" onchange="autoSave()">
-        <span class="step-title">Chase Threads &amp; Blow Out Blind Holes (Gewinde durchjagen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_threads_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
-                <li>Tap set: 7/16"-14, 3/8"-16, 5/16"-18 (11.11 mm, 9.53 mm, 7.94 mm)</li>
-                <li>Compressed air gun with extension</li>
-                <li>Safety glasses (mandatory!)</li>
-                <li>T-handle tap wrench</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="consumables">Consumables (Betriebsmittel)</h4><ul>
-                <li>Brake cleaner (residual dirt)</li>
-                <li>Clean lint-free rags</li>
-            </ul></div>
-            <div class="warning-box"><strong>WARNING:</strong> Blind holes must be oil- and debris-free! Fluid in a blind hole acts hydraulically &ndash; the stud can crack the block.</div>
-            <div class="guide-block"><h4 class="release">Release Criteria (Freigabe)</h4><ul>
-                <li>All holes free of chips and residue</li>
-                <li>Tap runs freely in every hole</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="time">Time Estimate</h4><ul><li>~45 min.</li></ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_deck_height" onchange="autoSave()">
-        <span class="step-title">Measure Deck Height (Deckh&ouml;he messen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_deck_height_n" placeholder="Measured value..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
-                <li>Depth micrometer (Tiefenmikrometer) or depth gauge</li>
-                <li>Straightedge (Haarlineal) + feeler gauge (F&uuml;hlerlehre)</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
-                <div class="spec-line"><span>Deck Height (BHE)</span><span class="spec-val">8.206" (208.43 mm)</span></div>
-                <div class="spec-line"><span>Tolerance (Toleranz)</span><span class="spec-val">&plusmn; 0.005" (0.13 mm)</span></div>
-                <div class="spec-line"><span>Ford 302 Nominal</span><span class="spec-val">8.206" (208.43 mm)</span></div>
-                <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Measured (Gemessen):</label><input type="text" data-field="p1_deck_height_val" placeholder="e.g. 8.205" oninput="autoSave()"></div>
-                </div>
+    <!-- Phase 2 -->
+    <a href="build-log-phase2.html" class="phase-card p2" id="card-p2">
+        <div class="phase-card-top">
+            <div class="phase-num">2</div>
+            <div>
+                <h3>Mock-up &amp; Degree</h3>
+                <div class="phase-desc">Cam degree, pushrod length, P-V clearance, quench, dry fit accessories</div>
             </div>
-            <div class="guide-block guide-full"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
-                <li>Measure at least 4 locations per bank (front, rear, left, right)</li>
-                <li>Deck height + piston deck clearance = quench distance (determines compression &amp; detonation margin)</li>
-            </ul></div>
+            <div class="phase-arrow">&rarr;</div>
         </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_piston_deck" onchange="autoSave()">
-        <span class="step-title">Piston Deck Clearance (Kolbenstand) &ndash; all 8 cylinders</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_piston_deck_n" placeholder="Cyl.1:___ 2:___ 3:___ 4:___ 5:___ 6:___ 7:___ 8:___" oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
-                <li>Dial indicator (Messuhr) with magnetic base</li>
-                <li>Straightedge (Haarlineal) across bore</li>
-                <li>Crank turning tool or box wrench</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
-                <div class="spec-line"><span>Deck Clearance (Kolbenstand)</span><span class="spec-val">~0.010" (0.25 mm) below deck</span></div>
-                <div class="spec-line"><span>Method</span><span class="spec-val">Straightedge + dial indicator</span></div>
-                <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Cyl 1:</label><input type="text" data-field="p1_pd_cyl1" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 2:</label><input type="text" data-field="p1_pd_cyl2" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 3:</label><input type="text" data-field="p1_pd_cyl3" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 4:</label><input type="text" data-field="p1_pd_cyl4" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 5:</label><input type="text" data-field="p1_pd_cyl5" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 6:</label><input type="text" data-field="p1_pd_cyl6" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 7:</label><input type="text" data-field="p1_pd_cyl7" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 8:</label><input type="text" data-field="p1_pd_cyl8" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                </div>
-            </div>
-            <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
-                <li><strong>Most critical measurement of the entire build!</strong> Piston deck clearance determines compression ratio, quench distance, and head gasket choice.</li>
-                <li>Measure Cyl. 1 + 5 first &ndash; the spread reveals block machining precision</li>
-                <li>Rotate crank to exact TDC (highest point), not slightly off</li>
-                <li>Measure each bore at thrust side AND anti-thrust side</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="photo">Photo Documentation</h4><ul>
-                <li>Dial indicator on straightedge over bore (method documentation)</li>
-                <li>Reading at Cyl 1 and Cyl 5</li>
+        <div class="phase-bar"><div class="phase-bar-fill" id="bar-p2" style="width:0%"></div></div>
+        <div class="phase-stats"><span id="stats-p2">0 / 0</span><span id="pct-p2">0%</span></div>
+        <details class="steps-preview">
+            <summary>Steps</summary>
+            <ul>
+                <li>Cam Bearings &ndash; check / replace</li>
+                <li>Install Camshaft</li>
+                <li>Thrust Plate + Timing Set</li>
+                <li>Cam Endplay</li>
+                <li>Install Lifter on Cyl #1</li>
+                <li>Degree Camshaft (ICL)</li>
+                <li>Install All 16 Lifters</li>
+                <li>Mock-up Head (finger-tight)</li>
+                <li>Install Guide Plates</li>
+                <li>Determine Pushrod Length</li>
+                <li>Rocker Sweep Check</li>
+                <li>Piston-to-Valve Clearance (P-V)</li>
+                <li>Quench Distance (solder wire)</li>
+                <li>Retainer-to-Seal Clearance</li>
+                <li>Intake Manifold dry fit</li>
+                <li>Oil Pump dry fit</li>
+                <li>Timing Cover dry fit</li>
+                <li>Oil Pan clearance</li>
+                <li>Pickup-to-Pan distance</li>
+                <li>Valve Covers rocker clearance</li>
+                <li>Distributor intake clearance</li>
+                <li>Order Final Pushrods</li>
+                <li>Complete Teardown</li>
             </ul>
-            <div class="photo-gallery" data-photo-group="p1_pdeck_photos"></div>
-            <label class="photo-add-btn" onclick="addPhoto('p1_pdeck_photos')">&#128247; Add Photo</label>
+        </details>
+    </a>
+
+    <!-- Phase 3 -->
+    <a href="build-log-phase3.html" class="phase-card p3" id="card-p3">
+        <div class="phase-card-top">
+            <div class="phase-num">3</div>
+            <div>
+                <h3>Final Assembly (Endmontage)</h3>
+                <div class="phase-desc">Cam, heads, intake, sealing &ndash; from here: irreversible!</div>
             </div>
+            <div class="phase-arrow">&rarr;</div>
         </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_crank_turn" onchange="autoSave()">
-        <span class="step-title">Rotate Crankshaft by Hand (Kurbelwelle drehen) &ndash; no binding</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_crank_turn_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="measure">Criteria</h4><ul>
-                <li>Crankshaft turns smoothly through full 720&deg;</li>
-                <li>No sudden resistance or binding</li>
-                <li>No noises (scraping, clicking)</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Turn at flywheel end by hand (more leverage)</li>
-                <li>Binding = bearing issue or debris in oil gallery</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_oil_plug" onchange="autoSave()">
-        <span class="step-title">Check Oil Gallery Plugs (&Ouml;lkanalstopfen pr&uuml;fen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_oil_plug_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="torque">Torque Values (Anzugswerte)</h4>
-                <div class="spec-line"><span>Gallery Plugs</span><span class="spec-val">8&ndash;10 ft-lbs (11&ndash;14 Nm)</span></div>
-                <div class="spec-line"><span>Sealant (Dichtmittel)</span><span class="spec-val">Teflon tape or pipe sealant</span></div>
-            </div>
-            <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Located behind distributor bore &ndash; easy to miss</li>
-                <li>If loose = no oil pressure at startup</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_cam_bearing_type" onchange="autoSave()">
-        <span class="step-title">Determine Cam Bearing Type (Cam-Lagertyp bestimmen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_cam_bearing_type_n" placeholder="Type:..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="measure">Identification &amp; Target Values (Sollwerte)</h4><ul>
-                <li><strong>R351:</strong> Oil holes on camshaft side (standard for BOSS block)</li>
-                <li><strong>J351:</strong> Offset oil holes (rare, older blocks)</li>
+        <div class="phase-bar"><div class="phase-bar-fill" id="bar-p3" style="width:0%"></div></div>
+        <div class="phase-stats"><span id="stats-p3">0 / 0</span><span id="pct-p3">0%</span></div>
+        <details class="steps-preview">
+            <summary>Steps</summary>
+            <ul>
+                <li>Clean Sealing Surfaces</li>
+                <li>Blow Out Head Bolt Holes</li>
+                <li>Parts &amp; Consumables Ready</li>
+                <li>Cam Lube + Install</li>
+                <li>Timing Set + Cam Bolt</li>
+                <li>Install 16 Lifters</li>
+                <li>Oil Pump M-6600-D2</li>
+                <li>Oil Pump Drive Shaft</li>
+                <li>Pickup install</li>
+                <li>Head Gasket CP331 (FRONT!)</li>
+                <li>ARP Head Studs</li>
+                <li>ARP Lube + Set Heads</li>
+                <li>Torque Heads (3 stages)</li>
+                <li>Guide Plates + Pushrods</li>
+                <li>Rockers + Preload</li>
+                <li>Timing Cover + Seal</li>
+                <li>Balancer (0-oz!)</li>
+                <li>Oil Pan + RTV</li>
+                <li>Water Pump</li>
+                <li>Intake Manifold (18 ft-lbs!)</li>
+                <li>Distributor</li>
+                <li>Spark Plugs</li>
+                <li>Valve Covers</li>
+                <li>Fuel Pump</li>
             </ul>
-                <div class="spec-line"><span>Bearing I.D. #1 (front)</span><span class="spec-val">2.1295"&ndash;2.1305" (54.09&ndash;54.11 mm)</span></div>
-                <div class="spec-line"><span>Bearing I.D. #2&ndash;#4</span><span class="spec-val">2.0835"&ndash;2.0845" (52.92&ndash;52.95 mm)</span></div>
-                <div class="spec-line"><span>Bearing I.D. #5 (rear)</span><span class="spec-val">1.8595"&ndash;1.8605" (47.23&ndash;47.26 mm)</span></div>
-                <div class="spec-line"><span>Cam Journal &oslash;</span><span class="spec-val">2.0820"&ndash;2.0830" (52.88&ndash;52.91 mm)</span></div>
-                <div class="spec-line"><span>Bearing Clearance (Lagerspiel)</span><span class="spec-val">0.001"&ndash;0.003" (0.025&ndash;0.076 mm)</span></div>
-                <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Type found:</label><input type="text" data-field="p1_cam_brg_type" placeholder="R351 / J351" oninput="autoSave()" style="width:80px;"></div>
-                    <div><label>Brg I.D. #1:</label><input type="text" data-field="p1_cam_brg_id1" placeholder="2.130" oninput="autoSave()" style="width:65px;"></div>
-                    <div><label>Brg I.D. #3:</label><input type="text" data-field="p1_cam_brg_id3" placeholder="2.084" oninput="autoSave()" style="width:65px;"></div>
-                </div>
+        </details>
+    </a>
+
+    <!-- Phase 4 -->
+    <a href="build-log-phase4.html" class="phase-card p4" id="card-p4">
+        <div class="phase-card-top">
+            <div class="phase-num">4</div>
+            <div>
+                <h3>First Start &amp; Break-In (Erststart &amp; Einfahren)</h3>
+                <div class="phase-desc">Pre-oil, start, timing, re-torque, filter cut, spark read</div>
             </div>
-            <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-                <li>BOSS 302 block has factory-installed R351 bearings</li>
-                <li>Compare cam journal measurement (next step) against bearing I.D. for actual clearance</li>
-                <li>Oil holes MUST align with block galleries after installation!</li>
-            </ul></div>
+            <div class="phase-arrow">&rarr;</div>
         </div>
-    </div>
-</div>
-
-<!-- === Camshaft & Valvetrain (on workbench) === -->
-<div class="subphase">Camshaft &amp; Valvetrain (Nockenwelle &amp; Ventiltrieb &ndash; Werkbank)</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_cam_visual" onchange="autoSave()">
-        <span class="step-title">XE274HR Lobe &amp; Journal Visual Inspection (Sichtpr&uuml;fung)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_cam_visual_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="measure">Inspection Points</h4><ul>
-                <li>Lobe surfaces (Nockenfl&auml;chen): no scoring, no pitting, no heat discoloration</li>
-                <li>Journals (Lagerzapfen): polished surface, no rust</li>
-                <li>Distributor drive gear: teeth undamaged</li>
-                <li>Cam card included? (Intake Centerline for degreeing)</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Light rust on journals = shipping damage, remove with fine Scotch-Brite + oil</li>
-                <li>NEVER use abrasives on lobe surfaces!</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_cam_journals" onchange="autoSave()">
-        <span class="step-title">Measure All 5 Cam Journals (Cam-Zapfen messen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_cam_journals_n" placeholder="#1:___ #2:___ #3:___ #4:___ #5:___" oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools</h4><ul>
-                <li>Outside micrometer (Au&szlig;enmikrometer) 1.5"&ndash;2.5" (38&ndash;64 mm)</li>
-                <li>Measure at 2 positions per journal (0&deg; and 90&deg;)</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
-                <div class="spec-line"><span>Journal &oslash; #2&ndash;#4</span><span class="spec-val">2.0820"&ndash;2.0830" (52.88&ndash;52.91 mm)</span></div>
-                <div class="spec-line"><span>Max. Ovality (Ovalit&auml;t)</span><span class="spec-val">&le; 0.001" (0.025 mm)</span></div>
-                <div class="spec-line"><span>Bearing Clearance (Lagerspiel)</span><span class="spec-val">0.001"&ndash;0.003" (0.025&ndash;0.076 mm)</span></div>
-                <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>#1:</label><input type="text" data-field="p1_camj1" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
-                    <div><label>#2:</label><input type="text" data-field="p1_camj2" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
-                    <div><label>#3:</label><input type="text" data-field="p1_camj3" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
-                    <div><label>#4:</label><input type="text" data-field="p1_camj4" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
-                    <div><label>#5:</label><input type="text" data-field="p1_camj5" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_lifters" onchange="autoSave()">
-        <span class="step-title">Morel 5327 Lifters &ndash; inspect 16 pcs (16 St&uuml;ck pr&uuml;fen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_lifters_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="measure">Inspection Points &amp; Specs</h4><ul>
-                <li>Count: 16 pcs</li>
-                <li>Rollers spin freely (check each one individually)</li>
-                <li>Link-bar mechanism functions correctly</li>
+        <div class="phase-bar"><div class="phase-bar-fill" id="bar-p4" style="width:0%"></div></div>
+        <div class="phase-stats"><span id="stats-p4">0 / 0</span><span id="pct-p4">0%</span></div>
+        <details class="steps-preview">
+            <summary>Steps</summary>
+            <ul>
+                <li>Pre-Oil (all rockers wet)</li>
+                <li>Rotate Crank 4&times; 90&deg;</li>
+                <li>Oil Pressure during Pre-Oil</li>
+                <li>Fill Break-In Oil (ZDDP)</li>
+                <li>Fill &amp; Bleed Coolant</li>
+                <li>Check Fuel System</li>
+                <li>Static Timing ~12&deg; BTDC</li>
+                <li>MSD Rev Limiter 6,500 RPM</li>
+                <li>Recheck Preload (16 valves)</li>
+                <li>Wiring, Ground, Firing Order</li>
+                <li>FIRE EXTINGUISHER!</li>
+                <li>START &ndash; 2,000-2,500 RPM</li>
+                <li>Oil Pressure warm</li>
+                <li>Visual: no leaks</li>
+                <li>Coolant Temp &ndash; thermostat opens</li>
+                <li>Check Timing warm</li>
+                <li>Oil Pressure idle</li>
+                <li>Final Timing 34-36&deg; total</li>
+                <li>Re-Torque Head Nuts (cold)</li>
+                <li>Oil Change + Cut Filter</li>
+                <li>Read Spark Plugs</li>
+                <li>Synchronize Carburetors</li>
             </ul>
-                <div class="spec-line"><span>Body Diameter (K&ouml;rper-&oslash;)</span><span class="spec-val">0.875" (22.23 mm)</span></div>
-                <div class="spec-line"><span>Type</span><span class="spec-val">Hydraulic Link-Bar (HLT)</span></div>
-            </div>
-            <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-                <li><strong>Soak in oil now!</strong> Morel HLT lifters need min. 24h in clean engine oil before Phase 2</li>
-                <li>Establish numbering system (1E, 1A, 2E, 2A... = cylinder + intake/exhaust)</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
+        </details>
+    </a>
 
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_rockers" onchange="autoSave()">
-        <span class="step-title">COMP 1632-16 Rockers &ndash; Trunnion, Ratio</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_rockers_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="measure">Inspection Points</h4><ul>
-                <li>16 pcs, trunnion (pivot pin) with no axial play</li>
-                <li>Roller tip spins freely</li>
-                <li>Ratio 1.6:1 confirmed on packaging</li>
-                <li>7/16" (11.11 mm) stud mount confirmed (fits AFR #6411 studs)</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Ultra Pro Magnum = steel body &ndash; significantly stronger than aluminum rockers</li>
-                <li>Fulcrum design &ndash; no separate fulcrum bolt required</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_polylocks" onchange="autoSave()">
-        <span class="step-title">COMP 4600-16 Polylocks &ndash; 16 pcs, 7/16" (11.11 mm)</span>
-    </div>
-    <input type="text" class="step-note" data-field="p1_polylocks_n" placeholder="Count confirmed / Findings..." oninput="autoSave()">
-</div>
-
-<!-- === Cylinder Heads AFR 1399 (on workbench) === -->
-<div class="subphase">Cylinder Heads AFR 1399 (Zylinderk&ouml;pfe &ndash; Werkbank)</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_deck_flat" onchange="autoSave()">
-        <span class="step-title">Sealing Surface Flatness (Dichtfl&auml;chen Planheit)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_deck_flat_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools</h4><ul>
-                <li>Precision straightedge (Haarlineal) min. 14" (356 mm)</li>
-                <li>Feeler gauge (F&uuml;hlerlehre) 0.001"&ndash;0.004" (0.025&ndash;0.10 mm)</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="measure">Target Values</h4>
-                <div class="spec-line"><span>Max. Warpage (Verzug)</span><span class="spec-val">&le; 0.003" (0.076 mm) over length</span></div>
-                <div class="spec-line"><span>Method</span><span class="spec-val">Straightedge diagonal + crosswise, 6 positions</span></div>
-                <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>LH max:</label><input type="text" data-field="p1_flat_lh" placeholder=".001" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>RH max:</label><input type="text" data-field="p1_flat_rh" placeholder=".001" oninput="autoSave()" style="width:55px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_chamber_vol" onchange="autoSave()">
-        <span class="step-title">Chamber Volume (Brennraumvolumen) &ndash; Target: 58 cc</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_chamber_vol_n" placeholder="Measured cc..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools</h4><ul>
-                <li>Burette (B&uuml;rette) 100 ml, 0.1 ml graduation</li>
-                <li>CC plate (Plexiglas with hole)</li>
-                <li>Grease/vaseline for sealing</li>
-                <li>Measuring fluid (isopropanol + food coloring)</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="measure">Target Values</h4>
-                <div class="spec-line"><span>AFR 1399 Chamber Volume</span><span class="spec-val">58 cc</span></div>
-                <div class="spec-line"><span>Tolerance</span><span class="spec-val">&plusmn; 1 cc</span></div>
-                <div class="spec-line"><span>Sample Size</span><span class="spec-val">Min. 2 chambers per head</span></div>
-                <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>LH #1:</label><input type="text" data-field="p1_cc_lh1" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
-                    <div><label>LH #2:</label><input type="text" data-field="p1_cc_lh2" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
-                    <div><label>RH #1:</label><input type="text" data-field="p1_cc_rh1" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
-                    <div><label>RH #2:</label><input type="text" data-field="p1_cc_rh2" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
-                </div>
-            </div>
-            <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Valves must be closed for measurement (springs hold them shut)</li>
-                <li>Seal spark plug hole with old plug</li>
-                <li>Air escapes through the hole in the CC plate</li>
-                <li>Spread &gt; 1 cc between chambers = head needs resurfacing</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_studs" onchange="autoSave()">
-        <span class="step-title">Rocker Studs 7/16" (11.11 mm) #6411 &ndash; confirm</span>
-    </div>
-    <input type="text" class="step-note" data-field="p1_studs_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_springs" onchange="autoSave()">
-        <span class="step-title">Springs #8605 + Titanium Retainers #8600 &ndash; confirm</span>
-    </div>
-    <input type="text" class="step-note" data-field="p1_springs_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_spring_height" onchange="autoSave()">
-        <span class="step-title">Installed Spring Height (Federeinbauh&ouml;he) &ndash; all 16</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_spring_height_n" placeholder="Min:___ Max:___ Avg:___" oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools</h4><ul>
-                <li>Installed-height micrometer or caliper (Messschieber)</li>
-                <li>Spring height gauge (steel plate with hole)</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="measure">Target Values</h4>
-                <div class="spec-line"><span>AFR Spec Installed Height</span><span class="spec-val">Per AFR data sheet &plusmn; 0.015" (0.38 mm)</span></div>
-                <div class="spec-line"><span>Correction if out of spec</span><span class="spec-val">Shims under spring</span></div>
-                <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Min:</label><input type="text" data-field="p1_sh_min" placeholder="" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Max:</label><input type="text" data-field="p1_sh_max" placeholder="" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Avg:</label><input type="text" data-field="p1_sh_avg" placeholder="" oninput="autoSave()" style="width:55px;"></div>
-                </div>
-            </div>
-            <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Measure without spring: install retainer + keepers, measure gap from spring seat to retainer underside</li>
-                <li>Spread &gt; 0.030" (0.76 mm) between valves = rework valve seats or use shims</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_coilbind" onchange="autoSave()">
-        <span class="step-title">Coil Bind Clearance &ge; 0.060" (1.52 mm) over max. lift</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_coilbind_n" placeholder="Clearance:___" oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block guide-full"><h4 class="measure">Calculation (Berechnung)</h4><ul>
-                <li><strong>Max. Valve Lift (exhaust):</strong> 0.565" (14.35 mm) &ndash; this IS the valve lift (at-the-valve, not lobe lift)</li>
-                <li><strong>Formula:</strong> Installed Height &minus; Max Lift &minus; Coil Bind Height = Clearance</li>
-                <li>Clearance must be &ge; 0.060" (1.52 mm), otherwise spring or retainer failure</li>
-                <li>Coil bind height is on the spring data sheet (PAC/AFR #8605)</li>
-            </ul>
-                <div class="guide-input-row" style="margin-top:0.3rem;">
-                    <div><label>Installed Ht:</label><input type="text" data-field="p1_cb_ish" placeholder="" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Coil Bind Ht:</label><input type="text" data-field="p1_cb_cbh" placeholder="" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Clearance:</label><input type="text" data-field="p1_cb_clr" placeholder="" oninput="autoSave()" style="width:55px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_spring_open" onchange="autoSave()">
-        <span class="step-title">Open Spring Pressure at 0.565" (14.35 mm) lift</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_spring_open_n" placeholder="Pressure lbs:___" oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools</h4><ul><li>Spring tester (Federpr&uuml;fstand) or calculate from rate</li></ul></div>
-            <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Excessive open pressure overloads Morel 5327 link-bars</li>
-                <li>Morel recommendation: max. ~400 lbs open for hydraulic roller</li>
-            </ul>
-                <div class="guide-input-row" style="margin-top:0.3rem;">
-                    <div><label>Open pressure:</label><input type="text" data-field="p1_open_psi" placeholder="lbs" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Seat pressure:</label><input type="text" data-field="p1_seat_psi" placeholder="lbs" oninput="autoSave()" style="width:55px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_keepers" onchange="autoSave()">
-        <span class="step-title">Valve Keepers (Ventilkeile) 7&deg; &ndash; match titanium retainers</span>
-    </div>
-    <input type="text" class="step-note" data-field="p1_keepers_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
-</div>
-
-<!-- === Fasteners (Befestigungsmaterial) === -->
-<div class="subphase">Fasteners (Befestigungsmaterial)</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_arp_length" onchange="autoSave()">
-        <span class="step-title">ARP 154-4003 Head Studs &ndash; measure length (L&auml;nge messen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_arp_length_n" placeholder="Short:___ Long:___" oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="measure">Target Values &amp; Inspection</h4>
-                <div class="spec-line"><span>Long Studs (Trockenbohrung/blind)</span><span class="spec-val">6.800" (172.72 mm) &ndash; qty 4</span></div>
-                <div class="spec-line"><span>Short Studs (Wasserbohrung/thru)</span><span class="spec-val">5.750" (146.05 mm) &ndash; qty 6</span></div>
-                <div class="spec-line"><span>Tolerance (L&auml;ngentoleranz)</span><span class="spec-val">&plusmn; 0.010" (0.25 mm)</span></div>
-                <div class="spec-line"><span>Thread</span><span class="spec-val">7/16"-14 block side, 7/16"-14 nut side</span></div>
-                <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Long measured:</label><input type="text" data-field="p1_arp_long" placeholder="6.800" oninput="autoSave()" style="width:65px;"></div>
-                    <div><label>Short measured:</label><input type="text" data-field="p1_arp_short" placeholder="5.750" oninput="autoSave()" style="width:65px;"></div>
-                </div>
-            </div>
-            <div class="guide-block"><h4 class="prereq">Procedure</h4><ul>
-                <li>Measure both stud types with caliper (Messschieber)</li>
-                <li>Compare against block thread depth + head height</li>
-                <li>Stud must NOT bottom out in blind hole!</li>
-                <li>Nut thread must protrude 2&ndash;3 threads beyond nut</li>
-            </ul></div>
-            <div class="warning-box"><strong>Critical:</strong> A stud bottoming in a blind hole will hydraulically lock and crack the block when torqued. Always verify thread engagement depth.</div>
-            <div class="guide-block"><h4 class="tools">Tools</h4><ul>
-                <li>Caliper (Messschieber) 0&ndash;8" (0&ndash;200 mm)</li>
-                <li>ARP spec sheet (included in kit)</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_arp_cam" onchange="autoSave()">
-        <span class="step-title">ARP 254-1001 Cam Bolt &ndash; inspect</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_arp_cam_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="measure">Specs &amp; Inspection</h4>
-                <div class="spec-line"><span>Thread</span><span class="spec-val">5/16"-18 &times; 1.000" (25.4 mm)</span></div>
-                <div class="spec-line"><span>Material</span><span class="spec-val">ARP 8740 Chromoly</span></div>
-                <div class="spec-line"><span>Torque (Phase 3)</span><span class="spec-val">25&ndash;30 ft-lbs (34&ndash;41 Nm) with ARP lube</span></div>
-                <div class="spec-line"><span>Washer</span><span class="spec-val">Hardened washer included &ndash; must be used</span></div>
-            </div>
-            <div class="guide-block"><h4 class="prereq">Inspection</h4><ul>
-                <li>Thread condition: no damage, clean threads</li>
-                <li>Hardened washer present (flat, not spring washer)</li>
-                <li>ARP lube sachet included</li>
-                <li>Compare thread length vs. cam snout depth &ndash; bolt must not bottom out</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p1_timing_set" onchange="autoSave()">
-        <span class="step-title">M-6268-A302 Timing Set &ndash; inspect</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p1_timing_set_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="measure">Inspection Points</h4><ul>
-                <li><strong>Crank sprocket:</strong> Keyway undamaged, teeth sharp (no wear)</li>
-                <li><strong>Cam sprocket:</strong> Timing marks (dots) clearly visible, 3 keyway positions (Adv/Std/Ret)</li>
-                <li><strong>Chain (Kette):</strong> No stiff links, chain stretch &lt; 1/8" (3.2 mm) over 12 links</li>
-                <li><strong>Thrust plate:</strong> Surfaces smooth, thickness uniform</li>
-                <li><strong>Bolts:</strong> 2x cam-to-sprocket bolts (these are replaced by ARP 254-1001 for the cam bolt)</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Ford M-6268-A302 is a double-roller set &ndash; superior to single-roller OEM</li>
-                <li>Verify keyway position before Phase 3: "0" / STD for initial build</li>
-                <li>Timing marks must point toward each other (dot-to-dot) at TDC #1</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="photo-gallery" data-photo-group="phase1"></div>
-<label class="photo-add-btn" onclick="addPhoto('phase1')">&#128247; Add Phase 1 Photos</label>
-
-</div><!-- /phase1body -->
-</div><!-- /phase1 -->
-
-<!-- ============================================================ -->
-<!--  PHASE 2 - MOCK-UP & DEGREE                                   -->
-<!-- ============================================================ -->
-<div id="phase2">
-<div class="phase-banner p2" onclick="togglePhase('phase2body')">
-    <div class="phase-num">2</div>
-    <div class="phase-info">
-        <h2>Mock-up &amp; Degree</h2>
-        <p>Dry assembly &ndash; build it all, consume nothing. Use Fel-Pro 1011-x mock-up gasket!</p>
-    </div>
-    <span class="phase-toggle" id="toggle_phase2body">&#9660;</span>
-</div>
-<div class="progress-bar"><div class="progress-fill" id="prog2" style="width:0%"></div></div>
-<div class="progress-text" id="progText2">0 / 0</div>
-
-<div class="phase-body" id="phase2body">
-
-<div class="subphase">Cam &amp; Timing (Steuertrieb)</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p2_cam_bearings" onchange="autoSave()">
-        <span class="step-title">Cam Bearings (Cam-Lager) &ndash; check / replace if needed</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p2_cam_bearings_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="prereq">Prerequisites (Voraussetzungen)</h4><ul>
-                <li>Phase 1: cam bearing type (R351/J351) identified</li>
-                <li>Phase 1: cam journal diameters measured</li>
-                <li>Calculate actual clearance: Bearing I.D. &minus; Journal &oslash;</li>
-            </ul>
-                <div class="spec-line"><span>Required Clearance</span><span class="spec-val">0.001"&ndash;0.003" (0.025&ndash;0.076 mm)</span></div>
-                <div class="guide-input-row" style="margin-top:0.3rem;">
-                    <div><label>Actual clearance:</label><input type="text" data-field="p2_cam_brg_clr" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
-                </div>
-            </div>
-            <div class="guide-block"><h4 class="tools">Tools (only if replacing)</h4><ul>
-                <li>Cam bearing installation tool (Einpresswerkzeug)</li>
-                <li>Brass or plastic hammer</li>
-            </ul></div>
-            <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Only replace if type conflict or visible wear</li>
-                <li>Oil holes MUST align with block galleries after press-in!</li>
-                <li>Always install with oil, never press in dry</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p2_cam_install" onchange="autoSave()">
-        <span class="step-title">Install Camshaft (Nockenwelle einsetzen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p2_cam_install_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools</h4><ul>
-                <li>Long bolt 5/16"-18 &times; 4" (7.94 mm &times; 102 mm) as guide handle (in cam nose thread)</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="consumables">Consumables (Betriebsmittel)</h4><ul>
-                <li><strong>Assembly lube</strong> (COMP 159 or equivalent) on ALL lobes</li>
-                <li><strong>Engine oil</strong> on all 5 journals</li>
-            </ul></div>
-            <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Insert cam straight and slowly &ndash; lobes must NEVER touch bearing shells</li>
-                <li>The long bolt as handle gives control &ndash; without it the cam slides in uncontrolled</li>
-                <li>Tilt block slightly rearward (rear end lower) &ndash; gravity helps</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="time">Time Estimate</h4><ul><li>~15 min.</li></ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p2_thrust_plate" onchange="autoSave()">
-        <span class="step-title">Thrust Plate + Timing Set &ndash; install (montieren)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p2_thrust_plate_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="prereq">Procedure</h4><ul>
-                <li>Install thrust plate (retaining plate) with bolts finger-tight</li>
-                <li>Install crank sprocket on crankshaft keyway</li>
-                <li>Install cam sprocket &ndash; use "0"/STD keyway position</li>
-                <li>Route chain over both sprockets &ndash; timing marks dot-to-dot</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="torque">Torque Values</h4>
-                <div class="spec-line"><span>Thrust Plate Bolts</span><span class="spec-val">9&ndash;12 ft-lbs (12&ndash;16 Nm)</span></div>
-                <div class="spec-line"><span>Cam Bolt (ARP 254-1001)</span><span class="spec-val">25&ndash;30 ft-lbs (34&ndash;41 Nm) w/ ARP lube</span></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p2_endplay" onchange="autoSave()">
-        <span class="step-title">Cam Endplay (Axialspiel) &ndash; 0.001"&ndash;0.007" (0.025&ndash;0.178 mm)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p2_endplay_n" placeholder="Measured:___" oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools</h4><ul>
-                <li>Dial indicator (Messuhr) with magnetic base</li>
-                <li>Screwdriver for prying (carefully!)</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="measure">Target Values</h4>
-                <div class="spec-line"><span>Cam Endplay (Ford Spec)</span><span class="spec-val">0.001"&ndash;0.007" (0.025&ndash;0.178 mm)</span></div>
-                <div class="spec-line"><span>Service Limit</span><span class="spec-val">0.009" (0.229 mm)</span></div>
-                <div class="guide-input-row" style="margin-top:0.3rem;">
-                    <div><label>Measured:</label><input type="text" data-field="p2_endplay_val" placeholder=".004" oninput="autoSave()" style="width:55px;"></div>
-                </div>
-            </div>
-            <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Place dial indicator on cam sprocket, push cam forward and back</li>
-                <li>Too much play = thrust plate worn or wrong thickness</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p2_lifter1" onchange="autoSave()">
-        <span class="step-title">Install Lifter on Test Cylinder #1 (Pr&uuml;fzylinder)</span>
-    </div>
-    <input type="text" class="step-note" data-field="p2_lifter1_n" placeholder="Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p2_degree" onchange="autoSave()">
-        <span class="step-title">Degree Camshaft (Nockenwelle degreen) &ndash; verify ICL</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p2_degree_n" placeholder="ICL target:___ actual:___" oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools</h4><ul>
-                <li>Degree wheel min. 9" (229 mm) diameter</li>
-                <li>Pointer (Zeiger), mounted to block</li>
-                <li>Dial indicator with lifter adapter</li>
-                <li>Piston stop (steel or rubber)</li>
-                <li>Checking spring (light spring, replaces valve spring)</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="measure">Target Values &ndash; COMP XE274HR</h4>
-                <div class="spec-line"><span>Intake Centerline (ICL)</span><span class="spec-val">Per cam card (laut Cam Card)</span></div>
-                <div class="spec-line"><span>Duration @.050" Int/Exh</span><span class="spec-val">224&deg; / 232&deg;</span></div>
-                <div class="spec-line"><span>Lobe Separation Angle (LSA)</span><span class="spec-val">112&deg;</span></div>
-                <div class="spec-line"><span>Valve Lift Int/Exh</span><span class="spec-val">0.555" / 0.565" (14.10 / 14.35 mm)</span></div>
-                <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>ICL target:</label><input type="text" data-field="p2_icl_target" placeholder="" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>ICL actual:</label><input type="text" data-field="p2_icl_actual" placeholder="" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Open @.050:</label><input type="text" data-field="p2_open050" placeholder="&deg;" oninput="autoSave()" style="width:50px;"></div>
-                    <div><label>Close @.050:</label><input type="text" data-field="p2_close050" placeholder="&deg;" oninput="autoSave()" style="width:50px;"></div>
-                </div>
-            </div>
-            <div class="guide-block guide-full"><h4 class="prereq">Procedure</h4><ul>
-                <li><strong>1.</strong> Mount degree wheel on crank snout, pointer on block</li>
-                <li><strong>2.</strong> Find true TDC: install piston stop, rotate crank against stop (both directions), split the difference = TDC</li>
-                <li><strong>3.</strong> Place dial indicator on #1 intake lifter</li>
-                <li><strong>4.</strong> Slowly rotate cam, find max lift point</li>
-                <li><strong>5.</strong> Read degree wheel at .050" (1.27 mm) lifter rise on each side of max lift</li>
-                <li><strong>6.</strong> Midpoint = Intake Centerline</li>
-            </ul></div>
-            <div class="warning-box"><strong>EVERY camshaft must be degreed!</strong> Manufacturing tolerances can mean 2&ndash;4&deg; deviation. This significantly changes engine character.</div>
-            <div class="guide-block"><h4 class="photo">Photo Documentation</h4><ul>
-                <li>Degree wheel with pointer at TDC</li>
-                <li>Dial indicator reading at .050" opening and closing</li>
-            </ul>
-            <div class="photo-gallery" data-photo-group="p2_degree_photos"></div>
-            <label class="photo-add-btn" onclick="addPhoto('p2_degree_photos')">&#128247; Add Photo</label>
-            </div>
-            <div class="guide-block"><h4 class="time">Time Estimate</h4><ul><li>~90 min. (incl. TDC finding)</li></ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p2_lifters_all" onchange="autoSave()">
-        <span class="step-title">Install All 16 Lifters (alle 16 Lifter einsetzen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p2_lifters_all_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Align link-bars parallel to cam, flat side facing valley</li>
-                <li>Note positions or label &ndash; reinstall in same position if removed!</li>
-                <li>Lifters must slide freely in their bores</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="subphase">Heads &amp; Valvetrain Mock-up (K&ouml;pfe &amp; Ventiltrieb)</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p2_mockup_head" onchange="autoSave()">
-        <span class="step-title">Mock-up Gasket + Head &ndash; finger-tight only</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p2_mockup_head_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="warning-box"><strong>Use Fel-Pro 1011-x as mock-up gasket!</strong> The M-6051-CP331 is a single-use copper gasket &ndash; stays in packaging until Phase 3.</div>
-            <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Finger-tight with a few nuts only &ndash; no torque needed</li>
-                <li>Head must sit on dowel pins, must not shift</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p2_guideplates" onchange="autoSave()">
-        <span class="step-title">Install Guide Plates (F&uuml;hrungsplatten montieren)</span>
-    </div>
-    <input type="text" class="step-note" data-field="p2_guideplates_n" placeholder="Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p2_pushrod" onchange="autoSave()">
-        <span class="step-title">Determine Pushrod Length (Pushrod-L&auml;nge ermitteln)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p2_pushrod_n" placeholder="Intake:___ Exhaust:___" oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools</h4><ul>
-                <li>CNC-TC6878 Checking Pushrod (adjustable)</li>
-                <li>Caliper (Messschieber) to read length</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="prereq">Procedure</h4><ul>
-                <li><strong>1.</strong> Rotate cam to base circle (Grundkreis) &ndash; lifter in valley</li>
-                <li><strong>2.</strong> Insert checking pushrod</li>
-                <li><strong>3.</strong> Install rocker, polylock to zero lash + 1/2 turn (= preload)</li>
-                <li><strong>4.</strong> Read checking pushrod length</li>
-                <li><strong>5.</strong> Round to nearest 0.025" (0.64 mm) increment</li>
-                <li><strong>6.</strong> Measure min. 2 cylinders, intake and exhaust separately!</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="measure">Measurement Entry</h4>
-                <div class="guide-input-row">
-                    <div><label>Intake length:</label><input type="text" data-field="p2_pr_intake" placeholder='e.g. 7.100"' oninput="autoSave()" style="width:70px;"></div>
-                    <div><label>Exhaust length:</label><input type="text" data-field="p2_pr_exhaust" placeholder='e.g. 7.200"' oninput="autoSave()" style="width:70px;"></div>
-                </div>
-                <div class="guide-input-row" style="margin-top:0.2rem;">
-                    <div><label>Cyl #1 Int:</label><input type="text" data-field="p2_pr_c1i" placeholder="" oninput="autoSave()" style="width:60px;"></div>
-                    <div><label>Cyl #1 Exh:</label><input type="text" data-field="p2_pr_c1e" placeholder="" oninput="autoSave()" style="width:60px;"></div>
-                    <div><label>Cyl #5 Int:</label><input type="text" data-field="p2_pr_c5i" placeholder="" oninput="autoSave()" style="width:60px;"></div>
-                    <div><label>Cyl #5 Exh:</label><input type="text" data-field="p2_pr_c5e" placeholder="" oninput="autoSave()" style="width:60px;"></div>
-                </div>
-            </div>
-            <div class="guide-block"><h4 class="release">Release Criteria</h4><ul>
-                <li>Intake and exhaust lengths documented</li>
-                <li>Sweep check (next step) confirms the length</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="time">Time Estimate</h4><ul><li>~60 min.</li></ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p2_sweep" onchange="autoSave()">
-        <span class="step-title">Rocker Sweep Check (felt-tip method / Filzstift-Methode)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p2_sweep_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block guide-full"><h4 class="prereq">Procedure</h4><ul>
-                <li><strong>1.</strong> Color valve stem tip completely with felt-tip marker</li>
-                <li><strong>2.</strong> Cycle valve through full lift (rotate cam by hand)</li>
-                <li><strong>3.</strong> Read contact pattern on valve stem:</li>
-                <li>&bull; <strong>Narrow band, centered</strong> = pushrod length correct</li>
-                <li>&bull; <strong>Band offset outward (toward exhaust)</strong> = pushrod too long</li>
-                <li>&bull; <strong>Band offset inward (toward center)</strong> = pushrod too short</li>
-                <li>&bull; <strong>Wide band</strong> = wrong length &ndash; valve guide suffers!</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="photo">Photo Documentation</h4><ul>
-                <li>Sweep pattern on valve stem (document both good and bad patterns)</li>
-            </ul>
-            <div class="photo-gallery" data-photo-group="p2_sweep_photos"></div>
-            <label class="photo-add-btn" onclick="addPhoto('p2_sweep_photos')">&#128247; Add Photo</label>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p2_ptv" onchange="autoSave()">
-        <span class="step-title">Piston-to-Valve Clearance (P-V, Knetmasse)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p2_ptv_n" placeholder="Intake:___ Exhaust:___" oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools</h4><ul>
-                <li>Modeling clay (Knetmasse), ~0.120" / 3 mm thick</li>
-                <li>Checking springs (light springs) &ndash; NOT the #8605 valve springs!</li>
-                <li>Razor blade / scalpel for cutting</li>
-                <li>Caliper (Messschieber)</li>
-            </ul></div>
-            <div class="guide-block"><h4 class="measure">Target Values</h4>
-                <div class="spec-line"><span>P-V Intake min.</span><span class="spec-val">&ge; 0.080" (2.03 mm)</span></div>
-                <div class="spec-line"><span>P-V Exhaust min.</span><span class="spec-val">&ge; 0.100" (2.54 mm)</span></div>
-                <div class="guide-input-row" style="margin-top:0.3rem;">
-                    <div><label>Intake P-V:</label><input type="text" data-field="p2_ptv_int" placeholder=".080" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Exhaust P-V:</label><input type="text" data-field="p2_ptv_exh" placeholder=".100" oninput="autoSave()" style="width:55px;"></div>
-                </div>
-            </div>
-            <div class="guide-block guide-full"><h4 class="prereq">Procedure</h4><ul>
-                <li><strong>1.</strong> Place clay ~0.120" (3 mm) thick on piston crown (under valve pockets)</li>
-                <li><strong>2.</strong> Install checking springs (the #8605 springs are too strong for manual rotation!)</li>
-                <li><strong>3.</strong> Place head with mock-up gasket, finger-tight</li>
-                <li><strong>4.</strong> Rotate crankshaft 2 full turns</li>
-                <li><strong>5.</strong> Remove head, carefully peel clay off piston</li>
-                <li><strong>6.</strong> Cut clay at thinnest point, measure with caliper</li>
-            </ul></div>
-            <div class="warning-box"><strong>Insufficient P-V Clearance = valve hits piston!</strong> This destroys valves, pistons, and possibly connecting rods. When in doubt, have valve pockets machined deeper.</div>
-            <div class="guide-block"><h4 class="photo">Photo Documentation</h4><ul>
-                <li>Clay before measurement (mark thinnest point)</li>
-                <li>Caliper on clay cross-section</li>
-            </ul>
-            <div class="photo-gallery" data-photo-group="p2_ptv_photos"></div>
-            <label class="photo-add-btn" onclick="addPhoto('p2_ptv_photos')">&#128247; Add Photo</label>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="step-card">
-    <div class="step-header">
-        <input type="checkbox" data-field="p2_ret_seal" onchange="autoSave()">
-        <span class="step-title">Retainer-to-Seal Clearance at max lift</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
-    </div>
-    <input type="text" class="step-note" data-field="p2_ret_seal_n" placeholder="Measured:___" oninput="autoSave()">
-    <div class="step-guide">
-        <div class="guide-grid">
-            <div class="guide-block"><h4 class="measure">Target Value</h4>
-                <div class="spec-line"><span>Min. Retainer&ndash;Seal gap</span><span class="spec-val">&ge; 0.060" (1.52 mm)</span></div>
-                <div class="guide-input-row" style="margin-top:0.3rem;">
-                    <div><label>Measured:</label><input type="text" data-field="p2_retseal_val" placeholder=".060" oninput="autoSave()" style="width:55px;"></div>
-                </div>
-            </div>
-            <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Measure at max lift: retainer must not contact valve stem seal</li>
-                <li>Contact = seal destroyed = oil consumption</li>
-            </ul></div>
-        </div>
-    </div>
-</div>
-
-<div class="subphase">Dry Fit Accessories (Trockenpassung Anbauteile)</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p2_intake_dry" onchange="autoSave()"><span class="step-title">Intake Manifold (Ansaugbr&uuml;cke) &ndash; dry fit</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p2_intake_dry_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block guide-full"><h4 class="measure">Inspection Points</h4><ul>
-            <li>Port alignment: intake port must align with head port (witness marks)</li>
-            <li>Max. mismatch: &lt; 1/16" (1.59 mm) &ndash; otherwise flow loss</li>
-            <li>Check 4 corner fitment (block-to-pan rail area)</li>
-        </ul></div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p2_oilpump_dry" onchange="autoSave()"><span class="step-title">Oil Pump (&Ouml;lpumpe) + Drive Shaft &ndash; dry fit</span></div>
-    <input type="text" class="step-note" data-field="p2_oilpump_dry_n" placeholder="Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p2_timing_cover_dry" onchange="autoSave()"><span class="step-title">Timing Cover &ndash; dry fit</span></div>
-    <input type="text" class="step-note" data-field="p2_timing_cover_dry_n" placeholder="Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p2_oilpan" onchange="autoSave()"><span class="step-title">Oil Pan (&Ouml;lwanne) &ndash; clearance, pickup distance</span></div>
-    <input type="text" class="step-note" data-field="p2_oilpan_n" placeholder="Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p2_pickup" onchange="autoSave()"><span class="step-title">Pickup-to-Pan Bottom: 1/4"&ndash;3/8" (6.4&ndash;9.5 mm)</span></div>
-    <input type="text" class="step-note" data-field="p2_pickup_n" placeholder="Measured:___" oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p2_valvecover" onchange="autoSave()"><span class="step-title">Valve Covers (Ventildeckel) &ndash; rocker clearance</span></div>
-    <input type="text" class="step-note" data-field="p2_valvecover_n" placeholder="Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p2_distributor" onchange="autoSave()"><span class="step-title">Distributor (Verteiler) &ndash; intake clearance</span></div>
-    <input type="text" class="step-note" data-field="p2_distributor_n" placeholder="Findings..." oninput="autoSave()">
-</div>
-
-<div class="subphase">Mock-up Conclusion (Abschluss)</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p2_pushrods_order" onchange="autoSave()"><span class="step-title">Order Final Pushrods (finale Pushrods bestellen)</span></div>
-    <input type="text" class="step-note" data-field="p2_pushrods_order_n" placeholder="Ordered: Intake:___ Exhaust:___" oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p2_teardown" onchange="autoSave()"><span class="step-title">Complete Teardown &ndash; label all parts (zerlegen &amp; beschriften)</span></div>
-    <input type="text" class="step-note" data-field="p2_teardown_n" placeholder="Findings..." oninput="autoSave()">
-</div>
-
-<div class="photo-gallery" data-photo-group="phase2"></div>
-<label class="photo-add-btn" onclick="addPhoto('phase2')">&#128247; Add Phase 2 Photos</label>
-
-</div><!-- /phase2body -->
-</div><!-- /phase2 -->
-
-<!-- ============================================================ -->
-<!--  PHASE 3 - FINAL ASSEMBLY (ENDMONTAGE)                        -->
-<!-- ============================================================ -->
-<div id="phase3">
-<div class="phase-banner p3" onclick="togglePhase('phase3body')">
-    <div class="phase-num">3</div>
-    <div class="phase-info">
-        <h2>Final Assembly (Endmontage)</h2>
-        <p>Prerequisites: pushrods delivered, P-V released, sweep OK. Irreversible from here!</p>
-    </div>
-    <span class="phase-toggle" id="toggle_phase3body">&#9660;</span>
-</div>
-<div class="progress-bar"><div class="progress-fill" id="prog3" style="width:0%"></div></div>
-<div class="progress-text" id="progText3">0 / 0</div>
-
-<div class="phase-body" id="phase3body">
-
-<div class="subphase">3a &ndash; Cleaning &amp; Preparation (Reinigung &amp; Vorbereitung)</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_clean" onchange="autoSave()"><span class="step-title">Clean Sealing Surfaces (Dichtfl&auml;chen reinigen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p3_clean_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="consumables">Consumables</h4><ul>
-            <li>Brake cleaner (acetone-based)</li>
-            <li>Clean, lint-free cloths</li>
-            <li>Plastic scraper (NO wire brush on aluminum heads!)</li>
-        </ul></div>
-        <div class="guide-block"><h4 class="release">Release Criteria</h4><ul>
-            <li>All surfaces oil- and grease-free</li>
-            <li>No abrasion residue visible</li>
-            <li>Blind holes dry (compressed air!)</li>
-        </ul></div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_blowout" onchange="autoSave()"><span class="step-title">Blow Out Head Bolt Holes (Kopfbohrungen ausblasen)</span></div>
-    <input type="text" class="step-note" data-field="p3_blowout_n" placeholder="Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_all_parts" onchange="autoSave()"><span class="step-title">All Parts + Consumables Ready (Teile griffbereit)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p3_all_parts_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block guide-full"><h4 class="consumables">Consumables Checklist</h4><ul>
-            <li>ARP Ultra-Torque lubricant (included in stud kit)</li>
-            <li>Assembly lube (COMP 159 or equivalent)</li>
-            <li>RTV silicone (Permatex Ultra Black or Grey)</li>
-            <li>Clean engine oil (for lubrication)</li>
-            <li>Anti-seize (for spark plugs / Z&uuml;ndkerzen)</li>
-            <li>Thread sealant / Teflon tape (for oil fittings)</li>
-            <li>Brake cleaner + clean cloths</li>
-        </ul></div>
-    </div></div>
-</div>
-
-<div class="subphase">3b &ndash; Cam, Lifters &amp; Oil Pump (Cam, Lifter &amp; &Ouml;lpumpe)</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_cam_lube" onchange="autoSave()"><span class="step-title">Camshaft: assembly lube on ALL lobes + journals</span></div>
-    <input type="text" class="step-note" data-field="p3_cam_lube_n" placeholder="Done / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_cam_install" onchange="autoSave()"><span class="step-title">Install Cam (long bolt as handle / langer Bolzen als Griff)</span></div>
-    <input type="text" class="step-note" data-field="p3_cam_install_n" placeholder="Done / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_timing_set" onchange="autoSave()"><span class="step-title">Timing Set + ARP 254-1001 Cam Bolt</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p3_timing_set_n" placeholder="Torque:___" oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="torque">Torque Values (Anzugswerte)</h4>
-            <div class="spec-line"><span>ARP 254-1001 Cam Bolt</span><span class="spec-val">25&ndash;30 ft-lbs (34&ndash;41 Nm)</span></div>
-            <div class="spec-line"><span>Lubricant</span><span class="spec-val">ARP Ultra-Torque</span></div>
-            <div class="spec-line"><span>Thrust Plate Bolts</span><span class="spec-val">9&ndash;12 ft-lbs (12&ndash;16 Nm)</span></div>
-        </div>
-        <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-            <li>Timing marks must point toward each other (dot-to-dot) at TDC #1</li>
-            <li>Cam sprocket on cam, crank sprocket on crank &ndash; route chain over both</li>
-            <li>Use ARP hardened washer (included) under cam bolt</li>
-        </ul></div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_lifters" onchange="autoSave()"><span class="step-title">Install All 16 Lifters (assembly lube)</span></div>
-    <input type="text" class="step-note" data-field="p3_lifters_n" placeholder="Done / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_oilpump" onchange="autoSave()"><span class="step-title">Oil Pump M-6600-D2 &ndash; install</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p3_oilpump_n" placeholder="Torque:___" oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="consumables">Consumables</h4><ul>
-            <li>Fill pump completely with assembly lube BEFORE installation (pumpe VOR Montage bef&uuml;llen)</li>
-        </ul></div>
-        <div class="guide-block"><h4 class="torque">Torque Value</h4>
-            <div class="spec-line"><span>Oil Pump to Block</span><span class="spec-val">22&ndash;25 ft-lbs (30&ndash;34 Nm)</span></div>
-        </div>
-        <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
-            <li>Pump MUST be pre-filled with assembly lube &ndash; dry pump cannot build pressure!</li>
-            <li>Pump tends to rotate during installation &ndash; verify correct alignment</li>
-        </ul></div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_oilshaft" onchange="autoSave()"><span class="step-title">Oil Pump Drive Shaft M-6605-B302 &ndash; install</span></div>
-    <input type="text" class="step-note" data-field="p3_oilshaft_n" placeholder="Done / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_pickup" onchange="autoSave()"><span class="step-title">Pickup &ndash; install and BOLT (verschrauben, nicht nur klemmen)</span></div>
-    <input type="text" class="step-note" data-field="p3_pickup_n" placeholder="Done / Findings..." oninput="autoSave()">
-</div>
-
-<div class="subphase">3c &ndash; Cylinder Heads &amp; Valvetrain (K&ouml;pfe &amp; Ventiltrieb)</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_headgasket" onchange="autoSave()"><span class="step-title">Head Gasket CP331 &ndash; FRONT marking forward!</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p3_headgasket_n" placeholder="FRONT verified / Findings..." oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="warning-box"><strong>HEAD GASKET HAS &quot;FRONT&quot; PRINTED ON IT!</strong> Installed backwards = cooling of one bank blocked = engine damage. Most common SBF mistake!</div>
-        <div class="guide-block"><h4 class="measure">Gasket Data M-6051-CP331</h4>
-            <div class="spec-line"><span>Type</span><span class="spec-val">Copper ring, single-use (Einweg)</span></div>
-            <div class="spec-line"><span>Compressed Thickness</span><span class="spec-val">0.040" (1.02 mm)</span></div>
-        </div>
-        <div class="guide-block"><h4 class="photo">Photo Documentation</h4><ul>
-            <li>Photograph &quot;FRONT&quot; marking visible (proof of correct installation)</li>
+    <div class="info-section">
+        <h3>Data Synchronization</h3>
+        <ul>
+            <li>All 4 phase pages share the same localStorage + Gist cloud sync</li>
+            <li>Progress is calculated from checkbox states across all phases</li>
+            <li>Export/Import on the Main Page includes all build log data</li>
         </ul>
-        <div class="photo-gallery" data-photo-group="p3_gasket_photos"></div>
-        <label class="photo-add-btn" onclick="addPhoto('p3_gasket_photos')">&#128247; Add Photo</label>
-        </div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_studs" onchange="autoSave()"><span class="step-title">ARP 154-4003 Head Studs (Stehbolzen) &ndash; hand-tight into block</span></div>
-    <input type="text" class="step-note" data-field="p3_studs_n" placeholder="Done / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_arp_lube" onchange="autoSave()"><span class="step-title">ARP Ultra-Torque on threads + nut face (Gewinde + Mutterauflage)</span></div>
-    <input type="text" class="step-note" data-field="p3_arp_lube_n" placeholder="Done / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_heads_on" onchange="autoSave()"><span class="step-title">Set Heads on Dowels (K&ouml;pfe auf Passh&uuml;lsen setzen)</span></div>
-    <input type="text" class="step-note" data-field="p3_heads_on_n" placeholder="Done / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_heads_torque" onchange="autoSave()"><span class="step-title">Torque Heads &ndash; 3 stages, cross pattern (K&ouml;pfe anziehen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p3_heads_torque_n" placeholder="Stage 1:___ 2:___ 3:___" oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="torque">Torque Values ARP 154-4003</h4>
-            <div class="spec-line"><span>Stage 1</span><span class="spec-val">35 ft-lbs (47 Nm)</span></div>
-            <div class="spec-line"><span>Stage 2</span><span class="spec-val">55 ft-lbs (75 Nm)</span></div>
-            <div class="spec-line"><span>Stage 3 (Long/Blind)</span><span class="spec-val">80 ft-lbs (108 Nm)</span></div>
-            <div class="spec-line"><span>Stage 3 (Short/Water)</span><span class="spec-val">70 ft-lbs (95 Nm)</span></div>
-            <div class="spec-line"><span>Lubricant</span><span class="spec-val">ARP Ultra-Torque (included)</span></div>
-        </div>
-        <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-            <li>Cross pattern from center outward!</li>
-            <li>Wait 5 min between stages (gasket settles)</li>
-            <li>Long studs (blind hole) and short studs (water hole) have different final torque values</li>
-        </ul></div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_guideplates" onchange="autoSave()"><span class="step-title">Guide Plates + Final Pushrods &ndash; install</span></div>
-    <input type="text" class="step-note" data-field="p3_guideplates_n" placeholder="Done / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_rockers" onchange="autoSave()"><span class="step-title">Rockers + Preload (1/4&ndash;1/2 turn, on base circle!)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p3_rockers_n" placeholder="Done / Findings..." oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="prereq">Preload Procedure</h4><ul>
-            <li><strong>1.</strong> Rotate crank so this valve's lifter sits on base circle (Grundkreis)</li>
-            <li><strong>2.</strong> Thread polylock onto rocker stud by hand</li>
-            <li><strong>3.</strong> Spin pushrod with one hand while tightening polylock</li>
-            <li><strong>4.</strong> Zero lash = pushrod just stops spinning</li>
-            <li><strong>5.</strong> From zero lash: 1/4 to 1/2 turn further = preload</li>
-            <li><strong>6.</strong> Tighten lock nut (polylock holds position)</li>
-        </ul></div>
-        <div class="guide-block"><h4 class="measure">Target Value</h4>
-            <div class="spec-line"><span>Preload Morel 5327 HLT</span><span class="spec-val">1/4&ndash;1/2 turn (Umdrehung)</span></div>
-        </div>
-        <div class="warning-box"><strong>Only set preload on base circle!</strong> If the lifter is on the lobe, the measurement is wrong and the valve stays open.</div>
-    </div></div>
-</div>
-
-<div class="subphase">3d &ndash; Sealing (Abdichten): Cover &rarr; Balancer &rarr; Pan &rarr; Water Pump</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_timing_cover" onchange="autoSave()"><span class="step-title">Timing Cover + Gasket + RTV</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p3_timing_cover_n" placeholder="Torque:___" oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="torque">Torque Value</h4>
-            <div class="spec-line"><span>Timing Cover Bolts</span><span class="spec-val">12&ndash;18 ft-lbs (16&ndash;24 Nm)</span></div>
-        </div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_balancer" onchange="autoSave()"><span class="step-title">Balancer M-6316-D302 (0-oz, press-on tool!)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p3_balancer_n" placeholder="Torque:___" oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="torque">Torque Value</h4>
-            <div class="spec-line"><span>Balancer Bolt</span><span class="spec-val">70&ndash;90 ft-lbs (95&ndash;122 Nm)</span></div>
-        </div>
-        <div class="warning-box"><strong>0-oz balancer (neutral balanced)!</strong> A 28-oz balancer fits a different rotating assembly and creates vibrations that destroy bearings.</div>
-        <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-            <li>NEVER hammer on &ndash; use press-on tool (threaded rod through crank) only</li>
-            <li>Balancer must seat flush on crank snout</li>
-        </ul></div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_oilpan" onchange="autoSave()"><span class="step-title">Oil Pan + Gasket + RTV corners (&Ouml;lwanne)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p3_oilpan_n" placeholder="Torque:___" oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="torque">Torque Value</h4>
-            <div class="spec-line"><span>Oil Pan Bolts</span><span class="spec-val">10&ndash;12 ft-lbs (14&ndash;16 Nm)</span></div>
-            <div class="spec-line"><span>RTV Cure Time</span><span class="spec-val">15&ndash;20 min. before assembly</span></div>
-        </div>
-        <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-            <li>RTV only at 4 corners (block-to-timing cover and block-to-rear seal joints)</li>
-            <li>Thin bead &ndash; too much RTV squeezes into oil passages!</li>
-            <li>Pan seals against timing cover bottom edge &ndash; that's why cover goes on FIRST</li>
-        </ul></div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_waterpump" onchange="autoSave()"><span class="step-title">Water Pump MIL-16230 (Wasserpumpe)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p3_waterpump_n" placeholder="Torque:___" oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="torque">Torque Value</h4>
-            <div class="spec-line"><span>Water Pump Bolts</span><span class="spec-val">12&ndash;15 ft-lbs (16&ndash;20 Nm)</span></div>
-        </div>
-        <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-            <li>Milodon 16230 is a high-flow pump &ndash; verify rotation direction matches belt routing</li>
-            <li>Use gasket + thin RTV bead on both sides</li>
-        </ul></div>
-    </div></div>
-</div>
-
-<div class="subphase">3e &ndash; Upper Accessories (Obere Anbauteile)</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_intake" onchange="autoSave()"><span class="step-title">Intake Manifold (Ansaugbr&uuml;cke) + Fel-Pro 1250</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p3_intake_n" placeholder="Torque:___" oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="torque">Torque Values</h4>
-            <div class="spec-line"><span>Stage 1</span><span class="spec-val">5 ft-lbs (7 Nm)</span></div>
-            <div class="spec-line"><span>Stage 2</span><span class="spec-val">12 ft-lbs (16 Nm)</span></div>
-            <div class="spec-line"><span>Stage 3 (final)</span><span class="spec-val">18 ft-lbs (24 Nm)</span></div>
-            <div class="spec-line"><span>Pattern</span><span class="spec-val">Cross, center &rarr; outward</span></div>
-        </div>
-        <div class="warning-box"><strong>DO NOT exceed 18 ft-lbs (24 Nm)!</strong> Over-torqued intake bolts are the #1 SBF mistake and cause head gasket problems.</div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_distributor" onchange="autoSave()"><span class="step-title">Distributor (Verteiler) &ndash; TDC #1 compression stroke</span></div>
-    <input type="text" class="step-note" data-field="p3_distributor_n" placeholder="Done / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_sparkplugs" onchange="autoSave()"><span class="step-title">Spark Plugs (Z&uuml;ndkerzen) Autolite 3924 &ndash; Gap 0.040" (1.02 mm)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p3_sparkplugs_n" placeholder="Torque:___" oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="torque">Torque Value</h4>
-            <div class="spec-line"><span>Spark Plugs (Alu heads)</span><span class="spec-val">15&ndash;22 ft-lbs (20&ndash;30 Nm)</span></div>
-            <div class="spec-line"><span>Thread Lubricant</span><span class="spec-val">Anti-seize on threads</span></div>
-            <div class="spec-line"><span>Gap</span><span class="spec-val">0.040" (1.02 mm) &ndash; pre-set from factory</span></div>
-        </div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_valvecovers" onchange="autoSave()"><span class="step-title">Valve Covers (Ventildeckel) &ndash; 4&ndash;6 ft-lbs (5&ndash;8 Nm), aluminum!</span></div>
-    <input type="text" class="step-note" data-field="p3_valvecovers_n" placeholder="Torque:___" oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p3_fuelpump" onchange="autoSave()"><span class="step-title">Fuel Pump Block-Off or Mechanical Pump</span></div>
-    <input type="text" class="step-note" data-field="p3_fuelpump_n" placeholder="Findings..." oninput="autoSave()">
-</div>
-
-<div class="photo-gallery" data-photo-group="phase3"></div>
-<label class="photo-add-btn" onclick="addPhoto('phase3')">&#128247; Add Phase 3 Photos</label>
-
-</div><!-- /phase3body -->
-</div><!-- /phase3 -->
-
-<!-- ============================================================ -->
-<!--  PHASE 4 - FIRST START & BREAK-IN (ERSTSTART)                  -->
-<!-- ============================================================ -->
-<div id="phase4">
-<div class="phase-banner p4" onclick="togglePhase('phase4body')">
-    <div class="phase-num">4</div>
-    <div class="phase-info">
-        <h2>First Start &amp; Break-In (Erststart &amp; Einfahren)</h2>
-        <p>Hydraulic roller does NOT need 20-min break-in &ndash; rollers run correctly from start</p>
     </div>
-    <span class="phase-toggle" id="toggle_phase4body">&#9660;</span>
-</div>
-<div class="progress-bar"><div class="progress-fill" id="prog4" style="width:0%"></div></div>
-<div class="progress-text" id="progText4">0 / 0</div>
 
-<div class="phase-body" id="phase4body">
-
-<div class="subphase">4a &ndash; Before Start (Vor dem Start)</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_preoil" onchange="autoSave()"><span class="step-title">Pre-Oil (Vor&ouml;len) until oil at all 16 rockers</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p4_preoil_n" placeholder="Findings..." oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="tools">Tools</h4><ul>
-            <li>Priming tool (Melling PT11 or long hex bit in drill)</li>
-            <li>Drill (slow speed, clockwise rotation!)</li>
-        </ul></div>
-        <div class="guide-block"><h4 class="prereq">Procedure</h4><ul>
-            <li><strong>1.</strong> Remove distributor (access to oil pump drive)</li>
-            <li><strong>2.</strong> Insert priming tool, spin with drill</li>
-            <li><strong>3.</strong> Watch oil pressure gauge &ndash; must show pressure</li>
-            <li><strong>4.</strong> Rotate crankshaft 4&times; 90&deg; during priming (supply all bearings)</li>
-            <li><strong>5.</strong> Remove valve covers &ndash; oil must appear at all 16 rockers</li>
-        </ul></div>
-        <div class="warning-box"><strong>No oil pressure after 30 sec = STOP!</strong> Investigate (shaft not engaged, pump empty, plug missing).</div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_preoil_crank" onchange="autoSave()"><span class="step-title">Rotate Crank 4&times; 90&deg; during pre-oiling</span></div>
-    <input type="text" class="step-note" data-field="p4_preoil_crank_n" placeholder="Done / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_oilpressure_prime" onchange="autoSave()"><span class="step-title">Oil Pressure during Pre-Oil (&Ouml;ldruck beim Vor&ouml;len)</span></div>
-    <input type="text" class="step-note" data-field="p4_oilpressure_prime_n" placeholder="Pressure:___ psi" oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_breakin_oil" onchange="autoSave()"><span class="step-title">Fill Break-In Oil (ZDDP!) &ndash; &Ouml;l einf&uuml;llen</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p4_breakin_oil_n" placeholder="Product + qty:___" oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="fill">Fill Quantity (F&uuml;llmenge)</h4>
-            <div class="spec-line"><span>Oil quantity (depends on pan)</span><span class="spec-val">5&ndash;7 quarts (4.7&ndash;6.6 L)</span></div>
-            <div class="spec-line"><span>Viscosity</span><span class="spec-val">10W-30 or 15W-40</span></div>
-        </div>
-        <div class="guide-block"><h4 class="consumables">Recommended Products</h4><ul>
-            <li>Brad Penn 10W-30 (high ZDDP content)</li>
-            <li>Driven BR30 Break-In Oil</li>
-            <li>Lucas Hot Rod &amp; Classic</li>
-        </ul></div>
-        <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
-            <li>ZDDP (zinc dialkyldithiophosphate) protects cam lobes and lifters during break-in</li>
-            <li>Modern oil (API SN+) has reduced ZDDP &ndash; not suitable for break-in</li>
-        </ul></div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_coolant" onchange="autoSave()"><span class="step-title">Fill &amp; Bleed Cooling System (K&uuml;hlsystem f&uuml;llen)</span></div>
-    <input type="text" class="step-note" data-field="p4_coolant_n" placeholder="Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_fuel" onchange="autoSave()"><span class="step-title">Check Fuel System (Kraftstoffsystem)</span></div>
-    <input type="text" class="step-note" data-field="p4_fuel_n" placeholder="Pressure:___" oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_timing_static" onchange="autoSave()"><span class="step-title">Static Ignition Timing ~12&deg; BTDC (Z&uuml;ndzeitpunkt statisch)</span></div>
-    <input type="text" class="step-note" data-field="p4_timing_static_n" placeholder="Setting:___" oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_revlimiter" onchange="autoSave()"><span class="step-title">MSD 6AL Rev Limiter: 6,500 RPM</span></div>
-    <input type="text" class="step-note" data-field="p4_revlimiter_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_preload_recheck" onchange="autoSave()"><span class="step-title">Recheck Preload all 16 valves (Preload nochmals pr&uuml;fen)</span></div>
-    <input type="text" class="step-note" data-field="p4_preload_recheck_n" placeholder="Done / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_wiring" onchange="autoSave()"><span class="step-title">Wiring, Lines, Ground, Firing Order (Kabel, Masse, Z&uuml;ndfolge)</span></div>
-    <input type="text" class="step-note" data-field="p4_wiring_n" placeholder="Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card" style="border-color: var(--danger);">
-    <div class="step-header" style="background: #fff5f5;">
-        <input type="checkbox" data-field="p4_safety" onchange="autoSave()">
-        <span class="step-title" style="color: var(--danger);">FIRE EXTINGUISHER! HELPER! EXHAUST VENTILATION!</span>
-    </div>
-    <input type="text" class="step-note" data-field="p4_safety_n" placeholder="Confirmed..." oninput="autoSave()">
-</div>
-
-<div class="subphase">4b &ndash; First Start (Erststart)</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_start" onchange="autoSave()"><span class="step-title">START &ndash; immediately 2,000&ndash;2,500 RPM!</span></div>
-    <input type="text" class="step-note" data-field="p4_start_n" placeholder="Time:___ Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_oil_running" onchange="autoSave()"><span class="step-title">Oil Pressure at 2,000 RPM warm: 40&ndash;55 psi (2.8&ndash;3.8 bar)</span></div>
-    <input type="text" class="step-note" data-field="p4_oil_running_n" placeholder="Pressure:___ psi" oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_leaks" onchange="autoSave()"><span class="step-title">Visual Inspection: no leaks (keine Leckagen)</span></div>
-    <input type="text" class="step-note" data-field="p4_leaks_n" placeholder="Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_temp" onchange="autoSave()"><span class="step-title">Coolant Temperature &ndash; thermostat opens (K&uuml;hlmitteltemp.)</span></div>
-    <input type="text" class="step-note" data-field="p4_temp_n" placeholder="Temp:___" oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_timing_warm" onchange="autoSave()"><span class="step-title">Check Timing Warm (Stroboskop / timing light)</span></div>
-    <input type="text" class="step-note" data-field="p4_timing_warm_n" placeholder="Degrees:___" oninput="autoSave()">
-</div>
-
-<div class="subphase">4c &ndash; After First Start (Nach Erststart)</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_oil_idle" onchange="autoSave()"><span class="step-title">Oil Pressure Idle Warm: 25&ndash;35 psi (1.7&ndash;2.4 bar)</span></div>
-    <input type="text" class="step-note" data-field="p4_oil_idle_n" placeholder="Pressure:___ psi" oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_timing_final" onchange="autoSave()"><span class="step-title">Final Timing: 34&ndash;36&deg; total advance</span></div>
-    <input type="text" class="step-note" data-field="p4_timing_final_n" placeholder="Degrees:___" oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_retorque" onchange="autoSave()"><span class="step-title">Re-Torque Head Nuts (engine cold! / Motor kalt!)</span></div>
-    <input type="text" class="step-note" data-field="p4_retorque_n" placeholder="Done / Findings..." oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_oilchange" onchange="autoSave()"><span class="step-title">Oil Change &ndash; Cut Filter Open (Filter aufschneiden)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button></div>
-    <input type="text" class="step-note" data-field="p4_oilchange_n" placeholder="Filter paper findings:___" oninput="autoSave()">
-    <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block guide-full"><h4 class="prereq">Procedure</h4><ul>
-            <li><strong>1.</strong> After 30&ndash;50 km (20&ndash;30 mi) or 1 hour runtime, drain oil warm</li>
-            <li><strong>2.</strong> Cut filter open with flange cutter or band saw</li>
-            <li><strong>3.</strong> Unfold filter paper and hold against light</li>
-            <li><strong>4.</strong> Clean paper = inspection passed</li>
-            <li><strong>5.</strong> Metal particles = find the cause, do not ignore!</li>
-        </ul></div>
-        <div class="guide-block"><h4 class="photo">Photo Documentation</h4><ul>
-            <li>Filter paper (clean = reference for future comparisons)</li>
-            <li>If particles: close-up + determine material (aluminum, steel, copper)</li>
-        </ul>
-        <div class="photo-gallery" data-photo-group="p4_filter_photos"></div>
-        <label class="photo-add-btn" onclick="addPhoto('p4_filter_photos')">&#128247; Add Photo</label>
-        </div>
-    </div></div>
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_sparkread" onchange="autoSave()"><span class="step-title">Read Spark Plugs (Kerzenbild lesen)</span></div>
-    <input type="text" class="step-note" data-field="p4_sparkread_n" placeholder="Color/Findings:___" oninput="autoSave()">
-</div>
-
-<div class="step-card">
-    <div class="step-header"><input type="checkbox" data-field="p4_sync" onchange="autoSave()"><span class="step-title">Synchronize DellOrto, Log Lambda</span></div>
-    <input type="text" class="step-note" data-field="p4_sync_n" placeholder="Lambda L:___ R:___" oninput="autoSave()">
-</div>
-
-<div class="photo-gallery" data-photo-group="phase4"></div>
-<label class="photo-add-btn" onclick="addPhoto('phase4')">&#128247; Add Phase 4 Photos</label>
-
-</div><!-- /phase4body -->
-</div><!-- /phase4 -->
-
-</div><!-- /container -->
-
-<div class="toast" id="toast"></div>
-
-<div class="lightbox" id="lightbox" onclick="this.classList.remove('show')">
-    <button class="lb-close" onclick="event.stopPropagation();this.parentElement.classList.remove('show')">&times;</button>
-    <img src="" alt="Photo" onclick="event.stopPropagation()">
-    <div class="caption"></div>
 </div>
 
 <script>
-    // ==== CONFIG ====
     var GIST_FILENAME = 'engine-build-log-data.json';
     var FIXED_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
-    var isLoading = false;
-    var autoSaveTimer = null;
 
-    function getGistConfig() { return { token: localStorage.getItem('gh_token') || '' }; }
-    function isGistConfigured() { return getGistConfig().token.length > 0; }
+    // Phase step counts (must match actual steps in each phase file)
+    var PHASE_STEPS = {
+        p1: { prefix: 'p1_chk_', count: 27 },
+        p2: { prefix: 'p2_chk_', count: 23 },
+        p3: { prefix: 'p3_chk_', count: 26 },
+        p4: { prefix: 'p4_chk_', count: 22 }
+    };
 
-    // ==== PHASE TOGGLE (collapsible) ====
-    function togglePhase(bodyId) {
-        var body = document.getElementById(bodyId);
-        var toggle = document.getElementById('toggle_' + bodyId);
-        if (body.classList.contains('collapsed')) {
-            body.classList.remove('collapsed');
-            if (toggle) toggle.classList.remove('collapsed');
-        } else {
-            body.classList.add('collapsed');
-            if (toggle) toggle.classList.add('collapsed');
-        }
-    }
-
-    // ==== GUIDE TOGGLE ====
-    function toggleGuide(btn) {
-        var guide = btn.closest('.step-card').querySelector('.step-guide');
-        if (guide) {
-            var open = guide.classList.toggle('open');
-            btn.classList.toggle('open', open);
-            btn.textContent = open ? 'Close' : 'Guide';
-        }
-    }
-
-    // ==== PROGRESS ====
-    function updateProgress() {
-        for (var p = 1; p <= 4; p++) {
-            var phase = document.getElementById('phase' + p);
-            if (!phase) continue;
-            var checks = phase.querySelectorAll('input[type="checkbox"][data-field]');
-            var done = Array.from(checks).filter(function(c) { return c.checked; }).length;
-            var bar = document.getElementById('prog' + p);
-            var text = document.getElementById('progText' + p);
-            if (bar) bar.style.width = (checks.length ? (done / checks.length * 100) : 0) + '%';
-            if (text) text.textContent = done + ' / ' + checks.length + ' completed';
-        }
-    }
-
-    // ==== NAV ====
-    function scrollToPhase(id) {
-        var el = document.getElementById(id);
-        if (el) {
-            var headerH = document.querySelector('.header').offsetHeight;
-            window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - headerH - 10, behavior: 'smooth' });
-            // Expand phase if collapsed
-            var bodyId = id + 'body';
-            var body = document.getElementById(bodyId);
-            if (body && body.classList.contains('collapsed')) {
-                body.classList.remove('collapsed');
-                var toggle = document.getElementById('toggle_' + bodyId);
-                if (toggle) toggle.classList.remove('collapsed');
-            }
-        }
-    }
-
-    // ==== DATA ====
-    function collectData() {
-        var data = {};
-        document.querySelectorAll('[data-field]').forEach(function(el) {
-            data[el.dataset.field] = el.type === 'checkbox' ? el.checked : el.value;
-        });
-        return data;
-    }
-
-    function applyData(data) {
-        document.querySelectorAll('[data-field]').forEach(function(el) {
-            var v = data[el.dataset.field];
-            if (v !== undefined) { if (el.type === 'checkbox') el.checked = v; else el.value = v; }
-        });
-        updateProgress();
-    }
-
-    async function saveData() {
-        var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-        var myData = collectData();
-        var merged = Object.assign({}, existing, myData);
-        merged._savedAt = new Date().toISOString();
-        localStorage.setItem('engineBuildLog', JSON.stringify(merged));
-        updateSaveStatus();
-
-        if (isGistConfigured()) {
-            try {
-                var t = getGistConfig().token;
-                var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
-                    method: 'PATCH',
-                    headers: { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(merged, null, 2) } } })
-                });
-                if (res.ok) showToast('Saved (local + cloud)');
-                else showToast('Saved locally (cloud error)');
-            } catch (e) { showToast('Saved locally (cloud error)'); }
-        } else { showToast('Saved locally'); }
-    }
-
-    function loadData() {
-        isLoading = true;
+    function loadProgress() {
         var raw = localStorage.getItem('engineBuildLog');
-        if (raw) { try { applyData(JSON.parse(raw)); } catch(e) {} }
-
-        if (isGistConfigured()) {
-            fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
-                headers: { 'Authorization': 'Bearer ' + getGistConfig().token }
-            }).then(function(r) { return r.json(); }).then(function(gist) {
-                var file = gist.files && gist.files[GIST_FILENAME];
-                if (file) {
-                    var data = JSON.parse(file.content);
-                    applyData(data);
-                    localStorage.setItem('engineBuildLog', JSON.stringify(data));
-                }
-                isLoading = false; updateSaveStatus();
-            }).catch(function() { isLoading = false; });
-        } else { isLoading = false; updateSaveStatus(); }
+        if (!raw) { updateDisplay({}); return; }
+        try { var data = JSON.parse(raw); updateDisplay(data); } catch(e) { updateDisplay({}); }
     }
 
-    function autoSave() {
-        if (isLoading) return;
-        updateProgress();
-        clearTimeout(autoSaveTimer);
-        autoSaveTimer = setTimeout(function() { saveData(); }, 2000);
-    }
-
-    function updateSaveStatus() {
-        var raw = localStorage.getItem('engineBuildLog');
-        if (raw) {
-            try {
-                var d = new Date(JSON.parse(raw)._savedAt);
-                document.getElementById('saveStatus').textContent =
-                    'Saved: ' + d.toLocaleDateString('de-DE') + ' ' + d.toLocaleTimeString('de-DE') +
-                    (isGistConfigured() ? ' (Cloud Sync)' : ' (Local)');
-            } catch(e) {}
-        }
-    }
-
-    function showToast(msg) {
-        var t = document.getElementById('toast'); t.textContent = msg;
-        t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); }, 2500);
-    }
-
-    // ==== PHOTOS ====
-    function addPhoto(group) {
-        var input = document.createElement('input');
-        input.type = 'file'; input.accept = 'image/*'; input.capture = 'environment';
-        input.onchange = function(e) {
-            var file = e.target.files[0]; if (!file) return;
-            var reader = new FileReader();
-            reader.onload = function(ev) {
-                var img = new Image();
-                img.onload = function() {
-                    var canvas = document.createElement('canvas');
-                    var maxW = 1200;
-                    var scale = img.width > maxW ? maxW / img.width : 1;
-                    canvas.width = img.width * scale;
-                    canvas.height = img.height * scale;
-                    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-                    var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                    var photos = JSON.parse(localStorage.getItem('buildPhotos_' + group) || '[]');
-                    photos.push({ src: dataUrl, caption: '', time: new Date().toISOString() });
-                    localStorage.setItem('buildPhotos_' + group, JSON.stringify(photos));
-                    renderPhotos(group);
-                    showToast('Photo saved');
-                };
-                img.src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-        };
-        input.click();
-    }
-
-    function renderPhotos(group) {
-        var galleries = document.querySelectorAll('.photo-gallery[data-photo-group="' + group + '"]');
-        galleries.forEach(function(gallery) {
-            var photos = JSON.parse(localStorage.getItem('buildPhotos_' + group) || '[]');
-            gallery.innerHTML = '';
-            photos.forEach(function(p, i) {
-                var img = document.createElement('img');
-                img.src = p.src; img.alt = p.caption || 'Photo ' + (i+1);
-                img.onclick = function() {
-                    var lb = document.getElementById('lightbox');
-                    lb.querySelector('img').src = p.src;
-                    lb.querySelector('.caption').textContent = p.caption || new Date(p.time).toLocaleString('de-DE');
-                    lb.classList.add('show');
-                };
-                gallery.appendChild(img);
-            });
-        });
-    }
-
-    // ==== BUILD-LOG SEARCH ====
-    var bsMarks = [], bsIdx = -1, bsTimer = null;
-    function doBuildSearch() {
-        clearTimeout(bsTimer);
-        bsTimer = setTimeout(_doBuildSearch, 200);
-    }
-    function _doBuildSearch() {
-        clearBuildHighlights();
-        var q = document.getElementById('searchInput').value.trim();
-        if (q.length < 2) { document.getElementById('buildSearchCount').textContent = ''; return; }
-        var walker = document.createTreeWalker(document.querySelector('.container'), NodeFilter.SHOW_TEXT, null);
-        var matches = [], qLower = q.toLowerCase();
-        while (walker.nextNode()) {
-            var node = walker.currentNode;
-            if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE')) continue;
-            var idx = node.textContent.toLowerCase().indexOf(qLower);
-            if (idx >= 0) matches.push({ node: node, idx: idx, len: q.length });
-        }
-        for (var i = matches.length - 1; i >= 0; i--) {
-            var m = matches[i];
-            var range = document.createRange();
-            range.setStart(m.node, m.idx); range.setEnd(m.node, m.idx + m.len);
-            var mark = document.createElement('mark');
-            mark.style.cssText = 'background:#fefcbf;color:#744210;padding:0 1px;border-radius:2px;';
-            mark.className = 'bs-hl';
-            range.surroundContents(mark);
-        }
-        bsMarks = Array.from(document.querySelectorAll('mark.bs-hl'));
-        document.getElementById('buildSearchCount').textContent = bsMarks.length ? bsMarks.length + ' hits' : 'none';
-        if (bsMarks.length) { bsIdx = 0; buildJumpTo(0); }
-    }
-    function buildJumpTo(idx) {
-        bsMarks.forEach(function(m) { m.style.background = '#fefcbf'; });
-        if (!bsMarks.length) return;
-        bsIdx = ((idx % bsMarks.length) + bsMarks.length) % bsMarks.length;
-        var mark = bsMarks[bsIdx];
-        // Open parent guide if collapsed
-        var el = mark;
-        while (el) {
-            if (el.classList && el.classList.contains('step-guide') && !el.classList.contains('open')) {
-                el.classList.add('open');
-                var btn = el.closest('.step-card').querySelector('.guide-toggle');
-                if (btn) { btn.classList.add('open'); btn.textContent = 'Close'; }
+    function updateDisplay(data) {
+        var totalDone = 0, totalSteps = 0;
+        ['p1','p2','p3','p4'].forEach(function(phase) {
+            var info = PHASE_STEPS[phase];
+            var done = 0;
+            for (var i = 1; i <= info.count; i++) {
+                var key = info.prefix + i;
+                if (data[key] === true || data[key] === 'true' || data[key] === 'on') done++;
             }
-            // Also expand collapsed phase
-            if (el.classList && el.classList.contains('phase-body') && el.classList.contains('collapsed')) {
-                el.classList.remove('collapsed');
-                var toggle = document.getElementById('toggle_' + el.id);
-                if (toggle) toggle.classList.remove('collapsed');
-            }
-            el = el.parentElement;
-        }
-        mark.style.background = '#ed8936'; mark.style.color = 'white';
-        mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        document.getElementById('buildSearchCount').textContent = (bsIdx + 1) + ' / ' + bsMarks.length;
-    }
-    function buildSearchJump(dir) { if (bsMarks.length) buildJumpTo(bsIdx + dir); }
-    function clearBuildHighlights() {
-        document.querySelectorAll('mark.bs-hl').forEach(function(m) {
-            var p = m.parentNode; p.replaceChild(document.createTextNode(m.textContent), m); p.normalize();
+            totalDone += done;
+            totalSteps += info.count;
+            var pct = info.count > 0 ? Math.round(done / info.count * 100) : 0;
+            var bar = document.getElementById('bar-' + phase);
+            var stats = document.getElementById('stats-' + phase);
+            var pctEl = document.getElementById('pct-' + phase);
+            if (bar) bar.style.width = pct + '%';
+            if (stats) stats.textContent = done + ' / ' + info.count;
+            if (pctEl) pctEl.textContent = pct + '%';
         });
-        bsMarks = []; bsIdx = -1;
+        var totalPct = totalSteps > 0 ? Math.round(totalDone / totalSteps * 100) : 0;
+        document.getElementById('totalBarFill').style.width = totalPct + '%';
+        document.getElementById('totalBarText').textContent = totalPct + '%';
+        document.getElementById('totalStats').textContent = totalDone + ' / ' + totalSteps + ' steps completed';
     }
-    function clearBuildSearch() {
-        document.getElementById('searchInput').value = '';
-        clearBuildHighlights();
-        document.getElementById('buildSearchCount').textContent = '';
-    }
-    document.addEventListener('keydown', function(e) {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-            e.preventDefault();
-            document.getElementById('searchInput').focus();
-            document.getElementById('searchInput').select();
-        }
-    });
 
-    // ==== INIT ====
     document.addEventListener('DOMContentLoaded', function() {
-        loadData();
-        // Render all photo galleries
-        document.querySelectorAll('.photo-gallery[data-photo-group]').forEach(function(g) {
-            renderPhotos(g.dataset.photoGroup);
-        });
+        loadProgress();
     });
 </script>
 
