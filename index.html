@@ -611,30 +611,6 @@
 
             <!-- Verdichtungsrechner: verschoben nach Sektion 4 (Zylinderkoepfe) -->
 
-            <!-- Drehzahl-Analyse: Schwaechstes Glied -->
-            <div class="comp-box" style="background:#fff5f5;border-color:#fed7d7;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#c53030;">&#9888; Drehzahl-Limits: Das schw&auml;chste Glied bestimmt</div>
-                <div class="comp-body">
-                    <p style="font-size:0.82rem;color:#333;margin:0 0 0.5rem;">Jede Komponente hat ein eigenes Drehzahl-Limit. Die <strong>niedrigste Grenze</strong> bestimmt die maximale Drehzahl des Motors.</p>
-                    <table style="width:100%;font-size:0.78rem;border-collapse:collapse;">
-                        <tr style="background:#fff5f5;"><th style="text-align:left;padding:0.3rem;">Komponente</th><th style="text-align:center;padding:0.3rem;">Max. RPM</th><th style="text-align:left;padding:0.3rem;">Begr&uuml;ndung</th></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">COMP Cams XE274HR</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong style="color:#c53030;">6.200</strong></td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">COMP Cams empf. Betriebsbereich 2.200&ndash;6.200</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Morel 5327 HLT Lifter</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">6.500&ndash;7.000+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">HLT (Limited Travel) f&uuml;r High-RPM ausgelegt</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">AFR 8605 Ventilfedern</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.000</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">AFR Upgrade-Feder, .650" Lift / 7.000 RPM</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">AFR 8600 Ti-Retainer</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.000+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Titan = leichter als Stahl, reduziert Ventiltrieb-Tr&auml;gheit</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">COMP 1632-16 Roller Rockers</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.000+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">8650 Chromoly, Nadellager, Ultra Pro Magnum</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">BOSS302 Block (4-Bolt)</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.500+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Race-Block, 4-Bolt Mains auf Pos. 2/3/4</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Geschmiedete Internals</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.500+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Kurbel, Pleuel, Kolben &ndash; alle geschmiedet</td></tr>
-                        <tr><td style="padding:0.25rem;"><strong>MSD 6AL Rev Limiter</strong></td><td style="text-align:center;padding:0.25rem;"><strong>einstellbar</strong></td><td style="padding:0.25rem;">2.000&ndash;11.000 RPM in 100er-Schritten</td></tr>
-                    </table>
-                    <div style="margin-top:0.5rem;padding:0.5rem;background:#c53030;color:#fff;border-radius:8px;text-align:center;font-size:0.85rem;">
-                        <strong>SCHW&Auml;CHSTES GLIED: Nockenwelle &rarr; 6.200 RPM</strong><br>
-                        <span style="font-size:0.75rem;">Empf. Rev-Limiter-Einstellung: <strong>6.500 RPM</strong> (Sicherheitsmarge f&uuml;r Ventiltrieb)</span>
-                    </div>
-                    <div class="info-box" style="margin-top:0.4rem;"><strong>Erkl&auml;rung:</strong> Die Nockenwelle bestimmt, bis zu welcher Drehzahl der Motor <em>effizient</em> arbeitet. Die mechanischen Komponenten (Federn, Lifter, Retainer) k&ouml;nnen h&ouml;her &ndash; daher setzt man den Rev Limiter etwas &uuml;ber die Cam-Range, um einen kurzen &Uuml;berdrehschutz zu haben, ohne die Hardware zu gef&auml;hrden.</div>
-                </div>
-            </div>
-
             <!-- Leistungsschaetzung -->
             <div class="comp-box">
                 <div class="comp-toggle" onclick="toggleComp(this)">&#9889; Gesch&auml;tzte Motorleistung</div>
@@ -1925,6 +1901,30 @@
             <div class="check-item">
                 <input type="checkbox" data-field="check_ign_revlimiter" onchange="autoSave()">
                 <span>Rev Limiter gesetzt (empfohlen: 6.500 RPM)</span>
+            </div>
+
+            <!-- Drehzahl-Limits: Schwaechstes Glied (hierher verschoben aus Build-Ziele) -->
+            <div class="comp-box" style="background:#fff5f5;border-color:#fed7d7;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#c53030;">&#9888; Drehzahl-Limits: Das schw&auml;chste Glied bestimmt</div>
+                <div class="comp-body">
+                    <p style="font-size:0.82rem;color:#333;margin:0 0 0.5rem;">Jede Komponente hat ein eigenes Drehzahl-Limit. Die <strong>niedrigste Grenze</strong> bestimmt die maximale Drehzahl des Motors &ndash; und damit die Rev-Limiter-Einstellung.</p>
+                    <table style="width:100%;font-size:0.78rem;border-collapse:collapse;">
+                        <tr style="background:#fff5f5;"><th style="text-align:left;padding:0.3rem;">Komponente</th><th style="text-align:center;padding:0.3rem;">Max. RPM</th><th style="text-align:left;padding:0.3rem;">Begr&uuml;ndung</th></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">COMP Cams XE274HR</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong style="color:#c53030;">6.200</strong></td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">COMP Cams empf. Betriebsbereich 2.200&ndash;6.200</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Morel 5327 HLT Lifter</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">6.500&ndash;7.000+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">HLT (Limited Travel) f&uuml;r High-RPM ausgelegt</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">AFR 8605 Ventilfedern</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.000</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">AFR Upgrade-Feder, .650" Lift / 7.000 RPM</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">AFR 8600 Ti-Retainer</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.000+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Titan = leichter als Stahl, reduziert Ventiltrieb-Tr&auml;gheit</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">COMP 1632-16 Roller Rockers</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.000+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">8650 Chromoly, Nadellager, Ultra Pro Magnum</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">BOSS302 Block (4-Bolt)</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.500+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Race-Block, 4-Bolt Mains auf Pos. 2/3/4</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Geschmiedete Internals</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">7.500+</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Kurbel, Pleuel, Kolben &ndash; alle geschmiedet</td></tr>
+                        <tr><td style="padding:0.25rem;"><strong>MSD 6AL Rev Limiter</strong></td><td style="text-align:center;padding:0.25rem;"><strong>einstellbar</strong></td><td style="padding:0.25rem;">2.000&ndash;11.000 RPM in 100er-Schritten</td></tr>
+                    </table>
+                    <div style="margin-top:0.5rem;padding:0.5rem;background:#c53030;color:#fff;border-radius:8px;text-align:center;font-size:0.85rem;">
+                        <strong>SCHW&Auml;CHSTES GLIED: Nockenwelle &rarr; 6.200 RPM</strong><br>
+                        <span style="font-size:0.75rem;">Empf. Rev-Limiter-Einstellung: <strong>6.500 RPM</strong> (Sicherheitsmarge f&uuml;r Ventiltrieb)</span>
+                    </div>
+                    <div class="info-box" style="margin-top:0.4rem;"><strong>Erkl&auml;rung:</strong> Die Nockenwelle bestimmt, bis zu welcher Drehzahl der Motor <em>effizient</em> arbeitet. Die mechanischen Komponenten (Federn, Lifter, Retainer) k&ouml;nnen h&ouml;her &ndash; daher setzt man den Rev Limiter etwas &uuml;ber die Cam-Range, um einen kurzen &Uuml;berdrehschutz zu haben, ohne die Hardware zu gef&auml;hrden.</div>
+                </div>
             </div>
 
             <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
