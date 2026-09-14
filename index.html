@@ -32,33 +32,38 @@
         /* ---- Header ---- */
         .header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white; padding: 1.2rem 1rem; text-align: center;
-            position: sticky; top: 0; z-index: 100;
+            color: white; padding: 0; position: sticky; top: 0; z-index: 100;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
-        .header h1 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.15rem; }
-        .header p { font-size: 0.8rem; opacity: 0.85; }
-        .toolbar {
-            display: flex; gap: 0.4rem; justify-content: center;
-            flex-wrap: wrap; margin-top: 0.6rem;
+        .header-row {
+            display: flex; align-items: center; gap: 0; height: 44px;
         }
-        .toolbar button {
-            padding: 0.5rem 0.8rem; min-height: 40px;
-            border: 1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.15);
-            color: white; border-radius: 6px; cursor: pointer;
-            font-size: 0.75rem; font-weight: 500;
-            -webkit-tap-highlight-color: rgba(255,255,255,0.3); touch-action: manipulation;
+        .header-title {
+            padding: 0 0.6rem; font-size: 0.78rem; font-weight: 700; white-space: nowrap;
+            border-right: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center;
+            height: 100%; min-width: 0;
         }
-        .toolbar button:active { background: rgba(255,255,255,0.3); }
-        .toolbar .save-btn { background: var(--success); border-color: var(--success); }
-        .toolbar .sync-btn { background: #2b6cb0; border-color: #2b6cb0; }
-        .toolbar .sync-btn:disabled { opacity: 0.5; }
-        .toolbar .settings-btn { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.5); }
-        .save-status { font-size: 0.7rem; opacity: 0.8; margin-top: 0.3rem; min-height: 1.1em; }
-        .sync-badge { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.68rem; padding: 0.15rem 0.5rem; border-radius: 10px; font-weight: 600; }
+        .header-title span { font-size: 0.62rem; opacity: 0.7; margin-left: 0.35rem; font-weight: 400; }
+        .header h1, .header p, .toolbar { display: none; }
+        .nav-item {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.25rem;
+            height: 100%; padding: 0 0.3rem; color: rgba(255,255,255,0.75); font-size: 0.72rem;
+            font-weight: 600; cursor: pointer; border: none; background: none; text-decoration: none;
+            border-right: 1px solid rgba(255,255,255,0.15); white-space: nowrap;
+        }
+        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.2); color: white; }
+        .nav-item:last-child { border-right: none; }
+        .header-gear {
+            width: 44px; min-width: 44px; height: 44px; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; border: none; background: none;
+            color: rgba(255,255,255,0.8); font-size: 1.1rem; border-left: 1px solid rgba(255,255,255,0.15);
+        }
+        .header-gear:hover { background: rgba(255,255,255,0.2); color: white; }
+        .save-status { font-size: 0.65rem; opacity: 0.7; text-align: right; padding: 0.15rem 0.5rem; background: rgba(0,0,0,0.1); }
+        .sync-badge { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.62rem; padding: 0.1rem 0.4rem; border-radius: 10px; font-weight: 600; }
         .sync-badge.online { background: rgba(56,161,105,0.25); color: #c6f6d5; }
         .sync-badge.offline { background: rgba(229,62,62,0.25); color: #fed7d7; }
-        .sync-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .sync-dot { width: 5px; height: 5px; border-radius: 50%; }
         .sync-dot.online { background: #68d391; }
         .sync-dot.offline { background: #fc8181; }
 
@@ -224,14 +229,19 @@
         .comp-sub:first-child { border-top: none; margin-top: 0; padding-top: 0; }
 
         /* ---- Unit Converter ---- */
-        .converter-btn {
-            position: fixed; bottom: 80px; right: 16px; z-index: 900;
+        .fab-stack {
+            position: fixed; bottom: 16px; right: 16px; z-index: 900;
+            display: flex; flex-direction: column; gap: 8px; align-items: center;
+        }
+        .fab-btn {
             background: #38a169; color: #fff; border: none; border-radius: 50%;
             width: 44px; height: 44px; font-size: 1.1rem; cursor: pointer;
             box-shadow: 0 2px 8px rgba(0,0,0,.25); display: flex; align-items: center; justify-content: center;
         }
+        .fab-btn.glossary { background: #ed8936; }
+        .converter-btn { display: none; }
         .converter-panel {
-            display: none; position: fixed; bottom: 130px; right: 16px; z-index: 901;
+            display: none; position: fixed; bottom: 76px; right: 16px; z-index: 901;
             background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.25);
             padding: 1rem; width: 280px; font-size: 0.82rem;
         }
@@ -305,20 +315,7 @@
             body { background: white; }
         }
         /* ---- Section Groups & Navigation ---- */
-        .nav-bar {
-            display: flex; gap: 0; justify-content: center;
-            margin-top: 0.5rem; border-radius: 6px; overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        .nav-bar button {
-            flex: 1; padding: 0.45rem 0.3rem; border: none;
-            background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8);
-            font-size: 0.72rem; font-weight: 600; cursor: pointer;
-            border-right: 1px solid rgba(255,255,255,0.15);
-            transition: background 0.15s;
-        }
-        .nav-bar button:last-child { border-right: none; }
-        .nav-bar button:hover, .nav-bar button.active { background: rgba(255,255,255,0.25); color: white; }
+        .nav-bar { display: none; } /* replaced by header-row nav-items */
         .group-divider {
             display: flex; align-items: center; gap: 0.6rem;
             padding: 0.6rem 0.2rem 0.3rem; margin-top: 0.5rem; cursor: pointer; user-select: none;
@@ -405,21 +402,21 @@
 
         /* ---- Search ---- */
         .search-bar {
-            display: flex; align-items: center; gap: 0.4rem;
-            margin-top: 0.5rem; max-width: 500px; margin-left: auto; margin-right: auto;
+            display: flex; align-items: center; gap: 0.3rem;
+            padding: 0.25rem 0.5rem; background: rgba(0,0,0,0.08);
         }
         .search-bar input {
-            flex: 1; padding: 0.45rem 0.7rem; border: 1px solid rgba(255,255,255,0.5);
-            background: white; color: var(--text); border-radius: 6px;
-            font-size: 0.82rem; outline: none;
+            flex: 1; padding: 0.3rem 0.6rem; border: 1px solid rgba(255,255,255,0.5);
+            background: white; color: var(--text); border-radius: 4px;
+            font-size: 0.78rem; outline: none;
         }
         .search-bar input::placeholder { color: #a0aec0; }
         .search-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(237,137,54,0.3); }
         .search-nav { display: flex; align-items: center; gap: 0.2rem; }
         .search-nav button {
-            padding: 0.3rem 0.5rem; min-height: 32px; border: none;
+            padding: 0.2rem 0.4rem; min-height: 28px; border: none;
             background: rgba(255,255,255,0.2); color: white; border-radius: 4px;
-            cursor: pointer; font-size: 0.75rem;
+            cursor: pointer; font-size: 0.72rem;
         }
         .search-nav button:hover { background: rgba(255,255,255,0.35); }
         .search-count { font-size: 0.7rem; color: rgba(255,255,255,0.8); white-space: nowrap; min-width: 3rem; text-align: center; }
@@ -451,7 +448,9 @@
 
         /* ---- Mobile ---- */
         @media (max-width: 600px) {
-            .header h1 { font-size: 1.05rem; }
+            .header-title { font-size: 0.7rem; padding: 0 0.4rem; }
+            .header-title span { display: none; }
+            .nav-item { font-size: 0.65rem; padding: 0 0.15rem; }
             .container { padding: 0.4rem; }
             .section { padding: 0.75rem; }
             .measurement-grid { grid-template-columns: repeat(2, 1fr); }
@@ -464,41 +463,37 @@
 
 <!-- ===== HEADER ===== -->
 <div class="header">
-    <h1>Engine Build &amp; Measurement Log</h1>
-    <p>Ford 302ci BOSS (M-6009-302) &bull; COMP XE274HR</p>
-    <div class="toolbar">
-        <button style="background:#2c5282;border-color:#2c5282;" onclick="showGuide('guide-torque')">Torque Card</button>
-        <button style="background:#ed8936;border-color:#ed8936;" onclick="showGuide('guide-glossary')">Glossar</button>
-        <div style="position:relative;display:inline-block;">
-            <button class="settings-btn" onclick="toggleToolMenu()" id="toolMenuBtn">&#9881; Men&uuml;</button>
-            <div id="toolMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:4px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.2);min-width:160px;z-index:200;overflow:hidden;">
-                <button onclick="saveData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128190; Speichern</button>
+    <div class="header-row">
+        <div class="header-title">Engine Build Log<span>302 BOSS</span></div>
+        <button class="nav-item" onclick="scrollToGroup('grp-overview')" id="nav-overview">&#128202; Overview</button>
+        <button class="nav-item" onclick="scrollToGroup('grp-specs')" id="nav-specs">&#128295; Specs</button>
+        <a class="nav-item" href="build-log.html" id="nav-build">&#128736; Build Log</a>
+        <button class="nav-item" onclick="scrollToGroup('grp-ref')" id="nav-ref">&#128218; Reference</button>
+        <div style="position:relative;">
+            <button class="header-gear" onclick="toggleToolMenu()" id="toolMenuBtn">&#9881;</button>
+            <div id="toolMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:2px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:180px;z-index:200;overflow:hidden;">
+                <button onclick="saveData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128190; Save</button>
                 <button onclick="syncFromCloud();closeToolMenu()" id="syncBtn" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud Sync</button>
+                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
+                <button onclick="showGuide('guide-torque');closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128295; Torque Card</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="exportJSON();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
                 <button onclick="document.getElementById('importFile').click();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
+                <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
-                <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Drucken</button>
-                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Einstellungen</button>
-                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
+                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Settings</button>
                 <button onclick="clearAllData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--danger);font-size:0.78rem;cursor:pointer;">&#128465; Reset</button>
             </div>
         </div>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
     </div>
-    <div class="nav-bar">
-        <button onclick="scrollToGroup('grp-overview')" id="nav-overview">&#128202; &Uuml;bersicht</button>
-        <button onclick="scrollToGroup('grp-specs')" id="nav-specs">&#128295; Spezifikationen</button>
-        <a href="build-log.html" id="nav-build" style="flex:1;padding:0.45rem 0.3rem;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);font-size:0.72rem;font-weight:600;cursor:pointer;border-right:1px solid rgba(255,255,255,0.15);text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:0.2rem;">&#128736; Build Log &nearr;</a>
-        <button onclick="scrollToGroup('grp-ref')" id="nav-ref">&#128218; Referenz</button>
-    </div>
     <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Suchen... (z.B. Drehmoment, Oelpumpe, ARP)" oninput="doSearch()" onkeydown="searchKeyHandler(event)">
+        <input type="text" id="searchInput" placeholder="Search... (Ctrl+F)" oninput="doSearch()" onkeydown="searchKeyHandler(event)">
         <div class="search-nav" id="searchNav" style="display:none;">
-            <button onclick="searchJump(-1)" title="Vorheriger">&#9650;</button>
+            <button onclick="searchJump(-1)" title="Previous">&#9650;</button>
             <span class="search-count" id="searchCount"></span>
-            <button onclick="searchJump(1)" title="N&auml;chster">&#9660;</button>
-            <button onclick="clearSearch()" title="Schlie&szlig;en" style="margin-left:0.2rem;">&#10005;</button>
+            <button onclick="searchJump(1)" title="Next">&#9660;</button>
+            <button onclick="clearSearch()" title="Close" style="margin-left:0.2rem;">&#10005;</button>
         </div>
         <div class="sub-results" id="subResults" style="display:none;"></div>
     </div>
@@ -2014,6 +2009,10 @@
                     <div class="spec-item"><span class="spec-label">Konfiguration</span><span class="spec-value">RH Change (Drehrichtung umgekehrt f&uuml;r Mid-Engine)</span></div>
                     <div class="spec-item"><span class="spec-label">Modifikation</span><span class="spec-value">Modified 2nd &amp; 3rd Gears, drilled out Oil Ways</span></div>
                     <div class="spec-item"><span class="spec-label">Drehmomentgrenze</span><span class="spec-value">315 Nm (232 lb.ft) Serien-Spec, modifiziert ggf. h&ouml;her</span></div>
+                    <div id="crossCheckTorque" style="background:#fff5f5;padding:0.5rem;border-radius:6px;border:1px solid #fc8181;margin:0.3rem 0;font-size:0.76rem;display:none;">
+                        <strong style="color:#c53030;">&#9888; CROSS-CHECK WARNUNG:</strong>
+                        <span id="crossCheckTorqueText"></span>
+                    </div>
                     <div class="comp-sub" style="margin-top:0.3rem;">Standard-&Uuml;bersetzungen UN1-13</div>
                     <table style="width:100%;font-size:0.78rem;border-collapse:collapse;">
                         <tr style="background:#ebf4ff;"><th style="padding:0.2rem;">Gang</th><th style="text-align:center;padding:0.2rem;">1.</th><th style="text-align:center;padding:0.2rem;">2.</th><th style="text-align:center;padding:0.2rem;">3.</th><th style="text-align:center;padding:0.2rem;">4.</th><th style="text-align:center;padding:0.2rem;">5.</th><th style="text-align:center;padding:0.2rem;">R</th></tr>
@@ -3490,8 +3489,11 @@
 </div><!-- /guide-glossary -->
 
 <!-- ===== TOAST ===== -->
-<!-- Unit Converter -->
-<button class="converter-btn" onclick="document.getElementById('convPanel').classList.toggle('open')" title="Einheiten-Umrechner">&#8644;</button>
+<!-- Floating Action Buttons -->
+<div class="fab-stack">
+    <button class="fab-btn glossary" onclick="showGuide('guide-glossary')" title="Glossary">&#128214;</button>
+    <button class="fab-btn" onclick="document.getElementById('convPanel').classList.toggle('open')" title="Unit Converter">&#8644;</button>
+</div>
 <div class="converter-panel" id="convPanel">
     <h4>&#8644; Einheiten-Umrechner</h4>
     <strong style="font-size:0.75rem;">Drehmoment</strong>
@@ -4409,7 +4411,7 @@
     function autoSave() {
         if (isLoading) return;
         clearTimeout(autoSaveTimer);
-        autoSaveTimer = setTimeout(() => saveData(), 2000);
+        autoSaveTimer = setTimeout(() => { saveData(); runCrossChecks(); }, 2000);
     }
     function updateSaveStatus() {
         const raw = localStorage.getItem('engineBuildLog');
@@ -4539,7 +4541,7 @@
             const y = el.getBoundingClientRect().top + window.scrollY - headerH - 10;
             window.scrollTo({ top: y, behavior: 'smooth' });
         }
-        document.querySelectorAll('.nav-bar button').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
         const btn = document.getElementById('nav-' + id.replace('grp-', ''));
         if (btn) btn.classList.add('active');
     }
@@ -4587,7 +4589,7 @@
                 const el = document.getElementById(id);
                 if (el && el.getBoundingClientRect().top < headerH + 50) active = id;
             }
-            document.querySelectorAll('.nav-bar button').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             const btn = document.getElementById('nav-' + active.replace('grp-', ''));
             if (btn) btn.classList.add('active');
         }, 100);
@@ -4922,6 +4924,55 @@
         }
     });
 
+    // ==== CROSS-CHECKS ====
+    function runCrossChecks() {
+        // 1. Torque vs Gearbox limit
+        var torqueEl = document.querySelector('[data-field="target_torque"]');
+        var crossDiv = document.getElementById('crossCheckTorque');
+        var crossText = document.getElementById('crossCheckTorqueText');
+        if (torqueEl && crossDiv && crossText) {
+            var val = torqueEl.value || '';
+            // Extract numeric torque (try ft-lbs first, then Nm)
+            var nmMatch = val.match(/([\d.]+)\s*Nm/i);
+            var ftMatch = val.match(/([\d.]+)\s*ft/i);
+            var torqueNm = 0;
+            if (nmMatch) torqueNm = parseFloat(nmMatch[1]);
+            else if (ftMatch) torqueNm = parseFloat(ftMatch[1]) * 1.3558;
+            else {
+                var numOnly = parseFloat(val);
+                if (numOnly > 0) torqueNm = numOnly > 100 ? numOnly : numOnly * 1.3558; // guess: >100 = Nm, <100 = ft-lbs
+            }
+            var gearboxLimit = 315; // UN1-13 Serien-Spec
+            if (torqueNm > gearboxLimit) {
+                crossDiv.style.display = 'block';
+                crossText.innerHTML = ' Motor: <strong>' + Math.round(torqueNm) + ' Nm</strong> (' + (torqueNm/1.3558).toFixed(0) + ' ft-lbs) &ndash; UN1-13 Limit: <strong>' + gearboxLimit + ' Nm</strong>. '
+                    + 'Das Getriebe wird mit ' + Math.round((torqueNm/gearboxLimit-1)*100) + '% &uuml;ber seiner Serien-Drehmomentgrenze betrieben! '
+                    + '<strong>Erforderliche Ma&szlig;nahmen:</strong> Getriebe&ouml;lk&uuml;hler, Quaife-Innenleben, regelm&auml;&szlig;ige Inspektion, ggf. modifizierte Zahnr&auml;der.';
+            } else {
+                crossDiv.style.display = 'none';
+            }
+        }
+        // 2. CR vs Fuel octane
+        var crEl = document.querySelector('[data-field="target_cr"]');
+        var fuelEl = document.querySelector('[data-field="target_fuel"]');
+        if (crEl && fuelEl) {
+            var crVal = parseFloat((crEl.value || '').replace(/[^\d.]/g, ''));
+            var fuelVal = fuelEl.value || '';
+            if (crVal > 10.5 && /98|ROZ|RON/i.test(fuelVal)) {
+                if (!document.getElementById('crossCheckCR')) {
+                    var warn = document.createElement('div');
+                    warn.id = 'crossCheckCR';
+                    warn.style.cssText = 'background:#fff5f5;padding:0.4rem;border-radius:6px;border:1px solid #fc8181;margin:0.3rem 0;font-size:0.76rem;';
+                    warn.innerHTML = '<strong style="color:#c53030;">&#9888; CROSS-CHECK:</strong> Verdichtung ' + crVal.toFixed(1) + ':1 mit 98 ROZ erfordert konservatives Initial Timing und engmaschige Klopf&uuml;berwachung!';
+                    crEl.parentElement.after(warn);
+                }
+            } else {
+                var existing = document.getElementById('crossCheckCR');
+                if (existing) existing.remove();
+            }
+        }
+    }
+
     // ==== BUILD DASHBOARD ====
     function updateBuildDashboard() {
         var raw = localStorage.getItem('engineBuildLog');
@@ -4955,7 +5006,7 @@
     }
 
     // ==== INIT ====
-    generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData(); loadSubPages(); updateBuildDashboard();
+    generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData(); loadSubPages(); updateBuildDashboard(); setTimeout(runCrossChecks, 500);
 </script>
 </body>
 </html>
