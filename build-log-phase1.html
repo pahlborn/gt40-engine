@@ -1488,11 +1488,13 @@
             var changed = false;
             // Dictionary replacement
             keys.forEach(function(k) { if (text.indexOf(k) >= 0) { text = text.split(k).join(dict[k]); changed = true; } });
-            // Remove parenthetical German: " (German text)" pattern
-            var cleaned = text.replace(/\s*\([^)]*[\u00e4\u00f6\u00fc\u00c4\u00d6\u00dc\u00df][^)]*\)/g, '');
+            // Remove parenthetical German text - check for umlauts OR German words
+            var cleaned = text.replace(/\s*\(([^)]*)\)/g, function(m, inner) {
+                if (/[\u00e4\u00f6\u00fc\u00c4\u00d6\u00dc\u00df]/.test(inner)) return '';
+                if (/\b(messen|montiert|montage|Ventil|Kolben|Nocken|Pumpe|Dicht|Schraube|Steuer|Einbau|Sicht|Werkbank|Abschluss|Lager|Zapfen|Kette|Kolbenstand|Spiel|Praxis|Soll|Mess|Freigabe|Berechnung|Vorbereitung|Zeitbedarf|Hinweis|Empfehlung|Warnung|Achtung|alle\s|nicht|Dreh|Wanne|Deckel|Keile|Bolzen|Steck|Presse|Kabel|Masse|Reini|Kreuz|Leitung|Dichtmittel|Gemessen|fusselfreie|saubere|neue\s|ohne\s|vor\s|auf\s|beim|handfest|anziehen|einsetzen|drehen|Zylinder|Motor|Block|Kopf|Kurbelwelle|montieren|Verdichtung|Steuerkette|Simmerring|Vergaser|Kraftstoff|Wasserpumpe|Verteiler|Starter|WARNUNG|ENDMONTAGE|Nullspiel|Portdichtung|Sollwert|Sollwerte|Steuertrieb|Ventilkeile|Filterpapier|Stehbolzen|Markierung|Vorspannung|Umdrehung|Portdichtungen|Abdichten|Inbus|Flansch|Nockenfl|Lauffl|Zwischenwelle|Schraubengr|Federpr|fusselfreie|Phase-3|Befestigungs|Elektrodenabstand|Wasserbohrung|Gleichm|Gesamtz)\b/i.test(inner)) return '';
+                return m;
+            });
             if (cleaned !== text) { text = cleaned; changed = true; }
-            // Also remove HTML-entity encoded German in parentheses won't work in textContent, but
-            // handle common patterns like "(Ölpumpe)" etc
             if (changed) node.textContent = text;
         }
         // Translate placeholders
