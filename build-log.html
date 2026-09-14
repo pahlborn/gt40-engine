@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Aufbau-Log &ndash; 302ci BOSS Build</title>
+    <style>
+        :root {
+            --primary: #1a365d; --primary-light: #2b6cb0; --accent: #ed8936;
+            --bg: #f7fafc; --card-bg: #ffffff; --border: #e2e8f0;
+            --text: #2d3748; --text-light: #718096;
+            --success: #38a169; --warning: #d69e2e; --danger: #e53e3e;
+            --input-bg: #edf2f7;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white; padding: 1rem; text-align: center;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .header h1 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.1rem; }
+        .header p { font-size: 0.78rem; opacity: 0.85; }
+        .header-nav { display: flex; gap: 0.3rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem; }
+        .header-nav a, .header-nav button {
+            padding: 0.4rem 0.7rem; border: 1px solid rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.15); color: white; border-radius: 6px;
+            cursor: pointer; font-size: 0.72rem; font-weight: 500; text-decoration: none;
+            min-height: 36px; display: inline-flex; align-items: center;
+        }
+        .header-nav a:hover, .header-nav button:hover { background: rgba(255,255,255,0.25); }
+        .header-nav .save-btn { background: var(--success); border-color: var(--success); }
+        .save-status { font-size: 0.68rem; opacity: 0.8; margin-top: 0.25rem; min-height: 1em; }
+
+        /* Container */
+        .container { max-width: 900px; margin: 0 auto; padding: 0.75rem; }
+
+        /* Phase Header */
+        .phase-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, #4a5568 100%);
+            color: white; padding: 1rem; border-radius: 12px; margin-bottom: 0.75rem;
+            display: flex; align-items: center; gap: 0.75rem;
+        }
+        .phase-banner .phase-num {
+            background: rgba(255,255,255,0.2); width: 48px; height: 48px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; font-weight: 800; flex-shrink: 0;
+        }
+        .phase-banner .phase-info h2 { font-size: 1rem; font-weight: 700; }
+        .phase-banner .phase-info p { font-size: 0.78rem; opacity: 0.85; }
+        .phase-banner.p1 { background: linear-gradient(135deg, #2c5282, #2b6cb0); }
+        .phase-banner.p2 { background: linear-gradient(135deg, #975a16, #d69e2e); }
+        .phase-banner.p3 { background: linear-gradient(135deg, #276749, #38a169); }
+        .phase-banner.p4 { background: linear-gradient(135deg, #9b2c2c, #e53e3e); }
+
+        /* Sub-Phase */
+        .subphase { font-size: 0.82rem; font-weight: 700; color: var(--primary); margin: 0.75rem 0 0.4rem; padding: 0.4rem 0; border-bottom: 2px solid var(--primary); }
+
+        /* Step Card */
+        .step-card {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
+            margin-bottom: 0.5rem; overflow: hidden;
+        }
+        .step-header {
+            display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .step-header input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--success); flex-shrink: 0; }
+        .step-header .step-title { flex: 1; font-size: 0.85rem; font-weight: 600; }
+        .step-header .guide-toggle {
+            background: #ebf4ff; border: 1px solid #bee3f8; color: var(--primary-light);
+            padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer;
+            font-size: 0.7rem; font-weight: 600; white-space: nowrap; min-height: 32px;
+        }
+        .step-header .guide-toggle:hover { background: #bee3f8; }
+        .step-header .guide-toggle.open { background: var(--primary-light); color: white; border-color: var(--primary-light); }
+        .step-note {
+            width: 100%; padding: 0.4rem 0.75rem; border: none; border-bottom: 1px dashed var(--border);
+            font-size: 0.78rem; background: transparent; color: var(--text-light);
+        }
+        .step-note:focus { background: white; color: var(--text); border-bottom-style: solid; border-bottom-color: var(--primary-light); outline: none; }
+        .step-note::placeholder { color: #cbd5e0; font-style: italic; }
+
+        /* Guide Content */
+        .step-guide { display: none; padding: 0.75rem; background: #f8fafc; border-top: 2px solid var(--primary-light); }
+        .step-guide.open { display: block; }
+        .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        @media (max-width: 640px) { .guide-grid { grid-template-columns: 1fr; } }
+        .guide-block {
+            background: white; border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem;
+        }
+        .guide-block h4 {
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+            margin-bottom: 0.35rem; padding-bottom: 0.2rem; border-bottom: 1px solid var(--border);
+        }
+        .guide-block h4.tools { color: #2b6cb0; border-color: #bee3f8; }
+        .guide-block h4.consumables { color: #975a16; border-color: #fefcbf; }
+        .guide-block h4.torque { color: #c53030; border-color: #fed7d7; }
+        .guide-block h4.measure { color: #276749; border-color: #c6f6d5; }
+        .guide-block h4.prereq { color: #553c9a; border-color: #e9d8fd; }
+        .guide-block h4.release { color: #38a169; border-color: #c6f6d5; }
+        .guide-block h4.tips { color: #d69e2e; border-color: #fefcbf; }
+        .guide-block h4.photo { color: #e53e3e; border-color: #fed7d7; }
+        .guide-block h4.time { color: #718096; border-color: #e2e8f0; }
+        .guide-block h4.fill { color: #2b6cb0; border-color: #bee3f8; }
+        .guide-block ul { padding-left: 1rem; margin: 0; }
+        .guide-block li { font-size: 0.78rem; line-height: 1.5; margin-bottom: 0.15rem; }
+        .guide-block li strong { color: var(--text); }
+        .guide-block .spec-line { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 0.15rem 0; border-bottom: 1px dotted var(--border); }
+        .guide-block .spec-line:last-child { border-bottom: none; }
+        .guide-block .spec-val { font-weight: 700; color: var(--accent); }
+        .guide-full { grid-column: 1 / -1; }
+        .warning-box { background: #fff5f5; border: 1px solid #fc8181; border-radius: 8px; padding: 0.5rem 0.65rem; font-size: 0.78rem; color: #c53030; grid-column: 1 / -1; }
+        .warning-box strong { color: #9b2c2c; }
+
+        /* Photo Gallery */
+        .photo-gallery { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+        .photo-gallery img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid var(--border); }
+        .photo-add-btn { display: inline-block; padding: 0.35rem 0.7rem; font-size: 0.75rem; background: #ebf4ff; border: 1px dashed #bee3f8; border-radius: 6px; cursor: pointer; color: var(--primary-light); margin-top: 0.4rem; }
+
+        /* Progress Bar */
+        .progress-bar { background: var(--border); border-radius: 10px; height: 8px; margin-top: 0.4rem; overflow: hidden; }
+        .progress-fill { background: var(--success); height: 100%; border-radius: 10px; transition: width 0.3s; }
+        .progress-text { font-size: 0.68rem; color: var(--text-light); margin-top: 0.15rem; }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1a202c; color: white; padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 0.82rem; opacity: 0; transition: all 0.3s; z-index: 9999; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        /* Lightbox */
+        .lightbox { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 8000; align-items: center; justify-content: center; flex-direction: column; padding: 1rem; }
+        .lightbox.show { display: flex; }
+        .lightbox img { max-width: 95%; max-height: 80vh; border-radius: 8px; }
+        .lightbox .caption { color: white; font-size: 0.85rem; margin-top: 0.5rem; text-align: center; }
+        .lightbox .lb-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 1.5rem; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Aufbau-Log &ndash; 302ci BOSS Build</h1>
+    <p>Ford M-6009-302 &bull; AFR 1399 &bull; COMP XE274HR</p>
+    <div class="header-nav">
+        <a href="./">&larr; Hauptseite</a>
+        <button onclick="scrollToPhase('phase1')">Phase 1</button>
+        <button onclick="scrollToPhase('phase2')">Phase 2</button>
+        <button onclick="scrollToPhase('phase3')">Phase 3</button>
+        <button onclick="scrollToPhase('phase4')">Phase 4</button>
+        <button class="save-btn" onclick="saveData()">Speichern</button>
+    </div>
+    <div class="save-status" id="saveStatus"></div>
+</div>
+
+<div class="container">
+
+<!-- ============================================================ -->
+<!--  PHASE 1 - EINGANGSKONTROLLE                                  -->
+<!-- ============================================================ -->
+<div id="phase1">
+<div class="phase-banner p1">
+    <div class="phase-num">1</div>
+    <div class="phase-info">
+        <h2>Eingangskontrolle</h2>
+        <p>Alle Teile pr&uuml;fen &amp; messen &ndash; VOR dem ersten Zusammenbau</p>
+    </div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="prog1" style="width:0%"></div></div>
+<div class="progress-text" id="progText1">0 / 0 erledigt</div>
+
+<!-- === 1 Short Block === -->
+<div class="subphase">Short Block auf dem St&auml;nder</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_block_visual" onchange="autoSave()">
+        <span class="step-title">Block Sichtpr&uuml;fung</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_block_visual_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Vorbereitung</h4><ul>
+                <li>Short Block aus Kiste heben (2 Personen, ~70 kg)</li>
+                <li>Auf Motorst&auml;nder montieren (Adapter f&uuml;r 302/351W)</li>
+                <li>Konservierung/Transport&ouml;l entfernen</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+                <li>Starke Arbeitslampe / LED-Stableuchte</li>
+                <li>Spiegel (Zahnspiegel oder Teleskopspiegel)</li>
+                <li>Lupe f&uuml;r Haarrisse</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Pr&uuml;fpunkte</h4><ul>
+                <li><strong>Lauffl&auml;chen:</strong> Keine Riefen, keine Stufen am oberen Umkehrpunkt</li>
+                <li><strong>Dichtfl&auml;chen:</strong> Deck, Ansaug-Rails, Timing-Cover-Fl&auml;che &ndash; keine Kerben oder Grate</li>
+                <li><strong>Gewindebohrungen:</strong> Keine besch&auml;digten Gewinde, keine Fremdteile in Sacklochbohrungen</li>
+                <li><strong>Froststopfen:</strong> Alle dicht, kein Rost</li>
+                <li><strong>&Ouml;lkan&auml;le:</strong> Galeriestopfen vorhanden und dicht</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="photo">Fotodokumentation</h4><ul>
+                <li>Deck-Oberfl&auml;che beider B&auml;nke</li>
+                <li>Typenschild / Casting-Nummer</li>
+                <li>Auff&auml;lligkeiten (Gussfehler, Kratzer)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="time">Zeitbedarf</h4><ul>
+                <li>~30 Min. inkl. Auspacken und Aufst&auml;ndern</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_threads" onchange="autoSave()">
+        <span class="step-title">Gewinde durchjagen &amp; Sacklochbohrungen ausblasen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_threads_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+                <li>Gewindebohrer-Satz: 7/16"-14, 3/8"-16, 5/16"-18</li>
+                <li>Druckluftpistole mit Verl&auml;ngerung</li>
+                <li>Schutzbrille (Pflicht!)</li>
+                <li>T-Griff Gewindebohrerhalter</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="consumables">Betriebsmittel</h4><ul>
+                <li>Bremsenreiniger (Restschmutz l&ouml;sen)</li>
+                <li>Saubere Lappen (fusselfrei)</li>
+            </ul></div>
+            <div class="warning-box"><strong>ACHTUNG:</strong> Sacklochbohrungen m&uuml;ssen &ouml;l- und schmutzfrei sein! Fl&uuml;ssigkeit in einer Sacklochbohrung wirkt hydraulisch &ndash; der Stehbolzen kann den Block sprengen.</div>
+            <div class="guide-block"><h4 class="release">Freigabe</h4><ul>
+                <li>Alle Bohrungen frei von Sp&auml;nen und R&uuml;ckst&auml;nden</li>
+                <li>Gewindebohrer l&auml;uft in jeder Bohrung leichtg&auml;ngig</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="time">Zeitbedarf</h4><ul><li>~45 Min.</li></ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_deck_height" onchange="autoSave()">
+        <span class="step-title">Deckh&ouml;he messen (Soll: 8.206")</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_deck_height_n" placeholder="Messwert..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+                <li>Tiefenmessschieber oder Tiefenmikrometer</li>
+                <li>Haarlineal (Straightedge) + F&uuml;hlerlehre</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="measure">Sollwerte</h4>
+                <div class="spec-line"><span>Deckh&ouml;he (BHE &ndash; Piston Deck)</span><span class="spec-val">8.206"</span></div>
+                <div class="spec-line"><span>Toleranz</span><span class="spec-val">&plusmn; 0.005"</span></div>
+                <div class="spec-line"><span>Ford 302 Nominal</span><span class="spec-val">8.206"</span></div>
+            </div>
+            <div class="guide-block guide-full"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>An mindestens 4 Stellen pro Bank messen (vorne, hinten, links, rechts)</li>
+                <li>Die Deckh&ouml;he bestimmt zusammen mit dem Kolbenstand die Quench-Distanz</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_piston_deck" onchange="autoSave()">
+        <span class="step-title">Kolbenstand OT &ndash; alle 8 Zylinder</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_piston_deck_n" placeholder="Zyl.1:___ 2:___ 3:___ 4:___ 5:___ 6:___ 7:___ 8:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+                <li>Messuhr mit Magnetst&auml;nder</li>
+                <li>Haarlineal (Straightedge) &uuml;ber den Zylinder</li>
+                <li>Kurbelwellen-Drehwerkzeug oder Ringschl&uuml;ssel</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="measure">Sollwerte</h4>
+                <div class="spec-line"><span>Kolbenstand (Deck Clearance)</span><span class="spec-val">~0.010" unter Deck</span></div>
+                <div class="spec-line"><span>Methode</span><span class="spec-val">Haarlineal + Messuhr</span></div>
+            </div>
+            <div class="guide-block guide-full"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li><strong>Wichtigste Messung &uuml;berhaupt!</strong> Der Kolbenstand bestimmt Verdichtung, Quench und Kopfdichtungswahl</li>
+                <li>Zyl. 1 + 5 zuerst &ndash; die Streuung zeigt die Block-Fertigungspr&auml;zision</li>
+                <li>Kolben auf exakt OT drehen (h&ouml;chster Punkt), nicht daneben</li>
+                <li>Jeder Zylinder an Druckseite UND Gegendruckseite messen</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="photo">Fotodokumentation</h4><ul>
+                <li>Messuhr auf Haarlineal &uuml;ber Zylinder (Methode dokumentieren)</li>
+                <li>Messwert-Anzeige bei Zyl. 1 und 5</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_crank_turn" onchange="autoSave()">
+        <span class="step-title">Kurbelwelle von Hand drehen &ndash; kein Klemmen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_crank_turn_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="measure">Pr&uuml;fkriterien</h4><ul>
+                <li>Kurbelwelle dreht gleichm&auml;&szlig;ig &uuml;ber volle 720&deg;</li>
+                <li>Kein pl&ouml;tzlicher Widerstand, kein Klemmen</li>
+                <li>Keine Ger&auml;usche (Schleifen, Klicken)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>An der Schwungradseite mit der Hand drehen (mehr Hebelarm)</li>
+                <li>Klemmen = Lagerproblem oder Fremdteil im &Ouml;lkanal</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_oil_plug" onchange="autoSave()">
+        <span class="step-title">&Ouml;lkanalstopfen -4 AN pr&uuml;fen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_oil_plug_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="torque">Anzugswert</h4>
+                <div class="spec-line"><span>&Ouml;lkanalstopfen</span><span class="spec-val">8&ndash;10 ft-lbs</span></div>
+                <div class="spec-line"><span>Dichtmittel</span><span class="spec-val">Teflon-Tape oder Pipe Sealant</span></div>
+            </div>
+            <div class="guide-block"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>Sitzt hinter dem Verteileranschluss &ndash; leicht zu &uuml;bersehen</li>
+                <li>Wenn er undicht ist, hat der Motor keinen &Ouml;ldruck</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_cam_bearing_type" onchange="autoSave()">
+        <span class="step-title">Cam-Lagertyp bestimmen (R351 oder J351?)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_cam_bearing_type_n" placeholder="Typ:..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="measure">Bestimmung</h4><ul>
+                <li><strong>R351:</strong> Lager mit &Ouml;lbohrungen auf der Nockenwellenseite (Standard)</li>
+                <li><strong>J351:</strong> Lager mit versetzten &Ouml;lbohrungen (selten, &auml;ltere Bl&ouml;cke)</li>
+                <li>Der BOSS 302 Block hat werksseitig R351-Lager verbaut</li>
+                <li>Bei Cam-Zapfenmessung (n&auml;chster Schritt) gegen Lager-Innendurchmesser vergleichen</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<!-- === 1 Cam & Valvetrain === -->
+<div class="subphase">Nockenwelle &amp; Ventiltrieb (auf der Werkbank)</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_cam_visual" onchange="autoSave()">
+        <span class="step-title">XE274HR Nocken- und Lagerfl&auml;chen sichtpr&uuml;fen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_cam_visual_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="measure">Pr&uuml;fpunkte</h4><ul>
+                <li>Nockenfl&auml;chen: keine Riefen, keine Pittings, keine Anlauffarben</li>
+                <li>Lagerzapfen: polierte Oberfl&auml;che, kein Rost</li>
+                <li>Verteilerantriebsrad: Z&auml;hne unbeschaedigt</li>
+                <li>Cam Card beiliegend? (Intake Centerline f&uuml;r Degree)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>Leichter Rost auf Lagerzapfen = Versandschaden, mit feinem Schleifvlies (Scotch-Brite) und &Ouml;l entfernen</li>
+                <li>Nockenfl&auml;chen NIE mit Schleifmittel bearbeiten!</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_cam_journals" onchange="autoSave()">
+        <span class="step-title">Alle 5 Nockenwellenzapfen messen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_cam_journals_n" placeholder="#1:___ #2:___ #3:___ #4:___ #5:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+                <li>Au&szlig;enmikrometer 1.5"&ndash;2.5"</li>
+                <li>Messung an 2 Stellen pro Zapfen (0&deg; und 90&deg;)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="measure">Sollwerte</h4>
+                <div class="spec-line"><span>Ford 302 Cam-Zapfen &oslash;</span><span class="spec-val">2.082"&ndash;2.083"</span></div>
+                <div class="spec-line"><span>Max. Ovalit&auml;t</span><span class="spec-val">0.001"</span></div>
+                <div class="spec-line"><span>Lagerspiel (mit Bearing)</span><span class="spec-val">0.001"&ndash;0.003"</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_lifters" onchange="autoSave()">
+        <span class="step-title">Morel 5327 &ndash; 16 St&uuml;ck pr&uuml;fen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_lifters_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="measure">Pr&uuml;fpunkte</h4><ul>
+                <li>16 St&uuml;ck z&auml;hlen</li>
+                <li>Rollen drehen leichtg&auml;ngig (jede einzeln pr&uuml;fen)</li>
+                <li>Link-Bar-Mechanismus funktioniert</li>
+                <li>K&ouml;rperdurchmesser: 0.875"</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li><strong>Jetzt in &Ouml;l einlegen!</strong> Morel HLT-Lifter mindestens 24h vor Phase 2 in sauberem Motor&ouml;l lagern</li>
+                <li>Beschriftungssystem festlegen (1E, 1A, 2E, 2A... = Zylinder + Einlass/Auslass)</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_rockers" onchange="autoSave()">
+        <span class="step-title">COMP 1632-16 Rockers &ndash; Trunnion, Ratio</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_rockers_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="measure">Pr&uuml;fpunkte</h4><ul>
+                <li>16 St&uuml;ck, Trunnion (Kippbolzen) ohne Axialspiel</li>
+                <li>Roller-Tip dreht frei</li>
+                <li>Ratio 1.6:1 auf Verpackung best&auml;tigen</li>
+                <li>7/16" Stud-Mount best&auml;tigen (passend zu AFR #6411 Studs)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>Ultra Pro Magnum sind Stahlk&ouml;rper &ndash; deutlich stabiler als Alu-Rocker</li>
+                <li>Fulcrum-Design braucht keine separate Fulcrum-Schraube</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_polylocks" onchange="autoSave()">
+        <span class="step-title">COMP 4600-16 Polylocks pr&uuml;fen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_polylocks_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<!-- === 1 Zylinderkoepfe === -->
+<div class="subphase">Zylinderk&ouml;pfe AFR 1399 (auf der Werkbank)</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_deck_flat" onchange="autoSave()">
+        <span class="step-title">Dichtfl&auml;chen Planheit pr&uuml;fen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_deck_flat_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+                <li>Pr&auml;zisions-Haarlineal (mind. 14" lang)</li>
+                <li>F&uuml;hlerlehre 0.001"&ndash;0.004"</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="measure">Sollwerte</h4>
+                <div class="spec-line"><span>Max. Verzug (Flatness)</span><span class="spec-val">&le; 0.003" &uuml;ber L&auml;nge</span></div>
+                <div class="spec-line"><span>Messmethode</span><span class="spec-val">Lineal diagonal + quer, 6 Positionen</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_chamber_vol" onchange="autoSave()">
+        <span class="step-title">Brennraumvolumen pr&uuml;fen (Soll: 58 cc)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_chamber_vol_n" placeholder="Messwert cc..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+                <li>B&uuml;rette (100 ml, mit 0.1 ml Teilung)</li>
+                <li>Plexiglasplatte mit Loch (CC-Plate)</li>
+                <li>Fett/Vaseline zum Abdichten</li>
+                <li>Messfl&uuml;ssigkeit (Isopropanol + Lebensmittelfarbe)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="measure">Sollwerte</h4>
+                <div class="spec-line"><span>AFR 1399 Brennraum</span><span class="spec-val">58 cc</span></div>
+                <div class="spec-line"><span>Toleranz</span><span class="spec-val">&plusmn; 1 cc</span></div>
+                <div class="spec-line"><span>Stichprobe</span><span class="spec-val">Min. 2 Kammern pro Kopf</span></div>
+            </div>
+            <div class="guide-block guide-full"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>Ventile m&uuml;ssen f&uuml;r die Messung geschlossen sein (Federn dr&uuml;cken sie zu)</li>
+                <li>Z&uuml;ndkerzengewinde mit alter Kerze verschlie&szlig;en</li>
+                <li>Luft muss durch das Loch in der Plexiglasplatte entweichen k&ouml;nnen</li>
+                <li>Streuung &gt; 1 cc zwischen den Kammern = Kopf zum Planen</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_studs" onchange="autoSave()">
+        <span class="step-title">Rocker Studs 7/16" (#6411) best&auml;tigen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_studs_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_springs" onchange="autoSave()">
+        <span class="step-title">Federn #8605 + Retainer #8600 Titan best&auml;tigen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_springs_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_spring_height" onchange="autoSave()">
+        <span class="step-title">Installed Spring Height &ndash; alle 16</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_spring_height_n" placeholder="Min:___ Max:___ Schnitt:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+                <li>Installed-Height-Mikrometer oder Messschieber</li>
+                <li>Spring-Height-Gauge (Stahlplatte mit Bohrung)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="measure">Sollwerte</h4>
+                <div class="spec-line"><span>AFR-Spec Installed Height</span><span class="spec-val">Laut AFR-Datenblatt &plusmn; 0.015"</span></div>
+                <div class="spec-line"><span>Korrektur bei Abweichung</span><span class="spec-val">Shims unter Feder</span></div>
+            </div>
+            <div class="guide-block guide-full"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>Messen ohne Feder: Retainer + Keile montieren, Abstand Federsitz zu Retainer-Unterseite</li>
+                <li>Streuung &gt; 0.030" zwischen den Ventilen = Ventilsitze nacharbeiten oder Shims verwenden</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_coilbind" onchange="autoSave()">
+        <span class="step-title">Coil-Bind-Reserve &ge; 0.060" &uuml;ber max. Hub</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_coilbind_n" placeholder="Reserve:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="measure">Berechnung</h4><ul>
+                <li><strong>Max. Ventilhub (Auslass):</strong> 0.565" &times; 1.6 (Ratio) = 0.904" am Ventil... Nein: 0.565" IST bereits Ventilhub</li>
+                <li><strong>Installed Height - Max. Lift - Coil Bind Height = Reserve</strong></li>
+                <li>Reserve muss &ge; 0.060" sein, sonst bricht die Feder oder der Retainer</li>
+                <li>Coil-Bind-H&ouml;he steht auf dem Feder-Datenblatt (PAC/AFR #8605)</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_spring_open" onchange="autoSave()">
+        <span class="step-title">Federdruck open bei 0.565" Hub pr&uuml;fen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_spring_open_n" placeholder="Druck lbs:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul><li>Federpr&uuml;fstand (Spring Tester) oder berechnen</li></ul></div>
+            <div class="guide-block"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>Zu hoher Open-Pressure belastet Morel 5327 Link-Bars &uuml;berm&auml;&szlig;ig</li>
+                <li>Morel-Empfehlung: max. ~400 lbs open bei Hydraulic Roller</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_keepers" onchange="autoSave()">
+        <span class="step-title">Ventilkeile 7&deg; passend zu Titan-Retainern</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_keepers_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<!-- === 1 Befestigung === -->
+<div class="subphase">Befestigungsmaterial</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_arp_length" onchange="autoSave()">
+        <span class="step-title">ARP 154-4003 Stehbolzen &ndash; L&auml;nge messen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_arp_length_n" placeholder="Kurz:___ Lang:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="measure">Pr&uuml;fung</h4><ul>
+                <li>ARP 154-4003 enth&auml;lt 2 verschiedene L&auml;ngen (f&uuml;r Wasser- vs. Trockenbohrungen)</li>
+                <li>L&auml;nge beider Typen messen und gegen Block-Gewindetiefe + Kopfh&ouml;he vergleichen</li>
+                <li>Bolzen darf NICHT am Boden der Sacklochbohrung aufsetzen!</li>
+                <li>Muttergewinde muss ca. 2&ndash;3 Gewindeg&auml;nge &uuml;ber Mutter hinausragen</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_arp_cam" onchange="autoSave()">
+        <span class="step-title">ARP 254-1001 Cam-Bolt pr&uuml;fen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_arp_cam_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p1_timing_set" onchange="autoSave()">
+        <span class="step-title">M-6268-A302 Timing Set pr&uuml;fen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p1_timing_set_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="photo-gallery" data-photo-group="phase1"></div>
+<label class="photo-add-btn" onclick="addPhoto('phase1')">&#128247; Foto hinzuf&uuml;gen</label>
+
+</div><!-- /phase1 -->
+
+<!-- ============================================================ -->
+<!--  PHASE 2 - MOCK-UP & DEGREE                                   -->
+<!-- ============================================================ -->
+<div id="phase2">
+<div class="phase-banner p2">
+    <div class="phase-num">2</div>
+    <div class="phase-info">
+        <h2>Mock-up &amp; Degree</h2>
+        <p>Trockenlauf &ndash; alles zusammenbauen, nichts verbrauchen. Mock-up-Dichtung: Fel-Pro 1011-x!</p>
+    </div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="prog2" style="width:0%"></div></div>
+<div class="progress-text" id="progText2">0 / 0 erledigt</div>
+
+<div class="subphase">Cam &amp; Steuertrieb</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p2_cam_bearings" onchange="autoSave()">
+        <span class="step-title">Cam-Lager pr&uuml;fen / ggf. tauschen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p2_cam_bearings_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Vorbereitung</h4><ul>
+                <li>Phase-1-Messung: Cam-Lagertyp (R351/J351) bekannt</li>
+                <li>Cam-Zapfendurchmesser gemessen</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tools">Werkzeuge (nur bei Tausch)</h4><ul>
+                <li>Cam-Bearing-Installation-Tool</li>
+                <li>Hammer (Messing oder Kunststoff)</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>Nur tauschen bei Typkonflikt oder sichtbarem Verschlei&szlig;</li>
+                <li>&Ouml;lbohrungen m&uuml;ssen nach Einpressen exakt mit den Kan&auml;len im Block fluchten!</li>
+                <li>Neue Lager immer mit &Ouml;l einsetzen, nie trocken einpressen</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p2_cam_install" onchange="autoSave()">
+        <span class="step-title">Nockenwelle einsetzen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p2_cam_install_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+                <li>Langer Bolzen 5/16"-18 &times; 4" als F&uuml;hrungsgriff (in Cam-Gewinde schrauben)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="consumables">Betriebsmittel</h4><ul>
+                <li><strong>Assembly Lube</strong> (COMP 159 oder gleichwertig) auf ALLE Nocken</li>
+                <li><strong>Motor&ouml;l</strong> auf alle 5 Lagerzapfen</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>Cam gerade und langsam einf&uuml;hren &ndash; Nocken d&uuml;rfen die Lagerschalen NIE ber&uuml;hren</li>
+                <li>Der lange Bolzen als Griff gibt Kontrolle &ndash; ohne gleitet die Cam unkontrolliert rein</li>
+                <li>Block leicht nach hinten kippen (Hinterseite tiefer) &ndash; Schwerkraft hilft</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="time">Zeitbedarf</h4><ul><li>~15 Min.</li></ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p2_thrust_plate" onchange="autoSave()">
+        <span class="step-title">Thrust Plate + Timing Set montieren</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p2_thrust_plate_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p2_endplay" onchange="autoSave()">
+        <span class="step-title">Cam-Axialspiel messen (0.001"&ndash;0.007")</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p2_endplay_n" placeholder="Messwert:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+                <li>Messuhr mit Magnetst&auml;nder</li>
+                <li>Schraubendreher zum Hebeln (vorsichtig!)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="measure">Sollwerte</h4>
+                <div class="spec-line"><span>Cam Endplay (Ford Spec)</span><span class="spec-val">0.001"&ndash;0.007"</span></div>
+                <div class="spec-line"><span>Service-Limit</span><span class="spec-val">0.009"</span></div>
+            </div>
+            <div class="guide-block guide-full"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>Messuhr am Cam-Sprocket ansetzen, Cam vor und zur&uuml;ck dr&uuml;cken</li>
+                <li>Zu viel Spiel = Thrust Plate verschlissen oder falsche Dicke</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p2_lifter1" onchange="autoSave()">
+        <span class="step-title">Lifter auf Pr&uuml;fzylinder #1 einsetzen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p2_lifter1_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p2_degree" onchange="autoSave()">
+        <span class="step-title">Nockenwelle degreen &ndash; ICL pr&uuml;fen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p2_degree_n" placeholder="ICL Soll:___ Ist:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+                <li>Degree Wheel (min. 9" Durchmesser)</li>
+                <li>Zeiger (Pointer, am Block befestigt)</li>
+                <li>Messuhr mit Lifter-Adapter</li>
+                <li>Piston Stop (Stahl oder Gummi)</li>
+                <li>Checking Spring (leichte Feder statt Ventilfeder)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="measure">Sollwerte COMP XE274HR</h4>
+                <div class="spec-line"><span>Intake Centerline (ICL)</span><span class="spec-val">Laut Cam Card</span></div>
+                <div class="spec-line"><span>Duration @.050 Int/Exh</span><span class="spec-val">224&deg; / 232&deg;</span></div>
+                <div class="spec-line"><span>LSA</span><span class="spec-val">112&deg;</span></div>
+                <div class="spec-line"><span>Lift Int/Exh</span><span class="spec-val">0.555" / 0.565"</span></div>
+            </div>
+            <div class="guide-block guide-full"><h4 class="prereq">Ablauf</h4><ul>
+                <li><strong>1.</strong> Degree Wheel auf Crank-Snout befestigen, Zeiger am Block</li>
+                <li><strong>2.</strong> Echten OT finden: Piston Stop einsetzen, Kurbelwelle gegen Stop drehen (links + rechts), Mitte = OT</li>
+                <li><strong>3.</strong> Messuhr auf Lifter #1 Einlass setzen</li>
+                <li><strong>4.</strong> Cam langsam drehen, maximalen Hub finden</li>
+                <li><strong>5.</strong> Links und rechts vom Max bei .050" Lifterhub die Gradzahlen ablesen</li>
+                <li><strong>6.</strong> Mitte = Intake Centerline</li>
+            </ul></div>
+            <div class="warning-box"><strong>JEDE Nockenwelle degreen!</strong> Fertigungstoleranzen k&ouml;nnen 2&ndash;4&deg; Abweichung bedeuten. Das &auml;ndert den Motorcharakter erheblich.</div>
+            <div class="guide-block"><h4 class="photo">Fotodokumentation</h4><ul>
+                <li>Degree Wheel mit Zeiger auf OT</li>
+                <li>Messuhr-Ablesung bei .050" Opening und Closing</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="time">Zeitbedarf</h4><ul><li>~90 Min. (inkl. OT-Findung)</li></ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p2_lifters_all" onchange="autoSave()">
+        <span class="step-title">Alle 16 Lifter einsetzen</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p2_lifters_all_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>Link-Bars parallel zur Cam ausrichten, Flachseite zeigt zum Valley</li>
+                <li>Reihenfolge merken oder beschriften &ndash; bei Zerlegung positionsrichtig zur&uuml;ck!</li>
+                <li>Lifter m&uuml;ssen in ihren Bohrungen leichtg&auml;ngig gleiten</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="subphase">K&ouml;pfe &amp; Valvetrain (Mock-up)</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p2_mockup_head" onchange="autoSave()">
+        <span class="step-title">Mock-up-Dichtung + Kopf auflegen (handfest)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p2_mockup_head_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="warning-box"><strong>Fel-Pro 1011-x als Mock-up-Dichtung!</strong> Die M-6051-CP331 ist ein Kupfer-Einwegteil und bleibt bis Phase 3 in der Verpackung.</div>
+            <div class="guide-block guide-full"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>Nur handfest mit ein paar Muttern fixieren &ndash; kein Drehmoment n&ouml;tig</li>
+                <li>Kopf muss auf den Passh&uuml;lsen (Dowels) sitzen, nicht verschieben</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p2_guideplates" onchange="autoSave()">
+        <span class="step-title">Guideplates montieren</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p2_guideplates_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p2_pushrod" onchange="autoSave()">
+        <span class="step-title">Pushrod-L&auml;nge ermitteln (Checking Pushrod)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p2_pushrod_n" placeholder="Einlass:___ Auslass:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+                <li>CNC-TC6878 Checking Pushrod (verstellbar)</li>
+                <li>Messschieber zum Ablesen</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="prereq">Ablauf</h4><ul>
+                <li><strong>1.</strong> Cam auf Grundkreis drehen (Lifter im Tal)</li>
+                <li><strong>2.</strong> Checking Pushrod einsetzen</li>
+                <li><strong>3.</strong> Rocker montieren, Polylock auf Nullspiel + 1/2 Umdrehung (= Preload)</li>
+                <li><strong>4.</strong> Checking Pushrod Länge ablesen</li>
+                <li><strong>5.</strong> Auf 0.025"-Raster runden</li>
+                <li><strong>6.</strong> Min. 2 Zylinder messen, Einlass und Auslass getrennt!</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="release">Freigabe</h4><ul>
+                <li>Einlass- und Auslasslänge notiert</li>
+                <li>Sweep-Check (nächster Schritt) bestätigt die Länge</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="time">Zeitbedarf</h4><ul><li>~60 Min.</li></ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p2_sweep" onchange="autoSave()">
+        <span class="step-title">Rocker Sweep pr&uuml;fen (Filzstift-Methode)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p2_sweep_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="prereq">Ablauf</h4><ul>
+                <li><strong>1.</strong> Ventilschaftende mit Filzstift komplett schw&auml;rzen</li>
+                <li><strong>2.</strong> Ventil von Hand &uuml;ber vollen Hub fahren (Cam durchdrehen)</li>
+                <li><strong>3.</strong> Muster auf dem Ventilschaft ablesen:</li>
+                <li>&bull; <strong>Schmales Band, mittig</strong> = Pushrod-L&auml;nge korrekt</li>
+                <li>&bull; <strong>Band zu weit au&szlig;en (zur Auslassseite)</strong> = Pushrod zu lang</li>
+                <li>&bull; <strong>Band zu weit innen (zur Mitte)</strong> = Pushrod zu kurz</li>
+                <li>&bull; <strong>Breites Band</strong> = L&auml;nge stimmt nicht &ndash; Ventilf&uuml;hrung leidet!</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="photo">Fotodokumentation</h4><ul>
+                <li>Sweep-Muster auf Ventilschaft (gut/schlecht dokumentieren)</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p2_ptv" onchange="autoSave()">
+        <span class="step-title">P-V Clearance messen (Knetmasse)</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p2_ptv_n" placeholder="Einlass:___ Auslass:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+                <li>Knetmasse (Modelliermasse, ~3 mm dick)</li>
+                <li>Leichte Pr&uuml;ffedern (Checking Springs) statt der 8605er!</li>
+                <li>Rasiermesser/Skalpell zum Aufschneiden</li>
+                <li>Messschieber</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="measure">Sollwerte</h4>
+                <div class="spec-line"><span>P-V Einlass min.</span><span class="spec-val">&ge; 0.080"</span></div>
+                <div class="spec-line"><span>P-V Auslass min.</span><span class="spec-val">&ge; 0.100"</span></div>
+            </div>
+            <div class="guide-block guide-full"><h4 class="prereq">Ablauf</h4><ul>
+                <li><strong>1.</strong> Knetmasse ~3 mm dick auf Kolbenboden (unter den Ventiltaschen)</li>
+                <li><strong>2.</strong> Leichte Federn einsetzen (die 8605er sind zu stark f&uuml;r Handbetrieb!)</li>
+                <li><strong>3.</strong> Kopf mit Mock-up-Dichtung handfest auflegen</li>
+                <li><strong>4.</strong> Kurbelwelle 2 volle Umdrehungen durchdrehen</li>
+                <li><strong>5.</strong> Kopf abnehmen, Knetmasse vorsichtig abziehen</li>
+                <li><strong>6.</strong> An der d&uuml;nnsten Stelle aufschneiden und mit Messschieber messen</li>
+            </ul></div>
+            <div class="warning-box"><strong>Zu wenig P-V Clearance = Ventil trifft Kolben!</strong> Das zerst&ouml;rt Ventile, Kolben und evtl. die Pleuel. Im Zweifelsfall Kolbentaschen vertiefen lassen.</div>
+            <div class="guide-block"><h4 class="photo">Fotodokumentation</h4><ul>
+                <li>Knetmasse vor Messung (D&uuml;nnste Stelle markieren)</li>
+                <li>Messschieber an Knetmasse</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <input type="checkbox" data-field="p2_ret_seal" onchange="autoSave()">
+        <span class="step-title">Retainer-zu-Schaftdichtung bei max. Hub</span>
+        <button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button>
+    </div>
+    <input type="text" class="step-note" data-field="p2_ret_seal_n" placeholder="Messwert:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="measure">Sollwert</h4>
+                <div class="spec-line"><span>Min. Abstand Retainer&ndash;Seal</span><span class="spec-val">&ge; 0.060"</span></div>
+            </div>
+            <div class="guide-block"><h4 class="tips">Praxis-Tipp</h4><ul>
+                <li>Bei max. Hub messen: Retainer darf Schaftdichtung nicht ber&uuml;hren</li>
+                <li>Kontakt = Schaftdichtung wird zerst&ouml;rt = &Ouml;lverbrauch</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
+<div class="subphase">Trockenpassung Anbauteile</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p2_intake_dry" onchange="autoSave()"><span class="step-title">Ansaugbr&uuml;cke trocken auflegen</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p2_intake_dry_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block guide-full"><h4 class="measure">Pr&uuml;fpunkte</h4><ul>
+            <li>Port-Alignment: Ansaugport muss mit Kopf-Port fluchten (Witness Marks)</li>
+            <li>Kein Versatz &gt; 1/16" &ndash; sonst Stroemungsverlust</li>
+            <li>Ecken (4 Stellen Block-zu-Wanne) auf Passgenauigkeit pr&uuml;fen</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p2_oilpump_dry" onchange="autoSave()"><span class="step-title">&Ouml;lpumpe + Welle trocken einsetzen</span></div>
+    <input type="text" class="step-note" data-field="p2_oilpump_dry_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p2_timing_cover_dry" onchange="autoSave()"><span class="step-title">Timing Cover trocken anlegen</span></div>
+    <input type="text" class="step-note" data-field="p2_timing_cover_dry_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p2_oilpan" onchange="autoSave()"><span class="step-title">&Ouml;lwanne trocken &ndash; Freigang, Pickup-Abstand</span></div>
+    <input type="text" class="step-note" data-field="p2_oilpan_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p2_pickup" onchange="autoSave()"><span class="step-title">Pickup-Abstand zum Wannenboden: 1/4"&ndash;3/8"</span></div>
+    <input type="text" class="step-note" data-field="p2_pickup_n" placeholder="Messwert:___" oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p2_valvecover" onchange="autoSave()"><span class="step-title">Ventildeckel trocken &ndash; Freigang Rocker</span></div>
+    <input type="text" class="step-note" data-field="p2_valvecover_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p2_distributor" onchange="autoSave()"><span class="step-title">Verteiler trocken &ndash; Freigang Ansaugbr&uuml;cke</span></div>
+    <input type="text" class="step-note" data-field="p2_distributor_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="subphase">Abschluss Mock-up</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p2_pushrods_order" onchange="autoSave()"><span class="step-title">Finale Pushrods bestellen</span></div>
+    <input type="text" class="step-note" data-field="p2_pushrods_order_n" placeholder="Bestellt: Einlass:___ Auslass:___" oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p2_teardown" onchange="autoSave()"><span class="step-title">Komplett zerlegen &ndash; Teile beschriften</span></div>
+    <input type="text" class="step-note" data-field="p2_teardown_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="photo-gallery" data-photo-group="phase2"></div>
+<label class="photo-add-btn" onclick="addPhoto('phase2')">&#128247; Foto hinzuf&uuml;gen</label>
+
+</div><!-- /phase2 -->
+
+<!-- ============================================================ -->
+<!--  PHASE 3 - ENDMONTAGE                                         -->
+<!-- ============================================================ -->
+<div id="phase3">
+<div class="phase-banner p3">
+    <div class="phase-num">3</div>
+    <div class="phase-info">
+        <h2>Endmontage</h2>
+        <p>Startbedingung: Pushrods geliefert, P-V freigegeben, Sweep OK. Ab hier irreversibel!</p>
+    </div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="prog3" style="width:0%"></div></div>
+<div class="progress-text" id="progText3">0 / 0 erledigt</div>
+
+<div class="subphase">3a &ndash; Reinigung &amp; Vorbereitung</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_clean" onchange="autoSave()"><span class="step-title">Dichtfl&auml;chen reinigen</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p3_clean_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="consumables">Betriebsmittel</h4><ul>
+            <li>Bremsenreiniger (acetonhaltig)</li>
+            <li>Saubere, fusselfreie T&uuml;cher</li>
+            <li>Kunststoffschaber (KEINE Drahtb&uuml;rste auf Alu-K&ouml;pfen!)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="release">Freigabe</h4><ul>
+            <li>Alle Fl&auml;chen &ouml;l- und fettfrei</li>
+            <li>Kein Abrieb sichtbar</li>
+            <li>Sacklochbohrungen trocken (Druckluft!)</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_blowout" onchange="autoSave()"><span class="step-title">Kopfbohrungen ausblasen</span></div>
+    <input type="text" class="step-note" data-field="p3_blowout_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_all_parts" onchange="autoSave()"><span class="step-title">Alle Teile + Betriebsmittel griffbereit</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p3_all_parts_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block guide-full"><h4 class="consumables">Checkliste Betriebsmittel</h4><ul>
+            <li>ARP Ultra-Torque Schmierstoff (mitgeliefert)</li>
+            <li>Assembly Lube (COMP 159 oder gleichwertig)</li>
+            <li>RTV Silikon (Permatex Ultra Black oder Grey)</li>
+            <li>Motor&ouml;l (sauber, zum Schmieren)</li>
+            <li>Anti-Seize (f&uuml;r Z&uuml;ndkerzen)</li>
+            <li>Thread Sealant / Teflon-Tape (f&uuml;r &Ouml;l-Fittinge)</li>
+            <li>Bremsenreiniger + saubere T&uuml;cher</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<div class="subphase">3b &ndash; Cam, Lifter &amp; &Ouml;lpumpe</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_cam_lube" onchange="autoSave()"><span class="step-title">Nockenwelle: Assembly Lube auf ALLE Nocken + Zapfen</span></div>
+    <input type="text" class="step-note" data-field="p3_cam_lube_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_cam_install" onchange="autoSave()"><span class="step-title">Cam einsetzen (langer Bolzen als Griff)</span></div>
+    <input type="text" class="step-note" data-field="p3_cam_install_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_timing_set" onchange="autoSave()"><span class="step-title">Timing Set + ARP Cam-Bolt</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p3_timing_set_n" placeholder="Drehmoment:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="torque">Anzugswerte</h4>
+            <div class="spec-line"><span>ARP 254-1001 Cam-Bolt</span><span class="spec-val">40&ndash;45 ft-lbs</span></div>
+            <div class="spec-line"><span>Schmierstoff</span><span class="spec-val">ARP Ultra-Torque</span></div>
+        </div>
+        <div class="guide-block"><h4 class="tips">Praxis-Tipp</h4><ul>
+            <li>Timing-Marks m&uuml;ssen zueinander zeigen (Dot-to-Dot)</li>
+            <li>Cam-Sprocket auf Cam, Crank-Sprocket auf Crank &ndash; Kette aufziehen</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_lifters" onchange="autoSave()"><span class="step-title">Alle 16 Lifter einsetzen (Assembly Lube)</span></div>
+    <input type="text" class="step-note" data-field="p3_lifters_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_oilpump" onchange="autoSave()"><span class="step-title">&Ouml;lpumpe M-6600-D2 montieren</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p3_oilpump_n" placeholder="Drehmoment:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="consumables">Betriebsmittel</h4><ul>
+            <li>Assembly Lube zum F&uuml;llen der Pumpe (Pumpe VOR Montage komplett bef&uuml;llen)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="torque">Anzugswert</h4>
+            <div class="spec-line"><span>&Ouml;lpumpe am Block</span><span class="spec-val">22&ndash;25 ft-lbs</span></div>
+        </div>
+        <div class="guide-block guide-full"><h4 class="tips">Praxis-Tipp</h4><ul>
+            <li>Pumpe VOR Montage mit Assembly Lube f&uuml;llen &ndash; trocken baut sie keinen Druck auf!</li>
+            <li>Pumpe dreht sich beim Einbau leicht &ndash; auf korrekte Ausrichtung achten</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_oilshaft" onchange="autoSave()"><span class="step-title">&Ouml;lpumpenwelle M-6605-B302 einsetzen</span></div>
+    <input type="text" class="step-note" data-field="p3_oilshaft_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_pickup" onchange="autoSave()"><span class="step-title">Pickup montieren und VERSCHRAUBEN</span></div>
+    <input type="text" class="step-note" data-field="p3_pickup_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="subphase">3c &ndash; Zylinderk&ouml;pfe &amp; Valvetrain</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_headgasket" onchange="autoSave()"><span class="step-title">Kopfdichtung CP331 auflegen &ndash; FRONT nach vorne!</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p3_headgasket_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="warning-box"><strong>HEAD GASKET HAT &quot;FRONT&quot; AUFGEDRUCKT!</strong> R&uuml;ckw&auml;rts montiert = K&uuml;hlung einer Bank unterbrochen = Motorschaden. H&auml;ufigster SBF-Fehler!</div>
+        <div class="guide-block"><h4 class="measure">Dichtungsdaten M-6051-CP331</h4>
+            <div class="spec-line"><span>Typ</span><span class="spec-val">Kupferring, Einweg</span></div>
+            <div class="spec-line"><span>Komprimierte Dicke</span><span class="spec-val">0.040"</span></div>
+        </div>
+        <div class="guide-block"><h4 class="photo">Fotodokumentation</h4><ul>
+            <li>&quot;FRONT&quot;-Markierung sichtbar fotografieren (Beweissicherung)</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_studs" onchange="autoSave()"><span class="step-title">ARP 154-4003 Stehbolzen einsetzen</span></div>
+    <input type="text" class="step-note" data-field="p3_studs_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_arp_lube" onchange="autoSave()"><span class="step-title">ARP Ultra-Torque auf Gewinde + Mutterauflage</span></div>
+    <input type="text" class="step-note" data-field="p3_arp_lube_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_heads_on" onchange="autoSave()"><span class="step-title">K&ouml;pfe aufsetzen (Passh&uuml;lsen!)</span></div>
+    <input type="text" class="step-note" data-field="p3_heads_on_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_heads_torque" onchange="autoSave()"><span class="step-title">K&ouml;pfe anziehen &ndash; 3 Stufen, Kreuz</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p3_heads_torque_n" placeholder="Stufe 1:___ 2:___ 3:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="torque">Anzugswerte ARP 154-4003</h4>
+            <div class="spec-line"><span>Stufe 1</span><span class="spec-val">35 ft-lbs</span></div>
+            <div class="spec-line"><span>Stufe 2</span><span class="spec-val">55 ft-lbs</span></div>
+            <div class="spec-line"><span>Stufe 3 (Lang/Trocken)</span><span class="spec-val">80 ft-lbs</span></div>
+            <div class="spec-line"><span>Stufe 3 (Kurz/Wasser)</span><span class="spec-val">70 ft-lbs</span></div>
+            <div class="spec-line"><span>Schmierstoff</span><span class="spec-val">ARP Ultra-Torque (beiliegend)</span></div>
+        </div>
+        <div class="guide-block"><h4 class="tips">Praxis-Tipp</h4><ul>
+            <li>Kreuzmuster von innen nach au&szlig;en!</li>
+            <li>Zwischen den Stufen 5 Min. warten (Dichtung setzt sich)</li>
+            <li>Lange Bolzen (Trockenbohrung) und kurze Bolzen (Wasserbohrung) haben unterschiedliche Endwerte</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_guideplates" onchange="autoSave()"><span class="step-title">Guideplates + finale Pushrods einsetzen</span></div>
+    <input type="text" class="step-note" data-field="p3_guideplates_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_rockers" onchange="autoSave()"><span class="step-title">Rocker + Preload (1/4&ndash;1/2 Umdrehung, auf Grundkreis!)</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p3_rockers_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="prereq">Ablauf Preload-Einstellung</h4><ul>
+            <li><strong>1.</strong> Kurbelwelle so drehen, dass der Lifter dieses Ventils auf dem Grundkreis steht</li>
+            <li><strong>2.</strong> Polylock mit Finger auf den Rocker-Stud schrauben</li>
+            <li><strong>3.</strong> Pushrod mit einer Hand leicht drehen, gleichzeitig Polylock anziehen</li>
+            <li><strong>4.</strong> Nullpunkt = Pushrod l&auml;sst sich gerade nicht mehr drehen</li>
+            <li><strong>5.</strong> Ab Nullpunkt 1/4 bis 1/2 Umdrehung weiterdrehen = Preload</li>
+            <li><strong>6.</strong> Kontermutter festziehen (Polylock h&auml;lt Position)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="measure">Sollwerte</h4>
+            <div class="spec-line"><span>Preload Morel 5327 HLT</span><span class="spec-val">1/4&ndash;1/2 Umdrehung</span></div>
+        </div>
+        <div class="warning-box"><strong>NUR auf dem Grundkreis einstellen!</strong> Wenn der Lifter auf dem Nocken steht, ist die Messung falsch und das Ventil steht offen.</div>
+    </div></div>
+</div>
+
+<div class="subphase">3d &ndash; Abdichten (Cover &rarr; Wanne &rarr; Wasserpumpe)</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_timing_cover" onchange="autoSave()"><span class="step-title">Timing Cover + Dichtung + RTV</span></div>
+    <input type="text" class="step-note" data-field="p3_timing_cover_n" placeholder="Drehmoment:___" oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_balancer" onchange="autoSave()"><span class="step-title">Balancer M-6316-D302 (0-oz, Einpresswerkzeug!)</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p3_balancer_n" placeholder="Drehmoment:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="torque">Anzugswert</h4>
+            <div class="spec-line"><span>Balancer-Bolt</span><span class="spec-val">70&ndash;90 ft-lbs</span></div>
+        </div>
+        <div class="warning-box"><strong>0-oz Balancer (neutral gewuchtet)!</strong> Ein 28-oz-Balancer passt zu einem anderen Rotating Assembly und erzeugt Vibrationen, die Lager zerst&ouml;ren.</div>
+        <div class="guide-block"><h4 class="tips">Praxis-Tipp</h4><ul>
+            <li>NIE mit Hammer aufschlagen &ndash; nur mit Einpresswerkzeug (Gewindestange durch Crank)</li>
+            <li>Balancer muss plan auf der Crank-Snout sitzen</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_oilpan" onchange="autoSave()"><span class="step-title">&Ouml;lwanne + Dichtung + RTV Ecken</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p3_oilpan_n" placeholder="Drehmoment:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="torque">Anzugswert</h4>
+            <div class="spec-line"><span>&Ouml;lwannen-Schrauben</span><span class="spec-val">10&ndash;12 ft-lbs</span></div>
+            <div class="spec-line"><span>RTV Ablueftzeit</span><span class="spec-val">15&ndash;20 Min. vor Montage</span></div>
+        </div>
+        <div class="guide-block"><h4 class="tips">Praxis-Tipp</h4><ul>
+            <li>RTV NUR an den 4 Ecken (Block-Timing Cover und Block-Rear Seal)</li>
+            <li>D&uuml;nne Raupe &ndash; zu viel RTV quillt in die &Ouml;lkan&auml;le!</li>
+            <li>Wanne dichtet gegen Timing Cover Unterkante &ndash; deshalb Cover ZUERST</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_waterpump" onchange="autoSave()"><span class="step-title">Wasserpumpe MIL-16230</span></div>
+    <input type="text" class="step-note" data-field="p3_waterpump_n" placeholder="Drehmoment:___" oninput="autoSave()">
+</div>
+
+<div class="subphase">3e &ndash; Obere Anbauteile</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_intake" onchange="autoSave()"><span class="step-title">Ansaugbr&uuml;cke + Fel-Pro 1250</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p3_intake_n" placeholder="Drehmoment:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="torque">Anzugswerte</h4>
+            <div class="spec-line"><span>Stufe 1</span><span class="spec-val">5 ft-lbs</span></div>
+            <div class="spec-line"><span>Stufe 2</span><span class="spec-val">12 ft-lbs</span></div>
+            <div class="spec-line"><span>Stufe 3 (final)</span><span class="spec-val">18 ft-lbs</span></div>
+            <div class="spec-line"><span>Muster</span><span class="spec-val">Kreuz, innen &rarr; au&szlig;en</span></div>
+        </div>
+        <div class="warning-box"><strong>18 ft-lbs NICHT &uuml;berschreiten!</strong> &Uuml;berdrehte Ansaugschrauben sind der #1-Fehler am SBF und verursachen Kopfdichtungsprobleme.</div>
+    </div></div>
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_distributor" onchange="autoSave()"><span class="step-title">Verteiler einsetzen (OT Zyl. 1 Verdichtungstakt)</span></div>
+    <input type="text" class="step-note" data-field="p3_distributor_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_sparkplugs" onchange="autoSave()"><span class="step-title">Z&uuml;ndkerzen Autolite 3924 (Gap 0.040")</span></div>
+    <input type="text" class="step-note" data-field="p3_sparkplugs_n" placeholder="Drehmoment:___" oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_valvecovers" onchange="autoSave()"><span class="step-title">Ventildeckel (4&ndash;6 ft-lbs, Alu!)</span></div>
+    <input type="text" class="step-note" data-field="p3_valvecovers_n" placeholder="Drehmoment:___" oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p3_fuelpump" onchange="autoSave()"><span class="step-title">Kraftstoffpumpen-Blockoff oder mech. Pumpe</span></div>
+    <input type="text" class="step-note" data-field="p3_fuelpump_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="photo-gallery" data-photo-group="phase3"></div>
+<label class="photo-add-btn" onclick="addPhoto('phase3')">&#128247; Foto hinzuf&uuml;gen</label>
+
+</div><!-- /phase3 -->
+
+<!-- ============================================================ -->
+<!--  PHASE 4 - ERSTSTART                                           -->
+<!-- ============================================================ -->
+<div id="phase4">
+<div class="phase-banner p4">
+    <div class="phase-num">4</div>
+    <div class="phase-info">
+        <h2>Erststart &amp; Einfahren</h2>
+        <p>Hydraulic Roller braucht KEIN 20-Min-Break-in &ndash; Rollen laufen sofort richtig</p>
+    </div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="prog4" style="width:0%"></div></div>
+<div class="progress-text" id="progText4">0 / 0 erledigt</div>
+
+<div class="subphase">4a &ndash; Vor dem Start</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_preoil" onchange="autoSave()"><span class="step-title">Vor&ouml;len bis &Ouml;l an allen 16 Rockern austritt</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p4_preoil_n" placeholder="Befund..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="tools">Werkzeuge</h4><ul>
+            <li>Melling PT11 Priming Tool (oder langer Sechskant in Bohrmaschine)</li>
+            <li>Bohrmaschine (langsam, Rechtslauf!)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="prereq">Ablauf</h4><ul>
+            <li><strong>1.</strong> Verteiler entfernen (Zugang zum &Ouml;lpumpenantrieb)</li>
+            <li><strong>2.</strong> Priming Tool einsetzen, mit Bohrmaschine drehen</li>
+            <li><strong>3.</strong> &Ouml;ldruck-Manometer beobachten &ndash; muss Druck anzeigen</li>
+            <li><strong>4.</strong> Kurbelwelle dabei 4&times; 90&deg; weiterdrehen (alle Lager versorgen)</li>
+            <li><strong>5.</strong> Ventildeckel abnehmen &ndash; an allen 16 Rockern muss &Ouml;l austreten</li>
+        </ul></div>
+        <div class="warning-box"><strong>Kein &Ouml;ldruck nach 30 Sek. = STOPP!</strong> Ursache suchen (Welle nicht eingegriffen, Pumpe leer, Stopfen undicht).</div>
+    </div></div>
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_preoil_crank" onchange="autoSave()"><span class="step-title">Kurbelwelle 4&times; 90&deg; drehen w&auml;hrend Vor&ouml;len</span></div>
+    <input type="text" class="step-note" data-field="p4_preoil_crank_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_oilpressure_prime" onchange="autoSave()"><span class="step-title">&Ouml;ldruck beim Vor&ouml;len kontrollieren</span></div>
+    <input type="text" class="step-note" data-field="p4_oilpressure_prime_n" placeholder="Druck:___ psi" oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_breakin_oil" onchange="autoSave()"><span class="step-title">Break-in-&Ouml;l einf&uuml;llen (ZDDP!)</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p4_breakin_oil_n" placeholder="Produkt + Menge:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="fill">F&uuml;llmenge</h4>
+            <div class="spec-line"><span>&Ouml;lmenge (abh&auml;ngig von Wanne)</span><span class="spec-val">5&ndash;7 Quarts</span></div>
+            <div class="spec-line"><span>Viskosit&auml;t</span><span class="spec-val">10W-30 oder 15W-40</span></div>
+        </div>
+        <div class="guide-block"><h4 class="consumables">Empfohlene Produkte</h4><ul>
+            <li>Brad Penn 10W-30 (hoher ZDDP-Gehalt)</li>
+            <li>Driven BR30 Break-In Oil</li>
+            <li>Lucas Hot Rod &amp; Classic</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="tips">Praxis-Tipp</h4><ul>
+            <li>ZDDP (Zinkdialkyldithiophosphat) sch&uuml;tzt Nocken und Lifter w&auml;hrend des Einlaufens</li>
+            <li>Modernes &ouml;l (API SN+) hat weniger ZDDP &ndash; nicht f&uuml;r Break-in geeignet</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_coolant" onchange="autoSave()"><span class="step-title">K&uuml;hlsystem f&uuml;llen und entl&uuml;ften</span></div>
+    <input type="text" class="step-note" data-field="p4_coolant_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_fuel" onchange="autoSave()"><span class="step-title">Kraftstoffsystem pr&uuml;fen</span></div>
+    <input type="text" class="step-note" data-field="p4_fuel_n" placeholder="Druck:___" oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_timing_static" onchange="autoSave()"><span class="step-title">Z&uuml;ndzeitpunkt statisch ~12&deg; vor OT</span></div>
+    <input type="text" class="step-note" data-field="p4_timing_static_n" placeholder="Einstellung:___" oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_revlimiter" onchange="autoSave()"><span class="step-title">MSD 6AL Rev-Limiter 6.500 RPM</span></div>
+    <input type="text" class="step-note" data-field="p4_revlimiter_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_preload_recheck" onchange="autoSave()"><span class="step-title">Preload alle 16 Ventile nochmals pr&uuml;fen</span></div>
+    <input type="text" class="step-note" data-field="p4_preload_recheck_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_wiring" onchange="autoSave()"><span class="step-title">Kabel, Leitungen, Masse, Z&uuml;ndfolge</span></div>
+    <input type="text" class="step-note" data-field="p4_wiring_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card" style="border-color: var(--danger);">
+    <div class="step-header" style="background: #fff5f5;">
+        <input type="checkbox" data-field="p4_safety" onchange="autoSave()">
+        <span class="step-title" style="color: var(--danger);">Feuerl&ouml;scher! Helfer! Abgasabfuhr!</span>
+    </div>
+    <input type="text" class="step-note" data-field="p4_safety_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="subphase">4b &ndash; Erststart</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_start" onchange="autoSave()"><span class="step-title">START &ndash; sofort 2.000&ndash;2.500 RPM!</span></div>
+    <input type="text" class="step-note" data-field="p4_start_n" placeholder="Uhrzeit:___ Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_oil_running" onchange="autoSave()"><span class="step-title">&Ouml;ldruck bei 2.000 RPM warm: 40&ndash;55 psi</span></div>
+    <input type="text" class="step-note" data-field="p4_oil_running_n" placeholder="Druck:___ psi" oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_leaks" onchange="autoSave()"><span class="step-title">Sichtpr&uuml;fung: keine Leckagen</span></div>
+    <input type="text" class="step-note" data-field="p4_leaks_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_temp" onchange="autoSave()"><span class="step-title">K&uuml;hlmitteltemperatur &ndash; Thermostat &ouml;ffnet</span></div>
+    <input type="text" class="step-note" data-field="p4_temp_n" placeholder="Temp:___" oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_timing_warm" onchange="autoSave()"><span class="step-title">Z&uuml;ndzeitpunkt warm pr&uuml;fen (Stroboskop)</span></div>
+    <input type="text" class="step-note" data-field="p4_timing_warm_n" placeholder="Grad:___" oninput="autoSave()">
+</div>
+
+<div class="subphase">4c &ndash; Nach dem Erststart</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_oil_idle" onchange="autoSave()"><span class="step-title">&Ouml;ldruck Leerlauf warm: 25&ndash;35 psi</span></div>
+    <input type="text" class="step-note" data-field="p4_oil_idle_n" placeholder="Druck:___ psi" oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_timing_final" onchange="autoSave()"><span class="step-title">Z&uuml;ndzeitpunkt final: 34&ndash;36&deg; gesamt</span></div>
+    <input type="text" class="step-note" data-field="p4_timing_final_n" placeholder="Grad:___" oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_retorque" onchange="autoSave()"><span class="step-title">Kopfmuttern nachziehen (Motor kalt!)</span></div>
+    <input type="text" class="step-note" data-field="p4_retorque_n" placeholder="Befund..." oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_oilchange" onchange="autoSave()"><span class="step-title">&Ouml;lwechsel &ndash; Filter aufschneiden</span><button class="guide-toggle" onclick="toggleGuide(this)">Anleitung</button></div>
+    <input type="text" class="step-note" data-field="p4_oilchange_n" placeholder="Befund Filterpapier:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block guide-full"><h4 class="prereq">Ablauf</h4><ul>
+            <li><strong>1.</strong> Nach 30&ndash;50 km (oder 1 Stunde Laufzeit) &Ouml;l warm ablassen</li>
+            <li><strong>2.</strong> Filter mit B&ouml;rdelmesserschneider oder Bandsaege &ouml;ffnen</li>
+            <li><strong>3.</strong> Filterpapier auseinanderfalten und gegen Licht halten</li>
+            <li><strong>4.</strong> Sauberes Papier = Pr&uuml;fung bestanden</li>
+            <li><strong>5.</strong> Metallsp&auml;ne = Problem finden, nicht ignorieren!</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="photo">Fotodokumentation</h4><ul>
+            <li>Filterpapier (sauber = Referenz f&uuml;r sp&auml;tere Vergleiche)</li>
+            <li>Bei Sp&auml;nen: Nahaufnahme + Material bestimmen (Alu, Stahl, Kupfer)</li>
+        </ul></div>
+    </div></div>
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_sparkread" onchange="autoSave()"><span class="step-title">Kerzenbild lesen</span></div>
+    <input type="text" class="step-note" data-field="p4_sparkread_n" placeholder="Befund:___" oninput="autoSave()">
+</div>
+
+<div class="step-card">
+    <div class="step-header"><input type="checkbox" data-field="p4_sync" onchange="autoSave()"><span class="step-title">DellOrto synchronisieren, Lambda loggen</span></div>
+    <input type="text" class="step-note" data-field="p4_sync_n" placeholder="Lambda L:___ R:___" oninput="autoSave()">
+</div>
+
+<div class="photo-gallery" data-photo-group="phase4"></div>
+<label class="photo-add-btn" onclick="addPhoto('phase4')">&#128247; Foto hinzuf&uuml;gen</label>
+
+</div><!-- /phase4 -->
+
+</div><!-- /container -->
+
+<div class="toast" id="toast"></div>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('show')">
+    <button class="lb-close" onclick="event.stopPropagation();this.parentElement.classList.remove('show')">&times;</button>
+    <img src="" alt="Foto" onclick="event.stopPropagation()">
+    <div class="caption"></div>
+</div>
+
+<script>
+    // ==== CONFIG ====
+    const GIST_FILENAME = 'engine-build-log-data.json';
+    const FIXED_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
+    let isLoading = false;
+    let autoSaveTimer = null;
+
+    function getGistConfig() { return { token: localStorage.getItem('gh_token') || '' }; }
+    function isGistConfigured() { return getGistConfig().token.length > 0; }
+
+    // ==== GUIDE TOGGLE ====
+    function toggleGuide(btn) {
+        const guide = btn.closest('.step-card').querySelector('.step-guide');
+        if (guide) {
+            const open = guide.classList.toggle('open');
+            btn.classList.toggle('open', open);
+            btn.textContent = open ? 'Schliessen' : 'Anleitung';
+        }
+    }
+
+    // ==== PROGRESS ====
+    function updateProgress() {
+        for (let p = 1; p <= 4; p++) {
+            const phase = document.getElementById('phase' + p);
+            if (!phase) continue;
+            const checks = phase.querySelectorAll('input[type="checkbox"][data-field]');
+            const done = Array.from(checks).filter(c => c.checked).length;
+            const bar = document.getElementById('prog' + p);
+            const text = document.getElementById('progText' + p);
+            if (bar) bar.style.width = (checks.length ? (done / checks.length * 100) : 0) + '%';
+            if (text) text.textContent = done + ' / ' + checks.length + ' erledigt';
+        }
+    }
+
+    // ==== NAV ====
+    function scrollToPhase(id) {
+        const el = document.getElementById(id);
+        if (el) {
+            const headerH = document.querySelector('.header').offsetHeight;
+            window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - headerH - 10, behavior: 'smooth' });
+        }
+    }
+
+    // ==== DATA ====
+    function collectData() {
+        const data = {};
+        document.querySelectorAll('[data-field]').forEach(el => {
+            data[el.dataset.field] = el.type === 'checkbox' ? el.checked : el.value;
+        });
+        return data;
+    }
+
+    function applyData(data) {
+        document.querySelectorAll('[data-field]').forEach(el => {
+            const v = data[el.dataset.field];
+            if (v !== undefined) { if (el.type === 'checkbox') el.checked = v; else el.value = v; }
+        });
+        updateProgress();
+    }
+
+    async function saveData() {
+        // Merge with existing data (main page fields stay intact)
+        const existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+        const myData = collectData();
+        const merged = Object.assign({}, existing, myData);
+        merged._savedAt = new Date().toISOString();
+        localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+        updateSaveStatus();
+
+        if (isGistConfigured()) {
+            try {
+                const t = getGistConfig().token;
+                const res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(merged, null, 2) } } })
+                });
+                if (res.ok) showToast('Gespeichert (lokal + Cloud)');
+                else showToast('Lokal gespeichert (Cloud-Fehler)');
+            } catch (e) { showToast('Lokal gespeichert (Cloud-Fehler)'); }
+        } else { showToast('Lokal gespeichert'); }
+    }
+
+    function loadData() {
+        isLoading = true;
+        const raw = localStorage.getItem('engineBuildLog');
+        if (raw) { try { applyData(JSON.parse(raw)); } catch(e) {} }
+
+        if (isGistConfigured()) {
+            fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
+                headers: { 'Authorization': 'Bearer ' + getGistConfig().token }
+            }).then(r => r.json()).then(gist => {
+                const file = gist.files && gist.files[GIST_FILENAME];
+                if (file) {
+                    const data = JSON.parse(file.content);
+                    applyData(data);
+                    localStorage.setItem('engineBuildLog', JSON.stringify(data));
+                }
+                isLoading = false; updateSaveStatus();
+            }).catch(() => { isLoading = false; });
+        } else { isLoading = false; updateSaveStatus(); }
+    }
+
+    function autoSave() {
+        if (isLoading) return;
+        updateProgress();
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(() => saveData(), 2000);
+    }
+
+    function updateSaveStatus() {
+        const raw = localStorage.getItem('engineBuildLog');
+        if (raw) {
+            try {
+                const d = new Date(JSON.parse(raw)._savedAt);
+                document.getElementById('saveStatus').textContent =
+                    'Gespeichert: ' + d.toLocaleDateString('de-DE') + ' ' + d.toLocaleTimeString('de-DE') +
+                    (isGistConfigured() ? ' (Cloud Sync)' : ' (Lokal)');
+            } catch(e) {}
+        }
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast'); t.textContent = msg;
+        t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ==== PHOTOS ====
+    function addPhoto(group) {
+        const input = document.createElement('input');
+        input.type = 'file'; input.accept = 'image/*'; input.capture = 'environment';
+        input.onchange = function(e) {
+            const file = e.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxW = 1200;
+                    const scale = img.width > maxW ? maxW / img.width : 1;
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    const photos = JSON.parse(localStorage.getItem('buildPhotos_' + group) || '[]');
+                    photos.push({ src: dataUrl, caption: '', time: new Date().toISOString() });
+                    localStorage.setItem('buildPhotos_' + group, JSON.stringify(photos));
+                    renderPhotos(group);
+                    showToast('Foto gespeichert');
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+        input.click();
+    }
+
+    function renderPhotos(group) {
+        const gallery = document.querySelector('.photo-gallery[data-photo-group="' + group + '"]');
+        if (!gallery) return;
+        const photos = JSON.parse(localStorage.getItem('buildPhotos_' + group) || '[]');
+        gallery.innerHTML = '';
+        photos.forEach((p, i) => {
+            const img = document.createElement('img');
+            img.src = p.src; img.alt = p.caption || 'Foto ' + (i+1);
+            img.onclick = function() {
+                const lb = document.getElementById('lightbox');
+                lb.querySelector('img').src = p.src;
+                lb.querySelector('.caption').textContent = p.caption || new Date(p.time).toLocaleString('de-DE');
+                lb.classList.add('show');
+            };
+            gallery.appendChild(img);
+        });
+    }
+
+    // ==== INIT ====
+    document.addEventListener('DOMContentLoaded', function() {
+        loadData();
+        ['phase1','phase2','phase3','phase4'].forEach(g => renderPhotos(g));
+    });
+</script>
+
+</body>
+</html>
