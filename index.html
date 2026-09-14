@@ -897,7 +897,7 @@
                     <div class="comp-sub">Installationshinweise (COMP Cams)</div>
                     <div class="spec-item"><span class="spec-label">Ventilfedern</span><span class="spec-value">Stock-Federn k&ouml;nnen NICHT verwendet werden!</span></div>
                     <div class="spec-item"><span class="spec-label">Screw-in Studs</span><span class="spec-value">Erforderlich (z.B. COMP #4504 f&uuml;r &rsquo;78+)</span></div>
-                    <div class="spec-item"><span class="spec-label">Guide Plates</span><span class="spec-value">Erforderlich &ndash; <strong>COMP 4816-8</strong> (f&uuml;r 5/16" Pushrods)</span></div>
+                    <div class="spec-item"><span class="spec-label">Guide Plates</span><span class="spec-value">Erforderlich (COMP #1442-16 bei Studs + Guideplates)</span></div>
                     <div class="spec-item"><span class="spec-label">Axialspiel Soll</span><span class="spec-value">0.001" &ndash; 0.007" (lt. Ford IS-1850-0427)</span></div>
                     <div class="spec-item" style="padding-top:0.4rem;border-top:1px solid #c3dafe;">
                         <span class="spec-label">Hersteller-PDF</span>
@@ -1079,7 +1079,7 @@
 
             <div class="info-box">
                 <strong>Ziel-Quench:</strong> 0.035" &ndash; 0.045" &nbsp;|&nbsp;
-                <strong>Min. Ventilfreiraum:</strong> Einlass &ge; 0.080" / Auslass &ge; 0.110"
+                <strong>Min. Ventilfreiraum:</strong> Einlass &ge; 0.080" / Auslass &ge; 0.100"
             </div>
 
             <div class="table-wrapper">
@@ -1091,7 +1091,7 @@
                             <th>Dichtungsdicke (B)</th>
                             <th>Quench (A+B)</th>
                             <th>P-t-V Einlass<br>(&ge;0.080")</th>
-                            <th>P-t-V Auslass<br>(&ge;0.110")</th>
+                            <th>P-t-V Auslass<br>(&ge;0.100")</th>
                         </tr>
                     </thead>
                     <tbody id="quenchTableBody"></tbody>
@@ -1154,7 +1154,7 @@
                     <div class="spec-item"><span class="spec-label">Bauform</span><span class="spec-value">Link Bar (Retro-Fit)</span></div>
                     <div class="spec-item"><span class="spec-label">Max. Federdruck</span><span class="spec-value">Seat: 100&ndash;250 lbs | Open: 285&ndash;650 lbs</span></div>
                     <div class="spec-item"><span class="spec-label">Max. Drehzahl</span><span class="spec-value">6.500&ndash;7.000+ U/min</span></div>
-                    <div class="spec-item"><span class="spec-label">Preload</span><span class="spec-value"><strong>1/2 bis 3/4 Umdrehung</strong> nach Nullspiel, nur auf dem Grundkreis der Nockenwelle einstellen</span></div>
+                    <div class="spec-item"><span class="spec-label">Preload</span><span class="spec-value">1/4 bis 1/2 Umdrehung nach Nullspiel (HLT: weniger Preload!)</span></div>
                     <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">16 St&uuml;ck</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Bei 302-Blocks m&uuml;ssen die Zylinderkoepfe abgenommen werden, um die Lifter einzubauen!</div>
                 </div>
@@ -1215,7 +1215,7 @@
                 <input type="text" data-field="pushrod_actual" placeholder='z.B. 7.100"' oninput="autoSave()">
             </div>
             <div class="form-group">
-                <label>Kipphebel-Vorspannung (Lifter Preload) <span class="tolerance">Empf.: 1/2 bis 3/4 Umdrehung nach Nullspiel (nur auf Grundkreis!)</span></label>
+                <label>Kipphebel-Vorspannung (Lifter Preload) <span class="tolerance">Empf.: 1/4 bis 1/2 Umdrehung nach Nullspiel</span></label>
                 <input type="text" data-field="lifter_preload" placeholder="z.B. 1/2 Umdrehung" oninput="autoSave()">
             </div>
             <div class="section-comment">
@@ -1237,18 +1237,17 @@
                 <div class="comp-body">
                     <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Abh. von Vergaser-Konfiguration (DellOrto-Downdraft oder 4-Barrel)</span></div>
                     <div class="spec-item"><span class="spec-label">Enddichtungen</span><span class="spec-value">RTV-Silikon statt Kork empfohlen</span></div>
-                    <div class="spec-item"><span class="spec-label">Endwert Drehmoment</span><span class="spec-value"><strong>20 &ndash; 25 ft-lbs</strong> / 27&ndash;34 Nm (2 Stufen, Kreuzmuster innen nach au&szlig;en)</span></div>
+                    <div class="spec-item"><span class="spec-label">Endwert Drehmoment</span><span class="spec-value">18 ft-lbs / 24 Nm (3 Stufen)</span></div>
                 </div>
             </div>
 
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">Ansaugkr&uuml;mmer-Dichtung &ndash; Fel-Pro 1250S</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">Ansaugkr&uuml;mmer-Dichtung &ndash; Fel-Pro 1250</div>
                 <div class="comp-body">
-                    <div class="spec-item"><span class="spec-label">Teilenummer</span><span class="spec-value"><strong>Fel-Pro 1250S</strong> &ndash; nur die S-Version (stahlarmiert)!</span></div>
-                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Performance Intake Manifold Gasket Set, stahlarmiert</span></div>
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Performance Intake Manifold Gasket Set</span></div>
                     <div class="spec-item"><span class="spec-label">Passend</span><span class="spec-value">Small Block Ford 260/289/302/351W</span></div>
                     <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">PermaTorque&reg; mit Stahleinfassung</span></div>
-                    <div class="spec-item"><span class="spec-label">Hinweis</span><span class="spec-value">Dichtung nicht port-matchen. Ecken mit RTV abdichten.</span></div>
+                    <div class="spec-item"><span class="spec-label">Hinweis</span><span class="spec-value">Port-&Ouml;ffnung auf AFR-1399-Ports abstimmen (ggf. matchen)</span></div>
                 </div>
             </div>
             <a class="guide-link" onclick="showGuide('guide-intake')">&#128214; Anleitung: Ansaugspinne Montage &amp; Drehmomente</a>
@@ -1258,7 +1257,7 @@
             </div>
             <div class="check-item">
                 <input type="checkbox" data-field="chk_intake_torqued" onchange="autoSave()">
-                <span>Ansaugspinne auf 20&ndash;25 ft-lbs angezogen (2-Stufen-Verfahren, innen nach au&szlig;en)</span>
+                <span>Ansaugspinne auf 18 ft-lbs angezogen (3-Stufen-Verfahren)</span>
             </div>
             <div class="section-comment">
                 <label>Kommentar zu Ansaugspinne</label>
@@ -1277,12 +1276,12 @@
             <div class="comp-box">
                 <div class="comp-toggle" onclick="toggleComp(this)">Z&uuml;ndkerzen-Spezifikation</div>
                 <div class="comp-body">
-                    <div class="spec-item"><span class="spec-label">Empfohlen</span><span class="spec-value"><strong>NGK FR5 (7373)</strong></span></div>
-                    <div class="spec-item"><span class="spec-label">Alternativen</span><span class="spec-value">Autolite 3924 / Champion RC9YC</span></div>
+                    <div class="spec-item"><span class="spec-label">Empfohlen</span><span class="spec-value">Autolite 3924</span></div>
+                    <div class="spec-item"><span class="spec-label">Alternativen</span><span class="spec-value">NGK FR5 / Champion RC9YC</span></div>
                     <div class="spec-item"><span class="spec-label">Gewinde</span><span class="spec-value">14mm, 0.750" (Long Reach)</span></div>
                     <div class="spec-item"><span class="spec-label">Sitzform</span><span class="spec-value">Dichtscheibe (Gasket Seat)</span></div>
-                    <div class="spec-item"><span class="spec-label">Elektrodenabstand</span><span class="spec-value"><strong>0.035" &ndash; 0.040"</strong> (f&uuml;r MSD 6AL CDI-Z&uuml;ndung &ndash; kleinerer Gap n&ouml;tig!)</span></div>
-                    <div class="spec-item"><span class="spec-label">Drehmoment</span><span class="spec-value">15 &ndash; 20 ft-lbs (im kalten Kopf, Anti-Seize auf Gewinde)</span></div>
+                    <div class="spec-item"><span class="spec-label">Elektrodenabstand</span><span class="spec-value">0.040" (NGK Pre-Set ab Werk)</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehmoment</span><span class="spec-value">15 &ndash; 22 ft-lbs</span></div>
                 </div>
             </div>
             <a class="guide-link" onclick="showGuide('guide-spark')">&#128214; Anleitung: Z&uuml;ndkerzen Details</a>
@@ -1292,7 +1291,7 @@
             </div>
             <div class="check-item">
                 <input type="checkbox" data-field="chk_spark_torqued" onchange="autoSave()">
-                <span>Z&uuml;ndkerzen angezogen (15&ndash;20 ft-lbs)</span>
+                <span>Z&uuml;ndkerzen angezogen (15&ndash;22 ft-lbs)</span>
             </div>
             <div class="section-comment">
                 <label>Kommentar zu Z&uuml;ndkerzen</label>
@@ -1418,10 +1417,9 @@
             </div>
 
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">Steuerkettendeckel &ndash; Ford Perf. M-6059-D351</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">Steuerkettendeckel (Timing Chain Cover)</div>
                 <div class="comp-body">
-                    <div class="spec-item"><span class="spec-label">Teilenummer</span><span class="spec-value"><strong>M-6059-D351</strong> &ndash; Kraftstoffpumpen-&Ouml;ffnung blind setzen (keine mech. Pumpe)</span></div>
-                    <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">Aluminium</span></div>
+                    <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">Aluminium oder Stahlblech (je nach Ausf&uuml;hrung)</span></div>
                     <div class="spec-item"><span class="spec-label">Dichtung</span><span class="spec-value">Kork/Gummi-Dichtung + RTV an den &Uuml;berg&auml;ngen Block/&Ouml;lwanne</span></div>
                     <div class="spec-item"><span class="spec-label">Drehmoment</span><span class="spec-value">12&ndash;18 ft-lbs (16&ndash;24 Nm)</span></div>
                     <div class="spec-item"><span class="spec-label">Kurbelwellen-Simmerring</span><span class="spec-value">Im Timing Cover &ndash; vor Montage einpressen!</span></div>
@@ -1439,10 +1437,8 @@
                     <div class="spec-item"><span class="spec-label">L&auml;nge</span><span class="spec-value">3.000" gesamt</span></div>
                     <div class="spec-item"><span class="spec-label">Pulley-Montage</span><span class="spec-value">3- und 4-Bolt Montagel&ouml;cher</span></div>
                     <div class="spec-item"><span class="spec-label">Timing-Markierung</span><span class="spec-value">Lasergeritzt, Passenger Side (11 Uhr) + Driver Side (2 Uhr)</span></div>
-                    <div class="spec-item"><span class="spec-label">Spacer</span><span class="spec-value"><strong>M-8510-B351</strong> &ndash; 0.950" Aluminium (nicht vergessen!)</span></div>
-                    <div class="spec-item"><span class="spec-label">Balancer Bolt</span><span class="spec-value"><strong>ARP 154-2503</strong> &ndash; NICHT 154-2501 (das ist die 351C-Nummer!)</span></div>
                     <div class="spec-item"><span class="spec-label">Montage</span><span class="spec-value">Mit Einpresswerkzeug (Crank Bolt + Adapter) &ndash; NIEMALS mit Hammer!</span></div>
-                    <div class="spec-item"><span class="spec-label">Drehmoment Zentralschraube</span><span class="spec-value"><strong>90&ndash;100 ft-lbs</strong> (122&ndash;136 Nm) mit ARP 154-2503 + ARP Lube. Kurbelwelle blockieren!</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehmoment Zentralschraube</span><span class="spec-value">70&ndash;90 ft-lbs (95&ndash;122 Nm)</span></div>
                 </div>
             </div>
 
