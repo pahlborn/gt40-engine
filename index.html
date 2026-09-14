@@ -468,8 +468,8 @@
                 <div class="comp-toggle" onclick="toggleComp(this)">&#9889; Gesch&auml;tzte Motorleistung</div>
                 <div class="comp-body">
                     <div class="info-box"><strong>Hinweis:</strong> Sch&auml;tzwerte basierend auf der Komponentenauswahl. Tats&auml;chliche Leistung h&auml;ngt stark von Ansaugung, Abgasanlage, Abstimmung und Verdichtung ab.</div>
-                    <div class="spec-item"><span class="spec-label">Gesch. Leistung</span><span class="spec-value"><strong>330 &ndash; 360 HP</strong> (abh. von Intake/Exhaust/Tuning)</span></div>
-                    <div class="spec-item"><span class="spec-label">Gesch. Drehmoment</span><span class="spec-value"><strong>330 &ndash; 350 ft-lbs</strong> (447&ndash;475 Nm)</span></div>
+                    <div class="spec-item"><span class="spec-label">Gesch. Leistung</span><span class="spec-value"><strong>330 &ndash; 360 BHP</strong> (246&ndash;268 kW / 335&ndash;365 PS) &ndash; abh. von Intake/Exhaust/Tuning</span></div>
+                    <div class="spec-item"><span class="spec-label">Gesch. Drehmoment</span><span class="spec-value"><strong>330 &ndash; 350 ft-lbs</strong> (447&ndash;475 Nm) &ndash; an der Kurbelwelle</span></div>
                     <div class="spec-item"><span class="spec-label">Peak Power RPM</span><span class="spec-value">5.500 &ndash; 6.000 U/min</span></div>
                     <div class="spec-item"><span class="spec-label">Peak Torque RPM</span><span class="spec-value">3.500 &ndash; 4.500 U/min</span></div>
                     <div class="spec-item"><span class="spec-label">Nutzbares Drehzahlband</span><span class="spec-value">2.200 &ndash; 6.200 U/min (Cam-Range lt. COMP Cams)</span></div>
@@ -479,7 +479,7 @@
                     <table style="width:100%;font-size:0.78rem;border-collapse:collapse;">
                         <tr style="background:#f0f5ff;"><th style="text-align:left;padding:0.3rem;">Komponente</th><th style="text-align:left;padding:0.3rem;">Einfluss</th><th style="text-align:left;padding:0.3rem;">Tendenz</th></tr>
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">DellOrto DRLA 45 (4x Downdraft)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Direktes Ansprechverhalten</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Einzeldrosselklappen &rarr; sofortige Response</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Bundle of Snakes (TSC GT40)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">+15&ndash;30 HP vs. Gusskr&uuml;mmer</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Platzoptimiert f&uuml;r GT40-Chassis</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Bundle of Snakes (TSC GT40)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">+15&ndash;30 BHP vs. Gusskr&uuml;mmer</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Platzoptimiert f&uuml;r GT40-Chassis</td></tr>
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndung (MSD 6AL)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Kapazitiv &rarr; st&auml;rkerer Funke</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Advance-Kurve abstimmen f&uuml;r max. Leistung</td></tr>
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndzeitpunkt</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Leistung + Detonation</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">32&ndash;36&deg; total (je nach CR + Benzin)</td></tr>
                         <tr><td style="padding:0.25rem;">Verdichtung</td><td style="padding:0.25rem;">Effizienz + Drehmoment</td><td style="padding:0.25rem;">9.5&ndash;10.0:1 ideal f&uuml;r Super Plus (98 ROZ)</td></tr>
@@ -493,8 +493,8 @@
 
             <!-- Leistungsziele -->
             <div class="form-group">
-                <label>Angestrebte Leistung (HP)</label>
-                <input type="text" data-field="target_hp" placeholder='z.B. 350 HP' oninput="autoSave()">
+                <label>Angestrebte Leistung (BHP an Kurbelwelle)</label>
+                <input type="text" data-field="target_hp" placeholder='z.B. 350 BHP (261 kW / 355 PS)' oninput="autoSave()">
             </div>
             <div class="form-group">
                 <label>Angestrebtes Drehmoment (ft-lbs)</label>
@@ -577,22 +577,82 @@
             <!-- Ergebnis-Anzeige -->
             <div id="simResults" style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;margin:0.6rem 0;font-size:0.82rem;">
                 <div style="background:#e6ffed;padding:0.5rem;border-radius:8px;text-align:center;">
-                    <div style="font-size:0.7rem;color:#276749;">Gesch. Peak Leistung</div>
-                    <div id="simPeakHP" style="font-size:1.3rem;font-weight:800;color:#276749;">-- HP</div>
+                    <div style="font-size:0.7rem;color:#276749;">Gesch. Peak Leistung (BHP)</div>
+                    <div id="simPeakHP" style="font-size:1.3rem;font-weight:800;color:#276749;">-- BHP</div>
                     <div id="simPeakHPrpm" style="font-size:0.7rem;color:#276749;">@ -- RPM</div>
+                    <div id="simPeakHPconv" style="font-size:0.62rem;color:#718096;">-- kW / -- PS</div>
                 </div>
                 <div style="background:#ebf4ff;padding:0.5rem;border-radius:8px;text-align:center;">
                     <div style="font-size:0.7rem;color:#2b6cb0;">Gesch. Peak Drehmoment</div>
                     <div id="simPeakTQ" style="font-size:1.3rem;font-weight:800;color:#2b6cb0;">-- ft-lbs</div>
                     <div id="simPeakTQrpm" style="font-size:0.7rem;color:#2b6cb0;">@ -- RPM</div>
+                    <div id="simPeakTQconv" style="font-size:0.62rem;color:#718096;">-- Nm</div>
+                </div>
+            </div>
+
+            <!-- Masseinheiten-Hinweis -->
+            <div class="comp-box" style="margin:0.3rem 0;background:#f0f5ff;border-color:#90cdf4;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="font-size:0.78rem;color:#2b6cb0;">&#128207; Ma&szlig;einheiten in diesem Dokument</div>
+                <div class="comp-body">
+                    <p style="font-size:0.76rem;line-height:1.4;margin:0 0 0.3rem;">Alle Leistungs- und Drehmoment-Angaben in diesem Build-Log verwenden die in der US-Motorentechnik &uuml;blichen <strong>imperialen Einheiten</strong>. Die Umrechnung in metrische Einheiten wird wo m&ouml;glich mit angegeben.</p>
+
+                    <div class="comp-sub" style="margin-top:0.3rem;">Leistung</div>
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Bezeichnung</th><th style="text-align:left;padding:0.2rem;">Definition / Verwendung</th><th style="text-align:center;padding:0.2rem;">Umrechnung</th></tr>
+                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">BHP</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Brake Horsepower</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Dieses Dokument.</strong> Nutzleistung an der Kurbelwelle, ohne Nebenaggregat-Verluste. Ford Perf. Katalog-Standard (SAE J607).</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 BHP = Basis</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">PS (DIN)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pferdest&auml;rke</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">DIN 66036. Metrische Pferdest&auml;rke. In DE/EU gebr&auml;uchlich.</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 BHP = 1.0139 PS</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">kW</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kilowatt</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">SI-Einheit. EU-Fahrzeugpapiere, offizielle Angaben.</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 BHP = 0.7457 kW</td></tr>
+                        <tr><td style="padding:0.2rem;">WHP</td><td style="padding:0.2rem;">Wheel Horsepower</td><td style="padding:0.2rem;">Radleistung, nach Getriebe-/Antriebsverlusten (~12&ndash;18% weniger als BHP).</td><td style="text-align:center;padding:0.2rem;">~0.82&ndash;0.88 &times; BHP</td></tr>
+                    </table>
+
+                    <div class="comp-sub" style="margin-top:0.3rem;">Drehmoment</div>
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Bezeichnung</th><th style="text-align:center;padding:0.2rem;">Umrechnung</th></tr>
+                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">ft-lbs</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Foot-Pounds (lb-ft). <strong>Dieses Dokument</strong> (US-Standard f&uuml;r Motordrehmoment).</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 ft-lb = 1.3558 Nm</td></tr>
+                        <tr><td style="padding:0.2rem;">Nm</td><td style="padding:0.2rem;">Newtonmeter. SI-Einheit, in EU/DE gebr&auml;uchlich.</td><td style="text-align:center;padding:0.2rem;">1 Nm = 0.7376 ft-lbs</td></tr>
+                    </table>
+
+                    <div class="comp-sub" style="margin-top:0.3rem;">Anzugsdrehmomente (Schrauben)</div>
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:center;padding:0.2rem;">Umrechnung</th></tr>
+                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">ft-lbs</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Dieses Dokument</strong> (US-Hersteller-Specs).</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 ft-lb = 1.3558 Nm</td></tr>
+                        <tr><td style="padding:0.2rem;">in-lbs</td><td style="padding:0.2rem;">F&uuml;r kleine Schrauben (1/12 ft-lb). Teils in US-Specs.</td><td style="text-align:center;padding:0.2rem;">1 in-lb = 0.1130 Nm</td></tr>
+                    </table>
+
+                    <div class="comp-sub" style="margin-top:0.3rem;">Druck</div>
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:center;padding:0.2rem;">Umrechnung</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">psi</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">&Ouml;ldruck, Kraftstoffdruck (US-Standard).</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 psi = 0.0689 Bar</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Bar</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Metrisch (DE/EU).</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 Bar = 14.504 psi</td></tr>
+                        <tr><td style="padding:0.2rem;">PSI (Zugfestigkeit)</td><td style="padding:0.2rem;">Materialfestigkeit (z.B. ARP 200.000 PSI).</td><td style="text-align:center;padding:0.2rem;">1.000 PSI = 6.895 MPa</td></tr>
+                    </table>
+
+                    <div class="comp-sub" style="margin-top:0.3rem;">L&auml;nge / Volumen</div>
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:center;padding:0.2rem;">Umrechnung</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Inch (")</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Bohrung, Hub, Spaltma&szlig;e, Schrauben.</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1" = 25.4 mm</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">thou (mil)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">0.001" = ein Tausendstel Inch. Lagerspiel, Dichtungsdicke.</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 thou = 0.0254 mm</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">ci / CID</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Cubic Inches &ndash; Hubraum (US).</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 ci = 16.387 cc (ml)</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">cc</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kubikzentimeter &ndash; Brennraumvolumen, Kanalvolumen.</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 cc = 1 ml</td></tr>
+                        <tr><td style="padding:0.2rem;">CFM</td><td style="padding:0.2rem;">Cubic Feet per Minute &ndash; Luftdurchsatz Zylinderkopf.</td><td style="text-align:center;padding:0.2rem;">1 CFM = 1.699 m&sup3;/h</td></tr>
+                    </table>
+
+                    <div class="comp-sub" style="margin-top:0.3rem;">Gewicht</div>
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:center;padding:0.2rem;">Umrechnung</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">lbs</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">US-Pfund. Bauteil-/Motorgewicht.</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 lb = 0.4536 kg</td></tr>
+                        <tr><td style="padding:0.2rem;">kg</td><td style="padding:0.2rem;">Kilogramm (SI). Fahrzeuggewicht.</td><td style="text-align:center;padding:0.2rem;">1 kg = 2.2046 lbs</td></tr>
+                    </table>
+
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Pr&uuml;fstands-Korrektur:</strong> Ford Performance gibt Pushrod-Crate-Engine-Leistung nach <strong>SAE J607</strong> (&bdquo;Racer Corrected&ldquo;) an: korrigiert auf 60&deg;F / 29.92" Hg. Diese Werte liegen ca. <strong>4% &uuml;ber</strong> SAE J1349 (77&deg;F / 29.31" Hg, 85% mech. Wirkungsgrad), dem heutigen Industrie-Standard. Unser Simulator berechnet BHP nach der Standardformel <strong>BHP = Torque &times; RPM / 5252</strong> und entspricht am ehesten SAE J607.</div>
                 </div>
             </div>
 
             <!-- Canvas Chart -->
             <canvas id="simChart" width="700" height="340" style="width:100%;height:auto;border:1px solid #e2e8f0;border-radius:8px;background:#fff;"></canvas>
             <div style="display:flex;justify-content:center;gap:1rem;font-size:0.7rem;margin-top:0.2rem;">
-                <span><span style="color:#276749;font-weight:700;">&#9644;</span> Leistung (HP)</span>
-                <span><span style="color:#2b6cb0;font-weight:700;">&#9644;</span> Drehmoment (ft-lbs)</span>
+                <span><span style="color:#276749;font-weight:700;">&#9644;</span> Leistung (BHP &ndash; Brake Horsepower)</span>
+                <span><span style="color:#2b6cb0;font-weight:700;">&#9644;</span> Drehmoment (ft-lbs / Nm)</span>
                 <span style="color:#a0aec0;">&#9644; VE (%)</span>
             </div>
 
@@ -1931,7 +1991,7 @@
             <h2>15. Streckenanalyse &amp; Fahrzeugeinsch&auml;tzung</h2>
         </div>
         <div class="section-body">
-            <div class="info-box" style="margin-bottom:0.5rem;"><strong>Fahrzeug:</strong> TSC GT40 Kit Car | ~1.050 kg | ~340&ndash;360 HP | ~324&ndash;343 HP/t | Crossply-Reifen (Avon A24) | Kein ABS/TC/ESP | Schaltgetriebe UN1-13</div>
+            <div class="info-box" style="margin-bottom:0.5rem;"><strong>Fahrzeug:</strong> TSC GT40 Kit Car | ~1.050 kg | ~340&ndash;360 BHP (254&ndash;268 kW) | ~324&ndash;343 BHP/t | Crossply-Reifen (Avon A24) | Kein ABS/TC/ESP | Schaltgetriebe UN1-13</div>
 
             <!-- Pannoniaring -->
             <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
@@ -4288,10 +4348,12 @@
         }
 
         // Update display
-        document.getElementById('simPeakHP').textContent = Math.round(peakHP) + ' HP';
+        document.getElementById('simPeakHP').textContent = Math.round(peakHP) + ' BHP';
         document.getElementById('simPeakHPrpm').textContent = '@ ' + peakHPrpm + ' RPM';
+        document.getElementById('simPeakHPconv').textContent = Math.round(peakHP * 0.7457) + ' kW / ' + Math.round(peakHP * 1.0139) + ' PS (DIN)';
         document.getElementById('simPeakTQ').textContent = Math.round(peakTQ) + ' ft-lbs';
-        document.getElementById('simPeakTQrpm').textContent = '@ ' + peakTQrpm + ' RPM (' + Math.round(peakTQ * 1.3558) + ' Nm)';
+        document.getElementById('simPeakTQrpm').textContent = '@ ' + peakTQrpm + ' RPM';
+        document.getElementById('simPeakTQconv').textContent = Math.round(peakTQ * 1.3558) + ' Nm';
 
         // Store data for drivetrain sim
         lastSimData = data;
@@ -4348,7 +4410,7 @@
         ctx.save();
         ctx.fillStyle = '#276749'; ctx.font = 'bold 10px sans-serif';
         ctx.translate(12, pad.top + ch / 2); ctx.rotate(-Math.PI / 2);
-        ctx.textAlign = 'center'; ctx.fillText('HP', 0, 0);
+        ctx.textAlign = 'center'; ctx.fillText('BHP / ft-lbs', 0, 0);
         ctx.restore();
         ctx.save();
         ctx.fillStyle = '#2b6cb0'; ctx.font = 'bold 10px sans-serif';
@@ -4397,7 +4459,7 @@
                 ctx.beginPath(); ctx.arc(xPos(data[i].rpm), yPos(data[i].hp), 4, 0, 2 * Math.PI);
                 ctx.fillStyle = '#276749'; ctx.fill();
                 ctx.fillStyle = '#276749'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'left';
-                ctx.fillText(Math.round(peakHP) + ' HP', xPos(data[i].rpm) + 6, yPos(data[i].hp) - 6);
+                ctx.fillText(Math.round(peakHP) + ' BHP', xPos(data[i].rpm) + 6, yPos(data[i].hp) - 6);
             }
             if (Math.abs(data[i].torque - peakTQ) < 0.1 && i > 5) {
                 ctx.beginPath(); ctx.arc(xPos(data[i].rpm), yPos(data[i].torque), 4, 0, 2 * Math.PI);
