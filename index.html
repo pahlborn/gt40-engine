@@ -2237,9 +2237,9 @@
                     <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Renault UN1-013 (Renault 21 Turbo Basis)</span></div>
                     <div class="spec-item"><span class="spec-label">Konfiguration</span><span class="spec-value">RH Change (Drehrichtung umgekehrt f&uuml;r Mid-Engine)</span></div>
                     <div class="spec-item"><span class="spec-label">Modifikation</span><span class="spec-value">Modified 2nd &amp; 3rd Gears, drilled out Oil Ways</span></div>
-                    <div class="spec-item"><span class="spec-label">Drehmomentgrenze</span><span class="spec-value">315 Nm (232 lb.ft) Katalog-Dauerlast. Praxis: Trackday-erprobt mit ~475 Nm Peak (302ci / ~360 BHP)</span></div>
-                    <div id="crossCheckTorque" style="background:#ebf8ff;padding:0.5rem;border-radius:6px;border:1px solid #90cdf4;margin:0.3rem 0;font-size:0.76rem;display:none;">
-                        <strong style="color:#2b6cb0;">&#8505; GETRIEBE-INFO:</strong>
+                    <div class="spec-item"><span class="spec-label">Drehmomentgrenze (Eingang)</span><span class="spec-value">315 Nm (232 lb.ft) &ndash; Renault/Lotus-Spec f&uuml;r UN1-016. UN1-026 &bdquo;High Torque&ldquo;: 400 Nm. Getestet bis 550 Nm (Quelle: Lotus Esprit World)</span></div>
+                    <div id="crossCheckTorque" style="background:#fffff0;padding:0.5rem;border-radius:6px;border:1px solid #fefcbf;margin:0.3rem 0;font-size:0.76rem;display:none;">
+                        <strong style="color:#975a16;">&#9888; GETRIEBE CROSS-CHECK:</strong>
                         <span id="crossCheckTorqueText"></span>
                     </div>
                     <div class="comp-sub" style="margin-top:0.3rem;">Standard-&Uuml;bersetzungen UN1-13</div>
@@ -4081,12 +4081,14 @@
             warnings.push({type:'danger', text:'<strong>Peak Torque @ ' + peakTQrpm + ' RPM</strong> liegt &uuml;ber dem Systemlimit <strong>' + SYSTEM_RPM_LIMIT + ' RPM</strong>. Das Drehmoment-Maximum ist im Betrieb nicht erreichbar!'});
         }
 
-        // 3. Torque vs gearbox (UN1-13 Katalog-Dauerlast: 315 Nm)
+        // 3. Torque vs gearbox (UN1-016 Renault/Lotus-Spec: 315 Nm Eingang, getestet bis 550 Nm)
         var peakTQnm = Math.round(peakTQ * 1.3558);
         if (peakTQnm > 315 && peakTQnm <= 550) {
-            warnings.push({type:'info', text:'<strong>Getriebe-Info:</strong> Berechnetes Drehmoment <strong>' + peakTQnm + ' Nm</strong> liegt &uuml;ber der UN1-13 Katalog-Dauerlast (315 Nm). Praxiserfahrung best&auml;tigt zuverl&auml;ssigen Trackday-Betrieb bei ~475 Nm. Empfohlen: Getriebeoelk&uuml;hler + regelm&auml;&szlig;ige &Ouml;lwechsel.'});
+            var pct = Math.round((peakTQnm / 315 - 1) * 100);
+            warnings.push({type:'info', text:'<strong>Getriebe:</strong> Eingangsdrehmoment <strong>' + peakTQnm + ' Nm</strong> liegt ' + pct + '% &uuml;ber der UN1-016 Renault/Lotus-Spec (315 Nm). Innerhalb des getesteten Bereichs (bis 550 Nm). Empfohlen: Getriebe&ouml;lk&uuml;hler + regelm&auml;&szlig;ige &Ouml;lwechsel.'});
         } else if (peakTQnm > 550) {
-            warnings.push({type:'warning', text:'<strong>Getriebe:</strong> Berechnetes Drehmoment <strong>' + peakTQnm + ' Nm</strong> liegt sehr deutlich &uuml;ber der UN1-13 Katalog-Dauerlast (315 Nm). Getriebeoelk&uuml;hler + Quaife-LSD + regelm&auml;&szlig;ige Inspektion dringend empfohlen.'});
+            var pct = Math.round((peakTQnm / 315 - 1) * 100);
+            warnings.push({type:'danger', text:'<strong>Getriebe:</strong> Eingangsdrehmoment <strong>' + peakTQnm + ' Nm</strong> liegt ' + pct + '% &uuml;ber der UN1-016 Spec (315 Nm) und <strong>&uuml;berschreitet den getesteten Bereich (550 Nm)</strong>. Getriebe&ouml;lk&uuml;hler + Quaife-LSD + regelm&auml;&szlig;ige Inspektion dringend empfohlen.'});
         }
 
         // 4. Rev Limiter field vs system limit
@@ -4483,15 +4485,16 @@
                 if (tq > peakEngineTq) peakEngineTq = tq;
             }
             var peakEngineTqNm = Math.round(peakEngineTq * 1.3558);
-            var gearboxContRating = 315;
-            if (peakEngineTqNm > gearboxContRating) {
-                var pct = Math.round((peakEngineTqNm / gearboxContRating - 1) * 100);
-                var infoText = '<strong>Getriebe-Info:</strong> Motor-Spitzendrehmoment <strong>' + peakEngineTqNm + ' Nm</strong> liegt ' + pct + '% &uuml;ber der UN1-13 Katalog-Dauerlast (' + gearboxContRating + ' Nm).';
-                if (peakEngineTqNm > 550) {
-                    infoText += ' <strong>Empfehlung:</strong> Getriebeoelk&uuml;hler + Quaife-LSD + regelm&auml;&szlig;ige Inspektion.';
-                    warnings.push({type:'warning', text: infoText});
+            var gearboxSpec = 315; // UN1-016 Renault/Lotus-Spec
+            var gearboxTested = 550; // Getestet bis 550 Nm
+            if (peakEngineTqNm > gearboxSpec) {
+                var pct = Math.round((peakEngineTqNm / gearboxSpec - 1) * 100);
+                var infoText = '<strong>Getriebe:</strong> Eingangsdrehmoment <strong>' + peakEngineTqNm + ' Nm</strong> liegt ' + pct + '% &uuml;ber der UN1-016 Renault/Lotus-Spec (' + gearboxSpec + ' Nm).';
+                if (peakEngineTqNm > gearboxTested) {
+                    infoText += ' <strong>&Uuml;berschreitet den getesteten Bereich (' + gearboxTested + ' Nm)!</strong> Getriebe&ouml;lk&uuml;hler + Quaife-LSD + regelm&auml;&szlig;ige Inspektion dringend empfohlen.';
+                    warnings.push({type:'danger', text: infoText});
                 } else {
-                    infoText += ' Praxiserfahrung zeigt, dass das Getriebe diese Belastung auf Trackdays bew&auml;ltigt. Empfohlen: Getriebeoelk&uuml;hler + regelm&auml;&szlig;ige &Ouml;lwechsel.';
+                    infoText += ' Innerhalb des getesteten Bereichs (bis ' + gearboxTested + ' Nm). Empfohlen: Getriebe&ouml;lk&uuml;hler + regelm&auml;&szlig;ige &Ouml;lwechsel.';
                     warnings.push({type:'info', text: infoText});
                 }
             }
@@ -5204,13 +5207,19 @@
                 var numOnly = parseFloat(val);
                 if (numOnly > 0) torqueNm = numOnly > 100 ? numOnly : numOnly * 1.3558; // guess: >100 = Nm, <100 = ft-lbs
             }
-            var gearboxContRating = 315; // UN1-13 Katalog-Dauerlast
-            if (torqueNm > gearboxContRating) {
+            var gearboxSpec = 315; // UN1-016 Renault/Lotus-Spec (Eingangsdrehmoment)
+            var gearboxTested = 550; // Getestet bis 550 Nm (Lotus Esprit World)
+            if (torqueNm > gearboxSpec) {
                 crossDiv.style.display = 'block';
-                var pct = Math.round((torqueNm / gearboxContRating - 1) * 100);
-                crossText.innerHTML = ' Motor: <strong>' + Math.round(torqueNm) + ' Nm</strong> (' + (torqueNm/1.3558).toFixed(0) + ' ft-lbs) liegt ' + pct + '% &uuml;ber der UN1-13 Katalog-Dauerlast (' + gearboxContRating + ' Nm). '
-                    + 'Praxiserfahrung: Das UN1-13 bew&auml;ltigt ~475 Nm Peak zuverl&auml;ssig auf Trackdays. '
-                    + '<strong>Empfohlen:</strong> Getriebe&ouml;lk&uuml;hler (Fittinge bereits vorhanden) + regelm&auml;&szlig;ige &Ouml;lwechsel.';
+                var pct = Math.round((torqueNm / gearboxSpec - 1) * 100);
+                var msg = ' Motor-Eingangsdrehmoment: <strong>' + Math.round(torqueNm) + ' Nm</strong> (' + (torqueNm/1.3558).toFixed(0) + ' ft-lbs) &ndash; ' + pct + '% &uuml;ber UN1-016 Renault/Lotus-Spec (' + gearboxSpec + ' Nm).';
+                if (torqueNm <= gearboxTested) {
+                    msg += ' Liegt innerhalb des getesteten Bereichs (bis ' + gearboxTested + ' Nm, Quelle: Lotus Esprit World).';
+                } else {
+                    msg += ' <strong style="color:#c53030;">&Uuml;berschreitet auch den getesteten Bereich (' + gearboxTested + ' Nm)!</strong>';
+                }
+                msg += ' <strong>Empfohlen:</strong> Getriebe&ouml;lk&uuml;hler + regelm&auml;&szlig;ige &Ouml;lwechsel (Castrol TAF-X oder gleichwertig).';
+                crossText.innerHTML = msg;
             } else {
                 crossDiv.style.display = 'none';
             }
