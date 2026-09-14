@@ -5174,27 +5174,75 @@
 
     // ==== EXPORT / IMPORT ====
     function exportJSON() {
-        const blob = new Blob([JSON.stringify(collectData(), null, 2)], { type: 'application/json' });
+        // Export ALL data: merged localStorage (includes build-log fields) + photos
+        const allData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+        const exportObj = {
+            fields: allData,
+            photos_main: JSON.parse(localStorage.getItem('engineBuildPhotos') || '{}'),
+            photos_buildlog: {}
+        };
+        ['phase1','phase2','phase3','phase4'].forEach(function(g) {
+            const d = localStorage.getItem('buildPhotos_' + g);
+            if (d) exportObj.photos_buildlog[g] = JSON.parse(d);
+        });
+        exportObj._exportedAt = new Date().toISOString();
+        const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = 'engine-build-log_' + new Date().toISOString().slice(0, 10) + '.json';
-        a.click(); URL.revokeObjectURL(a.href); showToast('Exportiert!');
+        a.click(); URL.revokeObjectURL(a.href); showToast('Exportiert (inkl. Build-Log + Fotos)!');
     }
     function importJSON(event) {
         const file = event.target.files[0]; if (!file) return;
         const r = new FileReader();
-        r.onload = function(e) { try { applyData(JSON.parse(e.target.result)); saveData(); showToast('Importiert!'); } catch(err) { showToast('Import-Fehler!'); } };
+        r.onload = function(e) {
+            try {
+                const imported = JSON.parse(e.target.result);
+                // Support both new format (with photos) and old format (flat fields)
+                if (imported.fields) {
+                    // New format
+                    const existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+                    const merged = Object.assign({}, existing, imported.fields);
+                    localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+                    applyData(merged);
+                    if (imported.photos_main) {
+                        localStorage.setItem('engineBuildPhotos', JSON.stringify(imported.photos_main));
+                        photoData = imported.photos_main;
+                        document.querySelectorAll('[data-photo-group]').forEach(function(g) { renderPhotos(g.dataset.photoGroup); });
+                    }
+                    if (imported.photos_buildlog) {
+                        Object.keys(imported.photos_buildlog).forEach(function(g) {
+                            localStorage.setItem('buildPhotos_' + g, JSON.stringify(imported.photos_buildlog[g]));
+                        });
+                    }
+                } else {
+                    // Old format (flat fields object)
+                    const existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+                    const merged = Object.assign({}, existing, imported);
+                    localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+                    applyData(merged);
+                }
+                saveData();
+                showToast('Importiert (inkl. Build-Log-Daten)!');
+            } catch(err) { showToast('Import-Fehler: ' + err.message); }
+        };
         r.readAsText(file); event.target.value = '';
     }
     function clearAllData() {
-        if (confirm('Alle Daten loeschen?')) {
+        if (confirm('ALLE Daten loeschen?\n\nDas betrifft:\n- Alle Messwerte und Eingaben\n- Alle Build-Log-Checklisten\n- Alle Fotos (Hauptseite + Build-Log)\n\nDieser Schritt kann nicht rueckgaengig gemacht werden!')) {
             localStorage.removeItem('engineBuildLog');
+            localStorage.removeItem('engineBuildPhotos');
+            ['phase1','phase2','phase3','phase4'].forEach(function(g) {
+                localStorage.removeItem('buildPhotos_' + g);
+            });
+            photoData = {};
             document.querySelectorAll('[data-field]').forEach(el => {
                 if (el.type === 'checkbox') el.checked = false; else el.value = '';
                 el.classList.remove('status-ok','status-warn','status-error');
             });
+            document.querySelectorAll('[data-photo-group]').forEach(function(g) { g.innerHTML = ''; });
             document.getElementById('saveStatus').innerHTML = '<span id="syncBadge"></span>';
-            updateSyncBadge(); showToast('Geloescht.');
+            updateSyncBadge(); showToast('Alle Daten geloescht (Hauptseite + Build-Log + Fotos).');
         }
     }
 
