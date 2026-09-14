@@ -151,6 +151,12 @@
         <button onclick="scrollToPhase('phase4')">Phase 4</button>
         <button class="save-btn" onclick="saveData()">Speichern</button>
     </div>
+    <div style="display:flex;align-items:center;gap:0.3rem;margin-top:0.4rem;max-width:400px;margin-left:auto;margin-right:auto;position:relative;">
+        <input type="text" id="searchInput" placeholder="Suchen..." oninput="doBuildSearch()" onkeydown="if(event.key==='Escape'){clearBuildSearch();event.target.blur();}" style="flex:1;padding:0.4rem 0.65rem;border:1px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);color:white;border-radius:6px;font-size:0.8rem;outline:none;">
+        <span id="buildSearchCount" style="font-size:0.68rem;color:rgba(255,255,255,0.8);min-width:2.5rem;text-align:center;"></span>
+        <button onclick="buildSearchJump(-1)" style="padding:0.25rem 0.4rem;border:none;background:rgba(255,255,255,0.2);color:white;border-radius:4px;cursor:pointer;font-size:0.72rem;">&#9650;</button>
+        <button onclick="buildSearchJump(1)" style="padding:0.25rem 0.4rem;border:none;background:rgba(255,255,255,0.2);color:white;border-radius:4px;cursor:pointer;font-size:0.72rem;">&#9660;</button>
+    </div>
     <div class="save-status" id="saveStatus"></div>
 </div>
 
@@ -1657,6 +1663,76 @@
             gallery.appendChild(img);
         });
     }
+
+    // ==== BUILD-LOG SEARCH ====
+    var bsMarks = [], bsIdx = -1, bsTimer = null;
+    function doBuildSearch() {
+        clearTimeout(bsTimer);
+        bsTimer = setTimeout(_doBuildSearch, 200);
+    }
+    function _doBuildSearch() {
+        clearBuildHighlights();
+        var q = document.getElementById('searchInput').value.trim();
+        if (q.length < 2) { document.getElementById('buildSearchCount').textContent = ''; return; }
+        var walker = document.createTreeWalker(document.querySelector('.container'), NodeFilter.SHOW_TEXT, null);
+        var matches = [], qLower = q.toLowerCase();
+        while (walker.nextNode()) {
+            var node = walker.currentNode;
+            if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE')) continue;
+            var idx = node.textContent.toLowerCase().indexOf(qLower);
+            if (idx >= 0) matches.push({ node: node, idx: idx, len: q.length });
+        }
+        for (var i = matches.length - 1; i >= 0; i--) {
+            var m = matches[i];
+            var range = document.createRange();
+            range.setStart(m.node, m.idx); range.setEnd(m.node, m.idx + m.len);
+            var mark = document.createElement('mark');
+            mark.style.cssText = 'background:#fefcbf;color:#744210;padding:0 1px;border-radius:2px;';
+            mark.className = 'bs-hl';
+            range.surroundContents(mark);
+        }
+        bsMarks = Array.from(document.querySelectorAll('mark.bs-hl'));
+        document.getElementById('buildSearchCount').textContent = bsMarks.length ? bsMarks.length + ' Treffer' : 'keine';
+        if (bsMarks.length) { bsIdx = 0; buildJumpTo(0); }
+    }
+    function buildJumpTo(idx) {
+        bsMarks.forEach(function(m) { m.style.background = '#fefcbf'; });
+        if (!bsMarks.length) return;
+        bsIdx = ((idx % bsMarks.length) + bsMarks.length) % bsMarks.length;
+        var mark = bsMarks[bsIdx];
+        // Open parent guide if collapsed
+        var el = mark;
+        while (el) {
+            if (el.classList && el.classList.contains('step-guide') && !el.classList.contains('open')) {
+                el.classList.add('open');
+                var btn = el.closest('.step-card').querySelector('.guide-toggle');
+                if (btn) { btn.classList.add('open'); btn.textContent = 'Schliessen'; }
+            }
+            el = el.parentElement;
+        }
+        mark.style.background = '#ed8936'; mark.style.color = 'white';
+        mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById('buildSearchCount').textContent = (bsIdx + 1) + ' / ' + bsMarks.length;
+    }
+    function buildSearchJump(dir) { if (bsMarks.length) buildJumpTo(bsIdx + dir); }
+    function clearBuildHighlights() {
+        document.querySelectorAll('mark.bs-hl').forEach(function(m) {
+            var p = m.parentNode; p.replaceChild(document.createTextNode(m.textContent), m); p.normalize();
+        });
+        bsMarks = []; bsIdx = -1;
+    }
+    function clearBuildSearch() {
+        document.getElementById('searchInput').value = '';
+        clearBuildHighlights();
+        document.getElementById('buildSearchCount').textContent = '';
+    }
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+            e.preventDefault();
+            document.getElementById('searchInput').focus();
+            document.getElementById('searchInput').select();
+        }
+    });
 
     // ==== INIT ====
     document.addEventListener('DOMContentLoaded', function() {

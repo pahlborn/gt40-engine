@@ -426,6 +426,29 @@
         mark.search-hl { background: #fefcbf; color: #744210; padding: 0 1px; border-radius: 2px; }
         mark.search-hl.active { background: #ed8936; color: white; }
 
+        /* ---- Sub-Page Search Results ---- */
+        .sub-results {
+            position: absolute; top: 100%; left: 0; right: 0;
+            background: white; border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25); max-height: 300px;
+            overflow-y: auto; z-index: 110;
+        }
+        .sub-results .sub-header {
+            font-size: 0.7rem; font-weight: 700; color: var(--text-light);
+            padding: 0.4rem 0.7rem 0.15rem; text-transform: uppercase; letter-spacing: 0.03em;
+            border-bottom: 1px solid var(--border);
+        }
+        .sub-results .sub-hit {
+            display: block; padding: 0.4rem 0.7rem; font-size: 0.78rem;
+            color: var(--text); text-decoration: none; border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+        .sub-results .sub-hit:hover { background: #ebf4ff; }
+        .sub-results .sub-hit .sub-page { font-size: 0.68rem; color: var(--primary-light); font-weight: 600; }
+        .sub-results .sub-hit .sub-context { color: var(--text-light); }
+        .sub-results .sub-hit mark { background: #fefcbf; color: #744210; padding: 0 1px; border-radius: 2px; font-weight: 600; }
+        .search-bar { position: relative; }
+
         /* ---- Mobile ---- */
         @media (max-width: 600px) {
             .header h1 { font-size: 1.05rem; }
@@ -469,6 +492,7 @@
             <button onclick="searchJump(1)" title="N&auml;chster">&#9660;</button>
             <button onclick="clearSearch()" title="Schlie&szlig;en" style="margin-left:0.2rem;">&#10005;</button>
         </div>
+        <div class="sub-results" id="subResults" style="display:none;"></div>
     </div>
     <div class="save-status" id="saveStatus"><span id="syncBadge"></span></div>
 </div>
@@ -5333,35 +5357,134 @@
     let searchIdx = -1;
     let searchTimeout = null;
 
+    // ==== SUB-PAGE SEARCH INDEX ====
+    var subPageCache = null; // [{url, title, lines: [{text, lineNum}]}]
+    var subPageLoading = false;
+
+    function loadSubPages() {
+        if (subPageCache || subPageLoading) return;
+        subPageLoading = true;
+        var pages = [
+            { url: 'build-log.html', title: 'Aufbau-Log' },
+            { url: 'docs/M-6009-302.html', title: 'M-6009-302 Short Block' },
+            { url: 'docs/M-6010-BOSS302.html', title: 'M-6010-BOSS302 Block' }
+        ];
+        subPageCache = [];
+        var loaded = 0;
+        pages.forEach(function(page) {
+            fetch(page.url).then(function(r) { return r.ok ? r.text() : ''; }).then(function(html) {
+                if (!html) return;
+                // Extract visible text from HTML
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(html, 'text/html');
+                // Remove script and style elements
+                doc.querySelectorAll('script, style').forEach(function(el) { el.remove(); });
+                var body = doc.body;
+                // Walk text nodes and collect lines with context
+                var lines = [];
+                var allText = body.textContent || '';
+                var rawLines = allText.split(/\n/);
+                rawLines.forEach(function(line, idx) {
+                    var trimmed = line.trim();
+                    if (trimmed.length > 3) {
+                        lines.push({ text: trimmed, lineNum: idx });
+                    }
+                });
+                subPageCache.push({ url: page.url, title: page.title, lines: lines });
+            }).catch(function() {}).finally(function() {
+                loaded++;
+                if (loaded === pages.length) subPageLoading = false;
+            });
+        });
+    }
+
+    function searchSubPages(q) {
+        var results = document.getElementById('subResults');
+        results.innerHTML = '';
+        results.style.display = 'none';
+        if (!subPageCache || q.length < 2) return;
+        var qLower = q.toLowerCase();
+        var hits = [];
+        subPageCache.forEach(function(page) {
+            page.lines.forEach(function(line) {
+                var idx = line.text.toLowerCase().indexOf(qLower);
+                if (idx >= 0) {
+                    // Extract context around the hit (max 100 chars)
+                    var start = Math.max(0, idx - 30);
+                    var end = Math.min(line.text.length, idx + q.length + 50);
+                    var before = (start > 0 ? '...' : '') + escHtml(line.text.substring(start, idx));
+                    var match = escHtml(line.text.substring(idx, idx + q.length));
+                    var after = escHtml(line.text.substring(idx + q.length, end)) + (end < line.text.length ? '...' : '');
+                    hits.push({ page: page, context: before + '<mark>' + match + '</mark>' + after });
+                }
+            });
+        });
+        // Deduplicate similar contexts per page
+        var seen = {};
+        var unique = [];
+        hits.forEach(function(h) {
+            var key = h.page.url + ':' + h.context.substring(0, 60);
+            if (!seen[key]) { seen[key] = true; unique.push(h); }
+        });
+        if (unique.length === 0) return;
+        // Group by page
+        var grouped = {};
+        unique.forEach(function(h) {
+            if (!grouped[h.page.url]) grouped[h.page.url] = { page: h.page, hits: [] };
+            grouped[h.page.url].hits.push(h);
+        });
+        var html = '';
+        Object.keys(grouped).forEach(function(url) {
+            var g = grouped[url];
+            var count = g.hits.length;
+            html += '<div class="sub-header">' + escHtml(g.page.title) + ' (' + count + ' Treffer)</div>';
+            // Show max 5 per page
+            g.hits.slice(0, 5).forEach(function(h) {
+                html += '<a class="sub-hit" href="' + h.page.url + '" target="_blank">'
+                    + '<span class="sub-context">' + h.context + '</span></a>';
+            });
+            if (count > 5) {
+                html += '<a class="sub-hit" href="' + g.page.url + '" target="_blank" style="font-style:italic;color:var(--primary-light);">'
+                    + '... und ' + (count - 5) + ' weitere Treffer &rarr;</a>';
+            }
+        });
+        results.innerHTML = html;
+        results.style.display = 'block';
+    }
+
+    function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
     function doSearch() {
         if (searchTimeout) clearTimeout(searchTimeout);
         searchTimeout = setTimeout(_doSearch, 200);
     }
 
     function _doSearch() {
-        const q = document.getElementById('searchInput').value.trim();
+        var q = document.getElementById('searchInput').value.trim();
         clearHighlights();
         if (q.length < 2) {
             document.getElementById('searchNav').style.display = 'none';
+            document.getElementById('subResults').style.display = 'none';
             return;
         }
-        const container = document.getElementById('mainContent');
-        const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
-        const matches = [];
-        const qLower = q.toLowerCase();
+        // Search main page
+        var container = document.getElementById('mainContent');
+        var walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+        var matches = [];
+        var qLower = q.toLowerCase();
         while (walker.nextNode()) {
-            const node = walker.currentNode;
+            var node = walker.currentNode;
             if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE')) continue;
-            const idx = node.textContent.toLowerCase().indexOf(qLower);
-            if (idx >= 0) matches.push({ node, idx, len: q.length });
+            var idx = node.textContent.toLowerCase().indexOf(qLower);
+            if (idx >= 0) matches.push({ node: node, idx: idx, len: q.length });
         }
         // highlight all matches
-        for (let i = matches.length - 1; i >= 0; i--) {
-            const m = matches[i];
-            const range = document.createRange();
+        for (var i = matches.length - 1; i >= 0; i--) {
+            var m = matches[i];
+            var range = document.createRange();
             range.setStart(m.node, m.idx);
             range.setEnd(m.node, m.idx + m.len);
-            const mark = document.createElement('mark');
+            var mark = document.createElement('mark');
             mark.className = 'search-hl';
             range.surroundContents(mark);
         }
@@ -5369,6 +5492,8 @@
         document.getElementById('searchNav').style.display = searchMarks.length ? 'flex' : 'none';
         document.getElementById('searchCount').textContent = searchMarks.length ? searchMarks.length + ' Treffer' : 'keine';
         if (searchMarks.length) { searchIdx = 0; jumpToMark(0); }
+        // Search sub-pages
+        searchSubPages(q);
     }
 
     function jumpToMark(idx) {
@@ -5410,6 +5535,7 @@
         document.getElementById('searchInput').value = '';
         clearHighlights();
         document.getElementById('searchNav').style.display = 'none';
+        document.getElementById('subResults').style.display = 'none';
     }
 
     function searchKeyHandler(e) {
@@ -5426,7 +5552,7 @@
     });
 
     // ==== INIT ====
-    generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData();
+    generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData(); loadSubPages();
 </script>
 </body>
 </html>
