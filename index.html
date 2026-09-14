@@ -640,6 +640,40 @@
             </div>
 
             <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Leistungsberechnung und Drehmoment-/Leistungskurven werden im <strong>Motor-Simulator</strong> (Sektion 1c unten) berechnet. Die Zielwerte oben sind die <em>angestrebten</em> Werte, der Simulator zeigt die <em>berechneten</em> Werte basierend auf den tats&auml;chlichen Komponenten.</div>
+
+            <!-- FUEL DELIVERY -->
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#9981; Kraftstoffversorgung &ndash; Herstellerhinweise</div>
+                <div class="comp-body">
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoffdruck bei Peak HP aufrechterhalten</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">2x Facet Red Top + Druckregler</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoffdruck Dell&rsquo;Orto DHLA 45: <strong>2.5&ndash;3.5 psi (0.17&ndash;0.24 bar)</strong><br><span style="font-size:0.68rem;color:#718096;">Facet Red Top liefert 7.5 psi &rarr; Druckregler PFLICHT (z.B. Malpassi Filter King)</span></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Druckregler dokumentiert</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pumpe schwerkraftgespeist montieren (nicht saugend)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Facet: vertikal, tanknahe, Auslass oben</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoff durch Filter dr&uuml;cken, nicht saugen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Filter nach Pumpe, vor Druckregler</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">BSFC ~0.5 lb/HP f&uuml;r Dimensionierung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">2x Facet = ~120 l/h total, ausreichend</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Tankbaffles vorhanden?</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pr&uuml;fen (je 1 Pumpe pro Tank)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
+                        <tr><td style="padding:0.2rem;">H&ouml;henlage, Temperatur &amp; Kraftstoff beeinflussen Bedüsung</td><td style="padding:0.2rem;">DellOrto: Jetting nach Streckenh&ouml;he</td><td style="text-align:center;padding:0.2rem;color:#975a16;font-weight:700;">&#9888; Tuning</td></tr>
+                    </table>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Ford Performance Jetting-Hinweis:</strong> Oktanzahl, Au&szlig;entemperatur und H&ouml;henlage beeinflussen die Gemischbildung erheblich. Beispiel (750 CFM Holley): Bei 6.000 ft H&ouml;he m&uuml;ssen die Jets um 8 Stufen magerer sein als auf Meeresniveau. F&uuml;r DellOrto-Vergaser gilt analog: Hauptd&uuml;se und Leerlaufd&uuml;se bei gro&szlig;en H&ouml;hen- oder Temperatur&auml;nderungen pr&uuml;fen. Spa (300 m &uuml;. NN) &ne; Pannoniaring (180 m).</div>
+                </div>
+            </div>
+
+
+            <!-- DYNO CORRECTION FACTORS -->
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#128200; Pr&uuml;fstands-Korrekturfaktoren (SAE J1349 vs. J607)</div>
+                <div class="comp-body">
+                    <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.3rem;">Ford Performance gibt Leistungswerte ihrer Pushrod Crate Engines nach <strong>SAE J607 (&bdquo;Racer Corrected&ldquo;)</strong> an &ndash; korrigiert auf 60&deg;F (15,6&deg;C) und 29.92" Hg. Diese Werte sind ca. <strong>4% h&ouml;her</strong> als SAE J1349 (&bdquo;SAE&ldquo;), welche auf 77&deg;F (25&deg;C) und 29.31" Hg korrigiert und 85% mechanischen Wirkungsgrad ber&uuml;cksichtigt.</p>
+                    <table style="width:100%;font-size:0.74rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Korrekturfaktor</th><th style="text-align:center;padding:0.25rem;">Temperatur</th><th style="text-align:center;padding:0.25rem;">Druck</th><th style="text-align:center;padding:0.25rem;">Ergebnis</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>SAE J607</strong> (Racer Corrected)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">60&deg;F (15,6&deg;C)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">29.92" Hg</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">H&ouml;here Werte (~4% mehr)</td></tr>
+                        <tr><td style="padding:0.2rem;"><strong>SAE J1349</strong> (SAE Standard)</td><td style="text-align:center;padding:0.2rem;">77&deg;F (25&deg;C)</td><td style="text-align:center;padding:0.2rem;">29.31" Hg</td><td style="text-align:center;padding:0.2rem;">Realistischere Werte</td></tr>
+                    </table>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Praxis:</strong> Wenn Sie auf einem Pr&uuml;fstand landen, fragen Sie nach dem Korrekturfaktor. SAE J1349 ist der realistischere Standard. Ford Performance Katalog-Angaben f&uuml;r den M-6009-302 sind wahrscheinlich J607-korrigiert &ndash; reale Leistung auf dem Pr&uuml;fstand wird ~4% niedriger sein.</div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -1606,6 +1640,28 @@
                 <textarea data-field="comment_oil" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
             </div>
 
+
+            <!-- OILING SYSTEM -->
+            <div class="comp-box" style="background:#fff5f5;border-color:#fc8181;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#c53030;">&#128373; &Ouml;lsystem &ndash; Herstellerhinweise</div>
+                <div class="comp-body">
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+                        <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Priming vor Erststart &ndash; Pflicht!</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Melling PT11 Priming Tool + Anleitung</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">&Ouml;lwanne min. 7 qt Kapazit&auml;t</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Wanne noch zu spezifizieren</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">4-Richtungen-Schwallbleche (Road Race)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Wanne mit Baffles w&auml;hlen</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Windage Tray</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Empfohlen, f&uuml;r Track Pflicht</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Bestellen</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pickup-Abstand .250"&ndash;.375" vom Boden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Messfeld vorhanden, Anleitung vorhanden</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pickup-Sieb: Wire Mesh, nicht perforiertes Blech</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Hinweis eingearbeitet</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">&Ouml;lk&uuml;hler: Ausreichend dimensioniert, keine Restriktionen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kostenneutral (vorhanden)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">&Ouml;lleitungen: Ausreichend gro&szlig;, wenig B&ouml;gen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pr&uuml;fen bei Montage</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Nie gebrauchten &Ouml;lk&uuml;hler wiederverwenden!</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">&ndash;</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
+                        <tr><td style="padding:0.2rem;">Durchflussrichtung beachten (One-Way-Systeme)</td><td style="padding:0.2rem;">Bei Montage pr&uuml;fen</td><td style="text-align:center;padding:0.2rem;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
+                    </table>
+                    <div style="background:#fff5f5;padding:0.4rem;border-radius:6px;margin-top:0.3rem;font-size:0.76rem;"><strong>&#9888; Ford Performance Warnung f&uuml;r Cobra/GT40 Replicas:</strong> &bdquo;<em>Many Cobra replica kit cars use components that are too restrictive.</em>&ldquo; &ndash; &Ouml;lleitungen, Remote-Filter und K&uuml;hler m&uuml;ssen ausreichend dimensioniert sein. <strong>Unterdimensionierte &Ouml;lleitungen sind die h&auml;ufigste Fehlerquelle bei Replicas!</strong></div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -1687,6 +1743,24 @@
                 <label>Kommentar zu Timing Cover &amp; Balancer</label>
                 <textarea data-field="comment_timing_cover" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
             </div>
+
+            <!-- COOLING SYSTEM -->
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#127777; K&uuml;hlsystem &ndash; Herstellerhinweise</div>
+                <div class="comp-body">
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">H&ouml;here Leistung = mehr K&uuml;hlkapazit&auml;t</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Milodon 16230 High-Volume Wasserpumpe</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Bef&uuml;llpunkt = h&ouml;chster Punkt!</strong> Sonst Lufttaschen &rarr; Hot Spots &rarr; Motorschaden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;"><strong>GT40: Pr&uuml;fen!</strong> K&uuml;hler oft tief</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;font-weight:700;">&#10060; Pr&uuml;fen</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Riemenscheiben: Richtige Gr&ouml;&szlig;e (Underdrive = zu wenig Durchfluss)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Serien-Ratio oder leichtes Overdrive</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">K&uuml;hlerfl&auml;che ausreichend f&uuml;r Motorleistung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">K&uuml;hler-Dimensionierung pr&uuml;fen</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">L&uuml;fter + Shroud: Luftdurchsatz ausreichend</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Shroud erh&ouml;ht Effektivit&auml;t massiv</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
+                        <tr><td style="padding:0.2rem;">K&uuml;hler-Position: Luftstrom bei verschiedenen Geschwindigkeiten</td><td style="padding:0.2rem;">GT40: Heck-K&uuml;hler, Luftf&uuml;hrung pr&uuml;fen</td><td style="text-align:center;padding:0.2rem;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
+                    </table>
+                    <div style="background:#fff5f5;padding:0.4rem;border-radius:6px;margin-top:0.3rem;font-size:0.76rem;"><strong>&#9888; Kritisch f&uuml;r GT40:</strong> Der Einf&uuml;llpunkt des K&uuml;hlsystems <strong>muss der h&ouml;chste Punkt</strong> sein! Im GT40 liegt der Motor hinter dem Fahrer &ndash; je nach K&uuml;hler-Routing k&ouml;nnen Lufttaschen entstehen, die zu lokaler &Uuml;berhitzung f&uuml;hren. L&ouml;sung: <strong>Ausgleichsbeh&auml;lter am h&ouml;chsten Punkt</strong> des K&uuml;hlkreislaufs montieren und System bei der Erstbef&uuml;llung mehrfach entl&uuml;ften.</div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -1979,6 +2053,34 @@
                 <label>Kommentar zur Z&uuml;ndeinstellung</label>
                 <textarea data-field="comment_ignition" placeholder="Advance-Kombination, Timing-Erfahrungen, Klopfneigung..." oninput="autoSave()"></textarea>
             </div>
+
+            <!-- IGNITION SYSTEM -->
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#9889; Z&uuml;ndsystem &ndash; Herstellerhinweise</div>
+                <div class="comp-body">
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Total Timing 5.0L (302): <strong>36&ndash;38&deg;</strong></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Empf. 32&ndash;36&deg; (9.8:1 CR, konservativer)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Vacuum Advance an <strong>Ported Vacuum</strong> (nicht Manifold!)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MSD 8479 + Ported Vacuum dokumentiert</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndkabel-Routing: Inductive Crossfire vermeiden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Dokumentiert</strong> (s.u.)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Verteilerzahnrad: Material passend zur Nockenwelle</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MSD 8479: Iron Gear f&uuml;r Hyd. Roller &#10004;</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;">Falsche H&ouml;he des Verteilerzahnrads vermeiden</td><td style="padding:0.2rem;">MSD Werks-Einstellung, nicht ver&auml;ndert</td><td style="text-align:center;padding:0.2rem;color:#276749;font-weight:700;">&#10004;</td></tr>
+                    </table>
+                    <div style="background:#fff5f5;padding:0.5rem;border-radius:6px;margin-top:0.3rem;font-size:0.76rem;border:1px solid #fed7d7;">
+                        <strong style="color:#c53030;">&#9888; KRITISCH &ndash; Z&uuml;ndfolge / Firing Order:</strong><br>
+                        COMP XE274HR = Teilenr. <strong>35</strong>-518-8. Der &bdquo;35&ldquo;-Prefix bedeutet <strong>351W/HO-Zuendfolge</strong>:<br>
+                        <span style="font-size:1rem;font-weight:800;color:#2c5282;">1 &ndash; 3 &ndash; 7 &ndash; 2 &ndash; 6 &ndash; 5 &ndash; 4 &ndash; 8</span><br>
+                        <span style="color:#c53030;">NICHT die Standard-302-Folge (1-5-4-2-6-3-7-8)!</span><br>
+                        Quelle: COMP Cams &ndash; Cams mit Prefix &bdquo;31&ldquo; = Standard 302, Prefix &bdquo;35&ldquo; = 351W/HO.<br>
+                        <strong>Verteilerkappe + Z&uuml;ndkabel m&uuml;ssen entsprechend verdrahtet werden.</strong>
+                    </div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Crossfire-Vermeidung (Z&uuml;ndkabel-Routing):</strong> Kabel von Z&uuml;ndfolge-benachbarten Zylindern <strong>nicht nebeneinander verlegen!</strong> Z&uuml;ndfolge dieses Builds: <strong>1-3-7-2-6-5-4-8</strong>. Kabel von Zylinder 3 und 7 (bzw. 5 und 4) m&uuml;ssen getrennt gef&uuml;hrt werden. Kreuzungen im 90&deg;-Winkel minimieren induktive Kopplung.<br>
+                    <strong>Zylinderanordnung (Blick von vorne):</strong><br>
+                    Beifahrerseite (RH): 1-2-3-4 | Fahrerseite (LH): 5-6-7-8<br>
+                    Verteiler dreht <strong>gegen den Uhrzeigersinn</strong> (CCW).</div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -2074,6 +2176,21 @@
                 <label>Kommentar Nebenaggregate</label>
                 <textarea data-field="comment_accessories" placeholder="Riemen-Teilenummern, Lager-Typ, Lima-Modell..." oninput="autoSave()"></textarea>
             </div>
+
+            <!-- FLYWHEEL / TRANSMISSION -->
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#9881; Schwungrad &amp; Getriebe &ndash; Herstellerhinweise</div>
+                <div class="comp-body">
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Schwungrad muss zum Balance Factor passen!</strong></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">M-6009-302 = Zero Balance &rarr; Zero-Balance Schwungrad Pflicht</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004; Dokumentiert</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Falsche Getriebewellenl&auml;nge kann Kurbelwelle nach vorn dr&uuml;cken &rarr; Axiallager-Schaden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">UN1-13 Adapter pr&uuml;fen</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
+                        <tr><td style="padding:0.2rem;">Axiallager-Schaden passiert in Sekunden!</td><td style="padding:0.2rem;">Axialspiel messen (Messfeld vorhanden)</td><td style="text-align:center;padding:0.2rem;color:#276749;font-weight:700;">&#10004;</td></tr>
+                    </table>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Ford Performance:</strong> &bdquo;<em>Damage to the thrust bearing can happen in seconds!</em>&ldquo; &ndash; Bei der Kupplung des UN1-13 an den 302 unbedingt die Stack-Up Height und die Freistellung der Kurbelwelle pr&uuml;fen. Die Kupplungsgabel darf die Kurbelwelle <strong>niemals</strong> nach vorn dr&uuml;cken.</div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -2243,147 +2360,6 @@
         <button class="group-toggle" onclick="toggleGroup(this, 'grp-ref')">Alles einklappen</button>
     </div>
 
-    <!-- 15. Ford Performance Installation & Tuning Tips -->
-    <div class="section">
-        <div class="section-header" onclick="toggleSection(this)">
-            <span class="section-icon">&#9888;</span>
-            <h2>15. Ford Performance Installationshinweise</h2>
-        </div>
-        <div class="section-body">
-            <div class="info-box" style="margin-bottom:0.4rem;"><strong>Quelle:</strong> Ford Racing Performance Parts &ndash; &bdquo;<a href="EngineInstallation_TuningTips.pdf" target="_blank" style="color:var(--primary-light);">Engine Installation and Tuning Tips</a>&ldquo; (PDF, lokal archiviert). Diese Checkliste fasst alle Herstellerhinweise zusammen und zeigt den Status f&uuml;r diesen Build.</div>
-
-            <!-- OILING SYSTEM -->
-            <div class="comp-box" style="background:#fff5f5;border-color:#fc8181;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#c53030;">&#128373; &Ouml;lsystem &ndash; Herstellerhinweise</div>
-                <div class="comp-body">
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Priming vor Erststart &ndash; Pflicht!</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Melling PT11 Priming Tool + Anleitung</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">&Ouml;lwanne min. 7 qt Kapazit&auml;t</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Wanne noch zu spezifizieren</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">4-Richtungen-Schwallbleche (Road Race)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Wanne mit Baffles w&auml;hlen</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Windage Tray</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Empfohlen, f&uuml;r Track Pflicht</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Bestellen</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pickup-Abstand .250"&ndash;.375" vom Boden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Messfeld vorhanden, Anleitung vorhanden</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pickup-Sieb: Wire Mesh, nicht perforiertes Blech</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Hinweis eingearbeitet</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">&Ouml;lk&uuml;hler: Ausreichend dimensioniert, keine Restriktionen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kostenneutral (vorhanden)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">&Ouml;lleitungen: Ausreichend gro&szlig;, wenig B&ouml;gen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pr&uuml;fen bei Montage</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Nie gebrauchten &Ouml;lk&uuml;hler wiederverwenden!</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">&ndash;</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
-                        <tr><td style="padding:0.2rem;">Durchflussrichtung beachten (One-Way-Systeme)</td><td style="padding:0.2rem;">Bei Montage pr&uuml;fen</td><td style="text-align:center;padding:0.2rem;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
-                    </table>
-                    <div style="background:#fff5f5;padding:0.4rem;border-radius:6px;margin-top:0.3rem;font-size:0.76rem;"><strong>&#9888; Ford Performance Warnung f&uuml;r Cobra/GT40 Replicas:</strong> &bdquo;<em>Many Cobra replica kit cars use components that are too restrictive.</em>&ldquo; &ndash; &Ouml;lleitungen, Remote-Filter und K&uuml;hler m&uuml;ssen ausreichend dimensioniert sein. <strong>Unterdimensionierte &Ouml;lleitungen sind die h&auml;ufigste Fehlerquelle bei Replicas!</strong></div>
-                </div>
-            </div>
-
-            <!-- IGNITION SYSTEM -->
-            <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#9889; Z&uuml;ndsystem &ndash; Herstellerhinweise</div>
-                <div class="comp-body">
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Total Timing 5.0L (302): <strong>36&ndash;38&deg;</strong></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Empf. 32&ndash;36&deg; (9.8:1 CR, konservativer)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Vacuum Advance an <strong>Ported Vacuum</strong> (nicht Manifold!)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MSD 8479 + Ported Vacuum dokumentiert</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndkabel-Routing: Inductive Crossfire vermeiden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Dokumentiert</strong> (s.u.)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Verteilerzahnrad: Material passend zur Nockenwelle</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MSD 8479: Iron Gear f&uuml;r Hyd. Roller &#10004;</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;">Falsche H&ouml;he des Verteilerzahnrads vermeiden</td><td style="padding:0.2rem;">MSD Werks-Einstellung, nicht ver&auml;ndert</td><td style="text-align:center;padding:0.2rem;color:#276749;font-weight:700;">&#10004;</td></tr>
-                    </table>
-                    <div style="background:#fff5f5;padding:0.5rem;border-radius:6px;margin-top:0.3rem;font-size:0.76rem;border:1px solid #fed7d7;">
-                        <strong style="color:#c53030;">&#9888; KRITISCH &ndash; Z&uuml;ndfolge / Firing Order:</strong><br>
-                        COMP XE274HR = Teilenr. <strong>35</strong>-518-8. Der &bdquo;35&ldquo;-Prefix bedeutet <strong>351W/HO-Zuendfolge</strong>:<br>
-                        <span style="font-size:1rem;font-weight:800;color:#2c5282;">1 &ndash; 3 &ndash; 7 &ndash; 2 &ndash; 6 &ndash; 5 &ndash; 4 &ndash; 8</span><br>
-                        <span style="color:#c53030;">NICHT die Standard-302-Folge (1-5-4-2-6-3-7-8)!</span><br>
-                        Quelle: COMP Cams &ndash; Cams mit Prefix &bdquo;31&ldquo; = Standard 302, Prefix &bdquo;35&ldquo; = 351W/HO.<br>
-                        <strong>Verteilerkappe + Z&uuml;ndkabel m&uuml;ssen entsprechend verdrahtet werden.</strong>
-                    </div>
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>Crossfire-Vermeidung (Z&uuml;ndkabel-Routing):</strong> Kabel von Z&uuml;ndfolge-benachbarten Zylindern <strong>nicht nebeneinander verlegen!</strong> Z&uuml;ndfolge dieses Builds: <strong>1-3-7-2-6-5-4-8</strong>. Kabel von Zylinder 3 und 7 (bzw. 5 und 4) m&uuml;ssen getrennt gef&uuml;hrt werden. Kreuzungen im 90&deg;-Winkel minimieren induktive Kopplung.<br>
-                    <strong>Zylinderanordnung (Blick von vorne):</strong><br>
-                    Beifahrerseite (RH): 1-2-3-4 | Fahrerseite (LH): 5-6-7-8<br>
-                    Verteiler dreht <strong>gegen den Uhrzeigersinn</strong> (CCW).</div>
-                </div>
-            </div>
-
-            <!-- FUEL DELIVERY -->
-            <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#9981; Kraftstoffversorgung &ndash; Herstellerhinweise</div>
-                <div class="comp-body">
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoffdruck bei Peak HP aufrechterhalten</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">2x Facet Red Top + Druckregler</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoffdruck Dell&rsquo;Orto DHLA 45: <strong>2.5&ndash;3.5 psi (0.17&ndash;0.24 bar)</strong><br><span style="font-size:0.68rem;color:#718096;">Facet Red Top liefert 7.5 psi &rarr; Druckregler PFLICHT (z.B. Malpassi Filter King)</span></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Druckregler dokumentiert</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pumpe schwerkraftgespeist montieren (nicht saugend)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Facet: vertikal, tanknahe, Auslass oben</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoff durch Filter dr&uuml;cken, nicht saugen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Filter nach Pumpe, vor Druckregler</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">BSFC ~0.5 lb/HP f&uuml;r Dimensionierung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">2x Facet = ~120 l/h total, ausreichend</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Tankbaffles vorhanden?</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pr&uuml;fen (je 1 Pumpe pro Tank)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
-                        <tr><td style="padding:0.2rem;">H&ouml;henlage, Temperatur &amp; Kraftstoff beeinflussen Bedüsung</td><td style="padding:0.2rem;">DellOrto: Jetting nach Streckenh&ouml;he</td><td style="text-align:center;padding:0.2rem;color:#975a16;font-weight:700;">&#9888; Tuning</td></tr>
-                    </table>
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>Ford Performance Jetting-Hinweis:</strong> Oktanzahl, Au&szlig;entemperatur und H&ouml;henlage beeinflussen die Gemischbildung erheblich. Beispiel (750 CFM Holley): Bei 6.000 ft H&ouml;he m&uuml;ssen die Jets um 8 Stufen magerer sein als auf Meeresniveau. F&uuml;r DellOrto-Vergaser gilt analog: Hauptd&uuml;se und Leerlaufd&uuml;se bei gro&szlig;en H&ouml;hen- oder Temperatur&auml;nderungen pr&uuml;fen. Spa (300 m &uuml;. NN) &ne; Pannoniaring (180 m).</div>
-                </div>
-            </div>
-
-            <!-- COOLING SYSTEM -->
-            <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#127777; K&uuml;hlsystem &ndash; Herstellerhinweise</div>
-                <div class="comp-body">
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">H&ouml;here Leistung = mehr K&uuml;hlkapazit&auml;t</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Milodon 16230 High-Volume Wasserpumpe</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Bef&uuml;llpunkt = h&ouml;chster Punkt!</strong> Sonst Lufttaschen &rarr; Hot Spots &rarr; Motorschaden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;"><strong>GT40: Pr&uuml;fen!</strong> K&uuml;hler oft tief</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;font-weight:700;">&#10060; Pr&uuml;fen</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Riemenscheiben: Richtige Gr&ouml;&szlig;e (Underdrive = zu wenig Durchfluss)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Serien-Ratio oder leichtes Overdrive</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">K&uuml;hlerfl&auml;che ausreichend f&uuml;r Motorleistung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">K&uuml;hler-Dimensionierung pr&uuml;fen</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">L&uuml;fter + Shroud: Luftdurchsatz ausreichend</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Shroud erh&ouml;ht Effektivit&auml;t massiv</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
-                        <tr><td style="padding:0.2rem;">K&uuml;hler-Position: Luftstrom bei verschiedenen Geschwindigkeiten</td><td style="padding:0.2rem;">GT40: Heck-K&uuml;hler, Luftf&uuml;hrung pr&uuml;fen</td><td style="text-align:center;padding:0.2rem;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
-                    </table>
-                    <div style="background:#fff5f5;padding:0.4rem;border-radius:6px;margin-top:0.3rem;font-size:0.76rem;"><strong>&#9888; Kritisch f&uuml;r GT40:</strong> Der Einf&uuml;llpunkt des K&uuml;hlsystems <strong>muss der h&ouml;chste Punkt</strong> sein! Im GT40 liegt der Motor hinter dem Fahrer &ndash; je nach K&uuml;hler-Routing k&ouml;nnen Lufttaschen entstehen, die zu lokaler &Uuml;berhitzung f&uuml;hren. L&ouml;sung: <strong>Ausgleichsbeh&auml;lter am h&ouml;chsten Punkt</strong> des K&uuml;hlkreislaufs montieren und System bei der Erstbef&uuml;llung mehrfach entl&uuml;ften.</div>
-                </div>
-            </div>
-
-            <!-- FLYWHEEL / TRANSMISSION -->
-            <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#9881; Schwungrad &amp; Getriebe &ndash; Herstellerhinweise</div>
-                <div class="comp-body">
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Schwungrad muss zum Balance Factor passen!</strong></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">M-6009-302 = Zero Balance &rarr; Zero-Balance Schwungrad Pflicht</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004; Dokumentiert</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Falsche Getriebewellenl&auml;nge kann Kurbelwelle nach vorn dr&uuml;cken &rarr; Axiallager-Schaden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">UN1-13 Adapter pr&uuml;fen</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
-                        <tr><td style="padding:0.2rem;">Axiallager-Schaden passiert in Sekunden!</td><td style="padding:0.2rem;">Axialspiel messen (Messfeld vorhanden)</td><td style="text-align:center;padding:0.2rem;color:#276749;font-weight:700;">&#10004;</td></tr>
-                    </table>
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>Ford Performance:</strong> &bdquo;<em>Damage to the thrust bearing can happen in seconds!</em>&ldquo; &ndash; Bei der Kupplung des UN1-13 an den 302 unbedingt die Stack-Up Height und die Freistellung der Kurbelwelle pr&uuml;fen. Die Kupplungsgabel darf die Kurbelwelle <strong>niemals</strong> nach vorn dr&uuml;cken.</div>
-                </div>
-            </div>
-
-            <!-- MISC -->
-            <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#128295; Allgemeine Warnungen &ndash; Herstellerhinweise <span style="font-size:0.68rem;color:#718096;">(Details im Build-Log)</span></div>
-                <div class="comp-body">
-                    <p style="font-size:0.76rem;margin-bottom:0.4rem;">Diese Warnungen sind als kontextuelle Hinweise in den jeweiligen Build-Log-Schritten eingearbeitet:</p>
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Build-Log Schritt</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Keine Fremdteile in den Ansaugtrakt!</strong></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><a href="build-log-phase3.html#step1" style="color:var(--primary-light);">Phase 3, Step 1</a></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Ansaugbr&uuml;cke max. <strong>18 ft-lbs (24 Nm)</strong>!</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><a href="build-log-phase3.html#step22" style="color:var(--primary-light);">Phase 3, Step 22</a></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Verteiler-Zahnrad: Iron f&uuml;r Hyd. Roller</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><a href="build-log-phase3.html#step23" style="color:var(--primary-light);">Phase 3, Step 23</a></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Schwungrad: Zero-Balance Pflicht!</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><a href="build-log-phase4.html#step9" style="color:var(--primary-light);">Phase 4, Step 9</a></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;">Getriebewelle darf KW nicht nach vorn dr&uuml;cken!</td><td style="padding:0.2rem;"><a href="build-log-phase4.html#step10" style="color:var(--primary-light);">Phase 4, Step 10</a></td><td style="text-align:center;padding:0.2rem;color:#276749;font-weight:700;">&#10004;</td></tr>
-                    </table>
-                </div>
-            </div>
-
-            <!-- DYNO CORRECTION FACTORS -->
-            <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#128200; Pr&uuml;fstands-Korrekturfaktoren (SAE J1349 vs. J607)</div>
-                <div class="comp-body">
-                    <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.3rem;">Ford Performance gibt Leistungswerte ihrer Pushrod Crate Engines nach <strong>SAE J607 (&bdquo;Racer Corrected&ldquo;)</strong> an &ndash; korrigiert auf 60&deg;F (15,6&deg;C) und 29.92" Hg. Diese Werte sind ca. <strong>4% h&ouml;her</strong> als SAE J1349 (&bdquo;SAE&ldquo;), welche auf 77&deg;F (25&deg;C) und 29.31" Hg korrigiert und 85% mechanischen Wirkungsgrad ber&uuml;cksichtigt.</p>
-                    <table style="width:100%;font-size:0.74rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Korrekturfaktor</th><th style="text-align:center;padding:0.25rem;">Temperatur</th><th style="text-align:center;padding:0.25rem;">Druck</th><th style="text-align:center;padding:0.25rem;">Ergebnis</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>SAE J607</strong> (Racer Corrected)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">60&deg;F (15,6&deg;C)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">29.92" Hg</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">H&ouml;here Werte (~4% mehr)</td></tr>
-                        <tr><td style="padding:0.2rem;"><strong>SAE J1349</strong> (SAE Standard)</td><td style="text-align:center;padding:0.2rem;">77&deg;F (25&deg;C)</td><td style="text-align:center;padding:0.2rem;">29.31" Hg</td><td style="text-align:center;padding:0.2rem;">Realistischere Werte</td></tr>
-                    </table>
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>Praxis:</strong> Wenn Sie auf einem Pr&uuml;fstand landen, fragen Sie nach dem Korrekturfaktor. SAE J1349 ist der realistischere Standard. Ford Performance Katalog-Angaben f&uuml;r den M-6009-302 sind wahrscheinlich J607-korrigiert &ndash; reale Leistung auf dem Pr&uuml;fstand wird ~4% niedriger sein.</div>
-                </div>
-            </div>
-
-            <div style="background:#e6ffed;padding:0.5rem;border-radius:8px;margin-top:0.4rem;font-size:0.78rem;">
-                <strong>Gesamtbewertung:</strong> Von 25+ Herstellervorgaben sind <strong>die meisten eingearbeitet oder &uuml;bertroffen</strong>. Offene Punkte betreffen haupts&auml;chlich Fahrzeug-spezifische Pr&uuml;fungen (&Ouml;lwanne, K&uuml;hlung, Leitungen), die erst bei der physischen Montage im Chassis verifiziert werden k&ouml;nnen.
-            </div>
-        </div>
-    </div>
 
     <!-- 16. Streckenanalyse & Fahrzeugeinschaetzung -->
     <div class="section">
@@ -5327,7 +5303,7 @@
         'Nebenaggregate (Accessory Drive)':'Accessory Drive',
         'Kupplung & Antrieb (Clutch)':'Clutch & Drive',
         'Antriebsstrang (Drivetrain)':'Drivetrain',
-        'Ford Performance Installationshinweise':'Ford Performance Installation Notes',
+        'Ford Performance Hinweise':'Ford Performance Notes',
         'Streckenanalyse & Fahrzeugeinsch\u00e4tzung':'Track Analysis & Vehicle Assessment',
         'Teilekatalog & Kosten\u00fcbersicht':'Parts Catalog & Cost Summary',
         'Allgemeine Notizen':'General Notes',
