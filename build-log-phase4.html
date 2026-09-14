@@ -169,6 +169,7 @@
         <a href="build-log-phase3.html">&larr; P3</a>
         <a href="build-log-phase4.html" class="active">P4</a>
         <button class="save-btn" onclick="saveData()">Save (Speichern)</button>
+        <button id="langToggle" onclick="toggleLang()" style="width:36px;min-width:36px;height:44px;border:none;background:none;cursor:pointer;font-size:1.1rem;border-left:1px solid rgba(255,255,255,0.15);" title="DE / EN">&#127465;&#127466;</button>
     </div>
     <div style="display:flex;align-items:center;gap:0.3rem;margin-top:0.4rem;max-width:400px;margin-left:auto;margin-right:auto;position:relative;">
         <input type="text" id="searchInput" placeholder="Search... (Suchen...)" oninput="doBuildSearch()" onkeydown="if(event.key==='Escape'){clearBuildSearch();event.target.blur();}" style="flex:1;padding:0.4rem 0.65rem;border:1px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);color:white;border-radius:6px;font-size:0.8rem;outline:none;">
@@ -924,6 +925,44 @@
         }
     }
 
+    // ==== i18n LANGUAGE TOGGLE ====
+    var currentLang = localStorage.getItem('engineBuildLang') || 'de';
+    var i18nDict = {
+        'Vorbereitung': 'Preparation', 'Werkzeuge': 'Tools', 'Betriebsmittel': 'Consumables',
+        'F\u00FCllmengen': 'Fill Quantities', 'Anzugswerte': 'Torque Values',
+        'Mess- & Pr\u00FCfwerte': 'Measurements & Specs', 'Freigabekriterien': 'Release Criteria',
+        'Praxis-Tipps': 'Practical Tips', 'Fotodokumentation': 'Photo Documentation',
+        'Zeitbedarf': 'Time Required', 'Anleitung': 'Guide', 'Fortschritt': 'Progress',
+        'Endmontage': 'Final Assembly', 'Erststart & Einfahren': 'First Start & Break-In',
+        'Alles einklappen': 'Collapse all', 'Alles aufklappen': 'Expand all',
+        'Suchen': 'Search', 'Hauptseite': 'Main Page', '\u00DCbersicht': 'Overview',
+    };
+    var i18nReverse = {};
+    Object.keys(i18nDict).forEach(function(k) { if (i18nDict[k] !== k) i18nReverse[i18nDict[k]] = k; });
+    function setLang(lang) {
+        currentLang = lang;
+        localStorage.setItem('engineBuildLang', lang);
+        var btn = document.getElementById('langToggle');
+        if (btn) btn.textContent = lang === 'de' ? '\uD83C\uDDE9\uD83C\uDDEA' : '\uD83C\uDDFA\uD83C\uDDF8';
+        var dict = lang === 'en' ? i18nDict : i18nReverse;
+        var keys = Object.keys(dict);
+        if (keys.length === 0) return;
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        while (walker.nextNode()) {
+            var node = walker.currentNode;
+            if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE' || node.parentElement.tagName === 'TEXTAREA' || node.parentElement.tagName === 'INPUT')) continue;
+            var text = node.textContent;
+            var changed = false;
+            keys.forEach(function(k) { if (text.indexOf(k) >= 0) { text = text.split(k).join(dict[k]); changed = true; } });
+            if (changed) node.textContent = text;
+        }
+        document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(function(el) {
+            var ph = el.placeholder;
+            keys.forEach(function(k) { if (ph.indexOf(k) >= 0) el.placeholder = ph.split(k).join(dict[k]); });
+        });
+    }
+    function toggleLang() { setLang(currentLang === 'de' ? 'en' : 'de'); }
+
     // ==== INIT ====
     document.addEventListener('DOMContentLoaded', function() {
         loadData();
@@ -932,8 +971,13 @@
             renderPhotos(g.dataset.photoGroup);
         });
         scrollToHash();
+        if (currentLang === 'en') setTimeout(function() { setLang('en'); }, 100);
     });
 </script>
+
+<div style="position:fixed;bottom:16px;right:16px;z-index:900;display:flex;flex-direction:column;gap:8px;align-items:center;">
+    <button onclick="window.location.href='index.html'" style="background:#ed8936;color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.1rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;" title="Glossary">&#128214;</button>
+</div>
 
 </body>
 </html>
