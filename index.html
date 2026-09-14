@@ -479,7 +479,7 @@
                     <table style="width:100%;font-size:0.78rem;border-collapse:collapse;">
                         <tr style="background:#f0f5ff;"><th style="text-align:left;padding:0.3rem;">Komponente</th><th style="text-align:left;padding:0.3rem;">Einfluss</th><th style="text-align:left;padding:0.3rem;">Tendenz</th></tr>
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">DellOrto DRLA 45 (4x Downdraft)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Direktes Ansprechverhalten</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Einzeldrosselklappen &rarr; sofortige Response</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">F&auml;cherkr&uuml;mmer (Headers)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">+15&ndash;30 HP vs. Gusskr&uuml;mmer</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">1-5/8" Primary f&uuml;r 302</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Bundle of Snakes (TSC GT40)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">+15&ndash;30 HP vs. Gusskr&uuml;mmer</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Platzoptimiert f&uuml;r GT40-Chassis</td></tr>
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndung (MSD 6AL)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Kapazitiv &rarr; st&auml;rkerer Funke</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Advance-Kurve abstimmen f&uuml;r max. Leistung</td></tr>
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndzeitpunkt</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Leistung + Detonation</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">32&ndash;36&deg; total (je nach CR + Benzin)</td></tr>
                         <tr><td style="padding:0.25rem;">Verdichtung</td><td style="padding:0.25rem;">Effizienz + Drehmoment</td><td style="padding:0.25rem;">9.5&ndash;10.0:1 ideal f&uuml;r Super Plus (98 ROZ)</td></tr>
@@ -559,7 +559,8 @@
                 </select>
                 <label style="font-weight:600;">Auspuff</label>
                 <select id="simExhaust" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" onchange="runSim()">
-                    <option value="headers158" selected>Headers 1-5/8"</option>
+                    <option value="bos" selected>Bundle of Snakes (GT40)</option>
+                    <option value="headers158">Headers 1-5/8"</option>
                     <option value="headers175">Headers 1-3/4"</option>
                     <option value="cast">Gusskr&uuml;mmer</option>
                 </select>
@@ -592,10 +593,45 @@
             </div>
 
             <!-- Kraftstoff-Empfehlung -->
-            <div class="comp-box" style="margin-top:0.5rem;">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#9981; Kraftstoff-Empfehlung &amp; Oktanzahl</div>
+            <div class="comp-box" style="margin-top:0.5rem;background:#fffbeb;border-color:#f6e05e;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#975a16;">&#9981; Kraftstoff-Empfehlung &amp; Oktanzahl</div>
                 <div class="comp-body" id="simFuelResult">
                     <p style="font-size:0.8rem;color:#666;">Simulator starten um Empfehlung zu erhalten...</p>
+                </div>
+            </div>
+
+            <div class="comp-box" style="margin-top:0.3rem;">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#128218; Wechselwirkung: Z&uuml;ndung &harr; Oktan &harr; Verdichtung</div>
+                <div class="comp-body">
+                    <div class="comp-sub">Das Dreieck: CR &ndash; Timing &ndash; Oktanzahl</div>
+                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Die drei Gr&ouml;&szlig;en h&auml;ngen untrennbar zusammen:</p>
+                    <div style="background:#f0f5ff;padding:0.5rem;border-radius:8px;font-size:0.8rem;margin:0.3rem 0;">
+                        <strong>Verdichtung (CR)</strong> = fest, durch den Build definiert<br>
+                        <strong>Z&uuml;ndzeitpunkt</strong> = einstellbar (Initial + Centrifugal + Vacuum Advance)<br>
+                        <strong>Oktanzahl</strong> = bestimmt sich aus CR + Timing
+                    </div>
+
+                    <div class="comp-sub" style="margin-top:0.4rem;">Warum beeinflusst Timing die Oktanzahl?</div>
+                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Je <strong>fr&uuml;her</strong> die Z&uuml;ndung erfolgt (mehr Advance), desto h&ouml;her steigt der <strong>Spitzendruck</strong> im Brennraum. Hoher Spitzendruck bei hoher Verdichtung f&uuml;hrt zu <strong>Klopfen</strong> (Detonation) &ndash; einer unkontrollierten Selbstz&uuml;ndung des Restgemischs. H&ouml;here Oktanzahl = h&ouml;here Klopffestigkeit = mehr Timing m&ouml;glich.</p>
+
+                    <div class="comp-sub" style="margin-top:0.4rem;">Praxis-Vorgehensweise f&uuml;r den GT40</div>
+                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;"><strong>1.</strong> Verdichtung messen/berechnen (CR-Rechner oben) &rarr; ca. 9.7&ndash;9.8:1<br>
+                    <strong>2.</strong> Verf&uuml;gbaren Kraftstoff bestimmen (in DE: Super Plus 98 ROZ ideal)<br>
+                    <strong>3.</strong> Timing so einstellen, dass bei Volllast <strong>kein Klopfen</strong> auftritt<br>
+                    <strong>4.</strong> Total Timing ergibt sich aus dem Zusammenspiel von CR + Kraftstoff</p>
+
+                    <table style="width:100%;font-size:0.76rem;border-collapse:collapse;margin:0.3rem 0;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.3rem;">CR</th><th style="text-align:center;padding:0.3rem;">Max. Timing mit 95 ROZ</th><th style="text-align:center;padding:0.3rem;">Max. Timing mit 98 ROZ</th><th style="text-align:center;padding:0.3rem;">Max. Timing mit 100+ ROZ</th></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">9.0:1</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">36&ndash;38&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">38&ndash;40&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">40&ndash;42&deg;</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>9.5&ndash;9.8:1</strong></td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>32&ndash;34&deg;</strong></td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>34&ndash;36&deg;</strong></td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">36&ndash;38&deg;</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">10.0:1</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">30&ndash;32&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">32&ndash;34&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">34&ndash;36&deg;</td></tr>
+                        <tr><td style="padding:0.25rem;">10.5:1+</td><td style="text-align:center;padding:0.25rem;color:#c53030;">Kritisch!</td><td style="text-align:center;padding:0.25rem;">28&ndash;32&deg;</td><td style="text-align:center;padding:0.25rem;">32&ndash;34&deg;</td></tr>
+                    </table>
+
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>CNC-Brennraum-Bonus:</strong> Die AFR-1399-K&ouml;pfe haben CNC-bearbeitete Brennr&auml;ume mit optimaler Quench-Geometrie. Das reduziert die Klopfneigung um ca. 2&ndash;3 ROZ gegen&uuml;ber offenen Gu&szlig;-Kammern. Deshalb kann Ihr Build mit 9.8:1 CR und 34&deg; Total Timing problemlos <strong>Super Plus (98 ROZ)</strong> verwenden.</div>
+
+                    <div class="comp-sub" style="margin-top:0.4rem;">Vacuum Advance &amp; Oktanzahl</div>
+                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Der <strong>Vacuum Advance</strong> (MSD 8479) addiert bei Teillast zus&auml;tzliches Timing (bis ~15&deg; extra). Dies ist <strong>kein Klopfrisiko</strong>, da Teillast = weniger Brennraumdruck. Vacuum Advance verbessert den Verbrauch und die Gasannahme im Stadtverkehr erheblich, ohne die Klopfgrenze zu beeinflussen. Bei Volllast (WOT) ist kein Unterdruck vorhanden &rarr; Vacuum Advance = 0&deg;.</p>
                 </div>
             </div>
 
@@ -1393,16 +1429,21 @@
             </div>
 
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">MSD Pro-Billet Verteiler, Small Diameter (Ford 302)</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">Z&uuml;ndverteiler &ndash; MSD 8479 Street Pro-Billet</div>
                 <div class="comp-body">
-                    <div class="spec-item"><span class="spec-label">Passend</span><span class="spec-value">Ford 289/302 &ndash; Small Diameter (5/8" kleiner als Serie)</span></div>
-                    <div class="spec-item"><span class="spec-label">Geh&auml;use</span><span class="spec-value">CNC-gefr&auml;stes Billet-Aluminium</span></div>
-                    <div class="spec-item"><span class="spec-label">Welle</span><span class="spec-value">Polierter Stahl, QPQ-beschichtet, Kugellager oben</span></div>
-                    <div class="spec-item"><span class="spec-label">Trigger</span><span class="spec-value">Magnetischer Pickup + Pr&auml;zisions-Reluctor</span></div>
-                    <div class="spec-item"><span class="spec-label">Fliehkraftverstellung</span><span class="spec-value">Einstellbar (Federn + Stop-Bushings)</span></div>
-                    <div class="spec-item"><span class="spec-label">Antriebszahnrad</span><span class="spec-value">Stahl-Zahnrad f&uuml;r Hydraulic Roller Cam (Pflicht!)</span></div>
+                    <div class="spec-item"><span class="spec-label">PN</span><span class="spec-value"><strong>MSD 8479</strong></span></div>
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Street Pro-Billet, Small Diameter (5/8" kleiner als Serie)</span></div>
+                    <div class="spec-item"><span class="spec-label">Passend</span><span class="spec-value">Ford 289/302</span></div>
+                    <div class="spec-item"><span class="spec-label">Geh&auml;use</span><span class="spec-value">CNC-gefr&auml;stes Billet-Aluminium + Billet-Basis</span></div>
+                    <div class="spec-item"><span class="spec-label">Welle</span><span class="spec-value">Polierter Stahl, QPQ-beschichtet, abgedichtetes Kugellager</span></div>
+                    <div class="spec-item"><span class="spec-label">Trigger</span><span class="spec-value">Magnetischer Pickup + Pr&auml;zisions-Reluctor (wartungsfrei)</span></div>
+                    <div class="spec-item"><span class="spec-label">Fliehkraftverstellung</span><span class="spec-value">Chromoly-Stahl, QPQ-beschichtet, einstellbar (Federn + Stop-Bushings)</span></div>
+                    <div class="spec-item"><span class="spec-label">Unterdruckverstellung</span><span class="spec-value"><strong>Ja</strong> &ndash; Vacuum Advance f&uuml;r Teillast-Verbrauch (kann gesperrt werden)</span></div>
+                    <div class="spec-item"><span class="spec-label">Antriebszahnrad</span><span class="spec-value">Iron Gear (im Lieferumfang)</span></div>
+                    <div class="spec-item"><span class="spec-label">Kappe/Rotor</span><span class="spec-value">Small Diameter Cap (HEI-Style) + Race Rotor mitgeliefert</span></div>
                     <div class="spec-item"><span class="spec-label">Voraussetzung</span><span class="spec-value">Erfordert MSD 6/7/8-Series Z&uuml;ndbox</span></div>
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>Teilenummer nachreichen!</strong> Wahrscheinlich PN 8579 (302, Iron Gear) oder 857951 (302, Steel Gear). Steel Gear ist Pflicht f&uuml;r Hydraulic Roller Cam!</div>
+                    <div class="spec-item"><span class="spec-label">CARB</span><span class="spec-value">E.O. Approved</span></div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis Iron Gear:</strong> Das mitgelieferte Iron Gear ist kompatibel mit Hydraulic Roller Cams. Alternative: PN 84791 mit Steel Gear (Melonized QPQ) f&uuml;r h&ouml;here Haltbarkeit.</div>
                 </div>
             </div>
 
@@ -1511,7 +1552,130 @@
         </div>
     </div>
 
-    <!-- 14. Teilekatalog & Kostenuebersicht -->
+    <!-- 14. Antriebsstrang -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#9881;</span>
+            <h2>14. Antriebsstrang (Drivetrain)</h2>
+        </div>
+        <div class="section-body">
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Getriebe &ndash; Renault UN1-13 Transaxle</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Renault UN1-013 (Renault 21 Turbo Basis)</span></div>
+                    <div class="spec-item"><span class="spec-label">Konfiguration</span><span class="spec-value">RH Change (Drehrichtung umgekehrt f&uuml;r Mid-Engine)</span></div>
+                    <div class="spec-item"><span class="spec-label">Modifikation</span><span class="spec-value">Modified 2nd &amp; 3rd Gears, drilled out Oil Ways</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehmomentgrenze</span><span class="spec-value">315 Nm (232 lb.ft) Serien-Spec, modifiziert ggf. h&ouml;her</span></div>
+                    <div class="comp-sub" style="margin-top:0.3rem;">Standard-&Uuml;bersetzungen UN1-13</div>
+                    <table style="width:100%;font-size:0.78rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="padding:0.2rem;">Gang</th><th style="text-align:center;padding:0.2rem;">1.</th><th style="text-align:center;padding:0.2rem;">2.</th><th style="text-align:center;padding:0.2rem;">3.</th><th style="text-align:center;padding:0.2rem;">4.</th><th style="text-align:center;padding:0.2rem;">5.</th><th style="text-align:center;padding:0.2rem;">R</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Ratio</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">3.36</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">2.05</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1.38</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1.03</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">0.82</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">3.54</td></tr>
+                    </table>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> 2. und 3. Gang sind lt. Angabe modifiziert &ndash; tats&auml;chliche Ratios am Getriebe pr&uuml;fen! Die Standard-Werte sind im Simulator voreingestellt und k&ouml;nnen angepasst werden.</div>
+                    <div class="comp-sub" style="margin-top:0.3rem;">Geplant: Getriebe&ouml;lk&uuml;hlung</div>
+                    <div class="spec-item"><span class="spec-label">Status</span><span class="spec-value">Fittinge bereits am Getriebe nachger&uuml;stet</span></div>
+                    <div class="spec-item"><span class="spec-label">Noch offen</span><span class="spec-value">K&uuml;hler, Leitungen, Thermostat</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Differential &ndash; Quaife LSD</div>
+                <div class="comp-body">
+                    <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Quaife ATB Torque-Biasing Limited Slip Differential</span></div>
+                    <div class="spec-item"><span class="spec-label">Achsantrieb</span><span class="spec-value"><strong>3.44:1</strong> (Final Drive)</span></div>
+                    <div class="spec-item"><span class="spec-label">Funktion</span><span class="spec-value">Helical Gear, rein mechanisch, wartungsfrei, kein Speziall&ouml;l n&ouml;tig</span></div>
+                    <div class="spec-item"><span class="spec-label">Sperrwirkung</span><span class="spec-value">Progressiv, drehmomentabh&auml;ngig (kein abruptes Sperren)</span></div>
+                </div>
+            </div>
+
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">Bereifung &ndash; Avon Historic Crossply</div>
+                <div class="comp-body">
+                    <div class="comp-sub">Vorderachse</div>
+                    <div class="spec-item"><span class="spec-label">Dimension</span><span class="spec-value"><strong>8.5/23.0 x 15"</strong></span></div>
+                    <div class="spec-item"><span class="spec-label">Au&szlig;endurchmesser</span><span class="spec-value">23.0" (584 mm)</span></div>
+                    <div class="spec-item"><span class="spec-label">Breite</span><span class="spec-value">8.5" (216 mm)</span></div>
+                    <div class="comp-sub" style="margin-top:0.3rem;">Hinterachse</div>
+                    <div class="spec-item"><span class="spec-label">Dimension</span><span class="spec-value"><strong>11.0/25.0 x 15"</strong></span></div>
+                    <div class="spec-item"><span class="spec-label">Au&szlig;endurchmesser</span><span class="spec-value">25.0" (635 mm)</span></div>
+                    <div class="spec-item"><span class="spec-label">Breite</span><span class="spec-value">11.0" (279 mm)</span></div>
+                    <div class="comp-sub" style="margin-top:0.3rem;">Gemeinsam</div>
+                    <div class="spec-item"><span class="spec-label">Mischung</span><span class="spec-value">Avon A24 (Historic Racing Compound)</span></div>
+                    <div class="spec-item"><span class="spec-label">Profil</span><span class="spec-value">Crossply Historic</span></div>
+                    <div class="spec-item"><span class="spec-label">Felge</span><span class="spec-value">15" Durchmesser</span></div>
+                </div>
+            </div>
+
+            <!-- Geschwindigkeits-Simulator -->
+            <div style="background:#f0f5ff;border:1px solid #bee3f8;border-radius:10px;padding:0.6rem;margin-top:0.5rem;">
+                <div style="font-weight:700;font-size:0.9rem;color:#2b6cb0;margin-bottom:0.4rem;">&#128200; Geschwindigkeits-Simulator</div>
+                <button onclick="driveSimPull()" style="width:100%;padding:0.5rem;background:#2b6cb0;color:#fff;border:none;border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;margin-bottom:0.4rem;">&#8681; Motordaten vom Simulator &uuml;bernehmen</button>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.25rem 0.5rem;font-size:0.78rem;">
+                    <label style="font-weight:600;">Reifendurchm. hinten (inch)</label>
+                    <input type="number" id="dsTire" value="25.0" step="0.1" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
+                    <label style="font-weight:600;">Achsantrieb (Final Drive)</label>
+                    <input type="number" id="dsFinal" value="3.44" step="0.01" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
+                    <label style="font-weight:600;">1. Gang</label>
+                    <input type="number" id="dsG1" value="3.36" step="0.01" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
+                    <label style="font-weight:600;">2. Gang</label>
+                    <input type="number" id="dsG2" value="2.05" step="0.01" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
+                    <label style="font-weight:600;">3. Gang</label>
+                    <input type="number" id="dsG3" value="1.38" step="0.01" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
+                    <label style="font-weight:600;">4. Gang</label>
+                    <input type="number" id="dsG4" value="1.03" step="0.01" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
+                    <label style="font-weight:600;">5. Gang</label>
+                    <input type="number" id="dsG5" value="0.82" step="0.01" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
+                    <label style="font-weight:600;">Fahrzeuggewicht (kg)</label>
+                    <input type="number" id="dsWeight" value="1050" step="10" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
+                    <label style="font-weight:600;">cW-Wert</label>
+                    <input type="number" id="dsCw" value="0.38" step="0.01" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
+                    <label style="font-weight:600;">Stirnfl&auml;che (m&sup2;)</label>
+                    <input type="number" id="dsArea" value="1.65" step="0.01" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
+                    <label style="font-weight:600;">Max. Drehzahl (RPM)</label>
+                    <input type="number" id="dsRedline" value="6200" step="100" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
+                </div>
+
+                <!-- Ergebnis -->
+                <div id="dsResults" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.2rem;margin:0.5rem 0;font-size:0.78rem;">
+                    <div style="background:#e6ffed;padding:0.4rem;border-radius:8px;text-align:center;">
+                        <div style="font-size:0.65rem;color:#276749;">V-max (5. Gang)</div>
+                        <div id="dsVmax" style="font-size:1.1rem;font-weight:800;color:#276749;">--</div>
+                    </div>
+                    <div style="background:#ebf4ff;padding:0.4rem;border-radius:8px;text-align:center;">
+                        <div style="font-size:0.65rem;color:#2b6cb0;">V @ Peak Power</div>
+                        <div id="dsVpeak" style="font-size:1.1rem;font-weight:800;color:#2b6cb0;">--</div>
+                    </div>
+                    <div style="background:#fefcbf;padding:0.4rem;border-radius:8px;text-align:center;">
+                        <div style="font-size:0.65rem;color:#975a16;">Rad-Kraft max</div>
+                        <div id="dsFmax" style="font-size:1.1rem;font-weight:800;color:#975a16;">--</div>
+                    </div>
+                </div>
+
+                <!-- Canvas Gangdiagramm -->
+                <canvas id="dsChart" width="700" height="360" style="width:100%;height:auto;border:1px solid #e2e8f0;border-radius:8px;background:#fff;"></canvas>
+                <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem;font-size:0.65rem;margin-top:0.15rem;">
+                    <span style="color:#c53030;">&#9644; 1. Gang</span>
+                    <span style="color:#dd6b20;">&#9644; 2. Gang</span>
+                    <span style="color:#d69e2e;">&#9644; 3. Gang</span>
+                    <span style="color:#38a169;">&#9644; 4. Gang</span>
+                    <span style="color:#2b6cb0;">&#9644; 5. Gang</span>
+                    <span style="color:#a0aec0;">&#9644; Luftwiderstand</span>
+                </div>
+
+                <!-- Gang-Tabelle -->
+                <div id="dsTable" style="margin-top:0.4rem;font-size:0.75rem;"></div>
+            </div>
+
+            <div class="section-comment">
+                <label>Kommentar Antriebsstrang</label>
+                <textarea data-field="comment_drivetrain" placeholder="Getriebe-Zustand, Modifikationen, Kupplungsscheibe, Getriebeoel..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 15. Teilekatalog & Kostenuebersicht -->
     <div class="section">
         <div class="section-header" onclick="toggleSection(this)">
             <span class="section-icon">&#128176;</span>
@@ -1617,11 +1781,11 @@
         </div>
     </div>
 
-    <!-- 15. Allgemeine Notizen -->
+    <!-- 16. Allgemeine Notizen -->
     <div class="section">
         <div class="section-header" onclick="toggleSection(this)">
             <span class="section-icon">&#128221;</span>
-            <h2>15. Allgemeine Notizen</h2>
+            <h2>16. Allgemeine Notizen</h2>
         </div>
         <div class="section-body">
             <div class="form-group">
@@ -3650,7 +3814,8 @@
 
         // Exhaust modifier
         var exhMod = 1.0;
-        if (exhaustType === 'headers158') exhMod = 1.0;
+        if (exhaustType === 'bos') exhMod = 0.98; // Bundle of Snakes: leicht weniger als optimale Headers wg. Platz
+        else if (exhaustType === 'headers158') exhMod = 1.0;
         else if (exhaustType === 'headers175') exhMod = 1.03;
         else if (exhaustType === 'cast') exhMod = 0.88;
 
@@ -3727,11 +3892,17 @@
         document.getElementById('simPeakTQ').textContent = Math.round(peakTQ) + ' ft-lbs';
         document.getElementById('simPeakTQrpm').textContent = '@ ' + peakTQrpm + ' RPM (' + Math.round(peakTQ * 1.3558) + ' Nm)';
 
+        // Store data for drivetrain sim
+        lastSimData = data;
+
         // Draw chart
         drawSimChart(data, peakHP, peakTQ);
 
         // Fuel recommendation
         calcFuelReq(cr, timing);
+
+        // Auto-update drivetrain sim if it exists
+        if (document.getElementById('dsChart')) setTimeout(runDriveSim, 100);
     }
 
     function drawSimChart(data, peakHP, peakTQ) {
@@ -3926,6 +4097,253 @@
 
     // Run simulator on page load
     setTimeout(runSim, 600);
+
+    // ==== DRIVETRAIN SIMULATOR ====
+    var lastSimData = null; // store engine sim data for drivetrain
+
+    function driveSimPull() {
+        // Pull peak power RPM and redline from engine sim
+        var el = document.getElementById('simPeakHPrpm');
+        if (el) {
+            var m = el.textContent.match(/(\d+)/);
+            if (m) {
+                var peakRPM = parseInt(m[1]);
+                // Set redline slightly above peak power
+                document.getElementById('dsRedline').value = Math.min(peakRPM + 500, 6500);
+            }
+        }
+        runDriveSim();
+    }
+
+    function runDriveSim() {
+        var tireDiam = parseFloat(document.getElementById('dsTire').value) || 25;
+        var finalDrive = parseFloat(document.getElementById('dsFinal').value) || 3.44;
+        var gears = [
+            parseFloat(document.getElementById('dsG1').value) || 3.36,
+            parseFloat(document.getElementById('dsG2').value) || 2.05,
+            parseFloat(document.getElementById('dsG3').value) || 1.38,
+            parseFloat(document.getElementById('dsG4').value) || 1.03,
+            parseFloat(document.getElementById('dsG5').value) || 0.82
+        ];
+        var weight = parseFloat(document.getElementById('dsWeight').value) || 1050;
+        var cw = parseFloat(document.getElementById('dsCw').value) || 0.38;
+        var area = parseFloat(document.getElementById('dsArea').value) || 1.65;
+        var redline = parseFloat(document.getElementById('dsRedline').value) || 6200;
+
+        // Get engine torque curve from last sim run
+        var torqueCurve = {};
+        if (lastSimData) {
+            for (var i = 0; i < lastSimData.length; i++) {
+                torqueCurve[lastSimData[i].rpm] = lastSimData[i].torque;
+            }
+        } else {
+            // Fallback: flat 340 ft-lbs
+            for (var r = 1000; r <= 7500; r += 50) torqueCurve[r] = 340;
+        }
+
+        // Speed calculation: speed (km/h) = RPM * tire_circ_m * 60 / (gear * final * 1000)
+        var tireCirc = tireDiam * 0.0254 * Math.PI; // meters
+        var rho = 1.225; // air density kg/m3
+
+        function speedAtRPM(rpm, gear) {
+            return (rpm * tireCirc * 60) / (gear * finalDrive * 1000);
+        }
+
+        function rpmAtSpeed(speed, gear) {
+            return (speed * 1000 * gear * finalDrive) / (tireCirc * 60);
+        }
+
+        function getTorqueAtRPM(rpm) {
+            var rpmR = Math.round(rpm / 50) * 50;
+            rpmR = Math.max(1000, Math.min(rpmR, 7500));
+            return torqueCurve[rpmR] || 300;
+        }
+
+        // Wheel force at a given speed in a given gear
+        function wheelForce(speed, gearIdx) {
+            var rpm = rpmAtSpeed(speed, gears[gearIdx]);
+            if (rpm < 1000 || rpm > redline) return 0;
+            var tq = getTorqueAtRPM(rpm) * 1.3558; // ft-lbs to Nm
+            var tireRadius = tireDiam * 0.0254 / 2;
+            var force = tq * gears[gearIdx] * finalDrive * 0.92 / tireRadius; // 0.92 drivetrain eff
+            return force;
+        }
+
+        // Drag force at speed (km/h)
+        function dragForce(speedKmh) {
+            var v = speedKmh / 3.6;
+            return 0.5 * rho * cw * area * v * v;
+        }
+
+        // Rolling resistance
+        function rollResist() {
+            return weight * 9.81 * 0.015; // crossply ~0.015
+        }
+
+        // Calculate results
+        var gearColors = ['#c53030','#dd6b20','#d69e2e','#38a169','#2b6cb0'];
+        var gearNames = ['1.','2.','3.','4.','5.'];
+        var vmaxGear = [];
+        var maxWheelForce = 0;
+
+        // Build speed table
+        var tableHTML = '<table style="width:100%;border-collapse:collapse;">';
+        tableHTML += '<tr style="background:#ebf4ff;font-size:0.72rem;"><th style="padding:0.2rem;">Gang</th><th style="text-align:center;padding:0.2rem;">Ratio</th><th style="text-align:center;padding:0.2rem;">V @ 3000</th><th style="text-align:center;padding:0.2rem;">V @ 4500</th><th style="text-align:center;padding:0.2rem;">V @ 6000</th><th style="text-align:center;padding:0.2rem;">V-max (' + redline + ')</th></tr>';
+        for (var g = 0; g < 5; g++) {
+            var vMax = speedAtRPM(redline, gears[g]);
+            vmaxGear.push(vMax);
+            tableHTML += '<tr style="font-size:0.72rem;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;color:' + gearColors[g] + ';font-weight:700;">' + gearNames[g] + '</td>';
+            tableHTML += '<td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">' + gears[g].toFixed(2) + '</td>';
+            tableHTML += '<td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">' + speedAtRPM(3000, gears[g]).toFixed(0) + ' km/h</td>';
+            tableHTML += '<td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">' + speedAtRPM(4500, gears[g]).toFixed(0) + ' km/h</td>';
+            tableHTML += '<td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">' + speedAtRPM(6000, gears[g]).toFixed(0) + ' km/h</td>';
+            tableHTML += '<td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">' + vMax.toFixed(0) + ' km/h</td></tr>';
+        }
+        tableHTML += '</table>';
+        document.getElementById('dsTable').innerHTML = tableHTML;
+
+        // Find theoretical top speed (where wheel force = drag + rolling)
+        var vTheorMax = 0;
+        for (var v = 10; v <= 350; v += 1) {
+            var bestForce = 0;
+            for (var g = 0; g < 5; g++) {
+                var f = wheelForce(v, g);
+                if (f > bestForce) bestForce = f;
+            }
+            var resist = dragForce(v) + rollResist();
+            if (bestForce > resist) vTheorMax = v;
+            if (bestForce > maxWheelForce) maxWheelForce = bestForce;
+        }
+
+        // V at peak power in 5th gear
+        var peakPowerRPM = 5500;
+        if (lastSimData) {
+            var peakHP = 0;
+            for (var i = 0; i < lastSimData.length; i++) {
+                if (lastSimData[i].hp > peakHP) { peakHP = lastSimData[i].hp; peakPowerRPM = lastSimData[i].rpm; }
+            }
+        }
+        var vAtPeak = speedAtRPM(peakPowerRPM, gears[4]);
+
+        // Update results
+        document.getElementById('dsVmax').textContent = vTheorMax + ' km/h';
+        document.getElementById('dsVpeak').textContent = Math.round(vAtPeak) + ' km/h';
+        document.getElementById('dsFmax').textContent = Math.round(maxWheelForce) + ' N';
+
+        // Draw chart
+        drawDriveChart(gears, gearColors, gearNames, finalDrive, tireDiam, tireCirc, redline, torqueCurve, cw, area, weight, vTheorMax);
+    }
+
+    function drawDriveChart(gears, gearColors, gearNames, finalDrive, tireDiam, tireCirc, redline, torqueCurve, cw, area, weight, vmax) {
+        var canvas = document.getElementById('dsChart');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var W = canvas.width, H = canvas.height;
+        var pad = { top: 20, right: 45, bottom: 35, left: 50 };
+        var cw2 = W - pad.left - pad.right;
+        var ch = H - pad.top - pad.bottom;
+        var rho = 1.225;
+
+        ctx.clearRect(0, 0, W, H);
+
+        // X axis: speed 0-300 km/h, Y axis: wheel force 0-maxForce
+        var maxSpeed = Math.ceil((vmax + 30) / 50) * 50;
+        if (maxSpeed < 200) maxSpeed = 200;
+        if (maxSpeed > 350) maxSpeed = 350;
+
+        var maxForce = 0;
+        // Pre-calc max force
+        for (var g = 0; g < 5; g++) {
+            for (var rpm = 1500; rpm <= redline; rpm += 100) {
+                var spd = (rpm * tireCirc * 60) / (gears[g] * finalDrive * 1000);
+                var rpmR = Math.round(rpm / 50) * 50;
+                rpmR = Math.max(1000, Math.min(rpmR, 7500));
+                var tq = (torqueCurve[rpmR] || 300) * 1.3558;
+                var tireR = tireDiam * 0.0254 / 2;
+                var f = tq * gears[g] * finalDrive * 0.92 / tireR;
+                if (f > maxForce) maxForce = f;
+            }
+        }
+        maxForce = Math.ceil(maxForce / 1000) * 1000;
+        if (maxForce < 2000) maxForce = 2000;
+
+        function xPos(speed) { return pad.left + (speed / maxSpeed) * cw2; }
+        function yPos(force) { return pad.top + ch - (force / maxForce) * ch; }
+
+        // Grid
+        ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 0.5;
+        for (var s = 0; s <= maxSpeed; s += 25) {
+            var x = xPos(s);
+            ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + ch); ctx.stroke();
+            if (s % 50 === 0) {
+                ctx.fillStyle = '#718096'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+                ctx.fillText(s, x, H - pad.bottom + 14);
+            }
+        }
+        for (var f = 0; f <= maxForce; f += 1000) {
+            var y = yPos(f);
+            ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cw2, y); ctx.stroke();
+            ctx.fillStyle = '#718096'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+            ctx.fillText((f / 1000).toFixed(0) + 'kN', pad.left - 4, y + 3);
+        }
+
+        // Axis labels
+        ctx.fillStyle = '#718096'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText('Geschwindigkeit (km/h)', pad.left + cw2 / 2, H - 3);
+        ctx.save();
+        ctx.fillStyle = '#718096'; ctx.font = '10px sans-serif';
+        ctx.translate(10, pad.top + ch / 2); ctx.rotate(-Math.PI / 2);
+        ctx.textAlign = 'center'; ctx.fillText('Radkraft (N)', 0, 0);
+        ctx.restore();
+
+        // Draw gear curves
+        for (var g = 0; g < 5; g++) {
+            ctx.beginPath();
+            ctx.strokeStyle = gearColors[g];
+            ctx.lineWidth = 2;
+            var started = false;
+            for (var rpm = 1200; rpm <= redline; rpm += 50) {
+                var spd = (rpm * tireCirc * 60) / (gears[g] * finalDrive * 1000);
+                if (spd > maxSpeed) break;
+                var rpmR = Math.round(rpm / 50) * 50;
+                rpmR = Math.max(1000, Math.min(rpmR, 7500));
+                var tq = (torqueCurve[rpmR] || 300) * 1.3558;
+                var tireR = tireDiam * 0.0254 / 2;
+                var force = tq * gears[g] * finalDrive * 0.92 / tireR;
+                var x = xPos(spd), y = yPos(force);
+                if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            // Label
+            var labelRPM = Math.round(redline * 0.85 / 50) * 50;
+            var labelSpd = (labelRPM * tireCirc * 60) / (gears[g] * finalDrive * 1000);
+            if (labelSpd < maxSpeed) {
+                var rpmR2 = Math.round(labelRPM / 50) * 50;
+                var tq2 = (torqueCurve[Math.max(1000, Math.min(rpmR2, 7500))] || 300) * 1.3558;
+                var f2 = tq2 * gears[g] * finalDrive * 0.92 / (tireDiam * 0.0254 / 2);
+                ctx.fillStyle = gearColors[g]; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'left';
+                ctx.fillText(gearNames[g], xPos(labelSpd) + 3, yPos(f2) - 5);
+            }
+        }
+
+        // Drag curve
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(160,174,192,0.6)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([5, 3]);
+        var rollR = weight * 9.81 * 0.015;
+        for (var s = 0; s <= maxSpeed; s += 5) {
+            var v = s / 3.6;
+            var drag = 0.5 * rho * cw * area * v * v + rollR;
+            var x = xPos(s), y = yPos(drag);
+            if (s === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    // Run drivetrain sim on page load
+    setTimeout(runDriveSim, 800);
 
     function autoSave() {
         if (isLoading) return;
