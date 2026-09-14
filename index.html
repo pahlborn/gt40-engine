@@ -304,6 +304,29 @@
             .section { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
             body { background: white; }
         }
+        /* ---- Search ---- */
+        .search-bar {
+            display: flex; align-items: center; gap: 0.4rem;
+            margin-top: 0.5rem; max-width: 500px; margin-left: auto; margin-right: auto;
+        }
+        .search-bar input {
+            flex: 1; padding: 0.45rem 0.7rem; border: 1px solid rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.15); color: white; border-radius: 6px;
+            font-size: 0.82rem; outline: none;
+        }
+        .search-bar input::placeholder { color: rgba(255,255,255,0.55); }
+        .search-bar input:focus { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.7); }
+        .search-nav { display: flex; align-items: center; gap: 0.2rem; }
+        .search-nav button {
+            padding: 0.3rem 0.5rem; min-height: 32px; border: none;
+            background: rgba(255,255,255,0.2); color: white; border-radius: 4px;
+            cursor: pointer; font-size: 0.75rem;
+        }
+        .search-nav button:hover { background: rgba(255,255,255,0.35); }
+        .search-count { font-size: 0.7rem; color: rgba(255,255,255,0.8); white-space: nowrap; min-width: 3rem; text-align: center; }
+        mark.search-hl { background: #fefcbf; color: #744210; padding: 0 1px; border-radius: 2px; }
+        mark.search-hl.active { background: #ed8936; color: white; }
+
         /* ---- Mobile ---- */
         @media (max-width: 600px) {
             .header h1 { font-size: 1.05rem; }
@@ -328,9 +351,19 @@
         <button onclick="document.getElementById('importFile').click()">Import</button>
         <button onclick="clearAllData()">Reset</button>
         <button onclick="window.print()">Drucken</button>
+        <button style="background:#c53030;border-color:#c53030;" onclick="showGuide('guide-torque')">Drehmomente</button>
         <button style="background:#ed8936;border-color:#ed8936;" onclick="showGuide('guide-glossary')">Glossar</button>
         <button class="settings-btn" onclick="openSettings()">Einstellungen</button>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
+    </div>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Suchen... (z.B. Drehmoment, Oelpumpe, ARP)" oninput="doSearch()" onkeydown="searchKeyHandler(event)">
+        <div class="search-nav" id="searchNav" style="display:none;">
+            <button onclick="searchJump(-1)" title="Vorheriger">&#9650;</button>
+            <span class="search-count" id="searchCount"></span>
+            <button onclick="searchJump(1)" title="N&auml;chster">&#9660;</button>
+            <button onclick="clearSearch()" title="Schlie&szlig;en" style="margin-left:0.2rem;">&#10005;</button>
+        </div>
     </div>
     <div class="save-status" id="saveStatus"><span id="syncBadge"></span></div>
 </div>
@@ -3047,6 +3080,63 @@
     </div>
 </div>
 
+<!-- ===== TORQUE QUICK-REFERENCE OVERLAY ===== -->
+<div class="guide-overlay" id="guide-torque">
+    <div class="guide-header" style="background:linear-gradient(135deg,#c53030,#e53e3e);">
+        <button class="guide-back" onclick="hideGuide('guide-torque')">&larr; Zur&uuml;ck</button>
+        <h2>Drehmoment-Schnellkarte</h2>
+    </div>
+    <div class="guide-content">
+        <p style="font-size:0.8rem;color:#718096;margin-bottom:0.8rem;">Alle Drehmomente in Montagereihenfolge. Zum Ausdrucken: <strong>Strg+P</strong> w&auml;hrend diese Karte ge&ouml;ffnet ist.</p>
+
+        <h3 style="color:#c53030;">Short Block (bereits montiert)</h3>
+        <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
+            <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.35rem;">Verbindung</th><th style="text-align:right;padding:0.35rem;">Drehmoment</th><th style="text-align:left;padding:0.35rem;">Schmierstoff</th></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Hauptlager obere Reihe (1&ndash;5)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">80 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">30wt &Ouml;l</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Hauptlager untere Reihe (6&ndash;10)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">70 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">30wt &Ouml;l + Sealant</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&Ouml;lkanalstopfen -4 AN</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">8&ndash;10 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
+        </table>
+
+        <h3 style="color:#c53030;">Phase 2: Nockenwelle &amp; Steuertrieb</h3>
+        <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
+            <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.35rem;">Verbindung</th><th style="text-align:right;padding:0.35rem;">Drehmoment</th><th style="text-align:left;padding:0.35rem;">Schmierstoff</th></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Nockenwellenschraube (ARP 254-1001)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">40&ndash;45 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Lube</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&Ouml;lpumpe an Block</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">22&ndash;25 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Motor&ouml;l</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&Ouml;lwanne</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">10&ndash;12 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&Ouml;lwanne Ablassschraube</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">15&ndash;25 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Timing Cover</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">12&ndash;18 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Harmonic Balancer Zentralschraube</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">70&ndash;90 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
+        </table>
+
+        <h3 style="color:#c53030;">Phase 3: Zylinderk&ouml;pfe</h3>
+        <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
+            <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.35rem;">Verbindung</th><th style="text-align:right;padding:0.35rem;">Drehmoment</th><th style="text-align:left;padding:0.35rem;">Schmierstoff</th></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Kopfstehbolzen ARP 154-4003<br><span style="font-size:0.72rem;color:#718096;">3 Stufen: 35 &rarr; 55 &rarr; 80/70 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">80 / 70 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;font-size:0.72rem;color:#718096;" colspan="3">Obere Reihe (1-5): 80 ft-lbs &nbsp;|&nbsp; Untere Reihe (6-10): 70 ft-lbs &nbsp;|&nbsp; Kreuzmuster innen &rarr; au&szlig;en</td></tr>
+        </table>
+
+        <h3 style="color:#c53030;">Phase 3: Ansaugung &amp; Z&uuml;ndung</h3>
+        <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
+            <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.35rem;">Verbindung</th><th style="text-align:right;padding:0.35rem;">Drehmoment</th><th style="text-align:left;padding:0.35rem;">Schmierstoff</th></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Ansaugbr&uuml;cke (Fel-Pro 1250)<br><span style="font-size:0.72rem;color:#718096;">3 Stufen: 5 &rarr; 12 &rarr; 18 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">18 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Motor&ouml;l</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndkerzen (Alu-Kopf)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">15&ndash;22 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Anti-Seize</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Wasserpumpe</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">15&ndash;22 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Ventildeckel</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">4&ndash;6 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
+        </table>
+
+        <h3 style="color:#c53030;">Antriebsstrang</h3>
+        <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
+            <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.35rem;">Verbindung</th><th style="text-align:right;padding:0.35rem;">Drehmoment</th><th style="text-align:left;padding:0.35rem;">Schmierstoff</th></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Druckplatte / Kupplung</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">12&ndash;24 ft-lbs</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Kraftstoffpumpe</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">handfest + 1/4</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">&mdash;</td></tr>
+        </table>
+
+        <div style="background:#fff5f5;padding:0.6rem;border-radius:8px;border:1px solid #fed7d7;font-size:0.78rem;margin-top:0.5rem;">
+            <strong style="color:#c53030;">Wichtig:</strong> ARP-Schrauben erfordern <strong>ARP Ultra-Torque</strong> (100-9908). Die Drehmomente gelten NUR mit diesem Schmierstoff! Ohne ARP Lube = andere Vorspannung bei gleichem Drehmoment.
+        </div>
+    </div>
+</div>
+
 <!-- ===== GLOSSARY OVERLAY ===== -->
 <div class="guide-overlay" id="guide-glossary">
     <div class="glossary-search">
@@ -4868,6 +4958,103 @@
         const t = document.getElementById('toast'); t.textContent = msg;
         t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500);
     }
+
+    // ==== SEARCH ====
+    let searchMarks = [];
+    let searchIdx = -1;
+    let searchTimeout = null;
+
+    function doSearch() {
+        if (searchTimeout) clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(_doSearch, 200);
+    }
+
+    function _doSearch() {
+        const q = document.getElementById('searchInput').value.trim();
+        clearHighlights();
+        if (q.length < 2) {
+            document.getElementById('searchNav').style.display = 'none';
+            return;
+        }
+        const container = document.getElementById('mainContent');
+        const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+        const matches = [];
+        const qLower = q.toLowerCase();
+        while (walker.nextNode()) {
+            const node = walker.currentNode;
+            if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE')) continue;
+            const idx = node.textContent.toLowerCase().indexOf(qLower);
+            if (idx >= 0) matches.push({ node, idx, len: q.length });
+        }
+        // highlight all matches
+        for (let i = matches.length - 1; i >= 0; i--) {
+            const m = matches[i];
+            const range = document.createRange();
+            range.setStart(m.node, m.idx);
+            range.setEnd(m.node, m.idx + m.len);
+            const mark = document.createElement('mark');
+            mark.className = 'search-hl';
+            range.surroundContents(mark);
+        }
+        searchMarks = Array.from(container.querySelectorAll('mark.search-hl'));
+        document.getElementById('searchNav').style.display = searchMarks.length ? 'flex' : 'none';
+        document.getElementById('searchCount').textContent = searchMarks.length ? searchMarks.length + ' Treffer' : 'keine';
+        if (searchMarks.length) { searchIdx = 0; jumpToMark(0); }
+    }
+
+    function jumpToMark(idx) {
+        searchMarks.forEach(m => m.classList.remove('active'));
+        if (!searchMarks.length) return;
+        searchIdx = ((idx % searchMarks.length) + searchMarks.length) % searchMarks.length;
+        const mark = searchMarks[searchIdx];
+        // open collapsed parents
+        let el = mark;
+        while (el && el !== document.body) {
+            if (el.classList && el.classList.contains('section-body') && el.classList.contains('collapsed')) {
+                el.classList.remove('collapsed');
+                if (el.previousElementSibling) el.previousElementSibling.classList.remove('collapsed');
+            }
+            if (el.classList && el.classList.contains('comp-body') && !el.classList.contains('open')) {
+                el.classList.add('open');
+                if (el.previousElementSibling) el.previousElementSibling.classList.add('open');
+            }
+            el = el.parentElement;
+        }
+        mark.classList.add('active');
+        mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById('searchCount').textContent = (searchIdx + 1) + ' / ' + searchMarks.length;
+    }
+
+    function searchJump(dir) { if (searchMarks.length) jumpToMark(searchIdx + dir); }
+
+    function clearHighlights() {
+        document.querySelectorAll('mark.search-hl').forEach(mark => {
+            const parent = mark.parentNode;
+            parent.replaceChild(document.createTextNode(mark.textContent), mark);
+            parent.normalize();
+        });
+        searchMarks = [];
+        searchIdx = -1;
+    }
+
+    function clearSearch() {
+        document.getElementById('searchInput').value = '';
+        clearHighlights();
+        document.getElementById('searchNav').style.display = 'none';
+    }
+
+    function searchKeyHandler(e) {
+        if (e.key === 'Escape') { clearSearch(); e.target.blur(); }
+        else if (e.key === 'Enter') { e.preventDefault(); searchJump(e.shiftKey ? -1 : 1); }
+    }
+    // Ctrl+F / Cmd+F hijack for in-page search
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+            e.preventDefault();
+            document.getElementById('searchInput').focus();
+            document.getElementById('searchInput').select();
+        }
+    });
 
     // ==== INIT ====
     generateQuenchTable(); updateSyncBadge(); loadData();
