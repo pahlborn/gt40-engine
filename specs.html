@@ -4091,6 +4091,7 @@
     function toggleComp(el) { el.classList.toggle('open'); el.nextElementSibling.classList.toggle('open'); saveCollapseState(); }
     function toggleSection(h) { h.classList.toggle('collapsed'); h.nextElementSibling.classList.toggle('collapsed'); saveCollapseState(); }
 
+    var _collapseKey = 'engineBuild_collapse_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
     function saveCollapseState() {
         var state = {};
         document.querySelectorAll('.section-header').forEach(function(h, i) {
@@ -4099,10 +4100,13 @@
         document.querySelectorAll('.comp-toggle').forEach(function(t, i) {
             if (t.classList.contains('open')) state['c' + i] = 1;
         });
-        localStorage.setItem('engineBuildLog_collapse', JSON.stringify(state));
+        document.querySelectorAll('.group-divider').forEach(function(g, i) {
+            if (g.classList.contains('collapsed')) state['g' + i] = 1;
+        });
+        localStorage.setItem(_collapseKey, JSON.stringify(state));
     }
     function restoreCollapseState() {
-        var raw = localStorage.getItem('engineBuildLog_collapse');
+        var raw = localStorage.getItem(_collapseKey);
         if (!raw) return;
         try {
             var state = JSON.parse(raw);
@@ -4116,6 +4120,11 @@
                 if (state['c' + i]) {
                     t.classList.add('open');
                     if (t.nextElementSibling) t.nextElementSibling.classList.add('open');
+                }
+            });
+            document.querySelectorAll('.group-divider').forEach(function(g, i) {
+                if (state['g' + i]) {
+                    g.classList.add('collapsed');
                 }
             });
         } catch(e) {}
@@ -5022,12 +5031,19 @@
 
     // ==== SCROLL POSITION MEMORY ====
     var _scrollKey = 'engineBuild_scroll_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
+    var _scrollTimer = null;
+    window.addEventListener('scroll', function() {
+        clearTimeout(_scrollTimer);
+        _scrollTimer = setTimeout(function() {
+            localStorage.setItem(_scrollKey, window.scrollY);
+        }, 200);
+    }, { passive: true });
     window.addEventListener('beforeunload', function() {
         localStorage.setItem(_scrollKey, window.scrollY);
     });
     window.addEventListener('load', function() {
         var pos = localStorage.getItem(_scrollKey);
-        if (pos) setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 100);
+        if (pos) setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 150);
     });
 
 </script>
