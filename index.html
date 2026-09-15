@@ -1503,7 +1503,15 @@
     async function loadData() {
         isLoading = true;
         const raw = localStorage.getItem('engineBuildLog');
-        if (raw) { try { applyData(JSON.parse(raw)); } catch(e) {} }
+        if (raw) {
+            try {
+                var d = JSON.parse(raw);
+                // Migration: korrigiere falsche Defaults aus aelteren Versionen
+                if (d.cr_piston === '0' || d.cr_piston === 0) d.cr_piston = '-2.3';
+                if (d.cr_deck === '0' || d.cr_deck === 0 || d.cr_deck === '0.000') d.cr_deck = '0.010';
+                applyData(d);
+            } catch(e) {}
+        }
         if (isGistConfigured()) await loadFromGist();
         isLoading = false; updateSaveStatus();
     }
