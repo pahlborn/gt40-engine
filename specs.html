@@ -2845,7 +2845,7 @@
     <button class="fab-btn" onclick="document.getElementById('unitsPanel').classList.toggle('open')" title="Units Reference" style="background:#4a5568;font-size:0.85rem;">&#128207;</button>
 </div>
 <div class="converter-panel" id="convPanel">
-    <h4>&#8644; Einheiten-Umrechner</h4>
+    <div style="display:flex;justify-content:space-between;align-items:center;"><h4>&#8644; Einheiten-Umrechner</h4><button onclick="document.getElementById('convPanel').classList.remove('open')" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#718096;">&times;</button></div>
     <strong style="font-size:0.75rem;">Drehmoment</strong>
     <div class="converter-row">
         <input type="number" id="convFtlbs" placeholder="ft-lbs" oninput="document.getElementById('convNm').value=this.value?(this.value*1.3558).toFixed(1):''">
@@ -2875,7 +2875,7 @@
 </div>
 
 <div class="converter-panel" id="unitsPanel" style="max-width:340px;">
-    <h4>&#128207; Ma&szlig;einheiten</h4>
+    <div style="display:flex;justify-content:space-between;align-items:center;"><h4>&#128207; Ma&szlig;einheiten</h4><button onclick="document.getElementById('unitsPanel').classList.remove('open')" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#718096;">&times;</button></div>
     <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
         <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:left;padding:0.2rem;">Umrechnung</th></tr>
         <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">BHP</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Leistung (US)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 BHP = 0.746 kW = 1.014 PS</td></tr>
@@ -2895,6 +2895,8 @@
 <!-- Photo Lightbox -->
 <div class="photo-lightbox" id="photoLightbox" onclick="closeLightbox()">
     <button class="close-lb" onclick="closeLightbox()">&times;</button>
+    <button class="lb-nav lb-prev" onclick="event.stopPropagation();specLightboxNav(-1)" title="Previous" style="position:absolute;top:50%;left:1rem;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:white;font-size:2rem;padding:0.5rem 0.8rem;cursor:pointer;border-radius:4px;">&#10094;</button>
+    <button class="lb-nav lb-next" onclick="event.stopPropagation();specLightboxNav(1)" title="Next" style="position:absolute;top:50%;right:1rem;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:white;font-size:2rem;padding:0.5rem 0.8rem;cursor:pointer;border-radius:4px;">&#10095;</button>
     <button class="delete-lb" onclick="event.stopPropagation();deleteLightboxPhoto()">&#128465; L&ouml;schen</button>
     <img src="" alt="Foto" onclick="event.stopPropagation()">
     <div class="caption"></div>
@@ -4257,6 +4259,17 @@
         lb.classList.add('show');
     }
 
+
+    function specLightboxNav(dir) {
+        var lb = document.getElementById('photoLightbox');
+        var group = lb.dataset.group;
+        var idx = parseInt(lb.dataset.idx);
+        var photos = photoData[group] || [];
+        var newIdx = idx + dir;
+        if (newIdx < 0) newIdx = photos.length - 1;
+        if (newIdx >= photos.length) newIdx = 0;
+        openLightbox(group, newIdx);
+    }
     function closeLightbox() { document.getElementById('photoLightbox').classList.remove('show'); }
 
     function deleteLightboxPhoto() {

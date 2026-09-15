@@ -180,6 +180,28 @@
         .lightbox img { max-width: 95%; max-height: 80vh; border-radius: 8px; }
         .lightbox .caption { color: white; font-size: 0.85rem; margin-top: 0.5rem; text-align: center; }
         .lightbox .lb-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 1.5rem; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; }
+
+        .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); border: none; color: white; font-size: 2rem; padding: 0.5rem 0.8rem; cursor: pointer; border-radius: 4px; z-index: 8001; }
+        .lb-nav:hover { background: rgba(255,255,255,0.35); }
+        .lb-prev { left: 1rem; }
+        .lb-next { right: 1rem; }
+        .lb-delete { position: absolute; top: 1rem; left: 1rem; color: #fc8181; font-size: 0.8rem; cursor: pointer; background: rgba(0,0,0,0.5); border: 1px solid #fc8181; border-radius: 4px; padding: 0.3rem 0.6rem; z-index: 8001; }
+        .lb-delete:hover { background: rgba(200,0,0,0.5); color: white; }
+
+        .converter-panel {
+            display: none; position: fixed; bottom: 70px; right: 16px; z-index: 950;
+            background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            padding: 0.75rem; max-width: 300px; width: calc(100vw - 32px);
+        }
+        .converter-panel.open { display: block; }
+        .converter-panel h4 { margin: 0 0 0.5rem; font-size: 0.9rem; color: #1a365d; }
+        .converter-row { display: flex; gap: 0.3rem; align-items: center; margin-bottom: 0.5rem; }
+        .converter-row input { flex: 1; padding: 0.35rem 0.4rem; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 0.82rem; }
+        .converter-row .conv-label { font-size: 0.7rem; color: #666; min-width: 38px; text-align: center; }
+        .converter-sep { border-top: 1px solid #e2e8f0; margin: 0.6rem 0; }
+        .fab-stack { position: fixed; bottom: 16px; right: 16px; z-index: 900; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+        .fab-btn { width: 44px; height: 44px; border-radius: 50%; border: none; color: white; font-size: 1.1rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; background: #2b6cb0; }
+        .fab-btn:hover { filter: brightness(1.15); }
     </style>
 </head>
 <body>
@@ -1053,8 +1075,11 @@
 
 <div class="toast" id="toast"></div>
 
-<div class="lightbox" id="lightbox" onclick="this.classList.remove('show')">
-    <button class="lb-close" onclick="event.stopPropagation();this.parentElement.classList.remove('show')">&times;</button>
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lb-close" onclick="event.stopPropagation();closeLightbox()">&times;</button>
+    <button class="lb-nav lb-prev" onclick="event.stopPropagation();lightboxNav(-1)" title="Previous">&#10094;</button>
+    <button class="lb-nav lb-next" onclick="event.stopPropagation();lightboxNav(1)" title="Next">&#10095;</button>
+    <button class="lb-delete" onclick="event.stopPropagation();deleteLightboxPhoto()">&#128465; Delete</button>
     <img src="" alt="Photo" onclick="event.stopPropagation()">
     <div class="caption"></div>
 </div>
@@ -1280,6 +1305,37 @@
         t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); }, 2500);
     }
 
+
+    // ==== LIGHTBOX with delete + navigation ====
+    var _lbGroup = null, _lbIdx = -1;
+    function openLightbox(group, idx) {
+        var photos = JSON.parse(localStorage.getItem('buildPhotos_' + group) || '[]');
+        if (!photos[idx]) return;
+        _lbGroup = group; _lbIdx = idx;
+        var lb = document.getElementById('lightbox');
+        lb.querySelector('img').src = photos[idx].src;
+        lb.querySelector('.caption').textContent = photos[idx].caption || new Date(photos[idx].time).toLocaleString('de-DE');
+        lb.classList.add('show');
+    }
+    function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); _lbGroup = null; }
+    function lightboxNav(dir) {
+        if (!_lbGroup) return;
+        var photos = JSON.parse(localStorage.getItem('buildPhotos_' + _lbGroup) || '[]');
+        var newIdx = _lbIdx + dir;
+        if (newIdx < 0) newIdx = photos.length - 1;
+        if (newIdx >= photos.length) newIdx = 0;
+        openLightbox(_lbGroup, newIdx);
+    }
+    function deleteLightboxPhoto() {
+        if (!_lbGroup || _lbIdx < 0) return;
+        if (!confirm('Foto wirklich loeschen?')) return;
+        var photos = JSON.parse(localStorage.getItem('buildPhotos_' + _lbGroup) || '[]');
+        photos.splice(_lbIdx, 1);
+        localStorage.setItem('buildPhotos_' + _lbGroup, JSON.stringify(photos));
+        renderPhotos(_lbGroup);
+        closeLightbox();
+        showToast('Foto geloescht');
+    }
     // ==== PHOTOS ====
     function addPhoto(group) {
         var input = document.createElement('input');
@@ -1318,12 +1374,7 @@
             photos.forEach(function(p, i) {
                 var img = document.createElement('img');
                 img.src = p.src; img.alt = p.caption || 'Photo ' + (i+1);
-                img.onclick = function() {
-                    var lb = document.getElementById('lightbox');
-                    lb.querySelector('img').src = p.src;
-                    lb.querySelector('.caption').textContent = p.caption || new Date(p.time).toLocaleString('de-DE');
-                    lb.classList.add('show');
-                };
+                img.onclick = (function(g, j) { return function() { openLightbox(g, j); }; })(group, i);
                 gallery.appendChild(img);
             });
         });

@@ -181,6 +181,21 @@
             .section { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
             body { background: white; }
         }
+
+        .converter-panel {
+            display: none; position: fixed; bottom: 70px; right: 16px; z-index: 950;
+            background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            padding: 0.75rem; max-width: 300px; width: calc(100vw - 32px);
+        }
+        .converter-panel.open { display: block; }
+        .converter-panel h4 { margin: 0 0 0.5rem; font-size: 0.9rem; color: #1a365d; }
+        .converter-row { display: flex; gap: 0.3rem; align-items: center; margin-bottom: 0.5rem; }
+        .converter-row input { flex: 1; padding: 0.35rem 0.4rem; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 0.82rem; }
+        .converter-row .conv-label { font-size: 0.7rem; color: #666; min-width: 38px; text-align: center; }
+        .converter-sep { border-top: 1px solid #e2e8f0; margin: 0.6rem 0; }
+        .fab-stack { position: fixed; bottom: 16px; right: 16px; z-index: 900; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+        .fab-btn { width: 44px; height: 44px; border-radius: 50%; border: none; color: white; font-size: 1.1rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; background: #2b6cb0; }
+        .fab-btn:hover { filter: brightness(1.15); }
     </style>
 </head>
 <body>
@@ -3266,7 +3281,76 @@
         setTimeout(restoreScrollPos, 100);
     });
 
+    // ==== ESC to close panels ====
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            var conv = document.getElementById('convPanel');
+            if (conv && conv.classList.contains('open')) { conv.classList.remove('open'); return; }
+            var units = document.getElementById('unitsPanel');
+            if (units && units.classList.contains('open')) { units.classList.remove('open'); return; }
+        }
+    });
+
 </script>
+
+<div class="fab-stack">
+    <button class="fab-btn" onclick="document.getElementById('convPanel').classList.toggle('open');document.getElementById('unitsPanel').classList.remove('open')" title="Unit Converter">&#8644;</button>
+    <button class="fab-btn" onclick="document.getElementById('unitsPanel').classList.toggle('open');document.getElementById('convPanel').classList.remove('open')" title="Units Reference" style="background:#4a5568;font-size:0.85rem;">&#128207;</button>
+</div>
+
+<!-- Unit Converter Panel -->
+<div class="converter-panel" id="convPanel">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h4>&#8644; Einheiten-Umrechner</h4>
+        <button onclick="document.getElementById('convPanel').classList.remove('open')" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#718096;">&times;</button>
+    </div>
+    <strong style="font-size:0.75rem;">Drehmoment</strong>
+    <div class="converter-row">
+        <input type="number" id="convFtlbs" placeholder="ft-lbs" oninput="document.getElementById('convNm').value=this.value?(this.value*1.3558).toFixed(1):''">
+        <span class="conv-label">ft-lbs</span>
+        <span>&harr;</span>
+        <input type="number" id="convNm" placeholder="Nm" oninput="document.getElementById('convFtlbs').value=this.value?(this.value/1.3558).toFixed(1):''">
+        <span class="conv-label">Nm</span>
+    </div>
+    <div class="converter-sep"></div>
+    <strong style="font-size:0.75rem;">L&auml;nge / Spalt</strong>
+    <div class="converter-row">
+        <input type="number" id="convInch" placeholder="inch" step="0.001" oninput="document.getElementById('convMm').value=this.value?(this.value*25.4).toFixed(3):''">
+        <span class="conv-label">inch</span>
+        <span>&harr;</span>
+        <input type="number" id="convMm" placeholder="mm" step="0.001" oninput="document.getElementById('convInch').value=this.value?(this.value/25.4).toFixed(4):''">
+        <span class="conv-label">mm</span>
+    </div>
+    <div class="converter-sep"></div>
+    <strong style="font-size:0.75rem;">Volumen (Brennraum)</strong>
+    <div class="converter-row">
+        <input type="number" id="convCc" placeholder="cc" oninput="document.getElementById('convCi').value=this.value?(this.value/16.387).toFixed(2):''">
+        <span class="conv-label">cc</span>
+        <span>&harr;</span>
+        <input type="number" id="convCi" placeholder="ci" step="0.01" oninput="document.getElementById('convCc').value=this.value?(this.value*16.387).toFixed(1):''">
+        <span class="conv-label">ci</span>
+    </div>
+</div>
+
+<!-- Units Reference Panel -->
+<div class="converter-panel" id="unitsPanel" style="max-width:340px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h4>&#128207; Ma&szlig;einheiten</h4>
+        <button onclick="document.getElementById('unitsPanel').classList.remove('open')" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#718096;">&times;</button>
+    </div>
+    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:left;padding:0.2rem;">Umrechnung</th></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">BHP</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Leistung (US)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 BHP = 0.746 kW = 1.014 PS</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">ft-lbs</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Drehmoment (US)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 ft-lb = 1.356 Nm</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">inch (&Prime;)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">L&auml;ngen, Bohrungen</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1&Prime; = 25.4 mm</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">thou</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Spaltma&szlig;e (.001&Prime;)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 thou = 0.0254 mm</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">cc</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Brennraum, Hub</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 ci = 16.387 cc</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">psi</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">&Ouml;ldruck, Kraftstoffdruck</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 psi = 0.0689 bar</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">CFM</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Luftdurchsatz Zylinderk&ouml;pfe</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">cubic feet/min @ 28&Prime;H&#8322;O</td></tr>
+        <tr><td style="padding:0.15rem;font-weight:700;">ROZ/RON</td><td style="padding:0.15rem;">Oktanzahl (Research)</td><td style="padding:0.15rem;">95/98/100+ ROZ</td></tr>
+    </table>
+    <div style="font-size:0.68rem;color:#718096;margin-top:0.3rem;">Alle Leistungs- und Drehmoment-Angaben verwenden die in der US-Motorentechnik &uuml;blichen imperialen Einheiten.</div>
+</div>
 
 </body>
 </html>
