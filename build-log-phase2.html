@@ -1197,10 +1197,19 @@
             }).then(function(r) { return r.json(); }).then(function(gist) {
                 var file = gist.files && gist.files[GIST_FILENAME];
                 if (file) {
-                    var data = JSON.parse(file.content);
-                    migrateFields(data);
-                    applyData(data);
-                    localStorage.setItem('engineBuildLog', JSON.stringify(data));
+                    var cloudData = JSON.parse(file.content);
+                    var localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+                    var cloudTime = new Date(cloudData._savedAt || 0).getTime();
+                    var localTime = new Date(localData._savedAt || 0).getTime();
+                    var merged;
+                    if (cloudTime > localTime) {
+                        merged = Object.assign({}, localData, cloudData);
+                    } else {
+                        merged = Object.assign({}, cloudData, localData);
+                    }
+                    migrateFields(merged);
+                    applyData(merged);
+                    localStorage.setItem('engineBuildLog', JSON.stringify(merged));
                 }
                 isLoading = false; updateSaveStatus();
             }).catch(function() { isLoading = false; });

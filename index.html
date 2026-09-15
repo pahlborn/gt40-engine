@@ -1247,9 +1247,22 @@
             const gist = await res.json();
             const file = gist.files[GIST_FILENAME];
             if (!file) { isLoading = false; return false; }
-            const data = JSON.parse(file.content);
-            applyData(data);
-            localStorage.setItem('engineBuildLog', JSON.stringify(data));
+            const cloudData = JSON.parse(file.content);
+            // Merge: local wins over cloud for fields that exist locally,
+            // cloud fills in fields that are missing locally
+            const localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+            const cloudTime = new Date(cloudData._savedAt || 0).getTime();
+            const localTime = new Date(localData._savedAt || 0).getTime();
+            var merged;
+            if (cloudTime > localTime) {
+                // Cloud is newer: cloud wins, but preserve local-only fields
+                merged = Object.assign({}, localData, cloudData);
+            } else {
+                // Local is newer: local wins, but add cloud-only fields
+                merged = Object.assign({}, cloudData, localData);
+            }
+            applyData(merged);
+            localStorage.setItem('engineBuildLog', JSON.stringify(merged));
             isLoading = false; return true;
         } catch (err) { isLoading = false; return false; }
     }
