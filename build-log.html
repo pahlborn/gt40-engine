@@ -557,9 +557,16 @@
                 <div class="spec-line"><span>Gallery Plugs</span><span class="spec-val">8&ndash;10 ft-lbs (11&ndash;14 Nm)</span></div>
                 <div class="spec-line"><span>Sealant (Dichtmittel)</span><span class="spec-val">Teflon tape or pipe sealant</span></div>
             </div>
-            <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Located behind distributor bore &ndash; easy to miss</li>
-                <li>If loose = no oil pressure at startup</li>
+            <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
+                <li>Alle &Ouml;lkanalstopfen lokalisieren: 2 an der R&uuml;ckseite des Blocks (hinter Verteilerbohrung), 2 an der Vorderseite, weitere seitlich.</li>
+                <li>Jeden Stopfen mit Steckschl&uuml;ssel oder Inbus auf festen Sitz pr&uuml;fen.</li>
+                <li>Lose Stopfen herausdrehen, Gewinde reinigen, Teflonband oder Rohr-Dichtmittel auftragen.</li>
+                <li>Stopfen mit 8&ndash;10 ft-lbs (11&ndash;14 Nm) anziehen.</li>
+                <li>Bei Rebuild: Alle Stopfen generell erneuern (sie k&ouml;nnen mit der Zeit undicht werden).</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="tips">Praxis-Tipps</h4><ul>
+                <li>Hinter der Verteilerbohrung leicht zu &uuml;bersehen!</li>
+                <li>Lose Stopfen = kein &Ouml;ldruck beim Erststart = Motorschaden</li>
             </ul></div>
         </div>
     </div>
@@ -745,6 +752,14 @@
                     <div><label>#5:</label><input type="text" data-field="p1_camj5" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
                 </div>
             </div>
+            <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
+                <li>Nockenwelle auf V-Block oder Prismen legen (oder im Block belassen).</li>
+                <li>Au&szlig;enmikrometer (1.5&quot;&ndash;2.5&quot;) auf den Zapfen ansetzen.</li>
+                <li>Jeden Zapfen an 2 Positionen messen: 0&deg; und 90&deg; gedreht (Ovalit&auml;t pr&uuml;fen).</li>
+                <li>Alle 5 Zapfen durchmessen und Werte dokumentieren.</li>
+                <li>Ovalit&auml;t &gt; 0.001&quot;: Nockenwelle verschlissen &ndash; ersetzen.</li>
+                <li>Lagerspiel berechnen: Bearing I.D. &minus; Journal &oslash; = Clearance (Soll: 0.001&quot;&ndash;0.003&quot;).</li>
+            </ol></div>
         </div>
     </div>
 </div>
@@ -992,6 +1007,15 @@
                     <div><label>Clearance:</label><input type="text" data-field="p1_cb_clr" placeholder="" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
+            <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
+                <li>Installierte Federl&auml;nge (Installed Height) aus Step 19 &uuml;bernehmen oder messen.</li>
+                <li>Coil-Bind-H&ouml;he vom Feder-Datenblatt ablesen (PAC/AFR #8605).</li>
+                <li>Maximalen Ventilhub bestimmen (Auslass: 0.565&quot; bei 1.7:1 Rocker Ratio).</li>
+                <li>Rechnung: Installed Height &minus; Max. Valve Lift = L&auml;nge bei maximalem Hub.</li>
+                <li>Clearance = L&auml;nge bei max. Hub &minus; Coil-Bind-H&ouml;he.</li>
+                <li>Ergebnis muss &ge; 0.060&quot; (1.52 mm) sein. Weniger = Feder- oder Retainer-Bruch!</li>
+                <li>Bei zu wenig Clearance: Andere Feder oder Shims unter dem Retainer entfernen.</li>
+            </ol></div>
         </div>
     </div>
 </div>
@@ -1176,12 +1200,13 @@
                     <div><label>Short measured:</label><input type="text" data-field="p1_arp_short" placeholder="5.750" oninput="autoSave()" style="width:65px;"></div>
                 </div>
             </div>
-            <div class="guide-block"><h4 class="prereq">Procedure</h4><ul>
-                <li>Measure both stud types with caliper (Messschieber)</li>
-                <li>Compare against block thread depth + head height</li>
-                <li>Stud must NOT bottom out in blind hole!</li>
-                <li>Nut thread must protrude 2&ndash;3 threads beyond nut</li>
-            </ul></div>
+            <div class="guide-block"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
+                <li>Alle 20 Stehbolzen (10 pro Kopf) mit Messschieber messen und nach lang/kurz sortieren.</li>
+                <li>Lange Bolzen (4 St&uuml;ck pro Kopf): Soll 6.800&quot; &plusmn; 0.010&quot;. Kommen in die Sacklochbohrungen (Blind Holes).</li>
+                <li>Kurze Bolzen (6 St&uuml;ck pro Kopf): Soll 5.750&quot; &plusmn; 0.010&quot;. Kommen in die Wasserbohrungen (Water Holes &ndash; Dichtmittel auf Gewinde!).</li>
+                <li>Gewindetiefe im Block pr&uuml;fen: Bolzen darf NICHT am Grund aufsetzen (hydraulische Blockade &rarr; Blockriss!).</li>
+                <li>Bolzen handfest eindrehen, Gewindeg&auml;ngigkeit pr&uuml;fen. 2&ndash;3 Gewinde m&uuml;ssen &uuml;ber die Mutter hinausragen.</li>
+            </ol></div>
             <div class="warning-box"><strong>Critical:</strong> A stud bottoming in a blind hole will hydraulically lock and crack the block when torqued. Always verify thread engagement depth.</div>
             <div class="guide-block"><h4 class="tools">Tools</h4><ul>
                 <li>Caliper (Messschieber) 0&ndash;8&quot; (0&ndash;200 mm)</li>
@@ -1317,10 +1342,19 @@
                 <li>Cam bearing installation tool (Einpresswerkzeug)</li>
                 <li>Brass or plastic hammer</li>
             </ul></div>
-            <div class="guide-block guide-full"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
-                <li>Only replace if type conflict or visible wear</li>
-                <li>Oil holes MUST align with block galleries after press-in!</li>
-                <li>Always install with oil &ndash; never press in dry</li>
+            <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
+                <li>Lagertyp bestimmen: R351 (Standard) oder J351 (Boss). Cam-Journal-Durchmesser aus Phase 1, Step 11 verwenden.</li>
+                <li>Lagerspiel berechnen: Bearing I.D. &minus; Journal &oslash;. Soll: 0.001&quot;&ndash;0.003&quot;.</li>
+                <li>Visuelle Pr&uuml;fung: Riefen, Pitting, Verschlei&szlig;? Wenn ja &rarr; ersetzen.</li>
+                <li>Falls Austausch n&ouml;tig: Alte Lager mit Einpresswerkzeug heraustreiben (von au&szlig;en nach innen).</li>
+                <li>Neue Lager ein&ouml;len und mit Spezialwerkzeug einpressen (Hammer + Treibdorn, nicht schief ansetzen!).</li>
+                <li><strong>Kritisch:</strong> &Ouml;lbohrungen im Lager MUESSEN exakt mit den Block-&Ouml;lkan&auml;len fluchten. Lager mit Markierung zur &Ouml;lbohrung ausrichten.</li>
+                <li>Nach dem Einpressen nochmals Lagerspiel pr&uuml;fen.</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="tips">Praxis-Tipps</h4><ul>
+                <li>Nur austauschen bei Typkonflikt oder sichtbarem Verschlei&szlig;</li>
+                <li>&Ouml;lbohrungen MUESSEN mit Block-Kan&auml;len fluchten &ndash; sonst kein &Ouml;l an der Nocke!</li>
+                <li>Immer ge&ouml;lt einpressen &ndash; nie trocken</li>
             </ul></div>
         </div>
     </div>
@@ -1398,15 +1432,16 @@
                     <div><label>Measured:</label><input type="text" data-field="p2_endplay_val" placeholder=".004" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
-            <div class="guide-block guide-full"><h4 class="prereq">Procedure (Messverfahren)</h4><ul>
-                <li>Cam must be installed with thrust plate mounted</li>
-                <li>Place dial indicator axial on front cam end (or on cam sprocket face)</li>
-                <li>Push cam fully forward, zero indicator</li>
-                <li>Push cam fully rearward, read difference = endplay</li>
-            </ul></div>
-            <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Too much play = thrust plate worn or wrong thickness</li>
-                <li>Too little play = cam may bind when engine is warm (thermal expansion)</li>
+            <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
+                <li>Nockenwelle mit Anlaufscheibe (Thrust Plate) eingebaut, Nockenwellenrad montiert.</li>
+                <li>Messuhr (Dial Indicator) axial auf das vordere Nockenwellenende oder die Nockenwellenrad-Stirnfl&auml;che ansetzen.</li>
+                <li>Nockenwelle mit Schraubendreher vorsichtig ganz nach vorne dr&uuml;cken. Messuhr auf Null.</li>
+                <li>Nockenwelle ganz nach hinten dr&uuml;cken. Messuhr ablesen = Endplay.</li>
+                <li>Soll: 0.001&quot;&ndash;0.007&quot;. &Uuml;ber 0.009&quot;: Anlaufscheibe verschlissen &ndash; ersetzen.</li>
+            </ol></div>
+            <div class="guide-block guide-full"><h4 class="tips">Praxis-Tipps</h4><ul>
+                <li>Zu viel Spiel = Anlaufscheibe verschlissen oder falsche Dicke</li>
+                <li>Zu wenig Spiel = Nocke kann bei Betriebstemperatur klemmen (W&auml;rmeausdehnung)</li>
             </ul></div>
         </div>
     </div>
@@ -1650,14 +1685,17 @@
     <input type="text" class="step-note" data-field="p2_sweep_n" placeholder="Findings..." oninput="autoSave()">
     <div class="step-guide">
         <div class="guide-grid">
-            <div class="guide-block guide-full"><h4 class="prereq">Procedure</h4><ul>
-                <li><strong>1.</strong> Color valve stem tip completely with felt-tip marker</li>
-                <li><strong>2.</strong> Cycle valve through full lift (rotate cam by hand)</li>
-                <li><strong>3.</strong> Read contact pattern on valve stem:</li>
-                <li>&bull; <strong>Narrow band, centered</strong> = pushrod length correct</li>
-                <li>&bull; <strong>Band offset outward (toward exhaust)</strong> = pushrod too long</li>
-                <li>&bull; <strong>Band offset inward (toward center)</strong> = pushrod too short</li>
-                <li>&bull; <strong>Wide band</strong> = wrong length &ndash; valve guide suffers!</li>
+            <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
+                <li>Ventilschaft-Ende komplett mit Filzstift (Edding/Sharpie) einf&auml;rben.</li>
+                <li>Kipphebel montieren und Preload einstellen.</li>
+                <li>Nockenwelle eine volle Umdrehung von Hand drehen (Ventil durchl&auml;uft vollen Hub).</li>
+                <li>Kontaktmuster auf dem Ventilschaft ablesen:</li>
+            </ol>
+            <ul>
+                <li><strong>Schmales Band, mittig</strong> = St&ouml;&szlig;elstangenl&auml;nge korrekt</li>
+                <li><strong>Band nach au&szlig;en versetzt</strong> = St&ouml;&szlig;elstange zu lang</li>
+                <li><strong>Band nach innen versetzt</strong> = St&ouml;&szlig;elstange zu kurz</li>
+                <li><strong>Breites Band</strong> = falsche L&auml;nge &ndash; Ventilf&uuml;hrung leidet!</li>
             </ul></div>
             <div class="guide-block"><h4 class="photo">Photo Documentation</h4><ul>
                 <li>Sweep pattern on valve stem (document both good and bad patterns)</li>
@@ -1693,15 +1731,15 @@
                     <div><label>Exhaust P-V:</label><input type="text" data-field="p2_ptv_exh" placeholder=".100" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
-            <div class="guide-block guide-full"><h4 class="prereq">Procedure (7 Steps)</h4><ul>
-                <li><strong>1.</strong> Place clay ~0.120" (3 mm) thick on piston crown over valve pockets</li>
-                <li><strong>2.</strong> Install checking springs (NOT the real #8605 springs!)</li>
-                <li><strong>3.</strong> Place head with mock-up gasket, finger-tight</li>
-                <li><strong>4.</strong> Rotate crankshaft min. 2 full turns</li>
-                <li><strong>5.</strong> Remove head, carefully peel clay off piston</li>
-                <li><strong>6.</strong> Cut clay at thinnest point, measure with caliper</li>
-                <li><strong>7.</strong> Record intake and exhaust valve clearances separately</li>
-            </ul></div>
+            <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
+                <li>Modelliermasse (Knetmasse / Clay) ca. 3 mm dick auf die Ventiltaschen im Kolben dr&uuml;cken.</li>
+                <li>Pr&uuml;ffedern (Checking Springs) einbauen &ndash; NICHT die echten #8605 Ventilfedern!</li>
+                <li>Kopf mit Probekopfdichtung (Mock-up Gasket) auflegen, handfest anziehen.</li>
+                <li>Kurbelwelle mindestens 2 volle Umdrehungen drehen.</li>
+                <li>Kopf abnehmen, Knetmasse vorsichtig vom Kolben l&ouml;sen.</li>
+                <li>Knetmasse an der d&uuml;nnsten Stelle aufschneiden und mit Messschieber messen.</li>
+                <li>Einlass- und Auslass-Ventilfreigang getrennt dokumentieren.</li>
+            </ol></div>
             <div class="warning-box"><strong>Insufficient P-V Clearance = valve hits piston!</strong> This destroys valves, pistons, and possibly connecting rods. When in doubt, have valve pockets machined deeper.</div>
             <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
                 <li>If clearance too small: deepen valve pockets, use thicker gasket, or adjust cam timing</li>
@@ -1783,9 +1821,17 @@
                     <div><label>Measured:</label><input type="text" data-field="p2_retseal_val" placeholder=".060" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
-            <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
-                <li>Measure at max lift: retainer must not contact valve stem seal</li>
-                <li>Contact = seal destroyed = oil consumption</li>
+            <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
+                <li>Ventil bei installierter Feder auf maximalen Hub bringen (Kurbel drehen oder Feder mit Werkzeug komprimieren).</li>
+                <li>Abstand zwischen Unterseite des Federtellers (Retainer) und Oberkante der Ventilschaftdichtung (Valve Seal) messen.</li>
+                <li>Methode 1: F&uuml;hlerlehre zwischen Retainer und Seal einf&uuml;hren.</li>
+                <li>Methode 2: Plastigage-Streifen zwischen Retainer und Seal legen, Ventil auf max. Hub, Plastigage ablesen.</li>
+                <li>Mindestens 0.060&quot; (1.52 mm) Clearance erforderlich.</li>
+                <li>Bei zu wenig Abstand: Andere Dichtung (k&uuml;rzere Bauform) oder andere Retainer verwenden.</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="tips">Praxis-Tipps</h4><ul>
+                <li>Bei maximalem Hub messen &ndash; Retainer darf Dichtung nicht ber&uuml;hren</li>
+                <li>Kontakt = Dichtung zerst&ouml;rt = &Ouml;lverbrauch und Rauchentwicklung</li>
             </ul></div>
         </div>
     </div>
@@ -2606,10 +2652,20 @@
             <div class="spec-line"><span>Stage 3 Short/Water (Stufe 3 Kurz/Wasser)</span><span class="spec-val">70 ft-lbs (95 Nm)</span></div>
             <div class="spec-line"><span>Lubricant (Schmiermittel)</span><span class="spec-val">ARP Ultra-Torque (included / beiliegend)</span></div>
         </div>
-        <div class="guide-block"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
-            <li>Cross pattern from center outward! (Kreuzschema von der Mitte nach au&szlig;en!)</li>
-            <li>Wait 5 min between stages (gasket settles / Dichtung setzt sich)</li>
-            <li>Long studs (blind hole) and short studs (water hole) have <strong>different final torque values</strong></li>
+        <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
+            <li>Alle 10 Muttern handfest auf die Stehbolzen drehen (Kopfdichtung sitzt, Kopf ausgerichtet).</li>
+            <li><strong>Stufe 1:</strong> Alle 10 Muttern im Kreuzschema (Mitte &rarr; au&szlig;en) auf 35 ft-lbs (47 Nm) anziehen.</li>
+            <li>5 Minuten warten (Dichtung setzt sich).</li>
+            <li><strong>Stufe 2:</strong> Im selben Schema auf 55 ft-lbs (75 Nm) anziehen.</li>
+            <li>5 Minuten warten.</li>
+            <li><strong>Stufe 3:</strong> Obere Reihe (Blind Holes / Sackloch) auf 80 ft-lbs (108 Nm). Untere Reihe (Water Holes / Wasserkanal) auf 70 ft-lbs (95 Nm) + Dichtmittel auf Gewinde!</li>
+            <li>Schema beachten: 1-2-3-4-5-6-7-8-9-10 im Kreuz von der Mitte nach au&szlig;en (siehe Diagramm unten).</li>
+        </ol></div>
+        <div class="guide-block"><h4 class="tips">Praxis-Tipps</h4><ul>
+            <li>Kreuzschema von der Mitte nach au&szlig;en!</li>
+            <li>5 Minuten zwischen den Stufen warten (Dichtung setzt sich)</li>
+            <li>Lange Bolzen (Sackloch) und kurze Bolzen (Wasserkanal) haben <strong>unterschiedliche Endwerte</strong></li>
+            <li>ARP Ultra-Torque auf Gewinde UND Mutterauflage &ndash; ohne Schmierung sind die Werte falsch!</li>
         </ul></div>
         <div class="torque-diagram">
             <span class="diagram-title">&#9881; TORQUE SEQUENCE (Anzugsreihenfolge) &ndash; Top View, Exhaust Side Up (Draufsicht, Auslassseite oben)</span>
@@ -3260,9 +3316,19 @@
             <div class="guide-block"><h4 class="measure">Fuel Pressure (Kraftstoffdruck)</h4>
                 <div class="spec-line"><span>Mechanical pump (mechanische Pumpe)</span><span class="spec-val">5.5&ndash;7.0 psi (0.38&ndash;0.48 bar)</span></div>
             </div>
-            <div class="guide-block"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
-                <li>Too high = carburetor floods (Vergaser l&auml;uft &uuml;ber) &ndash; may need pressure regulator</li>
-                <li>Check all connections for leaks before start!</li>
+            <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
+                <li>Alle Kraftstoffleitungen, Schlauchklemmen und Anschl&uuml;sse auf festen Sitz pr&uuml;fen.</li>
+                <li>Kraftstofffilter auf Sauberkeit kontrollieren (bei Rebuild immer erneuern).</li>
+                <li>Mechanische Kraftstoffpumpe von Hand bet&auml;tigen (Hebel an der Pumpe) &ndash; Kraftstoff muss flie&szlig;en.</li>
+                <li>Kraftstoffdruck-Manometer am Vergaser-Eingang anschlie&szlig;en.</li>
+                <li>Motor anlassen (oder Anlasser drehen lassen) &ndash; Druck ablesen: Soll 5.5&ndash;7.0 psi (0.38&ndash;0.48 bar).</li>
+                <li>Zu hoch: Druckregler einbauen oder Pumpe pr&uuml;fen. Zu niedrig: Pumpe, Filter oder Leitung verstopft.</li>
+                <li>Auf Leckagen an allen Verbindungen pr&uuml;fen &ndash; Feuerrisiko!</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="tips">Praxis-Tipps</h4><ul>
+                <li>Zu hoher Druck = Vergaser l&auml;uft &uuml;ber (Flooding) &ndash; Druckregler erforderlich</li>
+                <li>Alle Verbindungen auf Dichtheit pr&uuml;fen &ndash; vor dem Erststart!</li>
+                <li>Feuerl&ouml;scher bereithalten</li>
             </ul></div>
         </div>
     </div>
@@ -5006,7 +5072,10 @@
 
             <div class="glossary-entry" data-search="quench distance quetschabstand piston-to-deck gasket abstand">
                 <div class="glossary-term">Quench Distance &ndash; Quetschabstand</div>
-                <div class="glossary-field"><span class="glossary-field-label">Berechnung:</span> Piston-to-Deck + Compressed Gasket Thickness</div>
+                <div class="glossary-field"><span class="glossary-field-label">Berechnung:</span> Piston-to-Deck + Compressed Gasket Thickness
+                <div class="glossary-field"><span class="glossary-field-label">Typischer Wert:</span> 0.035&quot;&ndash;0.045&quot; (0.89&ndash;1.14 mm) ideal. Unter 0.035&quot;: Klopfgefahr. &Uuml;ber 0.050&quot;: Quench-Effekt geht verloren.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wie berechnen?</span> Quench Distance = Piston-to-Deck Clearance + komprimierte Kopfdichtungsdicke (Compressed Gasket Thickness). Beispiel: 0.010&quot; Deck Clearance + 0.039&quot; Dichtung = 0.049&quot; Quench.</div>
+            </div>
             </div>
 
             <div class="glossary-entry" data-search="quench area quetschflaeche kolbenboden zylinderkopf nah">
@@ -5063,18 +5132,27 @@
             <div class="glossary-entry" data-search="main bearing clearance hauptlagerspiel abstand oelfilm kurbelwelle">
                 <div class="glossary-term">Main Bearing Clearance &ndash; Hauptlagerspiel</div>
                 <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der kleine Abstand zwischen Kurbelwellen-Hauptlagerzapfen und Hauptlager.</div>
-                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Zwischen Kurbelwelle und Lager muss ein definierter Raum f&uuml;r den &Ouml;lfilm vorhanden sein.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Zwischen Kurbelwelle und Lager muss ein definierter Raum f&uuml;r den &Ouml;lfilm vorhanden sein.
+                <div class="glossary-field"><span class="glossary-field-label">Typischer Wert:</span> 0.0015&quot;&ndash;0.0025&quot; (0.038&ndash;0.064 mm). Ford 302: 0.0005&quot;&ndash;0.0024&quot;.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> 1. Lagerschalen einlegen (trocken, kein &Ouml;l). 2. Plastigage-Streifen quer auf den Zapfen legen. 3. Lagerdeckel mit Sollmoment anziehen (ohne Kurbelwelle zu drehen!). 4. Deckel abnehmen, Plastigage-Breite mit Skala auf der Verpackung ablesen. 5. Breiter = weniger Spiel, schmaler = mehr Spiel. 6. Alle 5 Hauptlager einzeln messen.</div>
+            </div>
             </div>
 
             <div class="glossary-entry" data-search="rod bearing clearance pleuellagerspiel abstand oelfilm">
                 <div class="glossary-term">Rod Bearing Clearance &ndash; Pleuellagerspiel</div>
                 <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Abstand zwischen Pleuellager und Kurbelwellenzapfen.</div>
-                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Bestimmt, wie sich der tragende &Ouml;lfilm bildet.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Bestimmt, wie sich der tragende &Ouml;lfilm bildet.
+                <div class="glossary-field"><span class="glossary-field-label">Typischer Wert:</span> 0.001&quot;&ndash;0.003&quot; (0.025&ndash;0.076 mm). Ford 302: 0.0006&quot;&ndash;0.0026&quot;.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> 1. Lagerschalen in Pleuel und Deckel einlegen (trocken). 2. Plastigage-Streifen quer auf den Hubzapfen legen. 3. Pleueldeckel mit Sollmoment anziehen (Kurbel nicht drehen!). 4. Deckel abnehmen, Plastigage-Breite ablesen. 5. Alle 8 Pleuel einzeln messen. 6. Bei Abweichung: andere Lagerschalen-Gr&ouml;&szlig;e w&auml;hlen (Standard, 0.001&quot; OS, 0.010&quot; OS).</div>
+            </div>
             </div>
 
             <div class="glossary-entry" data-search="crankshaft endplay kurbelwellen axialspiel laengsrichtung wandern">
                 <div class="glossary-term">Crankshaft Endplay &ndash; Kurbelwellen-Axialspiel</div>
-                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Wie weit sich die Kurbelwelle in L&auml;ngsrichtung vor und zur&uuml;ck bewegen kann.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Wie weit sich die Kurbelwelle in L&auml;ngsrichtung vor und zur&uuml;ck bewegen kann.
+                <div class="glossary-field"><span class="glossary-field-label">Typischer Wert:</span> 0.004&quot;&ndash;0.008&quot; (0.10&ndash;0.20 mm). Ford 302: 0.004&quot;&ndash;0.008&quot;.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> 1. Kurbelwelle mit allen Hauptlagern eingebaut. 2. Messuhr (Dial Indicator) an der Stirnseite der Kurbelwelle ansetzen. 3. Kurbelwelle mit Schraubendreher nach hinten dr&uuml;cken, Messuhr auf Null. 4. Kurbelwelle nach vorne dr&uuml;cken, Messuhr ablesen = Endplay. 5. Alternativ: F&uuml;hlerlehre zwischen Thrust-Bearing-Flanke und Kurbelwangen-Anlauffl&auml;che messen.</div>
+            </div>
             </div>
 
             <div class="glossary-entry" data-search="internal balance innenauswuchtung kurbeltrieb ausgleichsmassen">
@@ -5106,7 +5184,10 @@
             <div class="glossary-entry" data-search="piston-to-wall clearance kolben zylinder spiel klemmen kippen">
                 <div class="glossary-term">Piston-to-Wall Clearance &ndash; Kolben-Zylinder-Spiel</div>
                 <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Abstand zwischen Kolben und Zylinderwand.</div>
-                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Darf nicht klemmen, aber auch nicht zu viel Spiel haben.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Darf nicht klemmen, aber auch nicht zu viel Spiel haben.
+                <div class="glossary-field"><span class="glossary-field-label">Typischer Wert:</span> 0.003&quot;&ndash;0.005&quot; (0.08&ndash;0.13 mm) f&uuml;r geschmiedete Kolben. Gusskolben: 0.001&quot;&ndash;0.002&quot;.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> 1. Zylinderbohrung mit Innenmessschraube (Bore Gauge) oder Telescoping Gauge + Mikrometerschraube messen. 2. Kolbendurchmesser am Schaft (Skirt) rechtwinklig zum Kolbenbolzen messen (an der breitesten Stelle). 3. Bohrung minus Kolben = Clearance. 4. Jede Bohrung oben, mitte, unten messen (Konizit&auml;t) und in 90&deg; versetzt (Ovalit&auml;t).</div>
+            </div>
             </div>
 
             <div class="glossary-entry" data-search="compression height kompressionshoehe kolbenbolzenmitte kolbenoberseite">
@@ -5124,7 +5205,10 @@
                 <div class="glossary-term">Piston-to-Valve Clearance &ndash; Kolben-Ventil-Abstand</div>
                 <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der kleinste Abstand zwischen Kolben und Ventil w&auml;hrend des Motorzyklus.</div>
                 <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Kolben und Ventil d&uuml;rfen sich niemals ber&uuml;hren!</div>
-                <div class="glossary-field"><span class="glossary-field-label">Warum besonders wichtig?</span> H&auml;ngt von Nockenwellensteuerzeiten, Ventilhub, Deckh&ouml;he, Dichtung und Ventiltrieb ab.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum besonders wichtig?</span> H&auml;ngt von Nockenwellensteuerzeiten, Ventilhub, Deckh&ouml;he, Dichtung und Ventiltrieb ab.
+                <div class="glossary-field"><span class="glossary-field-label">Typischer Wert:</span> Einlass: &ge; 0.080&quot; (2.0 mm). Auslass: &ge; 0.100&quot; (2.5 mm). Mehr ist sicherer.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> 1. Motor komplett zusammengebaut (K&ouml;pfe, Ventile, Federn, Kipphebel, St&ouml;&szlig;elstangen). 2. Modelliermasse (Knetmasse / Clay) auf die Ventiltaschen im Kolben dr&uuml;cken. 3. Kurbelwelle 2 volle Umdrehungen drehen. 4. Kopf abnehmen, Knetmasse vorsichtig mit Messschieber messen. 5. D&uuml;nnste Stelle = PTV-Clearance. 6. Immer Einlass UND Auslass pr&uuml;fen.</div>
+            </div>
             </div>
 
             <div class="glossary-entry" data-search="piston-to-head clearance kolben kopf abstand">
@@ -5150,7 +5234,10 @@
             <div class="glossary-entry" data-search="ring end gap kolbenringstoss spalt enden ausdehnung erwaermung">
                 <div class="glossary-term">Ring End Gap &ndash; Kolbenringsto&szlig;</div>
                 <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Spalt zwischen den beiden Enden eines Kolbenrings.</div>
-                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Der Ring dehnt sich bei Erw&auml;rmung aus. Ohne Spalt k&ouml;nnten die Enden aneinanderstossen.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Der Ring dehnt sich bei Erw&auml;rmung aus. Ohne Spalt k&ouml;nnten die Enden aneinanderstossen.
+                <div class="glossary-field"><span class="glossary-field-label">Typischer Wert:</span> Top Ring: 0.016&quot;&ndash;0.022&quot; (0.41&ndash;0.56 mm). 2nd Ring: 0.010&quot;&ndash;0.020&quot; (0.25&ndash;0.51 mm). &Ouml;lring: herstellerabh&auml;ngig.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> 1. Ring in die Zylinderbohrung schieben (ohne Kolben). 2. Mit umgedrehtem Kolben den Ring ca. 1&quot; in die Bohrung dr&uuml;cken (damit er gerade sitzt). 3. F&uuml;hlerlehre in den Ringsto&szlig; (Gap) einf&uuml;hren. 4. Zu eng: Ring vorsichtig mit Diamantfeile am Sto&szlig; abfeilen. 5. Jeden Ring in seinem Zylinder messen (Bohrungen k&ouml;nnen leicht variieren).</div>
+            </div>
             </div>
 
             <div class="glossary-entry" data-search="ring groove kolbenringnut nut kolben ring sitzt">
@@ -5242,7 +5329,9 @@
             <div class="glossary-entry" data-search="installed spring height ventilfeder einbauhoehe abstand sitz federteller">
                 <div class="glossary-term">Installed Spring Height &ndash; Ventilfeder-Einbauh&ouml;he</div>
                 <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Abstand zwischen Federsitz und Federteller bei eingebauter Feder.</div>
-                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Die Federkraft h&auml;ngt stark von der Einbauh&ouml;he ab.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum?</span> Die Federkraft h&auml;ngt stark von der Einbauh&ouml;he ab.
+                <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> 1. Ventilfeder, Retainer und Keile einbauen. 2. Messschieber zwischen Federsitz (Spring Pad am Kopf) und Unterseite des Federtellers (Retainer) ansetzen. 3. Abstand ablesen = Installed Height. 4. Herstellervorgabe vergleichen. 5. Bei zu gro&szlig;er H&ouml;he: Shims (Unterlegscheiben) unter die Feder legen. 6. Alle 16 Ventile pr&uuml;fen.</div>
+            </div>
             </div>
 
             <div class="glossary-entry" data-search="seat pressure sitzdruck kraft ventilfeder geschlossen belastet">
@@ -5259,7 +5348,9 @@
             <div class="glossary-entry" data-search="coil bind federblock windungen aufeinanderliegen maximum">
                 <div class="glossary-term">Coil Bind &ndash; Federblock</div>
                 <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Windungen der Feder liegen vollst&auml;ndig aufeinander.</div>
-                <div class="glossary-field"><span class="glossary-field-label">Warum kritisch?</span> Die Feder darf bei maximalem Ventilhub nicht in Coil Bind kommen!</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum kritisch?</span> Die Feder darf bei maximalem Ventilhub nicht in Coil Bind kommen!
+                <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> 1. Ventilfeder auf Pr&uuml;fstand spannen oder: Eingebaute Feder mit Messschieber messen. 2. Installierte L&auml;nge (Installed Height) minus Ventilhub (Valve Lift) = L&auml;nge bei maximalem Hub. 3. Coil-Bind-H&ouml;he: Alle Windungen aufeinander gepresst (aus Herstellerangabe). 4. Clearance = L&auml;nge bei max. Hub &minus; Coil-Bind-H&ouml;he. 5. Mindestens 0.060&quot; (1.52 mm) Sicherheitsabstand halten.</div>
+            </div>
             </div>
 
             <div class="glossary-entry" data-search="retainer federteller oben ventilfeder ventilkeile">
@@ -5275,7 +5366,10 @@
             <div class="glossary-entry" data-search="retainer-to-seal clearance abstand federteller ventilschaftdichtung">
                 <div class="glossary-term">Retainer-to-Seal Clearance</div>
                 <div class="glossary-deutsch">Abstand Federteller&ndash;Ventilschaftdichtung</div>
-                <div class="glossary-field"><span class="glossary-field-label">Warum wichtig?</span> Der Federteller darf die Dichtung bei maximalem Hub nicht ber&uuml;hren!</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum wichtig?</span> Der Federteller darf die Dichtung bei maximalem Hub nicht ber&uuml;hren!
+                <div class="glossary-field"><span class="glossary-field-label">Typischer Wert:</span> Mindestens 0.050&quot; (1.27 mm) bei maximalem Hub.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> 1. Ventil bei maximalem Hub (oder mit bekanntem Shim unter dem Federteller). 2. Abstand zwischen Unterseite des Federtellers (Retainer) und Oberkante der Ventilschaftdichtung (Valve Seal) messen. 3. Methode: F&uuml;hlerlehre oder Plastigage zwischen Retainer und Seal. 4. Zu wenig Clearance zerst&ouml;rt die Dichtung beim Betrieb.</div>
+            </div>
             </div>
 
             <div class="glossary-entry" data-search="valve float ventilflattern drehzahl ventiltrieb instabil">
@@ -5341,7 +5435,10 @@
 
             <div class="glossary-entry" data-search="camshaft centerline nocken mittellinie kurbelwellenwinkel geometrische mitte">
                 <div class="glossary-term">Camshaft Centerline &ndash; Nocken-Mittellinie</div>
-                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Kurbelwellenwinkel, bei dem ein Nocken seine geometrische Mitte erreicht.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Der Kurbelwellenwinkel, bei dem ein Nocken seine geometrische Mitte erreicht.
+                <div class="glossary-field"><span class="glossary-field-label">Typischer Wert:</span> Intake Centerline 106&deg;&ndash;110&deg; ATDC (je nach Nockenwelle).</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> Siehe &quot;Degreeing the Cam&quot;. Die Intake Centerline ist der Kurbelwinkel (in Grad nach OT), bei dem das Einlassventil den maximalen Hub erreicht.</div>
+            </div>
             </div>
 
             <div class="glossary-entry" data-search="cam advance vorverstellung nockenwelle frueher">
@@ -5357,7 +5454,9 @@
             <div class="glossary-entry" data-search="degreeing cam nockenwelle einmessen gradscheibe messuhr position vermessen">
                 <div class="glossary-term">Degreeing the Cam &ndash; Nockenwelle einmessen</div>
                 <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die tats&auml;chliche Position der Nockenwelle wird mit Gradscheibe und Messuhr exakt vermessen.</div>
-                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Wir verlassen uns nicht nur auf die Kettenmarkierungen, sondern messen nach.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Wir verlassen uns nicht nur auf die Kettenmarkierungen, sondern messen nach.
+                <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> 1. Gradscheibe (Degree Wheel) an der Kurbelwelle befestigen. 2. Zeiger (Pointer) am Block fixieren. 3. OT exakt finden (Positive-Stop-Methode). 4. Messuhr auf den Einlass-Lifter von Zylinder 1 setzen. 5. Kurbel drehen bis Einlassventil auf maximalen Hub steht. 6. Intake Centerline Wert auf Gradscheibe ablesen. 7. Mit Hersteller-Angabe vergleichen. 8. Abweichung: Verstellbares Nockenwellenrad (Adjustable Timing Set) nutzen.</div>
+            </div>
             </div>
         </div>
 
@@ -5528,7 +5627,10 @@
             <div class="glossary-entry" data-search="pickup-to-pan clearance abstand oelansaugrohr oelwannenboden entfernt beruehren">
                 <div class="glossary-term">Pickup-to-Pan Clearance</div>
                 <div class="glossary-deutsch">Abstand &Ouml;lansaugrohr&ndash;&Ouml;lwannenboden</div>
-                <div class="glossary-field"><span class="glossary-field-label">Warum wichtig?</span> Darf weder zu weit vom &Ouml;l entfernt sein noch den Boden ber&uuml;hren.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Warum wichtig?</span> Darf weder zu weit vom &Ouml;l entfernt sein noch den Boden ber&uuml;hren.
+                <div class="glossary-field"><span class="glossary-field-label">Typischer Wert:</span> 1/4&quot;&ndash;3/8&quot; (6&ndash;10 mm) Abstand zwischen &Ouml;l-Pickup und Wannenboden.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> 1. Pickup in &Ouml;lpumpe einbauen, Pumpe am Block befestigen. 2. Modelliermasse (Knetmasse) auf die Unterseite des Pickup-Siebs dr&uuml;cken. 3. &Ouml;lwanne montieren und mit ein paar Schrauben fixieren. 4. Wanne wieder abnehmen, Knetmasse mit Messschieber messen. 5. D&uuml;nnste Stelle = Clearance. Zu nah: Pickup k&ouml;nnte auf dem Boden aufsetzen.</div>
+            </div>
             </div>
 
             <div class="glossary-entry" data-search="oil pan sump oelwanne oelvorrat behaelter motor unten">
@@ -5584,7 +5686,9 @@
 
             <div class="glossary-entry" data-search="runout rundlaufabweichung drehen kreisbahn eiert">
                 <div class="glossary-term">Runout &ndash; Rundlaufabweichung</div>
-                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Ob etwas beim Drehen &bdquo;eiert&ldquo;.</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Ob etwas beim Drehen &bdquo;eiert&ldquo;.
+                <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> 1. Teil in V-Block oder Prismen legen (bzw. eingebaut lassen). 2. Messuhr (Dial Indicator) am zu pr&uuml;fenden Punkt ansetzen und auf Null stellen. 3. Teil eine volle Umdrehung drehen. 4. Gesamtausschlag (TIR &ndash; Total Indicator Reading) ablesen. 5. Typische Anwendungen: Kurbelwelle (max. 0.001&quot;), Schwungrad-Planfl&auml;che, Nockenwelle.</div>
+            </div>
             </div>
 
             <div class="glossary-entry" data-search="endplay axialspiel bewegung laengsachse crankshaft">
