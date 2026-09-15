@@ -4260,7 +4260,7 @@
                     if (parentCard) guide = parentCard.querySelector('.step-guide');
                 }
                 if (guide) {
-                    guide.style.display = 'block';
+                    guide.classList.add('open');
                     var toggleBtn = guide.parentElement.querySelector('.guide-toggle');
                     if (toggleBtn) toggleBtn.classList.add('open');
                 }
