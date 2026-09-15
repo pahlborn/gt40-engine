@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Renault UN1-13 Transaxle &ndash; Hinweise &amp; Recherche</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 1rem; background: #f8f9fa; color: #1a202c; line-height: 1.6; }
+        .banner { background: #2b6cb0; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; margin-bottom: 1rem; }
+        .banner a { color: #bee3f8; }
+        h1 { color: #2d3748; border-bottom: 3px solid #2b6cb0; padding-bottom: 0.5rem; font-size: 1.6rem; }
+        h2 { color: #2b6cb0; border-bottom: 1px solid #cbd5e0; padding-bottom: 0.3rem; margin-top: 1.5rem; }
+        h3 { color: #4a5568; margin-top: 1rem; }
+        .section { background: white; padding: 1rem; border-radius: 8px; margin: 1rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .back-link { display: inline-block; margin-bottom: 1rem; color: #2b6cb0; text-decoration: none; font-weight: 600; }
+        table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; font-size: 0.85rem; }
+        th { background: #ebf4ff; text-align: left; padding: 0.4rem 0.6rem; border-bottom: 2px solid #2b6cb0; }
+        td { padding: 0.35rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        .highlight { background: #fffff0; border: 1px solid #fefcbf; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .warning { background: #fff5f5; border: 1px solid #fc8181; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .info { background: #ebf8ff; border: 1px solid #90cdf4; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .success { background: #e6ffed; border: 1px solid #c6f6d5; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .source { font-size: 0.75rem; color: #718096; margin-top: 0.2rem; }
+        ul { padding-left: 1.3rem; }
+        li { margin-bottom: 0.3rem; }
+        .toc { background: #f7fafc; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin: 1rem 0; }
+        .toc a { color: #2b6cb0; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { padding: 0.15rem 0; }
+        .toc li::before { content: '\25B8 '; color: #2b6cb0; }
+        .badge { display: inline-block; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+        .badge-oem { background: #e2e8f0; color: #4a5568; }
+        .badge-lotus { background: #ebf4ff; color: #2b6cb0; }
+        .badge-mod { background: #fefcbf; color: #975a16; }
+        .badge-tested { background: #e6ffed; color: #276749; }
+    </style>
+</head>
+<body>
+    <div class="banner">Recherche-Zusammenfassung &ndash; wird laufend erweitert. Quellen: GT40s.com Forum, LotusEspritWorld.com, LotustalkForums.com, erareplicas.com</div>
+    <a class="back-link" href="../">&larr; Zur&uuml;ck zum Build Log</a>
+
+    <h1>Renault UN1-13 Transaxle &ndash; Hinweise &amp; Recherche</h1>
+
+    <div class="toc">
+        <strong>Inhalt</strong>
+        <ul>
+            <li><a href="#varianten">UN1-Varianten im &Uuml;berblick</a></li>
+            <li><a href="#un1-013">UN1-013 Spezifikation (Renault 21 Turbo)</a></li>
+            <li><a href="#drehmoment">Drehmoment-Limits &amp; Praxiserfahrung</a></li>
+            <li><a href="#schwachstellen">Bekannte Schwachstellen</a></li>
+            <li><a href="#lotus-vs-renault">Lotus vs. Renault &ndash; Unterschiede</a></li>
+            <li><a href="#modifikationen">Modifikationen &amp; Upgrades</a></li>
+            <li><a href="#schmierstoff">Schmierstoff</a></li>
+            <li><a href="#unser-build">Unser Build: UN1-013 modifiziert (Tornado USA)</a></li>
+            <li><a href="#quellen">Quellen</a></li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="varianten">
+        <h2>UN1-Varianten im &Uuml;berblick</h2>
+        <table>
+            <tr><th>Variante</th><th>Fahrzeug</th><th>Drehmoment-Spec</th><th>Final Drive</th><th>Besonderheiten</th></tr>
+            <tr>
+                <td><strong>UN1-013</strong></td>
+                <td>Renault 21 Turbo</td>
+                <td><span class="badge badge-oem">285 Nm OEM-Motor</span></td>
+                <td>3.44</td>
+                <td>Bevorzugte Variante f&uuml;r Mid-Engine Kit Cars (beste &Uuml;bersetzungen). 2-Pinion-Diff.</td>
+            </tr>
+            <tr>
+                <td><strong>UN1-016</strong></td>
+                <td>Lotus Esprit (1988&ndash;1992)</td>
+                <td><span class="badge badge-lotus">315 Nm Lotus-Spec</span></td>
+                <td>3.89</td>
+                <td>Aufgewertetes CWP-Material, 4-Pinion-Diff, Extra-Dowels im Geh&auml;use</td>
+            </tr>
+            <tr>
+                <td><strong>UN1-026</strong></td>
+                <td>Lotus Esprit S4 (1993+)</td>
+                <td><span class="badge badge-mod">400 Nm &bdquo;High Torque&ldquo;</span></td>
+                <td>3.89</td>
+                <td>St&auml;rkeres Geh&auml;use, gr&ouml;&szlig;ere Befestigungsbolzen, verst&auml;rkte Lager</td>
+            </tr>
+            <tr>
+                <td><strong>UN1-027</strong></td>
+                <td>Lotus Esprit V8 (1996+)</td>
+                <td><span class="badge badge-mod">400 Nm</span></td>
+                <td>3.89</td>
+                <td>Wie UN1-026 + verbesserte Wellenbearbeitung, 5. Gang 0.76, Synchro-R&uuml;ckw&auml;rtsgang</td>
+            </tr>
+            <tr>
+                <td><strong>UN1-028</strong></td>
+                <td>Lotus Esprit GT3 (1998)</td>
+                <td><span class="badge badge-oem">300 Nm</span></td>
+                <td>4.11</td>
+                <td>3. Gang und Final Drive ge&auml;ndert. Niedrigeres CWP-Limit wegen anderer Ratio.</td>
+            </tr>
+            <tr>
+                <td>UN1-05</td>
+                <td>Alpine GTA</td>
+                <td>&ndash;</td>
+                <td>3.44</td>
+                <td>Umgekehrte Drehrichtung, 4-Pinion-Diff</td>
+            </tr>
+            <tr>
+                <td>UN1-07</td>
+                <td>Alpine Turbo</td>
+                <td>&ndash;</td>
+                <td>3.44</td>
+                <td>Umgekehrte Drehrichtung</td>
+            </tr>
+            <tr>
+                <td>UN1-08</td>
+                <td>Renault 25 V6 Turbo</td>
+                <td>&ndash;</td>
+                <td>3.778</td>
+                <td>&ndash;</td>
+            </tr>
+        </table>
+        <p class="source">Quellen: GT40s.com &bdquo;Renault UN1 transaxle, everything&ldquo;, LotustalkForums.com, erareplicas.com</p>
+
+        <h3>&Uuml;bersetzungen UN1-013 (Renault 21 Turbo)</h3>
+        <table>
+            <tr><th>Gang</th><th>1.</th><th>2.</th><th>3.</th><th>4.</th><th>5.</th><th>R</th><th>Final Drive</th></tr>
+            <tr><td><strong>Ratio</strong></td><td>3.36</td><td>2.05</td><td>1.38</td><td>1.03</td><td>0.82</td><td>3.54</td><td>3.44</td></tr>
+        </table>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="un1-013">
+        <h2>UN1-013 Spezifikation (Renault 21 Turbo)</h2>
+        <p>Die UN1-013 stammt aus dem <strong>Renault 21 Turbo</strong> (nur die Turbo-Version; der Standard R21 hat das kleinere NG-Getriebe). Sie ist die <strong>bevorzugte Variante f&uuml;r Mid-Engine Kit Cars</strong> (GT40 Replicas, Cobras, Lamborghini Replicas) weil:</p>
+        <ul>
+            <li>Beste Gangabstufung f&uuml;r leistungsstarke Motoren (n&auml;chste an originalen ZF-&Uuml;bersetzungen)</li>
+            <li>Final Drive 3.44 &ndash; gut f&uuml;r V8-Anwendungen</li>
+            <li>Mechanischer Tachometer-Sensor vorhanden &ndash; einfachste Anschlussoption</li>
+            <li>Weit verbreitet, Ersatzteile verf&uuml;gbar</li>
+        </ul>
+
+        <h3>Renault 21 Turbo Motor-Spezifikation (OEM)</h3>
+        <table>
+            <tr><td>Motor</td><td>2.0L I4 Turbo (J7R/J7T)</td></tr>
+            <tr><td>Leistung</td><td>162&ndash;175 PS (je nach Version)</td></tr>
+            <tr><td>Drehmoment</td><td><strong>285 Nm (210 lb-ft)</strong> &ndash; das Design-Target f&uuml;r die UN1-013</td></tr>
+        </table>
+
+        <div class="highlight">
+            <strong>Wichtig:</strong> Renault hat f&uuml;r die UN1-013 <strong>keine offizielle Drehmomentgrenze publiziert</strong> (anders als Lotus f&uuml;r die UN1-016). Der R21 Turbo Serien-Wert von 285 Nm ist das OEM-Design-Target, nicht ein verifiziertes mechanisches Limit.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="drehmoment">
+        <h2>Drehmoment-Limits &amp; Praxiserfahrung</h2>
+
+        <h3>Offizielle Angaben (Lotus/Renault)</h3>
+        <table>
+            <tr><th>Variante</th><th>Eingangsdrehmoment</th><th>Quelle</th></tr>
+            <tr><td>UN1-013 (R21 Turbo)</td><td>285 Nm OEM-Motor (keine offizielle Grenze)</td><td>Renault Werksdaten</td></tr>
+            <tr><td>UN1-016 (Lotus Esprit)</td><td>315 Nm (232 lb-ft)</td><td>Lotus Engineering (Mr. Dangerus / GT40s)</td></tr>
+            <tr><td>UN1-026 (Lotus High Torque)</td><td>400 Nm (295 lb-ft)</td><td>Lotus Engineering</td></tr>
+            <tr><td>UN1-028 (Lotus GT3)</td><td>300 Nm (220 lb-ft)</td><td>Lotus (anderes CWP-Ratio)</td></tr>
+        </table>
+
+        <h3>Praxiserfahrung &amp; Tests</h3>
+        <div class="success">
+            <strong>UN1-13 getestet bis 500 HP / 550 Nm</strong><br>
+            &bdquo;The UN1-13 box has been tested in other vehicles up to 500 hp and 550 Nm of torque.&ldquo;<br>
+            <span class="source">Quelle: Lotus Esprit World &ndash; Uprated Renault Gearbox (lotusespritworld.com)</span>
+        </div>
+
+        <div class="info">
+            <strong>Venturi 260 Atlantique: 405 Nm mit Standard-UN1</strong><br>
+            &bdquo;Venturi 260 Atlantique handled 41.3 mkg (405 Nm) of torque.&ldquo; Die Venturi 400 GT schaffte sogar 520 Nm (53 mkg), allerdings mit SADEV-verst&auml;rktem UN1.<br>
+            <span class="source">Quelle: GT40s.com Forum &ndash; UN1 Query (User-Recherche)</span>
+        </div>
+
+        <div class="info">
+            <strong>Eigene Erfahrung: ~360 BHP / ~475 Nm auf Trackdays</strong><br>
+            302ci V8 mit Renault UN1-013 (Tornado USA Mod.) &ndash; mehrj&auml;hriger Trackday-Betrieb ohne Getriebeversagen oder sichtbaren Verschlei&szlig;.
+        </div>
+
+        <h3>Einordnung f&uuml;r unseren Build</h3>
+        <table>
+            <tr><th></th><th>Wert</th><th>Einsch&auml;tzung</th></tr>
+            <tr><td>R21 Turbo OEM</td><td>285 Nm</td><td>Design-Target &ndash; deutlich &uuml;berschritten</td></tr>
+            <tr><td>Lotus UN1-016 Spec</td><td>315 Nm</td><td>&Uuml;berschritten (aber Lotus hatte besseres Material)</td></tr>
+            <tr><td><strong>Unser Motor (gesch.)</strong></td><td><strong>~461 Nm</strong></td><td>+62% &uuml;ber OEM, im Bereich der Praxiserfahrung</td></tr>
+            <tr><td>Getestetes Maximum</td><td>550 Nm</td><td>Wir liegen ~16% darunter</td></tr>
+        </table>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="schwachstellen">
+        <h2>Bekannte Schwachstellen</h2>
+
+        <h3>1. Prim&auml;rwelle &ndash; Vorderseite (schwimmendes Eingangslager)</h3>
+        <div class="warning">
+            <strong>Hauptschwachstelle:</strong> Die schwimmende Lagerung der Eingangswelle erzeugt Vibrationen, kann die Welle biegen und bei Adapter-Bellhousings zu Fehlausrichtung mit dem Motor f&uuml;hren.<br>
+            <span class="source">Quelle: GT40s.com &ndash; UN1 Query</span>
+        </div>
+
+        <h3>2. Prim&auml;rwelle &ndash; R&uuml;ckseite (fehlende Abstützung)</h3>
+        <div class="warning">
+            <strong>Zweite Schwachstelle:</strong> Die fehlende r&uuml;ckseitige Lagerung der Prim&auml;rwelle kann bei hohem Drehmoment zu Biegung oder Bruch f&uuml;hren. Eine verst&auml;rkte 1-St&uuml;ck-Welle ist die beste L&ouml;sung, aber teuer.<br>
+            <span class="source">Quelle: GT40s.com &ndash; UN1 Query</span>
+        </div>
+
+        <h3>3. Geh&auml;use-Biegung</h3>
+        <p>Das Aluminium-Geh&auml;use der fr&uuml;hen UN1-Varianten (inkl. UN1-013) neigt unter hohem Drehmoment zu Biegung. Lotus reagierte bei der UN1-026 mit st&auml;rkerem Geh&auml;use und gr&ouml;&szlig;eren Befestigungsbolzen.</p>
+
+        <h3>4. Kronrad &amp; Tellerrad (Crown Wheel &amp; Pinion)</h3>
+        <p>Die CWP-Belastung ist abh&auml;ngig von Final-Drive-Ratio und Drehmoment. Die UN1-013 nutzt <strong>Standard-Renault-Material</strong> (nicht das aufgewertete Lotus-Material). Die Renault-CWP-Teile passen in Lotus-Geh&auml;use, sind aber schw&auml;cher.</p>
+        <div class="highlight">
+            <strong>Lotus-Zitat (Mr. Dangerus):</strong> &bdquo;The Renault CWP parts will fit, but they're not as strong. The main problem was in the stiffness of the Transmission Casing and the loading on the Crown Wheel &amp; Pinion. The Lotus versions of the Renault UN1 Transaxles are the strongest variants available.&ldquo;
+        </div>
+
+        <h3>5. Synchronisation &amp; Schaltverhalten</h3>
+        <ul>
+            <li><strong>2. Gang:</strong> Bekannt f&uuml;r schwieriges Schalten. Ab 1989 wurde die 5.-Gang-Gabel ge&auml;ndert (verbesserter Materialwechsel). Eine Feder auf der Schaltschiene hilft beim Einlegen &ndash; diese verschlei&szlig;t mit der Zeit.</li>
+            <li><strong>Dog Teeth:</strong> K&ouml;nnen bei hoher Belastung abrunden. Shot Peening oder Winkel&auml;nderung erh&ouml;ht die Haltbarkeit.</li>
+        </ul>
+
+        <h3>6. Axiallager (Thrust Bearing)</h3>
+        <div class="warning">
+            <strong>Ford Performance Warnung:</strong> &bdquo;Damage to the thrust bearing can happen in seconds!&ldquo; &ndash; Falsche Getriebewellenl&auml;nge oder fehlende Freistellung der Kurbelwelle kann das Axiallager in Sekunden zerst&ouml;ren. Bei UN1-013 + SBF 302 mit Adapter-Bellhousing unbedingt Stack-Up Height und Axialspiel pr&uuml;fen!
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="lotus-vs-renault">
+        <h2>Lotus vs. Renault &ndash; Unterschiede</h2>
+        <table>
+            <tr><th>Merkmal</th><th>UN1-013 (Renault)</th><th>UN1-016 (Lotus)</th><th>UN1-026 (Lotus HT)</th></tr>
+            <tr><td>Kronrad-Material</td><td>Standard Renault</td><td><strong>Aufgewertet</strong></td><td><strong>Aufgewertet</strong></td></tr>
+            <tr><td>Differential</td><td>2 Pinions</td><td><strong>4 Pinions</strong></td><td><strong>4 Pinions</strong></td></tr>
+            <tr><td>Geh&auml;use-Dowels</td><td>Nein</td><td><strong>Ja</strong> (gegen Biegung)</td><td><strong>Ja</strong></td></tr>
+            <tr><td>Geh&auml;use-St&auml;rke</td><td>Standard</td><td>Standard + Dowels</td><td><strong>Verst&auml;rkt</strong></td></tr>
+            <tr><td>Befestigungsbolzen</td><td>Standard</td><td>Standard</td><td><strong>Gr&ouml;&szlig;er</strong></td></tr>
+            <tr><td>Drehmoment-Spec</td><td>285 Nm (OEM-Motor)</td><td>315 Nm</td><td>400 Nm</td></tr>
+            <tr><td>Final Drive</td><td>3.44</td><td>3.89</td><td>3.89</td></tr>
+            <tr><td>Zahnr&auml;der (Material)</td><td colspan="3" style="text-align:center;"><strong>Identisch &uuml;ber alle Varianten</strong> (selbes Renault-Material)</td></tr>
+        </table>
+        <p class="source">Quelle: Mr. Dangerus / GT40s.com Forum (ehemaliger Lotus-Ingenieur)</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="modifikationen">
+        <h2>Modifikationen &amp; Upgrades</h2>
+
+        <h3>Tornado USA Modifikation (unser Build)</h3>
+        <ul>
+            <li><strong>Modified 2nd &amp; 3rd Gears</strong> &ndash; Details nicht publiziert. K&ouml;nnte bedeuten: ge&auml;nderte Ratios, verst&auml;rkte Dog-Teeth, oder Shot-Peening</li>
+            <li><strong>Drilled out Oil Ways</strong> &ndash; Verbesserte interne &Ouml;lversorgung der Zahnr&auml;der</li>
+            <li><strong>RH Change</strong> &ndash; Drehrichtung umgekehrt f&uuml;r Mid-Engine-Einbau</li>
+            <li>Preis: ca. $2.600 (Tornado USA, Stand Forum ~2010)</li>
+        </ul>
+
+        <h3>Jack Knight / Bell Engineering Upgrade</h3>
+        <ul>
+            <li>Close-Ratio 1. und 2. Gang (Heavy Duty)</li>
+            <li>Verst&auml;rkte Synchro-Z&auml;hne</li>
+            <li>Kompatibel mit Ford 1"-Spline Kupplungen</li>
+            <li>Preis: &pound;1.995 (Tauschpreis, ~2005)</li>
+            <li>Optional: Road-Going LSD (&pound;500 zus&auml;tzlich)</li>
+        </ul>
+
+        <h3>Verst&auml;rkte 1-St&uuml;ck-Prim&auml;rwelle</h3>
+        <ul>
+            <li>Adressiert beide Schwachstellen (vorne + hinten) der Standard-Welle</li>
+            <li>Teuer, aber effektivste Einzelma&szlig;nahme</li>
+            <li>Erlaubt ge&auml;nderte Gangabstufung (neue Z&auml;hne werden aufgeschwei&szlig;t und gefr&auml;st)</li>
+        </ul>
+
+        <h3>4-Pinion-Differential Retrofit</h3>
+        <ul>
+            <li>Ein 4-Pinion-Diff (z.B. von Alpine oder Renault 30) kann mit kleiner Adapterplatte in die UN1-013 eingebaut werden</li>
+            <li>Erh&ouml;ht die Drehmoment-Kapazit&auml;t des Differentials</li>
+        </ul>
+
+        <h3>Quaife-LSD</h3>
+        <ul>
+            <li>Torque-biasing LSD als Ersatz f&uuml;r das offene Differential</li>
+            <li>Verbessert Traktion bei Trackday-Betrieb erheblich</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="schmierstoff">
+        <h2>Schmierstoff</h2>
+        <div class="warning">
+            <strong>Kritisch:</strong> Lotus stellte bei der Entwicklung fest, dass das Standard-Renault-&Ouml;l (<strong>Elf Tranself TRX</strong>) bei hoher Belastung und Hitze nicht ausreichend sch&uuml;tzt. Speziell die schnelle Drehmoment-Zunahme von Turbomotoren verursachte Kronrad-Verschlei&szlig;.
+        </div>
+
+        <h3>Empfohlene Schmierstoffe</h3>
+        <table>
+            <tr><th>Produkt</th><th>Status</th><th>Anmerkung</th></tr>
+            <tr><td><strong>Mobil SHC-630M</strong></td><td style="color:#c53030;">Eingestellt</td><td>Urspr&uuml;ngliche Lotus-Empfehlung</td></tr>
+            <tr><td><strong>Castrol TAF-X</strong></td><td style="color:#c53030;">Eingestellt</td><td>Zweite Lotus-Empfehlung</td></tr>
+            <tr><td><strong>Castrol Syntrans Multivehicle 75W-90</strong></td><td style="color:#276749;">Verf&uuml;gbar</td><td>Nachfolger, GL-4+</td></tr>
+            <tr><td><strong>Redline MT-90</strong></td><td style="color:#276749;">Verf&uuml;gbar</td><td>Bel. Alternativwahl in der Lotus-Community</td></tr>
+            <tr><td>Elf Tranself TRX</td><td style="color:#975a16;">Bedingt</td><td>Renault Standard &ndash; bei hoher Belastung nicht ausreichend</td></tr>
+        </table>
+
+        <div class="highlight">
+            <strong>Empfehlung:</strong> Bei V8-Leistung (&gt;300 Nm Eingangsdrehmoment) unbedingt hochwertiges Getriebe&ouml;l verwenden und regelm&auml;&szlig;ig wechseln. Getriebe&ouml;lk&uuml;hler dringend empfohlen bei Trackday-Betrieb.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="unser-build">
+        <h2>Unser Build: UN1-013 modifiziert (Tornado USA)</h2>
+        <table>
+            <tr><td>Variante</td><td><strong>UN1-013</strong> (Renault 21 Turbo Basis)</td></tr>
+            <tr><td>Konfiguration</td><td>RH Change (Drehrichtung umgekehrt f&uuml;r Mid-Engine)</td></tr>
+            <tr><td>Modifikation</td><td>Modified 2nd &amp; 3rd Gears, drilled out Oil Ways (Tornado USA)</td></tr>
+            <tr><td>Motor</td><td>Ford 302ci (M-6009-302) &ndash; ~340 BHP / ~340 ft-lbs (~461 Nm)</td></tr>
+            <tr><td>Kupplung</td><td>Quartermaster 7.25" 3-Disc (1.875" Belleville)</td></tr>
+            <tr><td>Differential</td><td>Standard 2-Pinion (offen)</td></tr>
+            <tr><td>Getriebe&ouml;lk&uuml;hler</td><td>Geplant &ndash; Fittinge bereits nachger&uuml;stet</td></tr>
+        </table>
+
+        <h3>Status &amp; offene Punkte</h3>
+        <ul>
+            <li>&#10004; Getriebe funktionst&uuml;chtig, mehrj&auml;hrige Trackday-Erfahrung mit ~360 BHP ohne Probleme</li>
+            <li>&#9888; Getriebe&ouml;lk&uuml;hler noch zu installieren (Leitungen, K&uuml;hler, Thermostat)</li>
+            <li>&#9888; Getriebe&ouml;l-Typ pr&uuml;fen/wechseln (hochwertiges GL-4+ verwenden)</li>
+            <li>&#9888; Axiallager-Situation bei n&auml;chster Demontage pr&uuml;fen</li>
+            <li>&#9888; 2./3. Gang Synchronringe bei n&auml;chster Inspektion pr&uuml;fen</li>
+            <li>&#128736; M&ouml;gliches Upgrade: 4-Pinion-Differential oder Quaife-LSD</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="quellen">
+        <h2>Quellen</h2>
+        <ul>
+            <li><a href="https://www.gt40s.com/threads/renault-un1-transaxle-everything.39425/" target="_blank">GT40s.com &ndash; &bdquo;Renault UN1 transaxle, everything&ldquo;</a> &ndash; Umfassende Zusammenstellung aller Varianten von Mr. Dangerus (ex-Lotus)</li>
+            <li><a href="https://www.gt40s.com/threads/un1-query.28376/" target="_blank">GT40s.com &ndash; &bdquo;UN1 Query&ldquo;</a> &ndash; Schwachstellenanalyse, Venturi-Referenz, Tornado USA Diskussion</li>
+            <li><a href="https://www.lotusespritworld.com/EGuides/EModifications/Gearbox.html" target="_blank">Lotus Esprit World &ndash; Uprated Renault Gearbox</a> &ndash; UN1-13 getestet bis 500 HP / 550 Nm, Jack Knight Upgrade</li>
+            <li><a href="https://www.lotustalk.com/threads/1991-esprit-transmission-rebuild.537400/" target="_blank">LotustalkForums &ndash; Esprit Transmission Rebuild</a> &ndash; Varianten-&Uuml;bersicht mit Drehmoment-Specs</li>
+            <li><a href="https://www.gt40s.com/threads/renault-transaxles.29767/" target="_blank">GT40s.com &ndash; &bdquo;Renault Transaxles&ldquo;</a> &ndash; UN1-013 = R21 Turbo only, Differenzierung zu NG-Getriebe</li>
+            <li><a href="https://www.erareplicas.com/misc/trans_gear_ratios.htm" target="_blank">ERA Replicas &ndash; Transmission Gear Ratios</a> &ndash; &Uuml;bersetzungstabelle</li>
+        </ul>
+    </div>
+
+    <div style="text-align:center;margin:2rem 0;font-size:0.75rem;color:#a0aec0;">
+        Erstellt: 2025 &ndash; Wird laufend erweitert<br>
+        <a href="../" style="color:#2b6cb0;">Zur&uuml;ck zum Engine Build Log</a>
+    </div>
+</body>
+</html>
