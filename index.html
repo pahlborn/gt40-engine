@@ -279,7 +279,7 @@
                 </div>
                 <div class="form-group" style="margin-bottom:0.3rem;">
                     <label style="font-size:0.72rem;">Strecken</label>
-                    <input type="text" data-field="target_tracks" value="Pannoniaring, Slovakiaring, Brno (Masaryk), Spa-Francorchamps" placeholder='Strecken...' oninput="autoSave()">
+                    <input type="text" data-field="target_tracks" value="Pannoniaring, Slovakiaring, Salzburgring, Brno (Masaryk), Spa-Francorchamps" placeholder='Strecken...' oninput="autoSave()">
                 </div>
                 <div class="section-comment">
                     <label style="font-size:0.72rem;">Notizen zu Build-Zielen</label>
@@ -894,6 +894,34 @@
                 </div>
             </div>
 
+            <!-- Salzburgring -->
+            <div class="comp-box" style="background:#ebf8ff;border-color:#90cdf4;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#2b6cb0;">&#127462;&#127481; Salzburgring (Plainfeld, &Ouml;sterreich)</div>
+                <div class="comp-body">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.78rem;">
+                        <div class="spec-item"><span class="spec-label">L&auml;nge</span><span class="spec-value">4.255 m</span></div>
+                        <div class="spec-item"><span class="spec-label">Kurven</span><span class="spec-value">12 (6R / 6L)</span></div>
+                        <div class="spec-item"><span class="spec-label">Breite</span><span class="spec-value">min. 10 m</span></div>
+                        <div class="spec-item"><span class="spec-label">L&auml;ngste Gerade</span><span class="spec-value">750 m (Start/Ziel)</span></div>
+                        <div class="spec-item"><span class="spec-label">H&ouml;hendifferenz</span><span class="spec-value">~22 m (648&ndash;671 m &uuml;. NN)</span></div>
+                        <div class="spec-item"><span class="spec-label">Max. Steigung</span><span class="spec-value">3,8% (Gegengerade)</span></div>
+                        <div class="spec-item"><span class="spec-label">Max. Gef&auml;lle</span><span class="spec-value">1,8% (Fahrerlagerkurve)</span></div>
+                        <div class="spec-item"><span class="spec-label">Boxen</span><span class="spec-value">31</span></div>
+                    </div>
+                    <div class="comp-sub" style="margin-top:0.4rem;">Einsch&auml;tzung f&uuml;r den GT40</div>
+                    <table style="width:100%;font-size:0.76rem;border-collapse:collapse;">
+                        <tr style="background:#ebf8ff;"><th style="text-align:left;padding:0.25rem;">Aspekt</th><th style="text-align:left;padding:0.25rem;">Bewertung</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">V-max auf Geraden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>~230&ndash;250 km/h</strong> (4.&ndash;5. Gang auf 750m-Gerade)</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Vorherrschende G&auml;nge</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">3.&ndash;5. Gang (schneller Streckencharakter, lange Geraden)</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Fahrerlagerkurve</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;"><strong>Schl&uuml;sselstelle!</strong> Schnellster Punkt der Strecke, langgezogene Kurve &ndash; viel Vertrauen in Vorderachse n&ouml;tig</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Bremsbelastung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Mittel&ndash;Hoch &ndash; Chicane nach Start/Ziel fordert sp&auml;tes, pr&auml;zises Bremsen</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Reifen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;">Fahrerlagerkurve bei hoher Geschwindigkeit mit Crossply &ndash; <strong>schrittweise steigern!</strong></td></tr>
+                        <tr><td style="padding:0.2rem;">K&uuml;hlung</td><td style="padding:0.2rem;">Moderate Anforderung &ndash; leichte Steigung auf Gegengerade erh&ouml;ht Last etwas</td></tr>
+                    </table>
+                    <div style="background:#bee3f8;padding:0.4rem;border-radius:6px;margin-top:0.3rem;font-size:0.78rem;"><strong>Gesamtbewertung: Schnelle, anspruchsvolle Strecke.</strong> Der Salzburgring ist historisch eine der schnellsten Rennstrecken &Ouml;sterreichs. Die 750m Start/Ziel-Gerade und die leicht ansteigende Gegengerade nutzen die Motorleistung voll aus. Die ber&uuml;hmte Fahrerlagerkurve ist die K&ouml;nigsdisziplin &ndash; am schnellsten Punkt der Strecke muss die Ideallinie exakt getroffen werden. &Uuml;berholen dort ist m&ouml;glich, aber erfordert Mut und Pr&auml;zision. Die Chicanes am Beginn und Ende der Start/Ziel-Geraden fordern pr&auml;zises Bremsen. Empfohlen <strong>nach Pannoniaring/Slovakiaring</strong>, vor Brno.</div>
+                </div>
+            </div>
+
             <!-- Spa -->
             <div class="comp-box" style="background:#e9d8fd;border-color:#b794f4;">
                 <div class="comp-toggle" onclick="toggleComp(this)" style="color:#553c9a;">&#127463;&#127466; Spa-Francorchamps (Stavelot, Belgien)</div>
@@ -928,6 +956,7 @@
                         <tr style="background:#ebf4ff;"><th style="padding:0.25rem;">Strecke</th><th style="text-align:center;padding:0.25rem;">L&auml;nge</th><th style="text-align:center;padding:0.25rem;">Kurven</th><th style="text-align:center;padding:0.25rem;">H&ouml;he &Delta;</th><th style="text-align:center;padding:0.25rem;">V-max</th><th style="text-align:center;padding:0.25rem;">Schwierigkeit</th></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pannoniaring</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">4.740 m</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">18</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">gering</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">~230</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">&#9733;&#9733;&#9734;&#9734;&#9734;</td></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Slovakiaring</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">5.922 m</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">14&ndash;16</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kuppen</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">~255</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;">&#9733;&#9733;&#9733;&#9734;&#9734;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Salzburgring</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">4.255 m</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">12</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">22 m</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">~245</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;">&#9733;&#9733;&#9733;&#9734;&#9734;</td></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Brno</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">5.403 m</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">14</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">73,75 m</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">~225</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#c53030;">&#9733;&#9733;&#9733;&#9733;&#9734;</td></tr>
                         <tr><td style="padding:0.2rem;">Spa</td><td style="text-align:center;padding:0.2rem;">7.004 m</td><td style="text-align:center;padding:0.2rem;">19</td><td style="text-align:center;padding:0.2rem;">102 m</td><td style="text-align:center;padding:0.2rem;">~255</td><td style="text-align:center;padding:0.2rem;color:#c53030;">&#9733;&#9733;&#9733;&#9733;&#9733;</td></tr>
                     </table>
@@ -936,8 +965,9 @@
                     <div style="font-size:0.78rem;line-height:1.6;">
                         <strong>1. Pannoniaring</strong> &rarr; Einfahren, Systeme pr&uuml;fen, Grundvertrauen aufbauen<br>
                         <strong>2. Slovakiaring</strong> &rarr; Hochgeschwindigkeits-Erfahrung, Bremsen unter Last<br>
-                        <strong>3. Brno</strong> &rarr; H&ouml;henprofil-Erfahrung, Setup-Feintuning, Bremsmanagement<br>
-                        <strong>4. Spa</strong> &rarr; K&ouml;nigsdisziplin, alle Systeme bew&auml;hrt
+                        <strong>3. Salzburgring</strong> &rarr; Schnelle Kurven bei Geschwindigkeit, Fahrerlagerkurve als Vertrauenstest<br>
+                        <strong>4. Brno</strong> &rarr; H&ouml;henprofil-Erfahrung, Setup-Feintuning, Bremsmanagement<br>
+                        <strong>5. Spa</strong> &rarr; K&ouml;nigsdisziplin, alle Systeme bew&auml;hrt
                     </div>
 
                     <div class="comp-sub" style="margin-top:0.4rem;">Kritische Punkte f&uuml;r alle Strecken</div>
