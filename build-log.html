@@ -3993,7 +3993,13 @@
     async function saveData() {
         var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
         var myData = collectData();
-        var merged = Object.assign({}, existing, myData);
+        var merged = Object.assign({}, existing);
+        for (var key in myData) {
+            if (myData[key] === '' || myData[key] === false) {
+                if (existing[key] && existing[key] !== '' && existing[key] !== false) continue;
+            }
+            merged[key] = myData[key];
+        }
         merged._savedAt = new Date().toISOString();
         localStorage.setItem('engineBuildLog', JSON.stringify(merged));
         updateSaveStatus();
@@ -4738,9 +4744,16 @@
     }, { passive: true });
     function saveFieldsSync() {
         var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-        var data = Object.assign({}, existing, collectData());
-        data._savedAt = new Date().toISOString();
-        localStorage.setItem('engineBuildLog', JSON.stringify(data));
+        var current = collectData();
+        var merged = Object.assign({}, existing);
+        for (var key in current) {
+            if (current[key] === '' || current[key] === false) {
+                if (existing[key] && existing[key] !== '' && existing[key] !== false) continue;
+            }
+            merged[key] = current[key];
+        }
+        merged._savedAt = new Date().toISOString();
+        localStorage.setItem('engineBuildLog', JSON.stringify(merged));
     }
     window.addEventListener('beforeunload', function() {
         saveFieldsSync();

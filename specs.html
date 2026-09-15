@@ -3182,9 +3182,16 @@
         for (var i = 1; i <= 8; i++) calcQuench(i);
     }
     async function saveData() {
-        // Merge: preserve build-log fields not present on this page
+        // Merge: preserve fields from other pages, never overwrite non-empty with empty
         const existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-        const data = Object.assign({}, existing, collectData());
+        const current = collectData();
+        const data = Object.assign({}, existing);
+        for (var key in current) {
+            if (current[key] === '' || current[key] === false) {
+                if (existing[key] && existing[key] !== '' && existing[key] !== false) continue;
+            }
+            data[key] = current[key];
+        }
         data._savedAt = new Date().toISOString();
         localStorage.setItem('engineBuildLog', JSON.stringify(data));
         updateSaveStatus();
@@ -5060,9 +5067,15 @@
         var cd = {}; document.querySelectorAll('[data-field]').forEach(function(el) {
             cd[el.dataset.field] = el.type === 'checkbox' ? el.checked : el.value;
         });
-        cd._savedAt = new Date().toISOString();
-        var data = Object.assign({}, existing, cd);
-        localStorage.setItem('engineBuildLog', JSON.stringify(data));
+        var merged = Object.assign({}, existing);
+        for (var key in cd) {
+            if (cd[key] === '' || cd[key] === false) {
+                if (existing[key] && existing[key] !== '' && existing[key] !== false) continue;
+            }
+            merged[key] = cd[key];
+        }
+        merged._savedAt = new Date().toISOString();
+        localStorage.setItem('engineBuildLog', JSON.stringify(merged));
     }
     window.addEventListener('beforeunload', saveFieldsSync);
     window.addEventListener('pagehide', saveFieldsSync);

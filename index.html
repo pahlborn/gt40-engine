@@ -1484,7 +1484,14 @@
     }
     async function saveData() {
         const existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-        const data = Object.assign({}, existing, collectData());
+        const current = collectData();
+        const data = Object.assign({}, existing);
+        for (var key in current) {
+            if (current[key] === '' || current[key] === false) {
+                if (existing[key] && existing[key] !== '' && existing[key] !== false) continue;
+            }
+            data[key] = current[key];
+        }
         data._savedAt = new Date().toISOString();
         localStorage.setItem('engineBuildLog', JSON.stringify(data));
         updateSaveStatus();
@@ -3351,9 +3358,16 @@
     // Synchronous save of field data on page leave (no async cloud upload)
     function saveFieldsSync() {
         var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-        var data = Object.assign({}, existing, collectData());
-        data._savedAt = new Date().toISOString();
-        localStorage.setItem('engineBuildLog', JSON.stringify(data));
+        var current = collectData();
+        var merged = Object.assign({}, existing);
+        for (var key in current) {
+            if (current[key] === '' || current[key] === false) {
+                if (existing[key] && existing[key] !== '' && existing[key] !== false) continue;
+            }
+            merged[key] = current[key];
+        }
+        merged._savedAt = new Date().toISOString();
+        localStorage.setItem('engineBuildLog', JSON.stringify(merged));
     }
     window.addEventListener('beforeunload', function() {
         saveFieldsSync();
