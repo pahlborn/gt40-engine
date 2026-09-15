@@ -1210,6 +1210,17 @@
         scrollToHash();
         if (currentLang === 'en') setTimeout(function() { setLang('en'); }, 100);
     });
+
+    // ==== SCROLL POSITION MEMORY ====
+    var _scrollKey = 'engineBuild_scroll_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
+    window.addEventListener('beforeunload', function() {
+        localStorage.setItem(_scrollKey, window.scrollY);
+    });
+    window.addEventListener('load', function() {
+        var pos = localStorage.getItem(_scrollKey);
+        if (pos) setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 100);
+    });
+
 </script>
 
 <div style="position:fixed;bottom:16px;right:16px;z-index:900;display:flex;flex-direction:column;gap:8px;align-items:center;">

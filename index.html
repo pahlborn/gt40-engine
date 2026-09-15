@@ -641,148 +641,9 @@
                 </div>
             </div>
 
-            <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Leistungsberechnung und Drehmoment-/Leistungskurven werden im <strong>Motor-Simulator</strong> (Sektion 1c unten) berechnet. Die Zielwerte oben sind die <em>angestrebten</em> Werte, der Simulator zeigt die <em>berechneten</em> Werte basierend auf den tats&auml;chlichen Komponenten.</div>
+            <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Leistungsberechnung und Drehmoment-/Leistungskurven werden im <strong>Motor-Simulator</strong> (Sektion &bdquo;Simulation &amp; Analyse&ldquo; am Ende der Spezifikationen) berechnet. Die Zielwerte oben sind die <em>angestrebten</em> Werte, der Simulator zeigt die <em>berechneten</em> Werte basierend auf den tats&auml;chlichen Komponenten.</div>
 
 
-        </div>
-    </div>
-
-    <!-- 1c. Motor-Simulator & Kraftstoff -->
-    <div class="section">
-        <div class="section-header" onclick="toggleSection(this)">
-            <span class="section-icon">&#128200;</span>
-            <h2>1c. Motor-Simulator &amp; Kraftstoffempfehlung</h2>
-        </div>
-        <div class="section-body">
-            <button onclick="simPullData()" style="width:100%;padding:0.6rem;background:#2b6cb0;color:#fff;border:none;border-radius:8px;font-size:0.85rem;font-weight:700;cursor:pointer;margin-bottom:0.5rem;">&#8681; Daten vom Build &uuml;bernehmen</button>
-
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 0.6rem;font-size:0.8rem;">
-                <label style="font-weight:600;">Bohrung (inch)</label>
-                <input type="number" id="simBore" value="4.000" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;">Hub (inch)</label>
-                <input type="number" id="simStroke" value="3.000" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;">Zylinder</label>
-                <input type="number" id="simCyl" value="8" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;">Verdichtung (CR)</label>
-                <input type="number" id="simCR" value="9.7" step="0.1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;">Cam Duration Intake @.050"</label>
-                <input type="number" id="simDurInt" value="224" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;">Cam Duration Exhaust @.050"</label>
-                <input type="number" id="simDurExh" value="232" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;">Ventilhub Einlass (inch)</label>
-                <input type="number" id="simLiftInt" value="0.555" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;">Ventilhub Auslass (inch)</label>
-                <input type="number" id="simLiftExh" value="0.565" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;">Lobe Sep. Angle (LSA)</label>
-                <input type="number" id="simLSA" value="112" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;">Kopf-Flow Einlass (CFM)</label>
-                <input type="number" id="simCFMint" value="255" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;">Kopf-Flow Auslass (CFM)</label>
-                <input type="number" id="simCFMexh" value="213" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;">Ansaugung</label>
-                <select id="simIntake" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" onchange="runSim()">
-                    <option value="itb" selected>Einzeldrosselklappen (ITB/DellOrto)</option>
-                    <option value="single4">Single 4-Barrel</option>
-                    <option value="dual4">Dual 4-Barrel / Tunnel Ram</option>
-                </select>
-                <label style="font-weight:600;">Auspuff</label>
-                <select id="simExhaust" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" onchange="runSim()">
-                    <option value="bos" selected>Bundle of Snakes (GT40)</option>
-                    <option value="headers158">Headers 1-5/8"</option>
-                    <option value="headers175">Headers 1-3/4"</option>
-                    <option value="cast">Gusskr&uuml;mmer</option>
-                </select>
-                <label style="font-weight:600;">Mech. Wirkungsgrad (%)</label>
-                <input type="number" id="simMechEff" value="85" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;">Total Timing (&deg;)</label>
-                <input type="number" id="simTiming" value="34" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-            </div>
-
-            <!-- Ergebnis-Anzeige -->
-            <div id="simResults" style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;margin:0.6rem 0;font-size:0.82rem;">
-                <div style="background:#e6ffed;padding:0.5rem;border-radius:8px;text-align:center;">
-                    <div style="font-size:0.7rem;color:#276749;">Gesch. Peak Leistung (BHP)</div>
-                    <div id="simPeakHP" style="font-size:1.3rem;font-weight:800;color:#276749;">-- BHP</div>
-                    <div id="simPeakHPrpm" style="font-size:0.7rem;color:#276749;">@ -- RPM</div>
-                    <div id="simPeakHPconv" style="font-size:0.62rem;color:#718096;">-- kW / -- PS</div>
-                </div>
-                <div style="background:#ebf4ff;padding:0.5rem;border-radius:8px;text-align:center;">
-                    <div style="font-size:0.7rem;color:#2b6cb0;">Gesch. Peak Drehmoment</div>
-                    <div id="simPeakTQ" style="font-size:1.3rem;font-weight:800;color:#2b6cb0;">-- ft-lbs</div>
-                    <div id="simPeakTQrpm" style="font-size:0.7rem;color:#2b6cb0;">@ -- RPM</div>
-                    <div id="simPeakTQconv" style="font-size:0.62rem;color:#718096;">-- Nm</div>
-                </div>
-            </div>
-
-            <!-- RPM Cross-Check Warnbereich -->
-            <div id="simRpmWarnings" style="display:none;margin:0.3rem 0;"></div>
-
-            <!-- Canvas Chart -->
-            <canvas id="simChart" width="700" height="340" style="width:100%;height:auto;border:1px solid #e2e8f0;border-radius:8px;background:#fff;"></canvas>
-            <div style="display:flex;justify-content:center;gap:1rem;font-size:0.7rem;margin-top:0.2rem;">
-                <span><span style="color:#276749;font-weight:700;">&#9644;</span> Leistung (BHP &ndash; Brake Horsepower)</span>
-                <span><span style="color:#2b6cb0;font-weight:700;">&#9644;</span> Drehmoment (ft-lbs / Nm)</span>
-                <span style="color:#a0aec0;">&#9644; VE (%)</span>
-            </div>
-
-            <!-- DYNO CORRECTION FACTORS -->
-            <div class="comp-box" style="margin-top:0.5rem;">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#128200; Pr&uuml;fstands-Korrekturfaktoren (SAE J1349 vs. J607)</div>
-                <div class="comp-body">
-                    <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.3rem;">Ford Performance gibt Leistungswerte ihrer Pushrod Crate Engines nach <strong>SAE J607 (&bdquo;Racer Corrected&ldquo;)</strong> an &ndash; korrigiert auf 60&deg;F (15,6&deg;C) und 29.92" Hg. Diese Werte sind ca. <strong>4% h&ouml;her</strong> als SAE J1349 (&bdquo;SAE&ldquo;), welche auf 77&deg;F (25&deg;C) und 29.31" Hg korrigiert und 85% mechanischen Wirkungsgrad ber&uuml;cksichtigt.</p>
-                    <table style="width:100%;font-size:0.74rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Korrekturfaktor</th><th style="text-align:center;padding:0.25rem;">Temperatur</th><th style="text-align:center;padding:0.25rem;">Druck</th><th style="text-align:center;padding:0.25rem;">Ergebnis</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>SAE J607</strong> (Racer Corrected)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">60&deg;F (15,6&deg;C)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">29.92" Hg</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">H&ouml;here Werte (~4% mehr)</td></tr>
-                        <tr><td style="padding:0.2rem;"><strong>SAE J1349</strong> (SAE Standard)</td><td style="text-align:center;padding:0.2rem;">77&deg;F (25&deg;C)</td><td style="text-align:center;padding:0.2rem;">29.31" Hg</td><td style="text-align:center;padding:0.2rem;">Realistischere Werte</td></tr>
-                    </table>
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>Praxis:</strong> Wenn Sie auf einem Pr&uuml;fstand landen, fragen Sie nach dem Korrekturfaktor. SAE J1349 ist der realistischere Standard. Ford Performance Katalog-Angaben f&uuml;r den M-6009-302 sind wahrscheinlich J607-korrigiert &ndash; reale Leistung auf dem Pr&uuml;fstand wird ~4% niedriger sein.</div>
-                </div>
-            </div>
-
-            <!-- Kraftstoff-Empfehlung -->
-            <div class="comp-box" style="margin-top:0.5rem;background:#fffbeb;border-color:#f6e05e;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#975a16;">&#9981; Kraftstoff-Empfehlung &amp; Oktanzahl</div>
-                <div class="comp-body" id="simFuelResult">
-                    <p style="font-size:0.8rem;color:#666;">Simulator starten um Empfehlung zu erhalten...</p>
-                </div>
-            </div>
-
-            <div class="comp-box" style="margin-top:0.3rem;">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#128218; Wechselwirkung: Z&uuml;ndung &harr; Oktan &harr; Verdichtung</div>
-                <div class="comp-body">
-                    <div class="comp-sub">Das Dreieck: CR &ndash; Timing &ndash; Oktanzahl</div>
-                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Die drei Gr&ouml;&szlig;en h&auml;ngen untrennbar zusammen:</p>
-                    <div style="background:#f0f5ff;padding:0.5rem;border-radius:8px;font-size:0.8rem;margin:0.3rem 0;">
-                        <strong>Verdichtung (CR)</strong> = fest, durch den Build definiert<br>
-                        <strong>Z&uuml;ndzeitpunkt</strong> = einstellbar (Initial + Centrifugal + Vacuum Advance)<br>
-                        <strong>Oktanzahl</strong> = bestimmt sich aus CR + Timing
-                    </div>
-
-                    <div class="comp-sub" style="margin-top:0.4rem;">Warum beeinflusst Timing die Oktanzahl?</div>
-                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Je <strong>fr&uuml;her</strong> die Z&uuml;ndung erfolgt (mehr Advance), desto h&ouml;her steigt der <strong>Spitzendruck</strong> im Brennraum. Hoher Spitzendruck bei hoher Verdichtung f&uuml;hrt zu <strong>Klopfen</strong> (Detonation) &ndash; einer unkontrollierten Selbstz&uuml;ndung des Restgemischs. H&ouml;here Oktanzahl = h&ouml;here Klopffestigkeit = mehr Timing m&ouml;glich.</p>
-
-                    <div class="comp-sub" style="margin-top:0.4rem;">Praxis-Vorgehensweise f&uuml;r den GT40</div>
-                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;"><strong>1.</strong> Verdichtung messen/berechnen (CR-Rechner oben) &rarr; ca. 9.7&ndash;9.8:1<br>
-                    <strong>2.</strong> Verf&uuml;gbaren Kraftstoff bestimmen (in DE: Super Plus 98 ROZ ideal)<br>
-                    <strong>3.</strong> Timing so einstellen, dass bei Volllast <strong>kein Klopfen</strong> auftritt<br>
-                    <strong>4.</strong> Total Timing ergibt sich aus dem Zusammenspiel von CR + Kraftstoff</p>
-
-                    <table style="width:100%;font-size:0.76rem;border-collapse:collapse;margin:0.3rem 0;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.3rem;">CR</th><th style="text-align:center;padding:0.3rem;">Max. Timing mit 95 ROZ</th><th style="text-align:center;padding:0.3rem;">Max. Timing mit 98 ROZ</th><th style="text-align:center;padding:0.3rem;">Max. Timing mit 100+ ROZ</th></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">9.0:1</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">36&ndash;38&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">38&ndash;40&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">40&ndash;42&deg;</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>9.5&ndash;9.8:1</strong></td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>32&ndash;34&deg;</strong></td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>34&ndash;36&deg;</strong></td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">36&ndash;38&deg;</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">10.0:1</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">30&ndash;32&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">32&ndash;34&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">34&ndash;36&deg;</td></tr>
-                        <tr><td style="padding:0.25rem;">10.5:1+</td><td style="text-align:center;padding:0.25rem;color:#c53030;">Kritisch!</td><td style="text-align:center;padding:0.25rem;">28&ndash;32&deg;</td><td style="text-align:center;padding:0.25rem;">32&ndash;34&deg;</td></tr>
-                    </table>
-
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>CNC-Brennraum-Bonus:</strong> Die AFR-1399-K&ouml;pfe haben CNC-bearbeitete Brennr&auml;ume mit optimaler Quench-Geometrie. Das reduziert die Klopfneigung um ca. 2&ndash;3 ROZ gegen&uuml;ber offenen Gu&szlig;-Kammern. Deshalb kann Ihr Build mit 9.8:1 CR und 34&deg; Total Timing problemlos <strong>Super Plus (98 ROZ)</strong> verwenden.</div>
-
-                    <div class="comp-sub" style="margin-top:0.4rem;">Vacuum Advance &amp; Oktanzahl</div>
-                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Der <strong>Vacuum Advance</strong> (MSD 8479) addiert bei Teillast zus&auml;tzliches Timing (bis ~15&deg; extra). Dies ist <strong>kein Klopfrisiko</strong>, da Teillast = weniger Brennraumdruck. Vacuum Advance verbessert den Verbrauch und die Gasannahme im Stadtverkehr erheblich, ohne die Klopfgrenze zu beeinflussen. Bei Volllast (WOT) ist kein Unterdruck vorhanden &rarr; Vacuum Advance = 0&deg;.</p>
-                </div>
-            </div>
-
-            <div class="info-box" style="margin-top:0.4rem;"><strong>Hinweis:</strong> Dies ist ein <em>empirisches Sch&auml;tzmodell</em> basierend auf VE-Kurve (Volumetric Efficiency), BMEP (Brake Mean Effective Pressure) und Cam-Timing. F&uuml;r exakte Werte ist ein Motorenpr&uuml;fstand erforderlich. Typische Genauigkeit: &plusmn;5&ndash;10%.</div>
         </div>
     </div>
 
@@ -1450,22 +1311,10 @@
                 <label>Pickup-to-Pan Clearance</label>
                 <input type="text" data-field="pickup_to_pan" placeholder='z.B. 3/8"' oninput="autoSave()">
             </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_oil_pump" onchange="autoSave()">
-                <span>&Ouml;lpumpe vormontiert, Pumpenantriebswelle eingesetzt</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_oil_pickup" onchange="autoSave()">
-                <span>Pickup montiert, Abstand zum Wannenboden gepr&uuml;ft</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_oil_pan" onchange="autoSave()">
-                <span>&Ouml;lwanne montiert, Dichtung/RTV korrekt, Schrauben auf Drehmoment</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_oil_primed" onchange="autoSave()">
-                <span>Motor vor Erststart mit Pumpenantrieb vor&ouml;lt (Priming)</span>
-            </div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; &Ouml;lpumpe vormontiert, Pumpenantriebswelle eingesetzt</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Pickup montiert, Abstand zum Wannenboden gepr&uuml;ft</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; &Ouml;lwanne montiert, Dichtung/RTV korrekt, Schrauben auf Drehmoment</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Motor vor Erststart mit Pumpenantrieb vor&ouml;lt (Priming)</div>
             <div class="section-comment">
                 <label>Kommentar zu &Ouml;lsystem</label>
                 <textarea data-field="comment_oil" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
@@ -1554,22 +1403,10 @@
 
             <a class="guide-link" href="build-log-phase3.html#step18">&#128214; Anleitung: Timing Cover &amp; Balancer Montage &nearr;</a>
 
-            <div class="check-item">
-                <input type="checkbox" data-field="check_front_seal" onchange="autoSave()">
-                <span>Kurbelwellen-Simmerring im Cover eingesetzt</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_timing_cover" onchange="autoSave()">
-                <span>Timing Cover montiert, Dichtung + RTV, Schrauben auf Drehmoment</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_balancer" onchange="autoSave()">
-                <span>Harmonic Balancer mit Einpresswerkzeug montiert, Schraube auf Drehmoment</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_timing_mark" onchange="autoSave()">
-                <span>Timing Mark am Balancer auf TDC gepr&uuml;ft</span>
-            </div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Kurbelwellen-Simmerring im Cover eingesetzt</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Timing Cover montiert, Dichtung + RTV, Schrauben auf Drehmoment</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Harmonic Balancer mit Einpresswerkzeug montiert, Schraube auf Drehmoment</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Timing Mark am Balancer auf TDC gepr&uuml;ft</div>
             <div class="section-comment">
                 <label>Kommentar zu Timing Cover &amp; Balancer</label>
                 <textarea data-field="comment_timing_cover" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
@@ -1623,18 +1460,9 @@
 
             <a class="guide-link" href="build-log-phase3.html#step21">&#128214; Anleitung: Wasserpumpe Montage &nearr;</a>
 
-            <div class="check-item">
-                <input type="checkbox" data-field="check_waterpump_gasket" onchange="autoSave()">
-                <span>Dichtfl&auml;chen gereinigt, neue Dichtung aufgelegt</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_waterpump_torque" onchange="autoSave()">
-                <span>Wasserpumpe montiert, Schrauben auf Drehmoment (15&ndash;22 ft-lbs)</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_waterpump_rotation" onchange="autoSave()">
-                <span>Drehrichtung gepr&uuml;ft (passend zum Riementrieb)</span>
-            </div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Dichtfl&auml;chen gereinigt, neue Dichtung aufgelegt</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Wasserpumpe montiert, Schrauben auf Drehmoment (15&ndash;22 ft-lbs)</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Drehrichtung gepr&uuml;ft (passend zum Riementrieb)</div>
             <div class="section-comment">
                 <label>Kommentar zu Wasserpumpe</label>
                 <textarea data-field="comment_waterpump" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
@@ -1689,22 +1517,10 @@
 
             <a class="guide-link" href="build-log-phase4.html#step6">&#128214; Anleitung: Vergaser &amp; Kraftstoffsystem &nearr;</a>
 
-            <div class="check-item">
-                <input type="checkbox" data-field="check_fuel_pump" onchange="autoSave()">
-                <span>Kraftstoffpumpe montiert, Dichtung + Drehmoment</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_fuel_filter" onchange="autoSave()">
-                <span>Kraftstofffilter eingebaut (vor dem Vergaser)</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_carb_gasket" onchange="autoSave()">
-                <span>Vergaser-Fu&szlig;dichtung aufgelegt, Vergaser montiert</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_fuel_lines" onchange="autoSave()">
-                <span>Kraftstoffleitungen angeschlossen, auf Dichtheit gepr&uuml;ft</span>
-            </div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Kraftstoffpumpe montiert, Dichtung + Drehmoment</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Kraftstofffilter eingebaut (vor dem Vergaser)</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Vergaser-Fu&szlig;dichtung aufgelegt, Vergaser montiert</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Kraftstoffleitungen angeschlossen, auf Dichtheit gepr&uuml;ft</div>
 
             <!-- FUEL DELIVERY -->
             <div class="comp-box">
@@ -1906,22 +1722,10 @@
 
             <a class="guide-link" href="build-log-phase4.html#step18">&#128214; Anleitung: Z&uuml;ndeinstellung &amp; Advance-Federn-Tuning &nearr;</a>
 
-            <div class="check-item">
-                <input type="checkbox" data-field="check_ign_distributor" onchange="autoSave()">
-                <span>Verteiler eingebaut, Grundeinstellung (Initial Timing)</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_ign_box" onchange="autoSave()">
-                <span>MSD 6AL Box verkabelt, an Batterie angeschlossen</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_ign_advance" onchange="autoSave()">
-                <span>Advance-Kurve eingestellt (Federn + Bushings)</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_ign_revlimiter" onchange="autoSave()">
-                <span>Rev Limiter gesetzt (empfohlen: 6.500 RPM)</span>
-            </div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Verteiler eingebaut, Grundeinstellung (Initial Timing)</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; MSD 6AL Box verkabelt, an Batterie angeschlossen</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Advance-Kurve eingestellt (Federn + Bushings)</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Rev Limiter gesetzt (empfohlen: 6.500 RPM)</div>
 
             <!-- Drehzahl-Limits: Schwaechstes Glied (hierher verschoben aus Build-Ziele) -->
             <div class="comp-box" style="background:#fff5f5;border-color:#fed7d7;">
@@ -2044,14 +1848,8 @@
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Pr&uuml;fpunkte vor Einbau:</strong> Ritzelzustand pr&uuml;fen (Zahnkanten nicht abgerundet?), Kabelquerschnitt + Zustand (mind. 4 AWG / 25 mm&sup2;), Masseband Motorblock &rarr; Chassis pr&uuml;fen. Bei erh&ouml;hter Verdichtung (9.7:1) muss der Starter das Anlassdrehmoment sicher aufbringen k&ouml;nnen.</div>
                 </div>
             </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_starter_inspected" onchange="autoSave()">
-                <span>Starter visuell gepr&uuml;ft, Ritzel OK, Kabel OK</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_starter_shims" onchange="autoSave()">
-                <span>Zahnspiel Starter/Schwungrad gepr&uuml;ft (ggf. Shims eingesetzt)</span>
-            </div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Starter visuell gepr&uuml;ft, Ritzel OK, Kabel OK</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Zahnspiel Starter/Schwungrad gepr&uuml;ft (ggf. Shims eingesetzt)</div>
             <div class="form-group">
                 <label>Starter-Typ / Hersteller</label>
                 <input type="text" data-field="starter_type" placeholder='z.B. Powermaster 9162, Tilton 40000' oninput="autoSave()">
@@ -2099,22 +1897,10 @@
                 </div>
             </div>
 
-            <div class="check-item">
-                <input type="checkbox" data-field="check_pulleys" onchange="autoSave()">
-                <span>Pulleys (Kurbel, Wapump, Lima) vorhanden + passend</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_vbelt" onchange="autoSave()">
-                <span>Keilriemen richtige L&auml;nge + Breite</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_alternator" onchange="autoSave()">
-                <span>Lichtmaschine vorhanden + min. 65A</span>
-            </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_mounts" onchange="autoSave()">
-                <span>Motorlager vorhanden + Ausrichtung gepr&uuml;ft</span>
-            </div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Pulleys (Kurbel, Wapump, Lima) vorhanden + passend</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Keilriemen richtige L&auml;nge + Breite</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Lichtmaschine vorhanden + min. 65A</div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Motorlager vorhanden + Ausrichtung gepr&uuml;ft</div>
             <div class="section-comment">
                 <label>Kommentar Nebenaggregate</label>
                 <textarea data-field="comment_accessories" placeholder="Riemen-Teilenummern, Lager-Typ, Lima-Modell..." oninput="autoSave()"></textarea>
@@ -2155,10 +1941,7 @@
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Dowel Pins verhindern Kupplungsrattern! Schrauben nacheinander je 1 Umdrehung anziehen &ndash; NICHT eine komplett festziehen.</div>
                 </div>
             </div>
-            <div class="check-item">
-                <input type="checkbox" data-field="check_clutch_bolts" onchange="autoSave()">
-                <span>Druckplatte montiert, Dowels eingesetzt, Drehmoment 12&ndash;24 ft-lbs</span>
-            </div>
+                        <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Druckplatte montiert, Dowels eingesetzt, Drehmoment 12&ndash;24 ft-lbs</div>
             <div class="section-comment">
                 <label>Kommentar Kupplung/Antrieb</label>
                 <textarea data-field="comment_clutch" placeholder="Schwungrad-Typ, Kupplungsscheibe, Getriebe..." oninput="autoSave()"></textarea>
@@ -2227,6 +2010,160 @@
                 </div>
             </div>
 
+            <div class="section-comment">
+                <label>Kommentar Antriebsstrang</label>
+                <textarea data-field="comment_drivetrain" placeholder="Getriebe-Zustand, Modifikationen, Kupplungsscheibe, Getriebeoel..." oninput="autoSave()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- ===== SIMULATION & ANALYSE ===== -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span class="section-icon">&#128200;</span>
+            <h2>Simulation &amp; Analyse (nach Zusammenbau)</h2>
+        </div>
+        <div class="section-body">
+            <div class="info-box" style="margin-bottom:0.5rem;"><strong>Hinweis:</strong> Alle Eingangsdaten aus Block, Kolben, Zylinderk&ouml;pfe, Nockenwelle, Getriebe und Reifen sind jetzt verf&uuml;gbar. Die Simulatoren nutzen diese Daten f&uuml;r die Leistungs- und Geschwindigkeitsberechnung.</div>
+
+            <!-- Motor-Simulator -->
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#128200; Motor-Simulator &amp; Kraftstoffempfehlung</div>
+                <div class="comp-body">
+            <button onclick="simPullData()" style="width:100%;padding:0.6rem;background:#2b6cb0;color:#fff;border:none;border-radius:8px;font-size:0.85rem;font-weight:700;cursor:pointer;margin-bottom:0.5rem;">&#8681; Daten vom Build &uuml;bernehmen</button>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 0.6rem;font-size:0.8rem;">
+                <label style="font-weight:600;">Bohrung (inch)</label>
+                <input type="number" id="simBore" value="4.000" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <label style="font-weight:600;">Hub (inch)</label>
+                <input type="number" id="simStroke" value="3.000" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <label style="font-weight:600;">Zylinder</label>
+                <input type="number" id="simCyl" value="8" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <label style="font-weight:600;">Verdichtung (CR)</label>
+                <input type="number" id="simCR" value="9.7" step="0.1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <label style="font-weight:600;">Cam Duration Intake @.050"</label>
+                <input type="number" id="simDurInt" value="224" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <label style="font-weight:600;">Cam Duration Exhaust @.050"</label>
+                <input type="number" id="simDurExh" value="232" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <label style="font-weight:600;">Ventilhub Einlass (inch)</label>
+                <input type="number" id="simLiftInt" value="0.555" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <label style="font-weight:600;">Ventilhub Auslass (inch)</label>
+                <input type="number" id="simLiftExh" value="0.565" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <label style="font-weight:600;">Lobe Sep. Angle (LSA)</label>
+                <input type="number" id="simLSA" value="112" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <label style="font-weight:600;">Kopf-Flow Einlass (CFM)</label>
+                <input type="number" id="simCFMint" value="255" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <label style="font-weight:600;">Kopf-Flow Auslass (CFM)</label>
+                <input type="number" id="simCFMexh" value="213" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <label style="font-weight:600;">Ansaugung</label>
+                <select id="simIntake" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" onchange="runSim()">
+                    <option value="itb" selected>Einzeldrosselklappen (ITB/DellOrto)</option>
+                    <option value="single4">Single 4-Barrel</option>
+                    <option value="dual4">Dual 4-Barrel / Tunnel Ram</option>
+                </select>
+                <label style="font-weight:600;">Auspuff</label>
+                <select id="simExhaust" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" onchange="runSim()">
+                    <option value="bos" selected>Bundle of Snakes (GT40)</option>
+                    <option value="headers158">Headers 1-5/8"</option>
+                    <option value="headers175">Headers 1-3/4"</option>
+                    <option value="cast">Gusskr&uuml;mmer</option>
+                </select>
+                <label style="font-weight:600;">Mech. Wirkungsgrad (%)</label>
+                <input type="number" id="simMechEff" value="85" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <label style="font-weight:600;">Total Timing (&deg;)</label>
+                <input type="number" id="simTiming" value="34" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+            </div>
+
+            <!-- Ergebnis-Anzeige -->
+            <div id="simResults" style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;margin:0.6rem 0;font-size:0.82rem;">
+                <div style="background:#e6ffed;padding:0.5rem;border-radius:8px;text-align:center;">
+                    <div style="font-size:0.7rem;color:#276749;">Gesch. Peak Leistung (BHP)</div>
+                    <div id="simPeakHP" style="font-size:1.3rem;font-weight:800;color:#276749;">-- BHP</div>
+                    <div id="simPeakHPrpm" style="font-size:0.7rem;color:#276749;">@ -- RPM</div>
+                    <div id="simPeakHPconv" style="font-size:0.62rem;color:#718096;">-- kW / -- PS</div>
+                </div>
+                <div style="background:#ebf4ff;padding:0.5rem;border-radius:8px;text-align:center;">
+                    <div style="font-size:0.7rem;color:#2b6cb0;">Gesch. Peak Drehmoment</div>
+                    <div id="simPeakTQ" style="font-size:1.3rem;font-weight:800;color:#2b6cb0;">-- ft-lbs</div>
+                    <div id="simPeakTQrpm" style="font-size:0.7rem;color:#2b6cb0;">@ -- RPM</div>
+                    <div id="simPeakTQconv" style="font-size:0.62rem;color:#718096;">-- Nm</div>
+                </div>
+            </div>
+
+            <!-- RPM Cross-Check Warnbereich -->
+            <div id="simRpmWarnings" style="display:none;margin:0.3rem 0;"></div>
+
+            <!-- Canvas Chart -->
+            <canvas id="simChart" width="700" height="340" style="width:100%;height:auto;border:1px solid #e2e8f0;border-radius:8px;background:#fff;"></canvas>
+            <div style="display:flex;justify-content:center;gap:1rem;font-size:0.7rem;margin-top:0.2rem;">
+                <span><span style="color:#276749;font-weight:700;">&#9644;</span> Leistung (BHP &ndash; Brake Horsepower)</span>
+                <span><span style="color:#2b6cb0;font-weight:700;">&#9644;</span> Drehmoment (ft-lbs / Nm)</span>
+                <span style="color:#a0aec0;">&#9644; VE (%)</span>
+            </div>
+
+            <!-- DYNO CORRECTION FACTORS -->
+            <div class="comp-box" style="margin-top:0.5rem;">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#128200; Pr&uuml;fstands-Korrekturfaktoren (SAE J1349 vs. J607)</div>
+                <div class="comp-body">
+                    <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.3rem;">Ford Performance gibt Leistungswerte ihrer Pushrod Crate Engines nach <strong>SAE J607 (&bdquo;Racer Corrected&ldquo;)</strong> an &ndash; korrigiert auf 60&deg;F (15,6&deg;C) und 29.92" Hg. Diese Werte sind ca. <strong>4% h&ouml;her</strong> als SAE J1349 (&bdquo;SAE&ldquo;), welche auf 77&deg;F (25&deg;C) und 29.31" Hg korrigiert und 85% mechanischen Wirkungsgrad ber&uuml;cksichtigt.</p>
+                    <table style="width:100%;font-size:0.74rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Korrekturfaktor</th><th style="text-align:center;padding:0.25rem;">Temperatur</th><th style="text-align:center;padding:0.25rem;">Druck</th><th style="text-align:center;padding:0.25rem;">Ergebnis</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>SAE J607</strong> (Racer Corrected)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">60&deg;F (15,6&deg;C)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">29.92" Hg</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">H&ouml;here Werte (~4% mehr)</td></tr>
+                        <tr><td style="padding:0.2rem;"><strong>SAE J1349</strong> (SAE Standard)</td><td style="text-align:center;padding:0.2rem;">77&deg;F (25&deg;C)</td><td style="text-align:center;padding:0.2rem;">29.31" Hg</td><td style="text-align:center;padding:0.2rem;">Realistischere Werte</td></tr>
+                    </table>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Praxis:</strong> Wenn Sie auf einem Pr&uuml;fstand landen, fragen Sie nach dem Korrekturfaktor. SAE J1349 ist der realistischere Standard. Ford Performance Katalog-Angaben f&uuml;r den M-6009-302 sind wahrscheinlich J607-korrigiert &ndash; reale Leistung auf dem Pr&uuml;fstand wird ~4% niedriger sein.</div>
+                </div>
+            </div>
+
+            <!-- Kraftstoff-Empfehlung -->
+            <div class="comp-box" style="margin-top:0.5rem;background:#fffbeb;border-color:#f6e05e;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#975a16;">&#9981; Kraftstoff-Empfehlung &amp; Oktanzahl</div>
+                <div class="comp-body" id="simFuelResult">
+                    <p style="font-size:0.8rem;color:#666;">Simulator starten um Empfehlung zu erhalten...</p>
+                </div>
+            </div>
+
+            <div class="comp-box" style="margin-top:0.3rem;">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#128218; Wechselwirkung: Z&uuml;ndung &harr; Oktan &harr; Verdichtung</div>
+                <div class="comp-body">
+                    <div class="comp-sub">Das Dreieck: CR &ndash; Timing &ndash; Oktanzahl</div>
+                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Die drei Gr&ouml;&szlig;en h&auml;ngen untrennbar zusammen:</p>
+                    <div style="background:#f0f5ff;padding:0.5rem;border-radius:8px;font-size:0.8rem;margin:0.3rem 0;">
+                        <strong>Verdichtung (CR)</strong> = fest, durch den Build definiert<br>
+                        <strong>Z&uuml;ndzeitpunkt</strong> = einstellbar (Initial + Centrifugal + Vacuum Advance)<br>
+                        <strong>Oktanzahl</strong> = bestimmt sich aus CR + Timing
+                    </div>
+
+                    <div class="comp-sub" style="margin-top:0.4rem;">Warum beeinflusst Timing die Oktanzahl?</div>
+                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Je <strong>fr&uuml;her</strong> die Z&uuml;ndung erfolgt (mehr Advance), desto h&ouml;her steigt der <strong>Spitzendruck</strong> im Brennraum. Hoher Spitzendruck bei hoher Verdichtung f&uuml;hrt zu <strong>Klopfen</strong> (Detonation) &ndash; einer unkontrollierten Selbstz&uuml;ndung des Restgemischs. H&ouml;here Oktanzahl = h&ouml;here Klopffestigkeit = mehr Timing m&ouml;glich.</p>
+
+                    <div class="comp-sub" style="margin-top:0.4rem;">Praxis-Vorgehensweise f&uuml;r den GT40</div>
+                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;"><strong>1.</strong> Verdichtung messen/berechnen (CR-Rechner oben) &rarr; ca. 9.7&ndash;9.8:1<br>
+                    <strong>2.</strong> Verf&uuml;gbaren Kraftstoff bestimmen (in DE: Super Plus 98 ROZ ideal)<br>
+                    <strong>3.</strong> Timing so einstellen, dass bei Volllast <strong>kein Klopfen</strong> auftritt<br>
+                    <strong>4.</strong> Total Timing ergibt sich aus dem Zusammenspiel von CR + Kraftstoff</p>
+
+                    <table style="width:100%;font-size:0.76rem;border-collapse:collapse;margin:0.3rem 0;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.3rem;">CR</th><th style="text-align:center;padding:0.3rem;">Max. Timing mit 95 ROZ</th><th style="text-align:center;padding:0.3rem;">Max. Timing mit 98 ROZ</th><th style="text-align:center;padding:0.3rem;">Max. Timing mit 100+ ROZ</th></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">9.0:1</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">36&ndash;38&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">38&ndash;40&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">40&ndash;42&deg;</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>9.5&ndash;9.8:1</strong></td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>32&ndash;34&deg;</strong></td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>34&ndash;36&deg;</strong></td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">36&ndash;38&deg;</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">10.0:1</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">30&ndash;32&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">32&ndash;34&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">34&ndash;36&deg;</td></tr>
+                        <tr><td style="padding:0.25rem;">10.5:1+</td><td style="text-align:center;padding:0.25rem;color:#c53030;">Kritisch!</td><td style="text-align:center;padding:0.25rem;">28&ndash;32&deg;</td><td style="text-align:center;padding:0.25rem;">32&ndash;34&deg;</td></tr>
+                    </table>
+
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>CNC-Brennraum-Bonus:</strong> Die AFR-1399-K&ouml;pfe haben CNC-bearbeitete Brennr&auml;ume mit optimaler Quench-Geometrie. Das reduziert die Klopfneigung um ca. 2&ndash;3 ROZ gegen&uuml;ber offenen Gu&szlig;-Kammern. Deshalb kann Ihr Build mit 9.8:1 CR und 34&deg; Total Timing problemlos <strong>Super Plus (98 ROZ)</strong> verwenden.</div>
+
+                    <div class="comp-sub" style="margin-top:0.4rem;">Vacuum Advance &amp; Oktanzahl</div>
+                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Der <strong>Vacuum Advance</strong> (MSD 8479) addiert bei Teillast zus&auml;tzliches Timing (bis ~15&deg; extra). Dies ist <strong>kein Klopfrisiko</strong>, da Teillast = weniger Brennraumdruck. Vacuum Advance verbessert den Verbrauch und die Gasannahme im Stadtverkehr erheblich, ohne die Klopfgrenze zu beeinflussen. Bei Volllast (WOT) ist kein Unterdruck vorhanden &rarr; Vacuum Advance = 0&deg;.</p>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top:0.4rem;"><strong>Hinweis:</strong> Dies ist ein <em>empirisches Sch&auml;tzmodell</em> basierend auf VE-Kurve (Volumetric Efficiency), BMEP (Brake Mean Effective Pressure) und Cam-Timing. F&uuml;r exakte Werte ist ein Motorenpr&uuml;fstand erforderlich. Typische Genauigkeit: &plusmn;5&ndash;10%.</div>
+                </div>
+            </div>
+
             <!-- Geschwindigkeits-Simulator -->
             <div style="background:#f0f5ff;border:1px solid #bee3f8;border-radius:10px;padding:0.6rem;margin-top:0.5rem;">
                 <div style="font-weight:700;font-size:0.9rem;color:#2b6cb0;margin-bottom:0.4rem;">&#128200; Geschwindigkeits-Simulator</div>
@@ -2290,15 +2227,9 @@
                 <!-- Gang-Tabelle -->
                 <div id="dsTable" style="margin-top:0.4rem;font-size:0.75rem;"></div>
             </div>
-
-            <div class="section-comment">
-                <label>Kommentar Antriebsstrang</label>
-                <textarea data-field="comment_drivetrain" placeholder="Getriebe-Zustand, Modifikationen, Kupplungsscheibe, Getriebeoel..." oninput="autoSave()"></textarea>
-            </div>
         </div>
     </div>
 
-    
     <!-- ===== GROUP: REFERENZ ===== -->
     <div class="group-divider" id="grp-ref">
         <span>&#128218; Referenz</span>
@@ -5257,6 +5188,7 @@
         'Build-Ziele (Build Targets)':'Build Targets',
         'Build-Ziele':'Build Targets',
         'Motor-Simulator & Kraftstoffempfehlung':'Engine Simulator & Fuel Recommendation',
+        'Simulation & Analyse (nach Zusammenbau)':'Simulation & Analysis (Post-Assembly)',
         'Build Log \u2013 Progress Dashboard':'Build Log \u2013 Progress Dashboard',
         'Block & Kurbeltrieb':'Block & Crankshaft',
         'Kolben & Pleuel':'Pistons & Connecting Rods',
@@ -5646,6 +5578,17 @@
     // ==== INIT ====
     generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData(); loadSubPages(); updateBuildDashboard(); restoreCollapseState(); setTimeout(runCrossChecks, 500);
     if (currentLang === 'en') setTimeout(function() { setLang('en'); }, 100);
+
+    // ==== SCROLL POSITION MEMORY ====
+    var _scrollKey = 'engineBuild_scroll_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
+    window.addEventListener('beforeunload', function() {
+        localStorage.setItem(_scrollKey, window.scrollY);
+    });
+    window.addEventListener('load', function() {
+        var pos = localStorage.getItem(_scrollKey);
+        if (pos) setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 100);
+    });
+
 </script>
 </body>
 </html>
