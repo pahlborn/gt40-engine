@@ -330,7 +330,7 @@
                 <div style="font-weight:700;font-size:0.88rem;color:#2b6cb0;margin-bottom:0.5rem;">&#127919; Zielkonfiguration</div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 0.8rem;">
                     <div class="form-group" style="margin-bottom:0.2rem;">
-                        <label style="font-size:0.72rem;">Angestrebte Leistung (HP SAE)</label>
+                        <label style="font-size:0.72rem;">Angestrebte Leistung (BHP)</label>
                         <input type="text" data-field="target_hp" placeholder='z.B. 350' oninput="autoSave()" style="padding:0.25rem 0.4rem;">
                     </div>
                     <div class="form-group" style="margin-bottom:0.2rem;">
@@ -386,7 +386,7 @@
                 <div class="comp-toggle" onclick="toggleComp(this)">&#9889; Gesch&auml;tzte Motorleistung</div>
                 <div class="comp-body">
                     <div class="info-box"><strong>Hinweis:</strong> Sch&auml;tzwerte basierend auf der Komponentenauswahl. Tats&auml;chliche Leistung h&auml;ngt stark von Ansaugung, Abgasanlage, Abstimmung und Verdichtung ab.</div>
-                    <div class="spec-item"><span class="spec-label">Gesch. Leistung</span><span class="spec-value"><strong>330 &ndash; 360 HP (SAE)</strong> (335&ndash;365 PS DIN / 246&ndash;268 kW) &ndash; abh. von Intake/Exhaust/Tuning</span></div>
+                    <div class="spec-item"><span class="spec-label">Gesch. Leistung</span><span class="spec-value"><strong>330 &ndash; 360 BHP</strong> (335&ndash;365 PS DIN / 246&ndash;268 kW) &ndash; abh. von Intake/Exhaust/Tuning</span></div>
                     <div class="spec-item"><span class="spec-label">Gesch. Drehmoment</span><span class="spec-value"><strong>330 &ndash; 350 ft-lbs</strong> (447&ndash;475 Nm) &ndash; an der Kurbelwelle</span></div>
                     <div class="spec-item"><span class="spec-label">Peak Power RPM</span><span class="spec-value">5.500 &ndash; 6.000 U/min</span></div>
                     <div class="spec-item"><span class="spec-label">Peak Torque RPM</span><span class="spec-value">3.500 &ndash; 4.500 U/min</span></div>
@@ -397,7 +397,7 @@
                     <table style="width:100%;font-size:0.78rem;border-collapse:collapse;">
                         <tr style="background:#f0f5ff;"><th style="text-align:left;padding:0.3rem;">Komponente</th><th style="text-align:left;padding:0.3rem;">Einfluss</th><th style="text-align:left;padding:0.3rem;">Tendenz</th></tr>
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">DellOrto DRLA 45 (4x Downdraft)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Direktes Ansprechverhalten</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Einzeldrosselklappen &rarr; sofortige Response</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Bundle of Snakes (TSC GT40)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">+15&ndash;30 HP vs. Gusskr&uuml;mmer</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Platzoptimiert f&uuml;r GT40-Chassis</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Bundle of Snakes (TSC GT40)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">+15&ndash;30 BHP vs. Gusskr&uuml;mmer</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Platzoptimiert f&uuml;r GT40-Chassis</td></tr>
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndung (MSD 6AL)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Kapazitiv &rarr; st&auml;rkerer Funke</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Advance-Kurve abstimmen f&uuml;r max. Leistung</td></tr>
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndzeitpunkt</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Leistung + Detonation</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">32&ndash;36&deg; total (je nach CR + Benzin)</td></tr>
                         <tr><td style="padding:0.25rem;">Verdichtung</td><td style="padding:0.25rem;">Effizienz + Drehmoment</td><td style="padding:0.25rem;">9.5&ndash;10.0:1 ideal f&uuml;r Super Plus (98 ROZ)</td></tr>
@@ -565,8 +565,8 @@
             <!-- Ergebnis-Anzeige -->
             <div id="simResults" style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;margin:0.6rem 0;font-size:0.82rem;">
                 <div style="background:#e6ffed;padding:0.5rem;border-radius:8px;text-align:center;">
-                    <div style="font-size:0.7rem;color:#276749;">Gesch. Peak Leistung (HP SAE)</div>
-                    <div id="simPeakHP" style="font-size:1.3rem;font-weight:800;color:#276749;">-- HP</div>
+                    <div style="font-size:0.7rem;color:#276749;">Gesch. Peak Leistung (BHP)</div>
+                    <div id="simPeakHP" style="font-size:1.3rem;font-weight:800;color:#276749;">-- BHP</div>
                     <div id="simPeakHPrpm" style="font-size:0.7rem;color:#276749;">@ -- RPM</div>
                     <div id="simPeakHPconv" style="font-size:0.62rem;color:#718096;">-- kW / -- PS</div>
                 </div>
@@ -584,7 +584,7 @@
             <!-- Canvas Chart -->
             <canvas id="simChart" width="700" height="340" style="width:100%;height:auto;border:1px solid #e2e8f0;border-radius:8px;background:#fff;"></canvas>
             <div style="display:flex;justify-content:center;gap:1rem;font-size:0.7rem;margin-top:0.2rem;">
-                <span><span style="color:#276749;font-weight:700;">&#9644;</span> Leistung (HP SAE)</span>
+                <span><span style="color:#276749;font-weight:700;">&#9644;</span> Leistung (BHP)</span>
                 <span><span style="color:#2b6cb0;font-weight:700;">&#9644;</span> Drehmoment (ft-lbs / Nm)</span>
                 <span style="color:#a0aec0;">&#9644; VE (%)</span>
             </div>
@@ -885,7 +885,7 @@
             <h2>16. Streckenanalyse &amp; Fahrzeugeinsch&auml;tzung</h2>
         </div>
         <div class="section-body">
-            <div class="info-box" style="margin-bottom:0.5rem;"><strong>Fahrzeug:</strong> TSC GT40 Kit Car | ~1.050 kg | ~340&ndash;360 HP (345&ndash;365 PS DIN) | ~324&ndash;343 HP/t | Crossply-Reifen (Avon A24) | Kein ABS/TC/ESP | Schaltgetriebe UN1-13</div>
+            <div class="info-box" style="margin-bottom:0.5rem;"><strong>Fahrzeug:</strong> TSC GT40 Kit Car | ~1.050 kg | ~340&ndash;360 BHP (345&ndash;365 PS DIN) | ~324&ndash;343 BHP/t | Crossply-Reifen (Avon A24) | Kein ABS/TC/ESP | Schaltgetriebe UN1-13</div>
 
             <!-- Pannoniaring -->
             <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
@@ -1688,7 +1688,7 @@
         }
 
         // Update display
-        document.getElementById('simPeakHP').textContent = Math.round(peakHP) + ' HP';
+        document.getElementById('simPeakHP').textContent = Math.round(peakHP) + ' BHP';
         document.getElementById('simPeakHPrpm').textContent = '@ ' + peakHPrpm + ' RPM';
         document.getElementById('simPeakHPconv').textContent = Math.round(peakHP * 0.7457) + ' kW / ' + Math.round(peakHP * 1.0139) + ' PS (DIN)';
         document.getElementById('simPeakTQ').textContent = Math.round(peakTQ) + ' ft-lbs';
@@ -1824,7 +1824,7 @@
         ctx.save();
         ctx.fillStyle = '#276749'; ctx.font = 'bold 10px sans-serif';
         ctx.translate(12, pad.top + ch / 2); ctx.rotate(-Math.PI / 2);
-        ctx.textAlign = 'center'; ctx.fillText('HP / ft-lbs', 0, 0);
+        ctx.textAlign = 'center'; ctx.fillText('BHP / ft-lbs', 0, 0);
         ctx.restore();
         ctx.save();
         ctx.fillStyle = '#2b6cb0'; ctx.font = 'bold 10px sans-serif';
@@ -1873,7 +1873,7 @@
                 ctx.beginPath(); ctx.arc(xPos(data[i].rpm), yPos(data[i].hp), 4, 0, 2 * Math.PI);
                 ctx.fillStyle = '#276749'; ctx.fill();
                 ctx.fillStyle = '#276749'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'left';
-                ctx.fillText(Math.round(peakHP) + ' HP', xPos(data[i].rpm) + 6, yPos(data[i].hp) - 6);
+                ctx.fillText(Math.round(peakHP) + ' BHP', xPos(data[i].rpm) + 6, yPos(data[i].hp) - 6);
             }
             if (Math.abs(data[i].torque - peakTQ) < 0.1 && i > 5) {
                 ctx.beginPath(); ctx.arc(xPos(data[i].rpm), yPos(data[i].torque), 4, 0, 2 * Math.PI);
@@ -2910,7 +2910,7 @@
         'Datum des Zusammenbaus':'Build Date',
         'Mechaniker / Builder':'Mechanic / Builder',
         'Projekt / Fahrzeug':'Project / Vehicle',
-        'Angestrebte Leistung (HP SAE)':'Target Power (HP SAE)',
+        'Angestrebte Leistung (BHP)':'Target Power (BHP)',
         'Angestrebtes Drehmoment (ft-lbs)':'Target Torque (ft-lbs)',
         'Ziel-Verdichtung':'Target Compression Ratio',
         'Einsatzzweck':'Intended Use', 'Strecken':'Tracks', 'Kraftstoff':'Fuel',
@@ -3235,8 +3235,8 @@
     <div class="converter-sep"></div>
     <strong style="font-size:0.75rem;">Leistung</strong>
     <div class="converter-row">
-        <input type="number" id="convHP" placeholder="HP (SAE)" step="1" oninput="if(this.value){document.getElementById('convPS').value=(this.value*1.01387).toFixed(1);document.getElementById('convKW').value=(this.value*0.7457).toFixed(1);}else{document.getElementById('convPS').value='';document.getElementById('convKW').value='';}">
-        <span class="conv-label">HP</span>
+        <input type="number" id="convHP" placeholder="BHP" step="1" oninput="if(this.value){document.getElementById('convPS').value=(this.value*1.01387).toFixed(1);document.getElementById('convKW').value=(this.value*0.7457).toFixed(1);}else{document.getElementById('convPS').value='';document.getElementById('convKW').value='';}">
+        <span class="conv-label">BHP</span>
         <span>&harr;</span>
         <input type="number" id="convPS" placeholder="PS (DIN)" step="1" oninput="if(this.value){document.getElementById('convHP').value=(this.value/1.01387).toFixed(1);document.getElementById('convKW').value=(this.value*0.7355).toFixed(1);}else{document.getElementById('convHP').value='';document.getElementById('convKW').value='';}">
         <span class="conv-label">PS</span>
@@ -3254,7 +3254,10 @@
     </div>
     <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
         <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:left;padding:0.2rem;">Umrechnung</th></tr>
-        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">HP (SAE)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Leistung (US/SAE J1349)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 HP = 0.746 kW = 1.014 PS (DIN)</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">BHP</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Brake Horsepower (Kurbelwelle)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 BHP = 0.746 kW = 1.014 PS</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">HP</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Horsepower (ohne Nebenaggregate)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">HP &ge; BHP (theoretisch)</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">WHP</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Wheel Horsepower (am Rad)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">WHP &asymp; BHP &times; 0.82&ndash;0.88</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">PS (DIN)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Pferdesst&auml;rke (metrisch)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 PS = 0.986 BHP = 0.735 kW</td></tr>
         <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">ft-lbs</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Drehmoment (US)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 ft-lb = 1.356 Nm</td></tr>
         <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">inch (&Prime;)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">L&auml;ngen, Bohrungen</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1&Prime; = 25.4 mm</td></tr>
         <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">thou</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Spaltma&szlig;e (.001&Prime;)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 thou = 0.0254 mm</td></tr>
@@ -3320,6 +3323,22 @@
                 <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Volumen, das der Kolben zwischen OT und UT verdr&auml;ngt.</div>
                 <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Der Raum, den der Kolben bei seiner Bewegung im Zylinder &bdquo;durchf&auml;hrt&ldquo;.</div>
                 <div class="glossary-related">Verwandt: Bore, Stroke, Compression Ratio</div>
+            </div>
+
+            <div class="glossary-entry" data-search="bhp brake horsepower leistung kurbelwelle pferdestärke ps din kw watt motor dyno prüfstand">
+                <div class="glossary-term">BHP &ndash; Brake Horsepower</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die reale Leistung, gemessen an der Kurbelwelle (am Bremsenpr&uuml;fstand / Dyno). BHP ber&uuml;cksichtigt innere Reibung und Lasten des Motors (Ventiltrieb, &Ouml;lpumpe, innere Reibung).</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Was der Motor tats&auml;chlich an seiner Kurbelwelle abgibt &ndash; <strong>die ehrlichste Leistungsangabe f&uuml;r den Motor selbst.</strong></div>
+                <div class="glossary-field"><span class="glossary-field-label">Abgrenzung:</span>
+                    <ul style="margin:0.3rem 0 0 1rem;padding:0;font-size:0.78rem;">
+                        <li><strong>HP (Horsepower)</strong> &ndash; oft theoretisch oder ohne Nebenaggregate (Lichtmaschine, Wasserpumpe) gemessen. HP &ge; BHP.</li>
+                        <li><strong>WHP (Wheel Horsepower)</strong> &ndash; Leistung, die tats&auml;chlich an den R&auml;dern ankommt. Immer niedriger als BHP, weil Getriebe, Differential und Antriebsstrang 12&ndash;18% Verluste erzeugen. <em>WHP &asymp; BHP &times; 0.82&ndash;0.88.</em></li>
+                        <li><strong>PS (DIN 70020)</strong> &ndash; metrische Pferdest&auml;rke. 1 PS = 0.986 BHP. 1 BHP = 1.014 PS.</li>
+                        <li><strong>kW</strong> &ndash; SI-Einheit. 1 BHP = 0.746 kW.</li>
+                    </ul>
+                </div>
+                <div class="glossary-field"><span class="glossary-field-label">In diesem Projekt:</span> Alle Leistungsangaben sind <strong>BHP</strong> (Kurbelwelle). Der Simulator berechnet BHP auf Basis von Verdichtung, Nockenwelle, Kopf-Flow und mechanischem Wirkungsgrad. F&uuml;r die tats&auml;chliche Radleistung (WHP) ca. 15% abziehen.</div>
+                <div class="glossary-related">Verwandt: Torque (ft-lbs), PS (DIN), kW, WHP, Dyno</div>
             </div>
 
             <div class="glossary-entry" data-search="tdc top dead center oberer totpunkt ot kolben oben referenz">

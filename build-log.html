@@ -4540,7 +4540,7 @@
         'Datum des Zusammenbaus':'Build Date',
         'Mechaniker / Builder':'Mechanic / Builder',
         'Projekt / Fahrzeug':'Project / Vehicle',
-        'Angestrebte Leistung (HP SAE)':'Target Power (HP SAE)',
+        'Angestrebte Leistung (BHP)':'Target Power (BHP)',
         'Angestrebtes Drehmoment (ft-lbs)':'Target Torque (ft-lbs)',
         'Ziel-Verdichtung':'Target Compression Ratio',
         'Einsatzzweck':'Intended Use', 'Strecken':'Tracks', 'Kraftstoff':'Fuel',
@@ -4887,8 +4887,8 @@
     <div class="converter-sep"></div>
     <strong style="font-size:0.75rem;">Leistung</strong>
     <div class="converter-row">
-        <input type="number" id="convHP" placeholder="HP (SAE)" step="1" oninput="if(this.value){document.getElementById('convPS').value=(this.value*1.01387).toFixed(1);document.getElementById('convKW').value=(this.value*0.7457).toFixed(1);}else{document.getElementById('convPS').value='';document.getElementById('convKW').value='';}">
-        <span class="conv-label">HP</span>
+        <input type="number" id="convHP" placeholder="BHP" step="1" oninput="if(this.value){document.getElementById('convPS').value=(this.value*1.01387).toFixed(1);document.getElementById('convKW').value=(this.value*0.7457).toFixed(1);}else{document.getElementById('convPS').value='';document.getElementById('convKW').value='';}">
+        <span class="conv-label">BHP</span>
         <span>&harr;</span>
         <input type="number" id="convPS" placeholder="PS (DIN)" step="1" oninput="if(this.value){document.getElementById('convHP').value=(this.value/1.01387).toFixed(1);document.getElementById('convKW').value=(this.value*0.7355).toFixed(1);}else{document.getElementById('convHP').value='';document.getElementById('convKW').value='';}">
         <span class="conv-label">PS</span>
@@ -4901,7 +4901,10 @@
     <div style="display:flex;justify-content:space-between;align-items:center;"><h4>&#128207; Ma&szlig;einheiten</h4><button onclick="document.getElementById('unitsPanel').classList.remove('open')" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#718096;">&times;</button></div>
     <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
         <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:left;padding:0.2rem;">Umrechnung</th></tr>
-        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">HP (SAE)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Leistung (US/SAE J1349)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 HP = 0.746 kW = 1.014 PS (DIN)</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">BHP</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Brake Horsepower (Kurbelwelle)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 BHP = 0.746 kW = 1.014 PS</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">HP</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Horsepower (ohne Nebenaggregate)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">HP &ge; BHP (theoretisch)</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">WHP</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Wheel Horsepower (am Rad)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">WHP &asymp; BHP &times; 0.82&ndash;0.88</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">PS (DIN)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Pferdest&auml;rke (metrisch)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 PS = 0.986 BHP = 0.735 kW</td></tr>
         <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">ft-lbs</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Drehmoment (US)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 ft-lb = 1.356 Nm</td></tr>
         <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">inch (&Prime;)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">L&auml;ngen, Bohrungen</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1&Prime; = 25.4 mm</td></tr>
         <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">thou</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Spaltma&szlig;e (.001&Prime;)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 thou = 0.0254 mm</td></tr>
@@ -4968,6 +4971,22 @@
                 <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Das Volumen, das der Kolben zwischen OT und UT verdr&auml;ngt.</div>
                 <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Der Raum, den der Kolben bei seiner Bewegung im Zylinder &bdquo;durchf&auml;hrt&ldquo;.</div>
                 <div class="glossary-related">Verwandt: Bore, Stroke, Compression Ratio</div>
+            </div>
+
+            <div class="glossary-entry" data-search="bhp brake horsepower leistung kurbelwelle pferdestärke ps din kw watt motor dyno prüfstand">
+                <div class="glossary-term">BHP &ndash; Brake Horsepower</div>
+                <div class="glossary-field"><span class="glossary-field-label">Was ist das?</span> Die reale Leistung, gemessen an der Kurbelwelle (am Bremsenpr&uuml;fstand / Dyno). BHP ber&uuml;cksichtigt innere Reibung und Lasten des Motors (Ventiltrieb, &Ouml;lpumpe, innere Reibung).</div>
+                <div class="glossary-field"><span class="glossary-field-label">Einfach gesagt:</span> Was der Motor tats&auml;chlich an seiner Kurbelwelle abgibt &ndash; <strong>die ehrlichste Leistungsangabe f&uuml;r den Motor selbst.</strong></div>
+                <div class="glossary-field"><span class="glossary-field-label">Abgrenzung:</span>
+                    <ul style="margin:0.3rem 0 0 1rem;padding:0;font-size:0.78rem;">
+                        <li><strong>HP (Horsepower)</strong> &ndash; oft theoretisch oder ohne Nebenaggregate (Lichtmaschine, Wasserpumpe) gemessen. HP &ge; BHP.</li>
+                        <li><strong>WHP (Wheel Horsepower)</strong> &ndash; Leistung, die tats&auml;chlich an den R&auml;dern ankommt. Immer niedriger als BHP, weil Getriebe, Differential und Antriebsstrang 12&ndash;18% Verluste erzeugen. <em>WHP &asymp; BHP &times; 0.82&ndash;0.88.</em></li>
+                        <li><strong>PS (DIN 70020)</strong> &ndash; metrische Pferdest&auml;rke. 1 PS = 0.986 BHP. 1 BHP = 1.014 PS.</li>
+                        <li><strong>kW</strong> &ndash; SI-Einheit. 1 BHP = 0.746 kW.</li>
+                    </ul>
+                </div>
+                <div class="glossary-field"><span class="glossary-field-label">In diesem Projekt:</span> Alle Leistungsangaben sind <strong>BHP</strong> (Kurbelwelle). Der Simulator berechnet BHP auf Basis von Verdichtung, Nockenwelle, Kopf-Flow und mechanischem Wirkungsgrad. F&uuml;r die tats&auml;chliche Radleistung (WHP) ca. 15% abziehen.</div>
+                <div class="glossary-related">Verwandt: Torque (ft-lbs), PS (DIN), kW, WHP, Dyno</div>
             </div>
 
             <div class="glossary-entry" data-search="tdc top dead center oberer totpunkt ot kolben oben referenz">
