@@ -80,38 +80,47 @@
 
         /* Phase Cards */
         .phase-card {
-            display: block; text-decoration: none; color: white;
+            display: block; text-decoration: none; color: var(--text);
             border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12); transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.15s, box-shadow 0.15s;
+            border: 1px solid var(--border);
         }
-        .phase-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
-        .phase-card.p1 { background: linear-gradient(135deg, #2c5282, #2b6cb0); }
-        .phase-card.p2 { background: linear-gradient(135deg, #975a16, #d69e2e); }
-        .phase-card.p3 { background: linear-gradient(135deg, #276749, #38a169); }
-        .phase-card.p4 { background: linear-gradient(135deg, #9b2c2c, #e53e3e); }
+        .phase-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+        .phase-card.p1 { background: #ebf4ff; }
+        .phase-card.p2 { background: #fefcbf; }
+        .phase-card.p3 { background: #f0fff4; }
+        .phase-card.p4 { background: #fff5f5; }
         .phase-card-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
         .phase-num {
-            background: rgba(255,255,255,0.2); width: 44px; height: 44px; border-radius: 50%;
+            width: 44px; height: 44px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem; font-weight: 800; flex-shrink: 0;
+            font-size: 1.3rem; font-weight: 800; flex-shrink: 0; color: white;
         }
+        .p1 .phase-num { background: #2c5282; }
+        .p2 .phase-num { background: #975a16; }
+        .p3 .phase-num { background: #276749; }
+        .p4 .phase-num { background: #9b2c2c; }
         .phase-card h3 { font-size: 0.95rem; font-weight: 700; }
-        .phase-card .phase-desc { font-size: 0.78rem; opacity: 0.85; margin-top: 0.1rem; }
-        .phase-card .phase-arrow { margin-left: auto; font-size: 1.3rem; opacity: 0.7; }
-        .phase-bar { height: 8px; background: rgba(255,255,255,0.25); border-radius: 4px; overflow: hidden; margin-bottom: 0.3rem; }
-        .phase-bar-fill { height: 100%; background: rgba(255,255,255,0.85); border-radius: 4px; transition: width 0.5s; }
-        .phase-stats { font-size: 0.72rem; opacity: 0.8; display: flex; justify-content: space-between; }
+        .p1 h3 { color: #2c5282; } .p2 h3 { color: #975a16; } .p3 h3 { color: #276749; } .p4 h3 { color: #9b2c2c; }
+        .phase-card .phase-desc { font-size: 0.78rem; color: var(--text-light); margin-top: 0.1rem; }
+        .phase-card .phase-arrow { margin-left: auto; font-size: 1.3rem; color: var(--text-light); }
+        .phase-bar { height: 8px; background: #cbd5e0; border-radius: 4px; overflow: hidden; margin-bottom: 0.3rem; }
+        .p1 .phase-bar-fill { height: 100%; background: #2b6cb0; border-radius: 4px; transition: width 0.5s; }
+        .p2 .phase-bar-fill { height: 100%; background: #d69e2e; border-radius: 4px; transition: width 0.5s; }
+        .p3 .phase-bar-fill { height: 100%; background: #38a169; border-radius: 4px; transition: width 0.5s; }
+        .p4 .phase-bar-fill { height: 100%; background: #e53e3e; border-radius: 4px; transition: width 0.5s; }
+        .phase-stats { font-size: 0.72rem; color: var(--text-light); display: flex; justify-content: space-between; }
 
         /* Steps List */
-        .steps-preview { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.2); }
+        .steps-preview { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border); }
         .steps-preview summary {
-            font-size: 0.72rem; opacity: 0.8; cursor: pointer; font-weight: 600;
+            font-size: 0.72rem; color: var(--text-light); cursor: pointer; font-weight: 600;
             list-style: none; display: flex; align-items: center; gap: 0.3rem;
         }
         .steps-preview summary::before { content: '\25B6'; font-size: 0.55rem; transition: transform 0.2s; }
         .steps-preview[open] summary::before { transform: rotate(90deg); }
         .steps-preview ul { margin: 0.3rem 0 0 1rem; padding: 0; }
-        .steps-preview li { font-size: 0.72rem; opacity: 0.75; margin-bottom: 0.15rem; }
+        .steps-preview li { font-size: 0.72rem; color: var(--text-light); margin-bottom: 0.15rem; }
         .steps-preview li.done { text-decoration: line-through; opacity: 0.5; }
 
         /* Info */
