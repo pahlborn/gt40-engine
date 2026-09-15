@@ -184,7 +184,7 @@
         .torque-steps { display: flex; flex-direction: column; gap: 0.35rem; margin: 0.5rem 0; }
         .torque-step { display: flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.65rem; background: var(--input-bg); border-radius: 8px; font-size: 0.82rem; }
         .step-num { background: var(--primary); color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
-        .step-value { font-weight: 700; color: var(--accent); }
+        .step-value { font-weight: 700; color: var(--text); }
         .torque-diagram { background: var(--input-bg); border-radius: 8px; padding: 0.65rem; font-family: 'Courier New', monospace; font-size: 0.72rem; overflow-x: auto; line-height: 1.8; margin: 0.5rem 0; }
 
         /* ---- Settings Modal ---- */
@@ -991,8 +991,8 @@
                             <th>Kolbenunterstand (A)</th>
                             <th>Dichtungsdicke (B)</th>
                             <th>Quench (A+B)</th>
-                            <th>P-t-V Einlass<br>(&ge;0.080")</th>
-                            <th>P-t-V Auslass<br>(&ge;0.100")</th>
+                            <th>Kolben-Ventil Einlass<br>(&ge;0.080")</th>
+                            <th>Kolben-Ventil Auslass<br>(&ge;0.100")</th>
                         </tr>
                     </thead>
                     <tbody id="quenchTableBody"></tbody>
@@ -3739,6 +3739,54 @@
             if (b && b.value) validateRange(b, 0.100, 9);
         }
         if (typeof calcCR === 'function') calcCR();
+        // Sync Build Log measurement values into Main Page fields
+        syncBuildLogToMain(data);
+    }
+
+    // Copy P1-P4 measurements into corresponding Main Page fields (one-way: Build Log -> Main)
+    function syncBuildLogToMain(data) {
+        // Direct field mappings: build-log field -> main page field
+        var fieldMap = {
+            'p1_crank_endplay': 'crank_endplay',
+            'p2_endplay_val': 'cam_endplay'
+        };
+        Object.keys(fieldMap).forEach(function(src) {
+            var dst = fieldMap[src];
+            if (data[src] && !data[dst]) {
+                var el = document.querySelector('[data-field="' + dst + '"]');
+                if (el) { el.value = data[src]; data[dst] = data[src]; }
+            }
+        });
+        // Sync P2 quench measurements (p2_quench_1..8) into main page quench table (quench_a_1..8)
+        for (var i = 1; i <= 8; i++) {
+            var ptvInt = data['p2_ptv_int'];
+            var ptvExh = data['p2_ptv_exh'];
+            // P2 has per-cylinder quench values
+            var q = data['p2_quench_' + i];
+            if (q && !data['quench_a_' + i]) {
+                var el = document.querySelector('[data-field="quench_a_' + i + '"]');
+                if (el) { el.value = q; data['quench_a_' + i] = q; }
+            }
+        }
+        // Sync PTV values (P2 has single intake/exhaust values)
+        if (data['p2_ptv_int']) {
+            for (var i = 1; i <= 8; i++) {
+                if (!data['ptv_intake_' + i]) {
+                    var el = document.querySelector('[data-field="ptv_intake_' + i + '"]');
+                    if (el) { el.value = data['p2_ptv_int']; }
+                }
+            }
+        }
+        if (data['p2_ptv_exh']) {
+            for (var i = 1; i <= 8; i++) {
+                if (!data['ptv_exhaust_' + i]) {
+                    var el = document.querySelector('[data-field="ptv_exhaust_' + i + '"]');
+                    if (el) { el.value = data['p2_ptv_exh']; }
+                }
+            }
+        }
+        // Recalculate after sync
+        for (var i = 1; i <= 8; i++) calcQuench(i);
     }
     async function saveData() {
         // Merge: preserve build-log fields not present on this page
@@ -5297,6 +5345,8 @@
         'Pleuellagerzapfen':'Rod Journal', 'Kurbelwelle':'Crankshaft',
         'Auswuchtung':'Balancing', 'Axialspiel Soll':'Target End Play',
         'Kolben':'Piston', 'Pleuel':'Connecting Rod', 'Verdichtung (nominal)':'Compression (nominal)',
+        'Zyl.':'Cyl.', 'Kolbenunterstand (A)':'Piston Deck Clearance (A)', 'Dichtungsdicke (B)':'Gasket Thickness (B)',
+        'Kolben-Ventil Einlass':'Piston-to-Valve Intake', 'Kolben-Ventil Auslass':'Piston-to-Valve Exhaust',
         'Verdichtung mit AFR 58cc':'Compression with AFR 58cc',
         'Brennraumvolumen':'Chamber Volume', 'Nockenhub (Lobe Lift)':'Lobe Lift',
         'Nockenwellenlager':'Cam Bearings', 'Nockenwellenrad':'Cam Sprocket',
