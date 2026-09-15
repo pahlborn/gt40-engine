@@ -2929,15 +2929,15 @@
     </div>
     <div class="converter-sep"></div>
     <strong style="font-size:0.75rem;">Leistung</strong>
-    <div class="converter-row">
-        <input type="number" id="convHP" placeholder="BHP" step="1" oninput="if(this.value){document.getElementById('convPS').value=(this.value*1.01387).toFixed(1);document.getElementById('convKW').value=(this.value*0.7457).toFixed(1);}else{document.getElementById('convPS').value='';document.getElementById('convKW').value='';}">
-        <span class="conv-label">BHP</span>
-        <span>&harr;</span>
-        <input type="number" id="convPS" placeholder="PS (DIN)" step="1" oninput="if(this.value){document.getElementById('convHP').value=(this.value/1.01387).toFixed(1);document.getElementById('convKW').value=(this.value*0.7355).toFixed(1);}else{document.getElementById('convHP').value='';document.getElementById('convKW').value='';}">
-        <span class="conv-label">PS</span>
-        <span>&harr;</span>
-        <input type="number" id="convKW" placeholder="kW" step="1" oninput="if(this.value){document.getElementById('convHP').value=(this.value/0.7457).toFixed(1);document.getElementById('convPS').value=(this.value/0.7355).toFixed(1);}else{document.getElementById('convHP').value='';document.getElementById('convPS').value='';}">
-        <span class="conv-label">kW</span>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 0.5rem;margin:0.3rem 0;">
+        <div><span style="font-size:0.62rem;color:#666;display:block;margin-bottom:0.1rem;">BHP (Kurbelwelle)</span><input type="number" id="convBHP" placeholder="z.B. 340" step="1" style="width:100%;padding:0.35rem;border:1px solid #cbd5e0;border-radius:6px;font-size:0.82rem;box-sizing:border-box;" oninput="convPower('bhp')"></div>
+        <div><span style="font-size:0.62rem;color:#666;display:block;margin-bottom:0.1rem;">PS (DIN 70020)</span><input type="number" id="convPSDIN" placeholder="z.B. 345" step="1" style="width:100%;padding:0.35rem;border:1px solid #cbd5e0;border-radius:6px;font-size:0.82rem;box-sizing:border-box;" oninput="convPower('psdin')"></div>
+        <div><span style="font-size:0.62rem;color:#666;display:block;margin-bottom:0.1rem;">PS (SAE netto)</span><input type="number" id="convPSSAE" placeholder="z.B. 350" step="1" style="width:100%;padding:0.35rem;border:1px solid #cbd5e0;border-radius:6px;font-size:0.82rem;box-sizing:border-box;" oninput="convPower('pssae')"></div>
+        <div><span style="font-size:0.62rem;color:#666;display:block;margin-bottom:0.1rem;">kW</span><input type="number" id="convKW" placeholder="z.B. 254" step="1" style="width:100%;padding:0.35rem;border:1px solid #cbd5e0;border-radius:6px;font-size:0.82rem;box-sizing:border-box;" oninput="convPower('kw')"></div>
+    </div>
+    <div style="font-size:0.6rem;color:#999;line-height:1.4;">
+        BHP &asymp; PS DIN &times; 0.986 | PS SAE &asymp; PS DIN &times; 1.013 | 1 BHP = 0.746 kW<br>
+        <em>DIN: mit Nebenaggregaten &ndash; SAE netto: ohne Lichtmaschine/Wasserpumpe</em>
     </div>
 </div>
 
@@ -2974,6 +2974,40 @@
 
 <!-- ===== JAVASCRIPT ===== -->
 <script>
+    // ==== POWER UNIT CONVERTER ====
+    function convPower(src) {
+        var bhp = document.getElementById('convBHP');
+        var psdin = document.getElementById('convPSDIN');
+        var pssae = document.getElementById('convPSSAE');
+        var kw = document.getElementById('convKW');
+        if (!bhp || !psdin || !pssae || !kw) return;
+        var v;
+        if (src === 'bhp') {
+            v = parseFloat(bhp.value);
+            if (!v) { psdin.value = ''; pssae.value = ''; kw.value = ''; return; }
+            psdin.value = (v * 1.01387).toFixed(1);
+            pssae.value = (v * 1.01387 * 1.013).toFixed(1);
+            kw.value = (v * 0.7457).toFixed(1);
+        } else if (src === 'psdin') {
+            v = parseFloat(psdin.value);
+            if (!v) { bhp.value = ''; pssae.value = ''; kw.value = ''; return; }
+            bhp.value = (v * 0.9863).toFixed(1);
+            pssae.value = (v * 1.013).toFixed(1);
+            kw.value = (v * 0.7355).toFixed(1);
+        } else if (src === 'pssae') {
+            v = parseFloat(pssae.value);
+            if (!v) { bhp.value = ''; psdin.value = ''; kw.value = ''; return; }
+            psdin.value = (v / 1.013).toFixed(1);
+            bhp.value = (v / 1.013 * 0.9863).toFixed(1);
+            kw.value = (v / 1.013 * 0.7355).toFixed(1);
+        } else if (src === 'kw') {
+            v = parseFloat(kw.value);
+            if (!v) { bhp.value = ''; psdin.value = ''; pssae.value = ''; return; }
+            bhp.value = (v / 0.7457).toFixed(1);
+            psdin.value = (v / 0.7355).toFixed(1);
+            pssae.value = (v / 0.7355 * 1.013).toFixed(1);
+        }
+    }
     // ==== CONFIG ====
     const GIST_FILENAME = 'engine-build-log-data.json';
     const FIXED_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
