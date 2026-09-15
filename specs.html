@@ -3056,12 +3056,17 @@
             const localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
             const cloudTime = new Date(cloudData._savedAt || 0).getTime();
             const localTime = new Date(localData._savedAt || 0).getTime();
-            var merged;
-            if (cloudTime > localTime) {
-                merged = Object.assign({}, localData, cloudData);
-            } else {
-                merged = Object.assign({}, cloudData, localData);
-            }
+            // Smart merge: never overwrite a non-empty value with an empty one
+            var merged = {};
+            var allKeys = new Set(Object.keys(localData).concat(Object.keys(cloudData)));
+            var winner = cloudTime > localTime ? cloudData : localData;
+            var loser = cloudTime > localTime ? localData : cloudData;
+            allKeys.forEach(function(k) {
+                var wVal = winner[k], lVal = loser[k];
+                if (wVal !== undefined && wVal !== '' && wVal !== null) { merged[k] = wVal; }
+                else if (lVal !== undefined && lVal !== '' && lVal !== null) { merged[k] = lVal; }
+                else { merged[k] = wVal !== undefined ? wVal : lVal; }
+            });
             applyData(merged);
             localStorage.setItem('engineBuildLog', JSON.stringify(merged));
             isLoading = false; return true;
