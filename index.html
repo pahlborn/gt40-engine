@@ -1254,18 +1254,22 @@
         } catch (err) { showToast('Cloud-Fehler: ' + err.message); return false; }
     }
     async function loadFromGist() {
-        const t = getGistConfig().token; if (!t) return false;
+        const t = getGistConfig().token; if (!t) { console.log('[loadFromGist] no token, skipping'); return false; }
         try {
             isLoading = true;
+            console.log('[loadFromGist] fetching from cloud...');
             const res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { headers: { 'Authorization': 'Bearer ' + t } });
-            if (!res.ok) { isLoading = false; return false; }
+            if (!res.ok) { console.warn('[loadFromGist] HTTP error:', res.status); isLoading = false; return false; }
             const gist = await res.json();
             const file = gist.files[GIST_FILENAME];
-            if (!file) { isLoading = false; return false; }
+            if (!file) { console.warn('[loadFromGist] file not found in gist'); isLoading = false; return false; }
             const cloudData = JSON.parse(file.content);
             const localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
             const cloudTime = new Date(cloudData._savedAt || 0).getTime();
             const localTime = new Date(localData._savedAt || 0).getTime();
+            console.log('[loadFromGist] cloudTime=', cloudData._savedAt, 'localTime=', localData._savedAt, 'winner=', cloudTime > localTime ? 'CLOUD' : 'LOCAL');
+            console.log('[loadFromGist] cloud build_date=', cloudData.build_date, 'local build_date=', localData.build_date);
+            console.log('[loadFromGist] cloud target_hp=', cloudData.target_hp, 'local target_hp=', localData.target_hp);
             // Smart merge: never overwrite a non-empty value with an empty one
             var merged = {};
             var allKeys = new Set(Object.keys(localData).concat(Object.keys(cloudData)));
@@ -1280,10 +1284,11 @@
                 // Both empty or only winner has empty -> use winner
                 else { merged[k] = wVal !== undefined ? wVal : lVal; }
             });
+            console.log('[loadFromGist] merged build_date=', merged.build_date, 'target_hp=', merged.target_hp);
             applyData(merged);
             localStorage.setItem('engineBuildLog', JSON.stringify(merged));
             isLoading = false; return true;
-        } catch (err) { isLoading = false; return false; }
+        } catch (err) { console.error('[loadFromGist] error:', err); isLoading = false; return false; }
     }
     async function syncFromCloud() {
         if (!isGistConfigured()) { openSettings(); return; }
@@ -1402,9 +1407,13 @@
     async function saveData() {
         // Merge: preserve build-log fields not present on this page
         const existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-        const data = Object.assign({}, existing, collectData());
+        const collected = collectData();
+        console.log('[saveData] collected fields:', Object.keys(collected).filter(k => collected[k] !== '' && collected[k] !== false).length, 'non-empty');
+        console.log('[saveData] build_date=', collected.build_date, 'target_hp=', collected.target_hp);
+        const data = Object.assign({}, existing, collected);
         data._savedAt = new Date().toISOString();
         localStorage.setItem('engineBuildLog', JSON.stringify(data));
+        console.log('[saveData] saved to localStorage, total keys:', Object.keys(data).length);
         updateSaveStatus();
         if (isGistConfigured()) {
             if (await saveToGist()) showToast('Gespeichert (lokal + Cloud)');
@@ -1413,10 +1422,23 @@
     }
     async function loadData() {
         isLoading = true;
+        console.log('[loadData] START');
         const raw = localStorage.getItem('engineBuildLog');
-        if (raw) { try { applyData(JSON.parse(raw)); } catch(e) {} }
-        if (isGistConfigured()) await loadFromGist();
+        if (raw) {
+            try {
+                var parsed = JSON.parse(raw);
+                console.log('[loadData] localStorage has', Object.keys(parsed).length, 'keys, build_date=', parsed.build_date, 'target_hp=', parsed.target_hp);
+                applyData(parsed);
+            } catch(e) { console.error('[loadData] parse error:', e); }
+        } else {
+            console.warn('[loadData] NO DATA in localStorage!');
+        }
+        if (isGistConfigured()) {
+            console.log('[loadData] Gist configured, loading from cloud...');
+            await loadFromGist();
+        }
         isLoading = false; updateSaveStatus();
+        console.log('[loadData] DONE, isLoading=false');
     }
     let autoSaveTimer = null;
     // ==== COMPRESSION RATIO CALCULATOR ====
@@ -2191,7 +2213,8 @@
     setTimeout(runDriveSim, 800);
 
     function autoSave() {
-        if (isLoading) return;
+        if (isLoading) { console.warn('[autoSave] BLOCKED - isLoading=true'); return; }
+        console.log('[autoSave] triggered');
         clearTimeout(autoSaveTimer);
         autoSaveTimer = setTimeout(() => { saveData(); runCrossChecks(); }, 500);
     }
@@ -3259,8 +3282,11 @@
     }, { passive: true });
     // Synchronous save of field data on page leave (no async cloud upload)
     function saveFieldsSync() {
+        console.log('[saveFieldsSync] called on page leave');
         var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-        var data = Object.assign({}, existing, collectData());
+        var collected = collectData();
+        console.log('[saveFieldsSync] build_date=', collected.build_date, 'target_hp=', collected.target_hp);
+        var data = Object.assign({}, existing, collected);
         data._savedAt = new Date().toISOString();
         localStorage.setItem('engineBuildLog', JSON.stringify(data));
     }

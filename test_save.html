@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html><head><title>Save Test</title></head>
+<body>
+<h2>Test: Daten speichern/laden</h2>
+<div id="results" style="font-family:monospace;white-space:pre;"></div>
+<script>
+var r = document.getElementById('results');
+function log(msg) { r.textContent += msg + '\n'; }
+
+// 1. Check what's in localStorage
+var raw = localStorage.getItem('engineBuildLog');
+if (!raw) {
+    log('ERROR: engineBuildLog nicht in localStorage gefunden!');
+    log('Moegliche Ursache: Seite wurde nie besucht oder Daten geloescht.');
+} else {
+    try {
+        var data = JSON.parse(raw);
+        var keys = Object.keys(data);
+        var nonEmpty = keys.filter(function(k) { return data[k] !== '' && data[k] !== false && data[k] !== null; });
+        log('Gesamt-Felder: ' + keys.length);
+        log('Nicht-leere Felder: ' + nonEmpty.length);
+        log('---');
+        
+        // Check specific project data fields
+        var projectFields = ['build_date', 'builder_name', 'project_vehicle', 'target_hp', 'target_cr', 'target_torque', 'target_fuel', 'target_use', 'target_tracks'];
+        projectFields.forEach(function(f) {
+            var val = data[f];
+            log(f + ': ' + (val === '' || val === undefined ? '[LEER]' : '"' + val + '"'));
+        });
+        log('---');
+        log('_savedAt: ' + (data._savedAt || '[nicht vorhanden]'));
+        
+        // Check some build-log fields
+        var blFields = ['p1_check_1', 'p1_note_1', 'p1_check_2', 'p1_note_2'];
+        blFields.forEach(function(f) {
+            var val = data[f];
+            if (val !== undefined && val !== '' && val !== false) {
+                log(f + ': "' + val + '"');
+            }
+        });
+    } catch(e) {
+        log('ERROR: JSON-Parsing fehlgeschlagen: ' + e.message);
+    }
+}
+
+// 2. Check Gist config
+var gist = localStorage.getItem('engineBuildLog_gistConfig');
+if (gist) {
+    try {
+        var gc = JSON.parse(gist);
+        log('---');
+        log('Gist konfiguriert: JA (Token: ' + (gc.token ? gc.token.substring(0,8) + '...' : 'FEHLT') + ')');
+    } catch(e) {}
+} else {
+    log('---');
+    log('Gist konfiguriert: NEIN (nur lokal)');
+}
+
+// 3. Check all localStorage keys for this app
+log('---');
+log('Alle engine* localStorage-Keys:');
+for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    if (key.indexOf('engine') === 0) {
+        var val = localStorage.getItem(key);
+        log('  ' + key + ': ' + (val.length > 80 ? val.substring(0,80) + '...' : val) + ' (' + val.length + ' bytes)');
+    }
+}
+</script>
+</body>
+</html>
