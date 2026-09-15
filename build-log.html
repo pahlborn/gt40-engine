@@ -488,15 +488,42 @@
     }
     function toggleLang() { setLang(currentLang === 'de' ? 'en' : 'de'); }
 
+    // ==== COLLAPSE STATE MEMORY ====
+    var _collapseKey = 'engineBuild_collapse_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
+    function saveHubCollapseState() {
+        var state = {};
+        document.querySelectorAll('details.steps-preview').forEach(function(d, i) {
+            if (d.open) state['d' + i] = 1;
+        });
+        localStorage.setItem(_collapseKey, JSON.stringify(state));
+    }
+    function restoreHubCollapseState() {
+        var raw = localStorage.getItem(_collapseKey);
+        if (!raw) return;
+        try {
+            var state = JSON.parse(raw);
+            document.querySelectorAll('details.steps-preview').forEach(function(d, i) {
+                if (state['d' + i]) d.open = true;
+            });
+        } catch(e) {}
+    }
+    // Listen for details toggle
+    document.addEventListener('toggle', function(e) {
+        if (e.target.classList.contains('steps-preview')) saveHubCollapseState();
+    }, true);
+
     document.addEventListener('DOMContentLoaded', function() {
         loadProgress();
+        restoreHubCollapseState();
         if (currentLang === 'en') setTimeout(function() { setLang('en'); }, 100);
     });
 
     // ==== SCROLL POSITION MEMORY ====
     var _scrollKey = 'engineBuild_scroll_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
     var _scrollTimer = null;
+    var _scrollReady = false;
     window.addEventListener('scroll', function() {
+        if (!_scrollReady) return;
         clearTimeout(_scrollTimer);
         _scrollTimer = setTimeout(function() {
             localStorage.setItem(_scrollKey, window.scrollY);
@@ -507,7 +534,10 @@
     });
     window.addEventListener('load', function() {
         var pos = localStorage.getItem(_scrollKey);
-        if (pos) setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 150);
+        if (pos) {
+            setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 150);
+            setTimeout(function() { window.scrollTo(0, parseInt(pos)); _scrollReady = true; }, 500);
+        } else { _scrollReady = true; }
     });
 
 </script>

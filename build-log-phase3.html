@@ -1201,6 +1201,44 @@
     function isGistConfigured() { return getGistConfig().token.length > 0; }
 
     // ==== PHASE TOGGLE (collapsible) ====
+
+    // ==== COLLAPSE STATE MEMORY ====
+    var _collapseKey = 'engineBuild_collapse_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
+    function saveBuildCollapseState() {
+        var state = {};
+        // Phase banner collapsed?
+        document.querySelectorAll('.phase-body').forEach(function(b) {
+            if (b.classList.contains('collapsed')) state['pb_' + b.id] = 1;
+        });
+        // Guide toggles open?
+        document.querySelectorAll('.step-guide').forEach(function(g, i) {
+            if (g.classList.contains('open')) state['sg_' + i] = 1;
+        });
+        localStorage.setItem(_collapseKey, JSON.stringify(state));
+    }
+    function restoreBuildCollapseState() {
+        var raw = localStorage.getItem(_collapseKey);
+        if (!raw) return;
+        try {
+            var state = JSON.parse(raw);
+            // Phase bodies
+            document.querySelectorAll('.phase-body').forEach(function(b) {
+                if (state['pb_' + b.id]) {
+                    b.classList.add('collapsed');
+                    var toggle = document.getElementById('toggle_' + b.id);
+                    if (toggle) toggle.classList.add('collapsed');
+                }
+            });
+            // Guides
+            document.querySelectorAll('.step-guide').forEach(function(g, i) {
+                if (state['sg_' + i]) {
+                    g.classList.add('open');
+                    var btn = g.closest('.step-card').querySelector('.guide-toggle');
+                    if (btn) btn.classList.add('open');
+                }
+            });
+        } catch(e) {}
+    }
     function togglePhase(bodyId) {
         var body = document.getElementById(bodyId);
         var toggle = document.getElementById('toggle_' + bodyId);
@@ -1211,6 +1249,7 @@
             body.classList.add('collapsed');
             if (toggle) toggle.classList.add('collapsed');
         }
+        saveBuildCollapseState();
     }
 
     // ==== GUIDE TOGGLE ====
@@ -1221,6 +1260,7 @@
             btn.classList.toggle('open', open);
             // arrow rotation handled by CSS ::after
         }
+        saveBuildCollapseState();
     }
 
     // ==== PROGRESS ====
@@ -1599,6 +1639,7 @@
     // ==== INIT ====
     document.addEventListener('DOMContentLoaded', function() {
         loadData();
+        restoreBuildCollapseState();
         // Render all photo galleries
         document.querySelectorAll('.photo-gallery[data-photo-group]').forEach(function(g) {
             renderPhotos(g.dataset.photoGroup);
@@ -1611,7 +1652,9 @@
     // ==== SCROLL POSITION MEMORY ====
     var _scrollKey = 'engineBuild_scroll_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
     var _scrollTimer = null;
+    var _scrollReady = false;
     window.addEventListener('scroll', function() {
+        if (!_scrollReady) return;
         clearTimeout(_scrollTimer);
         _scrollTimer = setTimeout(function() {
             localStorage.setItem(_scrollKey, window.scrollY);
@@ -1622,7 +1665,10 @@
     });
     window.addEventListener('load', function() {
         var pos = localStorage.getItem(_scrollKey);
-        if (pos) setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 150);
+        if (pos) {
+            setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 150);
+            setTimeout(function() { window.scrollTo(0, parseInt(pos)); _scrollReady = true; }, 500);
+        } else { _scrollReady = true; }
     });
 
 </script>

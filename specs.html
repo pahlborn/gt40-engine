@@ -5026,25 +5026,10 @@
     }
 
     // ==== INIT ====
-    generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData(); loadSubPages(); updateBuildDashboard(); restoreCollapseState(); setTimeout(runCrossChecks, 500);
+    generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData(); loadSubPages(); updateBuildDashboard(); setTimeout(runCrossChecks, 500);
     if (currentLang === 'en') setTimeout(function() { setLang('en'); }, 100);
 
-    // ==== SCROLL POSITION MEMORY ====
-    var _scrollKey = 'engineBuild_scroll_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
-    var _scrollTimer = null;
-    window.addEventListener('scroll', function() {
-        clearTimeout(_scrollTimer);
-        _scrollTimer = setTimeout(function() {
-            localStorage.setItem(_scrollKey, window.scrollY);
-        }, 200);
-    }, { passive: true });
-    window.addEventListener('beforeunload', function() {
-        localStorage.setItem(_scrollKey, window.scrollY);
-    });
-    window.addEventListener('load', function() {
-        var pos = localStorage.getItem(_scrollKey);
-        if (pos) setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 150);
-    });
+    // Specs: no scroll/collapse restore - always starts at initial state
 
 </script>
 </body>

@@ -3226,14 +3226,12 @@
         setLang(currentLang === 'de' ? 'en' : 'de');
     }
 
-    // ==== INIT ====
-    generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData(); loadSubPages(); updateBuildDashboard(); restoreCollapseState(); setTimeout(runCrossChecks, 500);
-    if (currentLang === 'en') setTimeout(function() { setLang('en'); }, 100);
-
     // ==== SCROLL POSITION MEMORY ====
     var _scrollKey = 'engineBuild_scroll_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
     var _scrollTimer = null;
+    var _scrollReady = false;
     window.addEventListener('scroll', function() {
+        if (!_scrollReady) return;
         clearTimeout(_scrollTimer);
         _scrollTimer = setTimeout(function() {
             localStorage.setItem(_scrollKey, window.scrollY);
@@ -3242,9 +3240,30 @@
     window.addEventListener('beforeunload', function() {
         localStorage.setItem(_scrollKey, window.scrollY);
     });
-    window.addEventListener('load', function() {
+    function restoreScrollPos() {
         var pos = localStorage.getItem(_scrollKey);
-        if (pos) setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 150);
+        if (pos) {
+            window.scrollTo(0, parseInt(pos));
+            // Retry after images/content may have shifted layout
+            setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 50);
+            setTimeout(function() { window.scrollTo(0, parseInt(pos)); _scrollReady = true; }, 300);
+        } else {
+            _scrollReady = true;
+        }
+    }
+
+    // ==== INIT ====
+    generateQuenchTable(); updateSyncBadge(); updateBuildDashboard();
+    restoreCollapseState();
+    // loadData is async (may fetch from Gist) - restore scroll AFTER it completes
+    loadData().then(function() {
+        loadPhotoData(); loadSubPages(); setTimeout(runCrossChecks, 500);
+        if (currentLang === 'en') setTimeout(function() { setLang('en'); }, 100);
+        // Restore scroll after all data is loaded and DOM is settled
+        setTimeout(restoreScrollPos, 100);
+    }).catch(function() {
+        loadPhotoData(); loadSubPages();
+        setTimeout(restoreScrollPos, 100);
     });
 
 </script>
