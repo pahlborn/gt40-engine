@@ -1428,6 +1428,10 @@
             </div>
         </div>
     </div>
+            <div style="background:#ebf8ff;border:1px solid #90cdf4;border-radius:8px;padding:0.5rem;margin-top:0.5rem;">
+                <a href="docs/dellorto-drla-tuning.html" style="color:#2b6cb0;font-weight:600;font-size:0.82rem;text-decoration:none;">&#128214; DellOrto DRLA 45 &ndash; Einstellungsleitfaden (Tuning Guide) &rarr;</a>
+                <div style="font-size:0.72rem;color:var(--text-light);margin-top:0.15rem;">Schwimmerstand, Synchronisation, Bedusung, Leerlauf, Progression, Volllast, Troubleshooting</div>
+            </div>
             <div class="section-comment">
                 <label>Kommentar zu Vergaser &amp; Kraftstoff</label>
                 <textarea data-field="comment_fuel" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
@@ -1589,6 +1593,10 @@
                 <input type="text" data-field="rev_limiter" placeholder='z.B. 6.500 RPM' oninput="autoSave();checkRevLimiterInput(this)">
                 <div id="revLimiterWarning" style="display:none;margin-top:0.2rem;"></div>
             </div>
+            <div style="background:#ebf8ff;border:1px solid #90cdf4;border-radius:8px;padding:0.5rem;margin-top:0.5rem;">
+                <a href="docs/msd-advance-tuning.html" style="color:#2b6cb0;font-weight:600;font-size:0.82rem;text-decoration:none;">&#128214; MSD 8479 &ndash; Advance-Kurve einstellen (Timing Curve Setup) &rarr;</a>
+                <div style="font-size:0.72rem;color:var(--text-light);margin-top:0.15rem;">Federn, Bushings, Timing-Factors, Schritt-f&uuml;r-Schritt Einstellung, Vacuum Advance, Troubleshooting</div>
+            </div>
             <div class="section-comment">
                 <label>Kommentar zur Z&uuml;ndeinstellung</label>
                 <textarea data-field="comment_ignition" placeholder="Advance-Kombination, Timing-Erfahrungen, Klopfneigung..." oninput="autoSave()"></textarea>
@@ -1735,6 +1743,54 @@
                 </div>
             </div>
                         <div style="font-size:0.78rem;padding:0.2rem 0;color:var(--text-light);">&bull; Druckplatte montiert, Dowels eingesetzt, Drehmoment 12&ndash;24 ft-lbs</div>
+            <div class="comp-box" style="background:#fffff0;border-color:#ecc94b;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#975a16;">&#128295; Schwungrad &amp; Kupplung &ndash; Montage-Anleitung (Flywheel &amp; Clutch Installation)</div>
+                <div class="comp-body">
+                    <div style="font-size:0.82rem;font-weight:700;color:var(--primary);margin-bottom:0.3rem;">1. Pilot Bearing (Pilotlager)</div>
+                    <ul style="font-size:0.76rem;margin:0 0 0.4rem 1rem;">
+                        <li>Altes Pilotlager mit Abzieher entfernen (Innenauszieher oder Brot-Methode bei Buchsen)</li>
+                        <li>Neues Lager pr&uuml;fen: Nadelh&uuml;lse (Needle Bearing) oder Bronze-Buchse</li>
+                        <li>Saubere Bohrung im Kurbelwellen-Flansch, &ouml;lfrei</li>
+                        <li>Neues Lager gerade eintreiben: Passende Nuss als Einpresswerkzeug, flache Seite nach au&szlig;en</li>
+                        <li><strong>Tiefe:</strong> B&uuml;ndig oder leicht versenkt (Getriebe-Eingangswelle muss frei gleiten)</li>
+                    </ul>
+                    <div style="font-size:0.82rem;font-weight:700;color:var(--primary);margin-bottom:0.3rem;">2. Schwungrad (Flywheel)</div>
+                    <ul style="font-size:0.76rem;margin:0 0 0.4rem 1rem;">
+                        <li><strong>ZERO BALANCE Pflicht!</strong> M-6009-302 = Neutral Balanced &rarr; Zero-Balance Schwungrad</li>
+                        <li>Auflageflasche auf Kurbelwelle reinigen (&ouml;lfrei, kein Fett!)</li>
+                        <li>Schwungrad auf Passstifte (Dowels) setzen</li>
+                        <li>Schrauben <strong>trocken</strong> einsetzen, <strong>kein Schmiermittel</strong></li>
+                        <li>Drehmoment: <strong>75&ndash;85 ft-lbs (102&ndash;115 Nm)</strong>, sternf&ouml;rmig (kreuzweise)</li>
+                        <li>Reibfl&auml;che mit Bremsenreiniger entfetten</li>
+                        <li><strong>Zahnkranz pr&uuml;fen:</strong> Keine besch&auml;digten Z&auml;hne, sonst Starterprobleme</li>
+                    </ul>
+                    <div style="font-size:0.82rem;font-weight:700;color:var(--primary);margin-bottom:0.3rem;">3. Kupplungsscheibe &amp; Druckplatte (Clutch Disc &amp; Pressure Plate)</div>
+                    <ul style="font-size:0.76rem;margin:0 0 0.4rem 1rem;">
+                        <li><strong>Reibfl&auml;chen entfetten!</strong> Schwungrad UND Druckplatte mit Bremsenreiniger reinigen</li>
+                        <li>Kupplungsscheibe mit <strong>Zentrierdorn</strong> (Alignment Tool) in Pilotlager einf&uuml;hren</li>
+                        <li>Reibbelag-Seite: &bdquo;Flywheel Side&ldquo; / Federseite zum Schwungrad</li>
+                        <li>Druckplatte aufsetzen, Dowel Pins (Ford M-6397-A302) zuerst!</li>
+                        <li>Schrauben <strong>gleichm&auml;&szlig;ig kreisf&ouml;rmig</strong> anziehen: je 1 Umdrehung nacheinander</li>
+                        <li>Drehmoment: <strong>12&ndash;24 ft-lbs (16&ndash;33 Nm)</strong></li>
+                        <li>Zentrierdorn erst NACH dem Anziehen entfernen &ndash; muss frei gleiten!</li>
+                    </ul>
+                    <div style="font-size:0.82rem;font-weight:700;color:var(--primary);margin-bottom:0.3rem;">4. Ausr&uuml;cklager &amp; Pr&uuml;fung</div>
+                    <ul style="font-size:0.76rem;margin:0 0 0.3rem 1rem;">
+                        <li>Ausr&uuml;cklager (Throw-Out Bearing) auf H&uuml;lse/Gabel pressen</li>
+                        <li>Freilauf pr&uuml;fen: Lager muss leichtg&auml;ngig drehen</li>
+                        <li>Gabel und Schwenkpunkt schmieren (Hochtemperaturfett)</li>
+                    </ul>
+                    <div style="background:#fff5f5;border:1px solid #fc8181;border-radius:6px;padding:0.4rem;font-size:0.76rem;color:#c53030;margin-top:0.3rem;">
+                        <strong>&#9888; KRITISCH (UN1-13 Adapter):</strong> Stack-Up Height pr&uuml;fen! Die Kupplungsgabel darf die Kurbelwelle <strong>NIEMALS</strong> nach vorn dr&uuml;cken. Thrust Bearing Schaden passiert in Sekunden! Freistellung mit F&uuml;hlerlehre messen.
+                    </div>
+                    <div style="margin-top:0.4rem;font-size:0.75rem;color:var(--text-light);">
+                        <strong>Video-Referenz:</strong>
+                        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin-top:0.3rem;">
+                            <iframe src="https://www.youtube.com/embed/KcS_d4CH1Cw" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allowfullscreen loading="lazy" title="Ford Mustang Clutch &amp; Flywheel Replacement"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="section-comment">
                 <label>Kommentar Kupplung/Antrieb</label>
                 <textarea data-field="comment_clutch" placeholder="Schwungrad-Typ, Kupplungsscheibe, Getriebe..." oninput="autoSave()"></textarea>

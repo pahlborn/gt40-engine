@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MSD 8479 &ndash; Advance-Kurve einstellen (Timing Curve Setup)</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 1rem; background: #f8f9fa; color: #1a202c; line-height: 1.6; }
+        .banner { background: #2b6cb0; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; margin-bottom: 1rem; }
+        .banner a { color: #bee3f8; }
+        h1 { color: #2d3748; border-bottom: 3px solid #2b6cb0; padding-bottom: 0.5rem; font-size: 1.6rem; }
+        h2 { color: #2b6cb0; border-bottom: 1px solid #cbd5e0; padding-bottom: 0.3rem; margin-top: 1.5rem; }
+        h3 { color: #4a5568; margin-top: 1rem; }
+        .section { background: white; padding: 1rem; border-radius: 8px; margin: 1rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .back-link { display: inline-block; margin-bottom: 1rem; color: #2b6cb0; text-decoration: none; font-weight: 600; }
+        table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; font-size: 0.85rem; }
+        th { background: #ebf4ff; text-align: left; padding: 0.4rem 0.6rem; border-bottom: 2px solid #2b6cb0; }
+        td { padding: 0.35rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        .highlight { background: #fffff0; border: 1px solid #fefcbf; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .warning { background: #fff5f5; border: 1px solid #fc8181; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .info { background: #ebf8ff; border: 1px solid #90cdf4; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .success { background: #e6ffed; border: 1px solid #c6f6d5; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .source { font-size: 0.75rem; color: #718096; margin-top: 0.2rem; }
+        ul { padding-left: 1.3rem; }
+        li { margin-bottom: 0.3rem; }
+        .toc { background: #f7fafc; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin: 1rem 0; }
+        .toc a { color: #2b6cb0; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { padding: 0.15rem 0; }
+        .toc li::before { content: '\25B8 '; color: #2b6cb0; }
+        .badge { display: inline-block; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+        .badge-oem { background: #e2e8f0; color: #4a5568; }
+        .badge-lotus { background: #ebf4ff; color: #2b6cb0; }
+        .badge-mod { background: #fefcbf; color: #975a16; }
+        .badge-tested { background: #e6ffed; color: #276749; }
+        details { margin: 1rem 0; }
+        summary { cursor: pointer; font-weight: 700; color: #2b6cb0; font-size: 1.1rem; padding: 0.5rem 0; border-bottom: 1px solid #cbd5e0; }
+        summary:hover { color: #2c5282; }
+        details[open] summary { margin-bottom: 0.5rem; }
+        .video-embed { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin: 0.5rem 0; background: #1a202c; }
+        .video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .video-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #a0aec0; font-size: 1rem; text-align: center; padding: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="banner">Tuning-Referenz &ndash; MSD 8479 Pro-Billet Distributor am Small Block Ford (289/302/347/363). Quellen: MSD 8479 Manual, MSD Tech Support, Praxiserfahrung.</div>
+    <a class="back-link" href="../">&larr; Zur&uuml;ck zum Build Log</a>
+
+    <h1>MSD 8479 &ndash; Advance-Kurve einstellen (Timing Curve Setup)</h1>
+
+    <div class="toc">
+        <strong>Inhalt</strong>
+        <ul>
+            <li><a href="#grundbegriffe">Grundbegriffe (Definitions)</a></li>
+            <li><a href="#lieferumfang">MSD 8479 Lieferumfang (What&rsquo;s In The Box)</a></li>
+            <li><a href="#bushings">Advance Stop Bushings (Begrenzungsbuchsen)</a></li>
+            <li><a href="#empfehlung">Empfehlung f&uuml;r diesen Build</a></li>
+            <li><a href="#timing-factors">Timing-Factors Tabelle (aus MSD 8479 Manual)</a></li>
+            <li><a href="#einstellvorgang">Einstellvorgang Schritt f&uuml;r Schritt (Step-by-Step Setup)</a></li>
+            <li><a href="#vacuum-advance">Vacuum Advance &ndash; Ported vs. Manifold</a></li>
+            <li><a href="#troubleshooting">Troubleshooting Z&uuml;ndung</a></li>
+            <li><a href="#videos">YouTube Videos</a></li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="grundbegriffe">
+        <details open>
+            <summary>1. Grundbegriffe (Definitions)</summary>
+            <table>
+                <tr><th>Begriff</th><th>Englisch</th><th>Erkl&auml;rung</th></tr>
+                <tr>
+                    <td><strong>Grundz&uuml;ndung</strong></td>
+                    <td>Initial Timing</td>
+                    <td>Basis-Z&uuml;ndung vor Beginn des mechanischen Vorlaufs, typisch <strong>10&ndash;14&deg; BTDC</strong>. Wird am Verteiler per Verdrehung eingestellt und mit Stroboskoplampe am Balancer abgelesen.</td>
+                </tr>
+                <tr>
+                    <td><strong>Fliehkraftverstellung</strong></td>
+                    <td>Centrifugal Advance</td>
+                    <td>Mechanischer Vorlauf &uuml;ber Gewichte + Federn im Verteiler. RPM-abh&auml;ngig &ndash; je h&ouml;her die Drehzahl, desto mehr Vorlauf (bis zum Stop-Bushing-Limit).</td>
+                </tr>
+                <tr>
+                    <td><strong>Gesamtz&uuml;ndung</strong></td>
+                    <td>Total Timing</td>
+                    <td>Initial + Centrifugal. Typisch <strong>32&ndash;36&deg; total</strong> f&uuml;r einen Small Block Ford (SBF).</td>
+                </tr>
+                <tr>
+                    <td><strong>Unterdruckverstellung</strong></td>
+                    <td>Vacuum Advance</td>
+                    <td>Zus&auml;tzlich <strong>8&ndash;12&deg;</strong> bei Teillast. <strong>NUR an Ported Vacuum anschlie&szlig;en</strong> (nicht Manifold Vacuum!). Wirkt nur bei Teillast/Cruising &ndash; bei Volllast f&auml;llt der Unterdruck weg.</td>
+                </tr>
+                <tr>
+                    <td><strong>All-In RPM</strong></td>
+                    <td>All-In RPM</td>
+                    <td>Drehzahl, bei der die Gesamtz&uuml;ndung (Total Timing) erreicht ist. Typisch <strong>2500&ndash;3500 RPM</strong> f&uuml;r einen SBF Stra&szlig;en-/Performance-Motor.</td>
+                </tr>
+            </table>
+            <div class="info">
+                <strong>Formel:</strong> Total Timing = Initial Timing + Centrifugal Advance<br>
+                Beispiel: 12&deg; Initial + 21&deg; Centrifugal = <strong>33&deg; Total</strong><br>
+                Vacuum Advance kommt on top, z&auml;hlt aber nicht zum &bdquo;Total Timing&ldquo; im klassischen Sinne.
+            </div>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="lieferumfang">
+        <details>
+            <summary>2. MSD 8479 Lieferumfang (What&rsquo;s In The Box)</summary>
+            <ul>
+                <li><strong>2x Heavy Silver Springs</strong> (Werksauslieferung = langsamste Kurve)</li>
+                <li>Zus&auml;tzliche Federn im <strong>Advance Kit MSD 8464</strong> (separat erh&auml;ltlich)</li>
+                <li><strong>Advance Stop Bushings:</strong> Silber (21&deg;), Blau (25&deg;), Schwarz (28&deg;)</li>
+                <li><strong>Vacuum Advance Dose MSD 8463</strong> (separate Teilenummer, nicht im Lieferumfang)</li>
+            </ul>
+
+            <h3>Federkombinationen &amp; Kurvencharakteristik</h3>
+            <table>
+                <tr><th>Kombi</th><th>Federn</th><th>Kurvencharakteristik</th><th>All-In RPM (ca.)</th></tr>
+                <tr>
+                    <td><strong>A</strong></td>
+                    <td>2x Heavy Silver</td>
+                    <td><span class="badge badge-oem">Langsamste Kurve</span> &ndash; Werksauslieferung</td>
+                    <td>3500&ndash;4000 RPM</td>
+                </tr>
+                <tr>
+                    <td><strong>B</strong></td>
+                    <td>1x Heavy Silver + 1x Light Blue</td>
+                    <td><span class="badge badge-lotus">Mittel</span> &ndash; guter Kompromiss</td>
+                    <td>2800&ndash;3200 RPM</td>
+                </tr>
+                <tr>
+                    <td><strong>C</strong></td>
+                    <td>2x Light Silver</td>
+                    <td><span class="badge badge-mod">Schnell</span></td>
+                    <td>2200&ndash;2800 RPM</td>
+                </tr>
+                <tr>
+                    <td><strong>D</strong></td>
+                    <td>1x Light Silver + 1x Light Blue</td>
+                    <td><span class="badge badge-mod">Sehr schnell</span></td>
+                    <td>2000&ndash;2500 RPM</td>
+                </tr>
+            </table>
+            <p class="source">Quelle: MSD 8464 Advance Kit Anleitung, MSD Tech Support</p>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="bushings">
+        <details>
+            <summary>3. Advance Stop Bushings (Begrenzungsbuchsen)</summary>
+            <p>Die Stop Bushings begrenzen den <strong>maximalen mechanischen Vorlauf</strong> (Centrifugal Advance). Sie sitzen auf dem Advance-Mechanismus und limitieren den Weg der Fliehgewichte.</p>
+            <table>
+                <tr><th>Bushing-Farbe</th><th>Mech. Vorlauf</th><th>Rechenbeispiel</th></tr>
+                <tr>
+                    <td><strong>Silber</strong></td>
+                    <td>21&deg;</td>
+                    <td>12&deg; Initial + 21&deg; = <strong>33&deg; Total</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Blau</strong></td>
+                    <td>25&deg;</td>
+                    <td>10&deg; Initial + 25&deg; = <strong>35&deg; Total</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Schwarz</strong></td>
+                    <td>28&deg;</td>
+                    <td>8&deg; Initial + 28&deg; = <strong>36&deg; Total</strong></td>
+                </tr>
+            </table>
+            <div class="warning">
+                <strong>&#9888; ACHTUNG:</strong> Zu viel Total Advance = Detonation/Klopfen = <strong>MOTORSCHADEN!</strong><br>
+                Niemals mehr als 36&deg; Total Timing an einem SBF mit Gusseisen-K&ouml;pfen und Stra&szlig;enbenzin. Bei hoher Verdichtung (&gt;10:1) oder schlechtem Kraftstoff entsprechend weniger.
+            </div>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="empfehlung">
+        <details open>
+            <summary>4. Empfehlung f&uuml;r diesen Build</summary>
+
+            <h3>Motor-Konfiguration</h3>
+            <table>
+                <tr><td>Motor</td><td><strong>302 BOSS Crate Engine</strong> (M-6009-302)</td></tr>
+                <tr><td>Verdichtung</td><td>~9.7:1 CR</td></tr>
+                <tr><td>Kraftstoff</td><td>98 ROZ (Super Plus / E5)</td></tr>
+                <tr><td>Vergaser</td><td><strong>DellOrto DRLA 45</strong> Downdraft (kein Holley)</td></tr>
+                <tr><td>Nockenwelle</td><td>Hydraulik-Roller <strong>XE274HR</strong></td></tr>
+            </table>
+
+            <h3>Start-Setup (Erstinbetriebnahme / Einfahren)</h3>
+            <div class="success">
+                <strong>Empfehlung START:</strong><br>
+                Federn: <strong>2x Heavy Silver</strong> (Werksauslieferung, langsamste Kurve)<br>
+                Bushing: <strong>Silber (21&deg;)</strong><br>
+                Initial Timing: <strong>10&ndash;14&deg; BTDC</strong><br>
+                &rarr; Ergibt <strong>31&ndash;35&deg; Total Timing</strong><br>
+                All-In bei ca. 3500&ndash;4000 RPM
+            </div>
+
+            <h3>Optimiertes Setup (nach Einfahren &amp; Testfahrten)</h3>
+            <div class="highlight">
+                <strong>Empfehlung NACH EINFAHREN:</strong><br>
+                Federn: <strong>1x Heavy Silver + 1x Light Blue</strong> (mittlere Kurve)<br>
+                Bushing: <strong>Blau (25&deg;) testen</strong><br>
+                Initial Timing: <strong>12&deg; BTDC</strong><br>
+                &rarr; Ergibt <strong>37&deg; Total</strong> &ndash; nur wenn klopffrei!<br>
+                Falls Klopfen: zur&uuml;ck auf Silber-Bushing (21&deg;) = 33&deg; Total
+            </div>
+
+            <div class="info">
+                <strong>MSD-Zitat:</strong> &bdquo;Use as much initial advance as possible without encountering excessive starter load. Start the centrifugal advance just above idle RPM.&ldquo;<br>
+                <span class="source">Quelle: MSD 8479 Pro-Billet Distributor Installation Manual</span>
+            </div>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="timing-factors">
+        <details>
+            <summary>5. Timing-Factors Tabelle (aus MSD 8479 Manual)</summary>
+            <p>Diese Tabelle zeigt die Faktoren, die <strong>mehr oder weniger Z&uuml;ndvorlauf</strong> erfordern. Nutze sie als Orientierung bei der Feinabstimmung.</p>
+            <table>
+                <tr><th>Faktor</th><th>Mehr Vorlauf (More Advance)</th><th>Weniger Vorlauf (Less Advance)</th></tr>
+                <tr>
+                    <td><strong>Verdichtung</strong> (Cylinder Pressure)</td>
+                    <td>Niedrig (Low)</td>
+                    <td>Hoch (High)</td>
+                </tr>
+                <tr>
+                    <td><strong>Drehzahl</strong> (RPM)</td>
+                    <td>Niedrig (Low)</td>
+                    <td>Hoch (High)</td>
+                </tr>
+                <tr>
+                    <td><strong>Unterdruck</strong> (Vacuum)</td>
+                    <td>Hoch (High)</td>
+                    <td>Niedrig (Low)</td>
+                </tr>
+                <tr>
+                    <td><strong>Z&uuml;ndenergie</strong> (Ignition Energy)</td>
+                    <td>Niedrig (Low)</td>
+                    <td>Hoch (High)</td>
+                </tr>
+                <tr>
+                    <td><strong>Oktanzahl</strong> (Fuel Octane)</td>
+                    <td>Hoch (High)</td>
+                    <td>Niedrig (Low)</td>
+                </tr>
+                <tr>
+                    <td><strong>Gemisch</strong> (Air/Fuel Ratio)</td>
+                    <td>Fett (Rich)</td>
+                    <td>Mager (Lean)</td>
+                </tr>
+                <tr>
+                    <td><strong>Temperatur</strong> (Temperature)</td>
+                    <td>K&uuml;hler (Cool)</td>
+                    <td>W&auml;rmer (Hot)</td>
+                </tr>
+                <tr>
+                    <td><strong>Brennraumform</strong> (Combustion Chamber)</td>
+                    <td>Offen (Open)</td>
+                    <td>Kompakt (Compact)</td>
+                </tr>
+                <tr>
+                    <td><strong>Z&uuml;ndkerzenposition</strong> (Spark Plug Location)</td>
+                    <td>Versetzt (Offset)</td>
+                    <td>Zentral (Center)</td>
+                </tr>
+                <tr>
+                    <td><strong>Turbulenz</strong> (Turbulence)</td>
+                    <td>Niedrig (Low)</td>
+                    <td>Hoch (High)</td>
+                </tr>
+                <tr>
+                    <td><strong>Last</strong> (Load)</td>
+                    <td>Leicht (Light)</td>
+                    <td>Schwer (Heavy)</td>
+                </tr>
+            </table>
+            <p class="source">Quelle: MSD 8479 Pro-Billet Distributor Installation Manual, Sektion &bdquo;Timing Factors&ldquo;</p>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="einstellvorgang">
+        <details>
+            <summary>6. Einstellvorgang Schritt f&uuml;r Schritt (Step-by-Step Setup)</summary>
+            <ol>
+                <li><strong>Motor abstellen</strong> (Engine off), Vakuumschlauch von der Vacuum-Advance-Dose abziehen und mit einem Stopfen verschlie&szlig;en.</li>
+                <li><strong>Verteilerkappe abnehmen</strong> (Remove distributor cap), Rotor entfernen &ndash; Advance-Mechanismus ist jetzt sichtbar.</li>
+                <li><strong>Feder-Auswahl</strong> (Spring selection): Alte Federn mit Spitzzange aush&auml;ngen, gew&uuml;nschte Kombination einh&auml;ngen. Federn m&uuml;ssen sicher sitzen!</li>
+                <li><strong>Stop Bushing wechseln</strong> (Change advance stop bushing): Sicherungsring (C-Clip) entfernen, alten Bushing herausnehmen, neuen einsetzen, Sicherungsring wieder befestigen.</li>
+                <li><strong>Zusammenbauen</strong> (Reassemble): Rotor aufsetzen, Verteilerkappe montieren.</li>
+                <li><strong>Initial Timing einstellen</strong> (Set base timing): Motor starten, Stroboskoplampe (Timing Light) an Z&uuml;ndkabel #1 anschlie&szlig;en. Markierung am Harmonic Balancer ablesen. Verteiler verdrehen bis gew&uuml;nschtes Initial Timing erreicht ist. Verteiler-Klemmschraube festziehen.</li>
+                <li><strong>Total Timing pr&uuml;fen</strong> (Check total timing): Motor auf <strong>3000&ndash;3500 RPM</strong> bringen. Total Timing mit Stroboskoplampe ablesen. Sollte bei 32&ndash;36&deg; BTDC liegen.</li>
+                <li><strong>Falls Total zu hoch:</strong> Kleineren Bushing einbauen (z.B. Blau &rarr; Silber) ODER st&auml;rkere/schwerere Federn verwenden.</li>
+                <li><strong>Falls All-In RPM zu sp&auml;t</strong> (Timing kommt erst bei &gt;4000 RPM voll rein): Leichtere Federn w&auml;hlen.</li>
+                <li><strong>Vakuum-Dose anschlie&szlig;en</strong> (Connect vacuum advance): Schlauch an <strong>Ported Vacuum</strong> am Vergaser anschlie&szlig;en &ndash; <strong>NICHT an Manifold Vacuum!</strong></li>
+                <li><strong>TESTFAHRT</strong> (Road test): Auf Klopfen/Ping achten unter Last (bergauf, niedriger Gang, Volllast). Bei Klopfen: sofort Total Timing reduzieren!</li>
+            </ol>
+            <div class="warning">
+                <strong>&#9888; Sicherheitshinweis:</strong> Niemals mit laufendem Motor in rotierende Teile (L&uuml;fter, Riemen) greifen! Lose Kleidung und Schmuck ablegen. Stroboskoplampe-Kabel von Riemenscheibe fernhalten.
+            </div>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="vacuum-advance">
+        <details>
+            <summary>7. Vacuum Advance &ndash; Ported vs. Manifold</summary>
+
+            <h3>Ported Vacuum (korrekt f&uuml;r Performance)</h3>
+            <div class="success">
+                <strong>PORTED VACUUM = KORREKT f&uuml;r diesen Build</strong><br>
+                Kein Unterdruck im Leerlauf &rarr; Vacuum Advance ist im Leerlauf inaktiv.<br>
+                Unterdruck steigt mit der Drosselklappenstellung/Drehzahl &rarr; Vacuum Advance wirkt bei Teillast/Cruising.<br>
+                Bei Volllast: Unterdruck f&auml;llt auf ~0 &rarr; Vacuum Advance deaktiviert sich selbst.
+            </div>
+
+            <h3>Manifold Vacuum (nur f&uuml;r reine Stra&szlig;en-/Sparmotoren)</h3>
+            <div class="highlight">
+                <strong>MANIFOLD VACUUM = NICHT empfohlen f&uuml;r diesen Build</strong><br>
+                Voller Unterdruck im Leerlauf &rarr; Vacuum Advance ist immer aktiv.<br>
+                Kann Leerlauf-Timing auf 40&deg;+ treiben &rarr; Gefahr von Klopfen beim &Uuml;bergang auf Last.<br>
+                Nur sinnvoll bei reinen Spar-/Emissionsfahrzeugen.
+            </div>
+
+            <h3>DellOrto DRLA 45 &ndash; Unterdruckanschluss</h3>
+            <ul>
+                <li>Unterdruckanschluss am Vergaserk&ouml;rper vorhanden (Ported Vacuum)</li>
+                <li>Vakuumschlauch vom DellOrto-Anschluss zur <strong>MSD 8463 Vacuum Advance Dose</strong> f&uuml;hren</li>
+                <li>Schlauch auf Dichtheit pr&uuml;fen &ndash; undichte Schl&auml;uche verf&auml;lschen die Kurve</li>
+            </ul>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="troubleshooting">
+        <details>
+            <summary>8. Troubleshooting Z&uuml;ndung (Ignition Troubleshooting)</summary>
+            <table>
+                <tr><th>Symptom</th><th>M&ouml;gliche Ursache</th><th>Ma&szlig;nahme</th></tr>
+                <tr>
+                    <td><strong>Klopfen bei Beschleunigung</strong><br>(Detonation under acceleration)</td>
+                    <td>Total Advance zu hoch</td>
+                    <td>Bushing verkleinern (z.B. Blau &rarr; Silber) oder Initial Timing zur&uuml;cknehmen</td>
+                </tr>
+                <tr>
+                    <td><strong>Tr&auml;ge Gasannahme</strong><br>(Sluggish throttle response)</td>
+                    <td>Federn zu schwer &ndash; Advance kommt zu sp&auml;t</td>
+                    <td>Leichtere Federkombination w&auml;hlen (z.B. Kombi A &rarr; Kombi B)</td>
+                </tr>
+                <tr>
+                    <td><strong>Starter zieht schwer</strong><br>(Hard cranking / starter strain)</td>
+                    <td>Initial Timing zu fr&uuml;h</td>
+                    <td>Initial Timing um 2&deg; zur&uuml;cknehmen</td>
+                </tr>
+                <tr>
+                    <td><strong>Ping auf der Autobahn bei Teillast</strong><br>(Cruise pinging)</td>
+                    <td>Vacuum Advance zu viel</td>
+                    <td>Einstellbare Vacuum-Dose verwenden (MSD 8463 hat Innensechskant-Schraube), oder Dose gegen schw&auml;chere tauschen</td>
+                </tr>
+                <tr>
+                    <td><strong>Unruhiger Leerlauf</strong><br>(Rough idle)</td>
+                    <td>Vakuumschlauch undicht, Verteilerkappe defekt, Rotorkontakt abgenutzt</td>
+                    <td>Schlauch pr&uuml;fen, Kappe &amp; Rotor inspizieren, ggf. tauschen</td>
+                </tr>
+            </table>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="videos">
+        <details>
+            <summary>9. YouTube Videos</summary>
+            <p>Referenz-Videos zur MSD-Verteiler-Einstellung und Z&uuml;ndzeitpunkt-Optimierung am Small Block Ford:</p>
+
+            <h3>Video: MSD Distributor Advance Curve Setup</h3>
+            <div class="video-embed">
+                <!-- TODO: YouTube URL hier einfuegen, z.B.: -->
+                <!-- <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe> -->
+                <div class="video-placeholder">Video: MSD Distributor Advance Curve Setup<br><br><em>URL wird nachgetragen</em></div>
+            </div>
+
+            <h3>Video: Engine Masters &ndash; Timing Test / Advance Curve Comparison</h3>
+            <div class="video-embed">
+                <!-- TODO: YouTube URL hier einfuegen, z.B.: -->
+                <!-- <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe> -->
+                <div class="video-placeholder">Video: Engine Masters &ndash; Timing Test<br><br><em>URL wird nachgetragen</em></div>
+            </div>
+
+            <p class="source">Platzhalter &ndash; URLs werden nach Recherche erg&auml;nzt.</p>
+        </details>
+    </div>
+
+    <div style="text-align:center;margin:2rem 0;font-size:0.75rem;color:#a0aec0;">
+        Erstellt: 2025 &ndash; Wird laufend erweitert<br>
+        <a href="../" style="color:#2b6cb0;">Zur&uuml;ck zum Engine Build Log</a>
+    </div>
+</body>
+</html>

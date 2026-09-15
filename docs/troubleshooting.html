@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Troubleshooting &ndash; Small Block Ford (289/302/347/363)</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 1rem; background: #f8f9fa; color: #1a202c; line-height: 1.6; }
+        .banner { background: #2b6cb0; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; margin-bottom: 1rem; }
+        .banner a { color: #bee3f8; }
+        h1 { color: #2d3748; border-bottom: 3px solid #2b6cb0; padding-bottom: 0.5rem; font-size: 1.6rem; }
+        h2 { color: #2b6cb0; border-bottom: 1px solid #cbd5e0; padding-bottom: 0.3rem; margin-top: 1.5rem; }
+        h3 { color: #4a5568; margin-top: 1rem; }
+        .section { background: white; padding: 1rem; border-radius: 8px; margin: 1rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .back-link { display: inline-block; margin-bottom: 1rem; color: #2b6cb0; text-decoration: none; font-weight: 600; }
+        table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; font-size: 0.85rem; }
+        th { background: #ebf4ff; text-align: left; padding: 0.4rem 0.6rem; border-bottom: 2px solid #2b6cb0; }
+        td { padding: 0.35rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        .highlight { background: #fffff0; border: 1px solid #fefcbf; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .warning { background: #fff5f5; border: 1px solid #fc8181; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .info { background: #ebf8ff; border: 1px solid #90cdf4; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .success { background: #e6ffed; border: 1px solid #c6f6d5; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .source { font-size: 0.75rem; color: #718096; margin-top: 0.2rem; }
+        ul { padding-left: 1.3rem; }
+        li { margin-bottom: 0.3rem; }
+        .toc { background: #f7fafc; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin: 1rem 0; }
+        .toc a { color: #2b6cb0; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { padding: 0.15rem 0; }
+        .toc li::before { content: '\25B8 '; color: #2b6cb0; }
+        details { margin: 1rem 0; }
+        summary { cursor: pointer; font-size: 1.15rem; font-weight: 700; color: #2b6cb0; padding: 0.6rem 0.8rem; background: #ebf4ff; border-radius: 6px; border: 1px solid #bee3f8; list-style: none; }
+        summary::-webkit-details-marker { display: none; }
+        summary::before { content: '\25B6  '; font-size: 0.8rem; }
+        details[open] > summary::before { content: '\25BC  '; }
+        summary:hover { background: #bee3f8; }
+        details[open] > summary { border-radius: 6px 6px 0 0; margin-bottom: 0; }
+        .details-body { background: white; padding: 1rem; border: 1px solid #bee3f8; border-top: none; border-radius: 0 0 6px 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <div class="banner">Troubleshooting-Referenz f&uuml;r klassische Small Block Ford Motoren (289, 302, 347, 363). Praxiswissen &ndash; kein modernes Motorenmanagement.</div>
+    <a class="back-link" href="../">&larr; Zur&uuml;ck zum Build Log</a>
+
+    <h1>Troubleshooting &ndash; Small Block Ford (SBF)</h1>
+    <p style="font-size:0.9rem;color:#4a5568;">Fehlersuche-Leitfaden f&uuml;r klassische Ford Small Block Motoren (289, 302, 347, 363 ci) mit Vergaser, konventioneller Z&uuml;ndung (MSD 6AL / Verteiler) und ohne elektronisches Motormanagement. Zweisprachig: Deutsch (prim&auml;r) mit englischen Begriffen in Klammern.</p>
+
+    <div class="toc">
+        <strong>Inhalt (Table of Contents)</strong>
+        <ul>
+            <li><a href="#start">Motor startet nicht (Engine Won&rsquo;t Start)</a></li>
+            <li><a href="#oeldruck">Kein &Ouml;ldruck (No Oil Pressure)</a></li>
+            <li><a href="#oelleck">&Ouml;lleck nach Zusammenbau (Oil Leaks After Assembly)</a></li>
+            <li><a href="#unrund">Motor l&auml;uft unrund (Engine Runs Rough)</a></li>
+            <li><a href="#ueberhitzung">&Uuml;berhitzung (Overheating)</a></li>
+            <li><a href="#detonation">Klopfen / Detonation (Knock / Detonation)</a></li>
+            <li><a href="#low-oil">Niedriger &Ouml;ldruck im Leerlauf (Low Oil Pressure at Idle)</a></li>
+            <li><a href="#kerzen">Abnormales Kerzenbild (Spark Plug Reading)</a></li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 1. Motor startet nicht -->
+    <!-- ============================================================ -->
+    <details id="start">
+        <summary>1. Motor startet nicht (Engine Won&rsquo;t Start)</summary>
+        <div class="details-body">
+
+            <h3>Kein Z&uuml;ndfunke (No Spark)</h3>
+            <ul>
+                <li><strong>MSD 6AL Verkabelung pr&uuml;fen</strong> &ndash; Stromversorgung (12V geschaltet), Trigger-Eingang, Masse direkt am Block. LED am MSD-Geh&auml;use muss bei Cranking blinken.</li>
+                <li><strong>Verteiler-Pickup Luftspalt (Distributor Pickup Air Gap)</strong> &ndash; Soll: <strong>0.050&quot;</strong> zwischen Reluctor und Pickup-Spule. Zu gro&szlig;er Spalt = kein Signal.</li>
+                <li><strong>Kappe &amp; Rotor (Cap &amp; Rotor)</strong> &ndash; Zustand pr&uuml;fen: Risse, Carbon-Tracks, korrodierte Kontakte. Besonders bei Langzeitlagerung.</li>
+                <li><strong>Masse / Batterie (Ground / Battery)</strong> &ndash; Batteriemasse direkt am Motorblock? Mindestens 10 AWG. Schlechte Masse = sporadischer Funkenausfall.</li>
+            </ul>
+
+            <h3>Falsche Z&uuml;ndfolge (Wrong Firing Order)</h3>
+            <div class="warning">
+                <strong>Ford SBF Z&uuml;ndfolge: 1-5-4-2-6-3-7-8</strong><br>
+                Nicht verwechseln mit Chevy SBC (1-8-4-3-6-5-7-2)! Zylindernum&shy;merierung Ford SBF: rechts (passenger side) 1-2-3-4, links (driver side) 5-6-7-8 (von vorne gesehen).
+            </div>
+            <ul>
+                <li><strong>Verteiler-Rotor auf TDC #1 Kompression</strong> &ndash; Nicht auf TDC Auslass (Exhaust)! Daumentest am Z&uuml;ndkerzenloch #1: Kompression dr&uuml;ckt den Daumen weg. Dann Rotor muss auf Kabel #1 in der Kappe zeigen.</li>
+                <li>Verteilerdrehrichtung SBF: <strong>gegen den Uhrzeigersinn (counter-clockwise)</strong> von oben gesehen.</li>
+            </ul>
+
+            <h3>Kein Kraftstoff (No Fuel)</h3>
+            <ul>
+                <li><strong>Mechanische Benzinpumpe</strong> &ndash; Bei Erststart nach Rebuild: Schwimmer&shy;kammern manuell f&uuml;llen (mit Spritze oder kleinem Trichter). Pumpe braucht mehrere Umdrehungen zum Ansaugen.</li>
+                <li><strong>Elektrische Pumpe</strong> &ndash; Flie&szlig;t Kraftstoff am Vergaser-Eingang? Druck pr&uuml;fen: 3&ndash;5 PSI f&uuml;r Vergaser (NICHT Einspritz-Druck!).</li>
+                <li><strong>DellOrto DRLA Schwimmerstand (Float Level)</strong> &ndash; Soll: <strong>5.5&ndash;6.0 mm</strong> unter Oberkante Schwimmerkammer (gemessen bei umgedrehtem Oberteil, ohne Dichtung). Zu hoch = &Uuml;berlauf, zu niedrig = Aushungern.</li>
+                <li><strong>Verstopfte D&uuml;sen (Clogged Jets)</strong> &ndash; Besonders nach Standzeiten: Haupt&shy;d&uuml;se (Main Jet), Leerlaufd&uuml;se (Idle Jet), Emulsionsrohr (Emulsion Tube) ausbauen und mit Druckluft durchblasen.</li>
+            </ul>
+
+            <h3>Falsches Timing (Incorrect Timing)</h3>
+            <ul>
+                <li><strong>Mehr als 20&deg; BTDC Grundz&uuml;ndung kann R&uuml;ckschlag verursachen (Kickback)</strong> &ndash; Beim Erststart konservativ beginnen: 10&ndash;12&deg; BTDC initial, dann mit Stroboskop (Timing Light) einstellen.</li>
+                <li>MSD 6AL: Mechanischen Advance im Verteiler zun&auml;chst blockieren (Total Timing = Initial Timing). Erst nach erfolgreichem Start Advance freigeben.</li>
+            </ul>
+
+            <h3>Nockenwelle nicht korrekt eingraduiert (Cam Timing Off)</h3>
+            <ul>
+                <li><strong>Einlass-Centerline pr&uuml;fen (Intake Centerline)</strong> &ndash; Mit Gradscheibe (Degree Wheel) und Messuhr (Dial Indicator) am #1 Einlassventil. Soll-Wert laut Cam Card vergleichen.</li>
+                <li>Dot-to-Dot Timing am Timing Set ist oft <strong>nicht</strong> exakt &ndash; besonders bei Aftermarket-Kettenr&auml;dern. Immer verifizieren!</li>
+                <li>Wenn um 180&deg; versetzt: Motor dreht, baut aber keine Kompression auf (Ventile &ouml;ffnen im falschen Takt).</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- ============================================================ -->
+    <!-- 2. Kein Oeldruck -->
+    <!-- ============================================================ -->
+    <details id="oeldruck">
+        <summary>2. Kein &Ouml;ldruck (No Oil Pressure)</summary>
+        <div class="details-body">
+
+            <div class="warning">
+                <strong>Vor dem Erststart: IMMER Pre-Oil!</strong><br>
+                Mit Bohrmaschine (Drill) und Priming Tool (langer Sechskant, ersetzt den Verteiler) die &Ouml;lpumpe antreiben, bis &Ouml;l an <strong>allen 16 Kipphebel&shy;bolzen (Rocker Arm Studs)</strong> sichtbar austritt. Das kann 2&ndash;5 Minuten dauern. Motor NIEMALS ohne Pre-Oil starten!
+            </div>
+
+            <h3>&Ouml;lpumpen-Antriebswelle (Oil Pump Drive Shaft)</h3>
+            <ul>
+                <li><strong>Gebrochen oder verdreht</strong> &ndash; H&auml;ufiges SBF-Problem! Die Intermediate Shaft zwischen Verteiler und &Ouml;lpumpe kann bei hohem Widerstand (kaltes &Ouml;l, neue Pumpe) brechen oder sich verwinden.</li>
+                <li>Symptom: Verteiler dreht sich beim Cranking, aber kein &Ouml;ldruck. Shaft ziehen und inspizieren.</li>
+                <li>Immer <strong>hochwertige Shaft</strong> verwenden (ARP oder Melling). Billige Wellen sind die #1 Ausfallursache.</li>
+            </ul>
+
+            <h3>&Ouml;lkanal-Stopfen (Gallery Plugs)</h3>
+            <ul>
+                <li><strong>Fehlende oder undichte Gallery Plugs</strong> &ndash; SBF hat Froststopfen (Freeze Plugs) UND &Ouml;lkanal-Stopfen (Oil Gallery Plugs) an der R&uuml;ck&shy;seite und Unterseite des Blocks. Bei Rebuild alle erneuern und mit Loctite sichern.</li>
+                <li>Ein undichter Stopfen = &Ouml;ldruck entweicht intern, bevor er die Lager erreicht.</li>
+            </ul>
+
+            <h3>&Ouml;lpumpe falsch montiert (Oil Pump Installation)</h3>
+            <ul>
+                <li><strong>Pickup-Abstand zum Wannenboden (Pickup-to-Pan Clearance)</strong> &ndash; Soll: <strong>1/4&quot; bis 3/8&quot;</strong> (6&ndash;10 mm). Zu weit = Luft ansaugen bei Beschleunigung/Kurvenfahrt. Zu nah = Strömungs&shy;widerstand.</li>
+                <li>Mit Knetmasse (Clay/Plastigage) am Pickup pr&uuml;fen, Wanne montieren, wieder abnehmen und messen.</li>
+            </ul>
+
+            <h3>Sensor defekt vs. echter Druckverlust (Gauge vs. Real Loss)</h3>
+            <ul>
+                <li><strong>Mechanischen &Ouml;ldruckpr&uuml;fer anschlie&szlig;en</strong> &ndash; Elektrische Sensoren und Anzeigen k&ouml;nnen falsche Werte liefern. Immer mit mechanischem Pr&uuml;fer (direkt am Block, an der Stelle des &Ouml;ldruckschalters) gegen&shy;pr&uuml;fen, bevor Panik aufkommt.</li>
+            </ul>
+
+            <h3>SBF-spezifisch: Ungleiche &Ouml;lversorgung</h3>
+            <div class="info">
+                <strong>Passagenseite (Passenger Side, rechts) wird zuerst versorgt.</strong><br>
+                Die Fahrerseite (Driver Side, links, Zylinder 5&ndash;8) kann bei Nockenwellen mit hohem Hub (High-Lift Cams, &gt;0.550&quot;) unter&shy;versorgt werden. Symptome: Klappern der Kipphebel auf der linken Seite, erh&ouml;hter Verschlei&szlig;. Abhilfe: Restricted Pushrods oder zus&auml;tzliche &Ouml;l&shy;versorgung &uuml;ber externe Leitungen.
+            </div>
+        </div>
+    </details>
+
+    <!-- ============================================================ -->
+    <!-- 3. Oelleck nach Zusammenbau -->
+    <!-- ============================================================ -->
+    <details id="oelleck">
+        <summary>3. &Ouml;lleck nach Zusammenbau (Oil Leaks After Assembly)</summary>
+        <div class="details-body">
+
+            <h3>Ventildeckel (Valve Covers)</h3>
+            <ul>
+                <li><strong>Anzugsmoment bei Aluminium-Deckeln: max. 4&ndash;6 ft-lbs!</strong> &ndash; &Uuml;berdrehen verbiegt die D&uuml;nnen Flansche und erzeugt erst recht Undichtig&shy;keiten.</li>
+                <li><strong>Kork vs. Gummi-Dichtungen (Cork vs. Rubber Gaskets)</strong> &ndash; Kork schrumpft mit der Zeit und muss nachgezogen werden. Gummi/Silikon-Dichtungen (z.B. Fel-Pro) sind dauerhafter. Bei Stahl-Deckeln mit Kork: d&uuml;nne Schicht RTV auf beide Seiten.</li>
+                <li>Dichtfl&auml;chen an K&ouml;pfen und Deckeln m&uuml;ssen plan sein &ndash; mit Lineal und F&uuml;hlerlehre pr&uuml;fen.</li>
+            </ul>
+
+            <h3>Ansaugbr&uuml;cke vorne/hinten (Intake Manifold End Seals)</h3>
+            <ul>
+                <li><strong>RTV auf die 4 Eckstellen (Block-to-Head Joints)</strong> &ndash; Das ist die kritischste Stelle! Die &Uuml;berg&auml;nge Block-Kopf-Intake bilden eine Vierfach-Kreuzung, die nur mit einer RTV-Raupe abgedichtet werden kann.</li>
+                <li>Vordere und hintere End Seals (Kork oder Gummi): passend zum Manifold w&auml;hlen. Manche Mechaniker lassen sie weg und dichten nur mit RTV &ndash; funktioniert, aber erfordert Erfahrung.</li>
+            </ul>
+
+            <h3>Timing Cover (Steuerkettengeh&auml;use)</h3>
+            <ul>
+                <li><strong>Pumpkin-Seed Seal (hintere Dichtung)</strong> &ndash; K&uuml;rbiskernf&ouml;rmige Dichtung zwischen Timing Cover und Block (unten). Immer erneuern + RTV auf beide Seiten.</li>
+                <li><strong>Dichtungslippe am Balancer (Front Seal)</strong> &ndash; Lauff&auml;che am Harmonic Balancer pr&uuml;fen: Riefen, Rost, Einlaufspuren. Ggf. Speedi-Sleeve (Repair Sleeve) aufpressen.</li>
+                <li>Timing Cover selbst: Aluminium-Cover auf Verzug pr&uuml;fen. Blechcover (Stamped Steel) sind unproblematischer.</li>
+            </ul>
+
+            <h3>&Ouml;lwanne (Oil Pan)</h3>
+            <ul>
+                <li><strong>Cork/Rubber Gasket + RTV auf die Rails</strong> &ndash; Block Rails (Dichtfl&auml;chen) m&uuml;ssen sauber und plan sein. RTV-Raupe auf Rails, Dichtung auflegen, nochmal RTV auf die 4 Ecken (Front/Rear Seal &Uuml;berg&auml;nge).</li>
+                <li><strong>One-Piece vs. Multi-Piece Gaskets</strong> &ndash; One-Piece (z.B. Fel-Pro OS34510R) ist deutlich einfacher und dichter. Multi-Piece (Seitenteile + Endst&uuml;cke) erfordert pr&auml;zise Platzierung.</li>
+                <li>Schrauben gleichm&auml;&szlig;ig und in Reihenfolge anziehen: 10&ndash;12 ft-lbs, von der Mitte nach au&szlig;en.</li>
+            </ul>
+
+            <h3>Hinterer Simmerring (Rear Main Seal)</h3>
+            <ul>
+                <li><strong>One-Piece vs. Two-Piece</strong> &ndash; Fr&uuml;he SBF (pre-1983) haben Two-Piece Rear Main Seal (Seilring / Rope Seal). Sp&auml;tere (1983+) verwenden One-Piece Neoprene. One-Piece ist deutlich zuverl&auml;ssiger.</li>
+                <li><strong>Einbaurichtung beachten!</strong> &ndash; Die Dichtlippe zeigt zum Motor (zur Kurbelwelle / zur Schwungscheibe hin). Falsch herum eingebaut = garantiertes Leck.</li>
+                <li>Bei Two-Piece: Enden b&uuml;ndig mit Block/Hauptlagerstuhl abschneiden, nicht &uuml;berstehen lassen. Tropfen RTV auf die Trennstellen.</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- ============================================================ -->
+    <!-- 4. Motor laeuft unrund -->
+    <!-- ============================================================ -->
+    <details id="unrund">
+        <summary>4. Motor l&auml;uft unrund (Engine Runs Rough)</summary>
+        <div class="details-body">
+
+            <h3>Vakuumleck (Vacuum Leak)</h3>
+            <ul>
+                <li><strong>Ansaugbr&uuml;cke oder Vergaser-Flansch undicht</strong> &ndash; Bremsenreiniger-Test (Brake Cleaner Test): Motor im Leerlauf laufen lassen, Bremsenreiniger um die Dichtfl&auml;chen spr&uuml;hen. Wenn die Drehzahl sich &auml;ndert = Leck an dieser Stelle.</li>
+                <li>Vakuumleitungen pr&uuml;fen: Bremskraftverst&auml;rker, Verteiler-Unterdruckdose (Vacuum Advance), PCV-Ventil.</li>
+                <li>Vakuum im Leerlauf messen: SBF gesund = <strong>15&ndash;18 inHg</strong>. Unter 12 inHg deutet auf Leck oder Ventilproblem hin.</li>
+            </ul>
+
+            <h3>Falsche Ventileinstellung (Incorrect Valve Adjustment)</h3>
+            <ul>
+                <li><strong>Hydraulik-Lifter-Preload: 1/4 bis 1/2 Umdrehung nach Null-Lash (Zero Lash)</strong></li>
+                <li>Methode: Kipphebelmutter (Rocker Nut) langsam anziehen, w&auml;hrend Sto&szlig;stange (Pushrod) zwischen Fingern gedreht wird. Wenn Pushrod gerade nicht mehr drehbar ist = Zero Lash. Dann <strong>1/4 bis 1/2 Umdrehung weiter</strong>.</li>
+                <li>Zu wenig Preload = Klappern (Ticking), Ventil &ouml;ffnet nicht vollst&auml;ndig. Zu viel Preload = Ventil schlie&szlig;t nicht vollst&auml;ndig (Kompressions&shy;verlust, Verbrennung der Ventile).</li>
+                <li>Einstell&shy;reihenfolge beachten: Immer im Paar &ndash; Auslass-Ventil bei &Uuml;berlappung (Exhaust Closing / Intake Opening) einstellen.</li>
+            </ul>
+
+            <h3>Z&uuml;ndkabel in falscher Reihenfolge (Plug Wires Mixed Up)</h3>
+            <ul>
+                <li>Erneut: <strong>1-5-4-2-6-3-7-8</strong>. Jedes vertauschte Kabel = ein Zylinder z&uuml;ndet falsch = extremer Laufunruhe.</li>
+                <li>Kabel einzeln pr&uuml;fen: Vom Verteiler (Cap) aus der Reihe nach durchgehen. #1 am Rotor bei TDC #1 Compression beginnen, dann gegen den Uhrzeigersinn weiterz&auml;hlen.</li>
+            </ul>
+
+            <h3>DellOrto DRLA: Synchronisation &amp; Gemisch (Sync &amp; Mixture)</h3>
+            <ul>
+                <li><strong>Schmetterlingsklappen nicht synchron (Throttle Plates Not Synchronized)</strong> &ndash; Mit Synchron-Tester (Uni-Syn oder Manometer-Bank) abgleichen. Beide Vergaser m&uuml;ssen identischen Luftdurchsatz bei Leerlauf liefern.</li>
+                <li><strong>Leerlaufgemisch-Schrauben (Idle Mixture Screws)</strong> &ndash; Ausgangsposition: 1.5 Umdrehungen auf (from fully seated). Dann jede Schraube einzeln auf h&ouml;chste Drehzahl einstellen, danach Leerlaufdrehzahl korrigieren.</li>
+                <li>Beschleunigerpumpe (Accelerator Pump) pr&uuml;fen: Beim Gasgeben muss ein kr&auml;ftiger Strahl in den Ansaugkanal spritzen. Schwache/keine Pumpe = Stottern bei Gasstoss (Stumble/Hesitation).</li>
+            </ul>
+
+            <h3>Nockenwelle: Lobe Wipe erkennen (Detecting Cam Lobe Failure)</h3>
+            <div class="warning">
+                <strong>&Ouml;lfilter aufschneiden! (Cut Open the Oil Filter!)</strong><br>
+                Nach dem Einlaufen (Break-In) und nach den ersten 100 km den &Ouml;lfilter aufschneiden und das Filtermedium auf metallische Sp&auml;ne untersuchen. Gl&auml;nzende, silbrige Partikel = Lobe Wipe (Nocken abgerieben). Sofort Motor abstellen und Nockenwelle + Lifter ersetzen.
+            </div>
+            <ul>
+                <li><strong>Ursachen f&uuml;r Lobe Wipe:</strong> Falsches Einlauf&ouml;l (zu wenig ZDDP/Zink), zu niedriger Federdruck beim Einlaufen, Motor nicht sofort auf 2000+ RPM gehalten, falsche Lifter-zu-Lobe-Kombination.</li>
+                <li><strong>Pr&auml;vention:</strong> Einlauf&ouml;l mit hohem ZDDP-Anteil (z.B. Brad Penn, Comp Cams Break-In Oil), neue Flat-Tappet-Lifter immer mit Assembly Lube auf Nockenlauff&auml;chen, Motor sofort nach Start auf 2000&ndash;2500 RPM halten f&uuml;r 20 Minuten.</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- ============================================================ -->
+    <!-- 5. Ueberhitzung -->
+    <!-- ============================================================ -->
+    <details id="ueberhitzung">
+        <summary>5. &Uuml;berhitzung (Overheating)</summary>
+        <div class="details-body">
+
+            <h3>Thermostat falsch eingebaut (Thermostat Installed Backwards)</h3>
+            <ul>
+                <li><strong>Sensor-Element (Wachskapsel) zeigt Richtung Motor!</strong> &ndash; Die federbelastete Seite zeigt in den Block hinein (zum hei&szlig;en K&uuml;hlmittel). Falsch herum = Thermostat &ouml;ffnet nicht oder viel zu sp&auml;t.</li>
+                <li>SBF Standard-Thermostat: <strong>180&deg;F (82&deg;C)</strong> f&uuml;r Stra&szlig;enbetrieb, 160&deg;F (71&deg;C) f&uuml;r Rennbetrieb mit entsprechender Abstimmung.</li>
+            </ul>
+
+            <h3>Lufteinschluss im K&uuml;hlsystem (Air Lock / Air Pocket)</h3>
+            <div class="info">
+                <strong>SBF-spezifisch:</strong> Das hohe Thermostatgeh&auml;use am SBF erschwert die Entl&uuml;ftung (Bleeding). Luft sammelt sich im h&ouml;chsten Punkt des Systems. L&ouml;sung: Fahrzeug vorne anh&auml;hen (Front hochbocken), Heizungsventil &ouml;ffnen, langsam auff&uuml;llen, Motor laufen lassen bis Thermostat &ouml;ffnet, nachf&uuml;llen.
+            </div>
+            <ul>
+                <li>Alternative: Kleines Entl&uuml;ftungsventil (Petcock) am Thermostatgeh&auml;use oder am h&ouml;chsten Schlauch einbauen.</li>
+            </ul>
+
+            <h3>Wasserpumpe: Drehrichtung (Water Pump Rotation)</h3>
+            <ul>
+                <li><strong>Standard-Rotation vs. Reverse-Rotation</strong> &ndash; Standard SBF Wasserpumpe dreht <strong>im Uhrzeigersinn</strong> (von vorne gesehen). Manche Serpentine-Belt-Setups (z.B. March, Billet Specialties) erfordern <strong>Reverse-Rotation</strong> Pumpen!</li>
+                <li>Falsche Drehrichtung = Pumpe f&ouml;rdert kaum/nicht = &Uuml;berhitzung innerhalb von Minuten.</li>
+                <li>Schnelltest: Bei warmem Motor oberen K&uuml;hlerschlauch (Upper Radiator Hose) dr&uuml;cken &ndash; muss sich prall und unter Druck anf&uuml;hlen.</li>
+            </ul>
+
+            <h3>K&uuml;hler &amp; L&uuml;fter (Radiator &amp; Fan)</h3>
+            <ul>
+                <li><strong>K&uuml;hler zu klein</strong> &ndash; Faustregel: mindestens 1 Reihe (Row) pro 100 HP f&uuml;r Aluminium-K&uuml;hler. Ein 302 mit 340 HP braucht mindestens einen 3-Row Aluminium- oder 4-Row Kupfer/Messing-K&uuml;hler.</li>
+                <li><strong>L&uuml;ftersteuerung</strong> &ndash; Mechanischer L&uuml;fter (Fan Clutch) vs. elektrische L&uuml;fter (Electric Fans). Bei Kit Cars meist elektrisch: Thermostatschalter bei 190&ndash;200&deg;F einschalten, bei 175&ndash;180&deg;F ausschalten.</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- ============================================================ -->
+    <!-- 6. Klopfen / Detonation -->
+    <!-- ============================================================ -->
+    <details id="detonation">
+        <summary>6. Klopfen / Detonation (Knock / Detonation)</summary>
+        <div class="details-body">
+
+            <div class="warning">
+                <strong>Detonation zerst&ouml;rt Kolben und Lager!</strong> Beim ersten Anzeichen von Klopfen (metallisches Klingeln unter Last) sofort Gas wegnehmen und Ursache finden.
+            </div>
+
+            <h3>Verdichtung vs. Oktanzahl (Compression Ratio vs. Octane)</h3>
+            <table>
+                <tr><th>Verdichtung (CR)</th><th>Min. Oktanzahl (ROZ)</th><th>Anmerkung</th></tr>
+                <tr><td>9.0:1 &ndash; 9.5:1</td><td>95 ROZ (91 AKI)</td><td>Standard-Superbenzin</td></tr>
+                <tr><td>9.5:1 &ndash; 10.0:1</td><td>98 ROZ (93 AKI)</td><td>Super Plus</td></tr>
+                <tr><td>10.0:1 &ndash; 10.5:1</td><td>98+ ROZ</td><td>Super Plus, evtl. Rennkraftstoff</td></tr>
+                <tr><td>&gt;11.0:1</td><td>100+ ROZ</td><td><strong>Rennkraftstoff erforderlich</strong> (Race Gas)</td></tr>
+            </table>
+
+            <h3>Z&uuml;ndzeitpunkt zu fr&uuml;h (Too Much Advance)</h3>
+            <ul>
+                <li><strong>Total Advance reduzieren</strong> &ndash; Initial Timing + mechanischer Advance + ggf. Vakuum-Advance = Total Advance. SBF typisch: <strong>32&ndash;36&deg; Total</strong> (ohne Vakuum). &Uuml;ber 38&deg; ist fast immer Detonation.</li>
+                <li>Vakuum-Advance (Unterdruckdose) nur im Teillast&shy;bereich &ndash; bei Vollgas hat Vakuum-Advance keinen Effekt (Manifold Vacuum nahe Null).</li>
+            </ul>
+
+            <h3>Hotspots (Carbon Deposits)</h3>
+            <ul>
+                <li>Carbon-Ablagerungen in der Brennkammer erzeugen gl&uuml;hende Stellen = Gl&uuml;hz&uuml;ndung (Pre-Ignition) oder Detonation.</li>
+                <li>Besonders bei Motoren, die lange im fetten Leerlauf gelaufen sind. L&ouml;sung: Brennraum reinigen (bei ge&ouml;ffneten K&ouml;pfen) oder mit hoher Last &bdquo;freibrennen&ldquo; (Italian Tune-Up).</li>
+            </ul>
+
+            <h3>Zu mageres Gemisch (Lean Mixture)</h3>
+            <ul>
+                <li><strong>Wideband-Lambda pr&uuml;fen (Wideband O2 Sensor)</strong> &ndash; Ziel unter Last (WOT): <strong>12.5&ndash;13.0:1 AFR</strong>. &Uuml;ber 13.5:1 unter Volllast = zu mager und Detonationsgefahr.</li>
+                <li>Leerlauf: 13.5&ndash;14.0:1 ist akzeptabel. Cruise/Teillast: 14.0&ndash;14.7:1.</li>
+                <li>DellOrto DRLA: Hauptd&uuml;se (Main Jet) eine Stufe gr&ouml;&szlig;er w&auml;hlen, wenn unter Last zu mager.</li>
+            </ul>
+
+            <h3>Quench Distance (Squish Clearance)</h3>
+            <div class="highlight">
+                <strong>Quench-Abstand (Piston-to-Head Clearance an der Quench-Fl&auml;che):</strong><br>
+                <strong>&lt;0.040&quot;</strong> (1.0 mm) = ideal &ndash; maximale Turbulenz, minimale Detonationsneigung.<br>
+                <strong>0.040&quot;&ndash;0.060&quot;</strong> = akzeptabel.<br>
+                <strong>&gt;0.060&quot;</strong> (1.5 mm) = <strong>f&ouml;rdert Detonation!</strong> End-Gas in der Quench-Zone wird nicht ausreichend verwirbelt und kann sich selbst entz&uuml;nden.
+            </div>
+            <ul>
+                <li>Berechnung: Deck Height (Kolben&shy;abstand zur Blockoberkante) + Kopfdichtungs&shy;dicke (Head Gasket, compressed) + Chamber-Quench-Fl&auml;che.</li>
+                <li>Bei SBF mit &uuml;blichen 0.025&quot; Deck + 0.040&quot; Dichtung = 0.065&quot; &ndash; grenzwertig! Ggf. Zero-Deck oder Kolben leicht &uuml;berstand (Pop-Up) verwenden.</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- ============================================================ -->
+    <!-- 7. Niedriger Oeldruck im Leerlauf -->
+    <!-- ============================================================ -->
+    <details id="low-oil">
+        <summary>7. Niedriger &Ouml;ldruck im Leerlauf (Low Oil Pressure at Idle)</summary>
+        <div class="details-body">
+
+            <h3>Normalwerte f&uuml;r SBF (Normal Values)</h3>
+            <div class="success">
+                <strong>SBF warm (Betriebstemperatur):</strong><br>
+                Leerlauf (Idle): <strong>25&ndash;35 PSI</strong> &ndash; Normal<br>
+                2000+ RPM: <strong>40&ndash;55 PSI</strong> &ndash; Normal<br>
+                Kaltstart: 50&ndash;70 PSI &ndash; Normal (sinkt mit Erw&auml;rmung)
+            </div>
+
+            <h3>Wenn unter 15 PSI warm (Below 15 PSI Hot)</h3>
+            <ul>
+                <li><strong>Lagerspiel pr&uuml;fen (Bearing Clearance)</strong> &ndash; Pleuel&shy;lager (Rod Bearings) und Hauptlager (Main Bearings) mit Plastigage messen. Soll: Rod = 0.0015&quot;&ndash;0.0025&quot;, Main = 0.0020&quot;&ndash;0.0030&quot;. &Uuml;ber 0.003&quot; = zu viel Spiel = Druckverlust.</li>
+                <li><strong>&Ouml;lpumpe verschlissen (Worn Oil Pump)</strong> &ndash; Standard-Volume-Pumpe bei hohen Laufleistungen verschlissen. Zahnradspiel pr&uuml;fen. Bei Rebuild immer neue Pumpe (Melling M68 = Standard, M68HV = High Volume).</li>
+                <li><strong>Pressure Relief Valve klemmt</strong> &ndash; Die Feder im Pumpen&shy;geh&auml;use kann verschmutzt oder gebrochen sein = &Ouml;l flie&szlig;t intern zur&uuml;ck statt zum Motor.</li>
+            </ul>
+
+            <h3>&Ouml;lviskosit&auml;t (Oil Viscosity)</h3>
+            <div class="info">
+                <strong>10W-30 vs. 20W-50: Dickeres &Ouml;l kaschiert nur das Problem!</strong><br>
+                Wenn der &Ouml;ldruck nur mit 20W-50 akzeptabel ist, sind die Lagerspiele zu gro&szlig;. Das dicke &Ouml;l flie&szlig;t langsamer durch die vergr&ouml;&szlig;erten Spalte und erzeugt h&ouml;heren Druck &ndash; die Ursache (Verschlei&szlig;) wird dadurch nicht behoben.<br><br>
+                <strong>Empfehlung:</strong> 10W-30 mit ZDDP-Zusatz (Zinc) f&uuml;r Flat-Tappet-Nockenwellen. Bei korrekten Lagerspielen reicht 10W-30 f&uuml;r alle Temperaturen.
+            </div>
+        </div>
+    </details>
+
+    <!-- ============================================================ -->
+    <!-- 8. Abnormales Kerzenbild -->
+    <!-- ============================================================ -->
+    <details id="kerzen">
+        <summary>8. Abnormales Kerzenbild (Spark Plug Reading)</summary>
+        <div class="details-body">
+
+            <h3>Kerzenfarbe interpretieren (Reading Plug Color)</h3>
+            <table>
+                <tr><th>Farbe / Zustand</th><th>Bedeutung</th><th>Aktion</th></tr>
+                <tr>
+                    <td style="background:#f7f7f7;"><strong>Wei&szlig; / Hell (White / Light)</strong></td>
+                    <td><strong>Zu mager (Too Lean)</strong></td>
+                    <td class="warning" style="border:none;border-radius:0;">GEFAHR: Kolbenschmelze m&ouml;glich! Sofort fetter abstimmen. Hauptd&uuml;se vergr&ouml;&szlig;ern.</td>
+                </tr>
+                <tr>
+                    <td style="background:#3a3a3a;color:white;"><strong>Schwarz / Ru&szlig;ig (Black / Sooty)</strong></td>
+                    <td><strong>Zu fett (Too Rich)</strong></td>
+                    <td>Leistungsverlust, aber mechanisch sicherer als zu mager. Hauptd&uuml;se verkleinern, Schwimmerstand pr&uuml;fen.</td>
+                </tr>
+                <tr>
+                    <td style="background:#c4a265;color:white;"><strong>Hellbraun / Rehbraun (Light Tan)</strong></td>
+                    <td><strong>Ideal (Perfect)</strong></td>
+                    <td>Keine Aktion n&ouml;tig. Gemisch stimmt.</td>
+                </tr>
+                <tr>
+                    <td style="background:#fff5f5;"><strong>Aluminium-Spritzer auf Elektrode</strong></td>
+                    <td><strong>Detonation / Vorentflammung (Pre-Ignition)</strong></td>
+                    <td class="warning" style="border:none;border-radius:0;"><strong>SOFORT Motor stoppen!</strong> Kolben schmilzt. Timing reduzieren, Gemisch anfetten, Oktanzahl erh&ouml;hen, Quench pr&uuml;fen.</td>
+                </tr>
+            </table>
+
+            <h3>DellOrto DRLA: Alle 8 Kerzen vergleichen</h3>
+            <div class="highlight">
+                <strong>Warum alle 8 vergleichen?</strong><br>
+                Bei Dual-DellOrto-DRLA-Setup versorgt jeder Vergaser 4 Zylinder. Wenn eine Seite (z.B. Zyl. 1&ndash;4) magerer l&auml;uft als die andere (Zyl. 5&ndash;8), deutet das auf:<br>
+                <ul>
+                    <li>Unterschiedliche Bed&uuml;sung (Jetting) zwischen den Vergasern</li>
+                    <li>Ungleichen Schwimmerstand (Float Level)</li>
+                    <li>Vakuumleck auf einer Seite</li>
+                    <li>Nicht synchronisierte Drosselklappen (Throttle Sync)</li>
+                </ul>
+                Alle 8 Kerzen nach einer Volllast-Fahrt (WOT Pull) gleichzeitig ziehen &ndash; nicht im Leerlauf! Leerlauf-Kerzenbild hat kaum Aussagekraft &uuml;ber Volllast-Gemisch.
+            </div>
+
+            <h3>Kerzenw&auml;rmewert (Heat Range)</h3>
+            <ul>
+                <li><strong>SBF Street/Performance:</strong> Autolite 3924 oder Champion RF11YC (Standard-W&auml;rmewert). F&uuml;r h&ouml;here Verdichtung und Rennbetrieb: eine Stufe k&auml;lter (z.B. Autolite 3923).</li>
+                <li>Zu kalte Kerze = Verrussen im Leerlauf (Black Fouling). Zu warme Kerze = Gl&uuml;hz&uuml;ndung (Pre-Ignition).</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- ============================================================ -->
+    <div style="text-align:center;margin:2rem 0;font-size:0.75rem;color:#a0aec0;">
+        Erstellt: 2025 &ndash; Wird laufend erweitert<br>
+        <a href="../" style="color:#2b6cb0;">Zur&uuml;ck zum Engine Build Log</a>
+    </div>
+</body>
+</html>

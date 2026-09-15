@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DellOrto DRLA 45 &ndash; Einstellungsleitfaden (Tuning Guide)</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 1rem; background: #f8f9fa; color: #1a202c; line-height: 1.6; }
+        .banner { background: #2b6cb0; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; margin-bottom: 1rem; }
+        .banner a { color: #bee3f8; }
+        h1 { color: #2d3748; border-bottom: 3px solid #2b6cb0; padding-bottom: 0.5rem; font-size: 1.6rem; }
+        h2 { color: #2b6cb0; border-bottom: 1px solid #cbd5e0; padding-bottom: 0.3rem; margin-top: 1.5rem; }
+        h3 { color: #4a5568; margin-top: 1rem; }
+        .section { background: white; padding: 1rem; border-radius: 8px; margin: 1rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .back-link { display: inline-block; margin-bottom: 1rem; color: #2b6cb0; text-decoration: none; font-weight: 600; }
+        table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; font-size: 0.85rem; }
+        th { background: #ebf4ff; text-align: left; padding: 0.4rem 0.6rem; border-bottom: 2px solid #2b6cb0; }
+        td { padding: 0.35rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        .highlight { background: #fffff0; border: 1px solid #fefcbf; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .warning { background: #fff5f5; border: 1px solid #fc8181; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .info { background: #ebf8ff; border: 1px solid #90cdf4; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .success { background: #e6ffed; border: 1px solid #c6f6d5; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .source { font-size: 0.75rem; color: #718096; margin-top: 0.2rem; }
+        ul { padding-left: 1.3rem; }
+        li { margin-bottom: 0.3rem; }
+        .toc { background: #f7fafc; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin: 1rem 0; }
+        .toc a { color: #2b6cb0; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { padding: 0.15rem 0; }
+        .toc li::before { content: '\25B8 '; color: #2b6cb0; }
+        .badge { display: inline-block; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+        .badge-oem { background: #e2e8f0; color: #4a5568; }
+        .badge-lotus { background: #ebf4ff; color: #2b6cb0; }
+        .badge-mod { background: #fefcbf; color: #975a16; }
+        .badge-tested { background: #e6ffed; color: #276749; }
+        details { margin: 0.5rem 0; }
+        summary { cursor: pointer; font-weight: 700; color: #2b6cb0; font-size: 1.1rem; padding: 0.4rem 0; border-bottom: 1px solid #cbd5e0; }
+        summary:hover { color: #2c5282; }
+        details[open] summary { margin-bottom: 0.5rem; }
+        .video-embed { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 0.8rem 0; border-radius: 8px; }
+        .video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="banner">Einstellungsleitfaden &ndash; DellOrto DRLA 45 Downdraft auf Small Block Ford 302 (4 Vergaser). Wird laufend erweitert.</div>
+    <a class="back-link" href="../">&larr; Zur&uuml;ck zum Build Log</a>
+
+    <h1>DellOrto DRLA 45 &ndash; Einstellungsleitfaden (Tuning Guide)</h1>
+    <p>Konfiguration: <strong>4&times; DellOrto DRLA 45</strong> Downdraft auf <strong>Ford 302ci (Small Block Ford)</strong>. Jeder Vergaser versorgt 2 Zylinder.</p>
+
+    <div class="toc">
+        <strong>Inhalt (Table of Contents)</strong>
+        <ul>
+            <li><a href="#grundlagen">1. Grundlagen DRLA 45 (Basics)</a></li>
+            <li><a href="#ersteinstellung">2. Ersteinstellung nach Zusammenbau (Initial Setup)</a></li>
+            <li><a href="#synchronisation">3. Synchronisation (4 Vergaser)</a></li>
+            <li><a href="#leerlauf">4. Leerlauf-Einstellung (Idle Tuning)</a></li>
+            <li><a href="#progression">5. Progression / &Uuml;bergang (Transition)</a></li>
+            <li><a href="#hauptduese">6. Hauptd&uuml;se / Volllast (Main Jet / Full Throttle)</a></li>
+            <li><a href="#kraftstoffdruck">7. Kraftstoffdruck (Fuel Pressure)</a></li>
+            <li><a href="#fehlersuche">8. Fehlersuche Vergaser (Carburetor Troubleshooting)</a></li>
+            <li><a href="#bedusung">9. Empfohlene Bed&uuml;sung als Startpunkt (Baseline Jetting)</a></li>
+            <li><a href="#videos">10. YouTube Videos</a></li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="grundlagen">
+        <details open>
+            <summary>1. Grundlagen DRLA 45 (Basics)</summary>
+
+            <h3>Aufbau (Construction)</h3>
+            <p>Der DellOrto DRLA 45 ist ein <strong>Doppel-Downdraft-Vergaser</strong> (Twin-Choke Downdraft) mit zwei identischen, spiegelbildlichen Venturi-Kan&auml;len. Jeder Kanal hat eine eigene Drosselklappe, Hauptd&uuml;se, Leerlaufd&uuml;se und Luftkorrekturd&uuml;se. Die <strong>Beschleunigerpumpe</strong> arbeitet mit einer Membrane (diaphragm-type accelerator pump) und versorgt beide Kan&auml;le &uuml;ber je einen Pumpjet.</p>
+
+            <h3>Kreisl&auml;ufe (Circuits)</h3>
+            <table>
+                <tr><th>Kreislauf (Circuit)</th><th>Funktion</th><th>Arbeitsbereich</th></tr>
+                <tr>
+                    <td><strong>Leerlauf (Idle Circuit)</strong></td>
+                    <td>Kraftstoffversorgung bei geschlossener Drosselklappe &uuml;ber Leerlaufd&uuml;se (Idle Jet) und Gemisch-Schraube (Mixture Screw)</td>
+                    <td>Leerlauf bis ~1200 RPM, Drosselklappe geschlossen/minimal ge&ouml;ffnet</td>
+                </tr>
+                <tr>
+                    <td><strong>Progression (&Uuml;bergang / Transition)</strong></td>
+                    <td>Progressionsbohrungen liefern zus&auml;tzlichen Kraftstoff beim &Ouml;ffnen der Drosselklappe, bevor die Hauptd&uuml;se &uuml;bernimmt</td>
+                    <td>~1200&ndash;2500 RPM, leichtes Gas (10&ndash;30% Drossel)</td>
+                </tr>
+                <tr>
+                    <td><strong>Hauptd&uuml;se (Main Jet Circuit)</strong></td>
+                    <td>Prim&auml;re Kraftstoffversorgung &uuml;ber Hauptd&uuml;se (Main Jet), Emulsionsrohr und Luftkorrekturd&uuml;se (Air Corrector)</td>
+                    <td>Ab ~2500 RPM / &gt;30% Drossel bis Volllast (WOT)</td>
+                </tr>
+                <tr>
+                    <td><strong>Beschleunigerpumpe (Accelerator Pump)</strong></td>
+                    <td>Sofortige Kraftstoff-Einspritzung beim schnellen Gasgeben, &uuml;berbr&uuml;ckt das &bdquo;Loch&ldquo; bis die Hauptd&uuml;se anspricht</td>
+                    <td>Transient &ndash; bei jedem schnellen Drosselklappen&ouml;ffnen</td>
+                </tr>
+            </table>
+
+            <div class="info">
+                <strong>Hinweis:</strong> Die Kreisl&auml;ufe arbeiten nicht isoliert &ndash; sie &uuml;berlappen sich. Die Progression und der Hauptd&uuml;sen-Kreislauf haben einen flie&szlig;enden &Uuml;bergang. Gute Abstimmung bedeutet: keine L&ouml;cher in der Kraftstoffversorgung &uuml;ber den gesamten Drehzahl- und Lastbereich.
+            </div>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="ersteinstellung">
+        <details>
+            <summary>2. Ersteinstellung nach Zusammenbau (Initial Setup)</summary>
+
+            <h3>Schwimmerstand (Float Level)</h3>
+            <ul>
+                <li><strong>Sollwert: 5.5&ndash;6 mm</strong> gemessen an der Spitze der Schwimmer (tip of floats)</li>
+                <li>Vergaser auf die Seite legen (nicht auf den Kopf!), Schwimmerkammerdeckel mit aufgelegter Dichtung</li>
+                <li>Ma&szlig; von der Dichtungsfl&auml;che (gasket surface) bis zur h&ouml;chsten Stelle des Schwimmers</li>
+                <li>Einstellung durch vorsichtiges Biegen der Schwimmerzunge (float tang)</li>
+            </ul>
+
+            <h3>Nadelventil pr&uuml;fen (Check Needle Valve)</h3>
+            <ul>
+                <li>Nadelventil muss frei beweglich sein &ndash; <strong>darf nicht klemmen!</strong></li>
+                <li>Schwimmer anh&auml;ngen und Vergaser vorsichtig sch&uuml;tteln &ndash; Nadel muss frei fallen</li>
+                <li>Typische Nadelventilgr&ouml;&szlig;e f&uuml;r 302/4&times;DRLA 45: <strong>200</strong> (2.00 mm)</li>
+            </ul>
+
+            <h3>Leerlauf-Gemisch-Schrauben (Idle Mixture Screws)</h3>
+            <ul>
+                <li><strong>Ausgangsposition: 3.5 Umdrehungen heraus</strong> (turns out from fully seated)</li>
+                <li>Vorsichtig eindrehen bis leichter Widerstand &ndash; <strong>NICHT festziehen!</strong> (Sitz besch&auml;digt sonst)</li>
+                <li>Jede Seite (Barrel 1 und Barrel 2) hat eine eigene Gemisch-Schraube</li>
+            </ul>
+
+            <h3>Bypass-Schrauben / Leerlauf-Luftschrauben (Air Bleed Screws)</h3>
+            <ul>
+                <li><strong>Startpunkt: Vollst&auml;ndig geschlossen</strong> (fully closed / seated)</li>
+                <li>Diese Schrauben regulieren die Luftzufuhr unterhalb der Drosselklappe</li>
+                <li>Werden sp&auml;ter zur Feinsynchronisation verwendet</li>
+            </ul>
+
+            <h3>Beschleunigerpumpe (Accelerator Pump)</h3>
+            <ul>
+                <li>Pumpjet-Gr&ouml;&szlig;e pr&uuml;fen &ndash; Startpunkt: <strong>40&ndash;50</strong></li>
+                <li>Pumpennocken-Form pr&uuml;fen (bestimmt Einspritzmenge und -dauer)</li>
+                <li>Membrane auf Risse und Verformung pr&uuml;fen</li>
+                <li>Funktionstest: Drosselklappe schnell &ouml;ffnen &ndash; kr&auml;ftiger Kraftstoffstrahl muss aus beiden Pumpjets kommen</li>
+            </ul>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="synchronisation">
+        <details>
+            <summary>3. Synchronisation (4 Vergaser / Syncing 4 Carbs)</summary>
+
+            <h3>Werkzeug (Tools Required)</h3>
+            <ul>
+                <li><strong>Vakuumuhr-Set (4&times;)</strong> &ndash; Mercury-Stick-Balancer oder Manometer-Set</li>
+                <li>Alternativ: Fluid-Balancer (z.B. Carbalancer / Morgan Carbtune)</li>
+                <li>Lange Innensechskant-Schl&uuml;ssel f&uuml;r Bypass-Schrauben</li>
+            </ul>
+
+            <h3>Schritt 1: Motor warmfahren (Warm Up Engine)</h3>
+            <ul>
+                <li>&Ouml;ltemperatur &gt; 70&deg;C &ndash; <strong>mindestens 10&ndash;15 Minuten fahren</strong></li>
+                <li>Wassertemperatur stabil im Normbereich</li>
+                <li>Choke vollst&auml;ndig ge&ouml;ffnet / deaktiviert</li>
+            </ul>
+
+            <h3>Schritt 2: Einzelvergaser balancieren (Balance Each Carb Internally)</h3>
+            <ul>
+                <li>Vakuumuhr an Barrel 1 und Barrel 2 <strong>desselben Vergasers</strong> anschlie&szlig;en</li>
+                <li>Angleichung mit den <strong>Bypass-Schrauben</strong> (Air Bleed Screws)</li>
+                <li>Ziel: Beide Barrels desselben Vergasers zeigen identischen Unterdruck</li>
+                <li>F&uuml;r alle 4 Vergaser wiederholen</li>
+            </ul>
+
+            <h3>Schritt 3: Alle 4 Vergaser untereinander synchronisieren (Sync All 4 Carbs)</h3>
+            <ul>
+                <li>Vakuumuhren an je einem Barrel pro Vergaser anschlie&szlig;en (4 Messungen gleichzeitig)</li>
+                <li>Angleichung &uuml;ber das <strong>Drosselklappen-Verbindungsgest&auml;nge</strong> (throttle linkage)</li>
+                <li>Ziel: Alle 4 Vergaser zeigen identischen Unterdruck bei Leerlauf</li>
+                <li>Auch bei leichtem Gasgeben (~2000 RPM) pr&uuml;fen &ndash; Gest&auml;nge darf nicht klemmen</li>
+            </ul>
+
+            <h3>Schritt 4: Leerlaufdrehzahl einstellen (Set Idle Speed)</h3>
+            <ul>
+                <li><strong>Ziel-Leerlaufdrehzahl: 700&ndash;850 RPM</strong> (f&uuml;r SBF 302 mit Nockenwelle)</li>
+                <li>Bei scharfer Nockenwelle: bis 900 RPM akzeptabel</li>
+                <li>Einstellung &uuml;ber gemeinsame Leerlauf-Anschlagschraube am Gest&auml;nge</li>
+            </ul>
+
+            <div class="highlight">
+                <strong>TIPP:</strong> Bei DellOrto DRLA sind die Bypass-Schrauben schlecht zug&auml;nglich &ndash; speziell bei 4-Vergaser-Aufbauten auf einem Ansaugspinne. <strong>Empfehlung: Innensechskant-Schrauben (Allen Head) nachr&uuml;sten</strong> statt der originalen Schlitz-Schrauben. Erleichtert die Einstellung enorm.
+            </div>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="leerlauf">
+        <details>
+            <summary>4. Leerlauf-Einstellung (Idle Tuning)</summary>
+
+            <h3>Gemisch-Schraube einstellen (Adjust Mixture Screw)</h3>
+            <ul>
+                <li><strong>Methode:</strong> Gemisch-Schraube langsam hineindrehen (clockwise / lean) bis der Motor anf&auml;ngt zu stottern oder die Drehzahl f&auml;llt</li>
+                <li>Dann <strong>1/8 Umdrehung zur&uuml;ck herausdrehen</strong> (counterclockwise / richer)</li>
+                <li><strong>Jede Seite (Barrel) separat einstellen!</strong> &ndash; der DRLA hat 2 Gemisch-Schrauben pro Vergaser</li>
+                <li>Nach Einstellung aller 8 Schrauben (4 Vergaser &times; 2 Barrels): Synchronisation erneut pr&uuml;fen</li>
+            </ul>
+
+            <h3>Lambda-Zielwert Leerlauf (Target AFR at Idle)</h3>
+            <div class="info">
+                <strong>Ziel-AFR Leerlauf: 13.5&ndash;14.0:1</strong> (leicht fett von st&ouml;chiometrisch 14.7:1)<br>
+                Messung mit Wideband-Lambda-Sonde. Schmalband-Sonden sind f&uuml;r exakte Abstimmung nicht geeignet.
+            </div>
+
+            <h3>Leerlaufd&uuml;se (Idle Jet) &ndash; Richtige Gr&ouml;&szlig;e bestimmen</h3>
+            <table>
+                <tr><th>Gemisch-Schraube Position</th><th>Diagnose</th><th>Aktion</th></tr>
+                <tr>
+                    <td>&gt; 4 Umdrehungen heraus</td>
+                    <td>Leerlaufd&uuml;se <strong>zu klein</strong> &ndash; Schraube muss zu weit raus um genug Kraftstoff zu liefern</td>
+                    <td>N&auml;chstgr&ouml;&szlig;ere Leerlaufd&uuml;se einsetzen</td>
+                </tr>
+                <tr>
+                    <td>2&ndash;4 Umdrehungen heraus</td>
+                    <td><strong>Korrekt</strong> &ndash; genug Einstellbereich</td>
+                    <td>Keine &Auml;nderung n&ouml;tig</td>
+                </tr>
+                <tr>
+                    <td>&lt; 2 Umdrehungen heraus</td>
+                    <td>Leerlaufd&uuml;se <strong>zu gro&szlig;</strong> &ndash; Schraube muss fast vollst&auml;ndig geschlossen werden</td>
+                    <td>N&auml;chstkleinere Leerlaufd&uuml;se einsetzen</td>
+                </tr>
+            </table>
+
+            <h3>Typische Startbed&uuml;sung Leerlauf (Typical Baseline Idle Jetting)</h3>
+            <div class="success">
+                <strong>302ci / 4&times; DRLA 45:</strong> Leerlaufd&uuml;se (Idle Jet / Getto Minimo) = <strong>55&ndash;60</strong>
+            </div>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="progression">
+        <details>
+            <summary>5. Progression / &Uuml;bergang (Transition)</summary>
+
+            <h3>Symptom: &bdquo;Loch beim Gasgeben&ldquo; (Hesitation / Bog on Tip-In)</h3>
+            <ul>
+                <li>Ursache 1: <strong>Beschleunigerpumpe zu schwach</strong> &ndash; Pumpjet zu klein, Membrane defekt, oder Pumpennocken verschlissen</li>
+                <li>Ursache 2: <strong>Progressionsbohrungen nicht korrekt</strong> &ndash; verstopft, falsche Gr&ouml;&szlig;e, oder Drosselklappe steht falsch zu den Bohrungen</li>
+                <li>Ursache 3: <strong>&Uuml;bergang Leerlauf &rarr; Hauptd&uuml;se zu sp&auml;t</strong> &ndash; Hauptd&uuml;sen-Kreislauf setzt erst bei zu hoher Drehzahl ein</li>
+            </ul>
+
+            <h3>Luftkorrekturd&uuml;se (Air Corrector Jet)</h3>
+            <ul>
+                <li>Die Luftkorrekturd&uuml;se bestimmt, <strong>wie fr&uuml;h die Hauptd&uuml;se wirksam wird</strong></li>
+                <li><strong>Gr&ouml;&szlig;ere Luftkorrekturd&uuml;se = Hauptd&uuml;se kommt fr&uuml;her</strong> (mehr Luft im Emulsionsrohr = fr&uuml;heres Signal)</li>
+                <li>Kleinere Luftkorrekturd&uuml;se = Hauptd&uuml;se kommt sp&auml;ter, oben herum fetter</li>
+                <li>Hilft direkt bei Progressions-Problemen</li>
+            </ul>
+
+            <h3>Typische Startbed&uuml;sung Luftkorrekturd&uuml;se (Baseline Air Corrector)</h3>
+            <div class="success">
+                <strong>302ci / 4&times; DRLA 45:</strong> Luftkorrekturd&uuml;se (Air Corrector / Getto Aria) = <strong>180&ndash;200</strong>
+            </div>
+
+            <h3>Drossel-Cutaway (Throttle Cutaway)</h3>
+            <ul>
+                <li>Falls vorhanden: Der Ausschnitt an der Unterkante der Drosselklappe beeinflusst den Luftstrom im Progressionsbereich</li>
+                <li>Gr&ouml;&szlig;erer Cutaway = mehr Luft = magerer in der Progression</li>
+                <li>Nicht alle DRLA haben verstellbare Cutaways &ndash; pr&uuml;fen ob relevant</li>
+            </ul>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="hauptduese">
+        <details>
+            <summary>6. Hauptd&uuml;se / Volllast (Main Jet / Full Throttle)</summary>
+
+            <h3>Lambda-Zielwert WOT (Target AFR at Wide Open Throttle)</h3>
+            <div class="warning">
+                <strong>Ziel-AFR bei Volllast (WOT): 12.5&ndash;12.8:1</strong> &ndash; mit Sicherheitsmarge!<br>
+                Niemals magerer als 13.0:1 unter Volllast. Bei Unsicherheit: <strong>IMMER eine D&uuml;sengr&ouml;&szlig;e fetter!</strong>
+            </div>
+
+            <h3>Methode zur Hauptd&uuml;sen-Abstimmung (Main Jet Tuning Method)</h3>
+            <ul>
+                <li>3. Gang w&auml;hlen (genug Last, aber nicht zu hohe Geschwindigkeit)</li>
+                <li>Vollgas (WOT) an einer Steigung &ndash; Motor unter maximaler Last</li>
+                <li><strong>Wideband-Lambda ablesen</strong> &ndash; AFR muss im Zielbereich liegen</li>
+                <li>Alternativ: Z&uuml;ndkerzen-Lesung (Porcelain Reading) &ndash; heller Haselnuss-Farbton = korrekt</li>
+            </ul>
+
+            <h3>Typische Hauptd&uuml;se (Typical Main Jet)</h3>
+            <div class="success">
+                <strong>302ci / 4&times; DRLA 45:</strong> Hauptd&uuml;se (Main Jet / Getto Massimo) = <strong>Start mit 135&ndash;140</strong>, dann anpassen nach Wideband-Ablesung
+            </div>
+
+            <h3>Einfluss H&ouml;henlage (Altitude Effect)</h3>
+            <ul>
+                <li>Pro <strong>1000 m H&ouml;he</strong> &uuml;ber Meeresspiegel: ca. <strong>3&ndash;4% magerere Jets</strong> erforderlich</li>
+                <li>Das entspricht ca. <strong>4&ndash;6 D&uuml;senstufen</strong> kleiner (z.B. von 140 auf 134&ndash;136)</li>
+                <li>D&uuml;nnere Luft = weniger Sauerstoff = weniger Kraftstoff ben&ouml;tigt</li>
+            </ul>
+
+            <h3>Einfluss Temperatur (Temperature Effect)</h3>
+            <ul>
+                <li>+20&deg;C Temperaturerh&ouml;hung = ca. <strong>2 D&uuml;senstufen magerer</strong></li>
+                <li>Hei&szlig;er Sommertag vs. k&uuml;hler Herbsttag: kann 2&ndash;4 Stufen Unterschied bedeuten</li>
+                <li>Bei Vergasern gibt es keine automatische Kompensation &ndash; manuelles Nachstellen erforderlich</li>
+            </ul>
+
+            <div class="warning">
+                <strong>&#9888; WARNUNG: ZU MAGER = KOLBENSCHADEN!</strong><br>
+                Ein zu mageres Gemisch unter Last f&uuml;hrt zu Detonation (Klopfen), &uuml;berh&ouml;hten Abgastemperaturen und kann Kolben, Ventile und Zylinderkopf zerst&ouml;ren. <strong>Im Zweifel IMMER eine D&uuml;senstufe gr&ouml;&szlig;er (fetter) w&auml;hlen!</strong>
+            </div>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="kraftstoffdruck">
+        <details>
+            <summary>7. Kraftstoffdruck (Fuel Pressure)</summary>
+
+            <h3>Maximaler Kraftstoffdruck DellOrto DRLA</h3>
+            <div class="warning">
+                <strong>DellOrto DRLA Maximum: 3.5 psi (0.24 bar)!</strong><br>
+                H&ouml;herer Druck dr&uuml;ckt die Nadelventile auf und f&uuml;hrt zu &Uuml;berflutung (flooding), unkontrolliertem Kraftstofffluss und Brandgefahr.
+            </div>
+
+            <h3>Kraftstoffpumpe &amp; Druckregler (Fuel Pump &amp; Regulator)</h3>
+            <table>
+                <tr><th>Komponente</th><th>Spezifikation</th><th>Anmerkung</th></tr>
+                <tr>
+                    <td><strong>Facet Red Top</strong> (elektrische Pumpe)</td>
+                    <td>6&ndash;8 psi Ausgangsdruck</td>
+                    <td><strong>&#9888; DRUCKREGLER ZWINGEND ERFORDERLICH!</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Malpassi Filter King</strong></td>
+                    <td>Kombinierter Filter + Druckregler</td>
+                    <td>Empfohlen &ndash; einstellbar, mit Manometer-Anschluss</td>
+                </tr>
+                <tr>
+                    <td>Druckregler-Einstellung</td>
+                    <td>2.5&ndash;3.0 psi</td>
+                    <td>Sicherheitsmarge unter dem 3.5 psi Maximum</td>
+                </tr>
+            </table>
+
+            <h3>Einbau-Hinweise (Installation Notes)</h3>
+            <ul>
+                <li><strong>Pumpe tanknah montieren</strong> (close to fuel tank) &ndash; Pumpen dr&uuml;cken besser als sie saugen</li>
+                <li><strong>Vertikal montieren, Auslass oben</strong> (vertical, outlet on top)</li>
+                <li>Kraftstofffilter VOR der Pumpe (Grobfilter) UND nach der Pumpe (Feinfilter/Regler)</li>
+                <li>R&uuml;cklaufleitung zum Tank empfohlen (Return Line) bei &uuml;berdimensionierter Pumpe</li>
+            </ul>
+
+            <h3>E10 / Ethanol-Kraftstoff</h3>
+            <div class="warning">
+                <strong>&#9888; E10 / ETHANOL: VERBOTEN f&uuml;r DellOrto Aluminium-K&ouml;rper!</strong><br>
+                Ethanol greift das Aluminium-Geh&auml;use, Schwimmer, Dichtungen und Membranen an. Nur bleifreies Super (E5 oder besser) verwenden. Bei l&auml;ngerem Stillstand: Vergaser leerfahren oder Kraftstoff ablassen.
+            </div>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="fehlersuche">
+        <details>
+            <summary>8. Fehlersuche Vergaser (Carburetor Troubleshooting)</summary>
+
+            <table>
+                <tr><th>Symptom</th><th>M&ouml;gliche Ursache (Possible Cause)</th><th>Abhilfe (Fix)</th></tr>
+                <tr>
+                    <td><strong>Motor spuckt durch Vergaser zur&uuml;ck</strong> (Backfire through carbs)</td>
+                    <td>ZU MAGER &ndash; oder Z&uuml;ndung zu sp&auml;t (retarded timing)</td>
+                    <td>Gemisch fetter einstellen, Z&uuml;ndzeitpunkt pr&uuml;fen (Stroboskoplampe), Vakuumlecks suchen</td>
+                </tr>
+                <tr>
+                    <td><strong>Schwarzer Rauch / ru&szlig;ige Kerzen</strong> (Black smoke / sooty plugs)</td>
+                    <td>ZU FETT &ndash; Schwimmerstand zu hoch, Nadelventil undicht, Hauptd&uuml;se zu gro&szlig;</td>
+                    <td>Schwimmerstand pr&uuml;fen (5.5&ndash;6 mm), Nadelventil auf Dichtheit pr&uuml;fen, D&uuml;sen verkleinern</td>
+                </tr>
+                <tr>
+                    <td><strong>Motor s&auml;uft ab bei Kaltstart</strong> (Floods on cold start)</td>
+                    <td>Choke-Kolben defekt, Starter-Circuit Problem, Nadelventil klemmt offen</td>
+                    <td>Choke-Mechanismus pr&uuml;fen, Nadelventil reinigen/ersetzen</td>
+                </tr>
+                <tr>
+                    <td><strong>Ungleichm&auml;&szlig;iger Leerlauf</strong> (Rough/uneven idle)</td>
+                    <td>Vakuumleck, Vergaser nicht synchron, verstopfter Leerlaufkanal</td>
+                    <td>Ansaugkr&uuml;mmer-Dichtungen pr&uuml;fen, Synchronisation wiederholen, <strong>Leerlaufkanal mit d&uuml;nnem Draht reinigen!</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Loch/Stottern beim Gasgeben</strong> (Hesitation / bog)</td>
+                    <td>Beschleunigerpumpe defekt, Pumpjet zu klein, Progressionsproblem</td>
+                    <td>Pumpen-Membrane pr&uuml;fen, Pumpjet vergr&ouml;&szlig;ern, Luftkorrekturd&uuml;se anpassen</td>
+                </tr>
+                <tr>
+                    <td><strong>Motor l&auml;uft nur auf einigen Zylindern</strong> (Runs on some cylinders only)</td>
+                    <td>Ein Vergaser bekommt keinen Kraftstoff, verstopfte D&uuml;se, defektes Nadelventil</td>
+                    <td>Kraftstoffversorgung zu jedem Vergaser pr&uuml;fen, D&uuml;sen reinigen</td>
+                </tr>
+            </table>
+
+            <div class="highlight">
+                <strong>Allgemeiner Tipp:</strong> Bei der Fehlersuche immer <strong>einen Parameter nach dem anderen &auml;ndern</strong>. Nie mehrere D&uuml;sen gleichzeitig wechseln. Notizen f&uuml;hren &uuml;ber jede &Auml;nderung und deren Ergebnis.
+            </div>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="bedusung">
+        <details>
+            <summary>9. Empfohlene Bed&uuml;sung als Startpunkt (Baseline Jetting)</summary>
+
+            <h3>Startpunkt-Bed&uuml;sung f&uuml;r Ford 302ci / 4&times; DellOrto DRLA 45</h3>
+            <table>
+                <tr><th>D&uuml;se (Jet)</th><th>DellOrto Bezeichnung</th><th>Startpunkt 302 / 4&times;DRLA 45</th></tr>
+                <tr>
+                    <td><strong>Hauptd&uuml;se</strong> (Main Jet)</td>
+                    <td>Getto Massimo</td>
+                    <td><strong>135&ndash;140</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Leerlaufd&uuml;se</strong> (Idle Jet)</td>
+                    <td>Getto Minimo</td>
+                    <td><strong>55&ndash;60</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Luftkorrekturd&uuml;se</strong> (Air Corrector)</td>
+                    <td>Getto Aria</td>
+                    <td><strong>180&ndash;200</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Emulsionsrohr</strong> (Emulsion Tube)</td>
+                    <td>Polverizzatore</td>
+                    <td><strong>7772.3 / 9164.3</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Pumpjet</strong> (Pump Jet)</td>
+                    <td>Getto Pompa</td>
+                    <td><strong>40&ndash;50</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Hilfsventuri</strong> (Auxiliary Venturi)</td>
+                    <td>Diffusore</td>
+                    <td><strong>4.5 mm</strong></td>
+                </tr>
+            </table>
+
+            <div class="info">
+                <strong>Hinweis (Note):</strong> Diese Werte sind Startpunkte (starting points only). Die endg&uuml;ltige Bed&uuml;sung h&auml;ngt ab von:
+                <ul>
+                    <li><strong>H&ouml;henlage</strong> (Altitude) &ndash; h&ouml;her = magerer</li>
+                    <li><strong>Au&szlig;entemperatur</strong> (Ambient Temperature) &ndash; hei&szlig;er = magerer</li>
+                    <li><strong>Nockenwellen-Profil</strong> (Cam Profile) &ndash; wildere Nocke = andere Leerlaufbed&uuml;sung</li>
+                    <li><strong>Auspuffanlage</strong> (Exhaust System) &ndash; freier Auspuff = tendenziell magerer</li>
+                    <li><strong>Ansauganlage</strong> (Intake Manifold) &ndash; Runner-L&auml;nge und Plenum-Volumen</li>
+                </ul>
+            </div>
+        </details>
+    </div>
+
+    <!-- ============================================================ -->
+    <div class="section" id="videos">
+        <details>
+            <summary>10. YouTube Videos</summary>
+
+            <h3>Vergaser-Synchronisation (Carb Synchronization Technique)</h3>
+            <div class="video-embed">
+                <iframe src="https://www.youtube.com/embed/7D_f05_a74Y" title="How to Balance Carbs" allowfullscreen></iframe>
+            </div>
+            <p class="source">How to Balance Carbs &ndash; Vergaser-Synchronisation mit Vakuumuhren</p>
+
+            <h3>DellOrto DRLA &Uuml;bersicht / Rebuild (Overview / Rebuild)</h3>
+            <div class="video-embed">
+                <!-- Platzhalter: Video-URL hier einfuegen -->
+                <!-- <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE" title="DellOrto DRLA Rebuild" allowfullscreen></iframe> -->
+                <p style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#718096;font-size:0.9rem;text-align:center;">
+                    &#127916; Platzhalter &ndash; Video-URL hier einf&uuml;gen<br>(Placeholder &ndash; Add video URL here)
+                </p>
+            </div>
+            <p class="source">DellOrto DRLA Rebuild / &Uuml;bersicht &ndash; Video noch hinzuzuf&uuml;gen</p>
+        </details>
+    </div>
+
+    <div style="text-align:center;margin:2rem 0;font-size:0.75rem;color:#a0aec0;">
+        Erstellt: 2025 &ndash; Wird laufend erweitert<br>
+        <a href="../" style="color:#2b6cb0;">Zur&uuml;ck zum Engine Build Log</a>
+    </div>
+</body>
+</html>
