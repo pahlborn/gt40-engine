@@ -2237,7 +2237,8 @@
                     <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Renault UN1-013 (Renault 21 Turbo Basis)</span></div>
                     <div class="spec-item"><span class="spec-label">Konfiguration</span><span class="spec-value">RH Change (Drehrichtung umgekehrt f&uuml;r Mid-Engine)</span></div>
                     <div class="spec-item"><span class="spec-label">Modifikation</span><span class="spec-value">Modified 2nd &amp; 3rd Gears, drilled out Oil Ways</span></div>
-                    <div class="spec-item"><span class="spec-label">Drehmomentgrenze (Eingang)</span><span class="spec-value">315 Nm (232 lb.ft) &ndash; Renault/Lotus-Spec f&uuml;r UN1-016. UN1-026 &bdquo;High Torque&ldquo;: 400 Nm. Getestet bis 550 Nm (Quelle: Lotus Esprit World)</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehmomentgrenze (Eingang)</span><span class="spec-value">Keine offizielle Renault-Angabe f&uuml;r UN1-013. Referenzwerte: UN1-016 (Lotus): 315 Nm, UN1-026 &bdquo;High Torque&ldquo;: 400 Nm. UN1-13 getestet bis 550 Nm / 500 HP (Lotus Esprit World). Renault 21 Turbo Serien-Drehmoment: 285 Nm (210 lb.ft).</span></div>
+                    <div class="info-box" style="margin-top:0.2rem;font-size:0.72rem;"><strong>Hinweis UN1-013 vs. UN1-016:</strong> Die UN1-013 (R21 Turbo) nutzt <strong>Standard-Renault-Kronrad-Material</strong> (nicht das aufgewertete Lotus-Material) und ein 2-Pinion-Differential (statt 4 bei Lotus/Alpine). Die Lotus UN1-016 hatte zus&auml;tzlich Dowels im Geh&auml;use gegen Biegung. Die Tornado USA Modifikation (modified 2nd/3rd gears, drilled oil ways) verbessert K&uuml;hlung und Haltbarkeit. Schw&auml;chste Stellen: Prim&auml;rwelle (vorne schwimmend gelagert, hinten ohne St&uuml;tze). Quelle: GT40s.com Forum.</div>
                     <div id="crossCheckTorque" style="background:#fffff0;padding:0.5rem;border-radius:6px;border:1px solid #fefcbf;margin:0.3rem 0;font-size:0.76rem;display:none;">
                         <strong style="color:#975a16;">&#9888; GETRIEBE CROSS-CHECK:</strong>
                         <span id="crossCheckTorqueText"></span>
@@ -4081,14 +4082,14 @@
             warnings.push({type:'danger', text:'<strong>Peak Torque @ ' + peakTQrpm + ' RPM</strong> liegt &uuml;ber dem Systemlimit <strong>' + SYSTEM_RPM_LIMIT + ' RPM</strong>. Das Drehmoment-Maximum ist im Betrieb nicht erreichbar!'});
         }
 
-        // 3. Torque vs gearbox (UN1-016 Renault/Lotus-Spec: 315 Nm Eingang, getestet bis 550 Nm)
+        // 3. Torque vs gearbox (UN1-013: R21 Turbo OEM 285 Nm, getestet bis 550 Nm)
         var peakTQnm = Math.round(peakTQ * 1.3558);
-        if (peakTQnm > 315 && peakTQnm <= 550) {
-            var pct = Math.round((peakTQnm / 315 - 1) * 100);
-            warnings.push({type:'info', text:'<strong>Getriebe:</strong> Eingangsdrehmoment <strong>' + peakTQnm + ' Nm</strong> liegt ' + pct + '% &uuml;ber der UN1-016 Renault/Lotus-Spec (315 Nm). Innerhalb des getesteten Bereichs (bis 550 Nm). Empfohlen: Getriebe&ouml;lk&uuml;hler + regelm&auml;&szlig;ige &Ouml;lwechsel.'});
+        if (peakTQnm > 285 && peakTQnm <= 550) {
+            var pct = Math.round((peakTQnm / 285 - 1) * 100);
+            warnings.push({type:'info', text:'<strong>Getriebe (UN1-013):</strong> Eingangsdrehmoment <strong>' + peakTQnm + ' Nm</strong> liegt ' + pct + '% &uuml;ber dem R21 Turbo Serien-Wert (285 Nm). Innerhalb des getesteten Bereichs (bis 550 Nm). Empfohlen: Getriebe&ouml;lk&uuml;hler + regelm&auml;&szlig;ige &Ouml;lwechsel.'});
         } else if (peakTQnm > 550) {
-            var pct = Math.round((peakTQnm / 315 - 1) * 100);
-            warnings.push({type:'danger', text:'<strong>Getriebe:</strong> Eingangsdrehmoment <strong>' + peakTQnm + ' Nm</strong> liegt ' + pct + '% &uuml;ber der UN1-016 Spec (315 Nm) und <strong>&uuml;berschreitet den getesteten Bereich (550 Nm)</strong>. Getriebe&ouml;lk&uuml;hler + Quaife-LSD + regelm&auml;&szlig;ige Inspektion dringend empfohlen.'});
+            var pct = Math.round((peakTQnm / 285 - 1) * 100);
+            warnings.push({type:'danger', text:'<strong>Getriebe (UN1-013):</strong> Eingangsdrehmoment <strong>' + peakTQnm + ' Nm</strong> liegt ' + pct + '% &uuml;ber dem R21 Turbo Serien-Wert (285 Nm) und <strong>&uuml;berschreitet den getesteten Bereich (550 Nm)</strong>. Getriebe&ouml;lk&uuml;hler + Quaife + regelm&auml;&szlig;ige Inspektion dringend empfohlen.'});
         }
 
         // 4. Rev Limiter field vs system limit
@@ -4485,13 +4486,13 @@
                 if (tq > peakEngineTq) peakEngineTq = tq;
             }
             var peakEngineTqNm = Math.round(peakEngineTq * 1.3558);
-            var gearboxSpec = 315; // UN1-016 Renault/Lotus-Spec
-            var gearboxTested = 550; // Getestet bis 550 Nm
-            if (peakEngineTqNm > gearboxSpec) {
-                var pct = Math.round((peakEngineTqNm / gearboxSpec - 1) * 100);
-                var infoText = '<strong>Getriebe:</strong> Eingangsdrehmoment <strong>' + peakEngineTqNm + ' Nm</strong> liegt ' + pct + '% &uuml;ber der UN1-016 Renault/Lotus-Spec (' + gearboxSpec + ' Nm).';
+            var gearboxOEM = 285; // UN1-013: R21 Turbo Serien-Motordrehmoment
+            var gearboxTested = 550; // UN1-13 getestet bis 550 Nm (Lotus Esprit World)
+            if (peakEngineTqNm > gearboxOEM) {
+                var pct = Math.round((peakEngineTqNm / gearboxOEM - 1) * 100);
+                var infoText = '<strong>Getriebe (UN1-013):</strong> Eingangsdrehmoment <strong>' + peakEngineTqNm + ' Nm</strong> liegt ' + pct + '% &uuml;ber dem R21 Turbo Serien-Wert (' + gearboxOEM + ' Nm).';
                 if (peakEngineTqNm > gearboxTested) {
-                    infoText += ' <strong>&Uuml;berschreitet den getesteten Bereich (' + gearboxTested + ' Nm)!</strong> Getriebe&ouml;lk&uuml;hler + Quaife-LSD + regelm&auml;&szlig;ige Inspektion dringend empfohlen.';
+                    infoText += ' <strong>&Uuml;berschreitet den getesteten Bereich (' + gearboxTested + ' Nm)!</strong> Getriebe&ouml;lk&uuml;hler + Quaife + regelm&auml;&szlig;ige Inspektion dringend empfohlen.';
                     warnings.push({type:'danger', text: infoText});
                 } else {
                     infoText += ' Innerhalb des getesteten Bereichs (bis ' + gearboxTested + ' Nm). Empfohlen: Getriebe&ouml;lk&uuml;hler + regelm&auml;&szlig;ige &Ouml;lwechsel.';
@@ -5207,18 +5208,18 @@
                 var numOnly = parseFloat(val);
                 if (numOnly > 0) torqueNm = numOnly > 100 ? numOnly : numOnly * 1.3558; // guess: >100 = Nm, <100 = ft-lbs
             }
-            var gearboxSpec = 315; // UN1-016 Renault/Lotus-Spec (Eingangsdrehmoment)
-            var gearboxTested = 550; // Getestet bis 550 Nm (Lotus Esprit World)
-            if (torqueNm > gearboxSpec) {
+            var gearboxOEM = 285; // UN1-013: R21 Turbo Serien-Motordrehmoment
+            var gearboxTested = 550; // UN1-13 getestet bis 550 Nm (Lotus Esprit World)
+            if (torqueNm > gearboxOEM) {
                 crossDiv.style.display = 'block';
-                var pct = Math.round((torqueNm / gearboxSpec - 1) * 100);
-                var msg = ' Motor-Eingangsdrehmoment: <strong>' + Math.round(torqueNm) + ' Nm</strong> (' + (torqueNm/1.3558).toFixed(0) + ' ft-lbs) &ndash; ' + pct + '% &uuml;ber UN1-016 Renault/Lotus-Spec (' + gearboxSpec + ' Nm).';
+                var pct = Math.round((torqueNm / gearboxOEM - 1) * 100);
+                var msg = ' Motor-Eingangsdrehmoment: <strong>' + Math.round(torqueNm) + ' Nm</strong> (' + (torqueNm/1.3558).toFixed(0) + ' ft-lbs) &ndash; ' + pct + '% &uuml;ber R21 Turbo Serien-Wert (' + gearboxOEM + ' Nm).';
                 if (torqueNm <= gearboxTested) {
-                    msg += ' Liegt innerhalb des getesteten Bereichs (bis ' + gearboxTested + ' Nm, Quelle: Lotus Esprit World).';
+                    msg += ' Innerhalb des getesteten Bereichs (bis ' + gearboxTested + ' Nm, Quelle: Lotus Esprit World).';
                 } else {
-                    msg += ' <strong style="color:#c53030;">&Uuml;berschreitet auch den getesteten Bereich (' + gearboxTested + ' Nm)!</strong>';
+                    msg += ' <strong style="color:#c53030;">&Uuml;berschreitet den getesteten Bereich (' + gearboxTested + ' Nm)!</strong>';
                 }
-                msg += ' <strong>Empfohlen:</strong> Getriebe&ouml;lk&uuml;hler + regelm&auml;&szlig;ige &Ouml;lwechsel (Castrol TAF-X oder gleichwertig).';
+                msg += ' <strong>Empfohlen:</strong> Getriebe&ouml;lk&uuml;hler + regelm&auml;&szlig;ige &Ouml;lwechsel.';
                 crossText.innerHTML = msg;
             } else {
                 crossDiv.style.display = 'none';
