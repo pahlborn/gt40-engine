@@ -72,12 +72,16 @@
         .step-header input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--success); flex-shrink: 0; }
         .step-header .step-title { flex: 1; font-size: 0.85rem; font-weight: 600; }
         .step-header .guide-toggle {
-            background: #ebf4ff; border: 1px solid #bee3f8; color: var(--primary-light);
-            padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer;
-            font-size: 0.7rem; font-weight: 600; white-space: nowrap; min-height: 32px;
+            background: none; border: none; color: var(--primary-light);
+            padding: 0.2rem 0.4rem; cursor: pointer;
+            font-size: 0.6rem; font-weight: 600; white-space: nowrap;
+            transition: transform 0.2s; display: inline-block;
         }
-        .step-header .guide-toggle:hover { background: #bee3f8; }
-        .step-header .guide-toggle.open { background: var(--primary-light); color: white; border-color: var(--primary-light); }
+        .step-header .guide-toggle::after { content: 'BC'; font-size: 0.55rem; transition: transform 0.2s; }
+        .step-header .guide-toggle.open::after { transform: rotate(180deg); }
+        .step-header .guide-toggle.open { color: var(--primary-light); }
+        .step-header .step-title { cursor: pointer; }
+        .step-header .step-title:hover { color: var(--primary-light); }
         .step-note {
             width: 100%; padding: 0.4rem 0.75rem; border: none; border-bottom: 1px dashed var(--border);
             font-size: 0.78rem; background: transparent; color: var(--text-light);
@@ -210,8 +214,8 @@
 <div class="step-card" id="step1">
     <div class="step-header">
         <input type="checkbox" data-field="p1_block_visual" onchange="autoSave()">
-        <span class="step-title">1. Block Visual Inspection (Sichtpr&uuml;fung)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">1. Block Visual Inspection (Sichtpr&uuml;fung)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_block_visual_n" placeholder="Findings... (Befund...)" oninput="autoSave()">
     <div class="step-guide">
@@ -250,8 +254,8 @@
 <div class="step-card" id="step2">
     <div class="step-header">
         <input type="checkbox" data-field="p1_threads" onchange="autoSave()">
-        <span class="step-title">2. Chase Threads &amp; Blow Out Blind Holes (Gewinde durchjagen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">2. Chase Threads &amp; Blow Out Blind Holes (Gewinde durchjagen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_threads_n" placeholder="Findings..." oninput="autoSave()">
     <div class="step-guide">
@@ -280,8 +284,8 @@
 <div class="step-card" id="step3">
     <div class="step-header">
         <input type="checkbox" data-field="p1_deck_height" onchange="autoSave()">
-        <span class="step-title">3. Measure Deck Height (Deckh&ouml;he messen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">3. Measure Deck Height (Deckh&ouml;he messen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_deck_height_n" placeholder="Measured value..." oninput="autoSave()">
     <div class="step-guide">
@@ -310,8 +314,8 @@
 <div class="step-card" id="step4">
     <div class="step-header">
         <input type="checkbox" data-field="p1_piston_deck" onchange="autoSave()">
-        <span class="step-title">4. Piston Deck Clearance (Kolbenstand) &ndash; all 8 cylinders</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">4. Piston Deck Clearance (Kolbenstand) &ndash; all 8 cylinders</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_piston_deck_n" placeholder="Cyl.1:___ 2:___ 3:___ 4:___ 5:___ 6:___ 7:___ 8:___" oninput="autoSave()">
     <div class="step-guide">
@@ -356,8 +360,8 @@
 <div class="step-card" id="step5">
     <div class="step-header">
         <input type="checkbox" data-field="p1_crank_turn" onchange="autoSave()">
-        <span class="step-title">5. Rotate Crankshaft by Hand (Kurbelwelle drehen) &ndash; no binding</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">5. Rotate Crankshaft by Hand (Kurbelwelle drehen) &ndash; no binding</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_crank_turn_n" placeholder="Findings..." oninput="autoSave()">
     <div class="step-guide">
@@ -379,8 +383,8 @@
 <div class="step-card" id="step6">
     <div class="step-header">
         <input type="checkbox" data-field="p1_oil_plug" onchange="autoSave()">
-        <span class="step-title">6. Check Oil Gallery Plugs (&Ouml;lkanalstopfen pr&uuml;fen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">6. Check Oil Gallery Plugs (&Ouml;lkanalstopfen pr&uuml;fen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_oil_plug_n" placeholder="Findings..." oninput="autoSave()">
     <div class="step-guide">
@@ -401,8 +405,8 @@
 <div class="step-card" id="step7">
     <div class="step-header">
         <input type="checkbox" data-field="p1_cam_bearing_type" onchange="autoSave()">
-        <span class="step-title">7. Determine Cam Bearing Type (Cam-Lagertyp bestimmen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">7. Determine Cam Bearing Type (Cam-Lagertyp bestimmen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_cam_bearing_type_n" placeholder="Type:..." oninput="autoSave()">
     <div class="step-guide">
@@ -435,8 +439,8 @@
 <div class="step-card" id="step8">
     <div class="step-header">
         <input type="checkbox" data-field="p1_main_brg_check" onchange="autoSave()">
-        <span class="step-title">8. Main Bearing Clearance &ndash; Plastigage (Hauptlagerspiel)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">8. Main Bearing Clearance &ndash; Plastigage (Hauptlagerspiel)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_main_brg_check_n" placeholder="All 5 mains measured..." oninput="autoSave()">
     <div class="step-guide">
@@ -491,8 +495,8 @@
 <div class="step-card" id="step9">
     <div class="step-header">
         <input type="checkbox" data-field="p1_crank_endplay_check" onchange="autoSave()">
-        <span class="step-title">9. Crankshaft Endplay (Kurbelwellen-Axialspiel)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">9. Crankshaft Endplay (Kurbelwellen-Axialspiel)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_crank_endplay_check_n" placeholder="Endplay value..." oninput="autoSave()">
     <div class="step-guide">
@@ -531,8 +535,8 @@
 <div class="step-card" id="step10">
     <div class="step-header">
         <input type="checkbox" data-field="p1_cam_visual" onchange="autoSave()">
-        <span class="step-title">10. XE274HR Lobe &amp; Journal Visual Inspection (Sichtpr&uuml;fung)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">10. XE274HR Lobe &amp; Journal Visual Inspection (Sichtpr&uuml;fung)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_cam_visual_n" placeholder="Findings..." oninput="autoSave()">
     <div class="step-guide">
@@ -555,8 +559,8 @@
 <div class="step-card" id="step11">
     <div class="step-header">
         <input type="checkbox" data-field="p1_cam_journals" onchange="autoSave()">
-        <span class="step-title">11. Measure All 5 Cam Journals (Cam-Zapfen messen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">11. Measure All 5 Cam Journals (Cam-Zapfen messen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_cam_journals_n" placeholder="#1:___ #2:___ #3:___ #4:___ #5:___" oninput="autoSave()">
     <div class="step-guide">
@@ -585,8 +589,8 @@
 <div class="step-card" id="step12">
     <div class="step-header">
         <input type="checkbox" data-field="p1_lifters" onchange="autoSave()">
-        <span class="step-title">12. Morel 5327 Lifters &ndash; inspect 16 pcs (16 St&uuml;ck pr&uuml;fen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">12. Morel 5327 Lifters &ndash; inspect 16 pcs (16 St&uuml;ck pr&uuml;fen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_lifters_n" placeholder="Findings..." oninput="autoSave()">
     <div class="step-guide">
@@ -612,8 +616,8 @@
 <div class="step-card" id="step13">
     <div class="step-header">
         <input type="checkbox" data-field="p1_rockers" onchange="autoSave()">
-        <span class="step-title">13. COMP 1632-16 Rockers &ndash; Trunnion, Ratio</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">13. COMP 1632-16 Rockers &ndash; Trunnion, Ratio</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_rockers_n" placeholder="Findings..." oninput="autoSave()">
     <div class="step-guide">
@@ -636,7 +640,7 @@
 <div class="step-card" id="step14">
     <div class="step-header">
         <input type="checkbox" data-field="p1_polylocks" onchange="autoSave()">
-        <span class="step-title">14. COMP 4600-16 Polylocks &ndash; 16 pcs, 7/16&quot; (11.11 mm)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">14. COMP 4600-16 Polylocks &ndash; 16 pcs, 7/16&quot; (11.11 mm)</span>
     </div>
     <input type="text" class="step-note" data-field="p1_polylocks_n" placeholder="Count confirmed / Findings..." oninput="autoSave()">
 </div>
@@ -650,8 +654,8 @@
 <div class="step-card" id="step15">
     <div class="step-header">
         <input type="checkbox" data-field="p1_deck_flat" onchange="autoSave()">
-        <span class="step-title">15. Sealing Surface Flatness (Dichtfl&auml;chen Planheit)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">15. Sealing Surface Flatness (Dichtfl&auml;chen Planheit)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_deck_flat_n" placeholder="Findings..." oninput="autoSave()">
     <div class="step-guide">
@@ -676,8 +680,8 @@
 <div class="step-card" id="step16">
     <div class="step-header">
         <input type="checkbox" data-field="p1_chamber_vol" onchange="autoSave()">
-        <span class="step-title">16. Chamber Volume (Brennraumvolumen) &ndash; Target: 58 cc</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">16. Chamber Volume (Brennraumvolumen) &ndash; Target: 58 cc</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_chamber_vol_n" placeholder="Measured cc..." oninput="autoSave()">
     <div class="step-guide">
@@ -713,7 +717,7 @@
 <div class="step-card" id="step17">
     <div class="step-header">
         <input type="checkbox" data-field="p1_studs" onchange="autoSave()">
-        <span class="step-title">17. Rocker Studs 7/16&quot; (11.11 mm) #6411 &ndash; confirm</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">17. Rocker Studs 7/16&quot; (11.11 mm) #6411 &ndash; confirm</span>
     </div>
     <input type="text" class="step-note" data-field="p1_studs_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
 </div>
@@ -722,7 +726,7 @@
 <div class="step-card" id="step18">
     <div class="step-header">
         <input type="checkbox" data-field="p1_springs" onchange="autoSave()">
-        <span class="step-title">18. Springs #8605 + Titanium Retainers #8600 &ndash; confirm</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">18. Springs #8605 + Titanium Retainers #8600 &ndash; confirm</span>
     </div>
     <input type="text" class="step-note" data-field="p1_springs_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
 </div>
@@ -731,8 +735,8 @@
 <div class="step-card" id="step19">
     <div class="step-header">
         <input type="checkbox" data-field="p1_spring_height" onchange="autoSave()">
-        <span class="step-title">19. Installed Spring Height (Federeinbauh&ouml;he) &ndash; all 16</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">19. Installed Spring Height (Federeinbauh&ouml;he) &ndash; all 16</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_spring_height_n" placeholder="Min:___ Max:___ Avg:___" oninput="autoSave()">
     <div class="step-guide">
@@ -762,8 +766,8 @@
 <div class="step-card" id="step20">
     <div class="step-header">
         <input type="checkbox" data-field="p1_coilbind" onchange="autoSave()">
-        <span class="step-title">20. Coil Bind Clearance &ge; 0.060&quot; (1.52 mm) over max. lift</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">20. Coil Bind Clearance &ge; 0.060&quot; (1.52 mm) over max. lift</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_coilbind_n" placeholder="Clearance:___" oninput="autoSave()">
     <div class="step-guide">
@@ -788,8 +792,8 @@
 <div class="step-card" id="step21">
     <div class="step-header">
         <input type="checkbox" data-field="p1_spring_open" onchange="autoSave()">
-        <span class="step-title">21. Open Spring Pressure at 0.565&quot; (14.35 mm) lift</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">21. Open Spring Pressure at 0.565&quot; (14.35 mm) lift</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_spring_open_n" placeholder="Pressure lbs:___" oninput="autoSave()">
     <div class="step-guide">
@@ -812,7 +816,7 @@
 <div class="step-card" id="step22">
     <div class="step-header">
         <input type="checkbox" data-field="p1_keepers" onchange="autoSave()">
-        <span class="step-title">22. Valve Keepers (Ventilkeile) 7&deg; &ndash; match titanium retainers</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">22. Valve Keepers (Ventilkeile) 7&deg; &ndash; match titanium retainers</span>
     </div>
     <input type="text" class="step-note" data-field="p1_keepers_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
 </div>
@@ -826,8 +830,8 @@
 <div class="step-card" id="step23">
     <div class="step-header">
         <input type="checkbox" data-field="p1_rod_brg_check" onchange="autoSave()">
-        <span class="step-title">23. Rod Bearing Clearance &ndash; Plastigage (Pleuellagerspiel)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">23. Rod Bearing Clearance &ndash; Plastigage (Pleuellagerspiel)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_rod_brg_check_n" placeholder="All 8 rods measured..." oninput="autoSave()">
     <div class="step-guide">
@@ -871,8 +875,8 @@
 <div class="step-card" id="step24">
     <div class="step-header">
         <input type="checkbox" data-field="p1_ring_gap_check" onchange="autoSave()">
-        <span class="step-title">24. Ring End Gap &ndash; Top &amp; 2nd Ring (Kolbenringsto&szlig; messen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">24. Ring End Gap &ndash; Top &amp; 2nd Ring (Kolbenringsto&szlig; messen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_ring_gap_check_n" placeholder="All 8 cylinders measured..." oninput="autoSave()">
     <div class="step-guide">
@@ -933,8 +937,8 @@
 <div class="step-card" id="step25">
     <div class="step-header">
         <input type="checkbox" data-field="p1_arp_length" onchange="autoSave()">
-        <span class="step-title">25. ARP 154-4003 Head Studs &ndash; measure length (L&auml;nge messen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">25. ARP 154-4003 Head Studs &ndash; measure length (L&auml;nge messen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_arp_length_n" placeholder="Short:___ Long:___" oninput="autoSave()">
     <div class="step-guide">
@@ -971,8 +975,8 @@
 <div class="step-card" id="step26">
     <div class="step-header">
         <input type="checkbox" data-field="p1_arp_cam" onchange="autoSave()">
-        <span class="step-title">26. ARP 254-1001 Cam Bolt &ndash; inspect</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">26. ARP 254-1001 Cam Bolt &ndash; inspect</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_arp_cam_n" placeholder="Findings..." oninput="autoSave()">
     <div class="step-guide">
@@ -997,8 +1001,8 @@
 <div class="step-card" id="step27">
     <div class="step-header">
         <input type="checkbox" data-field="p1_timing_set" onchange="autoSave()">
-        <span class="step-title">27. M-6268-A302 Timing Set &ndash; inspect</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">27. M-6268-A302 Timing Set &ndash; inspect</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_timing_set_n" placeholder="Findings..." oninput="autoSave()">
     <div class="step-guide">
@@ -1077,7 +1081,7 @@
         if (guide) {
             var open = guide.classList.toggle('open');
             btn.classList.toggle('open', open);
-            btn.textContent = open ? 'Close' : 'Guide';
+            // arrow rotation handled by CSS ::after
         }
     }
 
@@ -1337,7 +1341,7 @@
             if (el.classList && el.classList.contains('step-guide') && !el.classList.contains('open')) {
                 el.classList.add('open');
                 var btn = el.closest('.step-card').querySelector('.guide-toggle');
-                if (btn) { btn.classList.add('open'); btn.textContent = 'Close'; }
+                if (btn) { btn.classList.add('open'); }
             }
             // Also expand collapsed phase
             if (el.classList && el.classList.contains('phase-body') && el.classList.contains('collapsed')) {

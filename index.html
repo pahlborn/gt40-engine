@@ -560,32 +560,34 @@
             <!-- Zielkonfiguration - kommt zuerst -->
             <div style="background:#f0f5ff;border:1px solid #bee3f8;border-radius:10px;padding:0.75rem;margin-bottom:0.75rem;">
                 <div style="font-weight:700;font-size:0.88rem;color:#2b6cb0;margin-bottom:0.5rem;">&#127919; Zielkonfiguration</div>
-                <div class="form-group" style="margin-bottom:0.4rem;">
-                    <label>Angestrebte Leistung (BHP an Kurbelwelle)</label>
-                    <input type="text" data-field="target_hp" placeholder='z.B. 350 BHP (261 kW / 355 PS)' oninput="autoSave()">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 0.8rem;">
+                    <div class="form-group" style="margin-bottom:0.2rem;">
+                        <label style="font-size:0.72rem;">Angestrebte Leistung (BHP)</label>
+                        <input type="text" data-field="target_hp" placeholder='z.B. 350' oninput="autoSave()" style="padding:0.25rem 0.4rem;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0.2rem;">
+                        <label style="font-size:0.72rem;">Ziel-Verdichtung</label>
+                        <input type="text" data-field="target_cr" placeholder='z.B. 9.7:1' oninput="autoSave()" style="padding:0.25rem 0.4rem;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0.2rem;">
+                        <label style="font-size:0.72rem;">Angestrebtes Drehmoment (ft-lbs)</label>
+                        <input type="text" data-field="target_torque" placeholder='z.B. 340 ft-lbs (461 Nm)' oninput="autoSave()" style="padding:0.25rem 0.4rem;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0.2rem;">
+                        <label style="font-size:0.72rem;">Kraftstoff</label>
+                        <input type="text" data-field="target_fuel" placeholder='z.B. 98 ROZ' oninput="autoSave()" style="padding:0.25rem 0.4rem;">
+                    </div>
                 </div>
-                <div class="form-group" style="margin-bottom:0.4rem;">
-                    <label>Angestrebtes Drehmoment (ft-lbs)</label>
-                    <input type="text" data-field="target_torque" placeholder='z.B. 340 ft-lbs (461 Nm)' oninput="autoSave()">
-                </div>
-                <div class="form-group" style="margin-bottom:0.4rem;">
-                    <label>Ziel-Verdichtung</label>
-                    <input type="text" data-field="target_cr" placeholder='z.B. 9.7:1' oninput="autoSave()">
-                </div>
-                <div class="form-group" style="margin-bottom:0.4rem;">
-                    <label>Einsatzzweck</label>
+                <div class="form-group" style="margin-top:0.3rem;margin-bottom:0.3rem;">
+                    <label style="font-size:0.72rem;">Einsatzzweck</label>
                     <input type="text" data-field="target_use" value="Trackdays Only &ndash; TSC GT40 Kit Car" placeholder='z.B. Trackdays, Kit Car' oninput="autoSave()">
                 </div>
-                <div class="form-group" style="margin-bottom:0.4rem;">
-                    <label>Strecken</label>
+                <div class="form-group" style="margin-bottom:0.3rem;">
+                    <label style="font-size:0.72rem;">Strecken</label>
                     <input type="text" data-field="target_tracks" value="Pannoniaring, Slovakiaring, Brno (Masaryk), Spa-Francorchamps" placeholder='Strecken...' oninput="autoSave()">
                 </div>
-                <div class="form-group" style="margin-bottom:0.4rem;">
-                    <label>Kraftstoff</label>
-                    <input type="text" data-field="target_fuel" placeholder='z.B. Super Plus (98 ROZ), E10, Race Gas' oninput="autoSave()">
-                </div>
                 <div class="section-comment">
-                    <label>Notizen zu Build-Zielen</label>
+                    <label style="font-size:0.72rem;">Notizen zu Build-Zielen</label>
                     <textarea data-field="comment_targets" placeholder="Gedanken, Alternativkonfigurationen, Erfahrungswerte..." oninput="autoSave()"></textarea>
                 </div>
             </div>
@@ -641,38 +643,6 @@
 
             <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Leistungsberechnung und Drehmoment-/Leistungskurven werden im <strong>Motor-Simulator</strong> (Sektion 1c unten) berechnet. Die Zielwerte oben sind die <em>angestrebten</em> Werte, der Simulator zeigt die <em>berechneten</em> Werte basierend auf den tats&auml;chlichen Komponenten.</div>
 
-            <!-- FUEL DELIVERY -->
-            <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#9981; Kraftstoffversorgung &ndash; Herstellerhinweise</div>
-                <div class="comp-body">
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoffdruck bei Peak HP aufrechterhalten</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">2x Facet Red Top + Druckregler</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoffdruck Dell&rsquo;Orto DHLA 45: <strong>2.5&ndash;3.5 psi (0.17&ndash;0.24 bar)</strong><br><span style="font-size:0.68rem;color:#718096;">Facet Red Top liefert 7.5 psi &rarr; Druckregler PFLICHT (z.B. Malpassi Filter King)</span></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Druckregler dokumentiert</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pumpe schwerkraftgespeist montieren (nicht saugend)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Facet: vertikal, tanknahe, Auslass oben</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoff durch Filter dr&uuml;cken, nicht saugen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Filter nach Pumpe, vor Druckregler</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">BSFC ~0.5 lb/HP f&uuml;r Dimensionierung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">2x Facet = ~120 l/h total, ausreichend</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Tankbaffles vorhanden?</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pr&uuml;fen (je 1 Pumpe pro Tank)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
-                        <tr><td style="padding:0.2rem;">H&ouml;henlage, Temperatur &amp; Kraftstoff beeinflussen Bedüsung</td><td style="padding:0.2rem;">DellOrto: Jetting nach Streckenh&ouml;he</td><td style="text-align:center;padding:0.2rem;color:#975a16;font-weight:700;">&#9888; Tuning</td></tr>
-                    </table>
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>Ford Performance Jetting-Hinweis:</strong> Oktanzahl, Au&szlig;entemperatur und H&ouml;henlage beeinflussen die Gemischbildung erheblich. Beispiel (750 CFM Holley): Bei 6.000 ft H&ouml;he m&uuml;ssen die Jets um 8 Stufen magerer sein als auf Meeresniveau. F&uuml;r DellOrto-Vergaser gilt analog: Hauptd&uuml;se und Leerlaufd&uuml;se bei gro&szlig;en H&ouml;hen- oder Temperatur&auml;nderungen pr&uuml;fen. Spa (300 m &uuml;. NN) &ne; Pannoniaring (180 m).</div>
-                </div>
-            </div>
-
-
-            <!-- DYNO CORRECTION FACTORS -->
-            <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#128200; Pr&uuml;fstands-Korrekturfaktoren (SAE J1349 vs. J607)</div>
-                <div class="comp-body">
-                    <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.3rem;">Ford Performance gibt Leistungswerte ihrer Pushrod Crate Engines nach <strong>SAE J607 (&bdquo;Racer Corrected&ldquo;)</strong> an &ndash; korrigiert auf 60&deg;F (15,6&deg;C) und 29.92" Hg. Diese Werte sind ca. <strong>4% h&ouml;her</strong> als SAE J1349 (&bdquo;SAE&ldquo;), welche auf 77&deg;F (25&deg;C) und 29.31" Hg korrigiert und 85% mechanischen Wirkungsgrad ber&uuml;cksichtigt.</p>
-                    <table style="width:100%;font-size:0.74rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Korrekturfaktor</th><th style="text-align:center;padding:0.25rem;">Temperatur</th><th style="text-align:center;padding:0.25rem;">Druck</th><th style="text-align:center;padding:0.25rem;">Ergebnis</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>SAE J607</strong> (Racer Corrected)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">60&deg;F (15,6&deg;C)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">29.92" Hg</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">H&ouml;here Werte (~4% mehr)</td></tr>
-                        <tr><td style="padding:0.2rem;"><strong>SAE J1349</strong> (SAE Standard)</td><td style="text-align:center;padding:0.2rem;">77&deg;F (25&deg;C)</td><td style="text-align:center;padding:0.2rem;">29.31" Hg</td><td style="text-align:center;padding:0.2rem;">Realistischere Werte</td></tr>
-                    </table>
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>Praxis:</strong> Wenn Sie auf einem Pr&uuml;fstand landen, fragen Sie nach dem Korrekturfaktor. SAE J1349 ist der realistischere Standard. Ford Performance Katalog-Angaben f&uuml;r den M-6009-302 sind wahrscheinlich J607-korrigiert &ndash; reale Leistung auf dem Pr&uuml;fstand wird ~4% niedriger sein.</div>
-                </div>
-            </div>
 
         </div>
     </div>
@@ -747,70 +717,26 @@
             <!-- RPM Cross-Check Warnbereich -->
             <div id="simRpmWarnings" style="display:none;margin:0.3rem 0;"></div>
 
-            <!-- Masseinheiten-Hinweis -->
-            <div class="comp-box" style="margin:0.3rem 0;background:#f0f5ff;border-color:#90cdf4;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="font-size:0.78rem;color:#2b6cb0;">&#128207; Ma&szlig;einheiten in diesem Dokument</div>
-                <div class="comp-body">
-                    <p style="font-size:0.76rem;line-height:1.4;margin:0 0 0.3rem;">Alle Leistungs- und Drehmoment-Angaben in diesem Build-Log verwenden die in der US-Motorentechnik &uuml;blichen <strong>imperialen Einheiten</strong>. Die Umrechnung in metrische Einheiten wird wo m&ouml;glich mit angegeben.</p>
-
-                    <div class="comp-sub" style="margin-top:0.3rem;">Leistung</div>
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Bezeichnung</th><th style="text-align:left;padding:0.2rem;">Definition / Verwendung</th><th style="text-align:center;padding:0.2rem;">Umrechnung</th></tr>
-                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">BHP</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Brake Horsepower</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Dieses Dokument.</strong> Nutzleistung an der Kurbelwelle, ohne Nebenaggregat-Verluste. Ford Perf. Katalog-Standard (SAE J607).</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 BHP = Basis</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">PS (DIN)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pferdest&auml;rke</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">DIN 66036. Metrische Pferdest&auml;rke. In DE/EU gebr&auml;uchlich.</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 BHP = 1.0139 PS</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">kW</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kilowatt</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">SI-Einheit. EU-Fahrzeugpapiere, offizielle Angaben.</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 BHP = 0.7457 kW</td></tr>
-                        <tr><td style="padding:0.2rem;">WHP</td><td style="padding:0.2rem;">Wheel Horsepower</td><td style="padding:0.2rem;">Radleistung, nach Getriebe-/Antriebsverlusten (~12&ndash;18% weniger als BHP).</td><td style="text-align:center;padding:0.2rem;">~0.82&ndash;0.88 &times; BHP</td></tr>
-                    </table>
-
-                    <div class="comp-sub" style="margin-top:0.3rem;">Drehmoment</div>
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Bezeichnung</th><th style="text-align:center;padding:0.2rem;">Umrechnung</th></tr>
-                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">ft-lbs</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Foot-Pounds (lb-ft). <strong>Dieses Dokument</strong> (US-Standard f&uuml;r Motordrehmoment).</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 ft-lb = 1.3558 Nm</td></tr>
-                        <tr><td style="padding:0.2rem;">Nm</td><td style="padding:0.2rem;">Newtonmeter. SI-Einheit, in EU/DE gebr&auml;uchlich.</td><td style="text-align:center;padding:0.2rem;">1 Nm = 0.7376 ft-lbs</td></tr>
-                    </table>
-
-                    <div class="comp-sub" style="margin-top:0.3rem;">Anzugsdrehmomente (Schrauben)</div>
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:center;padding:0.2rem;">Umrechnung</th></tr>
-                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">ft-lbs</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Dieses Dokument</strong> (US-Hersteller-Specs).</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 ft-lb = 1.3558 Nm</td></tr>
-                        <tr><td style="padding:0.2rem;">in-lbs</td><td style="padding:0.2rem;">F&uuml;r kleine Schrauben (1/12 ft-lb). Teils in US-Specs.</td><td style="text-align:center;padding:0.2rem;">1 in-lb = 0.1130 Nm</td></tr>
-                    </table>
-
-                    <div class="comp-sub" style="margin-top:0.3rem;">Druck</div>
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:center;padding:0.2rem;">Umrechnung</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">psi</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">&Ouml;ldruck, Kraftstoffdruck (US-Standard).</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 psi = 0.0689 Bar</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Bar</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Metrisch (DE/EU).</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 Bar = 14.504 psi</td></tr>
-                        <tr><td style="padding:0.2rem;">PSI (Zugfestigkeit)</td><td style="padding:0.2rem;">Materialfestigkeit (z.B. ARP 200.000 PSI).</td><td style="text-align:center;padding:0.2rem;">1.000 PSI = 6.895 MPa</td></tr>
-                    </table>
-
-                    <div class="comp-sub" style="margin-top:0.3rem;">L&auml;nge / Volumen</div>
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:center;padding:0.2rem;">Umrechnung</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Inch (")</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Bohrung, Hub, Spaltma&szlig;e, Schrauben.</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1" = 25.4 mm</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">thou (mil)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">0.001" = ein Tausendstel Inch. Lagerspiel, Dichtungsdicke.</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 thou = 0.0254 mm</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">ci / CID</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Cubic Inches &ndash; Hubraum (US).</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 ci = 16.387 cc (ml)</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">cc</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kubikzentimeter &ndash; Brennraumvolumen, Kanalvolumen.</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 cc = 1 ml</td></tr>
-                        <tr><td style="padding:0.2rem;">CFM</td><td style="padding:0.2rem;">Cubic Feet per Minute &ndash; Luftdurchsatz Zylinderkopf.</td><td style="text-align:center;padding:0.2rem;">1 CFM = 1.699 m&sup3;/h</td></tr>
-                    </table>
-
-                    <div class="comp-sub" style="margin-top:0.3rem;">Gewicht</div>
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:center;padding:0.2rem;">Umrechnung</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">lbs</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">US-Pfund. Bauteil-/Motorgewicht.</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">1 lb = 0.4536 kg</td></tr>
-                        <tr><td style="padding:0.2rem;">kg</td><td style="padding:0.2rem;">Kilogramm (SI). Fahrzeuggewicht.</td><td style="text-align:center;padding:0.2rem;">1 kg = 2.2046 lbs</td></tr>
-                    </table>
-
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>Pr&uuml;fstands-Korrektur:</strong> Ford Performance gibt Pushrod-Crate-Engine-Leistung nach <strong>SAE J607</strong> (&bdquo;Racer Corrected&ldquo;) an: korrigiert auf 60&deg;F / 29.92" Hg. Diese Werte liegen ca. <strong>4% &uuml;ber</strong> SAE J1349 (77&deg;F / 29.31" Hg, 85% mech. Wirkungsgrad), dem heutigen Industrie-Standard. Unser Simulator berechnet BHP nach der Standardformel <strong>BHP = Torque &times; RPM / 5252</strong> und entspricht am ehesten SAE J607.</div>
-                </div>
-            </div>
-
             <!-- Canvas Chart -->
             <canvas id="simChart" width="700" height="340" style="width:100%;height:auto;border:1px solid #e2e8f0;border-radius:8px;background:#fff;"></canvas>
             <div style="display:flex;justify-content:center;gap:1rem;font-size:0.7rem;margin-top:0.2rem;">
                 <span><span style="color:#276749;font-weight:700;">&#9644;</span> Leistung (BHP &ndash; Brake Horsepower)</span>
                 <span><span style="color:#2b6cb0;font-weight:700;">&#9644;</span> Drehmoment (ft-lbs / Nm)</span>
                 <span style="color:#a0aec0;">&#9644; VE (%)</span>
+            </div>
+
+            <!-- DYNO CORRECTION FACTORS -->
+            <div class="comp-box" style="margin-top:0.5rem;">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#128200; Pr&uuml;fstands-Korrekturfaktoren (SAE J1349 vs. J607)</div>
+                <div class="comp-body">
+                    <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.3rem;">Ford Performance gibt Leistungswerte ihrer Pushrod Crate Engines nach <strong>SAE J607 (&bdquo;Racer Corrected&ldquo;)</strong> an &ndash; korrigiert auf 60&deg;F (15,6&deg;C) und 29.92" Hg. Diese Werte sind ca. <strong>4% h&ouml;her</strong> als SAE J1349 (&bdquo;SAE&ldquo;), welche auf 77&deg;F (25&deg;C) und 29.31" Hg korrigiert und 85% mechanischen Wirkungsgrad ber&uuml;cksichtigt.</p>
+                    <table style="width:100%;font-size:0.74rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Korrekturfaktor</th><th style="text-align:center;padding:0.25rem;">Temperatur</th><th style="text-align:center;padding:0.25rem;">Druck</th><th style="text-align:center;padding:0.25rem;">Ergebnis</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>SAE J607</strong> (Racer Corrected)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">60&deg;F (15,6&deg;C)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">29.92" Hg</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">H&ouml;here Werte (~4% mehr)</td></tr>
+                        <tr><td style="padding:0.2rem;"><strong>SAE J1349</strong> (SAE Standard)</td><td style="text-align:center;padding:0.2rem;">77&deg;F (25&deg;C)</td><td style="text-align:center;padding:0.2rem;">29.31" Hg</td><td style="text-align:center;padding:0.2rem;">Realistischere Werte</td></tr>
+                    </table>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Praxis:</strong> Wenn Sie auf einem Pr&uuml;fstand landen, fragen Sie nach dem Korrekturfaktor. SAE J1349 ist der realistischere Standard. Ford Performance Katalog-Angaben f&uuml;r den M-6009-302 sind wahrscheinlich J607-korrigiert &ndash; reale Leistung auf dem Pr&uuml;fstand wird ~4% niedriger sein.</div>
+                </div>
             </div>
 
             <!-- Kraftstoff-Empfehlung -->
@@ -853,101 +779,6 @@
 
                     <div class="comp-sub" style="margin-top:0.4rem;">Vacuum Advance &amp; Oktanzahl</div>
                     <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Der <strong>Vacuum Advance</strong> (MSD 8479) addiert bei Teillast zus&auml;tzliches Timing (bis ~15&deg; extra). Dies ist <strong>kein Klopfrisiko</strong>, da Teillast = weniger Brennraumdruck. Vacuum Advance verbessert den Verbrauch und die Gasannahme im Stadtverkehr erheblich, ohne die Klopfgrenze zu beeinflussen. Bei Volllast (WOT) ist kein Unterdruck vorhanden &rarr; Vacuum Advance = 0&deg;.</p>
-                </div>
-            </div>
-
-            <!-- Kraftstoff-Guide nach Tankketten -->
-            <div class="comp-box" style="margin-top:0.3rem;background:#fff5f5;border-color:#fc8181;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#c53030;">&#9888; Warnung: E10 &amp; DellOrto-Vergaser</div>
-                <div class="comp-body">
-                    <p style="font-size:0.8rem;line-height:1.5;margin:0 0 0.3rem;"><strong>E10 (10% Ethanol) darf NICHT getankt werden!</strong> Ethanol greift die Aluminium-Vergaserk&ouml;rper der DellOrto DRLA 45 an:</p>
-                    <div style="font-size:0.78rem;line-height:1.6;margin:0.2rem 0;">
-                        &bull; <strong>Korrosion</strong> der Aluminium-Druckguss-Teile (Vergaserk&ouml;rper, Schwimmerkammer)<br>
-                        &bull; <strong>Quellung</strong> von Dichtungen, Membranen und Schwimmernadel-Ventilen<br>
-                        &bull; <strong>Hygroskopisch:</strong> Ethanol bindet Wasser &rarr; Korrosion bei Standzeiten<br>
-                        &bull; <strong>Lacksch&auml;den:</strong> Ethanol greift Lackoberfl&auml;chen an (Spritzer beim Tanken!)<br>
-                        &bull; <strong>Phasentrennung:</strong> Bei Standzeiten trennt sich Ethanol/Wasser vom Benzin &rarr; Motorsch&auml;den
-                    </div>
-                    <div style="background:#fed7d7;padding:0.4rem;border-radius:6px;margin-top:0.3rem;font-size:0.78rem;"><strong>Regel:</strong> Immer E5 oder ethanol-frei tanken. An der Zapfs&auml;ule auf &bdquo;E5&ldquo; oder &bdquo;Super Plus&ldquo; achten. <strong>NIEMALS E10!</strong> Im Zweifel: Premium-Sorten sind fast immer ethanol-frei oder maximal E5.</div>
-                </div>
-            </div>
-
-            <div class="comp-box" style="margin-top:0.3rem;">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#9981; Kraftstoff-Guide nach Tankketten &amp; L&auml;ndern</div>
-                <div class="comp-body">
-                    <div class="comp-sub">&#127465;&#127466; Deutschland (Anreise / Heimat)</div>
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;margin:0.2rem 0;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Tankkette</th><th style="text-align:left;padding:0.25rem;">Produkt</th><th style="text-align:center;padding:0.25rem;">ROZ</th><th style="text-align:center;padding:0.25rem;">Ethanol</th><th style="text-align:center;padding:0.25rem;">Empfehlung</th></tr>
-                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">Aral</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Ultimate 102</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">102</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">0%</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; BESTE WAHL</td></tr>
-                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">Shell</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>V-Power Racing</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">max 0,7%</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; SEHR GUT</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">TotalEnergies</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Excellium Super Plus</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5 (max 5%)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Esso</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Synergy Supreme+ Super Plus</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5 (max 5%)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">JET</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Super Plus</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK (nicht &uuml;berall)</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Alle</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Super E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">95</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5 (max 5%)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;">Notfall</td></tr>
-                        <tr><td style="padding:0.2rem;"><s>Alle</s></td><td style="padding:0.2rem;"><s>Super E10</s></td><td style="text-align:center;padding:0.2rem;">95</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">E10 (10%)</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">&#10060; VERBOTEN</td></tr>
-                    </table>
-
-                    <div class="comp-sub" style="margin-top:0.4rem;">&#127469;&#127482; Ungarn (Pannoniaring)</div>
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;margin:0.2rem 0;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Tankkette</th><th style="text-align:left;padding:0.25rem;">Produkt</th><th style="text-align:center;padding:0.25rem;">ROZ</th><th style="text-align:center;padding:0.25rem;">Ethanol</th><th style="text-align:center;padding:0.25rem;">Empfehlung</th></tr>
-                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">MOL</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>EVO 100 / Master 100</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">100&ndash;101</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">0% (ETBE statt Ethanol)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; BESTE WAHL</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Shell</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">V-Power</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">OMV</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MaxxMotion 100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MOL / Andere</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Sz&uuml;per 98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
-                        <tr><td style="padding:0.2rem;"><s>Alle</s></td><td style="padding:0.2rem;"><s>Sz&uuml;per 95 (E10)</s></td><td style="text-align:center;padding:0.2rem;">95</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">E10</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">&#10060; VERBOTEN</td></tr>
-                    </table>
-                    <div class="info-box" style="margin-top:0.2rem;font-size:0.72rem;"><strong>Tipp:</strong> MOL ist die gr&ouml;&szlig;te Tankkette in Ungarn. MOL EVO/Master 100 verwendet <strong>ETBE</strong> statt Ethanol als Bio-Komponente &ndash; ETBE hat selbst eine Oktanzahl von ~110 und ist nicht hygroskopisch. Ideal f&uuml;r Vergaser!</div>
-
-                    <div class="comp-sub" style="margin-top:0.4rem;">&#127480;&#127472; Slowakei (Slovakiaring)</div>
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;margin:0.2rem 0;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Tankkette</th><th style="text-align:left;padding:0.25rem;">Produkt</th><th style="text-align:center;padding:0.25rem;">ROZ</th><th style="text-align:center;padding:0.25rem;">Ethanol</th><th style="text-align:center;padding:0.25rem;">Empfehlung</th></tr>
-                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">MOL</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>EVO 100</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">0% (ETBE)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; BESTE WAHL</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Shell</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">V-Power</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">OMV</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MaxxMotion 100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Alle</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Natural 98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
-                        <tr><td style="padding:0.2rem;"><s>Alle</s></td><td style="padding:0.2rem;"><s>Natural 95 (E10)</s></td><td style="text-align:center;padding:0.2rem;">95</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">E10</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">&#10060; VERBOTEN</td></tr>
-                    </table>
-                    <div class="info-box" style="margin-top:0.2rem;font-size:0.72rem;"><strong>Tipp:</strong> MOL ist auch in der Slowakei stark vertreten. Slovakiaring liegt nahe Bratislava &ndash; OMV und Shell gibt es direkt in der Stadt.</div>
-
-                    <div class="comp-sub" style="margin-top:0.4rem;">&#127464;&#127487; Tschechien (Brno / Masaryk Circuit)</div>
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;margin:0.2rem 0;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Tankkette</th><th style="text-align:left;padding:0.25rem;">Produkt</th><th style="text-align:center;padding:0.25rem;">ROZ</th><th style="text-align:center;padding:0.25rem;">Ethanol</th><th style="text-align:center;padding:0.25rem;">Empfehlung</th></tr>
-                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">Shell</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>V-Power Racing</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; BESTE WAHL</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MOL / Benzina</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Verva 100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">OMV</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MaxxMotion 100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Alle</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Natural 98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
-                        <tr><td style="padding:0.2rem;"><s>Alle</s></td><td style="padding:0.2rem;"><s>Natural 95 (E10)</s></td><td style="text-align:center;padding:0.2rem;">95</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">E10</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">&#10060; VERBOTEN</td></tr>
-                    </table>
-                    <div class="info-box" style="margin-top:0.2rem;font-size:0.72rem;"><strong>Tipp:</strong> In CZ hei&szlig;t Benzin &bdquo;Natural&ldquo;. Natural 98 = Super Plus (E5). Shell und MOL/Benzina-Stationen sind in Brno gut vertreten.</div>
-
-                    <div class="comp-sub" style="margin-top:0.4rem;">&#127463;&#127466; Belgien (Spa-Francorchamps)</div>
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;margin:0.2rem 0;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Tankkette</th><th style="text-align:left;padding:0.25rem;">Produkt</th><th style="text-align:center;padding:0.25rem;">ROZ</th><th style="text-align:center;padding:0.25rem;">Ethanol</th><th style="text-align:center;padding:0.25rem;">Empfehlung</th></tr>
-                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">TotalEnergies<br><em>(am Circuit!)</em></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Excellium SPA 102</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">102+</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; EXKLUSIV am Circuit!</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Shell</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">V-Power Racing</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">TotalEnergies</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Excellium Super Plus</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Alle</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">SP98 (Super Plus)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
-                        <tr><td style="padding:0.2rem;"><s>Alle</s></td><td style="padding:0.2rem;"><s>SP95 (E10)</s></td><td style="text-align:center;padding:0.2rem;">95</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">E10</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">&#10060; VERBOTEN</td></tr>
-                    </table>
-                    <div class="info-box" style="margin-top:0.2rem;font-size:0.72rem;"><strong>Highlight:</strong> Direkt am Circuit de Spa-Francorchamps gibt es eine <strong>TotalEnergies-Tankstelle</strong> (Route du Circuit 16, 4970 Francorchamps) mit exklusivem <strong>Excellium SPA 102</strong> &ndash; echter Rennkraftstoff (RON 102+), der auch mit normaler 98er-Einstellung gefahren werden kann. Unbedingt dort tanken!</div>
-
-                    <div class="comp-sub" style="margin-top:0.4rem;">&#127959; &Ouml;sterreich (Durchreise)</div>
-                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;margin:0.2rem 0;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Tankkette</th><th style="text-align:left;padding:0.25rem;">Produkt</th><th style="text-align:center;padding:0.25rem;">ROZ</th><th style="text-align:center;padding:0.25rem;">Ethanol</th><th style="text-align:center;padding:0.25rem;">Empfehlung</th></tr>
-                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">OMV</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>MaxxMotion 100+</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; BESTE WAHL</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Shell</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">V-Power Racing</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
-                        <tr><td style="padding:0.2rem;">Alle</td><td style="padding:0.2rem;">Super Plus</td><td style="text-align:center;padding:0.2rem;">98</td><td style="text-align:center;padding:0.2rem;">E5</td><td style="text-align:center;padding:0.2rem;color:#276749;">OK</td></tr>
-                    </table>
-                    <div class="info-box" style="margin-top:0.2rem;font-size:0.72rem;"><strong>Route Pannoniaring:</strong> Via &Ouml;sterreich (A2/S4). OMV-Netz ist extrem dicht. Letzter Tankstopp vor der Grenze mit MaxxMotion 100 empfohlen.</div>
-
-                    <div class="comp-sub" style="margin-top:0.5rem;">Zusammenfassung: Beste Wahl pro Strecke</div>
-                    <table style="width:100%;font-size:0.74rem;border-collapse:collapse;margin:0.2rem 0;">
-                        <tr style="background:#e6ffed;"><th style="text-align:left;padding:0.3rem;">Strecke</th><th style="text-align:left;padding:0.3rem;">Tanken bei</th><th style="text-align:left;padding:0.3rem;">Produkt</th><th style="text-align:center;padding:0.3rem;">ROZ</th></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Pannoniaring</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;font-weight:700;">MOL</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">EVO 100 (ethanol-frei!)</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">100</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Slovakiaring</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;font-weight:700;">MOL / OMV</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">EVO 100 oder MaxxMotion 100</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">100</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Brno</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;font-weight:700;">Shell / MOL-Benzina</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">V-Power Racing / Verva 100</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">100</td></tr>
-                        <tr><td style="padding:0.25rem;">Spa</td><td style="padding:0.25rem;font-weight:700;">TotalEnergies am Circuit</td><td style="padding:0.25rem;">Excellium SPA 102</td><td style="text-align:center;padding:0.25rem;">102+</td></tr>
-                    </table>
                 </div>
             </div>
 
@@ -1808,8 +1639,6 @@
                 <label>Kommentar zu Wasserpumpe</label>
                 <textarea data-field="comment_waterpump" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
             </div>
-        </div>
-    </div>
 
     <!-- 11. Vergaser / Kraftstoffsystem -->
     <div class="section">
@@ -1876,6 +1705,120 @@
                 <input type="checkbox" data-field="check_fuel_lines" onchange="autoSave()">
                 <span>Kraftstoffleitungen angeschlossen, auf Dichtheit gepr&uuml;ft</span>
             </div>
+
+            <!-- FUEL DELIVERY -->
+            <div class="comp-box">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#9981; Kraftstoffversorgung &ndash; Herstellerhinweise</div>
+                <div class="comp-body">
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoffdruck bei Peak HP aufrechterhalten</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">2x Facet Red Top + Druckregler</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoffdruck Dell&rsquo;Orto DHLA 45: <strong>2.5&ndash;3.5 psi (0.17&ndash;0.24 bar)</strong><br><span style="font-size:0.68rem;color:#718096;">Facet Red Top liefert 7.5 psi &rarr; Druckregler PFLICHT (z.B. Malpassi Filter King)</span></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Druckregler dokumentiert</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pumpe schwerkraftgespeist montieren (nicht saugend)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Facet: vertikal, tanknahe, Auslass oben</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Kraftstoff durch Filter dr&uuml;cken, nicht saugen</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Filter nach Pumpe, vor Druckregler</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">BSFC ~0.5 lb/HP f&uuml;r Dimensionierung</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">2x Facet = ~120 l/h total, ausreichend</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Tankbaffles vorhanden?</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Pr&uuml;fen (je 1 Pumpe pro Tank)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">&#9888; Pr&uuml;fen</td></tr>
+                        <tr><td style="padding:0.2rem;">H&ouml;henlage, Temperatur &amp; Kraftstoff beeinflussen Bedüsung</td><td style="padding:0.2rem;">DellOrto: Jetting nach Streckenh&ouml;he</td><td style="text-align:center;padding:0.2rem;color:#975a16;font-weight:700;">&#9888; Tuning</td></tr>
+                    </table>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Ford Performance Jetting-Hinweis:</strong> Oktanzahl, Au&szlig;entemperatur und H&ouml;henlage beeinflussen die Gemischbildung erheblich. Beispiel (750 CFM Holley): Bei 6.000 ft H&ouml;he m&uuml;ssen die Jets um 8 Stufen magerer sein als auf Meeresniveau. F&uuml;r DellOrto-Vergaser gilt analog: Hauptd&uuml;se und Leerlaufd&uuml;se bei gro&szlig;en H&ouml;hen- oder Temperatur&auml;nderungen pr&uuml;fen. Spa (300 m &uuml;. NN) &ne; Pannoniaring (180 m).</div>
+                </div>
+            </div>
+
+            <div class="comp-box" style="margin-top:0.3rem;background:#fff5f5;border-color:#fc8181;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#c53030;">&#9888; Warnung: E10 &amp; DellOrto-Vergaser</div>
+                <div class="comp-body">
+                    <p style="font-size:0.8rem;line-height:1.5;margin:0 0 0.3rem;"><strong>E10 (10% Ethanol) darf NICHT getankt werden!</strong> Ethanol greift die Aluminium-Vergaserk&ouml;rper der DellOrto DRLA 45 an:</p>
+                    <div style="font-size:0.78rem;line-height:1.6;margin:0.2rem 0;">
+                        &bull; <strong>Korrosion</strong> der Aluminium-Druckguss-Teile (Vergaserk&ouml;rper, Schwimmerkammer)<br>
+                        &bull; <strong>Quellung</strong> von Dichtungen, Membranen und Schwimmernadel-Ventilen<br>
+                        &bull; <strong>Hygroskopisch:</strong> Ethanol bindet Wasser &rarr; Korrosion bei Standzeiten<br>
+                        &bull; <strong>Lacksch&auml;den:</strong> Ethanol greift Lackoberfl&auml;chen an (Spritzer beim Tanken!)<br>
+                        &bull; <strong>Phasentrennung:</strong> Bei Standzeiten trennt sich Ethanol/Wasser vom Benzin &rarr; Motorsch&auml;den
+                    </div>
+                    <div style="background:#fed7d7;padding:0.4rem;border-radius:6px;margin-top:0.3rem;font-size:0.78rem;"><strong>Regel:</strong> Immer E5 oder ethanol-frei tanken. An der Zapfs&auml;ule auf &bdquo;E5&ldquo; oder &bdquo;Super Plus&ldquo; achten. <strong>NIEMALS E10!</strong> Im Zweifel: Premium-Sorten sind fast immer ethanol-frei oder maximal E5.</div>
+                </div>
+            </div>
+
+            <div class="comp-box" style="margin-top:0.3rem;">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#9981; Kraftstoff-Guide nach Tankketten &amp; L&auml;ndern</div>
+                <div class="comp-body">
+                    <div class="comp-sub">&#127465;&#127466; Deutschland (Anreise / Heimat)</div>
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;margin:0.2rem 0;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Tankkette</th><th style="text-align:left;padding:0.25rem;">Produkt</th><th style="text-align:center;padding:0.25rem;">ROZ</th><th style="text-align:center;padding:0.25rem;">Ethanol</th><th style="text-align:center;padding:0.25rem;">Empfehlung</th></tr>
+                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">Aral</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Ultimate 102</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">102</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">0%</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; BESTE WAHL</td></tr>
+                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">Shell</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>V-Power Racing</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">max 0,7%</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; SEHR GUT</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">TotalEnergies</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Excellium Super Plus</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5 (max 5%)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Esso</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Synergy Supreme+ Super Plus</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5 (max 5%)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">JET</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Super Plus</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK (nicht &uuml;berall)</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Alle</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Super E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">95</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5 (max 5%)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;">Notfall</td></tr>
+                        <tr><td style="padding:0.2rem;"><s>Alle</s></td><td style="padding:0.2rem;"><s>Super E10</s></td><td style="text-align:center;padding:0.2rem;">95</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">E10 (10%)</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">&#10060; VERBOTEN</td></tr>
+                    </table>
+
+                    <div class="comp-sub" style="margin-top:0.4rem;">&#127469;&#127482; Ungarn (Pannoniaring)</div>
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;margin:0.2rem 0;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Tankkette</th><th style="text-align:left;padding:0.25rem;">Produkt</th><th style="text-align:center;padding:0.25rem;">ROZ</th><th style="text-align:center;padding:0.25rem;">Ethanol</th><th style="text-align:center;padding:0.25rem;">Empfehlung</th></tr>
+                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">MOL</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>EVO 100 / Master 100</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">100&ndash;101</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">0% (ETBE statt Ethanol)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; BESTE WAHL</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Shell</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">V-Power</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">OMV</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MaxxMotion 100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MOL / Andere</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Sz&uuml;per 98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
+                        <tr><td style="padding:0.2rem;"><s>Alle</s></td><td style="padding:0.2rem;"><s>Sz&uuml;per 95 (E10)</s></td><td style="text-align:center;padding:0.2rem;">95</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">E10</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">&#10060; VERBOTEN</td></tr>
+                    </table>
+                    <div class="info-box" style="margin-top:0.2rem;font-size:0.72rem;"><strong>Tipp:</strong> MOL ist die gr&ouml;&szlig;te Tankkette in Ungarn. MOL EVO/Master 100 verwendet <strong>ETBE</strong> statt Ethanol als Bio-Komponente &ndash; ETBE hat selbst eine Oktanzahl von ~110 und ist nicht hygroskopisch. Ideal f&uuml;r Vergaser!</div>
+
+                    <div class="comp-sub" style="margin-top:0.4rem;">&#127480;&#127472; Slowakei (Slovakiaring)</div>
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;margin:0.2rem 0;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Tankkette</th><th style="text-align:left;padding:0.25rem;">Produkt</th><th style="text-align:center;padding:0.25rem;">ROZ</th><th style="text-align:center;padding:0.25rem;">Ethanol</th><th style="text-align:center;padding:0.25rem;">Empfehlung</th></tr>
+                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">MOL</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>EVO 100</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">0% (ETBE)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; BESTE WAHL</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Shell</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">V-Power</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">OMV</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MaxxMotion 100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Alle</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Natural 98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
+                        <tr><td style="padding:0.2rem;"><s>Alle</s></td><td style="padding:0.2rem;"><s>Natural 95 (E10)</s></td><td style="text-align:center;padding:0.2rem;">95</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">E10</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">&#10060; VERBOTEN</td></tr>
+                    </table>
+                    <div class="info-box" style="margin-top:0.2rem;font-size:0.72rem;"><strong>Tipp:</strong> MOL ist auch in der Slowakei stark vertreten. Slovakiaring liegt nahe Bratislava &ndash; OMV und Shell gibt es direkt in der Stadt.</div>
+
+                    <div class="comp-sub" style="margin-top:0.4rem;">&#127464;&#127487; Tschechien (Brno / Masaryk Circuit)</div>
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;margin:0.2rem 0;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Tankkette</th><th style="text-align:left;padding:0.25rem;">Produkt</th><th style="text-align:center;padding:0.25rem;">ROZ</th><th style="text-align:center;padding:0.25rem;">Ethanol</th><th style="text-align:center;padding:0.25rem;">Empfehlung</th></tr>
+                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">Shell</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>V-Power Racing</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; BESTE WAHL</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MOL / Benzina</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Verva 100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">OMV</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MaxxMotion 100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Alle</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Natural 98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
+                        <tr><td style="padding:0.2rem;"><s>Alle</s></td><td style="padding:0.2rem;"><s>Natural 95 (E10)</s></td><td style="text-align:center;padding:0.2rem;">95</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">E10</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">&#10060; VERBOTEN</td></tr>
+                    </table>
+                    <div class="info-box" style="margin-top:0.2rem;font-size:0.72rem;"><strong>Tipp:</strong> In CZ hei&szlig;t Benzin &bdquo;Natural&ldquo;. Natural 98 = Super Plus (E5). Shell und MOL/Benzina-Stationen sind in Brno gut vertreten.</div>
+
+                    <div class="comp-sub" style="margin-top:0.4rem;">&#127463;&#127466; Belgien (Spa-Francorchamps)</div>
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;margin:0.2rem 0;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Tankkette</th><th style="text-align:left;padding:0.25rem;">Produkt</th><th style="text-align:center;padding:0.25rem;">ROZ</th><th style="text-align:center;padding:0.25rem;">Ethanol</th><th style="text-align:center;padding:0.25rem;">Empfehlung</th></tr>
+                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">TotalEnergies<br><em>(am Circuit!)</em></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Excellium SPA 102</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">102+</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; EXKLUSIV am Circuit!</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Shell</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">V-Power Racing</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">TotalEnergies</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Excellium Super Plus</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Alle</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">SP98 (Super Plus)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">98</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">OK</td></tr>
+                        <tr><td style="padding:0.2rem;"><s>Alle</s></td><td style="padding:0.2rem;"><s>SP95 (E10)</s></td><td style="text-align:center;padding:0.2rem;">95</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">E10</td><td style="text-align:center;padding:0.2rem;color:#c53030;font-weight:700;">&#10060; VERBOTEN</td></tr>
+                    </table>
+                    <div class="info-box" style="margin-top:0.2rem;font-size:0.72rem;"><strong>Highlight:</strong> Direkt am Circuit de Spa-Francorchamps gibt es eine <strong>TotalEnergies-Tankstelle</strong> (Route du Circuit 16, 4970 Francorchamps) mit exklusivem <strong>Excellium SPA 102</strong> &ndash; echter Rennkraftstoff (RON 102+), der auch mit normaler 98er-Einstellung gefahren werden kann. Unbedingt dort tanken!</div>
+
+                    <div class="comp-sub" style="margin-top:0.4rem;">&#127959; &Ouml;sterreich (Durchreise)</div>
+                    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;margin:0.2rem 0;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Tankkette</th><th style="text-align:left;padding:0.25rem;">Produkt</th><th style="text-align:center;padding:0.25rem;">ROZ</th><th style="text-align:center;padding:0.25rem;">Ethanol</th><th style="text-align:center;padding:0.25rem;">Empfehlung</th></tr>
+                        <tr style="background:#e6ffed;"><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">OMV</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>MaxxMotion 100+</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;font-weight:700;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#9733; BESTE WAHL</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Shell</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">V-Power Racing</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">100</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">E5</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;">Sehr gut</td></tr>
+                        <tr><td style="padding:0.2rem;">Alle</td><td style="padding:0.2rem;">Super Plus</td><td style="text-align:center;padding:0.2rem;">98</td><td style="text-align:center;padding:0.2rem;">E5</td><td style="text-align:center;padding:0.2rem;color:#276749;">OK</td></tr>
+                    </table>
+                    <div class="info-box" style="margin-top:0.2rem;font-size:0.72rem;"><strong>Route Pannoniaring:</strong> Via &Ouml;sterreich (A2/S4). OMV-Netz ist extrem dicht. Letzter Tankstopp vor der Grenze mit MaxxMotion 100 empfohlen.</div>
+
+                    <div class="comp-sub" style="margin-top:0.5rem;">Zusammenfassung: Beste Wahl pro Strecke</div>
+                    <table style="width:100%;font-size:0.74rem;border-collapse:collapse;margin:0.2rem 0;">
+                        <tr style="background:#e6ffed;"><th style="text-align:left;padding:0.3rem;">Strecke</th><th style="text-align:left;padding:0.3rem;">Tanken bei</th><th style="text-align:left;padding:0.3rem;">Produkt</th><th style="text-align:center;padding:0.3rem;">ROZ</th></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Pannoniaring</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;font-weight:700;">MOL</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">EVO 100 (ethanol-frei!)</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">100</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Slovakiaring</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;font-weight:700;">MOL / OMV</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">EVO 100 oder MaxxMotion 100</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">100</td></tr>
+                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Brno</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;font-weight:700;">Shell / MOL-Benzina</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">V-Power Racing / Verva 100</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">100</td></tr>
+                        <tr><td style="padding:0.25rem;">Spa</td><td style="padding:0.25rem;font-weight:700;">TotalEnergies am Circuit</td><td style="padding:0.25rem;">Excellium SPA 102</td><td style="text-align:center;padding:0.25rem;">102+</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
             <div class="section-comment">
                 <label>Kommentar zu Vergaser &amp; Kraftstoff</label>
                 <textarea data-field="comment_fuel" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
@@ -3586,6 +3529,7 @@
 <div class="fab-stack">
     <button class="fab-btn glossary" onclick="showGuide('guide-glossary')" title="Glossary">&#128214;</button>
     <button class="fab-btn" onclick="document.getElementById('convPanel').classList.toggle('open')" title="Unit Converter">&#8644;</button>
+    <button class="fab-btn" onclick="document.getElementById('unitsPanel').classList.toggle('open')" title="Units Reference" style="background:#4a5568;font-size:0.85rem;">&#128207;</button>
 </div>
 <div class="converter-panel" id="convPanel">
     <h4>&#8644; Einheiten-Umrechner</h4>
@@ -3615,6 +3559,22 @@
         <input type="number" id="convCi" placeholder="ci" step="0.01" oninput="document.getElementById('convCc').value=this.value?(this.value*16.387).toFixed(1):''">
         <span class="conv-label">ci</span>
     </div>
+</div>
+
+<div class="converter-panel" id="unitsPanel" style="max-width:340px;">
+    <h4>&#128207; Ma&szlig;einheiten</h4>
+    <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:left;padding:0.2rem;">Umrechnung</th></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">BHP</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Leistung (US)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 BHP = 0.746 kW = 1.014 PS</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">ft-lbs</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Drehmoment (US)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 ft-lb = 1.356 Nm</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">inch (&Prime;)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">L&auml;ngen, Bohrungen</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1&Prime; = 25.4 mm</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">thou</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Spaltma&szlig;e (.001&Prime;)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 thou = 0.0254 mm</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">cc</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Brennraum, Hub</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 ci = 16.387 cc</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">psi</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">&Ouml;ldruck, Kraftstoffdruck</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 psi = 0.0689 bar</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">CFM</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Luftdurchsatz Zylinderk&ouml;pfe</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">cubic feet/min @ 28&Prime;H&#8322;O</td></tr>
+        <tr><td style="padding:0.15rem;font-weight:700;">ROZ/RON</td><td style="padding:0.15rem;">Oktanzahl (Research)</td><td style="padding:0.15rem;">95/98/100+ ROZ</td></tr>
+    </table>
+    <div style="font-size:0.68rem;color:#718096;margin-top:0.3rem;">Alle Leistungs- und Drehmoment-Angaben verwenden die in der US-Motorentechnik &uuml;blichen imperialen Einheiten. Metrische Umrechnungen werden wo m&ouml;glich angegeben.</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -5327,6 +5287,13 @@
         'Pr\u00fcfstands-Korrekturfaktoren (SAE J1349 vs. J607)':'Dyno Correction Factors (SAE J1349 vs. J607)',
         'Drehzahl-Limits: Das schw\u00e4chste Glied bestimmt':'RPM Limits: The Weakest Link Rules',
         'Ma\u00dfeinheiten in diesem Dokument':'Units of Measurement in This Document',
+        'Ma\u00dfeinheiten':'Units Reference',
+        'Einheit':'Unit', 'Verwendung':'Usage', 'Umrechnung':'Conversion',
+        'Leistung (US)':'Power (US)', 'Drehmoment (US)':'Torque (US)',
+        'L\u00e4ngen, Bohrungen':'Lengths, Bores', 'Spaltma\u00dfe':'Clearances',
+        'Brennraum, Hub':'Chamber, Stroke', '\u00d6ldruck, Kraftstoffdruck':'Oil Pressure, Fuel Pressure',
+        'Luftdurchsatz Zylinderk\u00f6pfe':'Cylinder Head Airflow', 'Oktanzahl (Research)':'Octane Rating (Research)',
+        'Alle Leistungs- und Drehmoment-Angaben verwenden die in der US-Motorentechnik \u00fcblichen imperialen Einheiten. Metrische Umrechnungen werden wo m\u00f6glich angegeben.':'All power and torque figures use imperial units common in US engine building. Metric conversions are provided where possible.',
         'Kraftstoff-Empfehlung & Oktanzahl':'Fuel Recommendation & Octane Rating',
         'Kraftstoff-Guide nach Tankketten & L\u00e4ndern':'Fuel Guide by Supply Chain & Country',
         'Wechselwirkung: Z\u00fcndung \u2194 Oktan \u2194 Verdichtung':'Interaction: Ignition \u2194 Octane \u2194 Compression',

@@ -76,12 +76,16 @@
         .step-header input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--success); flex-shrink: 0; }
         .step-header .step-title { flex: 1; font-size: 0.85rem; font-weight: 600; }
         .step-header .guide-toggle {
-            background: #ebf4ff; border: 1px solid #bee3f8; color: var(--primary-light);
-            padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer;
-            font-size: 0.7rem; font-weight: 600; white-space: nowrap; min-height: 32px;
+            background: none; border: none; color: var(--primary-light);
+            padding: 0.2rem 0.4rem; cursor: pointer;
+            font-size: 0.6rem; font-weight: 600; white-space: nowrap;
+            transition: transform 0.2s; display: inline-block;
         }
-        .step-header .guide-toggle:hover { background: #bee3f8; }
-        .step-header .guide-toggle.open { background: var(--primary-light); color: white; border-color: var(--primary-light); }
+        .step-header .guide-toggle::after { content: 'BC'; font-size: 0.55rem; transition: transform 0.2s; }
+        .step-header .guide-toggle.open::after { transform: rotate(180deg); }
+        .step-header .guide-toggle.open { color: var(--primary-light); }
+        .step-header .step-title { cursor: pointer; }
+        .step-header .step-title:hover { color: var(--primary-light); }
         .step-note {
             width: 100%; padding: 0.4rem 0.75rem; border: none; border-bottom: 1px dashed var(--border);
             font-size: 0.78rem; background: transparent; color: var(--text-light);
@@ -206,8 +210,8 @@
 <div class="step-card" id="p4_preoil_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_preoil" onchange="autoSave()">
-        <span class="step-title">1. Pre-Oil (Vor&ouml;len) until oil at all 16 rockers</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">1. Pre-Oil (Vor&ouml;len) until oil at all 16 rockers</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_preoil_n" placeholder="Findings... (Befund...)" oninput="autoSave()">
     <div class="step-guide">
@@ -235,7 +239,7 @@
 <div class="step-card" id="p4_preoil_crank_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_preoil_crank" onchange="autoSave()">
-        <span class="step-title">2. Rotate Crank 4&times; 90&deg; during pre-oiling (Kurbelwelle drehen beim Vor&ouml;len)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">2. Rotate Crank 4&times; 90&deg; during pre-oiling (Kurbelwelle drehen beim Vor&ouml;len)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_preoil_crank_n" placeholder="Done / Findings..." oninput="autoSave()">
 </div>
@@ -244,7 +248,7 @@
 <div class="step-card" id="p4_oilpressure_prime_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_oilpressure_prime" onchange="autoSave()">
-        <span class="step-title">3. Oil Pressure during Pre-Oil (&Ouml;ldruck beim Vor&ouml;len)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">3. Oil Pressure during Pre-Oil (&Ouml;ldruck beim Vor&ouml;len)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_oilpressure_prime_n" placeholder="Pressure:___ psi (___ bar)" oninput="autoSave()">
 </div>
@@ -253,8 +257,8 @@
 <div class="step-card" id="p4_breakin_oil_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_breakin_oil" onchange="autoSave()">
-        <span class="step-title">4. Fill Break-In Oil (ZDDP!) &ndash; &Ouml;l einf&uuml;llen</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">4. Fill Break-In Oil (ZDDP!) &ndash; &Ouml;l einf&uuml;llen</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_breakin_oil_n" placeholder="Product + qty:___" oninput="autoSave()">
     <div class="step-guide">
@@ -280,7 +284,7 @@
 <div class="step-card" id="p4_coolant_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_coolant" onchange="autoSave()">
-        <span class="step-title">5. Fill &amp; Bleed Cooling System (K&uuml;hlsystem f&uuml;llen &amp; entl&uuml;ften)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">5. Fill &amp; Bleed Cooling System (K&uuml;hlsystem f&uuml;llen &amp; entl&uuml;ften)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_coolant_n" placeholder="Findings..." oninput="autoSave()">
 </div>
@@ -289,8 +293,8 @@
 <div class="step-card" id="p4_fuel_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_fuel" onchange="autoSave()">
-        <span class="step-title">6. Check Fuel System (Kraftstoffsystem pr&uuml;fen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">6. Check Fuel System (Kraftstoffsystem pr&uuml;fen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_fuel_n" placeholder="Pressure:___ psi" oninput="autoSave()">
     <div class="step-guide">
@@ -310,7 +314,7 @@
 <div class="step-card" id="p4_timing_static_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_timing_static" onchange="autoSave()">
-        <span class="step-title">7. Static Ignition Timing ~12&deg; BTDC (Z&uuml;ndzeitpunkt statisch einstellen)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">7. Static Ignition Timing ~12&deg; BTDC (Z&uuml;ndzeitpunkt statisch einstellen)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_timing_static_n" placeholder="Setting:___&deg; BTDC" oninput="autoSave()">
 </div>
@@ -319,7 +323,7 @@
 <div class="step-card" id="p4_revlimiter_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_revlimiter" onchange="autoSave()">
-        <span class="step-title">8. MSD 6AL Rev Limiter: 6,500 RPM (Drehzahlbegrenzer)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">8. MSD 6AL Rev Limiter: 6,500 RPM (Drehzahlbegrenzer)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_revlimiter_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
 </div>
@@ -328,7 +332,7 @@
 <div class="step-card" id="p4_preload_recheck_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_preload_recheck" onchange="autoSave()">
-        <span class="step-title">9. Recheck Preload all 16 valves (Preload nochmals pr&uuml;fen)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">9. Recheck Preload all 16 valves (Preload nochmals pr&uuml;fen)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_preload_recheck_n" placeholder="Done / Findings..." oninput="autoSave()">
 </div>
@@ -337,7 +341,7 @@
 <div class="step-card" id="p4_wiring_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_wiring" onchange="autoSave()">
-        <span class="step-title">10. Wiring, Lines, Ground, Firing Order (Kabel, Leitungen, Masse, Z&uuml;ndfolge)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">10. Wiring, Lines, Ground, Firing Order (Kabel, Leitungen, Masse, Z&uuml;ndfolge)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_wiring_n" placeholder="Findings..." oninput="autoSave()">
 </div>
@@ -358,7 +362,7 @@
 <div class="step-card" id="p4_start_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_start" onchange="autoSave()">
-        <span class="step-title">12. START &ndash; immediately 2,000&ndash;2,500 RPM! (Sofort auf 2.000&ndash;2.500 U/min!)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">12. START &ndash; immediately 2,000&ndash;2,500 RPM! (Sofort auf 2.000&ndash;2.500 U/min!)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_start_n" placeholder="Time:___ Findings..." oninput="autoSave()">
 </div>
@@ -367,7 +371,7 @@
 <div class="step-card" id="p4_oil_running_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_oil_running" onchange="autoSave()">
-        <span class="step-title">13. Oil Pressure at 2,000 RPM warm: 40&ndash;55 psi (2.8&ndash;3.8 bar)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">13. Oil Pressure at 2,000 RPM warm: 40&ndash;55 psi (2.8&ndash;3.8 bar)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_oil_running_n" placeholder="Pressure:___ psi (___ bar)" oninput="autoSave()">
 </div>
@@ -376,7 +380,7 @@
 <div class="step-card" id="p4_leaks_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_leaks" onchange="autoSave()">
-        <span class="step-title">14. Visual Inspection: no leaks (Sichtkontrolle: keine Leckagen)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">14. Visual Inspection: no leaks (Sichtkontrolle: keine Leckagen)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_leaks_n" placeholder="Findings..." oninput="autoSave()">
 </div>
@@ -385,7 +389,7 @@
 <div class="step-card" id="p4_temp_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_temp" onchange="autoSave()">
-        <span class="step-title">15. Coolant Temperature &ndash; thermostat opens (K&uuml;hlmitteltemp. &ndash; Thermostat &ouml;ffnet)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">15. Coolant Temperature &ndash; thermostat opens (K&uuml;hlmitteltemp. &ndash; Thermostat &ouml;ffnet)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_temp_n" placeholder="Temp:___&deg;F (___&deg;C)" oninput="autoSave()">
 </div>
@@ -394,8 +398,8 @@
 <div class="step-card" id="p4_timing_warm_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_timing_warm" onchange="autoSave()">
-        <span class="step-title">16. Check Timing Warm (Z&uuml;ndung warm pr&uuml;fen &ndash; Stroboskop)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">16. Check Timing Warm (Z&uuml;ndung warm pr&uuml;fen &ndash; Stroboskop)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_timing_warm_n" placeholder="Degrees:___&deg; BTDC" oninput="autoSave()">
     <div class="step-guide">
@@ -423,7 +427,7 @@
 <div class="step-card" id="p4_oil_idle_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_oil_idle" onchange="autoSave()">
-        <span class="step-title">17. Oil Pressure Idle Warm: 25&ndash;35 psi (1.7&ndash;2.4 bar)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">17. Oil Pressure Idle Warm: 25&ndash;35 psi (1.7&ndash;2.4 bar)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_oil_idle_n" placeholder="Pressure:___ psi (___ bar)" oninput="autoSave()">
 </div>
@@ -432,8 +436,8 @@
 <div class="step-card" id="p4_timing_final_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_timing_final" onchange="autoSave()">
-        <span class="step-title">18. Final Timing: 34&ndash;36&deg; total advance (Gesamt-Z&uuml;ndzeitpunkt)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">18. Final Timing: 34&ndash;36&deg; total advance (Gesamt-Z&uuml;ndzeitpunkt)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_timing_final_n" placeholder="Initial:___&deg; / Total:___&deg;" oninput="autoSave()">
     <div class="step-guide">
@@ -536,7 +540,7 @@
 <div class="step-card" id="p4_retorque_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_retorque" onchange="autoSave()">
-        <span class="step-title">19. Re-Torque Head Nuts (engine cold! / Motor kalt nachziehen!)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">19. Re-Torque Head Nuts (engine cold! / Motor kalt nachziehen!)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_retorque_n" placeholder="Done / Findings..." oninput="autoSave()">
 </div>
@@ -545,8 +549,8 @@
 <div class="step-card" id="p4_oilchange_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_oilchange" onchange="autoSave()">
-        <span class="step-title">20. Oil Change &ndash; Cut Filter Open (Filter aufschneiden)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">20. Oil Change &ndash; Cut Filter Open (Filter aufschneiden)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_oilchange_n" placeholder="Filter paper findings:___" oninput="autoSave()">
     <div class="step-guide">
@@ -574,7 +578,7 @@
 <div class="step-card" id="p4_sparkread_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_sparkread" onchange="autoSave()">
-        <span class="step-title">21. Read Spark Plugs (Kerzenbild lesen)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">21. Read Spark Plugs (Kerzenbild lesen)</span>
     </div>
     <input type="text" class="step-note" data-field="p4_sparkread_n" placeholder="Color / Findings:___" oninput="autoSave()">
 </div>
@@ -583,8 +587,8 @@
 <div class="step-card" id="p4_sync_card">
     <div class="step-header">
         <input type="checkbox" data-field="p4_sync" onchange="autoSave()">
-        <span class="step-title">22. Synchronize DellOrto, Log Lambda (DellOrto synchronisieren, Lambda loggen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">22. Synchronize DellOrto, Log Lambda (DellOrto synchronisieren, Lambda loggen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_sync_n" placeholder="Lambda L:___ R:___" oninput="autoSave()">
     <div class="step-guide">
@@ -671,7 +675,7 @@
         if (guide) {
             var open = guide.classList.toggle('open');
             btn.classList.toggle('open', open);
-            btn.textContent = open ? 'Close' : 'Guide';
+            // arrow rotation handled by CSS ::after
         }
     }
 
@@ -863,7 +867,7 @@
             if (el.classList && el.classList.contains('step-guide') && !el.classList.contains('open')) {
                 el.classList.add('open');
                 var btn = el.closest('.step-card').querySelector('.guide-toggle');
-                if (btn) { btn.classList.add('open'); btn.textContent = 'Close'; }
+                if (btn) { btn.classList.add('open'); }
             }
             // Also expand collapsed phase
             if (el.classList && el.classList.contains('phase-body') && el.classList.contains('collapsed')) {
@@ -915,7 +919,7 @@
                 if (parent && !parent.classList.contains('open')) {
                     parent.classList.add('open');
                     var btn = parent.closest('.step-card').querySelector('.guide-toggle');
-                    if (btn) { btn.classList.add('open'); btn.textContent = 'Close'; }
+                    if (btn) { btn.classList.add('open'); }
                 }
                 var headerH = document.querySelector('.header').offsetHeight;
                 setTimeout(function() {

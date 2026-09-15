@@ -72,12 +72,16 @@
         .step-header input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--success); flex-shrink: 0; }
         .step-header .step-title { flex: 1; font-size: 0.85rem; font-weight: 600; }
         .step-header .guide-toggle {
-            background: #ebf4ff; border: 1px solid #bee3f8; color: var(--primary-light);
-            padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer;
-            font-size: 0.7rem; font-weight: 600; white-space: nowrap; min-height: 32px;
+            background: none; border: none; color: var(--primary-light);
+            padding: 0.2rem 0.4rem; cursor: pointer;
+            font-size: 0.6rem; font-weight: 600; white-space: nowrap;
+            transition: transform 0.2s; display: inline-block;
         }
-        .step-header .guide-toggle:hover { background: #bee3f8; }
-        .step-header .guide-toggle.open { background: var(--primary-light); color: white; border-color: var(--primary-light); }
+        .step-header .guide-toggle::after { content: 'BC'; font-size: 0.55rem; transition: transform 0.2s; }
+        .step-header .guide-toggle.open::after { transform: rotate(180deg); }
+        .step-header .guide-toggle.open { color: var(--primary-light); }
+        .step-header .step-title { cursor: pointer; }
+        .step-header .step-title:hover { color: var(--primary-light); }
         .step-note {
             width: 100%; padding: 0.4rem 0.75rem; border: none; border-bottom: 1px dashed var(--border);
             font-size: 0.78rem; background: transparent; color: var(--text-light);
@@ -204,8 +208,8 @@
 <div class="step-card" id="p3_clean">
     <div class="step-header">
         <input type="checkbox" data-field="p3_clean" onchange="autoSave()">
-        <span class="step-title">1. Clean Sealing Surfaces (Dichtfl&auml;chen reinigen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">1. Clean Sealing Surfaces (Dichtfl&auml;chen reinigen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_clean_n" placeholder="Findings... (Befund...)" oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -226,7 +230,7 @@
 <div class="step-card" id="p3_blowout">
     <div class="step-header">
         <input type="checkbox" data-field="p3_blowout" onchange="autoSave()">
-        <span class="step-title">2. Blow Out Head Bolt Holes (Kopfbohrungen ausblasen)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">2. Blow Out Head Bolt Holes (Kopfbohrungen ausblasen)</span>
     </div>
     <input type="text" class="step-note" data-field="p3_blowout_n" placeholder="Findings..." oninput="autoSave()">
 </div>
@@ -235,8 +239,8 @@
 <div class="step-card" id="p3_all_parts">
     <div class="step-header">
         <input type="checkbox" data-field="p3_all_parts" onchange="autoSave()">
-        <span class="step-title">3. All Parts + Consumables Ready (Teile &amp; Material griffbereit)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">3. All Parts + Consumables Ready (Teile &amp; Material griffbereit)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_all_parts_n" placeholder="Findings..." oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -261,7 +265,7 @@
 <div class="step-card" id="p3_cam_lube">
     <div class="step-header">
         <input type="checkbox" data-field="p3_cam_lube" onchange="autoSave()">
-        <span class="step-title">4. Camshaft: assembly lube on ALL lobes + journals (Montagepaste auf ALLE Nocken + Lagerzapfen)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">4. Camshaft: assembly lube on ALL lobes + journals (Montagepaste auf ALLE Nocken + Lagerzapfen)</span>
     </div>
     <input type="text" class="step-note" data-field="p3_cam_lube_n" placeholder="Done / Findings..." oninput="autoSave()">
 </div>
@@ -270,7 +274,7 @@
 <div class="step-card" id="p3_cam_install">
     <div class="step-header">
         <input type="checkbox" data-field="p3_cam_install" onchange="autoSave()">
-        <span class="step-title">5. Install Cam (long bolt as handle / langer Bolzen als Griff)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">5. Install Cam (long bolt as handle / langer Bolzen als Griff)</span>
     </div>
     <input type="text" class="step-note" data-field="p3_cam_install_n" placeholder="Done / Findings..." oninput="autoSave()">
 </div>
@@ -279,8 +283,8 @@
 <div class="step-card" id="p3_timing_set">
     <div class="step-header">
         <input type="checkbox" data-field="p3_timing_set" onchange="autoSave()">
-        <span class="step-title">6. Timing Set + ARP 254-1001 Cam Bolt (Steuerkettensatz + Nockenwellenschraube)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">6. Timing Set + ARP 254-1001 Cam Bolt (Steuerkettensatz + Nockenwellenschraube)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_timing_set_n" placeholder="Torque:___" oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -301,7 +305,7 @@
 <div class="step-card" id="p3_lifters">
     <div class="step-header">
         <input type="checkbox" data-field="p3_lifters" onchange="autoSave()">
-        <span class="step-title">7. Install All 16 Lifters (alle 16 Lifter mit Montagepaste einsetzen)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">7. Install All 16 Lifters (alle 16 Lifter mit Montagepaste einsetzen)</span>
     </div>
     <input type="text" class="step-note" data-field="p3_lifters_n" placeholder="Done / Findings..." oninput="autoSave()">
 </div>
@@ -310,8 +314,8 @@
 <div class="step-card" id="p3_oilpump">
     <div class="step-header">
         <input type="checkbox" data-field="p3_oilpump" onchange="autoSave()">
-        <span class="step-title">8. Oil Pump M-6600-D2 &ndash; install (&Ouml;lpumpe montieren)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">8. Oil Pump M-6600-D2 &ndash; install (&Ouml;lpumpe montieren)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_oilpump_n" placeholder="Torque:___" oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -339,7 +343,7 @@
 <div class="step-card" id="p3_oilshaft">
     <div class="step-header">
         <input type="checkbox" data-field="p3_oilshaft" onchange="autoSave()">
-        <span class="step-title">9. Oil Pump Drive Shaft M-6605-B302 &ndash; install (&Ouml;lpumpen-Antriebswelle)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">9. Oil Pump Drive Shaft M-6605-B302 &ndash; install (&Ouml;lpumpen-Antriebswelle)</span>
     </div>
     <input type="text" class="step-note" data-field="p3_oilshaft_n" placeholder="Done / Findings..." oninput="autoSave()">
 </div>
@@ -348,8 +352,8 @@
 <div class="step-card" id="p3_pickup">
     <div class="step-header">
         <input type="checkbox" data-field="p3_pickup" onchange="autoSave()">
-        <span class="step-title">10. Pickup &ndash; install and BOLT (verschrauben, nicht nur stecken!)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">10. Pickup &ndash; install and BOLT (verschrauben, nicht nur stecken!)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_pickup_n" placeholder="Clearance:___" oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -376,8 +380,8 @@
 <div class="step-card" id="p3_headgasket">
     <div class="step-header">
         <input type="checkbox" data-field="p3_headgasket" onchange="autoSave()">
-        <span class="step-title">11. Head Gasket CP331 &ndash; FRONT marking forward! (Kopfdichtung &ndash; FRONT-Markierung nach vorne!)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">11. Head Gasket CP331 &ndash; FRONT marking forward! (Kopfdichtung &ndash; FRONT-Markierung nach vorne!)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_headgasket_n" placeholder="FRONT verified / Findings..." oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -408,8 +412,8 @@
 <div class="step-card" id="p3_studs">
     <div class="step-header">
         <input type="checkbox" data-field="p3_studs" onchange="autoSave()">
-        <span class="step-title">12. ARP 154-4003 Head Studs &ndash; hand-tight into block (Stehbolzen handfest eindrehen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">12. ARP 154-4003 Head Studs &ndash; hand-tight into block (Stehbolzen handfest eindrehen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_studs_n" placeholder="Done / Findings..." oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -426,7 +430,7 @@
 <div class="step-card" id="p3_arp_lube">
     <div class="step-header">
         <input type="checkbox" data-field="p3_arp_lube" onchange="autoSave()">
-        <span class="step-title">13. ARP Ultra-Torque on threads + nut face (Gewinde + Mutterauflage)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">13. ARP Ultra-Torque on threads + nut face (Gewinde + Mutterauflage)</span>
     </div>
     <input type="text" class="step-note" data-field="p3_arp_lube_n" placeholder="Done / Findings..." oninput="autoSave()">
 </div>
@@ -435,7 +439,7 @@
 <div class="step-card" id="p3_heads_on">
     <div class="step-header">
         <input type="checkbox" data-field="p3_heads_on" onchange="autoSave()">
-        <span class="step-title">14. Set Heads on Dowels (K&ouml;pfe auf Passh&uuml;lsen setzen)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">14. Set Heads on Dowels (K&ouml;pfe auf Passh&uuml;lsen setzen)</span>
     </div>
     <input type="text" class="step-note" data-field="p3_heads_on_n" placeholder="Done / Findings..." oninput="autoSave()">
 </div>
@@ -444,8 +448,8 @@
 <div class="step-card" id="p3_heads_torque">
     <div class="step-header">
         <input type="checkbox" data-field="p3_heads_torque" onchange="autoSave()">
-        <span class="step-title">15. Torque Heads &ndash; 3 stages, cross pattern (K&ouml;pfe anziehen &ndash; 3 Stufen, Kreuzschema)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">15. Torque Heads &ndash; 3 stages, cross pattern (K&ouml;pfe anziehen &ndash; 3 Stufen, Kreuzschema)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_heads_torque_n" placeholder="Stage 1:___ 2:___ 3:___" oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -482,7 +486,7 @@
 <div class="step-card" id="p3_guideplates">
     <div class="step-header">
         <input type="checkbox" data-field="p3_guideplates" onchange="autoSave()">
-        <span class="step-title">16. Guide Plates + Final Pushrods &ndash; install (F&uuml;hrungsplatten + finale Pushrods)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">16. Guide Plates + Final Pushrods &ndash; install (F&uuml;hrungsplatten + finale Pushrods)</span>
     </div>
     <input type="text" class="step-note" data-field="p3_guideplates_n" placeholder="Done / Findings..." oninput="autoSave()">
 </div>
@@ -491,8 +495,8 @@
 <div class="step-card" id="p3_rockers">
     <div class="step-header">
         <input type="checkbox" data-field="p3_rockers" onchange="autoSave()">
-        <span class="step-title">17. Rockers + Preload (1/4&ndash;1/2 turn, on base circle! / Kipphebel + Vorspannung, auf Grundkreis!)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">17. Rockers + Preload (1/4&ndash;1/2 turn, on base circle! / Kipphebel + Vorspannung, auf Grundkreis!)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_rockers_n" placeholder="Done / Findings..." oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -525,8 +529,8 @@
 <div class="step-card" id="p3_timing_cover">
     <div class="step-header">
         <input type="checkbox" data-field="p3_timing_cover" onchange="autoSave()">
-        <span class="step-title">18. Timing Cover + Gasket + RTV (Steuerkettendeckel + Dichtung + RTV)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">18. Timing Cover + Gasket + RTV (Steuerkettendeckel + Dichtung + RTV)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_timing_cover_n" placeholder="Torque:___" oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -561,8 +565,8 @@
 <div class="step-card" id="p3_balancer">
     <div class="step-header">
         <input type="checkbox" data-field="p3_balancer" onchange="autoSave()">
-        <span class="step-title">19. Balancer M-6316-D302 (0-oz, press-on tool! / 0-oz, Aufpresswerkzeug!)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">19. Balancer M-6316-D302 (0-oz, press-on tool! / 0-oz, Aufpresswerkzeug!)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_balancer_n" placeholder="Torque:___" oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -584,8 +588,8 @@
 <div class="step-card" id="p3_oilpan">
     <div class="step-header">
         <input type="checkbox" data-field="p3_oilpan" onchange="autoSave()">
-        <span class="step-title">20. Oil Pan + Gasket + RTV corners (&Ouml;lwanne + Dichtung + RTV-Ecken)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">20. Oil Pan + Gasket + RTV corners (&Ouml;lwanne + Dichtung + RTV-Ecken)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_oilpan_n" placeholder="Torque:___" oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -612,8 +616,8 @@
 <div class="step-card" id="p3_waterpump">
     <div class="step-header">
         <input type="checkbox" data-field="p3_waterpump" onchange="autoSave()">
-        <span class="step-title">21. Water Pump MIL-16230 (Wasserpumpe)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">21. Water Pump MIL-16230 (Wasserpumpe)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_waterpump_n" placeholder="Torque:___" oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -653,8 +657,8 @@
 <div class="step-card" id="p3_intake">
     <div class="step-header">
         <input type="checkbox" data-field="p3_intake" onchange="autoSave()">
-        <span class="step-title">22. Intake Manifold + Fel-Pro 1250 (Ansaugbr&uuml;cke + Dichtungen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">22. Intake Manifold + Fel-Pro 1250 (Ansaugbr&uuml;cke + Dichtungen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_intake_n" placeholder="Torque:___" oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -710,7 +714,7 @@
 <div class="step-card" id="p3_distributor">
     <div class="step-header">
         <input type="checkbox" data-field="p3_distributor" onchange="autoSave()">
-        <span class="step-title">23. Distributor &ndash; TDC #1 compression stroke (Verteiler &ndash; OT #1 Kompressionstakt)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">23. Distributor &ndash; TDC #1 compression stroke (Verteiler &ndash; OT #1 Kompressionstakt)</span>
     </div>
     <input type="text" class="step-note" data-field="p3_distributor_n" placeholder="Done / Findings..." oninput="autoSave()">
 </div>
@@ -719,8 +723,8 @@
 <div class="step-card" id="p3_sparkplugs">
     <div class="step-header">
         <input type="checkbox" data-field="p3_sparkplugs" onchange="autoSave()">
-        <span class="step-title">24. Spark Plugs Autolite 3924 &ndash; Gap 0.040" (1.02 mm) (Z&uuml;ndkerzen)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">24. Spark Plugs Autolite 3924 &ndash; Gap 0.040" (1.02 mm) (Z&uuml;ndkerzen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_sparkplugs_n" placeholder="Torque:___ Gap verified:___" oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -754,7 +758,7 @@
 <div class="step-card" id="p3_valvecovers">
     <div class="step-header">
         <input type="checkbox" data-field="p3_valvecovers" onchange="autoSave()">
-        <span class="step-title">25. Valve Covers &ndash; 4&ndash;6 ft-lbs (5&ndash;8 Nm), aluminum! (Ventildeckel)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">25. Valve Covers &ndash; 4&ndash;6 ft-lbs (5&ndash;8 Nm), aluminum! (Ventildeckel)</span>
     </div>
     <input type="text" class="step-note" data-field="p3_valvecovers_n" placeholder="Torque:___" oninput="autoSave()">
 </div>
@@ -763,8 +767,8 @@
 <div class="step-card" id="p3_fuelpump">
     <div class="step-header">
         <input type="checkbox" data-field="p3_fuelpump" onchange="autoSave()">
-        <span class="step-title">26. Fuel Pump Block-Off or Mechanical Pump (Benzinpumpe / Blinddeckel)</span>
-        <button class="guide-toggle" onclick="toggleGuide(this)">Guide</button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">26. Fuel Pump Block-Off or Mechanical Pump (Benzinpumpe / Blinddeckel)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_fuelpump_n" placeholder="Findings..." oninput="autoSave()">
     <div class="step-guide"><div class="guide-grid">
@@ -833,7 +837,7 @@
         if (guide) {
             var open = guide.classList.toggle('open');
             btn.classList.toggle('open', open);
-            btn.textContent = open ? 'Close' : 'Guide';
+            // arrow rotation handled by CSS ::after
         }
     }
 
@@ -1045,7 +1049,7 @@
             if (el.classList && el.classList.contains('step-guide') && !el.classList.contains('open')) {
                 el.classList.add('open');
                 var btn = el.closest('.step-card').querySelector('.guide-toggle');
-                if (btn) { btn.classList.add('open'); btn.textContent = 'Close'; }
+                if (btn) { btn.classList.add('open'); }
             }
             // Also expand collapsed phase
             if (el.classList && el.classList.contains('phase-body') && el.classList.contains('collapsed')) {
@@ -1097,7 +1101,7 @@
                 if (guide && !guide.classList.contains('open')) {
                     guide.classList.add('open');
                     var btn = guide.closest('.step-card').querySelector('.guide-toggle');
-                    if (btn) { btn.classList.add('open'); btn.textContent = 'Close'; }
+                    if (btn) { btn.classList.add('open'); }
                 }
                 setTimeout(function() {
                     var headerH = document.querySelector('.header').offsetHeight;
