@@ -3980,7 +3980,7 @@
     function autoSave() {
         if (isLoading) return;
         clearTimeout(autoSaveTimer);
-        autoSaveTimer = setTimeout(() => { saveData(); runCrossChecks(); }, 2000);
+        autoSaveTimer = setTimeout(() => { saveData(); runCrossChecks(); }, 500);
     }
     function updateSaveStatus() {
         const raw = localStorage.getItem('engineBuildLog');
@@ -5048,6 +5048,19 @@
     if (currentLang === 'en') setTimeout(function() { setLang('en'); }, 100);
 
     // Specs: no scroll/collapse restore - always starts at initial state
+
+    // Save field data synchronously on page leave
+    function saveFieldsSync() {
+        var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+        var cd = {}; document.querySelectorAll('[data-field]').forEach(function(el) {
+            cd[el.dataset.field] = el.type === 'checkbox' ? el.checked : el.value;
+        });
+        cd._savedAt = new Date().toISOString();
+        var data = Object.assign({}, existing, cd);
+        localStorage.setItem('engineBuildLog', JSON.stringify(data));
+    }
+    window.addEventListener('beforeunload', saveFieldsSync);
+    window.addEventListener('pagehide', saveFieldsSync);
 
 </script>
 </body>

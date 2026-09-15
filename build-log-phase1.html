@@ -1409,7 +1409,7 @@
         if (isLoading) return;
         updateProgress();
         clearTimeout(autoSaveTimer);
-        autoSaveTimer = setTimeout(function() { saveData(); }, 2000);
+        autoSaveTimer = setTimeout(function() { saveData(); }, 500);
     }
 
     function updateSaveStatus() {
@@ -1736,11 +1736,21 @@
             localStorage.setItem(_scrollKey, window.scrollY);
         }, 200);
     }, { passive: true });
+    // Save field data synchronously on page leave (no async cloud upload)
+    function saveFieldsSync() {
+        var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+        var myData = collectData();
+        var data = Object.assign({}, existing, myData);
+        data._savedAt = new Date().toISOString();
+        localStorage.setItem('engineBuildLog', JSON.stringify(data));
+    }
     window.addEventListener('beforeunload', function() {
+        saveFieldsSync();
         localStorage.setItem(_scrollKey, window.scrollY);
         saveBuildCollapseState();
     });
     window.addEventListener('pagehide', function() {
+        saveFieldsSync();
         localStorage.setItem(_scrollKey, window.scrollY);
         saveBuildCollapseState();
     });
