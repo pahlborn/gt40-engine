@@ -4244,6 +4244,11 @@
                     var parentCard = target.closest('.step-card');
                     if (parentCard) guide = parentCard.querySelector('.step-guide');
                 }
+                if (guide) {
+                    guide.style.display = 'block';
+                    var toggleBtn = guide.parentElement.querySelector('.guide-toggle');
+                    if (toggleBtn) toggleBtn.classList.add('open');
+                }
                 setTimeout(function() {
                     var headerH = document.querySelector('.header').offsetHeight;
                     window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - headerH - 10, behavior: 'smooth' });
