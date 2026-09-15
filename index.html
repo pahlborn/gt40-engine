@@ -2599,248 +2599,11 @@
         });
     }
 
-    // ==== SEARCH ====
-    let searchMarks = [];
-    let searchIdx = -1;
-    let searchTimeout = null;
+    // ==== SEARCH (loaded from search.js) ====
 
-    // ==== SUB-PAGE SEARCH INDEX ====
-    var subPageCache = null; // [{url, title, lines: [{text, lineNum}]}]
-    var subPageLoading = false;
 
-    function loadSubPages() {
-        if (subPageCache || subPageLoading) return;
-        subPageLoading = true;
-        var pages = [
-            { url: 'build-log.html#phase1', title: 'Phase 1: Incoming Inspection' },
-            { url: 'build-log.html#phase2', title: 'Phase 2: Mock-up & Degree' },
-            { url: 'build-log.html#phase3', title: 'Phase 3: Final Assembly' },
-            { url: 'build-log.html#phase4', title: 'Phase 4: First Start' },
-            { url: 'docs/M-6009-302.html', title: 'M-6009-302 Short Block' },
-            { url: 'docs/M-6010-BOSS302.html', title: 'M-6010-BOSS302 Block' }
-        ];
-        subPageCache = [];
-        var loaded = 0;
-        pages.forEach(function(page) {
-            fetch(page.url).then(function(r) { return r.ok ? r.text() : ''; }).then(function(html) {
-                if (!html) return;
-                // Extract visible text from HTML
-                var parser = new DOMParser();
-                var doc = parser.parseFromString(html, 'text/html');
-                // Remove script and style elements
-                doc.querySelectorAll('script, style').forEach(function(el) { el.remove(); });
-                var body = doc.body;
-                // Walk text nodes and collect lines with context
-                var lines = [];
-                var allText = body.textContent || '';
-                var rawLines = allText.split(/\n/);
-                rawLines.forEach(function(line, idx) {
-                    var trimmed = line.trim();
-                    if (trimmed.length > 3) {
-                        lines.push({ text: trimmed, lineNum: idx });
-                    }
-                });
-                subPageCache.push({ url: page.url, title: page.title, lines: lines });
-            }).catch(function() {}).finally(function() {
-                loaded++;
-                if (loaded === pages.length) subPageLoading = false;
-            });
-        });
-    }
 
-    function getSubPageResultsHtml(q) {
-        if (!subPageCache || q.length < 2) return '';
-        var qLower = q.toLowerCase();
-        var hits = [];
-        subPageCache.forEach(function(page) {
-            page.lines.forEach(function(line) {
-                var idx = line.text.toLowerCase().indexOf(qLower);
-                if (idx >= 0) {
-                    var start = Math.max(0, idx - 30);
-                    var end = Math.min(line.text.length, idx + q.length + 50);
-                    var before = (start > 0 ? '...' : '') + escHtml(line.text.substring(start, idx));
-                    var match = escHtml(line.text.substring(idx, idx + q.length));
-                    var after = escHtml(line.text.substring(idx + q.length, end)) + (end < line.text.length ? '...' : '');
-                    hits.push({ page: page, context: before + '<mark>' + match + '</mark>' + after });
-                }
-            });
-        });
-        var seen = {};
-        var unique = [];
-        hits.forEach(function(h) {
-            var key = h.page.url + ':' + h.context.substring(0, 60);
-            if (!seen[key]) { seen[key] = true; unique.push(h); }
-        });
-        if (unique.length === 0) return '';
-        var grouped = {};
-        unique.forEach(function(h) {
-            if (!grouped[h.page.url]) grouped[h.page.url] = { page: h.page, hits: [] };
-            grouped[h.page.url].hits.push(h);
-        });
-        var html = '';
-        Object.keys(grouped).forEach(function(url) {
-            var g = grouped[url];
-            var count = g.hits.length;
-            html += '<div class="sub-header">' + escHtml(g.page.title) + ' (' + count + ' Treffer)</div>';
-            g.hits.slice(0, 5).forEach(function(h) {
-                html += '<a class="sub-hit" href="' + h.page.url + '" target="_blank">'
-                    + '<span class="sub-context">' + h.context + '</span></a>';
-            });
-            if (count > 5) {
-                html += '<a class="sub-hit" href="' + g.page.url + '" target="_blank" style="font-style:italic;color:var(--primary-light);">'
-                    + '... und ' + (count - 5) + ' weitere Treffer &rarr;</a>';
-            }
-        });
-        return html;
-    }
 
-    function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-    // ==== GLOSSARY INLINE SEARCH ====
-    function getGlossaryResultsHtml(q) {
-        var qLower = q.toLowerCase();
-        if (q.length < 2) return '';
-        var entries = document.querySelectorAll('#guide-glossary .glossary-entry');
-        var glossaryHits = [];
-        entries.forEach(function(entry) {
-            var searchData = (entry.getAttribute('data-search') || '').toLowerCase();
-            var termEl = entry.querySelector('.glossary-term');
-            var term = termEl ? termEl.textContent : '';
-            if (searchData.indexOf(qLower) >= 0 || term.toLowerCase().indexOf(qLower) >= 0) {
-                var fields = entry.querySelectorAll('.glossary-field');
-                var related = entry.querySelector('.glossary-related');
-                var fieldTexts = [];
-                fields.forEach(function(f) { fieldTexts.push(f.textContent.trim()); });
-                if (related) fieldTexts.push(related.textContent.trim());
-                glossaryHits.push({ term: term, fields: fieldTexts });
-            }
-        });
-        if (glossaryHits.length === 0) return '';
-        var html = '<div class="sub-header" style="color:#ed8936;border-bottom:2px solid #ed8936;padding-bottom:4px;margin-bottom:4px;">'
-            + '\uD83D\uDCD6 Glossar (' + glossaryHits.length + ' Treffer)</div>';
-        glossaryHits.slice(0, 3).forEach(function(h) {
-            html += '<div class="sub-hit" style="cursor:pointer;padding:8px 10px;border-left:3px solid #ed8936;margin-bottom:6px;background:rgba(237,137,54,0.06);" '
-                + 'onclick="openGlossary(\'' + escHtml(h.term.split(' ')[0]) + '\')">'
-                + '<span style="font-weight:700;color:#ed8936;font-size:0.85rem;">' + escHtml(h.term) + '</span>';
-            h.fields.forEach(function(f) {
-                html += '<div style="font-size:0.75rem;color:var(--text-light);margin-top:2px;line-height:1.35;">' + escHtml(f) + '</div>';
-            });
-            html += '</div>';
-        });
-        if (glossaryHits.length > 3) {
-            html += '<div class="sub-hit" style="cursor:pointer;font-style:italic;color:#ed8936;" onclick="openGlossary(\'' + escHtml(q) + '\')">'
-                + '... und ' + (glossaryHits.length - 3) + ' weitere &rarr; im Glossar</div>';
-        }
-        html += '<div style="border-top:1px solid #e2e8f0;margin:6px 0;"></div>';
-        return html;
-    }
-
-    function doSearch() {
-        if (searchTimeout) clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(_doSearch, 200);
-    }
-
-    function _doSearch() {
-        var q = document.getElementById('searchInput').value.trim();
-        clearHighlights();
-        if (q.length < 2) {
-            document.getElementById('searchNav').style.display = 'none';
-            var _sr = document.getElementById('subResults'); if (_sr) _sr.style.display = 'none';
-            return;
-        }
-        // Search main page
-        var container = document.getElementById('mainContent');
-        var walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
-        var matches = [];
-        var qLower = q.toLowerCase();
-        while (walker.nextNode()) {
-            var node = walker.currentNode;
-            if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE')) continue;
-            var idx = node.textContent.toLowerCase().indexOf(qLower);
-            if (idx >= 0) matches.push({ node: node, idx: idx, len: q.length });
-        }
-        // highlight all matches
-        for (var i = matches.length - 1; i >= 0; i--) {
-            var m = matches[i];
-            var range = document.createRange();
-            range.setStart(m.node, m.idx);
-            range.setEnd(m.node, m.idx + m.len);
-            var mark = document.createElement('mark');
-            mark.className = 'search-hl';
-            range.surroundContents(mark);
-        }
-        searchMarks = Array.from(container.querySelectorAll('mark.search-hl'));
-        document.getElementById('searchNav').style.display = searchMarks.length ? 'flex' : 'none';
-        document.getElementById('searchCount').textContent = searchMarks.length ? searchMarks.length + ' Treffer' : 'keine';
-        if (searchMarks.length) { searchIdx = 0; jumpToMark(0); }
-        // Build combined dropdown: glossary first, then sub-page results
-        var subEl = document.getElementById('subResults');
-        var glossaryHtml = getGlossaryResultsHtml(q);
-        var subPageHtml = getSubPageResultsHtml(q);
-        var combinedHtml = glossaryHtml + subPageHtml;
-        if (combinedHtml && subEl) {
-            subEl.innerHTML = combinedHtml;
-            subEl.style.display = 'block';
-        } else if (subEl) {
-            subEl.innerHTML = '';
-            subEl.style.display = 'none';
-        }
-    }
-
-    function jumpToMark(idx) {
-        searchMarks.forEach(m => m.classList.remove('active'));
-        if (!searchMarks.length) return;
-        searchIdx = ((idx % searchMarks.length) + searchMarks.length) % searchMarks.length;
-        const mark = searchMarks[searchIdx];
-        // open collapsed parents
-        let el = mark;
-        while (el && el !== document.body) {
-            if (el.classList && el.classList.contains('section-body') && el.classList.contains('collapsed')) {
-                el.classList.remove('collapsed');
-                if (el.previousElementSibling) el.previousElementSibling.classList.remove('collapsed');
-            }
-            if (el.classList && el.classList.contains('comp-body') && !el.classList.contains('open')) {
-                el.classList.add('open');
-                if (el.previousElementSibling) el.previousElementSibling.classList.add('open');
-            }
-            el = el.parentElement;
-        }
-        mark.classList.add('active');
-        mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        document.getElementById('searchCount').textContent = (searchIdx + 1) + ' / ' + searchMarks.length;
-    }
-
-    function searchJump(dir) { if (searchMarks.length) jumpToMark(searchIdx + dir); }
-
-    function clearHighlights() {
-        document.querySelectorAll('mark.search-hl').forEach(mark => {
-            const parent = mark.parentNode;
-            parent.replaceChild(document.createTextNode(mark.textContent), mark);
-            parent.normalize();
-        });
-        searchMarks = [];
-        searchIdx = -1;
-    }
-
-    function clearSearch() {
-        document.getElementById('searchInput').value = '';
-        clearHighlights();
-        document.getElementById('searchNav').style.display = 'none';
-        var sr = document.getElementById('subResults'); if (sr) sr.style.display = 'none';
-    }
-
-    function searchKeyHandler(e) {
-        if (e.key === 'Escape') { clearSearch(); e.target.blur(); }
-        else if (e.key === 'Enter') { e.preventDefault(); searchJump(e.shiftKey ? -1 : 1); }
-    }
-    // Ctrl+F / Cmd+F hijack for in-page search
-    document.addEventListener('keydown', function(e) {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-            e.preventDefault();
-            document.getElementById('searchInput').focus();
-            document.getElementById('searchInput').select();
-        }
-    });
 
     // ==== CROSS-CHECKS ====
     function runCrossChecks() {
@@ -3396,14 +3159,14 @@
     restoreCollapseState();
     // loadData is async (may fetch from Gist) - restore scroll AFTER it completes
     loadData().then(function() {
-        loadPhotoData(); loadSubPages(); setTimeout(runCrossChecks, 500);
+        loadPhotoData(); initUnifiedSearch(); setTimeout(runCrossChecks, 500);
         if (currentLang === 'en') {
             setTimeout(function() { setLang('en'); setTimeout(restoreScrollPos, 50); }, 100);
         } else {
             setTimeout(restoreScrollPos, 100);
         }
     }).catch(function() {
-        loadPhotoData(); loadSubPages();
+        loadPhotoData(); initUnifiedSearch();
         setTimeout(restoreScrollPos, 100);
     });
     // bfcache support
@@ -4366,5 +4129,6 @@
 
     </div><!-- /glossary-body -->
 </div><!-- /guide-glossary -->
+<script src="search.js"></script>
 </body>
 </html>

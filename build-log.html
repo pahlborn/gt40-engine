@@ -313,13 +313,14 @@
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
     </div>
     <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search... (Ctrl+F)" oninput="doBuildSearch()" onkeydown="if(event.key==='Escape'){clearBuildSearch();event.target.blur();}">
+        <input type="text" id="searchInput" placeholder="Search... (Ctrl+F)" oninput="doSearch()" onkeydown="searchKeyHandler(event)">
         <div class="search-nav" id="searchNav" style="display:none;">
-            <button onclick="buildSearchJump(-1)" title="Previous">&#9650;</button>
-            <span class="search-count" id="buildSearchCount"></span>
-            <button onclick="buildSearchJump(1)" title="Next">&#9660;</button>
-            <button onclick="clearBuildSearch()" title="Close" style="margin-left:0.2rem;">&#10005;</button>
+            <button onclick="searchJump(-1)" title="Previous">&#9650;</button>
+            <span class="search-count" id="searchCount"></span>
+            <button onclick="searchJump(1)" title="Next">&#9660;</button>
+            <button onclick="clearSearch()" title="Close" style="margin-left:0.2rem;">&#10005;</button>
         </div>
+        <div id="subResults" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #e2e8f0;border-radius:8px;max-height:300px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:100;padding:0.5rem;font-size:0.8rem;"></div>
     </div>
     <div class="save-status" id="saveStatus"></div>
 </div>
@@ -4152,84 +4153,7 @@
     }
 
     // ==== BUILD-LOG SEARCH ====
-    var bsMarks = [], bsIdx = -1, bsTimer = null;
-    function doBuildSearch() {
-        clearTimeout(bsTimer);
-        bsTimer = setTimeout(_doBuildSearch, 200);
-    }
-    function _doBuildSearch() {
-        clearBuildHighlights();
-        var q = document.getElementById('searchInput').value.trim();
-        if (q.length < 2) { document.getElementById('buildSearchCount').textContent = ''; var nav = document.getElementById('searchNav'); if (nav) nav.style.display = 'none'; return; }
-        var walker = document.createTreeWalker(document.querySelector('.container'), NodeFilter.SHOW_TEXT, null);
-        var matches = [], qLower = q.toLowerCase();
-        while (walker.nextNode()) {
-            var node = walker.currentNode;
-            if (node.parentElement && (node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE')) continue;
-            var idx = node.textContent.toLowerCase().indexOf(qLower);
-            if (idx >= 0) matches.push({ node: node, idx: idx, len: q.length });
-        }
-        for (var i = matches.length - 1; i >= 0; i--) {
-            var m = matches[i];
-            var range = document.createRange();
-            range.setStart(m.node, m.idx); range.setEnd(m.node, m.idx + m.len);
-            var mark = document.createElement('mark');
-            mark.style.cssText = 'background:#fefcbf;color:#744210;padding:0 1px;border-radius:2px;';
-            mark.className = 'bs-hl';
-            range.surroundContents(mark);
-        }
-        bsMarks = Array.from(document.querySelectorAll('mark.bs-hl'));
-        var nav = document.getElementById('searchNav');
-        if (nav) nav.style.display = bsMarks.length ? 'flex' : 'none';
-        document.getElementById('buildSearchCount').textContent = bsMarks.length ? bsMarks.length + ' hits' : 'none';
-        if (bsMarks.length) { bsIdx = 0; buildJumpTo(0); }
-    }
-    function buildJumpTo(idx) {
-        bsMarks.forEach(function(m) { m.style.background = '#fefcbf'; });
-        if (!bsMarks.length) return;
-        bsIdx = ((idx % bsMarks.length) + bsMarks.length) % bsMarks.length;
-        var mark = bsMarks[bsIdx];
-        // Open parent guide if collapsed
-        var el = mark;
-        while (el) {
-            if (el.classList && el.classList.contains('step-guide') && !el.classList.contains('open')) {
-                el.classList.add('open');
-                var btn = el.closest('.step-card').querySelector('.guide-toggle');
-                if (btn) { btn.classList.add('open'); }
-            }
-            // Also expand collapsed phase
-            if (el.classList && el.classList.contains('phase-body') && el.classList.contains('collapsed')) {
-                el.classList.remove('collapsed');
-                var toggle = document.getElementById('toggle_' + el.id);
-                if (toggle) toggle.classList.remove('collapsed');
-            }
-            el = el.parentElement;
-        }
-        mark.style.background = '#ed8936'; mark.style.color = 'white';
-        mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        document.getElementById('buildSearchCount').textContent = (bsIdx + 1) + ' / ' + bsMarks.length;
-    }
-    function buildSearchJump(dir) { if (bsMarks.length) buildJumpTo(bsIdx + dir); }
-    function clearBuildHighlights() {
-        document.querySelectorAll('mark.bs-hl').forEach(function(m) {
-            var p = m.parentNode; p.replaceChild(document.createTextNode(m.textContent), m); p.normalize();
-        });
-        bsMarks = []; bsIdx = -1;
-    }
-    function clearBuildSearch() {
-        document.getElementById('searchInput').value = '';
-        clearBuildHighlights();
-        document.getElementById('buildSearchCount').textContent = '';
-        var nav = document.getElementById('searchNav');
-        if (nav) nav.style.display = 'none';
-    }
-    document.addEventListener('keydown', function(e) {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-            e.preventDefault();
-            document.getElementById('searchInput').focus();
-            document.getElementById('searchInput').select();
-        }
-    });
+    // ==== SEARCH (loaded from search.js) ====
 
     // ==== SCROLL TO HASH (deep links) ====
     function scrollToHash() {
@@ -4781,6 +4705,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         loadData();
         restoreBuildCollapseState();
+        initUnifiedSearch();
         document.querySelectorAll('.photo-gallery[data-photo-group]').forEach(function(g) {
             renderPhotos(g.dataset.photoGroup);
         });
@@ -5775,5 +5700,6 @@
 
     </div><!-- /glossary-body -->
 </div><!-- /guide-glossary -->
+<script src="search.js"></script>
 </body>
 </html>
