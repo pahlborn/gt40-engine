@@ -2395,6 +2395,7 @@
             }
         }
         btn.textContent = isCollapsing ? 'Alles aufklappen' : 'Alles einklappen';
+        saveCollapseState();
     }
 
     // scroll spy for nav bar
@@ -3258,6 +3259,11 @@
     }, { passive: true });
     window.addEventListener('beforeunload', function() {
         localStorage.setItem(_scrollKey, window.scrollY);
+        saveCollapseState();
+    });
+    window.addEventListener('pagehide', function() {
+        localStorage.setItem(_scrollKey, window.scrollY);
+        saveCollapseState();
     });
     function restoreScrollPos() {
         var pos = localStorage.getItem(_scrollKey);
@@ -3277,12 +3283,18 @@
     // loadData is async (may fetch from Gist) - restore scroll AFTER it completes
     loadData().then(function() {
         loadPhotoData(); loadSubPages(); setTimeout(runCrossChecks, 500);
-        if (currentLang === 'en') setTimeout(function() { setLang('en'); }, 100);
-        // Restore scroll after all data is loaded and DOM is settled
-        setTimeout(restoreScrollPos, 100);
+        if (currentLang === 'en') {
+            setTimeout(function() { setLang('en'); setTimeout(restoreScrollPos, 50); }, 100);
+        } else {
+            setTimeout(restoreScrollPos, 100);
+        }
     }).catch(function() {
         loadPhotoData(); loadSubPages();
         setTimeout(restoreScrollPos, 100);
+    });
+    // bfcache support
+    window.addEventListener('pageshow', function(e) {
+        if (e.persisted) { restoreCollapseState(); restoreScrollPos(); }
     });
 
     // ==== ESC to close panels ====

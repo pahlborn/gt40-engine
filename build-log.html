@@ -466,13 +466,15 @@
     Object.keys(i18nDict).forEach(function(k) { if (i18nDict[k] !== k) i18nReverse[i18nDict[k]] = k; });
     // Store original text nodes for clean round-trip
     var _origTexts = new WeakMap();
+    var i18nKeysSorted = Object.keys(i18nDict).sort(function(a,b) { return b.length - a.length; });
+    var i18nRevKeysSorted = Object.keys(i18nReverse).sort(function(a,b) { return b.length - a.length; });
     function setLang(lang) {
         currentLang = lang;
         localStorage.setItem('engineBuildLang', lang);
         var btn = document.getElementById('langToggle');
         if (btn) btn.textContent = lang === 'de' ? '\uD83C\uDDE9\uD83C\uDDEA' : '\uD83C\uDDFA\uD83C\uDDF8';
         var dict = lang === 'en' ? i18nDict : i18nReverse;
-        var keys = Object.keys(dict);
+        var keys = lang === 'en' ? i18nKeysSorted : i18nRevKeysSorted;
         // Walk all text nodes
         var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
         while (walker.nextNode()) {
@@ -484,15 +486,15 @@
             var text = lang === 'de' ? _origTexts.get(node) : node.textContent;
             if (lang === 'de') { node.textContent = text; continue; }
             var changed = false;
-            // Dictionary replacement
-            keys.forEach(function(k) { if (text.indexOf(k) >= 0) { text = text.split(k).join(dict[k]); changed = true; } });
-            // Remove parenthetical German text - check for umlauts OR German words
+            // Step 1: Remove German parenthetical text BEFORE dict replacement
             var cleaned = text.replace(/\s*\(([^)]*)\)/g, function(m, inner) {
                 if (/[\u00e4\u00f6\u00fc\u00c4\u00d6\u00dc\u00df]/.test(inner)) return '';
-                if (/\b(messen|montiert|montage|Ventil|Kolben|Nocken|Pumpe|Dicht|Schraube|Steuer|Einbau|Sicht|Werkbank|Abschluss|Lager|Zapfen|Kette|Kolbenstand|Spiel|Praxis|Soll|Mess|Freigabe|Berechnung|Vorbereitung|Zeitbedarf|Hinweis|Empfehlung|Warnung|Achtung|alle\s|nicht|Dreh|Wanne|Deckel|Keile|Bolzen|Steck|Presse|Kabel|Masse|Reini|Kreuz|Leitung|Dichtmittel|Gemessen|fusselfreie|saubere|neue\s|ohne\s|vor\s|auf\s|beim|handfest|anziehen|einsetzen|drehen|Zylinder|Motor|Block|Kopf|Kurbelwelle|montieren|Verdichtung|Steuerkette|Simmerring|Vergaser|Kraftstoff|Wasserpumpe|Verteiler|Starter|WARNUNG|ENDMONTAGE|Nullspiel|Portdichtung|Sollwert|Sollwerte|Steuertrieb|Ventilkeile|Filterpapier|Stehbolzen|Markierung|Vorspannung|Umdrehung|Portdichtungen|Abdichten|Inbus|Flansch|Nockenfl|Lauffl|Zwischenwelle|Schraubengr|Federpr|fusselfreie|Phase-3|Befestigungs|Elektrodenabstand|Wasserbohrung|Gleichm|Gesamtz)\b/i.test(inner)) return '';
+                if (/^(Werkzeuge|Sollwerte|Sollwert|Anzugswerte|Betriebsmittel|Fotodokumentation|Zeitbedarf|Vorbereitung|Voraussetzungen|Vorgehensweise|Messverfahren|Freigabe|Berechnung|Spezifikation|Empfehlung|Kolbenstand|Lagerspiel|Eingangskontrolle|Endmontage|Steuertrieb|Abschluss|Befestigungsmaterial|Ventilkeile|Gemessen|Messwerte|Messuhr|Messschieber|Haarlineal|Dichtmittel|Froststopfen|Nockenwelle|Ventiltrieb|Brennraumvolumen|Verzug|Lagerzapfen|Kette|Gewindebohrungen|Grundkreis|Axialspiel|Werkbank|Toleranz|Durchmesser|Kraftstoff|Kraftstoffdruck|Verdichtung|Brennraum|Elektrodenabstand|Erststart|Leerlauf warm|Verteiler|Steuerkette montiert|Ventildeckel)$/i.test(inner.trim())) return '';
                 return m;
             });
             if (cleaned !== text) { text = cleaned; changed = true; }
+            // Step 2: Dictionary replacement on cleaned text
+            keys.forEach(function(k) { if (text.indexOf(k) >= 0) { text = text.split(k).join(dict[k]); changed = true; } });
             if (changed) node.textContent = text;
         }
         // Translate placeholders
@@ -546,13 +548,22 @@
     }, { passive: true });
     window.addEventListener('beforeunload', function() {
         localStorage.setItem(_scrollKey, window.scrollY);
+        saveHubCollapseState();
+    });
+    window.addEventListener('pagehide', function() {
+        localStorage.setItem(_scrollKey, window.scrollY);
+        saveHubCollapseState();
     });
     window.addEventListener('load', function() {
         var pos = localStorage.getItem(_scrollKey);
         if (pos) {
-            setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 150);
-            setTimeout(function() { window.scrollTo(0, parseInt(pos)); _scrollReady = true; }, 500);
+            var delay = currentLang === 'en' ? 400 : 200;
+            setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, delay);
+            setTimeout(function() { window.scrollTo(0, parseInt(pos)); _scrollReady = true; }, delay + 200);
         } else { _scrollReady = true; }
+    });
+    window.addEventListener('pageshow', function(e) {
+        if (e.persisted) { restoreHubCollapseState(); var pos = localStorage.getItem(_scrollKey); if (pos) window.scrollTo(0, parseInt(pos)); }
     });
 
 </script>
