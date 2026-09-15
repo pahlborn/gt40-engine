@@ -4851,6 +4851,7 @@
         if (search && term) { search.value = term; filterGlossary(); }
     }
 
+        var activeCategory = '';
         function filterGlossary() {
         const q = (document.getElementById('glossarySearch').value || '').toLowerCase().trim();
         const entries = document.querySelectorAll('#glossaryBody .glossary-entry');
