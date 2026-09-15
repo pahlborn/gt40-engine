@@ -3203,6 +3203,7 @@
     let autoSaveTimer = null;
     // ==== COMPRESSION RATIO CALCULATOR ====
     function calcCR() {
+        if (!document.getElementById('crBore')) return;
         const bore = parseFloat(document.getElementById('crBore').value) || 0;
         const stroke = parseFloat(document.getElementById('crStroke').value) || 0;
         const chamber = parseFloat(document.getElementById('crChamber').value) || 0;
@@ -3255,6 +3256,7 @@
     }
 
     function runSim() {
+        if (!document.getElementById('simBore')) return;
         var bore = parseFloat(document.getElementById('simBore').value) || 4.0;
         var stroke = parseFloat(document.getElementById('simStroke').value) || 3.0;
         var cyl = parseInt(document.getElementById('simCyl').value) || 8;
@@ -3678,6 +3680,7 @@
     }
 
     function runDriveSim() {
+        if (!document.getElementById('dsTire')) return;
         var tireDiam = parseFloat(document.getElementById('dsTire').value) || 25;
         var finalDrive = parseFloat(document.getElementById('dsFinal').value) || 3.44;
         var gears = [

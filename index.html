@@ -281,6 +281,7 @@
             <button onclick="searchJump(1)" title="Next">&#9660;</button>
             <button onclick="clearSearch()" title="Close" style="margin-left:0.2rem;">&#10005;</button>
         </div>
+        <div id="subResults" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #e2e8f0;border-radius:8px;max-height:300px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:100;padding:0.5rem;font-size:0.8rem;"></div>
     </div>
     <div class="save-status" id="saveStatus"><span id="syncBadge"></span></div>
 </div>
@@ -2552,6 +2553,7 @@
         const photos = photoData[group] || [];
         if (!photos[idx]) return;
         const lb = document.getElementById('photoLightbox');
+        if (!lb) return;
         lb.querySelector('img').src = photos[idx].data;
         lb.querySelector('.caption').textContent = (photos[idx].caption ? photos[idx].caption + ' — ' : '') + photos[idx].time;
         lb.dataset.group = group;
@@ -2559,10 +2561,11 @@
         lb.classList.add('show');
     }
 
-    function closeLightbox() { document.getElementById('photoLightbox').classList.remove('show'); }
+    function closeLightbox() { var lb = document.getElementById('photoLightbox'); if (lb) lb.classList.remove('show'); }
 
     function deleteLightboxPhoto() {
         const lb = document.getElementById('photoLightbox');
+        if (!lb) return;
         const group = lb.dataset.group;
         const idx = parseInt(lb.dataset.idx);
         if (confirm('Foto wirklich loeschen?')) {
@@ -2735,7 +2738,7 @@
         clearHighlights();
         if (q.length < 2) {
             document.getElementById('searchNav').style.display = 'none';
-            document.getElementById('subResults').style.display = 'none';
+            var _sr = document.getElementById('subResults'); if (_sr) _sr.style.display = 'none';
             return;
         }
         // Search main page
@@ -2768,10 +2771,10 @@
         var glossaryHtml = getGlossaryResultsHtml(q);
         var subPageHtml = getSubPageResultsHtml(q);
         var combinedHtml = glossaryHtml + subPageHtml;
-        if (combinedHtml) {
+        if (combinedHtml && subEl) {
             subEl.innerHTML = combinedHtml;
             subEl.style.display = 'block';
-        } else {
+        } else if (subEl) {
             subEl.innerHTML = '';
             subEl.style.display = 'none';
         }
@@ -2816,7 +2819,7 @@
         document.getElementById('searchInput').value = '';
         clearHighlights();
         document.getElementById('searchNav').style.display = 'none';
-        document.getElementById('subResults').style.display = 'none';
+        var sr = document.getElementById('subResults'); if (sr) sr.style.display = 'none';
     }
 
     function searchKeyHandler(e) {
