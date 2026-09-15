@@ -1617,12 +1617,19 @@
 
     // ==== SCROLL POSITION MEMORY ====
     var _scrollKey = 'engineBuild_scroll_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
+    var _scrollTimer = null;
+    window.addEventListener('scroll', function() {
+        clearTimeout(_scrollTimer);
+        _scrollTimer = setTimeout(function() {
+            localStorage.setItem(_scrollKey, window.scrollY);
+        }, 200);
+    }, { passive: true });
     window.addEventListener('beforeunload', function() {
         localStorage.setItem(_scrollKey, window.scrollY);
     });
     window.addEventListener('load', function() {
         var pos = localStorage.getItem(_scrollKey);
-        if (pos) setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 100);
+        if (pos) setTimeout(function() { window.scrollTo(0, parseInt(pos)); }, 150);
     });
 
 </script>
