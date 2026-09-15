@@ -278,8 +278,39 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_preoil_crank" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">2. Rotate Crank 4&times; 90&deg; during pre-oiling (Kurbelwelle drehen beim Vor&ouml;len)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_preoil_crank_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>Pre-oiling in progress (priming tool spinning in drill)</li>
+                <li>Wrench or socket on harmonic balancer bolt for crank rotation</li>
+                <li>Oil pressure gauge connected and showing pressure</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+                <li>Large wrench or breaker bar on damper bolt (15/16" or 24 mm)</li>
+                <li>Priming tool (Melling PT11) still engaged in drill</li>
+                <li>Helper recommended: one person runs drill, other rotates crank</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Start priming:</strong> With priming tool spinning in drill, allow oil pressure to build and stabilize (Vor&ouml;len starten, Druck aufbauen lassen)</li>
+                <li><strong>First 90&deg; rotation:</strong> While drill is running, slowly rotate crankshaft 90&deg; clockwise with wrench on damper bolt (Kurbel 90&deg; im Uhrzeigersinn drehen)</li>
+                <li><strong>Pause 15&ndash;20 seconds:</strong> Hold position and let oil flow reach the newly-positioned bearings (15&ndash;20 Sekunden warten)</li>
+                <li><strong>Second 90&deg; rotation:</strong> Rotate another 90&deg; (total 180&deg;) &ndash; pause again (weitere 90&deg; drehen)</li>
+                <li><strong>Third 90&deg; rotation:</strong> Rotate another 90&deg; (total 270&deg;) &ndash; pause (weitere 90&deg;)</li>
+                <li><strong>Fourth 90&deg; rotation:</strong> Rotate final 90&deg; (full 360&deg; revolution) &ndash; all bearings have now been in every position relative to oil feed holes (letzte 90&deg; &ndash; alle Lager waren in jeder Position)</li>
+                <li><strong>Watch for oil at rockers:</strong> Continue priming and rotating until oil appears at all 16 rocker arms (bis &Ouml;l an allen 16 Kipphebeln austritt)</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>Rotating the crank ensures ALL main bearings, rod bearings, and cam bearings receive oil &ndash; oil feed holes in bearings only align at certain crank positions</li>
+                <li>Rotate SLOWLY &ndash; the priming tool cannot supply oil as fast as a running engine</li>
+                <li>If oil pressure drops during rotation: this is normal &ndash; new bearings are being loaded with oil</li>
+                <li>Ideal to do 2&ndash;3 full revolutions total for thorough pre-oiling</li>
+                <li>Check under engine for any oil leaks while priming (auf Leckagen pr&uuml;fen)</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- 3. Oil Pressure during Pre-Oil -->
@@ -287,8 +318,42 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_oilpressure_prime" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">3. Oil Pressure during Pre-Oil (&Ouml;ldruck beim Vor&ouml;len)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_oilpressure_prime_n" placeholder="Pressure:___ psi (___ bar)" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>Mechanical oil pressure gauge connected (do NOT rely on electric sender for pre-oil)</li>
+                <li>Priming tool engaged and drill running</li>
+                <li>Oil level verified on dipstick before priming</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
+                <div class="spec-line"><span>Minimum during priming</span><span class="spec-val">&ge; 15 psi (1.0 bar)</span></div>
+                <div class="spec-line"><span>Good reading</span><span class="spec-val">25&ndash;40 psi (1.7&ndash;2.8 bar)</span></div>
+                <div class="spec-line"><span>Time to pressure</span><span class="spec-val">&lt; 30 seconds</span></div>
+                <div class="guide-input-row" style="margin-top:0.4rem;">
+                    <div><label>Pre-oil psi:</label><input type="text" data-field="p4_preoil_psi" placeholder="25" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Time to pressure:</label><input type="text" data-field="p4_preoil_time" placeholder="10 sec" oninput="autoSave()" style="width:70px;"></div>
+                </div>
+            </div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Start drill:</strong> Run priming tool at moderate speed (not full RPM) and watch gauge immediately (Bohrmaschine starten, Manometer beobachten)</li>
+                <li><strong>Pressure within 30 seconds:</strong> Gauge should show 15+ psi within 30 seconds of priming. If YES: continue priming with crank rotation (Druck innerhalb 30 Sek.)</li>
+                <li><strong>No pressure after 30 seconds: STOP!</strong> Investigate immediately: primer shaft not engaging pump, oil pump not primed (empty), pickup tube seal leaking, or wrong shaft length (STOPP falls kein Druck!)</li>
+                <li><strong>Continue until oil at rockers:</strong> Prime until oil is visible flowing at all 16 rocker arm pivot points &ndash; remove valve covers to verify (bis &Ouml;l an allen Kipphebeln sichtbar)</li>
+                <li><strong>Record pressure:</strong> Note the stabilized pressure reading on gauge for reference (&Ouml;ldruck notieren)</li>
+            </ol></div>
+            <div class="warning-box"><strong>No oil pressure after 30 seconds = STOP IMMEDIATELY!</strong> Common causes: (1) Primer shaft too short &ndash; not engaging pump rotor, (2) Oil pump was not pre-filled with assembly lube &ndash; cannot self-prime, (3) Pickup tube O-ring leaking air, (4) Oil level too low. (Kein Druck nach 30 Sek. = SOFORT stoppen und Ursache suchen!)</div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>Melling M-68 high-volume pump should show strong pressure during priming if properly filled with assembly lube before installation</li>
+                <li>Drill speed matters: too fast can aerate oil, too slow won&rsquo;t build pressure. Moderate speed is best</li>
+                <li>If oil never reaches one bank of rockers: suspect plugged oil gallery on that side</li>
+                <li>Total priming time: typically 3&ndash;5 minutes with crank rotation to fully oil all bearings and push oil to rockers</li>
+                <li>After priming, reinstall valve covers and distributor before starting</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- 4. Fill Break-In Oil (ZDDP!) -->
@@ -536,8 +601,49 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_start" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">12. START &ndash; immediately 2,000&ndash;2,500 RPM! (Sofort auf 2.000&ndash;2.500 U/min!)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_start_n" placeholder="Time:___ Findings..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>ALL pre-start checklist items completed (Steps 1&ndash;11)</li>
+                <li>Helper present with fire extinguisher</li>
+                <li>Exhaust ventilation in place (garage door open)</li>
+                <li>Throttle linkage verified &ndash; can hold 2,000&ndash;2,500 RPM</li>
+                <li>Timing set to ~12&deg; BTDC (static)</li>
+                <li>Tachometer connected and visible</li>
+                <li>Oil pressure gauge and temperature gauge visible from driver position</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+                <li>Tachometer (via MSD 6AL gray tach wire)</li>
+                <li>Oil pressure gauge (mechanical preferred)</li>
+                <li>Coolant temperature gauge</li>
+                <li>Timing light (for adjustment after startup)</li>
+                <li>Wrench for distributor hold-down (timing adjustment)</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Prime carburetor:</strong> Pump throttle 2&ndash;3 times to squirt accelerator pump fuel into intake (Vergaser pumpen)</li>
+                <li><strong>Crank engine:</strong> Turn key / hit starter &ndash; engine should fire within 5&ndash;10 seconds if timing and fuel are correct (Motor starten)</li>
+                <li><strong>IMMEDIATELY go to 2,000&ndash;2,500 RPM:</strong> As soon as engine fires, bring RPM up to 2,000&ndash;2,500 and HOLD IT THERE. Do NOT let it idle! (SOFORT auf 2.000&ndash;2.500 U/min &ndash; NICHT im Leerlauf lassen!)</li>
+                <li><strong>Check oil pressure FIRST:</strong> Within the first 5 seconds, confirm oil pressure on gauge. If NO pressure: shut down immediately! (Sofort &Ouml;ldruck pr&uuml;fen &ndash; kein Druck = SOFORT abstellen!)</li>
+                <li><strong>Hold 2,000&ndash;2,500 RPM for 20&ndash;30 minutes:</strong> This is the cam/distributor gear break-in period. Vary RPM between 2,000&ndash;3,000 every few minutes (20&ndash;30 Min. halten, Drehzahl variieren)</li>
+                <li><strong>Monitor continuously:</strong> Watch oil pressure, coolant temp, and listen for unusual sounds throughout the break-in period (durchgehend &uuml;berwachen)</li>
+                <li><strong>Check for leaks:</strong> Have helper visually inspect for oil, coolant, and fuel leaks during the run (Helfer pr&uuml;ft auf Leckagen)</li>
+                <li><strong>Adjust timing if needed:</strong> With timing light on #1, verify and adjust initial timing while engine is running (Z&uuml;ndung mit Stroboskop pr&uuml;fen)</li>
+            </ol></div>
+            <div class="warning-box"><strong>CRITICAL: Do NOT idle a fresh engine!</strong> At idle, oil splash from the crank is insufficient to lubricate cam lobes, lifter rollers, and distributor gear. The 2,000+ RPM ensures adequate oil circulation and splash lubrication to all components. Even hydraulic roller cams need elevated RPM for distributor gear break-in. (NICHT im Leerlauf laufen lassen &ndash; bei niedriger Drehzahl ist die &Ouml;lversorgung unzureichend!)</div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>If engine won&rsquo;t start within 15 seconds of cranking: STOP. Check ignition timing, fuel delivery, firing order. Do not run starter continuously (nicht endlos orgeln)</li>
+                <li>Vary RPM between 2,000&ndash;3,000 RPM every 2&ndash;3 minutes &ndash; constant RPM loads the same spots repeatedly</li>
+                <li>Coolant temp should reach thermostat opening (~180&deg;F / 82&deg;C) within 10&ndash;15 minutes &ndash; this is normal</li>
+                <li>Minor exhaust smoke at first start is normal &ndash; assembly lube and oil residue burning off</li>
+                <li>Have a plan for what to do if something goes wrong: kill switch location, fire extinguisher location</li>
+                <li>After 20&ndash;30 minutes: allow engine to idle briefly, then shut down. Break-in is complete</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="time">Time Estimate (Zeitbedarf)</h4><ul><li>20&ndash;30 min. continuous running at elevated RPM</li></ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- 13. Oil Pressure at 2,000 RPM -->
@@ -545,8 +651,44 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_oil_running" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">13. Oil Pressure at 2,000 RPM warm: 40&ndash;55 psi (2.8&ndash;3.8 bar)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_oil_running_n" placeholder="Pressure:___ psi (___ bar)" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
+                <div class="spec-line"><span>At 2,000 RPM warm (180&deg;F / 82&deg;C)</span><span class="spec-val">40&ndash;55 psi (2.8&ndash;3.8 bar)</span></div>
+                <div class="spec-line"><span>Rule of thumb</span><span class="spec-val">~10 psi per 1,000 RPM minimum</span></div>
+                <div class="spec-line"><span>Cold startup (first seconds)</span><span class="spec-val">60&ndash;80 psi (normal &ndash; thick oil)</span></div>
+                <div class="spec-line"><span>Hot idle (after warm-up)</span><span class="spec-val">25&ndash;35 psi (1.7&ndash;2.4 bar)</span></div>
+                <div class="guide-input-row" style="margin-top:0.4rem;">
+                    <div><label>At 2,000 RPM warm:</label><input type="text" data-field="p4_oil_2k_warm" placeholder="50 psi" oninput="autoSave()" style="width:65px;"></div>
+                    <div><label>Oil temp:</label><input type="text" data-field="p4_oil_temp_2k" placeholder="180&deg;F" oninput="autoSave()" style="width:65px;"></div>
+                </div>
+            </div>
+            <div class="guide-block"><h4 class="prereq">What to Monitor (Worauf achten)</h4><ul>
+                <li><strong>Normal:</strong> Pressure drops as oil warms up &ndash; thinner oil = lower pressure (normal)</li>
+                <li><strong>Low pressure (&lt;30 psi at 2,000 RPM warm):</strong> Check bearing clearances, oil pump, pickup tube seal, oil level</li>
+                <li><strong>Very low (&lt;15 psi at any RPM):</strong> SHUT DOWN immediately &ndash; investigate before running again (SOFORT abstellen!)</li>
+                <li><strong>High pressure (&gt;60 psi warm):</strong> Oil still cold, wrong viscosity, or relief valve stuck closed</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Read at steady 2,000 RPM:</strong> With engine at operating temperature (180&deg;F+ coolant), hold steady 2,000 RPM and read oil pressure gauge (bei Betriebstemperatur ablesen)</li>
+                <li><strong>Compare to spec:</strong> Melling M-68 high-volume pump should provide 40&ndash;55 psi at 2,000 RPM with standard bearing clearances (mit Soll vergleichen)</li>
+                <li><strong>Check at 3,000 RPM:</strong> Increase to 3,000 RPM briefly &ndash; pressure should rise proportionally to ~50&ndash;65 psi (bei 3.000 U/min pr&uuml;fen)</li>
+                <li><strong>Check at idle:</strong> Drop to idle &ndash; should hold 25&ndash;35 psi when warm. Below 15 psi at idle is concerning (im Leerlauf pr&uuml;fen)</li>
+                <li><strong>Record readings:</strong> Document oil pressure at 2,000 RPM warm as baseline for future comparison (Werte dokumentieren)</li>
+            </ol></div>
+            <div class="warning-box"><strong>Below 10 psi at ANY RPM = SHUT DOWN!</strong> Low oil pressure will destroy main bearings, rod bearings, and cam bearings within minutes. Possible causes: excessive bearing clearances, oil pump failure, air leak at pickup, low oil level. (Unter 10 psi = SOFORT abstellen &ndash; Lagerschaden droht!)</div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>Melling M-68 is a high-volume pump &ndash; expect slightly higher pressure than stock pump</li>
+                <li>Oil pressure is a function of clearances + pump volume + relief valve setting &ndash; not just the pump</li>
+                <li>10W-30 break-in oil will show lower warm pressure than 15W-40 &ndash; both are normal for their viscosity</li>
+                <li>Pressure fluctuation of &plusmn;5 psi at steady RPM is normal &ndash; large swings indicate air in system or pickup uncovering</li>
+                <li>After break-in oil change: re-check pressure with new oil to establish true baseline</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- 14. Visual Inspection: no leaks -->

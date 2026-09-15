@@ -269,8 +269,39 @@
     <div class="step-header">
         <input type="checkbox" data-field="p3_blowout" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">2. Blow Out Head Bolt Holes (Kopfbohrungen ausblasen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_blowout_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>Block on engine stand, deck surface accessible</li>
+                <li>All head bolt holes visible (10 per side, 20 total)</li>
+                <li>Safety glasses &ndash; debris will fly out of holes (Schutzbrille!)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+                <li>Compressed air with blow gun (Druckluft mit Ausblaspistole)</li>
+                <li>Brake cleaner spray (Bremsenreiniger)</li>
+                <li>Clean lint-free cloths (fusselfreie T&uuml;cher)</li>
+                <li>Flashlight for hole inspection</li>
+                <li>Safety glasses (Schutzbrille)</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Spray brake cleaner:</strong> Shoot brake cleaner into each head bolt hole to dissolve oil, coolant residue, and debris (Bremsenreiniger in jede Kopfbohrung spr&uuml;hen)</li>
+                <li><strong>Blow out with air:</strong> Insert air nozzle into each hole and blow dry &ndash; direct debris AWAY from engine (mit Druckluft ausblasen &ndash; Schmutz WEG vom Motor lenken)</li>
+                <li><strong>Inspect each hole:</strong> Use flashlight to look into each hole &ndash; must be clean and dry, no liquid pooling at bottom (mit Taschenlampe pr&uuml;fen &ndash; trocken, keine Fl&uuml;ssigkeit am Boden)</li>
+                <li><strong>Repeat if needed:</strong> If any hole shows residue, spray and blow again (bei R&uuml;ckst&auml;nden wiederholen)</li>
+                <li><strong>Wipe deck surface:</strong> Clean deck surface around holes with brake cleaner and cloth (Dichtfl&auml;che um Bohrungen reinigen)</li>
+            </ol></div>
+            <div class="warning-box"><strong>CRITICAL: Liquid in blind holes causes hydraulic lock during torquing!</strong> The bolt cannot compress liquid &ndash; this gives false torque readings and can crack the block. (Fl&uuml;ssigkeit in Sacklochbohrungen verursacht hydraulisches Sperren beim Anziehen &ndash; falsche Drehmomentwerte und Blockrisse m&ouml;glich!)</div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>Water-jacket holes (lower positions 6&ndash;10) may have coolant residue &ndash; extra attention needed</li>
+                <li>Blind holes (upper positions 1&ndash;5) trap oil at the bottom &ndash; blow thoroughly</li>
+                <li>Run a thread chaser (NOT a tap!) through each hole if threads look dirty or damaged</li>
+                <li>This step takes only 10&ndash;15 minutes but prevents catastrophic assembly errors</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- Step 3: All Parts + Consumables Ready -->
@@ -304,8 +335,36 @@
     <div class="step-header">
         <input type="checkbox" data-field="p3_cam_lube" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">4. Camshaft: assembly lube on ALL lobes + journals (Montagepaste auf ALLE Nocken + Lagerzapfen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_cam_lube_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>COMP Cams XE274HR camshaft out of packaging, inspected for damage</li>
+                <li>COMP Cams assembly lube #106 (included with cam or purchased separately)</li>
+                <li>Clean work surface &ndash; cam must stay clean (saubere Arbeitsfl&auml;che)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="consumables">Consumables (Betriebsmittel)</h4><ul>
+                <li>COMP Cams cam lube #106 &ndash; generous amount (gro&szlig;z&uuml;gig auftragen)</li>
+                <li>Clean engine oil for journals as backup lubricant</li>
+                <li>Latex gloves to keep contaminants off cam surfaces</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>All 16 lobes:</strong> Apply thick coat of COMP #106 lube to every cam lobe &ndash; intake AND exhaust, both flanks and nose (dicke Schicht auf alle 16 Nocken &ndash; Einlass UND Auslass)</li>
+                <li><strong>All 5 journals:</strong> Apply lube to all cam bearing journals (alle 5 Lagerzapfen einschmieren)</li>
+                <li><strong>Distributor gear:</strong> Apply lube to the distributor drive gear at rear of cam (Verteiler-Antriebszahnrad am Nockenende)</li>
+                <li><strong>Fuel pump eccentric:</strong> Lube the fuel pump eccentric lobe if applicable (Benzinpumpen-Exzenter)</li>
+                <li><strong>Verify coverage:</strong> Visually confirm every surface that contacts another part is covered with lube &ndash; no bare metal visible (alle Kontaktfl&auml;chen bedeckt)</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>Hydraulic roller cams are less critical than flat tappet for break-in, but the distributor gear and journals still need protection during initial startup</li>
+                <li>Do NOT use motor oil alone &ndash; it drains off during assembly time. #106 stays in place (Motor&ouml;l allein l&auml;uft ab &ndash; #106 bleibt haften)</li>
+                <li>More lube is better than less &ndash; excess will dissolve into engine oil harmlessly (&uuml;bersch&uuml;ssige Paste l&ouml;st sich im Motor&ouml;l auf)</li>
+                <li>Work quickly after lubing &ndash; install cam promptly to minimize exposure to air/dust</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- Step 5: Install Cam -->
@@ -313,8 +372,41 @@
     <div class="step-header">
         <input type="checkbox" data-field="p3_cam_install" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">5. Install Cam (long bolt as handle / langer Bolzen als Griff)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_cam_install_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>Cam bearings verified in correct position (oil holes aligned)</li>
+                <li>All cam lobes and journals lubed with COMP #106 (previous step)</li>
+                <li>Block tilted slightly rearward if possible (gravity assists)</li>
+                <li>5/16"-18 &times; 6" long bolt as installation handle</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+                <li>Long bolt 5/16"-18 &times; 6" (threaded into cam nose) as guide handle (langer Bolzen als F&uuml;hrungsgriff)</li>
+                <li>Additional COMP #106 lube for touch-up</li>
+                <li>Clean gloves (saubere Handschuhe)</li>
+                <li>Flashlight to watch bearing alignment during insertion</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Thread guide bolt:</strong> Thread the 5/16"-18 &times; 6" bolt into the cam nose &ndash; this is your handle for controlled insertion (Bolzen als Griff in Nockenwellennase schrauben)</li>
+                <li><strong>Support cam weight:</strong> Hold cam level by the guide bolt with one hand and support the rear of the cam with the other (Nocke waagerecht halten, Gewicht st&uuml;tzen)</li>
+                <li><strong>Insert slowly:</strong> Carefully slide cam into block, rotating very slowly as needed to clear each bearing journal (langsam einschieben, leicht drehen)</li>
+                <li><strong>Watch the lobes:</strong> NEVER let lobe edges scrape against cam bearing surfaces &ndash; this destroys both the lobe and bearing (Nocken d&uuml;rfen NIEMALS an Lagerschalen kratzen)</li>
+                <li><strong>Feel for resistance:</strong> If resistance is felt, STOP &ndash; pull back slightly, re-align, and try again. Do not force! (bei Widerstand STOPP &ndash; zur&uuml;ckziehen und neu ausrichten)</li>
+                <li><strong>Seat fully:</strong> Cam is fully seated when thrust plate surface is reached (Nocke sitzt, wenn Druckplatte erreicht ist)</li>
+                <li><strong>Remove guide bolt:</strong> Unthread the guide bolt from cam nose (F&uuml;hrungsbolzen herausdrehen)</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>The long bolt as handle is essential &ndash; without it, the cam slides in uncontrolled and can damage bearings (ohne Griff gleitet die Nocke unkontrolliert)</li>
+                <li>Tilting the block rearward (rear lower) lets gravity help guide the cam in</li>
+                <li>Ford 302 has 5 cam bearings &ndash; each one is a potential snag point for lobe edges</li>
+                <li>If you feel a lobe catch on a bearing edge, the cam is not centered &ndash; never force it through</li>
+                <li>Estimated time: ~15 min. with care</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- Step 6: Timing Set + ARP Cam Bolt -->
@@ -344,8 +436,40 @@
     <div class="step-header">
         <input type="checkbox" data-field="p3_lifters" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">7. Install All 16 Lifters (alle 16 Lifter mit Montagepaste einsetzen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_lifters_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>All 16 COMP hydraulic roller lifters inspected (no damage, rollers spin freely)</li>
+                <li>Camshaft installed and timing set in place</li>
+                <li>Lifter bores clean and free of debris</li>
+                <li>Link bar pairs identified (lifters must be installed in matched pairs)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="consumables">Consumables (Betriebsmittel)</h4><ul>
+                <li>COMP Cams assembly lube #106 &ndash; for lifter bodies and bores</li>
+                <li>Clean engine oil as secondary lubricant</li>
+                <li>Clean lint-free cloths</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Clean all bores:</strong> Wipe each of the 16 lifter bores with clean cloth &ndash; remove any preservative or debris (alle 16 Bohrungen reinigen)</li>
+                <li><strong>Lube bores:</strong> Apply assembly lube inside each lifter bore (Montagepaste in jede Bohrung)</li>
+                <li><strong>Lube lifter bodies:</strong> Coat each lifter body with assembly lube, especially the bottom (roller) and sides (Lifter-K&ouml;rper einschmieren)</li>
+                <li><strong>Align rollers:</strong> Orient each lifter so the roller wheel is aligned parallel with the cam lobe it will ride on (Rolle parallel zur Nocke ausrichten)</li>
+                <li><strong>Install in pairs:</strong> Link bar lifters must be installed as matched pairs &ndash; the link bar keeps both lifters (intake + exhaust for one cylinder) aligned and prevents rotation (Paarweise mit Verbindungsb&uuml;gel einsetzen)</li>
+                <li><strong>Check free movement:</strong> Each lifter must slide freely up and down in its bore with no binding (jeder Lifter muss frei gleiten)</li>
+                <li><strong>Verify roller alignment:</strong> Visually confirm all 16 rollers are sitting on their respective cam lobes and tracking straight (Rollenausrichtung visuell pr&uuml;fen)</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>Label or note lifter positions &ndash; if removed later, reinstall in same bore (Positionen markieren)</li>
+                <li>Link bars prevent rotation &ndash; a rotated roller lifter will be destroyed by the cam lobe within seconds of engine start</li>
+                <li>Lifter-to-bore clearance: 0.0010"&ndash;0.0025" (0.025&ndash;0.064 mm) &ndash; too tight = binding, too loose = oil leak and noise</li>
+                <li>If any lifter does not slide freely: check for burr in bore, wrong lifter diameter, or debris</li>
+                <li>Install all lifters BEFORE the oil pump &ndash; easier access to valley area</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- Step 8: Oil Pump M-6600-D2 -->
@@ -495,8 +619,44 @@
     <div class="step-header">
         <input type="checkbox" data-field="p3_arp_lube" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">13. ARP Ultra-Torque on threads + nut face (Gewinde + Mutterauflage)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_arp_lube_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>ARP 154-4003 head studs installed hand-tight in block</li>
+                <li>ARP Ultra-Torque lubricant packet (included in stud kit)</li>
+                <li>ARP hardened washers (included in kit)</li>
+                <li>12-point ARP nuts (included in kit)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="consumables">Consumables (Betriebsmittel)</h4><ul>
+                <li>ARP Ultra-Torque lubricant &ndash; from ARP stud kit (do NOT substitute!)</li>
+                <li>Clean cloth for wiping excess</li>
+                <li>Small brush or finger for application</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Apply to threads:</strong> Coat ALL stud threads (the portion above the block where nut threads on) with ARP Ultra-Torque (Gewinde oberhalb des Blocks einschmieren)</li>
+                <li><strong>Apply to nut face:</strong> Put a dab of Ultra-Torque on the underside (contact face) of each ARP nut AND on the washer faces (Mutterauflagefl&auml;che UND Scheiben einschmieren)</li>
+                <li><strong>Apply to washers:</strong> Both sides of each ARP hardened washer get a thin film of Ultra-Torque (beide Seiten der Scheiben)</li>
+                <li><strong>Verify coverage:</strong> Every metal-to-metal contact surface in the clamping stack must be lubricated (alle Kontaktfl&auml;chen m&uuml;ssen geschmiert sein)</li>
+                <li><strong>Do NOT wipe off excess:</strong> Leave the lubricant in place &ndash; it is designed to remain during torquing (&Uuml;berschuss NICHT abwischen)</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="torque">Torque Values with ARP Ultra-Torque (Anzugswerte)</h4>
+                <div class="spec-line"><span>Stage 1 (Stufe 1)</span><span class="spec-val">35 ft-lbs (47 Nm)</span></div>
+                <div class="spec-line"><span>Stage 2 (Stufe 2)</span><span class="spec-val">55 ft-lbs (75 Nm)</span></div>
+                <div class="spec-line"><span>Stage 3 Long/Blind (Stufe 3)</span><span class="spec-val">80 ft-lbs (108 Nm)</span></div>
+                <div class="spec-line"><span>Stage 3 Short/Water (Stufe 3)</span><span class="spec-val">70 ft-lbs (95 Nm)</span></div>
+            </div>
+            <div class="warning-box"><strong>Do NOT use motor oil, anti-seize, or moly lube instead of ARP Ultra-Torque!</strong> Each lubricant has a different friction coefficient &ndash; using the wrong one means the specified torque produces the WRONG clamping force. ARP specs are calibrated for Ultra-Torque ONLY. (NUR ARP Ultra-Torque verwenden &ndash; anderes Schmiermittel = falsche Klemmkraft!)</div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>One packet of Ultra-Torque from the ARP kit is usually enough for one engine &ndash; use it all</li>
+                <li>If you run out: ARP sells Ultra-Torque separately (ARP 100-9908)</li>
+                <li>Apply lube just before torquing &ndash; do not let it sit overnight exposed to dust</li>
+                <li>Re-apply if studs are loosened and re-torqued (during re-torque after first heat cycle)</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- Step 14: Set Heads on Dowels -->
@@ -504,8 +664,41 @@
     <div class="step-header">
         <input type="checkbox" data-field="p3_heads_on" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">14. Set Heads on Dowels (K&ouml;pfe auf Passh&uuml;lsen setzen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_heads_on_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>Head gaskets (Fel-Pro 1011-2 or M-6051-CP331) ready &ndash; verify correct part number</li>
+                <li>Block deck surface clean and dry (previous cleaning step completed)</li>
+                <li>Dowel pins in block verified (2 per side, pressed into block)</li>
+                <li>ARP head studs installed and lubed (previous step completed)</li>
+                <li>AFR 1399 cylinder heads clean, ports free of debris</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+                <li>Helper recommended &ndash; AFR aluminum heads weigh ~25 lbs (11 kg) each</li>
+                <li>ARP 12-point nuts + hardened washers (from stud kit)</li>
+                <li>Flashlight to verify gasket alignment</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Place head gaskets:</strong> Set gaskets on dowel pins &ndash; check orientation: &quot;UP&quot; or &quot;FRONT&quot; marking must face correct direction (Dichtung auf Passh&uuml;lsen setzen &ndash; Beschriftung pr&uuml;fen)</li>
+                <li><strong>Verify gasket alignment:</strong> All water passages, oil drain-backs, and bolt holes must align with block (alle Durchl&auml;sse m&uuml;ssen fluchten)</li>
+                <li><strong>Lift head carefully:</strong> With a helper, carefully lower the cylinder head straight down onto the gasket and dowel pins (Kopf gerade nach unten auf Passh&uuml;lsen absenken)</li>
+                <li><strong>Do NOT slide:</strong> Never slide the head sideways on the gasket &ndash; this can damage or shift the gasket seal (Kopf NICHT seitlich verschieben &ndash; besch&auml;digt die Dichtung)</li>
+                <li><strong>Align with dowels:</strong> The 2 dowel pins per side ensure correct positioning &ndash; head should drop into place with minimal guidance (Passh&uuml;lsen sorgen f&uuml;r korrekte Position)</li>
+                <li><strong>Hand-start all nuts:</strong> Place ARP washers and hand-start all ARP nuts on studs &ndash; do NOT torque yet (alle Muttern handfest aufdrehen &ndash; noch NICHT anziehen)</li>
+                <li><strong>Repeat for second head:</strong> Install second head gasket and head the same way (f&uuml;r zweiten Kopf wiederholen)</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>Copper gaskets (CP331) are installed DRY &ndash; no sealant! (Kupferdichtung TROCKEN &ndash; kein Dichtmittel!)</li>
+                <li>AFR aluminum heads are lighter than cast iron &ndash; easier to handle but still use a helper</li>
+                <li>Verify the gasket did not shift after setting the head &ndash; peek through bolt holes with flashlight</li>
+                <li>If a dowel pin is missing or damaged, do NOT proceed &ndash; head will shift under torque</li>
+                <li>Some builders use guide studs (long bolts without heads) in 2 corner holes to guide the head down &ndash; recommended for heavy iron heads</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- Step 15: Torque Heads -->
@@ -551,8 +744,40 @@
     <div class="step-header">
         <input type="checkbox" data-field="p3_guideplates" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">16. Guide Plates + Final Pushrods &ndash; install (F&uuml;hrungsplatten + finale Pushrods)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_guideplates_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>Cylinder heads torqued to final spec (previous step completed)</li>
+                <li>COMP Cams flat-style guide plates &ndash; correct type for AFR 1399 heads</li>
+                <li>Final-length pushrods (intake and exhaust lengths determined in Phase 2)</li>
+                <li>COMP #106 assembly lube for pushrod tips</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+                <li>3/8" socket or wrench for guide plate bolts</li>
+                <li>Assembly lube (COMP #106) for pushrod tips</li>
+                <li>Clean cloth</li>
+                <li>Flashlight for alignment inspection</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Orient guide plates:</strong> Install COMP guide plates with flat side UP (for AFR heads) &ndash; check COMP documentation for your specific plate/head combination (flache Seite nach OBEN f&uuml;r AFR-K&ouml;pfe)</li>
+                <li><strong>Slide onto studs:</strong> Place guide plate over rocker arm studs for each pair of intake/exhaust positions (auf Kipphebel-Stehbolzen schieben)</li>
+                <li><strong>Lube pushrod tips:</strong> Apply COMP #106 assembly lube to both ends of each pushrod &ndash; ball end and cup end (beide Enden der Pushrods mit Montagepaste versehen)</li>
+                <li><strong>Insert pushrods:</strong> Drop final-length pushrods through guide plate slots into lifter cups &ndash; intake and exhaust lengths may differ! (Pushrods einsetzen &ndash; Einlass/Auslass L&auml;ngen k&ouml;nnen unterschiedlich sein!)</li>
+                <li><strong>Verify centering:</strong> Each pushrod must be centered in its guide plate slot &ndash; no contact with slot edges (Pushrod muss mittig im Schlitz laufen)</li>
+                <li><strong>Check for interference:</strong> Rotate crank slowly and verify pushrods move freely through entire lift cycle without binding on guide plates (Kurbel drehen, auf Bindung pr&uuml;fen)</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>Guide plates prevent pushrod side-loading on valve stem tips &ndash; critical for valve guide life</li>
+                <li>Double-check intake vs. exhaust pushrod lengths &ndash; mixing them up causes incorrect geometry</li>
+                <li>If pushrod contacts guide plate edge at any point in the cam cycle: wrong pushrod length or wrong guide plate orientation</li>
+                <li>Do not fully tighten guide plates until rockers are installed and preload is set</li>
+                <li>Cam lube on pushrod tips is critical &ndash; dry pushrod tips will gall rocker cups and lifter seats on first startup</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- Step 17: Rockers + Preload -->
@@ -779,8 +1004,41 @@
     <div class="step-header">
         <input type="checkbox" data-field="p3_distributor" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">23. Distributor &ndash; TDC #1 compression stroke (Verteiler &ndash; OT #1 Kompressionstakt)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_distributor_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>MSD Pro-Billet or Ready-to-Run distributor ready</li>
+                <li>Oil pump drive shaft installed (engages distributor gear)</li>
+                <li>Intake manifold installed (distributor drops through intake on SBF)</li>
+                <li>Engine at TDC #1 compression stroke &ndash; BOTH valves on #1 must be closed</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+                <li>Breaker bar or socket on crank bolt (to rotate engine to TDC)</li>
+                <li>1/2" wrench for distributor hold-down clamp</li>
+                <li>Distributor cap + rotor (for marking #1 position)</li>
+                <li>Marker or paint pen</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Find TDC #1 compression:</strong> Rotate crank until TDC mark on damper aligns with pointer AND both valves on #1 cylinder are fully closed &ndash; this is compression stroke TDC (OT #1 Kompressionstakt &ndash; beide Ventile geschlossen)</li>
+                <li><strong>Verify compression stroke:</strong> If either valve is partially open, you are at TDC overlap (exhaust stroke) &ndash; rotate crank 360&deg; more to reach compression TDC (falls ein Ventil offen: 360&deg; weiterdrehen)</li>
+                <li><strong>Mark #1 on housing:</strong> With distributor cap off, identify #1 spark plug wire terminal on cap. Mark corresponding position on distributor housing (Position #1 am Geh&auml;use markieren)</li>
+                <li><strong>Set rotor direction:</strong> Orient rotor to point toward #1 terminal position as you lower distributor into block (Verteilerfinger auf #1 ausrichten)</li>
+                <li><strong>Insert distributor:</strong> Lower distributor into bore &ndash; the gear will mesh with cam gear and rotor may rotate slightly as gears engage. Compensate by offsetting rotor one tooth in advance (Zahnrad greift in Nockenrad &ndash; Finger dreht sich leicht beim Einsetzen)</li>
+                <li><strong>Verify gear mesh:</strong> Distributor should drop fully into bore &ndash; if it stops short, the oil pump drive shaft hex is not aligned. Bump starter briefly or rotate oil pump shaft with screwdriver (falls Verteiler nicht ganz einrastet: &Ouml;lpumpenwelle drehen)</li>
+                <li><strong>Verify rotor position:</strong> With distributor fully seated, rotor must point at #1 terminal position (Verteilerfinger muss auf #1 zeigen)</li>
+                <li><strong>Snug hold-down:</strong> Tighten hold-down clamp just enough to hold position &ndash; final timing adjustment comes later (Klemmschraube leicht anziehen &ndash; Feineinstellung sp&auml;ter)</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>Ford 302 firing order: 1-5-4-2-6-3-7-8, distributor rotates counter-clockwise (gegen Uhrzeigersinn)</li>
+                <li>MSD distributors have no vacuum advance (no canister) &ndash; all advance is electronic via MSD 6AL box</li>
+                <li>The distributor gear meshes with the cam gear at a helical angle &ndash; rotor rotates ~15&deg; as it drops in. Pre-offset accordingly</li>
+                <li>Mark the intake manifold at the distributor base so you can verify it hasn&rsquo;t rotated during transport/handling</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- Step 24: Spark Plugs -->
@@ -823,8 +1081,45 @@
     <div class="step-header">
         <input type="checkbox" data-field="p3_valvecovers" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">25. Valve Covers &ndash; 4&ndash;6 ft-lbs (5&ndash;8 Nm), aluminum! (Ventildeckel)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p3_valvecovers_n" placeholder="Torque:___" oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>All 16 rocker arms set with correct preload (previous step)</li>
+                <li>Valve covers + gaskets (cork or rubber) ready</li>
+                <li>PCV valve and breather grommets in correct positions</li>
+                <li>Gasket surfaces on heads clean and dry</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+                <li>Torque wrench (low-range, accurate at 4&ndash;6 ft-lbs)</li>
+                <li>1/4" drive socket for valve cover bolts</li>
+                <li>Valve cover gaskets (cork or rubber, matched to covers)</li>
+                <li>RTV silicone (thin bead at corners if cork gaskets)</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Check rocker clearance:</strong> Verify valve cover clears all rocker arm components &ndash; polylock nuts, adjusting screws (Kipphebel-Freigang pr&uuml;fen)</li>
+                <li><strong>Place gaskets:</strong> Set gaskets on head gasket rails &ndash; use thin bead of RTV at corners if using cork gaskets. Rubber gaskets typically need no RTV (Dichtungen auflegen &ndash; bei Kork d&uuml;nne RTV-Raupe an Ecken)</li>
+                <li><strong>Set covers:</strong> Place valve covers on heads, aligning all bolt holes (Ventildeckel aufsetzen)</li>
+                <li><strong>Hand-start all bolts:</strong> Insert and hand-start ALL bolts before tightening any (alle Schrauben handfest eindrehen)</li>
+                <li><strong>Torque in pattern:</strong> Tighten in alternating pattern to 4&ndash;6 ft-lbs (5&ndash;8 Nm) &ndash; start center, work outward (Kreuzschema von Mitte nach au&szlig;en)</li>
+                <li><strong>Verify PCV and breather:</strong> Check PCV valve and breather are in correct positions for your ventilation routing (PCV und Entl&uuml;ftung pr&uuml;fen)</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="torque">Torque Value (Anzugswert)</h4>
+                <div class="spec-line"><span>Valve Cover Bolts (Ventildeckel-Schrauben)</span><span class="spec-val">4&ndash;6 ft-lbs (5&ndash;8 Nm)</span></div>
+                <div class="spec-line"><span>Pattern (Schema)</span><span class="spec-val">Alternating, center &rarr; outward</span></div>
+            </div>
+            <div class="warning-box"><strong>Do NOT overtighten!</strong> 4&ndash;6 ft-lbs is very little torque. Over-torquing crushes the gasket, causes squeeze-out, and guarantees oil leaks. Aluminum covers distort easily. (NICHT &uuml;berziehen! 4&ndash;6 ft-lbs ist sehr wenig &ndash; &Uuml;berziehen zerquetscht die Dichtung und verursacht Leckagen.)</div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>Cork gaskets compress over time &ndash; re-torque to 4&ndash;6 ft-lbs after first heat cycle</li>
+                <li>Rubber gaskets are reusable and provide a better seal long-term than cork</li>
+                <li>If using stamped steel covers with roller rockers: verify clearance with modeling clay first (Phase 2 step)</li>
+                <li>Tall valve covers (fabricated aluminum) may be needed with stud-mount roller rockers &ndash; verify in Phase 2 mock-up</li>
+                <li>PCV valve typically goes on one cover, open breather on the other &ndash; check your ventilation system routing</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- Step 26: Fuel Pump -->

@@ -363,8 +363,39 @@
     <div class="step-header">
         <input type="checkbox" data-field="p2_lifter1" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">5. Install Lifter on Test Cylinder #1 (Pr&uuml;fzylinder)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p2_lifter1_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>Camshaft installed and timing set in place</li>
+                <li>One COMP hydraulic roller lifter (from set of 16) ready</li>
+                <li>Rotate crank so #1 intake lobe is on base circle (Grundkreis)</li>
+                <li>Identify #1 intake lifter bore (passenger side, front)</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+                <li>Assembly lube (COMP #106 or equivalent)</li>
+                <li>Clean lint-free cloth</li>
+                <li>Flashlight for bore inspection</li>
+                <li>Long screwdriver or pushrod to check lifter rotation</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Clean bore:</strong> Wipe #1 intake lifter bore with clean cloth &ndash; remove any debris or preservative oil (Bohrung reinigen)</li>
+                <li><strong>Lubricate:</strong> Apply assembly lube to lifter body and inside of lifter bore (Montagepaste auf Lifter und Bohrung)</li>
+                <li><strong>Align roller:</strong> Orient lifter so roller wheel is aligned parallel with camshaft lobe &ndash; roller must track straight on lobe (Rolle muss parallel zur Nocke ausgerichtet sein)</li>
+                <li><strong>Insert lifter:</strong> Slide lifter into bore &ndash; it should drop in freely under its own weight (Lifter muss frei gleiten)</li>
+                <li><strong>Check rotation:</strong> Lifter must NOT rotate in bore &ndash; link bar slot prevents rotation on hydraulic roller lifters (Lifter darf sich nicht in der Bohrung drehen)</li>
+                <li><strong>Verify free movement:</strong> Push lifter down and release &ndash; it should spring back up freely, no binding (frei auf und ab gleiten)</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>This is a test lifter only &ndash; used for degreeing cam and checking pushrod length</li>
+                <li>If lifter binds in bore: check for burrs, debris, or wrong lifter diameter</li>
+                <li>Hydraulic roller lifters use link bars to prevent rotation &ndash; link bar not needed for single test lifter, but verify roller alignment manually</li>
+                <li>Lifter-to-bore clearance: 0.0010"&ndash;0.0025" (0.025&ndash;0.064 mm) typical</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- 6. Degree Camshaft -->
@@ -465,8 +496,40 @@
     <div class="step-header">
         <input type="checkbox" data-field="p2_guideplates" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">9. Install Guide Plates (F&uuml;hrungsplatten montieren)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p2_guideplates_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+                <li>COMP Cams flat-style guide plates (for AFR 1399 heads)</li>
+                <li>Cylinder head(s) mock-installed with gasket and finger-tight nuts</li>
+                <li>Lifters installed in bores</li>
+                <li>Checking pushrod or final pushrods available</li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+                <li>3/8" socket or wrench for guide plate bolts</li>
+                <li>Rocker arm studs installed in head</li>
+                <li>Straightedge or pushrod for alignment check</li>
+                <li>Flashlight for visual inspection</li>
+            </ul></div>
+            <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
+                <li><strong>Identify orientation:</strong> Flat side of guide plate faces UP for AFR heads &ndash; check COMP instructions for specific head (flache Seite nach oben f&uuml;r AFR-K&ouml;pfe)</li>
+                <li><strong>Position on studs:</strong> Slide guide plate over rocker studs between each pair of intake/exhaust pushrods (F&uuml;hrungsplatte &uuml;ber Kipphebel-Stehbolzen schieben)</li>
+                <li><strong>Insert pushrod:</strong> Drop checking pushrod through guide plate slot into lifter cup (Pushrod durch Schlitz in Lifter einsetzen)</li>
+                <li><strong>Check alignment:</strong> Pushrod must be centered in guide plate slot &ndash; no contact with slot edges at rest (Pushrod muss mittig im Schlitz laufen)</li>
+                <li><strong>Rotate cam through full cycle:</strong> Verify pushrod does not bind or deflect against guide plate edges at any point in the lift cycle (kein Verklemmen &uuml;ber den gesamten Hub)</li>
+                <li><strong>Verify all positions:</strong> Repeat for all 8 guide plates (16 pushrod positions) (f&uuml;r alle 8 Platten wiederholen)</li>
+            </ol></div>
+            <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+                <li>Guide plates prevent pushrod side-loading on valve tips &ndash; critical for valve guide longevity (verhindert seitliche Belastung der Ventilf&uuml;hrungen)</li>
+                <li>AFR 1399 heads use pedestal-mount rockers &ndash; verify guide plate is compatible with stud spacing</li>
+                <li>If pushrod contacts slot edge: wrong guide plate type, incorrect pushrod length, or misaligned rocker stud</li>
+                <li>Do NOT fully torque guide plates during mock-up &ndash; finger-tight only, final torque in Phase 3</li>
+                <li>Some builders lightly scuff pushrod with marker to check for guide plate contact marks</li>
+            </ul></div>
+        </div>
+    </div>
 </div>
 
 <!-- 10. Determine Pushrod Length -->
