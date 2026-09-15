@@ -1139,13 +1139,9 @@
 
     // ==== COLLAPSE STATE MEMORY ====
     var _collapseKey = 'engineBuild_collapse_' + location.pathname.replace(/[^a-z0-9]/gi, '_');
+    try { var _old = JSON.parse(localStorage.getItem(_collapseKey) || '{}'); var _changed = false; Object.keys(_old).forEach(function(k) { if (k.indexOf('pb_') === 0) { delete _old[k]; _changed = true; } }); if (_changed) localStorage.setItem(_collapseKey, JSON.stringify(_old)); } catch(e) {}
     function saveBuildCollapseState() {
         var state = {};
-        // Phase banner collapsed?
-        document.querySelectorAll('.phase-body').forEach(function(b) {
-            if (b.classList.contains('collapsed')) state['pb_' + b.id] = 1;
-        });
-        // Guide toggles open?
         document.querySelectorAll('.step-guide').forEach(function(g, i) {
             if (g.classList.contains('open')) state['sg_' + i] = 1;
         });
@@ -1156,15 +1152,6 @@
         if (!raw) return;
         try {
             var state = JSON.parse(raw);
-            // Phase bodies
-            document.querySelectorAll('.phase-body').forEach(function(b) {
-                if (state['pb_' + b.id]) {
-                    b.classList.add('collapsed');
-                    var toggle = document.getElementById('toggle_' + b.id);
-                    if (toggle) toggle.classList.add('collapsed');
-                }
-            });
-            // Guides
             document.querySelectorAll('.step-guide').forEach(function(g, i) {
                 if (state['sg_' + i]) {
                     g.classList.add('open');
