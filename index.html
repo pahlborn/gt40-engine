@@ -5208,29 +5208,28 @@
     }
 
     // ==== BUILD DASHBOARD ====
+    var PHASE_KEYS = {
+        P1: { keys: ['p1_block_visual','p1_threads','p1_deck_height','p1_piston_deck','p1_crank_turn','p1_oil_plug','p1_cam_bearing_type','p1_main_brg_check','p1_crank_endplay_check','p1_cam_visual','p1_cam_journals','p1_lifters','p1_rockers','p1_polylocks','p1_deck_flat','p1_chamber_vol','p1_studs','p1_springs','p1_spring_height','p1_coilbind','p1_spring_open','p1_keepers','p1_rod_brg_check','p1_ring_gap_check','p1_arp_length','p1_arp_cam','p1_timing_set'], bar: 'dashP1', txt: 'dashP1t' },
+        P2: { keys: ['p2_cam_bearings','p2_cam_install','p2_thrust_plate','p2_endplay','p2_lifter1','p2_degree','p2_lifters_all','p2_mockup_head','p2_guideplates','p2_pushrod','p2_sweep','p2_ptv','p2_quench','p2_ret_seal','p2_intake_dry','p2_oilpump_dry','p2_timing_cover_dry','p2_oilpan','p2_pickup','p2_valvecover','p2_distributor','p2_pushrods_order','p2_teardown'], bar: 'dashP2', txt: 'dashP2t' },
+        P3: { keys: ['p3_clean','p3_blowout','p3_all_parts','p3_cam_lube','p3_cam_install','p3_timing_set','p3_lifters','p3_oilpump','p3_oilshaft','p3_pickup','p3_headgasket','p3_studs','p3_arp_lube','p3_heads_on','p3_heads_torque','p3_guideplates','p3_rockers','p3_timing_cover','p3_balancer','p3_oilpan','p3_waterpump','p3_intake','p3_distributor','p3_sparkplugs','p3_valvecovers','p3_fuelpump'], bar: 'dashP3', txt: 'dashP3t' },
+        P4: { keys: ['p4_preoil','p4_preoil_crank','p4_oilpressure_prime','p4_breakin_oil','p4_coolant','p4_fuel','p4_timing_static','p4_revlimiter','p4_preload_recheck','p4_wiring','p4_safety','p4_start','p4_oil_running','p4_leaks','p4_temp','p4_timing_warm','p4_oil_idle','p4_timing_final','p4_retorque','p4_oilchange','p4_sparkread','p4_sync'], bar: 'dashP4', txt: 'dashP4t' }
+    };
     function updateBuildDashboard() {
         var raw = localStorage.getItem('engineBuildLog');
         var data = {};
         if (raw) { try { data = JSON.parse(raw); } catch(e) {} }
-        var phases = {
-            P1: { prefix: 'p1_chk_', count: 27, bar: 'dashP1', txt: 'dashP1t' },
-            P2: { prefix: 'p2_chk_', count: 23, bar: 'dashP2', txt: 'dashP2t' },
-            P3: { prefix: 'p3_chk_', count: 26, bar: 'dashP3', txt: 'dashP3t' },
-            P4: { prefix: 'p4_chk_', count: 22, bar: 'dashP4', txt: 'dashP4t' }
-        };
         var totalDone = 0, totalSteps = 0;
-        Object.keys(phases).forEach(function(k) {
-            var p = phases[k], done = 0;
-            for (var i = 1; i <= p.count; i++) {
-                var key = p.prefix + i;
+        Object.keys(PHASE_KEYS).forEach(function(k) {
+            var p = PHASE_KEYS[k], done = 0;
+            p.keys.forEach(function(key) {
                 if (data[key] === true || data[key] === 'true' || data[key] === 'on') done++;
-            }
-            totalDone += done; totalSteps += p.count;
-            var pct = p.count > 0 ? Math.round(done / p.count * 100) : 0;
+            });
+            totalDone += done; totalSteps += p.keys.length;
+            var pct = p.keys.length > 0 ? Math.round(done / p.keys.length * 100) : 0;
             var bar = document.getElementById(p.bar);
             var txt = document.getElementById(p.txt);
             if (bar) bar.style.width = pct + '%';
-            if (txt) txt.textContent = done + '/' + p.count;
+            if (txt) txt.textContent = done + '/' + p.keys.length;
         });
         var totalPct = totalSteps > 0 ? Math.round(totalDone / totalSteps * 100) : 0;
         var fill = document.getElementById('dashTotalFill');

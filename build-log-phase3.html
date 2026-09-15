@@ -17,23 +17,52 @@
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
 
         .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white; padding: 1rem; text-align: center;
-            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+            color: white; padding: 0; position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
-        .header h1 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.1rem; }
-        .header p { font-size: 0.78rem; opacity: 0.85; }
-        .header-nav { display: flex; gap: 0.3rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem; }
-        .header-nav a, .header-nav button {
-            padding: 0.4rem 0.7rem; border: 1px solid rgba(255,255,255,0.4);
-            background: rgba(255,255,255,0.15); color: white; border-radius: 6px;
-            cursor: pointer; font-size: 0.72rem; font-weight: 500; text-decoration: none;
-            min-height: 36px; display: inline-flex; align-items: center;
+        .header-row {
+            display: flex; align-items: center; gap: 0; height: 44px;
         }
-        .header-nav a:hover, .header-nav button:hover { background: rgba(255,255,255,0.25); }
-        .header-nav .active { background: rgba(255,255,255,0.35); border-color: rgba(255,255,255,0.8); font-weight: 700; }
-        .header-nav .save-btn { background: var(--success); border-color: var(--success); }
-        .save-status { font-size: 0.68rem; opacity: 0.8; margin-top: 0.25rem; min-height: 1em; }
+        .header-title {
+            padding: 0 0.6rem; font-size: 0.78rem; font-weight: 700; white-space: nowrap;
+            border-right: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center;
+            height: 100%; min-width: 0;
+        }
+        .header-title span { font-size: 0.62rem; opacity: 0.7; margin-left: 0.35rem; font-weight: 400; }
+        .nav-item {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.25rem;
+            height: 100%; padding: 0 0.3rem; color: rgba(255,255,255,0.75); font-size: 0.72rem;
+            font-weight: 600; cursor: pointer; border: none; background: none; text-decoration: none;
+            border-right: 1px solid rgba(255,255,255,0.15); white-space: nowrap;
+        }
+        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.2); color: white; }
+        .header-gear {
+            width: 44px; min-width: 44px; height: 44px; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; border: none; background: none;
+            color: rgba(255,255,255,0.8); font-size: 1.1rem; border-left: 1px solid rgba(255,255,255,0.15);
+        }
+        .header-gear:hover { background: rgba(255,255,255,0.2); color: white; }
+        .save-status { font-size: 0.65rem; opacity: 0.7; text-align: right; padding: 0.15rem 0.5rem; background: rgba(0,0,0,0.1); }
+        .search-bar {
+            display: flex; align-items: center; gap: 0.3rem;
+            padding: 0.25rem 0.5rem; background: rgba(0,0,0,0.08);
+        }
+        .search-bar input {
+            flex: 1; padding: 0.3rem 0.6rem; border: 1px solid rgba(255,255,255,0.5);
+            background: white; color: #2d3748; border-radius: 4px;
+            font-size: 0.78rem; outline: none;
+        }
+        .search-bar input::placeholder { color: #a0aec0; }
+        .search-bar input:focus { border-color: #ed8936; box-shadow: 0 0 0 2px rgba(237,137,54,0.3); }
+        .search-nav { display: flex; align-items: center; gap: 0.2rem; }
+        .search-nav button {
+            padding: 0.2rem 0.4rem; min-height: 28px; border: none;
+            background: rgba(255,255,255,0.15); color: white; border-radius: 4px;
+            cursor: pointer; font-size: 0.72rem;
+        }
+        .search-nav button:hover { background: rgba(255,255,255,0.3); }
+        .search-count { font-size: 0.68rem; color: rgba(255,255,255,0.8); min-width: 2.5rem; text-align: center; }
 
         .container { max-width: 900px; margin: 0 auto; padding: 0.75rem; }
 
@@ -159,23 +188,32 @@
 <body>
 
 <div class="header">
-    <h1>Phase 3 &ndash; Final Assembly (Endmontage)</h1>
-    <p>Ford M-6009-302 &bull; AFR 1399 &bull; COMP XE274HR</p>
-    <div class="header-nav">
-        <a href="./">&larr; Main</a>
-        <a href="build-log.html">Hub</a>
-        <a href="build-log-phase1.html">P1</a>
-        <a href="build-log-phase2.html">&larr; P2</a>
-        <a href="build-log-phase3.html" class="active">P3</a>
-        <a href="build-log-phase4.html">P4 &rarr;</a>
-        <button class="save-btn" onclick="saveData()">Save (Speichern)</button>
+    <div class="header-row">
+        <a href="./" class="header-title" style="text-decoration:none;color:white;">Engine Build Log<span>302 BOSS</span></a>
+        <a class="nav-item" href="./#grp-overview">Overview</a>
+        <a class="nav-item" href="./#grp-specs">Specs</a>
+        <a class="nav-item active" href="build-log.html">Build Log</a>
+        <a class="nav-item" href="./#grp-ref">Reference</a>
         <button id="langToggle" onclick="toggleLang()" style="width:36px;min-width:36px;height:44px;border:none;background:none;cursor:pointer;font-size:1.1rem;border-left:1px solid rgba(255,255,255,0.15);" title="DE / EN">&#127465;&#127466;</button>
+        <div style="position:relative;">
+            <button class="header-gear" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">&#9881;</button>
+            <div style="display:none;position:absolute;right:0;top:100%;margin-top:2px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:180px;z-index:200;overflow:hidden;">
+                <button onclick="saveData();this.closest('div').parentElement.querySelector('div').style.display='none'" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:#2d3748;font-size:0.78rem;cursor:pointer;">&#128190; Save</button>
+                <button onclick="exportJSON();this.closest('div').parentElement.querySelector('div').style.display='none'" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:#2d3748;font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
+                <button onclick="document.getElementById('importFile').click()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:#2d3748;font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
+                <button onclick="window.print()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:#2d3748;font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
+            </div>
+        </div>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
     </div>
-    <div style="display:flex;align-items:center;gap:0.3rem;margin-top:0.4rem;max-width:400px;margin-left:auto;margin-right:auto;position:relative;">
-        <input type="text" id="searchInput" placeholder="Search... (Suchen...)" oninput="doBuildSearch()" onkeydown="if(event.key==='Escape'){clearBuildSearch();event.target.blur();}" style="flex:1;padding:0.4rem 0.65rem;border:1px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);color:white;border-radius:6px;font-size:0.8rem;outline:none;">
-        <span id="buildSearchCount" style="font-size:0.68rem;color:rgba(255,255,255,0.8);min-width:2.5rem;text-align:center;"></span>
-        <button onclick="buildSearchJump(-1)" style="padding:0.25rem 0.4rem;border:none;background:rgba(255,255,255,0.2);color:white;border-radius:4px;cursor:pointer;font-size:0.72rem;">&#9650;</button>
-        <button onclick="buildSearchJump(1)" style="padding:0.25rem 0.4rem;border:none;background:rgba(255,255,255,0.2);color:white;border-radius:4px;cursor:pointer;font-size:0.72rem;">&#9660;</button>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search... (Ctrl+F)" oninput="doBuildSearch()" onkeydown="if(event.key==='Escape'){clearBuildSearch();event.target.blur();}">
+        <div class="search-nav" id="searchNav" style="display:none;">
+            <button onclick="buildSearchJump(-1)" title="Previous">&#9650;</button>
+            <span class="search-count" id="buildSearchCount"></span>
+            <button onclick="buildSearchJump(1)" title="Next">&#9660;</button>
+            <button onclick="clearBuildSearch()" title="Close" style="margin-left:0.2rem;">&#10005;</button>
+        </div>
     </div>
     <div class="save-status" id="saveStatus"></div>
 </div>
