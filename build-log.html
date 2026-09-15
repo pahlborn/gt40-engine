@@ -4540,7 +4540,7 @@
         'Datum des Zusammenbaus':'Build Date',
         'Mechaniker / Builder':'Mechanic / Builder',
         'Projekt / Fahrzeug':'Project / Vehicle',
-        'Angestrebte Leistung (BHP an Kurbelwelle)':'Target Power (BHP at Crankshaft)',
+        'Angestrebte Leistung (HP SAE)':'Target Power (HP SAE)',
         'Angestrebtes Drehmoment (ft-lbs)':'Target Torque (ft-lbs)',
         'Ziel-Verdichtung':'Target Compression Ratio',
         'Einsatzzweck':'Intended Use', 'Strecken':'Tracks', 'Kraftstoff':'Fuel',
@@ -4884,12 +4884,24 @@
         <input type="number" id="convCi" placeholder="ci" step="0.01" oninput="document.getElementById('convCc').value=this.value?(this.value*16.387).toFixed(1):''">
         <span class="conv-label">ci</span>
     </div>
+    <div class="converter-sep"></div>
+    <strong style="font-size:0.75rem;">Leistung</strong>
+    <div class="converter-row">
+        <input type="number" id="convHP" placeholder="HP (SAE)" step="1" oninput="if(this.value){document.getElementById('convPS').value=(this.value*1.01387).toFixed(1);document.getElementById('convKW').value=(this.value*0.7457).toFixed(1);}else{document.getElementById('convPS').value='';document.getElementById('convKW').value='';}">
+        <span class="conv-label">HP</span>
+        <span>&harr;</span>
+        <input type="number" id="convPS" placeholder="PS (DIN)" step="1" oninput="if(this.value){document.getElementById('convHP').value=(this.value/1.01387).toFixed(1);document.getElementById('convKW').value=(this.value*0.7355).toFixed(1);}else{document.getElementById('convHP').value='';document.getElementById('convKW').value='';}">
+        <span class="conv-label">PS</span>
+        <span>&harr;</span>
+        <input type="number" id="convKW" placeholder="kW" step="1" oninput="if(this.value){document.getElementById('convHP').value=(this.value/0.7457).toFixed(1);document.getElementById('convPS').value=(this.value/0.7355).toFixed(1);}else{document.getElementById('convHP').value='';document.getElementById('convKW').value='';}">
+        <span class="conv-label">kW</span>
+    </div>
 </div>
 <div class="converter-panel" id="unitsPanel" style="max-width:340px;">
     <div style="display:flex;justify-content:space-between;align-items:center;"><h4>&#128207; Ma&szlig;einheiten</h4><button onclick="document.getElementById('unitsPanel').classList.remove('open')" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#718096;">&times;</button></div>
     <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
         <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.2rem;">Einheit</th><th style="text-align:left;padding:0.2rem;">Verwendung</th><th style="text-align:left;padding:0.2rem;">Umrechnung</th></tr>
-        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">BHP</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Leistung (US)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 BHP = 0.746 kW = 1.014 PS</td></tr>
+        <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">HP (SAE)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Leistung (US/SAE J1349)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 HP = 0.746 kW = 1.014 PS (DIN)</td></tr>
         <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">ft-lbs</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Drehmoment (US)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 ft-lb = 1.356 Nm</td></tr>
         <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">inch (&Prime;)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">L&auml;ngen, Bohrungen</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1&Prime; = 25.4 mm</td></tr>
         <tr><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;font-weight:700;">thou</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">Spaltma&szlig;e (.001&Prime;)</td><td style="padding:0.15rem;border-bottom:1px solid #e2e8f0;">1 thou = 0.0254 mm</td></tr>
