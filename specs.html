@@ -3051,10 +3051,39 @@
         if (search && term) { search.value = term; filterGlossary(); }
     }
     let activeCategory = '';
+    function _glossaryRemoveHL(root) {
+        root.querySelectorAll('mark.gloss-hl').forEach(function(m) {
+            var p = m.parentNode; p.replaceChild(document.createTextNode(m.textContent), m); p.normalize();
+        });
+    }
+    function _glossaryAddHL(root, q) {
+        if (!q || q.length < 2) return;
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+        var hits = [], qLow = q.toLowerCase();
+        while (walker.nextNode()) {
+            var n = walker.currentNode, tag = n.parentElement ? n.parentElement.tagName : '';
+            if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'MARK') continue;
+            var idx = n.textContent.toLowerCase().indexOf(qLow);
+            if (idx >= 0) hits.push({node: n, idx: idx, len: q.length});
+        }
+        for (var i = hits.length - 1; i >= 0; i--) {
+            try {
+                var r = document.createRange();
+                r.setStart(hits[i].node, hits[i].idx);
+                r.setEnd(hits[i].node, hits[i].idx + hits[i].len);
+                var mk = document.createElement('mark');
+                mk.className = 'gloss-hl';
+                mk.style.cssText = 'background:#fefcbf;color:inherit;padding:0 1px;border-radius:2px;';
+                r.surroundContents(mk);
+            } catch(e) {}
+        }
+    }
     function filterGlossary() {
         const q = (document.getElementById('glossarySearch').value || '').toLowerCase().trim();
         const entries = document.querySelectorAll('#glossaryBody .glossary-entry');
         const cats = document.querySelectorAll('#glossaryBody .glossary-category');
+        const body = document.getElementById('glossaryBody');
+        _glossaryRemoveHL(body);
         let visible = 0;
         entries.forEach(e => {
             const searchText = (e.getAttribute('data-search') || '') + ' ' + (e.textContent || '');
@@ -3068,6 +3097,9 @@
             const catEntries = c.querySelectorAll('.glossary-entry:not(.hidden)');
             c.style.display = catEntries.length === 0 ? 'none' : '';
         });
+        if (q && visible > 0) {
+            entries.forEach(e => { if (!e.classList.contains('hidden')) _glossaryAddHL(e, q); });
+        }
         document.getElementById('glossaryNoResults').style.display = visible === 0 ? '' : 'none';
         document.getElementById('glossaryCount').textContent = visible + ' Begriffe';
     }
