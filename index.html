@@ -1342,6 +1342,7 @@
         const a = parseFloat(gfv('quench_a_' + cyl)) || 0;
         const b = parseFloat(gfv('quench_b_' + cyl)) || 0;
         const f = document.querySelector('[data-field="quench_total_' + cyl + '"]');
+        if (!f) return;
         if (a > 0 || b > 0) {
             const t = a + b; f.value = t.toFixed(4);
             f.classList.remove('status-ok','status-warn','status-error');
@@ -1353,6 +1354,7 @@
 
     // ==== VALIDATION ====
     function validateRange(input, min, max) {
+        if (!input) return;
         const v = parseFloat(input.value);
         input.classList.remove('status-ok','status-warn','status-error');
         if (!isNaN(v)) input.classList.add(v >= min && v <= max ? 'status-ok' : 'status-error');
@@ -1373,16 +1375,18 @@
             const v = data[el.dataset.field];
             if (v !== undefined) { if (el.type === 'checkbox') el.checked = v; else el.value = v; }
         });
-        for (let i = 1; i <= 8; i++) calcQuench(i);
-        document.querySelectorAll('[data-field="crank_endplay"]').forEach(el => validateRange(el, 0.004, 0.008));
-        document.querySelectorAll('[data-field="cam_endplay"]').forEach(el => validateRange(el, 0.004, 0.009));
-        for (let i = 1; i <= 8; i++) {
-            const a = document.querySelector('[data-field="ptv_intake_' + i + '"]');
-            const b = document.querySelector('[data-field="ptv_exhaust_' + i + '"]');
-            if (a && a.value) validateRange(a, 0.080, 9);
-            if (b && b.value) validateRange(b, 0.100, 9);
-        }
-        if (typeof calcCR === 'function') calcCR();
+        try {
+            for (let i = 1; i <= 8; i++) calcQuench(i);
+            document.querySelectorAll('[data-field="crank_endplay"]').forEach(el => validateRange(el, 0.004, 0.008));
+            document.querySelectorAll('[data-field="cam_endplay"]').forEach(el => validateRange(el, 0.004, 0.009));
+            for (let i = 1; i <= 8; i++) {
+                const a = document.querySelector('[data-field="ptv_intake_' + i + '"]');
+                const b = document.querySelector('[data-field="ptv_exhaust_' + i + '"]');
+                if (a && a.value) validateRange(a, 0.080, 9);
+                if (b && b.value) validateRange(b, 0.100, 9);
+            }
+            if (typeof calcCR === 'function') calcCR();
+        } catch(e) { console.warn('[applyData] validation error (non-fatal):', e.message); }
         // Sync Build Log measurement values into Main Page fields
         syncBuildLogToMain(data);
     }
