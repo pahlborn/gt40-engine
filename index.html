@@ -212,6 +212,10 @@
         <div style="position:relative;">
             <button class="header-gear" onclick="toggleToolMenu()" id="toolMenuBtn">&#9881;</button>
             <div id="toolMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:2px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:180px;z-index:200;overflow:hidden;">
+                <button onclick="syncFromCloud();closeToolMenu()" id="syncBtn" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud Sync</button>
+                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
+                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Einstellungen</button>
+                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
             </div>
         </div>
@@ -1113,6 +1117,22 @@
 <!-- ===== TOAST ===== -->
 <div class="toast" id="toast"></div>
 
+<!-- ===== SETTINGS MODAL ===== -->
+<div class="modal-overlay" id="settingsModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:9000;align-items:center;justify-content:center;">
+    <div style="background:white;border-radius:12px;padding:1.5rem;max-width:420px;width:calc(100vw - 32px);box-shadow:0 8px 30px rgba(0,0,0,0.3);">
+        <h3 style="margin:0 0 0.75rem;font-size:1rem;color:var(--primary);">GitHub-Einstellungen</h3>
+        <div class="status-line" id="connectionStatus" style="font-size:0.78rem;margin-bottom:0.5rem;"></div>
+        <label for="ghToken" style="font-size:0.78rem;font-weight:600;">GitHub Personal Access Token</label>
+        <input type="password" id="ghToken" placeholder="github_pat_..." style="width:100%;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.82rem;margin:0.3rem 0;">
+        <div style="font-size:0.7rem;color:var(--text-light);margin-bottom:0.5rem;">GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens<br>Berechtigung: <strong>Gists (Read and Write)</strong></div>
+        <div style="display:flex;gap:0.4rem;justify-content:flex-end;">
+            <button onclick="disconnectGist()" style="padding:0.4rem 0.8rem;border:1px solid #e53e3e;background:white;color:#e53e3e;border-radius:6px;cursor:pointer;font-size:0.78rem;">Trennen</button>
+            <button onclick="closeSettings()" style="padding:0.4rem 0.8rem;border:1px solid var(--border);background:white;color:var(--text);border-radius:6px;cursor:pointer;font-size:0.78rem;">Abbrechen</button>
+            <button onclick="saveSettings()" style="padding:0.4rem 0.8rem;border:none;background:var(--primary-light);color:white;border-radius:6px;cursor:pointer;font-size:0.78rem;">Verbinden</button>
+        </div>
+    </div>
+</div>
+
 <script>
     // ==== CONFIG ====
     const GIST_FILENAME = 'engine-build-log-data.json';
@@ -1190,18 +1210,22 @@
 
     // ==== SETTINGS ====
     function openSettings() {
-        document.getElementById('ghToken').value = getGistConfig().token;
+        var tok = document.getElementById('ghToken');
+        if (tok) tok.value = getGistConfig().token;
         updateConnectionStatus();
-        document.getElementById('settingsModal').classList.add('show');
+        var sm = document.getElementById('settingsModal');
+        if (sm) sm.style.display = 'flex';
         window.scrollTo(0, 0);
     }
-    function closeSettings() { document.getElementById('settingsModal').classList.remove('show'); }
+    function closeSettings() { var sm = document.getElementById('settingsModal'); if (sm) sm.style.display = 'none'; }
     document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('settingsModal').addEventListener('click', function(e) { if (e.target === this) closeSettings(); });
+        var sm = document.getElementById('settingsModal');
+        if (sm) sm.addEventListener('click', function(e) { if (e.target === this) closeSettings(); });
     });
 
     async function saveSettings() {
-        const token = document.getElementById('ghToken').value.trim();
+        var tokEl = document.getElementById('ghToken');
+        var token = tokEl ? tokEl.value.trim() : '';
         if (!token) { showToast('Bitte Token eingeben!'); return; }
         try {
             const res = await fetch('https://api.github.com/user', { headers: { 'Authorization': 'Bearer ' + token } });
@@ -1216,12 +1240,14 @@
     }
     function disconnectGist() {
         localStorage.removeItem('gh_token');
-        document.getElementById('ghToken').value = '';
+        var tokEl = document.getElementById('ghToken');
+        if (tokEl) tokEl.value = '';
         updateSyncBadge(); updateConnectionStatus();
         showToast('Verbindung getrennt.'); closeSettings();
     }
     function updateConnectionStatus() {
         const el = document.getElementById('connectionStatus');
+        if (!el) return;
         if (getGistConfig().token) {
             el.className = 'status-line connected';
             el.innerHTML = 'Verbunden &mdash; Gist: <code>' + FIXED_GIST_ID.substring(0,10) + '...</code>';
@@ -1232,12 +1258,14 @@
     }
     function updateSyncBadge() {
         const b = document.getElementById('syncBadge');
+        if (!b) return;
+        const sb = document.getElementById('syncBtn');
         if (isGistConfigured()) {
             b.innerHTML = '<span class="sync-badge online"><span class="sync-dot online"></span>Cloud Sync</span>';
-            document.getElementById('syncBtn').disabled = false;
+            if (sb) sb.disabled = false;
         } else {
             b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Lokal</span>';
-            document.getElementById('syncBtn').disabled = true;
+            if (sb) sb.disabled = true;
         }
     }
 
