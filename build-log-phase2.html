@@ -701,8 +701,33 @@
     <div class="step-header">
         <input type="checkbox" data-field="p2_oilpump_dry" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">16. Oil Pump (&Ouml;lpumpe) + Drive Shaft &ndash; dry fit</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p2_oilpump_dry_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+            <li>Melling M-68 oil pump ready (or Ford M-6600-D2)</li>
+            <li>Oil pump intermediate drive shaft (ARP or OEM)</li>
+            <li>Block rear main area accessible</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>3/4&quot; combination wrench (19 mm)</li>
+            <li>Long screwdriver for alignment</li>
+            <li>Inspection mirror</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1. Shaft alignment:</strong> Insert intermediate shaft into block &ndash; hex end must engage camshaft gear (Sechskant muss in Nockenwellen-Antriebszahnrad greifen)</li>
+            <li><strong>2. Drive shaft length:</strong> Shaft must extend below block far enough to engage pump rotor &ndash; verify ~0.5&quot; (12.7 mm) protrusion below pump mounting pad</li>
+            <li><strong>3. Pump mounting:</strong> Set pump on rear main cap mounting pad &ndash; bolt finger-tight only</li>
+            <li><strong>4. Rotation check:</strong> Turn shaft by hand (screwdriver in hex) &ndash; must rotate freely without binding</li>
+            <li><strong>5. Pickup alignment:</strong> Verify pickup tube direction points toward pan sump area</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>If shaft won&rsquo;t engage cam gear: rotate crank slightly to align gears</li>
+            <li>Shaft must NOT bottom out against cam gear &ndash; verify 0.010&quot;&ndash;0.030&quot; (0.25&ndash;0.76 mm) clearance</li>
+            <li>Mark orientation of pump body for Phase 3 reinstall</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- 17. Timing Cover dry fit -->
@@ -710,8 +735,33 @@
     <div class="step-header">
         <input type="checkbox" data-field="p2_timing_cover_dry" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">17. Timing Cover &ndash; dry fit</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p2_timing_cover_dry_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+            <li>Timing chain and sprockets installed from degreeing step</li>
+            <li>Ford timing cover + gasket ready</li>
+            <li>Front crank seal ready (do NOT install yet &ndash; dry fit only)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>3/8&quot; socket set (Nusskasten)</li>
+            <li>Straightedge for gasket alignment check</li>
+            <li>Feeler gauge 0.010&quot; (0.25 mm)</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1. Gasket alignment:</strong> Place gasket dry on block &ndash; all bolt holes and water passages must align perfectly (alle Bohrungen und Wasserdurchl&auml;sse m&uuml;ssen fluchten)</li>
+            <li><strong>2. Cover fitment:</strong> Slide cover over crank snout &ndash; must clear timing chain sprocket</li>
+            <li><strong>3. Seal bore check:</strong> Verify front seal bore is concentric with crank snout &ndash; no offset that would damage seal</li>
+            <li><strong>4. Pan rail alignment:</strong> Cover bottom edge must be flush with block oil pan rail &ndash; check with straightedge (Unterkante muss b&uuml;ndig mit Block-Wannenschiene sein)</li>
+            <li><strong>5. Balancer clearance:</strong> With cover loosely in place, verify harmonic balancer can slide through seal bore without interference</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>Cover goes on BEFORE oil pan &ndash; pan seals against cover bottom edge</li>
+            <li>Aftermarket covers may need trimming at pan rail &ndash; check now, not during final assembly</li>
+            <li>Note bolt lengths &ndash; Ford covers often use 2&ndash;3 different lengths</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- 18. Oil Pan -->
@@ -719,8 +769,34 @@
     <div class="step-header">
         <input type="checkbox" data-field="p2_oilpan" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">18. Oil Pan (&Ouml;lwanne) &ndash; clearance, pickup distance</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p2_oilpan_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+            <li>Canton Road Race pan #15-644 (or selected pan) ready</li>
+            <li>Oil pump + pickup installed from previous step</li>
+            <li>Pan gaskets (side rails + end seals) ready for dry check</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>Ruler or caliper for pickup clearance measurement</li>
+            <li>Flashlight for internal inspection</li>
+            <li>3/8&quot; socket set</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1. Gasket alignment:</strong> Lay side gaskets + end seals dry on block &ndash; verify all bolt holes align with pan</li>
+            <li><strong>2. Pan clearance:</strong> Set pan in place &ndash; check that pickup tube and pump body clear pan interior (Saugr&uuml;ssel und Pumpe d&uuml;rfen Wanne innen nicht ber&uuml;hren)</li>
+            <li><strong>3. Pickup-to-pan bottom:</strong> Measure from bottom of pickup screen to inside bottom of pan &ndash; target 1/4&quot;&ndash;3/8&quot; (6.4&ndash;9.5 mm)</li>
+            <li><strong>4. Dipstick tube:</strong> Verify dipstick tube boss aligns with block or pan provision</li>
+            <li><strong>5. Windage tray:</strong> If Canton pan includes windage tray, check clearance to crank counterweights &ndash; min. 1/4&quot; (6.4 mm)</li>
+            <li><strong>6. Drain plug:</strong> Verify drain plug is accessible and in correct position for chassis</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>Canton Road Race pans are deeper in rear &ndash; verify chassis ground clearance for mid-engine applications</li>
+            <li>Mark pickup-to-pan measurement for Phase 3 verification</li>
+            <li>Check for interference with steering rack, crossmember, or frame rails if applicable</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- 19. Pickup-to-Pan Bottom -->
@@ -728,8 +804,33 @@
     <div class="step-header">
         <input type="checkbox" data-field="p2_pickup" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">19. Pickup-to-Pan Bottom: 1/4"&ndash;3/8" (6.4&ndash;9.5 mm)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p2_pickup_n" placeholder="Measured:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>Ruler, caliper, or bent wire gauge</li>
+            <li>Modeling clay (Knetmasse) &ndash; alternative measurement method</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
+            <div class="spec-line"><span>Pickup-to-Pan Bottom</span><span class="spec-val">1/4&quot;&ndash;3/8&quot; (6.4&ndash;9.5 mm)</span></div>
+            <div class="spec-line"><span>Ideal</span><span class="spec-val">5/16&quot; (8 mm)</span></div>
+            <div class="guide-input-row" style="margin-top:0.4rem;">
+                <div><label>Measured:</label><input type="text" data-field="p2_pickup_clr" placeholder='5/16"' oninput="autoSave()" style="width:65px;"></div>
+            </div>
+        </div>
+        <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>Method A (Direct):</strong> With pan loosely in place, measure from pickup screen bottom to pan floor with ruler through drain hole or bolt hole</li>
+            <li><strong>Method B (Clay):</strong> Place modeling clay on pan floor, set pan on block, remove and measure compressed clay thickness</li>
+            <li><strong>Method C (Wire):</strong> Bend wire to known length, insert through drain hole to touch pickup &ndash; calculate distance</li>
+        </ul></div>
+        <div class="warning-box"><strong>CRITICAL for oil starvation prevention!</strong> Too close (&lt;1/4&quot;) = cavitation &amp; oil aeration under load. Too far (&gt;3/8&quot;) = air ingestion during hard cornering/acceleration when oil level drops. (Zu nah = Kavitation. Zu weit = Luft ansaugen bei Kurvenfahrt.)</div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>If clearance is wrong, bend pickup tube carefully (small adjustments only!) or use a different pickup</li>
+            <li>This is the MOST critical oil system dimension &ndash; recheck in Phase 3 before final pan installation</li>
+            <li>Mid-engine/track cars: err toward closer (1/4&quot;) to prevent uncovering under G-loads</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- 20. Valve Covers -->
@@ -737,8 +838,32 @@
     <div class="step-header">
         <input type="checkbox" data-field="p2_valvecover" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">20. Valve Covers (Ventildeckel) &ndash; rocker clearance</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p2_valvecover_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+            <li>Rockers + polylocks installed on at least test cylinder</li>
+            <li>Valve covers + gaskets ready</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>Modeling clay (Knetmasse) ~3/16&quot; (5 mm) thick</li>
+            <li>Caliper for measuring compressed clay</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1. Rocker clearance:</strong> Place modeling clay on highest points of rocker arms (adjusting nut / polylock area)</li>
+            <li><strong>2.</strong> Set valve cover on head with gasket, press down evenly</li>
+            <li><strong>3.</strong> Remove cover, measure clay thickness &ndash; minimum clearance: 1/8&quot; (3.2 mm) to any rocker component</li>
+            <li><strong>4. Gasket seal:</strong> Check gasket rail seating &ndash; gasket must sit flat with no gaps</li>
+            <li><strong>5. PCV/breather:</strong> Verify PCV valve and breather grommet positions match planned routing</li>
+            <li><strong>6. Bolt holes:</strong> Verify all mounting holes align &ndash; aftermarket covers may differ from OEM pattern</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>COMP 1632-16 rockers with polylocks are taller than stock &ndash; standard covers often don&rsquo;t clear!</li>
+            <li>If interference: use tall/fabricated covers, or spacers (Abstandshalter) under cover gasket rail</li>
+            <li>Note clearance issues now &ndash; order correct covers before Phase 3</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- 21. Distributor -->
@@ -746,8 +871,33 @@
     <div class="step-header">
         <input type="checkbox" data-field="p2_distributor" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">21. Distributor (Verteiler) &ndash; intake clearance</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p2_distributor_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
+            <li>MSD distributor ready (Pro-Billet or Ready-to-Run)</li>
+            <li>Intake manifold dry-fitted or in place from step 15</li>
+            <li>Crank at TDC #1 compression stroke</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>1/2&quot; open-end wrench for hold-down clamp</li>
+            <li>Flashlight for gear mesh inspection</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1. Gear mesh:</strong> Drop distributor into block &ndash; drive gear must mesh with cam gear. Slight rotation during insertion is normal (helical gear / Schr&auml;gverzahnung)</li>
+            <li><strong>2. Rotor alignment:</strong> At TDC #1 compression, rotor tip should point toward #1 spark plug wire tower on cap</li>
+            <li><strong>3. Intake clearance:</strong> With intake manifold in place, check clearance between distributor body/cap and intake manifold runners &ndash; minimum 1/4&quot; (6.4 mm)</li>
+            <li><strong>4. Hold-down clamp:</strong> Verify clamp fits in block groove and can secure distributor</li>
+            <li><strong>5. Vacuum advance:</strong> Check vacuum canister clearance to firewall/bulkhead and accessories</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>MSD distributors are slightly larger than stock Ford &ndash; verify clearance to intake plenum, A/C compressor, etc.</li>
+            <li>Note the number of teeth offset during insertion (gear helix causes ~1 tooth rotation)</li>
+            <li>If distributor won&rsquo;t seat fully: oil pump shaft may not be aligned &ndash; wiggle or rotate slightly</li>
+            <li>Mark distributor body position relative to block for Phase 3 reference</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- =============================== -->
@@ -760,8 +910,34 @@
     <div class="step-header">
         <input type="checkbox" data-field="p2_pushrods_order" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">22. Order Final Pushrods (finale Pushrods bestellen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p2_pushrods_order_n" placeholder="Ordered: Intake:___ Exhaust:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="prereq">Prerequisites (Voraussetzungen)</h4><ul>
+            <li>Pushrod length determined in step 10 (checking pushrod)</li>
+            <li>Sweep check confirmed in step 11</li>
+            <li>Both intake and exhaust lengths documented</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="measure">Order Specifications (Bestelldaten)</h4>
+            <div class="spec-line"><span>Diameter (Durchmesser)</span><span class="spec-val">5/16&quot; (7.94 mm) or 3/8&quot; (9.53 mm)</span></div>
+            <div class="spec-line"><span>Wall Thickness (Wandst&auml;rke)</span><span class="spec-val">0.080&quot; (2.03 mm) for performance</span></div>
+            <div class="spec-line"><span>Material</span><span class="spec-val">4130 Chromoly</span></div>
+            <div class="spec-line"><span>Tip Style</span><span class="spec-val">5/16&quot; ball + 5/16&quot; cup (std SBF)</span></div>
+            <div class="guide-input-row" style="margin-top:0.4rem;">
+                <div><label>Intake length:</label><input type="text" data-field="p2_pr_order_int" placeholder='7.100"' oninput="autoSave()" style="width:70px;"></div>
+                <div><label>Exhaust length:</label><input type="text" data-field="p2_pr_order_exh" placeholder='7.200"' oninput="autoSave()" style="width:70px;"></div>
+                <div><label>Qty:</label><input type="text" data-field="p2_pr_order_qty" placeholder="8+8" oninput="autoSave()" style="width:50px;"></div>
+            </div>
+        </div>
+        <div class="guide-block guide-full"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li><strong>COMP Cams, Smith Brothers, or Trend</strong> for custom lengths &ndash; specify to nearest 0.025&quot; increment</li>
+            <li>Order 1&ndash;2 extras per length in case of damage during assembly</li>
+            <li>Heat-treated chromoly is stronger than standard; recommended for hydraulic roller with high spring pressures</li>
+            <li>Typical lead time: 1&ndash;3 weeks for custom lengths (Lieferzeit: 1&ndash;3 Wochen)</li>
+            <li>Verify 5/16&quot; diameter clears COMP guideplate slots &ndash; if using 3/8&quot;, need matching guideplates</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- 23. Complete Teardown -->
@@ -769,8 +945,38 @@
     <div class="step-header">
         <input type="checkbox" data-field="p2_teardown" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">23. Complete Teardown &ndash; label all parts (zerlegen &amp; beschriften)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p2_teardown_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>Zip-lock bags (verschiedene Gr&ouml;&szlig;en)</li>
+            <li>Permanent marker + masking tape for labeling</li>
+            <li>Parts organizer trays</li>
+            <li>Clean lint-free cloths (fusselfreie T&uuml;cher)</li>
+            <li>Assembly lube (for coating bare surfaces)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="prereq">Disassembly Order (Zerlegungsreihenfolge)</h4><ul>
+            <li><strong>1.</strong> Remove distributor (Verteiler abnehmen)</li>
+            <li><strong>2.</strong> Remove valve covers (Ventildeckel)</li>
+            <li><strong>3.</strong> Remove rockers, polylocks, pushrods &ndash; bag per cylinder! (pro Zylinder einpacken!)</li>
+            <li><strong>4.</strong> Remove intake manifold (Ansaugbr&uuml;cke)</li>
+            <li><strong>5.</strong> Remove heads (K&ouml;pfe) &ndash; bag ARP nuts + washers separately per side</li>
+            <li><strong>6.</strong> Remove lifters &ndash; maintain numbering! (Lifter &ndash; Nummerierung beibehalten!)</li>
+            <li><strong>7.</strong> Remove oil pan + pickup (Wanne + Saugrohr)</li>
+            <li><strong>8.</strong> Remove oil pump (Pumpe)</li>
+            <li><strong>9.</strong> Remove timing cover, chain, sprockets (Steuerkettendeckel, Kette, Zahnr&auml;der)</li>
+            <li><strong>10.</strong> Remove camshaft (Nockenwelle)</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li><strong>Label everything!</strong> Lifters, pushrods, and rockers must return to their exact positions (Alles beschriften! Lifter, Pushrods und Kipphebel m&uuml;ssen exakt an ihren Platz zur&uuml;ck)</li>
+            <li>Coat all bare metal surfaces (crank journals, cam lobes) with oil or assembly lube to prevent surface rust</li>
+            <li>Bag hardware per location: &quot;LH Head Nuts&quot;, &quot;Timing Cover Bolts&quot;, etc.</li>
+            <li>Remove and discard mock-up gasket (Fel-Pro 1011) &ndash; NOT reusable (Probedichtung NICHT wiederverwendbar)</li>
+            <li>Store parts clean and dry in a dust-free area until Phase 3</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="time">Time Estimate (Zeitbedarf)</h4><ul><li>~2&ndash;3 hours including labeling and packaging (inkl. Beschriften und Verpacken)</li></ul></div>
+    </div></div>
 </div>
 
 <!-- Phase Photos -->

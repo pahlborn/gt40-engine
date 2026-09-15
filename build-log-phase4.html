@@ -323,8 +323,35 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_coolant" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">5. Fill &amp; Bleed Cooling System (K&uuml;hlsystem f&uuml;llen &amp; entl&uuml;ften)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_coolant_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="fill">Fill Quantity (F&uuml;llmenge)</h4>
+            <div class="spec-line"><span>SBF 302 Cooling System</span><span class="spec-val">~14 quarts (13.2 L) total</span></div>
+            <div class="spec-line"><span>Coolant Mix (K&uuml;hlmittel)</span><span class="spec-val">50/50 antifreeze/distilled water</span></div>
+            <div class="spec-line"><span>Thermostat Opens</span><span class="spec-val">180&deg;F (82&deg;C) &ndash; 192&deg;F (89&deg;C)</span></div>
+        </div>
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>Funnel with long neck (Trichter)</li>
+            <li>Drain pan (Auffangwanne)</li>
+            <li>Bleed valve wrench (if equipped)</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1.</strong> Verify all drain petcocks closed (alle Ablass-Hahne geschlossen)</li>
+            <li><strong>2.</strong> Remove heater hose at highest point for air bleed (Heizungsschlauch am h&ouml;chsten Punkt &ouml;ffnen)</li>
+            <li><strong>3.</strong> Fill slowly through radiator cap or filler neck (langsam einf&uuml;llen)</li>
+            <li><strong>4.</strong> Watch for coolant at heater hose bleed point &ndash; close when flowing (schlie&szlig;en wenn K&uuml;hlmittel kommt)</li>
+            <li><strong>5.</strong> Fill expansion/overflow tank to COLD mark (Ausgleichsbeh&auml;lter bis KALT-Markierung)</li>
+            <li><strong>6.</strong> After first warm-up: recheck level with engine cold (nach Warmlauf: Pegel kalt nachpr&uuml;fen)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>Mid-engine cars: fill system with engine tilted if possible &ndash; air pockets at highest point in hoses</li>
+            <li>Run engine to operating temp with radiator cap off (carefully!) to self-bleed</li>
+            <li>Squeeze upper radiator hose to push trapped air through system</li>
+            <li>Recheck level daily for first week &ndash; air pockets work out slowly</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- 6. Check Fuel System -->
@@ -353,8 +380,32 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_timing_static" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">7. Static Ignition Timing ~12&deg; BTDC (Z&uuml;ndzeitpunkt statisch einstellen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_timing_static_n" placeholder="Setting:___&deg; BTDC" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>Crank turning socket or breaker bar on balancer bolt</li>
+            <li>1/2&quot; wrench for distributor hold-down clamp</li>
+            <li>Test light or multimeter (for points/trigger verification)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
+            <div class="spec-line"><span>Initial Static Timing</span><span class="spec-val">10&ndash;12&deg; BTDC</span></div>
+            <div class="spec-line"><span>TDC Mark</span><span class="spec-val">0&deg; mark on balancer aligned with pointer</span></div>
+        </div>
+        <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1.</strong> Rotate crank to TDC #1 compression stroke &ndash; both valves closed, TDC mark aligned (Kurbelwelle auf OT #1 Kompressionstakt drehen)</li>
+            <li><strong>2.</strong> Verify rotor points toward #1 terminal on cap (Verteilerfinger zeigt auf Zyl. 1 Anschluss)</li>
+            <li><strong>3.</strong> Rotate crank BACKWARDS to 10&ndash;12&deg; BTDC mark on balancer</li>
+            <li><strong>4.</strong> Loosen distributor hold-down, rotate body until trigger/pickup just activates</li>
+            <li><strong>5.</strong> Tighten hold-down clamp &ndash; snug, not final (engine will need timing light adjustment at warm idle)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>10&ndash;12&deg; is a safe starting point &ndash; adjust with timing light after engine is running</li>
+            <li>Verify firing order: 1-5-4-2-6-3-7-8 (Ford 302) &ndash; wires must be in correct cap terminals</li>
+            <li>MSD magnetic pickup: no test light needed &ndash; just align rotor to #1 at static timing position</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- 8. MSD 6AL Rev Limiter -->
@@ -362,8 +413,27 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_revlimiter" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">8. MSD 6AL Rev Limiter: 6,500 RPM (Drehzahlbegrenzer)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_revlimiter_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="measure">RPM Module Selection (Modul-Auswahl)</h4>
+            <div class="spec-line"><span>Recommended Chip</span><span class="spec-val">6,200&ndash;6,500 RPM</span></div>
+            <div class="spec-line"><span>Module Type</span><span class="spec-val">MSD RPM Module (2-pin plug)</span></div>
+            <div class="spec-line"><span>XE274HR Max RPM</span><span class="spec-val">~6,500 RPM (per COMP cam card)</span></div>
+        </div>
+        <div class="guide-block"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1.</strong> Locate MSD 6AL box &ndash; find RPM module plug (2-pin connector)</li>
+            <li><strong>2.</strong> Select appropriate RPM pill/chip: 6,200 RPM (conservative) or 6,500 RPM (matches cam)</li>
+            <li><strong>3.</strong> Plug module firmly into connector &ndash; ensure positive click</li>
+            <li><strong>4.</strong> If no module installed: MSD defaults to ~9,000 RPM (no protection!)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>For break-in: use 6,200 RPM chip &ndash; swap to 6,500 after break-in complete</li>
+            <li>Carry spare module chips of different RPM values in toolbox</li>
+            <li>MSD 6AL also has 2-step launch control &ndash; optional for track use</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- 9. Recheck Preload -->
@@ -371,8 +441,29 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_preload_recheck" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">9. Recheck Preload all 16 valves (Preload nochmals pr&uuml;fen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_preload_recheck_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="measure">Target Value (Sollwert)</h4>
+            <div class="spec-line"><span>Preload Morel 5327 HLT</span><span class="spec-val">1/2 turn past zero lash (1/2 Umdrehung nach Nullspiel)</span></div>
+            <div class="spec-line"><span>Engine Temperature</span><span class="spec-val">Cold (Kalt)</span></div>
+        </div>
+        <div class="guide-block"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1.</strong> Rotate crank so valve&rsquo;s lifter is on base circle (Nocken-Grundkreis)</li>
+            <li><strong>2.</strong> Loosen polylock set screw, back off adjusting nut slightly</li>
+            <li><strong>3.</strong> Spin pushrod while re-tightening adjusting nut</li>
+            <li><strong>4.</strong> Zero lash = pushrod just stops spinning freely</li>
+            <li><strong>5.</strong> From zero lash: 1/2 turn further = preload</li>
+            <li><strong>6.</strong> Lock polylock set screw &ndash; recheck that nut did not move</li>
+            <li><strong>7.</strong> Repeat for ALL 16 valves using EO/IC method</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>Parts may have shifted since Phase 3 assembly &ndash; always recheck before first start</li>
+            <li>Use EO/IC method: when exhaust opens &rarr; set intake; when intake closes &rarr; set exhaust</li>
+            <li>If any pushrod feels loose or doesn&rsquo;t want to spin &ndash; investigate before starting!</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- 10. Wiring, Lines, Ground, Firing Order -->
@@ -380,8 +471,35 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_wiring" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">10. Wiring, Lines, Ground, Firing Order (Kabel, Leitungen, Masse, Z&uuml;ndfolge)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_wiring_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="measure">Firing Order &amp; Cylinder Layout (Z&uuml;ndfolge)</h4>
+            <div class="spec-line"><span>Ford 302 Firing Order</span><span class="spec-val">1-5-4-2-6-3-7-8</span></div>
+            <div class="spec-line"><span>Distributor Rotation</span><span class="spec-val">Counter-clockwise (gegen Uhrzeigersinn)</span></div>
+            <div class="spec-line"><span>Cylinder Layout (right bank)</span><span class="spec-val">1-2-3-4 (front to rear)</span></div>
+            <div class="spec-line"><span>Cylinder Layout (left bank)</span><span class="spec-val">5-6-7-8 (front to rear)</span></div>
+        </div>
+        <div class="guide-block"><h4 class="prereq">Wiring Checklist</h4><ul>
+            <li>&#9744; MSD 6AL box: heavy red wire to battery + (12V fused)</li>
+            <li>&#9744; MSD 6AL box: heavy black wire to solid engine/chassis ground</li>
+            <li>&#9744; MSD white wire to ignition switch (12V key-on)</li>
+            <li>&#9744; MSD coil wires: orange + dark green to MSD Blaster coil</li>
+            <li>&#9744; MSD magnetic pickup: violet &amp; green wires from distributor</li>
+            <li>&#9744; Tach signal: gray wire from MSD to tachometer</li>
+            <li>&#9744; Spark plug wires: correct firing order on distributor cap</li>
+            <li>&#9744; Starter solenoid: battery cable, ignition trigger wire</li>
+            <li>&#9744; Alternator: charge wire + field wire</li>
+            <li>&#9744; Oil pressure sender: wire to gauge</li>
+            <li>&#9744; Water temperature sender: wire to gauge</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>Trace each spark plug wire from cap to plug &ndash; verify firing order physically, not from memory</li>
+            <li>MSD 6AL requires dedicated 12V hot (not shared with other accessories) &ndash; use 10 AWG wire</li>
+            <li>Ground strap from engine block to chassis is mandatory &ndash; poor ground = no start or weak spark</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- 11. FIRE EXTINGUISHER! HELPER! EXHAUST VENTILATION! -->
@@ -389,8 +507,25 @@
     <div class="step-header" style="background: #fff5f5;">
         <input type="checkbox" data-field="p4_safety" onchange="autoSave()">
         <span class="step-title" style="color: var(--danger);">11. FIRE EXTINGUISHER! HELPER! EXHAUST VENTILATION! (Feuerl&ouml;scher! Helfer! Abgasabsaugung!)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_safety_n" placeholder="Confirmed..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="warning-box"><strong>DO NOT START without completing this checklist! Engine fires on first start are more common than you think. (NICHT STARTEN ohne diese Checkliste!)</strong></div>
+        <div class="guide-block guide-full"><h4 class="prereq">Safety Checklist (Sicherheits-Checkliste)</h4><ul>
+            <li>&#9744; <strong>Fire extinguisher</strong> (ABC rated, min. 5 lbs) within arm&rsquo;s reach (Feuerl&ouml;scher griffbereit)</li>
+            <li>&#9744; <strong>Helper present</strong> &ndash; one person at the controls, one watching for leaks/fire (Helfer anwesend)</li>
+            <li>&#9744; <strong>Exhaust ventilation</strong> &ndash; garage door open or exhaust extraction in place (Abgasabsaugung oder offenes Tor)</li>
+            <li>&#9744; <strong>No fuel leaks</strong> &ndash; check all fittings, fuel line connections, carburetor base (keine Kraftstoffleckagen)</li>
+            <li>&#9744; <strong>Oil level correct</strong> on dipstick (&Ouml;lstand korrekt auf Peilstab)</li>
+            <li>&#9744; <strong>Coolant level correct</strong> (K&uuml;hlmittelstand korrekt)</li>
+            <li>&#9744; <strong>All bolts torqued</strong> &ndash; visual inspection of all external fasteners (alle Schrauben angezogen)</li>
+            <li>&#9744; <strong>Battery fully charged</strong> &ndash; 12.6V minimum (Batterie vollgeladen)</li>
+            <li>&#9744; <strong>No loose wires</strong> near exhaust or moving parts (keine losen Kabel)</li>
+            <li>&#9744; <strong>Throttle returns to idle</strong> when released (Gas geht in Leerlauf zur&uuml;ck)</li>
+            <li>&#9744; <strong>Kill switch accessible</strong> &ndash; know how to shut off ignition immediately (Notausschalter erreichbar)</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- ===== Subphase 4b – First Start ===== -->
@@ -419,8 +554,30 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_leaks" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">14. Visual Inspection: no leaks (Sichtkontrolle: keine Leckagen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_leaks_n" placeholder="Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block guide-full"><h4 class="measure">Inspection Points (Pr&uuml;fpunkte) &ndash; at idle, with helper watching</h4><ul>
+            <li><strong>Oil (&Ouml;l):</strong> Valve covers, oil pan gasket, timing cover, oil filter, oil pressure sender, rear main seal, front crank seal</li>
+            <li><strong>Coolant (K&uuml;hlmittel):</strong> Water pump gasket, intake manifold end seals, heater hose connections, radiator hoses, thermostat housing</li>
+            <li><strong>Fuel (Kraftstoff):</strong> Carburetor base, fuel line fittings, fuel pump connections, fuel filter</li>
+            <li><strong>Exhaust (Abgas):</strong> Header/manifold flange gaskets &ndash; listen for ticking sound = exhaust leak</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>Use a flashlight and mirror to check underside and rear of engine</li>
+            <li>A clean engine shows leaks immediately &ndash; wipe down before starting</li>
+            <li>Small oil weeping at valve cover is common &ndash; re-torque to 4&ndash;6 ft-lbs after first heat cycle</li>
+            <li>Any fuel leak = SHUT DOWN immediately! (Kraftstoffleck = SOFORT abstellen!)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="photo">Photo Documentation (Fotodokumentation)</h4><ul>
+            <li>Photo of clean engine before first start (reference)</li>
+            <li>Photo of any leak location found</li>
+        </ul>
+        <div class="photo-gallery" data-photo-group="p4_leaks_photos"></div>
+        <label class="photo-add-btn" onclick="addPhoto('p4_leaks_photos')">&#128247; Add Photo</label>
+        </div>
+    </div></div>
 </div>
 
 <!-- 15. Coolant Temperature -->
@@ -428,8 +585,28 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_temp" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">15. Coolant Temperature &ndash; thermostat opens (K&uuml;hlmitteltemp. &ndash; Thermostat &ouml;ffnet)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_temp_n" placeholder="Temp:___&deg;F (___&deg;C)" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
+            <div class="spec-line"><span>Coolant Normal Operating</span><span class="spec-val">180&ndash;195&deg;F (82&ndash;91&deg;C)</span></div>
+            <div class="spec-line"><span>Oil Normal Operating</span><span class="spec-val">180&ndash;220&deg;F (82&ndash;104&deg;C)</span></div>
+            <div class="spec-line"><span>Thermostat Opens</span><span class="spec-val">180&deg;F (82&deg;C) typical</span></div>
+            <div class="spec-line"><span>Overheating Threshold</span><span class="spec-val">&gt; 230&deg;F (110&deg;C) = SHUT DOWN</span></div>
+            <div class="guide-input-row" style="margin-top:0.4rem;">
+                <div><label>Coolant temp:</label><input type="text" data-field="p4_coolant_temp" placeholder="190&deg;F" oninput="autoSave()" style="width:65px;"></div>
+                <div><label>Oil temp:</label><input type="text" data-field="p4_oil_temp" placeholder="200&deg;F" oninput="autoSave()" style="width:65px;"></div>
+            </div>
+        </div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>Thermostat opening is felt as sudden upper radiator hose getting hot (Thermostat &ouml;ffnet = oberer K&uuml;hlerschlauch wird pl&ouml;tzlich hei&szlig;)</li>
+            <li>If temp keeps climbing past 210&deg;F: verify fan operation, check for air pockets in cooling system</li>
+            <li>Oil temp lags coolant by several minutes &ndash; normal</li>
+            <li>Watch for temp spike = head gasket issue, air in cooling system, or electric fan not activating</li>
+        </ul></div>
+        <div class="warning-box"><strong>If temperature exceeds 230&deg;F (110&deg;C) &ndash; SHUT DOWN immediately!</strong> Overheating a fresh engine with fresh assembly lube can damage cam lobes, bearings, and head gasket. (Bei &uuml;ber 230&deg;F SOFORT abstellen!)</div>
+    </div></div>
 </div>
 
 <!-- 16. Check Timing Warm -->
@@ -466,8 +643,27 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_oil_idle" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">17. Oil Pressure Idle Warm: 25&ndash;35 psi (1.7&ndash;2.4 bar)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_oil_idle_n" placeholder="Pressure:___ psi (___ bar)" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
+            <div class="spec-line"><span>Hot Idle (Leerlauf warm)</span><span class="spec-val">15&ndash;35 psi (1.0&ndash;2.4 bar) minimum</span></div>
+            <div class="spec-line"><span>At 2,500 RPM warm</span><span class="spec-val">40&ndash;60 psi (2.8&ndash;4.1 bar)</span></div>
+            <div class="spec-line"><span>Rule of Thumb</span><span class="spec-val">~10 psi per 1,000 RPM minimum</span></div>
+            <div class="guide-input-row" style="margin-top:0.4rem;">
+                <div><label>Idle psi:</label><input type="text" data-field="p4_oil_idle_psi" placeholder="25" oninput="autoSave()" style="width:55px;"></div>
+                <div><label>2500 RPM psi:</label><input type="text" data-field="p4_oil_2500_psi" placeholder="50" oninput="autoSave()" style="width:55px;"></div>
+            </div>
+        </div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>Oil pressure drops as oil heats up &ndash; this is normal (thinner oil = lower pressure)</li>
+            <li>Below 15 psi at hot idle = investigate: bearing clearances, oil pump, pickup, oil level</li>
+            <li>Melling M-68 high-volume pump should provide 50+ psi at 2,500 RPM with correct bearing clearances</li>
+            <li>Excessively high pressure (&gt;70 psi cold) may indicate blocked oil gallery or wrong relief spring</li>
+        </ul></div>
+        <div class="warning-box"><strong>Below 10 psi at any RPM = SHUT DOWN!</strong> Investigate oil level, pickup, pump prime, or bearing clearances. (Unter 10 psi bei jeder Drehzahl = SOFORT abstellen!)</div>
+    </div></div>
 </div>
 
 <!-- 18. Final Timing: 34-36° total advance -->
@@ -579,8 +775,34 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_retorque" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">19. Re-Torque Head Nuts (engine cold! / Motor kalt nachziehen!)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_retorque_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="prereq">Prerequisites (Voraussetzungen)</h4><ul>
+            <li>Engine FULLY cooled (overnight best) &ndash; Motor KOMPLETT abgek&uuml;hlt (am besten &uuml;ber Nacht)</li>
+            <li>First heat cycle completed</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="torque">Re-Torque Values (Nachzugs-Werte)</h4>
+            <div class="spec-line"><span>Head Studs ARP 154-4003 Long/Blind</span><span class="spec-val">80 ft-lbs (108 Nm)</span></div>
+            <div class="spec-line"><span>Head Studs ARP 154-4003 Short/Water</span><span class="spec-val">70 ft-lbs (95 Nm)</span></div>
+            <div class="spec-line"><span>Intake Manifold Bolts</span><span class="spec-val">18 ft-lbs (24 Nm)</span></div>
+            <div class="spec-line"><span>Lubricant</span><span class="spec-val">ARP Ultra-Torque (already applied)</span></div>
+        </div>
+        <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1.</strong> Remove valve covers (Ventildeckel abnehmen)</li>
+            <li><strong>2.</strong> Re-torque head studs: cross pattern, center outward, to original spec (Kreuzschema von Mitte nach au&szlig;en)</li>
+            <li><strong>3.</strong> Re-torque intake manifold bolts: cross pattern to 18 ft-lbs (24 Nm)</li>
+            <li><strong>4.</strong> Recheck all 16 rocker preloads (1/2 turn past zero lash) &ndash; head re-torque may shift preload</li>
+            <li><strong>5.</strong> Reinstall valve covers</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>Copper gaskets (CP331) and aluminum heads settle during first heat cycle &ndash; re-torque is essential</li>
+            <li>Some studs may turn slightly further &ndash; this is normal (gasket compression)</li>
+            <li>If a stud turns more than 1/4 turn &ndash; something may have shifted &ndash; investigate</li>
+            <li>After re-torque, no further re-torques needed unless head is removed</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- 20. Oil Change – Cut Filter Open -->
@@ -617,8 +839,41 @@
     <div class="step-header">
         <input type="checkbox" data-field="p4_sparkread" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">21. Read Spark Plugs (Kerzenbild lesen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p4_sparkread_n" placeholder="Color / Findings:___" oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+            <li>Spark plug socket 5/8&quot; / 16 mm</li>
+            <li>Magnifying glass (Lupe) for insulator inspection</li>
+            <li>Good lighting</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="measure">Reading Guide (Kerzenbild-Deutung)</h4><ul>
+            <li><strong>Light tan / gray (Hellbraun / Grau):</strong> IDEAL &ndash; correct mixture, good combustion (Idealer Zustand)</li>
+            <li><strong>White / blistered (Wei&szlig; / Blasen):</strong> TOO LEAN &ndash; dangerous! Richen mixture or check for vacuum leaks (Zu mager &ndash; gef&auml;hrlich!)</li>
+            <li><strong>Black / sooty (Schwarz / ru&szlig;ig):</strong> TOO RICH &ndash; reduce jet size or check choke (Zu fett)</li>
+            <li><strong>Black / oily / wet (Schwarz / &ouml;lig):</strong> OIL FOULING &ndash; check valve seals, rings, PCV (Verschmutzt mit &Ouml;l)</li>
+            <li><strong>Aluminum deposits (Alu-Ablagerungen):</strong> DETONATION &ndash; piston damage! Retard timing, richen mixture (Klopfsch&auml;den!)</li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
+            <li><strong>1.</strong> Engine at operating temperature, run for at least 10 minutes under varying load</li>
+            <li><strong>2.</strong> Shut off engine at 2,500 RPM (do NOT idle first &ndash; idle enriches the reading)</li>
+            <li><strong>3.</strong> Pull ALL 8 plugs &ndash; lay out in cylinder order (alle 8 Kerzen ziehen &ndash; in Zylinderreihenfolge auslegen)</li>
+            <li><strong>4.</strong> Compare all 8 &ndash; should be uniform color (alle 8 vergleichen &ndash; gleichm&auml;&szlig;ige Farbe)</li>
+            <li><strong>5.</strong> One cylinder different from others = that cylinder has a specific issue</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>Install fresh plugs before the reading run for clearest results</li>
+            <li>DellOrto DRLA 45: each barrel feeds 4 cylinders &ndash; if one bank is different, adjust that carburetor</li>
+            <li>Photograph each plug for comparison at later tuning sessions</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="photo">Photo Documentation (Fotodokumentation)</h4><ul>
+            <li>All 8 plugs laid out in order &ndash; reference for future readings</li>
+        </ul>
+        <div class="photo-gallery" data-photo-group="p4_sparkread_photos"></div>
+        <label class="photo-add-btn" onclick="addPhoto('p4_sparkread_photos')">&#128247; Add Photo</label>
+        </div>
+    </div></div>
 </div>
 
 <!-- 22. Synchronize DellOrto, Log Lambda -->

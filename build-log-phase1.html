@@ -679,8 +679,22 @@
     <div class="step-header">
         <input type="checkbox" data-field="p1_polylocks" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">14. COMP 4600-16 Polylocks &ndash; 16 pcs, 7/16&quot; (11.11 mm)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_polylocks_n" placeholder="Count confirmed / Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="measure">Inspection Points (Pr&uuml;fpunkte)</h4><ul>
+            <li><strong>Quantity:</strong> 16 pcs (16 St&uuml;ck) &ndash; count and verify</li>
+            <li><strong>Thread:</strong> 7/16&quot;-20 fine thread (11.11 mm Feingewinde) &ndash; must match AFR #6411 rocker studs</li>
+            <li><strong>Set screw:</strong> Allen set screw present and functional on each polylock</li>
+            <li><strong>Thread condition:</strong> Clean threads, no damage or cross-threading</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>Polylocks replace standard adjusting nuts &ndash; they lock the rocker adjustment permanently</li>
+            <li>Set screw tightens against stud threads to prevent rotation &ndash; critical for maintaining valve preload</li>
+            <li>Keep 1&ndash;2 spares in toolbox for Phase 3 assembly</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- ===================================================================== -->
@@ -756,8 +770,23 @@
     <div class="step-header">
         <input type="checkbox" data-field="p1_studs" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">17. Rocker Studs 7/16&quot; (11.11 mm) #6411 &ndash; confirm</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_studs_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="measure">Inspection Points (Pr&uuml;fpunkte)</h4><ul>
+            <li><strong>Part Number:</strong> AFR #6411 screw-in rocker studs (Schraubstehbolzen)</li>
+            <li><strong>Thread (block side):</strong> 3/8&quot;-24 (9.53 mm) fine thread</li>
+            <li><strong>Thread (rocker side):</strong> 7/16&quot;-20 (11.11 mm) fine thread</li>
+            <li><strong>Quantity:</strong> 16 pcs installed in heads &ndash; verify all present and tight</li>
+            <li><strong>Height:</strong> All studs same height above head surface &ndash; visual check across row</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>AFR 1399 heads come with #6411 studs pre-installed &ndash; verify they were not removed during shipping</li>
+            <li>Studs must be compatible with COMP 1632-16 rockers (7/16&quot; stud mount confirmed)</li>
+            <li>Screw-in studs are mandatory for high-lift cams &ndash; press-in studs pull out under spring pressure</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- Step 18: Springs + Retainers -->
@@ -765,8 +794,23 @@
     <div class="step-header">
         <input type="checkbox" data-field="p1_springs" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">18. Springs #8605 + Titanium Retainers #8600 &ndash; confirm</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_springs_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="measure">Inspection Points (Pr&uuml;fpunkte)</h4><ul>
+            <li><strong>Springs PAC #8605:</strong> 16 pcs, dual spring (Doppelfeder), beehive or conventional design</li>
+            <li><strong>Retainers AFR #8600:</strong> 16 pcs, titanium (Titan) &ndash; significantly lighter than steel</li>
+            <li><strong>Visual check:</strong> No cracked or broken springs, retainers undamaged</li>
+            <li><strong>Spring color coding:</strong> All springs should be identical (same color / markings)</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>AFR 1399 heads ship with springs and retainers pre-installed &ndash; confirm correct parts</li>
+            <li>Titanium retainers are ~40% lighter than steel = less valvetrain mass = higher RPM capability</li>
+            <li>Verify spring and retainer combination matches cam specifications (installed height + seat/open pressure)</li>
+            <li>7&deg; keepers required for titanium retainers &ndash; check next step (#22)</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- Step 19: Installed Spring Height -->
@@ -855,8 +899,23 @@
     <div class="step-header">
         <input type="checkbox" data-field="p1_keepers" onchange="autoSave()">
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">22. Valve Keepers (Ventilkeile) 7&deg; &ndash; match titanium retainers</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="text" class="step-note" data-field="p1_keepers_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
+    <div class="step-guide"><div class="guide-grid">
+        <div class="guide-block"><h4 class="measure">Inspection Points (Pr&uuml;fpunkte)</h4><ul>
+            <li><strong>Angle:</strong> 7&deg; keepers (Ventilkeile) &ndash; must match titanium retainers #8600</li>
+            <li><strong>Quantity:</strong> 32 pcs (2 per valve &times; 16 valves)</li>
+            <li><strong>Groove count:</strong> Verify single- or multi-groove matches valve stem groove</li>
+            <li><strong>Condition:</strong> No nicks, cracks, or wear on locking surfaces</li>
+        </ul></div>
+        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li>7&deg; keepers are standard for titanium retainers &ndash; 10&deg; keepers will NOT lock properly</li>
+            <li>Mix-up between 7&deg; and 10&deg; = valve drops into cylinder = catastrophic engine failure</li>
+            <li>Keep 2&ndash;4 spare keepers in toolbox &ndash; tiny parts that easily get lost during assembly</li>
+            <li>AFR ships correct keepers pre-installed &ndash; verify they match retainer spec sheet</li>
+        </ul></div>
+    </div></div>
 </div>
 
 <!-- ===================================================================== -->
