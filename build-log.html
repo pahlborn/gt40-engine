@@ -44,6 +44,12 @@
         }
         .header-gear:hover { background: rgba(255,255,255,0.2); color: white; }
         .save-status { font-size: 0.65rem; opacity: 0.7; text-align: right; padding: 0.15rem 0.5rem; background: rgba(0,0,0,0.1); }
+        .sync-badge { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.62rem; padding: 0.1rem 0.4rem; border-radius: 10px; font-weight: 600; }
+        .sync-badge.online { background: rgba(56,161,105,0.25); color: #c6f6d5; }
+        .sync-badge.offline { background: rgba(229,62,62,0.25); color: #fed7d7; }
+        .sync-dot { width: 5px; height: 5px; border-radius: 50%; }
+        .sync-dot.online { background: #68d391; }
+        .sync-dot.offline { background: #fc8181; }
         .search-bar {
             display: flex; align-items: center; gap: 0.3rem;
             padding: 0.25rem 0.5rem; background: rgba(0,0,0,0.08);
@@ -342,7 +348,7 @@
         </div>
         <div id="subResults" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #e2e8f0;border-radius:8px;max-height:300px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:100;padding:0.5rem;font-size:0.8rem;"></div>
     </div>
-    <div class="save-status" id="saveStatus"></div>
+    <div class="save-status" id="saveStatus"><span id="syncBadge"></span></div>
 </div>
 
 <div class="container">
@@ -4030,7 +4036,7 @@
     }
     // ==== CONFIG ====
     const GIST_FILENAME = 'engine-build-log-data.json';
-    const FIXED_GIST_ID = 'e2c838fe26e4af9517cae13b492dc43e';
+    const FIXED_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
     let isLoading = false;
     let autoSaveTimer = null;
 
@@ -4074,15 +4080,27 @@
             const user = await res.json();
             localStorage.setItem('gh_token', token);
             showToast('Verbunden als ' + user.login + '!');
-            updateConnectionStatus(); closeSettings();
+            updateSyncBadge(); updateConnectionStatus(); closeSettings();
         } catch (err) { showToast('Fehler: ' + err.message); }
     }
     function disconnectGist() {
         localStorage.removeItem('gh_token');
         var tokEl = document.getElementById('ghToken');
         if (tokEl) tokEl.value = '';
-        updateConnectionStatus();
+        updateSyncBadge(); updateConnectionStatus();
         showToast('Verbindung getrennt.'); closeSettings();
+    }
+    function updateSyncBadge() {
+        var b = document.getElementById('syncBadge');
+        if (!b) return;
+        var sb = document.getElementById('syncBtn');
+        if (isGistConfigured()) {
+            b.innerHTML = '<span class="sync-badge online"><span class="sync-dot online"></span>Cloud Sync</span>';
+            if (sb) sb.disabled = false;
+        } else {
+            b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Lokal</span>';
+            if (sb) sb.disabled = true;
+        }
     }
     function updateConnectionStatus() {
         const el = document.getElementById('connectionStatus');
@@ -4319,9 +4337,10 @@
         if (raw) {
             try {
                 var d = new Date(JSON.parse(raw)._savedAt);
-                document.getElementById('saveStatus').textContent =
-                    'Saved: ' + d.toLocaleDateString('de-DE') + ' ' + d.toLocaleTimeString('de-DE') +
-                    (isGistConfigured() ? ' (Cloud Sync)' : ' (Local)');
+                var badge = document.getElementById('syncBadge');
+                var badgeHTML = badge ? badge.outerHTML : '';
+                document.getElementById('saveStatus').innerHTML =
+                    'Gespeichert: ' + d.toLocaleDateString('de-DE') + ' ' + d.toLocaleTimeString('de-DE') + ' ' + badgeHTML;
             } catch(e) {}
         }
     }
@@ -4962,6 +4981,7 @@
 
     // ==== INIT ====
     document.addEventListener('DOMContentLoaded', function() {
+        updateSyncBadge();
         loadData();
         restoreBuildCollapseState();
         initUnifiedSearch();
