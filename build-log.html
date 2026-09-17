@@ -318,12 +318,16 @@
 
         <button id="langToggle" onclick="toggleLang()" style="width:36px;min-width:36px;height:44px;border:none;background:none;cursor:pointer;font-size:1.1rem;border-left:1px solid rgba(255,255,255,0.15);" title="DE / EN">&#127465;&#127466;</button>
         <div style="position:relative;">
-            <button class="header-gear" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">&#9881;</button>
-            <div style="display:none;position:absolute;right:0;top:100%;margin-top:2px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:180px;z-index:200;overflow:hidden;">
-                <button onclick="saveData();this.closest('div').parentElement.querySelector('div').style.display='none'" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:#2d3748;font-size:0.78rem;cursor:pointer;">&#128190; Save</button>
-                <button onclick="exportJSON();this.closest('div').parentElement.querySelector('div').style.display='none'" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:#2d3748;font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
-                <button onclick="document.getElementById('importFile').click()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:#2d3748;font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
-                <button onclick="window.print()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:#2d3748;font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
+            <button class="header-gear" onclick="toggleToolMenu()" id="toolMenuBtn">&#9881;</button>
+            <div id="toolMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:2px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:180px;z-index:200;overflow:hidden;">
+                <button onclick="syncFromCloud();closeToolMenu()" id="syncBtn" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud Sync</button>
+                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
+                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Einstellungen</button>
+                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
+                <button onclick="saveData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128190; Save</button>
+                <button onclick="exportJSON();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
+                <button onclick="document.getElementById('importFile').click();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
+                <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
             </div>
         </div>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
@@ -3973,6 +3977,22 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- ===== SETTINGS MODAL ===== -->
+<div class="modal-overlay" id="settingsModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:9000;align-items:center;justify-content:center;">
+    <div style="background:white;border-radius:12px;padding:1.5rem;max-width:420px;width:calc(100vw - 32px);box-shadow:0 8px 30px rgba(0,0,0,0.3);">
+        <h3 style="margin:0 0 0.75rem;font-size:1rem;color:var(--primary);">GitHub-Einstellungen</h3>
+        <div class="status-line" id="connectionStatus" style="font-size:0.78rem;margin-bottom:0.5rem;"></div>
+        <label for="ghToken" style="font-size:0.78rem;font-weight:600;">GitHub Personal Access Token</label>
+        <input type="password" id="ghToken" placeholder="github_pat_..." style="width:100%;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.82rem;margin:0.3rem 0;">
+        <div style="font-size:0.7rem;color:var(--text-light);margin-bottom:0.5rem;">GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens<br>Berechtigung: <strong>Gists (Read and Write)</strong></div>
+        <div style="display:flex;gap:0.4rem;justify-content:flex-end;">
+            <button onclick="disconnectGist()" style="padding:0.4rem 0.8rem;border:1px solid #e53e3e;background:white;color:#e53e3e;border-radius:6px;cursor:pointer;font-size:0.78rem;">Trennen</button>
+            <button onclick="closeSettings()" style="padding:0.4rem 0.8rem;border:1px solid var(--border);background:white;color:var(--text);border-radius:6px;cursor:pointer;font-size:0.78rem;">Abbrechen</button>
+            <button onclick="saveSettings()" style="padding:0.4rem 0.8rem;border:none;background:var(--primary-light);color:white;border-radius:6px;cursor:pointer;font-size:0.78rem;">Verbinden</button>
+        </div>
+    </div>
+</div>
+
 <script>
     // ==== POWER UNIT CONVERTER ====
     function convPower(src) {
@@ -4016,6 +4036,95 @@
 
     function getGistConfig() { return { token: localStorage.getItem('gh_token') || '' }; }
     function isGistConfigured() { return getGistConfig().token.length > 0; }
+
+    // ==== TOOL MENU ====
+    function toggleToolMenu() {
+        var m = document.getElementById('toolMenu');
+        m.style.display = m.style.display === 'none' ? 'block' : 'none';
+    }
+    function closeToolMenu() { document.getElementById('toolMenu').style.display = 'none'; }
+    document.addEventListener('click', function(e) {
+        var menu = document.getElementById('toolMenu');
+        var btn = document.getElementById('toolMenuBtn');
+        if (menu && menu.style.display !== 'none' && !menu.contains(e.target) && e.target !== btn) {
+            closeToolMenu();
+        }
+    });
+
+    // ==== SETTINGS ====
+    function openSettings() {
+        var tok = document.getElementById('ghToken');
+        if (tok) tok.value = getGistConfig().token;
+        updateConnectionStatus();
+        var sm = document.getElementById('settingsModal');
+        if (sm) sm.style.display = 'flex';
+    }
+    function closeSettings() { var sm = document.getElementById('settingsModal'); if (sm) sm.style.display = 'none'; }
+    document.addEventListener('DOMContentLoaded', function() {
+        var sm = document.getElementById('settingsModal');
+        if (sm) sm.addEventListener('click', function(e) { if (e.target === this) closeSettings(); });
+    });
+    async function saveSettings() {
+        var tokEl = document.getElementById('ghToken');
+        var token = tokEl ? tokEl.value.trim() : '';
+        if (!token) { showToast('Bitte Token eingeben!'); return; }
+        try {
+            const res = await fetch('https://api.github.com/user', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (!res.ok) { showToast('Token ungueltig!'); return; }
+            const user = await res.json();
+            localStorage.setItem('gh_token', token);
+            showToast('Verbunden als ' + user.login + '!');
+            updateConnectionStatus(); closeSettings();
+        } catch (err) { showToast('Fehler: ' + err.message); }
+    }
+    function disconnectGist() {
+        localStorage.removeItem('gh_token');
+        var tokEl = document.getElementById('ghToken');
+        if (tokEl) tokEl.value = '';
+        updateConnectionStatus();
+        showToast('Verbindung getrennt.'); closeSettings();
+    }
+    function updateConnectionStatus() {
+        const el = document.getElementById('connectionStatus');
+        if (!el) return;
+        if (getGistConfig().token) {
+            el.className = 'status-line connected';
+            el.innerHTML = 'Verbunden &mdash; Gist: <code>' + FIXED_GIST_ID.substring(0,10) + '...</code>';
+        } else {
+            el.className = 'status-line disconnected';
+            el.textContent = 'Nicht verbunden';
+        }
+    }
+    async function syncFromCloud() {
+        if (!isGistConfigured()) { openSettings(); return; }
+        showToast('Lade aus Cloud...');
+        isLoading = true;
+        try {
+            var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { headers: { 'Authorization': 'Bearer ' + getGistConfig().token } });
+            if (!res.ok) { isLoading = false; showToast('Cloud-Fehler (Status ' + res.status + ')'); return; }
+            var gist = await res.json();
+            var file = gist.files && gist.files[GIST_FILENAME];
+            if (!file) { isLoading = false; showToast('Keine Cloud-Daten gefunden'); return; }
+            var cloudData = JSON.parse(file.content);
+            var localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+            var cloudTime = new Date(cloudData._savedAt || 0).getTime();
+            var localTime = new Date(localData._savedAt || 0).getTime();
+            var merged = {}, allKeys = Object.keys(localData).concat(Object.keys(cloudData)), seen = {};
+            var winner = cloudTime > localTime ? cloudData : localData;
+            var loser = cloudTime > localTime ? localData : cloudData;
+            for (var ki = 0; ki < allKeys.length; ki++) {
+                var k = allKeys[ki]; if (seen[k]) continue; seen[k] = 1;
+                var wVal = winner[k], lVal = loser[k];
+                if (wVal !== undefined && wVal !== '' && wVal !== null) { merged[k] = wVal; }
+                else if (lVal !== undefined && lVal !== '' && lVal !== null) { merged[k] = lVal; }
+                else { merged[k] = wVal !== undefined ? wVal : lVal; }
+            }
+            applyData(merged);
+            localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+            isLoading = false; updateSaveStatus();
+            showToast('Cloud-Daten geladen!');
+        } catch (err) { isLoading = false; showToast('Cloud-Fehler: ' + err.message); }
+    }
 
     // ==== COLLAPSE STATE ====
     var _collapseKey = 'engineBuild_collapse_buildlog';

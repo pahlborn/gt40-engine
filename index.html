@@ -285,9 +285,13 @@
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Einstellungen</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
+                <button onclick="saveData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128190; Save</button>
+                <button onclick="exportJSON();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
+                <button onclick="document.getElementById('importFile').click();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
                 <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
             </div>
         </div>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
     </div>
     <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search... (Ctrl+F)" oninput="doSearch()" onkeydown="searchKeyHandler(event)">

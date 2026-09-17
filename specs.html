@@ -490,17 +490,16 @@
         <div style="position:relative;">
             <button class="header-gear" onclick="toggleToolMenu()" id="toolMenuBtn">&#9881;</button>
             <div id="toolMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:2px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:180px;z-index:200;overflow:hidden;">
-                <button onclick="saveData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128190; Save</button>
                 <button onclick="syncFromCloud();closeToolMenu()" id="syncBtn" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud Sync</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
-                <button onclick="showGuide('guide-torque');closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128295; Torque Card</button>
+                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Einstellungen</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
+                <button onclick="saveData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128190; Save</button>
                 <button onclick="exportJSON();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
                 <button onclick="document.getElementById('importFile').click();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
                 <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
-                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Settings</button>
-                <button onclick="clearAllData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--danger);font-size:0.78rem;cursor:pointer;">&#128465; Reset</button>
+                <button onclick="showGuide('guide-torque');closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128295; Torque Card</button>
             </div>
         </div>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
