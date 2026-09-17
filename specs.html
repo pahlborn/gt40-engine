@@ -87,13 +87,14 @@
 
         /* ---- Guide Link ---- */
         .guide-link {
-            display: inline-flex; align-items: center; gap: 0.3rem;
+            display: flex; align-items: center; gap: 0.3rem;
             font-size: 0.78rem; color: var(--primary-light); font-weight: 600;
             cursor: pointer; padding: 0.35rem 0.7rem; border-radius: 6px;
             background: #ebf4ff; border: 1px solid #bee3f8;
             text-decoration: none; margin-bottom: 0.75rem;
             min-height: 36px; touch-action: manipulation;
             -webkit-tap-highlight-color: rgba(43,108,176,0.2);
+            width: 100%; box-sizing: border-box;
         }
         .guide-link:active { background: #bee3f8; }
 

@@ -4317,7 +4317,7 @@
                 setTimeout(function() {
                     var headerH = document.querySelector('.header').offsetHeight;
                     window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - headerH - 10, behavior: 'smooth' });
-                }, 200);
+                }, 400);
             }
         }
     }
@@ -4825,6 +4825,12 @@
         saveBuildCollapseState();
     });
     window.addEventListener('load', function() {
+        // If URL has a hash, skip scroll restoration – let scrollToHash() handle it
+        if (window.location.hash && window.location.hash.length > 1) {
+            _scrollReady = true;
+            scrollToHash();
+            return;
+        }
         var pos = localStorage.getItem(_scrollKey);
         if (pos) {
             var delay = currentLang === 'en' ? 400 : 200;
@@ -4833,7 +4839,16 @@
         } else { _scrollReady = true; }
     });
     window.addEventListener('pageshow', function(e) {
-        if (e.persisted) { restoreBuildCollapseState(); var pos = localStorage.getItem(_scrollKey); if (pos) window.scrollTo(0, parseInt(pos)); }
+        if (e.persisted) {
+            restoreBuildCollapseState();
+            // If hash present, scroll to hash instead of saved position
+            if (window.location.hash && window.location.hash.length > 1) {
+                scrollToHash();
+            } else {
+                var pos = localStorage.getItem(_scrollKey);
+                if (pos) window.scrollTo(0, parseInt(pos));
+            }
+        }
     });
 
     // ==== INIT ====
