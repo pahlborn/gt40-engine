@@ -3278,6 +3278,19 @@
         }
     }
 
+    // ==== DATA MIGRATION ====
+    (function migrateFieldNames() {
+        var raw = localStorage.getItem('engineBuildLog');
+        if (!raw) return;
+        try {
+            var data = JSON.parse(raw);
+            var m = {'p1_main_brg_1':'main_1','p1_main_brg_2':'main_2','p1_main_brg_3':'main_3','p1_main_brg_4':'main_4','p1_main_brg_5':'main_5','p1_crank_endplay':'crank_endplay','p2_endplay_val':'cam_endplay','p1_rod_brg_1':'rod_1','p1_rod_brg_2':'rod_2','p1_rod_brg_3':'rod_3','p1_rod_brg_4':'rod_4','p1_rod_brg_5':'rod_5','p1_rod_brg_6':'rod_6','p1_rod_brg_7':'rod_7','p1_rod_brg_8':'rod_8','p1_ring_top_1':'topring_1','p1_ring_top_2':'topring_2','p1_ring_top_3':'topring_3','p1_ring_top_4':'topring_4','p1_ring_top_5':'topring_5','p1_ring_top_6':'topring_6','p1_ring_top_7':'topring_7','p1_ring_top_8':'topring_8','p1_ring_2nd_1':'secring_1','p1_ring_2nd_2':'secring_2','p1_ring_2nd_3':'secring_3','p1_ring_2nd_4':'secring_4','p1_ring_2nd_5':'secring_5','p1_ring_2nd_6':'secring_6','p1_ring_2nd_7':'secring_7','p1_ring_2nd_8':'secring_8','p2_pr_intake':'pushrod_intake','p2_pr_exhaust':'pushrod_exhaust','p2_pickup_clr':'pickup_to_pan','p4_initial_timing':'initial_timing','p4_total_timing':'total_timing','p4_advance_springs':'advance_springs','p4_advance_bushing':'advance_bushing'};
+            var changed = false;
+            for (var o in m) { if (data[o] && !data[m[o]]) { data[m[o]] = data[o]; delete data[o]; changed = true; } }
+            if (changed) localStorage.setItem('engineBuildLog', JSON.stringify(data));
+        } catch(e) {}
+    })();
+
     // ==== INIT ====
     generateQuenchTable(); updateSyncBadge(); updateBuildDashboard();
     restoreCollapseState();
