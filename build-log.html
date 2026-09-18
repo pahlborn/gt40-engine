@@ -2967,6 +2967,10 @@
                 <div><label>Stage 3 done (Stufe 3):</label><input type="text" data-field="p3_int_s3" placeholder="18 ft-lbs" oninput="autoSave()" style="width:70px;"></div>
             </div>
         </div>
+        <div class="guide-block guide-full"><h4 class="measure">Montage-Checks</h4>
+            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_intake_rtv" onchange="autoSave()"> <span>RTV-Silikon statt Kork-Enddichtungen verwendet</span></div>
+            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_intake_torqued" onchange="autoSave()"> <span>Ansaugspinne auf 18 ft-lbs angezogen (3-Stufen-Verfahren)</span></div>
+        </div>
     </div></div>
 </div>
 
@@ -3044,6 +3048,10 @@
             <div class="spec-line"><span>Thread Lubricant</span><span class="spec-val">Anti-seize on threads</span></div>
         </div>
         <div class="warning-box"><strong>&#9888; Always install in COLD head!</strong> Cross-threaded aluminum = expensive HeliCoil repair. (Immer im KALTEN Kopf montieren! Quergedr&uuml;cktes Gewinde in Alu = teure HeliCoil-Reparatur.)</div>
+        <div class="guide-block guide-full"><h4 class="measure">Montage-Checks</h4>
+            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_spark_antiseize" onchange="autoSave()"> <span>Anti-Seize auf Z&uuml;ndkerzengewinde aufgetragen</span></div>
+            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_spark_torqued" onchange="autoSave()"> <span>Z&uuml;ndkerzen angezogen (15&ndash;22 ft-lbs)</span></div>
+        </div>
     </div></div>
 </div>
 
@@ -3484,6 +3492,15 @@
             <li>MSD 6AL requires dedicated 12V hot (not shared with other accessories) &ndash; use 10 AWG wire</li>
             <li>Ground strap from engine block to chassis is mandatory &ndash; poor ground = no start or weak spark</li>
         </ul></div>
+        <div class="guide-block guide-full"><h4 class="measure">Starter &amp; Nebenaggregate &ndash; Montage-Checks</h4>
+            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_starter_visual" onchange="autoSave()"> <span>Starter visuell gepr&uuml;ft, Ritzel OK, Kabel OK</span></div>
+            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_starter_shims" onchange="autoSave()"> <span>Zahnspiel Starter/Schwungrad gepr&uuml;ft (ggf. Shims eingesetzt)</span></div>
+            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_pulleys" onchange="autoSave()"> <span>Pulleys (Kurbel, Wapump, Lima) vorhanden + passend</span></div>
+            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_belt" onchange="autoSave()"> <span>Keilriemen richtige L&auml;nge + Breite</span></div>
+            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_alternator" onchange="autoSave()"> <span>Lichtmaschine vorhanden + min. 65A</span></div>
+            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_mounts" onchange="autoSave()"> <span>Motorlager vorhanden + Ausrichtung gepr&uuml;ft</span></div>
+            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_clutch_pp" onchange="autoSave()"> <span>Druckplatte montiert, Dowels eingesetzt, Drehmoment 12&ndash;24 ft-lbs</span></div>
+        </div>
     </div></div>
 </div>
 
@@ -4757,6 +4774,12 @@
         '\u00d6lpumpe vormontiert, Pumpenantriebswelle eingesetzt':'Oil pump pre-installed, drive shaft inserted',
         '\u00d6lwanne montiert, Dichtung/RTV korrekt, Schrauben auf Drehmoment':'Oil pan mounted, gasket/RTV correct, bolts torqued',
         'Drehrichtung gepr\u00fcft (passend zum Riementrieb)':'Rotation direction verified (matching belt drive)',
+        'Anti-Seize auf Z\u00fcndkerzengewinde aufgetragen':'Anti-seize applied to spark plug threads',
+        'Z\u00fcndkerzen angezogen (15\u201322 ft-lbs)':'Spark plugs torqued (15\u201322 ft-lbs)',
+        'RTV-Silikon statt Kork-Enddichtungen verwendet':'RTV silicone used instead of cork end seals',
+        'Ansaugspinne auf 18 ft-lbs angezogen (3-Stufen-Verfahren)':'Intake manifold torqued to 18 ft-lbs (3-stage method)',
+        'Starter & Nebenaggregate \u2013 Montage-Checks':'Starter & Accessories \u2013 Assembly Checks',
+        'Montage-Checks':'Assembly Checks',
         'Druckplatte montiert, Dowels eingesetzt, Drehmoment 12\u201324 ft-lbs':'Pressure plate mounted, dowels inserted, torqued 12\u201324 ft-lbs',
         'Harmonic Balancer mit Einpresswerkzeug montiert, Schraube auf Drehmoment':'Harmonic balancer installed with press tool, bolt torqued',
         'Kraftstoffleitungen angeschlossen, auf Dichtheit gepr\u00fcft':'Fuel lines connected, leak-tested',
