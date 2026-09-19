@@ -4733,7 +4733,9 @@
         }
     }
 
+    var _galleryScrollPos = 0;
     function openGallery(group) {
+        _galleryScrollPos = window.scrollY || window.pageYOffset;
         var overlay = document.getElementById('galleryOverlay');
         var title = document.getElementById('galleryTitle');
         var strip = document.querySelector('[data-comp-gallery="' + group + '"]');
@@ -4741,6 +4743,7 @@
         title.textContent = compName;
         overlay.dataset.group = group;
         overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
         renderGallery(group);
     }
 
@@ -4791,6 +4794,8 @@
 
     function closeGallery() {
         document.getElementById('galleryOverlay').classList.remove('show');
+        document.body.style.overflow = '';
+        window.scrollTo(0, _galleryScrollPos);
     }
 
     // ==== DRAG & DROP REORDER (desktop + touch) ====
