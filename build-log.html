@@ -175,6 +175,13 @@
         .photo-gallery { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
         .photo-gallery img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid var(--border); }
         .photo-add-btn { display: inline-block; padding: 0.35rem 0.7rem; font-size: 0.75rem; background: #ebf4ff; border: 1px dashed #bee3f8; border-radius: 6px; cursor: pointer; color: var(--primary-light); margin-top: 0.3rem; }
+        .photo-picker { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .photo-picker-box { background: #fff; border-radius: 12px; padding: 1.2rem; min-width: 240px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: center; }
+        .photo-picker-box h3 { margin: 0 0 0.8rem; font-size: 0.95rem; color: var(--primary); }
+        .photo-picker-btn { display: block; width: 100%; padding: 0.65rem 1rem; margin: 0.4rem 0; font-size: 0.85rem; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; background: #f7fafc; text-align: left; }
+        .photo-picker-btn:hover { background: #ebf4ff; border-color: var(--primary-light); }
+        .photo-picker-btn span { font-size: 1.1rem; margin-right: 0.4rem; }
+        .photo-picker-cancel { margin-top: 0.6rem; padding: 0.4rem 1rem; font-size: 0.78rem; border: none; background: none; color: #999; cursor: pointer; }
 
         /* Progress Bar */
         .progress-bar { background: var(--border); border-radius: 10px; height: 8px; margin-top: 0.4rem; overflow: hidden; }
@@ -4397,8 +4404,35 @@
 
     // ==== PHOTOS ====
     function addPhoto(group) {
+        var overlay = document.createElement('div');
+        overlay.className = 'photo-picker';
+        var box = document.createElement('div');
+        box.className = 'photo-picker-box';
+        var lang = document.documentElement.lang || 'de';
+        box.innerHTML = '<h3>' + (lang === 'de' ? 'Foto hinzuf\u00fcgen' : 'Add Photo') + '</h3>' +
+            '<button class="photo-picker-btn" data-mode="camera"><span>&#128247;</span> ' + (lang === 'de' ? 'Kamera' : 'Camera') + '</button>' +
+            '<button class="photo-picker-btn" data-mode="gallery"><span>&#128444;</span> ' + (lang === 'de' ? 'Aus Galerie w\u00e4hlen' : 'Choose from Gallery') + '</button>' +
+            '<button class="photo-picker-cancel">' + (lang === 'de' ? 'Abbrechen' : 'Cancel') + '</button>';
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay || e.target.classList.contains('photo-picker-cancel')) {
+                overlay.remove();
+            }
+        });
+        box.querySelectorAll('.photo-picker-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var mode = btn.getAttribute('data-mode');
+                overlay.remove();
+                _pickPhoto(group, mode);
+            });
+        });
+    }
+
+    function _pickPhoto(group, mode) {
         var input = document.createElement('input');
-        input.type = 'file'; input.accept = 'image/*'; input.capture = 'environment';
+        input.type = 'file'; input.accept = 'image/*';
+        if (mode === 'camera') input.capture = 'environment';
         input.onchange = function(e) {
             var file = e.target.files[0]; if (!file) return;
             var reader = new FileReader();
@@ -4416,7 +4450,7 @@
                     photos.push({ src: dataUrl, caption: '', time: new Date().toISOString() });
                     localStorage.setItem('buildPhotos_' + group, JSON.stringify(photos));
                     renderPhotos(group);
-                    showToast('Photo saved');
+                    showToast(document.documentElement.lang === 'de' ? 'Foto gespeichert' : 'Photo saved');
                 };
                 img.src = ev.target.result;
             };
