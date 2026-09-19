@@ -3238,10 +3238,10 @@
     function updateSyncBadge() {
         const b = document.getElementById('syncBadge');
         if (isGistConfigured()) {
-            b.innerHTML = '<span class="sync-badge online"><span class="sync-dot online"></span>Cloud Sync</span>';
+            b.innerHTML = '<span class="sync-badge online"><span class="sync-dot online"></span>Cloud Sync v2.4</span>';
             document.getElementById('syncBtn').disabled = false;
         } else {
-            b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Lokal</span>';
+            b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Lokal v2.4</span>';
             document.getElementById('syncBtn').disabled = true;
         }
     }
