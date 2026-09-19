@@ -4585,7 +4585,13 @@
         });
         if (!res.ok) {
             var err = await res.json().catch(function() { return {}; });
-            throw new Error('Upload fehlgeschlagen (' + res.status + '): ' + (err.message || ''));
+            if (res.status === 403 || res.status === 404) {
+                throw new Error('Token braucht "repo"-Berechtigung. Bitte unter github.com/settings/tokens pruefen.');
+            }
+            if (res.status === 422 && err.message && err.message.indexOf('sha') !== -1) {
+                throw new Error('Datei existiert bereits');
+            }
+            throw new Error('(' + res.status + ') ' + (err.message || 'Unbekannter Fehler'));
         }
         var result = await res.json();
         // Return the raw URL for the uploaded file
