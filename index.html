@@ -2667,20 +2667,11 @@
     let photoData = {};
 
     function addPhoto(group) {
-        var overlay = document.createElement('div');
-        overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;';
-        var box = document.createElement('div');
-        box.style.cssText = 'background:#fff;border-radius:12px;padding:1.2rem;min-width:240px;box-shadow:0 8px 32px rgba(0,0,0,0.25);text-align:center;';
+        // Kein capture-Attribut: iOS/Android zeigen nativ "Foto aufnehmen" + "Fotomediathek"
+        var input = document.createElement('input');
+        input.type = 'file'; input.accept = 'image/*';
         var lang = document.documentElement.lang || 'de';
-
-        var camInput = document.createElement('input');
-        camInput.type = 'file'; camInput.accept = 'image/*'; camInput.capture = 'environment';
-        camInput.style.display = 'none';
-        var galInput = document.createElement('input');
-        galInput.type = 'file'; galInput.accept = 'image/*';
-        galInput.style.display = 'none';
-
-        function handleFile(e) {
+        input.onchange = function(e) {
             var file = e.target.files[0]; if (!file) return;
             var reader = new FileReader();
             reader.onload = function(ev) {
@@ -2702,41 +2693,8 @@
                 img.src = ev.target.result;
             };
             reader.readAsDataURL(file);
-        }
-        camInput.onchange = handleFile;
-        galInput.onchange = handleFile;
-
-        var s = 'display:block;width:100%;padding:0.65rem 1rem;margin:0.4rem 0;font-size:0.85rem;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;background:#f7fafc;text-align:left;';
-        box.innerHTML = '<h3 style="margin:0 0 0.8rem;font-size:0.95rem;color:#2c5282;">' + (lang === 'de' ? 'Foto hinzuf\u00fcgen' : 'Add Photo') + '</h3>';
-
-        var camBtn = document.createElement('label');
-        camBtn.style.cssText = s;
-        camBtn.innerHTML = '<span style="font-size:1.1rem;margin-right:0.4rem;">&#128247;</span> ' + (lang === 'de' ? 'Kamera' : 'Camera');
-        camBtn.appendChild(camInput);
-        camBtn.onclick = function() { camInput.click(); };
-
-        var galBtn = document.createElement('label');
-        galBtn.style.cssText = s;
-        galBtn.innerHTML = '<span style="font-size:1.1rem;margin-right:0.4rem;">&#128444;</span> ' + (lang === 'de' ? 'Aus Galerie w\u00e4hlen' : 'Choose from Gallery');
-        galBtn.appendChild(galInput);
-        galBtn.onclick = function() { galInput.click(); };
-
-        var cancelBtn = document.createElement('button');
-        cancelBtn.style.cssText = 'margin-top:0.6rem;padding:0.4rem 1rem;font-size:0.78rem;border:none;background:none;color:#999;cursor:pointer;';
-        cancelBtn.textContent = lang === 'de' ? 'Abbrechen' : 'Cancel';
-        cancelBtn.onclick = function() { overlay.remove(); };
-
-        box.appendChild(camBtn);
-        box.appendChild(galBtn);
-        box.appendChild(cancelBtn);
-        overlay.appendChild(box);
-        document.body.appendChild(overlay);
-
-        camInput.addEventListener('change', function() { overlay.remove(); });
-        galInput.addEventListener('change', function() { overlay.remove(); });
-        overlay.addEventListener('click', function(e) {
-            if (e.target === overlay) overlay.remove();
-        });
+        };
+        input.click();
     }
 
     function renderPhotos(group) {
