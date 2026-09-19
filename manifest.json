@@ -1,0 +1,30 @@
+{
+  "name": "302 BOSS Build Log",
+  "short_name": "BOSS 302",
+  "description": "Engine Build Log & Specs - 302ci BOSS GT40 Build",
+  "start_url": "/gt40-engine/index.html",
+  "scope": "/gt40-engine/",
+  "display": "standalone",
+  "background_color": "#1a365d",
+  "theme_color": "#1a365d",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
