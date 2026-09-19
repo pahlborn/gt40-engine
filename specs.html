@@ -4678,40 +4678,83 @@
                 _reorderPhotos(group, fromIdx, toIdx);
             });
         });
-        // Touch drag
-        var _touchDrag = null;
+
+        // Touch drag: long-press to start, then drag to reorder
+        var _td = null; // touch drag state
+        var _tdTimer = null;
+        var _ghost = null;
+
         cards.forEach(function(card) {
             card.addEventListener('touchstart', function(e) {
                 if (e.touches.length !== 1) return;
-                _touchDrag = { el: card, startX: e.touches[0].clientX, startY: e.touches[0].clientY, idx: parseInt(card.dataset.userIdx), moved: false };
+                var touch = e.touches[0];
+                // Start long-press timer (500ms to enter drag mode)
+                _tdTimer = setTimeout(function() {
+                    _td = { el: card, idx: parseInt(card.dataset.userIdx), startX: touch.clientX, startY: touch.clientY };
+                    card.classList.add('dragging');
+                    // Create floating ghost
+                    _ghost = card.cloneNode(true);
+                    _ghost.style.cssText = 'position:fixed;z-index:1200;pointer-events:none;opacity:0.85;width:' + card.offsetWidth + 'px;transform:scale(1.05);box-shadow:0 8px 24px rgba(0,0,0,0.5);';
+                    _ghost.style.left = (touch.clientX - card.offsetWidth / 2) + 'px';
+                    _ghost.style.top = (touch.clientY - card.offsetHeight / 2) + 'px';
+                    document.body.appendChild(_ghost);
+                    // Haptic feedback if available
+                    if (navigator.vibrate) navigator.vibrate(30);
+                }, 500);
             }, { passive: true });
         });
+
         grid.addEventListener('touchmove', function(e) {
-            if (!_touchDrag) return;
-            var dx = e.touches[0].clientX - _touchDrag.startX;
-            var dy = e.touches[0].clientY - _touchDrag.startY;
-            if (Math.abs(dx) > 10 || Math.abs(dy) > 10) _touchDrag.moved = true;
-            if (!_touchDrag.moved) return;
-            _touchDrag.el.classList.add('dragging');
+            // Cancel long-press if moved before threshold
+            if (_tdTimer && !_td) {
+                var t = e.touches[0];
+                // Allow small movement during long-press wait
+                clearTimeout(_tdTimer); _tdTimer = null;
+                return;
+            }
+            if (!_td) return;
+            e.preventDefault(); // prevent scroll while dragging
+            var touch = e.touches[0];
+            // Move ghost
+            if (_ghost) {
+                _ghost.style.left = (touch.clientX - _ghost.offsetWidth / 2) + 'px';
+                _ghost.style.top = (touch.clientY - _ghost.offsetHeight / 2) + 'px';
+            }
+            // Highlight drop target - hide ghost briefly to find element underneath
+            _ghost.style.display = 'none';
+            var elem = document.elementFromPoint(touch.clientX, touch.clientY);
+            _ghost.style.display = '';
             _clearDragOver(grid);
-            var elem = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
             var overCard = elem ? elem.closest('.gallery-card') : null;
-            if (overCard && overCard !== _touchDrag.el) overCard.classList.add('drag-over');
-        }, { passive: true });
+            if (overCard && overCard !== _td.el && overCard.dataset.isDefault !== '1') {
+                overCard.classList.add('drag-over');
+            }
+        }, { passive: false });
+
         grid.addEventListener('touchend', function(e) {
-            if (!_touchDrag || !_touchDrag.moved) { _touchDrag = null; return; }
-            _touchDrag.el.classList.remove('dragging');
+            clearTimeout(_tdTimer); _tdTimer = null;
+            if (!_td) return;
+            _td.el.classList.remove('dragging');
             _clearDragOver(grid);
+            if (_ghost) { _ghost.remove(); _ghost = null; }
             var last = e.changedTouches[0];
             var elem = document.elementFromPoint(last.clientX, last.clientY);
             var overCard = elem ? elem.closest('.gallery-card') : null;
             if (overCard && overCard.dataset.isDefault !== '1') {
                 var toIdx = parseInt(overCard.dataset.userIdx);
-                if (!isNaN(toIdx) && toIdx !== _touchDrag.idx) {
-                    _reorderPhotos(group, _touchDrag.idx, toIdx);
+                if (!isNaN(toIdx) && toIdx !== _td.idx) {
+                    _reorderPhotos(group, _td.idx, toIdx);
                 }
             }
-            _touchDrag = null;
+            _td = null;
+        });
+
+        grid.addEventListener('touchcancel', function() {
+            clearTimeout(_tdTimer); _tdTimer = null;
+            if (_td) { _td.el.classList.remove('dragging'); }
+            _clearDragOver(grid);
+            if (_ghost) { _ghost.remove(); _ghost = null; }
+            _td = null;
         });
     }
     function _clearDragOver(grid) { grid.querySelectorAll('.drag-over').forEach(function(c) { c.classList.remove('drag-over'); }); }
