@@ -508,8 +508,12 @@
                 <input type="number" id="crGasketBore" data-field="cr_gasket_bore" value="4.160" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
                 <label style="font-weight:600;">Piston-to-Deck (inch) <span style="font-size:0.65rem;color:#666;">M-6009-302: .010&quot; nominal</span></label>
                 <input type="number" id="crDeck" data-field="cr_deck" value="0.010" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
-                <label style="font-weight:600;">Kolbenvolumen (cc, + = Dome, &ndash; = Dish) <span style="font-size:0.65rem;color:#666;">M-6009-302: &ndash;2.3cc (Valve Reliefs)</span></label>
-                <input type="number" id="crPiston" data-field="cr_piston" value="-2.3" step="0.5" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+                <label style="font-weight:600;">Kolbenmulde / Valve Reliefs (cc) <span style="font-size:0.65rem;color:#666;">M-6009-302: 2.3 cc</span></label>
+                <input type="number" id="crPiston" data-field="cr_piston" value="2.3" step="0.5" min="0" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
+            </div>
+            <div class="info-box" style="margin-top:0.5rem;font-size:0.72rem;background:#fffff0;border-color:#fefcbf;">
+                <strong>Kolbenmulde (Dish):</strong> Immer als <strong>positive</strong> Zahl eingeben. Die Mulde/Valve Reliefs vergr&ouml;&szlig;ern den Brennraum und <strong>senken</strong> die Verdichtung.<br>
+                <span style="color:#666;">Andere Rechner (z.B. Summit Racing &bdquo;Effective Dome Volume&ldquo;) verwenden teils umgekehrte Vorzeichen &ndash; dort ggf. positiv eingeben f&uuml;r Dish! Unser Rechner arbeitet mit dem Gasket-Bore (4.160&quot;) und ist daher pr&auml;ziser als vereinfachte Rechner.</span>
             </div>
             <div style="margin-top:0.7rem;padding:0.6rem;background:#fff;border:2px solid #975a16;border-radius:8px;text-align:center;">
                 <span style="font-size:0.75rem;color:#975a16;font-weight:600;">BERECHNETE VERDICHTUNG</span><br>
@@ -1584,8 +1588,10 @@
         if (raw) {
             try {
                 var d = JSON.parse(raw);
-                // Migration: korrigiere falsche Defaults aus aelteren Versionen
-                if (d.cr_piston === '0' || d.cr_piston === 0) d.cr_piston = '-2.3';
+                // Migration: korrigiere falsche Defaults und Vorzeichen-Konvention (Dish jetzt immer positiv)
+                if (d.cr_piston === '0' || d.cr_piston === 0) d.cr_piston = '2.3';
+                var pv = parseFloat(d.cr_piston);
+                if (pv < 0) d.cr_piston = String(Math.abs(pv));
                 if (d.cr_deck === '0' || d.cr_deck === 0 || d.cr_deck === '0.000') d.cr_deck = '0.010';
                 applyData(d);
             } catch(e) {}
@@ -1653,8 +1659,8 @@
         const gasketVol = (Math.PI / 4) * Math.pow(gasketB, 2) * gasketT * 16.387064;
         // Deck clearance volume in cc (piston below deck = positive)
         const deckVol = (Math.PI / 4) * Math.pow(bore, 2) * Math.abs(deckC) * 16.387064 * (deckC >= 0 ? 1 : -1);
-        // Clearance volume = chamber + gasket + deck - piston dome (+ dome adds, - dish subtracts)
-        const clearance = chamber + gasketVol + deckVol - pistonVol;
+        // Clearance volume = chamber + gasket + deck + dish (dish is always positive, adds to clearance)
+        const clearance = chamber + gasketVol + deckVol + pistonVol;
 
         if (clearance <= 0) {
             document.getElementById('crResult').textContent = 'ERR';
@@ -3053,7 +3059,7 @@
         'Ventilhub Einlass (inch)':'Intake Valve Lift (inch)',
         'Ventilhub Auslass (inch)':'Exhaust Valve Lift (inch)',
         'Max. Drehzahl (RPM)':'Max. RPM',
-        'Kolbenvolumen (cc, + = Dome, \u2013 = Dish)':'Piston Volume (cc, + = Dome, \u2013 = Dish)',
+        'Kolbenmulde / Valve Reliefs (cc)':'Piston Dish / Valve Reliefs (cc)',
         'Kolbenring-Sto\u00dfspiel \u2013 Top Ring (Oberer Kompressionsring)':'Ring End Gap \u2013 Top Ring',
         'Kolbenring-Sto\u00dfspiel \u2013 Second Ring (Zweiter Kompressionsring)':'Ring End Gap \u2013 Second Ring',
         'Initial Timing (Grundeinstellung) \u2013 Ziel: 10\u201314\u00b0 BTDC':'Initial Timing \u2013 Target: 10\u201314\u00b0 BTDC',
