@@ -390,8 +390,7 @@
         .gallery-card .gallery-star { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.7); border: none; color: #a0aec0; font-size: 1.3rem; cursor: pointer; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
         .gallery-card .gallery-star.active { color: #ed8936; }
         .gallery-card .gallery-star:hover { color: #ed8936; }
-        .gallery-card .gallery-del { position: absolute; bottom: 6px; right: 6px; background: rgba(200,0,0,0.8); border: none; color: #fff; font-size: 0.75rem; cursor: pointer; border-radius: 6px; padding: 0.3rem 0.6rem; min-height: 32px; }
-        .gallery-card .gallery-del:hover { background: rgba(255,0,0,0.9); }
+        /* delete is in long-press context menu, no visible button */
         .gallery-card .gallery-caption { font-size: 0.68rem; color: #cbd5e0; padding: 0.25rem 0.4rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .gallery-add-card { border: 2px dashed #4a5568; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 105px; cursor: pointer; color: #718096; font-size: 0.85rem; font-weight: 500; }
         .gallery-add-card:hover { border-color: #90cdf4; color: #90cdf4; }
@@ -603,7 +602,7 @@
                         <span class="spec-value"><a href="docs/M-6010-BOSS302.html" target="_blank" style="color:var(--primary-light);">M-6010-BOSS302 (lokal archiviert)</a></span>
                     </div>
                     <div class="comp-photo-strip" data-comp-gallery="block">
-                        <img class="comp-hero" src="boss302-block.jpg" data-default-src="boss302-block.jpg" onclick="openGallery('block')">
+                        <img class="comp-hero" src="img/ford-m6010-boss302.jpg" data-default-src="img/ford-m6010-boss302.jpg" onclick="openGallery('block')">
                         <div class="comp-photo-actions">
                             <button class="comp-photo-btn" onclick="openGallery('block')">&#128444; <span id="block-count">0</span> Fotos</button>
                             <button class="comp-photo-btn" onclick="addPhoto('block')">&#128247; Foto hinzuf&uuml;gen</button>
@@ -828,7 +827,7 @@
                         <span class="spec-label">Hersteller</span>
                         <span class="spec-value"><a href="https://www.airflowresearch.com/165cc-sbf-street-cylinder-head/p602" target="_blank" style="color:var(--primary-light);">AFR Produktseite</a> | <a href="https://www.airflowresearch.com/product/download_file/sbf-heads-3.pdf" target="_blank" style="color:var(--primary-light);">Einbauanleitung (PDF)</a></span>
                     </div>
-                    <div class="comp-photo-strip" data-comp-gallery="heads"><img class="comp-hero" src="img/afr-1399.png" data-default-src="img/afr-1399.png" onclick="openGallery('heads')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('heads')">&#128444; <span id="heads-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('heads')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="heads"><img class="comp-hero" src="img/afr-1399.jpg" data-default-src="img/afr-1399.jpg" onclick="openGallery('heads')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('heads')">&#128444; <span id="heads-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('heads')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -4413,34 +4412,70 @@
     let photoData = {};
 
     // ==== COMPONENT PHOTO GALLERY SYSTEM ====
+
+    // Map group -> default manufacturer image path (from data-default-src)
+    var _defaultImages = {};
+    function _collectDefaults() {
+        document.querySelectorAll('[data-comp-gallery]').forEach(function(strip) {
+            var img = strip.querySelector('.comp-hero[data-default-src]');
+            if (img) _defaultImages[strip.dataset.compGallery] = img.dataset.defaultSrc;
+        });
+    }
+
+    // Get all photos for gallery: manufacturer default (if exists) + user photos
+    function _getAllPhotos(group) {
+        var all = [];
+        if (_defaultImages[group]) {
+            all.push({ data: _defaultImages[group], caption: 'Herstellerbild', time: '', isHero: false, isDefault: true });
+        }
+        var user = photoData[group] || [];
+        for (var i = 0; i < user.length; i++) {
+            var p = Object.assign({}, user[i]);
+            p.isDefault = false;
+            p.userIdx = i;
+            all.push(p);
+        }
+        return all;
+    }
+
+    // Multiple file selection support
     function addPhoto(group) {
         var input = document.createElement('input');
-        input.type = 'file'; input.accept = 'image/*';
+        input.type = 'file'; input.accept = 'image/*'; input.multiple = true;
         input.onchange = function(e) {
-            var file = e.target.files[0]; if (!file) return;
+            var files = e.target.files; if (!files.length) return;
             var lang = document.documentElement.lang || 'de';
-            var reader = new FileReader();
-            reader.onload = function(ev) {
-                var img = new Image();
-                img.onload = function() {
-                    var canvas = document.createElement('canvas');
-                    var maxW = 1200, w = img.width, h = img.height;
-                    if (w > maxW) { h = h * maxW / w; w = maxW; }
-                    canvas.width = w; canvas.height = h;
-                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                    var caption = prompt(lang === 'de' ? 'Bildbeschreibung (optional):' : 'Caption (optional):') || '';
-                    if (!photoData[group]) photoData[group] = [];
-                    photoData[group].push({ data: dataUrl, caption: caption, time: new Date().toLocaleString('de-DE'), isHero: false });
-                    if (photoData[group].length === 1) photoData[group][0].isHero = true;
-                    savePhotoData();
-                    updateCompStrip(group);
-                    if (document.getElementById('galleryOverlay').classList.contains('show')) renderGallery(group);
-                    showToast(lang === 'de' ? 'Foto gespeichert' : 'Photo saved');
-                };
-                img.src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
+            var processed = 0;
+            for (var fi = 0; fi < files.length; fi++) {
+                (function(file) {
+                    var reader = new FileReader();
+                    reader.onload = function(ev) {
+                        var img = new Image();
+                        img.onload = function() {
+                            var canvas = document.createElement('canvas');
+                            var maxW = 1200, w = img.width, h = img.height;
+                            if (w > maxW) { h = h * maxW / w; w = maxW; }
+                            canvas.width = w; canvas.height = h;
+                            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                            var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                            if (!photoData[group]) photoData[group] = [];
+                            photoData[group].push({ data: dataUrl, caption: '', time: new Date().toLocaleString('de-DE'), isHero: false });
+                            if (photoData[group].length === 1) photoData[group][0].isHero = true;
+                            processed++;
+                            if (processed === files.length) {
+                                savePhotoData();
+                                updateCompStrip(group);
+                                if (document.getElementById('galleryOverlay').classList.contains('show')) renderGallery(group);
+                                showToast(processed === 1
+                                    ? (lang === 'de' ? 'Foto gespeichert' : 'Photo saved')
+                                    : processed + (lang === 'de' ? ' Fotos gespeichert' : ' photos saved'));
+                            }
+                        };
+                        img.src = ev.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                })(files[fi]);
+            }
         };
         input.click();
     }
@@ -4448,12 +4483,13 @@
     function updateCompStrip(group) {
         var strip = document.querySelector('[data-comp-gallery="' + group + '"]');
         if (!strip) return;
-        var photos = photoData[group] || [];
+        var userPhotos = photoData[group] || [];
+        var allPhotos = _getAllPhotos(group);
         var countEl = document.getElementById(group + '-count');
-        if (countEl) countEl.textContent = photos.length;
+        if (countEl) countEl.textContent = allPhotos.length;
         var heroImg = strip.querySelector('.comp-hero');
-        // Determine what to show: user-marked hero > first uploaded > default image
-        var hero = photos.find(function(p) { return p.isHero; }) || photos[0];
+        // Hero priority: user-marked hero > first user photo > default image
+        var hero = userPhotos.find(function(p) { return p.isHero; }) || userPhotos[0];
         if (hero && heroImg) {
             heroImg.src = hero.data;
             heroImg.style.display = '';
@@ -4461,7 +4497,6 @@
             heroImg.src = heroImg.dataset.defaultSrc;
             heroImg.style.display = '';
         } else if (!heroImg && hero) {
-            // No img element yet but we have a photo - create one
             var img = document.createElement('img');
             img.className = 'comp-hero';
             img.src = hero.data;
@@ -4484,18 +4519,20 @@
 
     function renderGallery(group) {
         var grid = document.getElementById('galleryGrid');
-        var photos = photoData[group] || [];
+        var allPhotos = _getAllPhotos(group);
         var lang = document.documentElement.lang || 'de';
         var html = '';
-        for (var i = 0; i < photos.length; i++) {
-            var p = photos[i];
-            html += '<div class="gallery-card">' +
-                '<img src="' + p.data + '" onclick="openLightbox(\'' + group + '\',' + i + ')">' +
-                '<button class="gallery-star' + (p.isHero ? ' active' : '') + '" onclick="event.stopPropagation();setHero(\'' + group + '\',' + i + ')" title="' + (lang === 'de' ? 'Als Hauptbild setzen' : 'Set as main image') + '">&#9733;</button>' +
-                '<button class="gallery-del" onclick="event.stopPropagation();deletePhoto(\'' + group + '\',' + i + ')">' + (lang === 'de' ? 'L\u00f6schen' : 'Delete') + '</button>' +
-                '<div class="gallery-caption">' + (p.caption || p.time) + '</div></div>';
+        for (var i = 0; i < allPhotos.length; i++) {
+            var p = allPhotos[i];
+            var isUserHero = !p.isDefault && p.isHero;
+            html += '<div class="gallery-card" data-gallery-idx="' + i + '" data-is-default="' + (p.isDefault ? '1' : '0') + '">' +
+                '<img src="' + p.data + '" onclick="openLightbox(\'' + group + '\',' + i + ')">';
+            if (!p.isDefault) {
+                html += '<button class="gallery-star' + (isUserHero ? ' active' : '') + '" onclick="event.stopPropagation();setHero(\'' + group + '\',' + (p.userIdx) + ')" title="' + (lang === 'de' ? 'Als Hauptbild setzen' : 'Set as main image') + '">&#9733;</button>';
+            }
+            html += '<div class="gallery-caption">' + (p.isDefault ? (lang === 'de' ? 'Herstellerbild' : 'Manufacturer') : (p.caption || p.time)) + '</div></div>';
         }
-        html += '<div class="gallery-add-card" onclick="addPhoto(\'' + group + '\')">+ ' + (lang === 'de' ? 'Foto hinzuf\u00fcgen' : 'Add Photo') + '</div>';
+        html += '<div class="gallery-add-card" onclick="addPhoto(\'' + group + '\')">+ ' + (lang === 'de' ? 'Fotos hinzuf\u00fcgen' : 'Add Photos') + '</div>';
         grid.innerHTML = html;
     }
 
@@ -4503,18 +4540,18 @@
         document.getElementById('galleryOverlay').classList.remove('show');
     }
 
-    function setHero(group, idx) {
+    function setHero(group, userIdx) {
         var photos = photoData[group] || [];
-        for (var i = 0; i < photos.length; i++) photos[i].isHero = (i === idx);
+        for (var i = 0; i < photos.length; i++) photos[i].isHero = (i === userIdx);
         savePhotoData();
         updateCompStrip(group);
         renderGallery(group);
     }
 
-    function deletePhoto(group, idx) {
+    function deletePhoto(group, userIdx) {
         var lang = document.documentElement.lang || 'de';
         if (!confirm(lang === 'de' ? 'Foto wirklich l\u00f6schen?' : 'Delete this photo?')) return;
-        photoData[group].splice(idx, 1);
+        photoData[group].splice(userIdx, 1);
         if (photoData[group].length > 0 && !photoData[group].some(function(p) { return p.isHero; })) {
             photoData[group][0].isHero = true;
         }
@@ -4523,14 +4560,92 @@
         renderGallery(group);
     }
 
-    function openLightbox(group, idx) {
-        var photos = photoData[group] || [];
-        if (!photos[idx]) return;
+    // Long-press context menu for gallery images
+    var _lpTimer = null;
+    var _lpGroup = '';
+    var _lpIdx = -1;
+    document.addEventListener('touchstart', function(e) {
+        var card = e.target.closest('.gallery-card');
+        if (!card) return;
+        var overlay = document.getElementById('galleryOverlay');
+        if (!overlay.classList.contains('show')) return;
+        _lpGroup = overlay.dataset.group;
+        var allPhotos = _getAllPhotos(_lpGroup);
+        var idx = parseInt(card.dataset.galleryIdx);
+        if (isNaN(idx) || idx < 0 || idx >= allPhotos.length) return;
+        _lpIdx = idx;
+        _lpTimer = setTimeout(function() {
+            e.preventDefault();
+            _showPhotoMenu(_lpGroup, _lpIdx, allPhotos[_lpIdx]);
+        }, 600);
+    }, { passive: false });
+    document.addEventListener('touchend', function() { clearTimeout(_lpTimer); });
+    document.addEventListener('touchmove', function() { clearTimeout(_lpTimer); });
+
+    function _showPhotoMenu(group, allIdx, photo) {
+        var lang = document.documentElement.lang || 'de';
+        var existing = document.getElementById('photoCtxMenu');
+        if (existing) existing.remove();
+        var menu = document.createElement('div');
+        menu.id = 'photoCtxMenu';
+        menu.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a202c;border-radius:12px;padding:0.5rem 0;z-index:1100;min-width:220px;box-shadow:0 8px 32px rgba(0,0,0,0.5);';
+        var items = [];
+        if (!photo.isDefault) {
+            items.push({ label: lang === 'de' ? '\u2B50 Als Hauptbild setzen' : '\u2B50 Set as main image', action: function() { setHero(group, photo.userIdx); } });
+            items.push({ label: lang === 'de' ? '\u270F Beschreibung bearbeiten' : '\u270F Edit caption', action: function() {
+                var cap = prompt(lang === 'de' ? 'Bildbeschreibung:' : 'Caption:', photoData[group][photo.userIdx].caption || '');
+                if (cap !== null) { photoData[group][photo.userIdx].caption = cap; savePhotoData(); renderGallery(group); }
+            }});
+            items.push({ label: '---' });
+            items.push({ label: lang === 'de' ? '\uD83D\uDDD1 Foto l\u00f6schen' : '\uD83D\uDDD1 Delete photo', action: function() { deletePhoto(group, photo.userIdx); }, color: '#fc8181' });
+        } else {
+            items.push({ label: lang === 'de' ? 'Herstellerbild (nicht l\u00f6schbar)' : 'Manufacturer image (read-only)', action: null, color: '#718096' });
+        }
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].label === '---') {
+                var sep = document.createElement('div');
+                sep.style.cssText = 'height:1px;background:#2d3748;margin:0.3rem 0;';
+                menu.appendChild(sep);
+            } else {
+                var btn = document.createElement('button');
+                btn.textContent = items[i].label;
+                btn.style.cssText = 'display:block;width:100%;text-align:left;padding:0.7rem 1rem;background:none;border:none;color:' + (items[i].color || '#e2e8f0') + ';font-size:0.88rem;cursor:pointer;';
+                if (items[i].action) {
+                    btn.onclick = (function(fn) { return function() { document.getElementById('photoCtxMenu').remove(); _backdrop.remove(); fn(); }; })(items[i].action);
+                }
+                menu.appendChild(btn);
+            }
+        }
+        var _backdrop = document.createElement('div');
+        _backdrop.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:1099;background:rgba(0,0,0,0.3);';
+        _backdrop.onclick = function() { menu.remove(); _backdrop.remove(); };
+        document.body.appendChild(_backdrop);
+        document.body.appendChild(menu);
+    }
+
+    // Desktop: right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        var card = e.target.closest('.gallery-card');
+        var overlay = document.getElementById('galleryOverlay');
+        if (!card || !overlay.classList.contains('show')) return;
+        e.preventDefault();
+        var group = overlay.dataset.group;
+        var allPhotos = _getAllPhotos(group);
+        var idx = parseInt(card.dataset.galleryIdx);
+        if (isNaN(idx) || idx < 0 || idx >= allPhotos.length) return;
+        _showPhotoMenu(group, idx, allPhotos[idx]);
+    });
+
+    function openLightbox(group, allIdx) {
+        var allPhotos = _getAllPhotos(group);
+        if (!allPhotos[allIdx]) return;
         var lb = document.getElementById('photoLightbox');
-        lb.querySelector('img').src = photos[idx].data;
-        lb.querySelector('.caption').textContent = (photos[idx].caption ? photos[idx].caption + ' \u2014 ' : '') + photos[idx].time;
+        lb.querySelector('img').src = allPhotos[allIdx].data;
+        var cap = allPhotos[allIdx].isDefault ? 'Herstellerbild' : (allPhotos[allIdx].caption || '');
+        var t = allPhotos[allIdx].time || '';
+        lb.querySelector('.caption').textContent = cap + (cap && t ? ' \u2014 ' : '') + t;
         lb.dataset.group = group;
-        lb.dataset.idx = idx;
+        lb.dataset.idx = allIdx;
         lb.classList.add('show');
     }
 
@@ -4538,10 +4653,10 @@
         var lb = document.getElementById('photoLightbox');
         var group = lb.dataset.group;
         var idx = parseInt(lb.dataset.idx);
-        var photos = photoData[group] || [];
+        var allPhotos = _getAllPhotos(group);
         var newIdx = idx + dir;
-        if (newIdx < 0) newIdx = photos.length - 1;
-        if (newIdx >= photos.length) newIdx = 0;
+        if (newIdx < 0) newIdx = allPhotos.length - 1;
+        if (newIdx >= allPhotos.length) newIdx = 0;
         openLightbox(group, newIdx);
     }
     function closeLightbox() { document.getElementById('photoLightbox').classList.remove('show'); }
@@ -4552,22 +4667,19 @@
         }
     }
 
-    // Update all comp-strips on load
+    // Init: collect default images and update strips
     function initCompPhotos() {
+        _collectDefaults();
         document.querySelectorAll('[data-comp-gallery]').forEach(function(strip) {
-            var group = strip.dataset.compGallery;
-            updateCompStrip(group);
+            updateCompStrip(strip.dataset.compGallery);
         });
     }
 
     function loadPhotoData() {
         try {
-            const d = localStorage.getItem('engineBuildPhotos');
+            var d = localStorage.getItem('engineBuildPhotos');
             if (d) photoData = JSON.parse(d);
         } catch(e) {}
-        document.querySelectorAll('[data-photo-group]').forEach(function(g) {
-            renderPhotos(g.dataset.photoGroup);
-        });
     }
 
     // ==== SEARCH (loaded from search.js) ====
