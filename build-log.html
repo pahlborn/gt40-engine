@@ -4456,31 +4456,15 @@
         var box = document.createElement('div');
         box.className = 'photo-picker-box';
         var lang = document.documentElement.lang || 'de';
-        box.innerHTML = '<h3>' + (lang === 'de' ? 'Foto hinzuf\u00fcgen' : 'Add Photo') + '</h3>' +
-            '<button class="photo-picker-btn" data-mode="camera"><span>&#128247;</span> ' + (lang === 'de' ? 'Kamera' : 'Camera') + '</button>' +
-            '<button class="photo-picker-btn" data-mode="gallery"><span>&#128444;</span> ' + (lang === 'de' ? 'Aus Galerie w\u00e4hlen' : 'Choose from Gallery') + '</button>' +
-            '<button class="photo-picker-cancel">' + (lang === 'de' ? 'Abbrechen' : 'Cancel') + '</button>';
-        overlay.appendChild(box);
-        document.body.appendChild(overlay);
-        overlay.addEventListener('click', function(e) {
-            if (e.target === overlay || e.target.classList.contains('photo-picker-cancel')) {
-                overlay.remove();
-            }
-        });
-        box.querySelectorAll('.photo-picker-btn').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var mode = btn.getAttribute('data-mode');
-                overlay.remove();
-                _pickPhoto(group, mode);
-            });
-        });
-    }
+        // Versteckte File-Inputs direkt im Picker erstellen (iOS erfordert User-Gesture-Kette)
+        var camInput = document.createElement('input');
+        camInput.type = 'file'; camInput.accept = 'image/*'; camInput.capture = 'environment';
+        camInput.style.display = 'none';
+        var galInput = document.createElement('input');
+        galInput.type = 'file'; galInput.accept = 'image/*';
+        galInput.style.display = 'none';
 
-    function _pickPhoto(group, mode) {
-        var input = document.createElement('input');
-        input.type = 'file'; input.accept = 'image/*';
-        if (mode === 'camera') input.capture = 'environment';
-        input.onchange = function(e) {
+        function handleFile(e) {
             var file = e.target.files[0]; if (!file) return;
             var reader = new FileReader();
             reader.onload = function(ev) {
@@ -4493,17 +4477,53 @@
                     canvas.height = img.height * scale;
                     canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
                     var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                    var photos = JSON.parse(localStorage.getItem('buildPhotos_' + group) || '[]');
-                    photos.push({ src: dataUrl, caption: '', time: new Date().toISOString() });
-                    localStorage.setItem('buildPhotos_' + group, JSON.stringify(photos));
-                    renderPhotos(group);
-                    showToast(document.documentElement.lang === 'de' ? 'Foto gespeichert' : 'Photo saved');
+                    try {
+                        var photos = JSON.parse(localStorage.getItem('buildPhotos_' + group) || '[]');
+                        photos.push({ src: dataUrl, caption: '', time: new Date().toISOString() });
+                        localStorage.setItem('buildPhotos_' + group, JSON.stringify(photos));
+                        renderPhotos(group);
+                        showToast(lang === 'de' ? 'Foto gespeichert' : 'Photo saved');
+                    } catch(err) {
+                        showToast(lang === 'de' ? 'Speicher voll - Foto zu gross' : 'Storage full - photo too large');
+                    }
                 };
                 img.src = ev.target.result;
             };
             reader.readAsDataURL(file);
-        };
-        input.click();
+        }
+        camInput.onchange = handleFile;
+        galInput.onchange = handleFile;
+
+        box.innerHTML = '<h3>' + (lang === 'de' ? 'Foto hinzuf\u00fcgen' : 'Add Photo') + '</h3>';
+        var camBtn = document.createElement('label');
+        camBtn.className = 'photo-picker-btn';
+        camBtn.innerHTML = '<span>&#128247;</span> ' + (lang === 'de' ? 'Kamera' : 'Camera');
+        camBtn.appendChild(camInput);
+        camBtn.onclick = function() { camInput.click(); };
+
+        var galBtn = document.createElement('label');
+        galBtn.className = 'photo-picker-btn';
+        galBtn.innerHTML = '<span>&#128444;</span> ' + (lang === 'de' ? 'Aus Galerie w\u00e4hlen' : 'Choose from Gallery');
+        galBtn.appendChild(galInput);
+        galBtn.onclick = function() { galInput.click(); };
+
+        var cancelBtn = document.createElement('button');
+        cancelBtn.className = 'photo-picker-cancel';
+        cancelBtn.textContent = lang === 'de' ? 'Abbrechen' : 'Cancel';
+        cancelBtn.onclick = function() { overlay.remove(); };
+
+        box.appendChild(camBtn);
+        box.appendChild(galBtn);
+        box.appendChild(cancelBtn);
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+
+        // Overlay nach Datei-Auswahl schliessen
+        camInput.addEventListener('change', function() { overlay.remove(); });
+        galInput.addEventListener('change', function() { overlay.remove(); });
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) overlay.remove();
+        });
     }
 
     function renderPhotos(group) {

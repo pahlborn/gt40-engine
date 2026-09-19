@@ -2672,58 +2672,71 @@
         var box = document.createElement('div');
         box.style.cssText = 'background:#fff;border-radius:12px;padding:1.2rem;min-width:240px;box-shadow:0 8px 32px rgba(0,0,0,0.25);text-align:center;';
         var lang = document.documentElement.lang || 'de';
-        box.innerHTML = '<h3 style="margin:0 0 0.8rem;font-size:0.95rem;color:#2c5282;">' + (lang === 'de' ? 'Foto hinzuf\u00fcgen' : 'Add Photo') + '</h3>' +
-            '<button data-mode="camera" style="display:block;width:100%;padding:0.65rem 1rem;margin:0.4rem 0;font-size:0.85rem;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;background:#f7fafc;text-align:left;"><span style="font-size:1.1rem;margin-right:0.4rem;">&#128247;</span> ' + (lang === 'de' ? 'Kamera' : 'Camera') + '</button>' +
-            '<button data-mode="gallery" style="display:block;width:100%;padding:0.65rem 1rem;margin:0.4rem 0;font-size:0.85rem;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;background:#f7fafc;text-align:left;"><span style="font-size:1.1rem;margin-right:0.4rem;">&#128444;</span> ' + (lang === 'de' ? 'Aus Galerie w\u00e4hlen' : 'Choose from Gallery') + '</button>' +
-            '<button style="margin-top:0.6rem;padding:0.4rem 1rem;font-size:0.78rem;border:none;background:none;color:#999;cursor:pointer;">' + (lang === 'de' ? 'Abbrechen' : 'Cancel') + '</button>';
-        overlay.appendChild(box);
-        document.body.appendChild(overlay);
-        overlay.addEventListener('click', function(e) {
-            if (e.target === overlay || e.target.style.color === 'rgb(153, 153, 153)') overlay.remove();
-        });
-        box.querySelectorAll('[data-mode]').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var mode = btn.getAttribute('data-mode');
-                overlay.remove();
-                _pickPhoto(group, mode);
-            });
-        });
-    }
 
-    function _pickPhoto(group, mode) {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        if (mode === 'camera') input.capture = 'environment';
-        input.onchange = function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
+        var camInput = document.createElement('input');
+        camInput.type = 'file'; camInput.accept = 'image/*'; camInput.capture = 'environment';
+        camInput.style.display = 'none';
+        var galInput = document.createElement('input');
+        galInput.type = 'file'; galInput.accept = 'image/*';
+        galInput.style.display = 'none';
+
+        function handleFile(e) {
+            var file = e.target.files[0]; if (!file) return;
+            var reader = new FileReader();
             reader.onload = function(ev) {
-                const img = new Image();
+                var img = new Image();
                 img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const maxW = 1200;
-                    let w = img.width, h = img.height;
+                    var canvas = document.createElement('canvas');
+                    var maxW = 1200;
+                    var w = img.width, h = img.height;
                     if (w > maxW) { h = h * maxW / w; w = maxW; }
                     canvas.width = w; canvas.height = h;
                     canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                    const caption = prompt(document.documentElement.lang === 'de' ? 'Bildbeschreibung (optional):' : 'Caption (optional):') || '';
+                    var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    var caption = prompt(lang === 'de' ? 'Bildbeschreibung (optional):' : 'Caption (optional):') || '';
                     if (!photoData[group]) photoData[group] = [];
-                    photoData[group].push({
-                        data: dataUrl,
-                        caption: caption,
-                        time: new Date().toLocaleString('de-DE')
-                    });
+                    photoData[group].push({ data: dataUrl, caption: caption, time: new Date().toLocaleString('de-DE') });
                     renderPhotos(group);
                     savePhotoData();
                 };
                 img.src = ev.target.result;
             };
             reader.readAsDataURL(file);
-        };
-        input.click();
+        }
+        camInput.onchange = handleFile;
+        galInput.onchange = handleFile;
+
+        var s = 'display:block;width:100%;padding:0.65rem 1rem;margin:0.4rem 0;font-size:0.85rem;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;background:#f7fafc;text-align:left;';
+        box.innerHTML = '<h3 style="margin:0 0 0.8rem;font-size:0.95rem;color:#2c5282;">' + (lang === 'de' ? 'Foto hinzuf\u00fcgen' : 'Add Photo') + '</h3>';
+
+        var camBtn = document.createElement('label');
+        camBtn.style.cssText = s;
+        camBtn.innerHTML = '<span style="font-size:1.1rem;margin-right:0.4rem;">&#128247;</span> ' + (lang === 'de' ? 'Kamera' : 'Camera');
+        camBtn.appendChild(camInput);
+        camBtn.onclick = function() { camInput.click(); };
+
+        var galBtn = document.createElement('label');
+        galBtn.style.cssText = s;
+        galBtn.innerHTML = '<span style="font-size:1.1rem;margin-right:0.4rem;">&#128444;</span> ' + (lang === 'de' ? 'Aus Galerie w\u00e4hlen' : 'Choose from Gallery');
+        galBtn.appendChild(galInput);
+        galBtn.onclick = function() { galInput.click(); };
+
+        var cancelBtn = document.createElement('button');
+        cancelBtn.style.cssText = 'margin-top:0.6rem;padding:0.4rem 1rem;font-size:0.78rem;border:none;background:none;color:#999;cursor:pointer;';
+        cancelBtn.textContent = lang === 'de' ? 'Abbrechen' : 'Cancel';
+        cancelBtn.onclick = function() { overlay.remove(); };
+
+        box.appendChild(camBtn);
+        box.appendChild(galBtn);
+        box.appendChild(cancelBtn);
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+
+        camInput.addEventListener('change', function() { overlay.remove(); });
+        galInput.addEventListener('change', function() { overlay.remove(); });
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) overlay.remove();
+        });
     }
 
     function renderPhotos(group) {
