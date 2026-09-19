@@ -5278,7 +5278,15 @@
 
     // ==== SERVICE WORKER ====
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(function() {});
+        navigator.serviceWorker.register('sw.js').then(function(reg) {
+            setInterval(function() { reg.update(); }, 60000);
+            reg.addEventListener('updatefound', function() {
+                var newSW = reg.installing;
+                if (newSW) newSW.addEventListener('statechange', function() {
+                    if (newSW.state === 'activated') location.reload();
+                });
+            });
+        }).catch(function() {});
     }
 </script>
 

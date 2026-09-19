@@ -3392,7 +3392,18 @@
 
     // ==== SERVICE WORKER ====
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(function() {});
+        navigator.serviceWorker.register('sw.js').then(function(reg) {
+            setInterval(function() { reg.update(); }, 60000);
+            reg.addEventListener('updatefound', function() {
+                var newSW = reg.installing;
+                if (newSW) newSW.addEventListener('statechange', function() {
+                    if (newSW.state === 'activated') {
+                        showToast('Update verfuegbar - Seite wird neu geladen...');
+                        setTimeout(function() { location.reload(); }, 1500);
+                    }
+                });
+            });
+        }).catch(function() {});
     }
 </script>
 

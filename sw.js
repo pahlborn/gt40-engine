@@ -1,4 +1,4 @@
-var CACHE_NAME = 'boss302-v1';
+var CACHE_NAME = 'boss302-v24';
 var urlsToCache = [
   '/gt40-engine/',
   '/gt40-engine/index.html',
@@ -9,15 +9,16 @@ var urlsToCache = [
 ];
 
 self.addEventListener('install', function(event) {
+  self.skipWaiting(); // Activate immediately, don't wait
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
       return cache.addAll(urlsToCache);
     })
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', function(event) {
+  // Delete ALL old caches
   event.waitUntil(
     caches.keys().then(function(names) {
       return Promise.all(
@@ -26,13 +27,14 @@ self.addEventListener('activate', function(event) {
       );
     })
   );
-  self.clients.claim();
+  self.clients.claim(); // Take control of all pages immediately
 });
 
 self.addEventListener('fetch', function(event) {
+  // Network-first: always try network, fall back to cache for offline
   event.respondWith(
     fetch(event.request).then(function(response) {
-      if (response && response.status === 200 && response.type === 'basic') {
+      if (response && response.status === 200) {
         var clone = response.clone();
         caches.open(CACHE_NAME).then(function(cache) {
           cache.put(event.request, clone);
