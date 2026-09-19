@@ -372,7 +372,7 @@
 
         /* ---- Component Photo System ---- */
         .comp-photo-strip { margin: 0.6rem 0; text-align: center; }
-        .comp-hero { max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer; }
+        .comp-hero { max-width: 100%; max-height: 280px; object-fit: contain; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer; }
         .comp-hero:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
         .comp-hero-caption { font-size: 0.7rem; color: var(--text-light); margin-top: 0.25rem; }
         .comp-photo-actions { display: flex; justify-content: center; gap: 0.6rem; margin-top: 0.5rem; }
@@ -4473,7 +4473,6 @@
                             var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
                             if (!photoData[group]) photoData[group] = [];
                             photoData[group].push({ data: dataUrl, caption: '', time: new Date().toLocaleString('de-DE'), isHero: false });
-                            if (photoData[group].length === 1) photoData[group][0].isHero = true;
                             processed++;
                             if (processed === files.length) {
                                 savePhotoData();
@@ -4501,18 +4500,27 @@
         var countEl = document.getElementById(group + '-count');
         if (countEl) countEl.textContent = allPhotos.length;
         var heroImg = strip.querySelector('.comp-hero');
-        // Hero priority: user-marked hero > first user photo > default image
-        var hero = userPhotos.find(function(p) { return p.isHero; }) || userPhotos[0];
-        if (hero && heroImg) {
-            heroImg.src = hero.data;
-            heroImg.style.display = '';
+        var heroInfo = _getHeroInfo(group);
+        var defaults = _defaultImages[group] || [];
+        var heroSrc = null;
+        if (heroInfo.type === 'user' && userPhotos[heroInfo.idx]) {
+            heroSrc = userPhotos[heroInfo.idx].data;
+        } else if (heroInfo.type === 'default' && defaults[heroInfo.idx]) {
+            heroSrc = defaults[heroInfo.idx];
+        } else if (defaults.length > 0) {
+            heroSrc = defaults[0];
         } else if (heroImg && heroImg.dataset.defaultSrc) {
-            heroImg.src = heroImg.dataset.defaultSrc;
+            heroSrc = heroImg.dataset.defaultSrc;
+        } else if (userPhotos[0]) {
+            heroSrc = userPhotos[0].data;
+        }
+        if (heroSrc && heroImg) {
+            heroImg.src = heroSrc;
             heroImg.style.display = '';
-        } else if (!heroImg && hero) {
+        } else if (!heroImg && heroSrc) {
             var img = document.createElement('img');
             img.className = 'comp-hero';
-            img.src = hero.data;
+            img.src = heroSrc;
             img.onclick = function() { openGallery(group); };
             var actions = strip.querySelector('.comp-photo-actions');
             if (actions) strip.insertBefore(img, actions);
@@ -4535,16 +4543,24 @@
         var allPhotos = _getAllPhotos(group);
         var lang = document.documentElement.lang || 'de';
         var html = '';
+        // Determine which photo is currently the hero
+        var heroInfo = _getHeroInfo(group);
         for (var i = 0; i < allPhotos.length; i++) {
             var p = allPhotos[i];
-            var isUserHero = !p.isDefault && p.isHero;
+            var isActive = false;
+            if (p.isDefault && heroInfo.type === 'default' && p.defaultIdx === heroInfo.idx) isActive = true;
+            if (!p.isDefault && heroInfo.type === 'user' && p.userIdx === heroInfo.idx) isActive = true;
+            if (heroInfo.type === 'none' && p.isDefault && p.defaultIdx === 0) isActive = true;
             // User photos are draggable, defaults are not
             html += '<div class="gallery-card" data-gallery-idx="' + i + '" data-is-default="' + (p.isDefault ? '1' : '0') + '"' +
-                (!p.isDefault ? ' draggable="true" data-user-idx="' + p.userIdx + '"' : '') + '>' +
+                (!p.isDefault ? ' draggable="true" data-user-idx="' + p.userIdx + '"' : '') +
+                (p.isDefault ? ' data-default-idx="' + p.defaultIdx + '"' : '') + '>' +
                 '<img src="' + p.data + '" onclick="openLightbox(\'' + group + '\',' + i + ')" draggable="false">';
-            if (!p.isDefault) {
-                html += '<button class="gallery-star' + (isUserHero ? ' active' : '') + '" onclick="event.stopPropagation();setHero(\'' + group + '\',' + (p.userIdx) + ')" title="' + (lang === 'de' ? 'Als Hauptbild setzen' : 'Set as main image') + '">&#9733;</button>';
-            }
+            // Star button for ALL photos (defaults + user)
+            var starClick = p.isDefault
+                ? 'setHeroDefault(\'' + group + '\',' + p.defaultIdx + ')'
+                : 'setHero(\'' + group + '\',' + p.userIdx + ')';
+            html += '<button class="gallery-star' + (isActive ? ' active' : '') + '" onclick="event.stopPropagation();' + starClick + '" title="' + (lang === 'de' ? 'Als Hauptbild setzen' : 'Set as main image') + '">&#9733;</button>';
             html += '<div class="gallery-caption">' + (p.isDefault ? (lang === 'de' ? 'Herstellerbild' : 'Manufacturer') : (p.caption || p.time)) + '</div></div>';
         }
         html += '<div class="gallery-add-card" onclick="addPhoto(\'' + group + '\')">+ ' + (lang === 'de' ? 'Fotos hinzuf\u00fcgen' : 'Add Photos') + '</div>';
@@ -4630,9 +4646,42 @@
         renderGallery(group);
     }
 
-    function setHero(group, userIdx) {
+    // Hero selection stored per group in localStorage as heroSelection = {group: {type:'default',idx:0} or {type:'user',idx:2}}
+    var _heroSelection = {};
+    function _loadHeroSelection() {
+        try { var d = localStorage.getItem('engineBuildHeroSelection'); if (d) _heroSelection = JSON.parse(d); } catch(e) {}
+    }
+    function _saveHeroSelection() {
+        try { localStorage.setItem('engineBuildHeroSelection', JSON.stringify(_heroSelection)); } catch(e) {}
+    }
+    function _getHeroInfo(group) {
+        if (_heroSelection[group]) return _heroSelection[group];
+        // Legacy: check if any user photo has isHero=true
         var photos = photoData[group] || [];
-        for (var i = 0; i < photos.length; i++) photos[i].isHero = (i === userIdx);
+        for (var i = 0; i < photos.length; i++) {
+            if (photos[i].isHero) return { type: 'user', idx: i };
+        }
+        // Default: first default image
+        return { type: 'none', idx: 0 };
+    }
+
+    function setHero(group, userIdx) {
+        // Clear old isHero flags
+        var photos = photoData[group] || [];
+        for (var i = 0; i < photos.length; i++) photos[i].isHero = false;
+        _heroSelection[group] = { type: 'user', idx: userIdx };
+        _saveHeroSelection();
+        savePhotoData();
+        updateCompStrip(group);
+        renderGallery(group);
+    }
+
+    function setHeroDefault(group, defaultIdx) {
+        // Clear user isHero flags
+        var photos = photoData[group] || [];
+        for (var i = 0; i < photos.length; i++) photos[i].isHero = false;
+        _heroSelection[group] = { type: 'default', idx: defaultIdx };
+        _saveHeroSelection();
         savePhotoData();
         updateCompStrip(group);
         renderGallery(group);
@@ -4642,8 +4691,14 @@
         var lang = document.documentElement.lang || 'de';
         if (!confirm(lang === 'de' ? 'Foto wirklich l\u00f6schen?' : 'Delete this photo?')) return;
         photoData[group].splice(userIdx, 1);
-        if (photoData[group].length > 0 && !photoData[group].some(function(p) { return p.isHero; })) {
-            photoData[group][0].isHero = true;
+        // If the deleted photo was the hero, reset to default
+        var hi = _heroSelection[group];
+        if (hi && hi.type === 'user' && hi.idx === userIdx) {
+            delete _heroSelection[group];
+            _saveHeroSelection();
+        } else if (hi && hi.type === 'user' && hi.idx > userIdx) {
+            _heroSelection[group].idx--;
+            _saveHeroSelection();
         }
         savePhotoData();
         updateCompStrip(group);
@@ -4680,7 +4735,9 @@
         menu.id = 'photoCtxMenu';
         menu.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a202c;border-radius:12px;padding:0.5rem 0;z-index:1100;min-width:220px;box-shadow:0 8px 32px rgba(0,0,0,0.5);';
         var items = [];
-        if (!photo.isDefault) {
+        if (photo.isDefault) {
+            items.push({ label: lang === 'de' ? '\u2B50 Als Hauptbild setzen' : '\u2B50 Set as main image', action: function() { setHeroDefault(group, photo.defaultIdx); } });
+        } else {
             items.push({ label: lang === 'de' ? '\u2B50 Als Hauptbild setzen' : '\u2B50 Set as main image', action: function() { setHero(group, photo.userIdx); } });
             items.push({ label: lang === 'de' ? '\u270F Beschreibung bearbeiten' : '\u270F Edit caption', action: function() {
                 var cap = prompt(lang === 'de' ? 'Bildbeschreibung:' : 'Caption:', photoData[group][photo.userIdx].caption || '');
@@ -4688,8 +4745,6 @@
             }});
             items.push({ label: '---' });
             items.push({ label: lang === 'de' ? '\uD83D\uDDD1 Foto l\u00f6schen' : '\uD83D\uDDD1 Delete photo', action: function() { deletePhoto(group, photo.userIdx); }, color: '#fc8181' });
-        } else {
-            items.push({ label: lang === 'de' ? 'Herstellerbild (nicht l\u00f6schbar)' : 'Manufacturer image (read-only)', action: null, color: '#718096' });
         }
         for (var i = 0; i < items.length; i++) {
             if (items[i].label === '---') {
@@ -4760,6 +4815,7 @@
     // Init: collect default images and update strips
     function initCompPhotos() {
         _collectDefaults();
+        _loadHeroSelection();
         document.querySelectorAll('[data-comp-gallery]').forEach(function(strip) {
             updateCompStrip(strip.dataset.compGallery);
         });
