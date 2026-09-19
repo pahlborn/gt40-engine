@@ -391,6 +391,8 @@
         .gallery-card .gallery-star.active { color: #ed8936; }
         .gallery-card .gallery-star:hover { color: #ed8936; }
         /* delete is in long-press context menu, no visible button */
+        .gallery-card.dragging { opacity: 0.4; transform: scale(0.95); }
+        .gallery-card.drag-over { outline: 2px solid #ed8936; outline-offset: 2px; }
         .gallery-card .gallery-caption { font-size: 0.68rem; color: #cbd5e0; padding: 0.25rem 0.4rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .gallery-add-card { border: 2px dashed #4a5568; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 105px; cursor: pointer; color: #718096; font-size: 0.85rem; font-weight: 500; }
         .gallery-add-card:hover { border-color: #90cdf4; color: #90cdf4; }
@@ -601,7 +603,7 @@
                         <span class="spec-label">Archivierte Kopie</span>
                         <span class="spec-value"><a href="docs/M-6010-BOSS302.html" target="_blank" style="color:var(--primary-light);">M-6010-BOSS302 (lokal archiviert)</a></span>
                     </div>
-                    <div class="comp-photo-strip" data-comp-gallery="block">
+                    <div class="comp-photo-strip" data-comp-gallery="block" data-extra-images="boss302-block.jpg">
                         <img class="comp-hero" src="img/ford-m6010-boss302.jpg" data-default-src="img/ford-m6010-boss302.jpg" onclick="openGallery('block')">
                         <div class="comp-photo-actions">
                             <button class="comp-photo-btn" onclick="openGallery('block')">&#128444; <span id="block-count">0</span> Fotos</button>
@@ -635,7 +637,7 @@
                         <span class="spec-label">Installation Tips</span>
                         <span class="spec-value"><a href="EngineInstallation_TuningTips.pdf" target="_blank" style="color:var(--primary-light);">Engine Installation &amp; Tuning Tips (PDF, archiviert)</a></span>
                     </div>
-                    <div class="comp-photo-strip" data-comp-gallery="shortblock"><img class="comp-hero" src="img/ford-m6009-302.jpg" data-default-src="img/ford-m6009-302.jpg" onclick="openGallery('shortblock')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('shortblock')">&#128444; <span id="shortblock-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('shortblock')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="shortblock" data-extra-images="m6009-302.jpg"><img class="comp-hero" src="img/ford-m6009-302.jpg" data-default-src="img/ford-m6009-302.jpg" onclick="openGallery('shortblock')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('shortblock')">&#128444; <span id="shortblock-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('shortblock')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -4413,20 +4415,31 @@
 
     // ==== COMPONENT PHOTO GALLERY SYSTEM ====
 
-    // Map group -> default manufacturer image path (from data-default-src)
+    // Map group -> array of default manufacturer images
     var _defaultImages = {};
     function _collectDefaults() {
         document.querySelectorAll('[data-comp-gallery]').forEach(function(strip) {
+            var gid = strip.dataset.compGallery;
+            _defaultImages[gid] = [];
+            // Primary default from comp-hero
             var img = strip.querySelector('.comp-hero[data-default-src]');
-            if (img) _defaultImages[strip.dataset.compGallery] = img.dataset.defaultSrc;
+            if (img) _defaultImages[gid].push(img.dataset.defaultSrc);
+            // Additional defaults from data-extra-images attribute
+            var extra = strip.dataset.extraImages;
+            if (extra) {
+                extra.split(',').forEach(function(src) {
+                    if (src.trim()) _defaultImages[gid].push(src.trim());
+                });
+            }
         });
     }
 
-    // Get all photos for gallery: manufacturer default (if exists) + user photos
+    // Get all photos for gallery: manufacturer defaults + user photos
     function _getAllPhotos(group) {
         var all = [];
-        if (_defaultImages[group]) {
-            all.push({ data: _defaultImages[group], caption: 'Herstellerbild', time: '', isHero: false, isDefault: true });
+        var defaults = _defaultImages[group] || [];
+        for (var d = 0; d < defaults.length; d++) {
+            all.push({ data: defaults[d], caption: 'Herstellerbild', time: '', isHero: false, isDefault: true, defaultIdx: d });
         }
         var user = photoData[group] || [];
         for (var i = 0; i < user.length; i++) {
@@ -4525,8 +4538,10 @@
         for (var i = 0; i < allPhotos.length; i++) {
             var p = allPhotos[i];
             var isUserHero = !p.isDefault && p.isHero;
-            html += '<div class="gallery-card" data-gallery-idx="' + i + '" data-is-default="' + (p.isDefault ? '1' : '0') + '">' +
-                '<img src="' + p.data + '" onclick="openLightbox(\'' + group + '\',' + i + ')">';
+            // User photos are draggable, defaults are not
+            html += '<div class="gallery-card" data-gallery-idx="' + i + '" data-is-default="' + (p.isDefault ? '1' : '0') + '"' +
+                (!p.isDefault ? ' draggable="true" data-user-idx="' + p.userIdx + '"' : '') + '>' +
+                '<img src="' + p.data + '" onclick="openLightbox(\'' + group + '\',' + i + ')" draggable="false">';
             if (!p.isDefault) {
                 html += '<button class="gallery-star' + (isUserHero ? ' active' : '') + '" onclick="event.stopPropagation();setHero(\'' + group + '\',' + (p.userIdx) + ')" title="' + (lang === 'de' ? 'Als Hauptbild setzen' : 'Set as main image') + '">&#9733;</button>';
             }
@@ -4534,10 +4549,85 @@
         }
         html += '<div class="gallery-add-card" onclick="addPhoto(\'' + group + '\')">+ ' + (lang === 'de' ? 'Fotos hinzuf\u00fcgen' : 'Add Photos') + '</div>';
         grid.innerHTML = html;
+        _initDragDrop(group, grid);
     }
 
     function closeGallery() {
         document.getElementById('galleryOverlay').classList.remove('show');
+    }
+
+    // ==== DRAG & DROP REORDER (desktop + touch) ====
+    function _initDragDrop(group, grid) {
+        var cards = grid.querySelectorAll('.gallery-card[draggable="true"]');
+        // Desktop drag events
+        cards.forEach(function(card) {
+            card.addEventListener('dragstart', function(e) {
+                card.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', card.dataset.userIdx);
+            });
+            card.addEventListener('dragend', function() { card.classList.remove('dragging'); _clearDragOver(grid); });
+        });
+        grid.querySelectorAll('.gallery-card').forEach(function(card) {
+            card.addEventListener('dragover', function(e) {
+                e.preventDefault(); e.dataTransfer.dropEffect = 'move';
+                _clearDragOver(grid); card.classList.add('drag-over');
+            });
+            card.addEventListener('drop', function(e) {
+                e.preventDefault(); _clearDragOver(grid);
+                var fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
+                var toCard = card.closest('.gallery-card');
+                if (!toCard || toCard.dataset.isDefault === '1') return;
+                var toIdx = parseInt(toCard.dataset.userIdx);
+                if (isNaN(fromIdx) || isNaN(toIdx) || fromIdx === toIdx) return;
+                _reorderPhotos(group, fromIdx, toIdx);
+            });
+        });
+        // Touch drag
+        var _touchDrag = null;
+        cards.forEach(function(card) {
+            card.addEventListener('touchstart', function(e) {
+                if (e.touches.length !== 1) return;
+                _touchDrag = { el: card, startX: e.touches[0].clientX, startY: e.touches[0].clientY, idx: parseInt(card.dataset.userIdx), moved: false };
+            }, { passive: true });
+        });
+        grid.addEventListener('touchmove', function(e) {
+            if (!_touchDrag) return;
+            var dx = e.touches[0].clientX - _touchDrag.startX;
+            var dy = e.touches[0].clientY - _touchDrag.startY;
+            if (Math.abs(dx) > 10 || Math.abs(dy) > 10) _touchDrag.moved = true;
+            if (!_touchDrag.moved) return;
+            _touchDrag.el.classList.add('dragging');
+            _clearDragOver(grid);
+            var elem = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+            var overCard = elem ? elem.closest('.gallery-card') : null;
+            if (overCard && overCard !== _touchDrag.el) overCard.classList.add('drag-over');
+        }, { passive: true });
+        grid.addEventListener('touchend', function(e) {
+            if (!_touchDrag || !_touchDrag.moved) { _touchDrag = null; return; }
+            _touchDrag.el.classList.remove('dragging');
+            _clearDragOver(grid);
+            var last = e.changedTouches[0];
+            var elem = document.elementFromPoint(last.clientX, last.clientY);
+            var overCard = elem ? elem.closest('.gallery-card') : null;
+            if (overCard && overCard.dataset.isDefault !== '1') {
+                var toIdx = parseInt(overCard.dataset.userIdx);
+                if (!isNaN(toIdx) && toIdx !== _touchDrag.idx) {
+                    _reorderPhotos(group, _touchDrag.idx, toIdx);
+                }
+            }
+            _touchDrag = null;
+        });
+    }
+    function _clearDragOver(grid) { grid.querySelectorAll('.drag-over').forEach(function(c) { c.classList.remove('drag-over'); }); }
+    function _reorderPhotos(group, fromIdx, toIdx) {
+        var photos = photoData[group];
+        if (!photos || fromIdx < 0 || fromIdx >= photos.length || toIdx < 0 || toIdx >= photos.length) return;
+        var item = photos.splice(fromIdx, 1)[0];
+        photos.splice(toIdx, 0, item);
+        savePhotoData();
+        updateCompStrip(group);
+        renderGallery(group);
     }
 
     function setHero(group, userIdx) {
