@@ -4471,6 +4471,53 @@
         return all;
     }
 
+    // Extract EXIF DateTimeOriginal from JPEG ArrayBuffer
+    function _getExifDate(buf) {
+        try {
+            var view = new DataView(buf);
+            if (view.getUint16(0) !== 0xFFD8) return null; // not JPEG
+            var off = 2;
+            while (off < view.byteLength - 1) {
+                var marker = view.getUint16(off);
+                if (marker === 0xFFE1) { // APP1 = EXIF
+                    var len = view.getUint16(off + 2);
+                    // Check "Exif\0\0"
+                    if (view.getUint32(off + 4) !== 0x45786966) return null;
+                    var tiffOff = off + 10;
+                    var le = view.getUint16(tiffOff) === 0x4949; // little-endian?
+                    var g16 = function(o) { return le ? view.getUint16(o, true) : view.getUint16(o); };
+                    var g32 = function(o) { return le ? view.getUint32(o, true) : view.getUint32(o); };
+                    // IFD0
+                    var ifdOff = tiffOff + g32(tiffOff + 4);
+                    var cnt = g16(ifdOff); var exifIfdOff = 0;
+                    for (var i = 0; i < cnt; i++) {
+                        var tag = g16(ifdOff + 2 + i * 12);
+                        if (tag === 0x8769) { exifIfdOff = tiffOff + g32(ifdOff + 2 + i * 12 + 8); break; }
+                    }
+                    if (!exifIfdOff) return null;
+                    // Exif sub-IFD: find 0x9003 (DateTimeOriginal) or 0x9004 (DateTimeDigitized)
+                    cnt = g16(exifIfdOff);
+                    for (var i = 0; i < cnt; i++) {
+                        var tag = g16(exifIfdOff + 2 + i * 12);
+                        if (tag === 0x9003 || tag === 0x9004) {
+                            var strOff = tiffOff + g32(exifIfdOff + 2 + i * 12 + 8);
+                            var s = '';
+                            for (var c = 0; c < 19; c++) s += String.fromCharCode(view.getUint8(strOff + c));
+                            // "2024:03:15 14:30:22" -> "15.03.2024, 14:30:22"
+                            var m = s.match(/(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})/);
+                            if (m) return m[3] + '.' + m[2] + '.' + m[1] + ', ' + m[4] + ':' + m[5] + ':' + m[6];
+                            return null;
+                        }
+                    }
+                    return null;
+                }
+                if ((marker & 0xFF00) !== 0xFF00) return null;
+                off += 2 + view.getUint16(off + 2);
+            }
+        } catch(e) {}
+        return null;
+    }
+
     // Multiple file selection support
     function addPhoto(group) {
         var input = document.createElement('input');
@@ -4481,6 +4528,16 @@
             var processed = 0;
             for (var fi = 0; fi < files.length; fi++) {
                 (function(file) {
+                    // Read file twice: once as ArrayBuffer for EXIF, once as DataURL for display
+                    var exifReader = new FileReader();
+                    exifReader.onload = function(exifEv) {
+                        var exifDate = _getExifDate(exifEv.target.result);
+                        var photoTime = exifDate || new Date().toLocaleString('de-DE');
+                        // Also check file.lastModified as fallback
+                        if (!exifDate && file.lastModified) {
+                            var d = new Date(file.lastModified);
+                            if (d.getFullYear() > 2000) photoTime = d.toLocaleString('de-DE');
+                        }
                     var reader = new FileReader();
                     reader.onload = function(ev) {
                         var img = new Image();
@@ -4492,7 +4549,7 @@
                             canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                             var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
                             if (!photoData[group]) photoData[group] = [];
-                            photoData[group].push({ data: dataUrl, caption: '', time: new Date().toLocaleString('de-DE'), isHero: false });
+                            photoData[group].push({ data: dataUrl, caption: '', time: photoTime, isHero: false });
                             processed++;
                             if (processed === files.length) {
                                 savePhotoData();
@@ -4506,6 +4563,8 @@
                         img.src = ev.target.result;
                     };
                     reader.readAsDataURL(file);
+                    };
+                    exifReader.readAsArrayBuffer(file);
                 })(files[fi]);
             }
         };
