@@ -3368,6 +3368,12 @@
         if (isGistConfigured()) await loadFromGist();
         isLoading = false; updateSaveStatus();
     }
+    // Auto-Sync bei Fokus (Tab-Wechsel, App-Wechsel auf Mobilgeraeten)
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden && isGistConfigured() && !isLoading) {
+            loadFromGist().then(function(ok) { if (ok) updateSaveStatus(); });
+        }
+    });
     let autoSaveTimer = null;
     // ==== COMPRESSION RATIO CALCULATOR ====
     function calcCR() {

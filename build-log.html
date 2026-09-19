@@ -4371,6 +4371,38 @@
             }).catch(function() { isLoading = false; });
         } else { isLoading = false; updateSaveStatus(); }
     }
+    function _syncFromGist() {
+        if (!isGistConfigured() || isLoading) return;
+        isLoading = true;
+        fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
+            headers: { 'Authorization': 'Bearer ' + getGistConfig().token }
+        }).then(function(r) { return r.json(); }).then(function(gist) {
+            var file = gist.files && gist.files[GIST_FILENAME];
+            if (file) {
+                var cloudData = JSON.parse(file.content);
+                var localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+                var cloudTime = new Date(cloudData._savedAt || 0).getTime();
+                var localTime = new Date(localData._savedAt || 0).getTime();
+                var merged = {}, allKeys = Object.keys(localData).concat(Object.keys(cloudData)), seen = {};
+                var winner = cloudTime > localTime ? cloudData : localData;
+                var loser = cloudTime > localTime ? localData : cloudData;
+                for (var ki = 0; ki < allKeys.length; ki++) {
+                    var k = allKeys[ki]; if (seen[k]) continue; seen[k] = 1;
+                    var wVal = winner[k], lVal = loser[k];
+                    if (wVal !== undefined && wVal !== '' && wVal !== null) { merged[k] = wVal; }
+                    else if (lVal !== undefined && lVal !== '' && lVal !== null) { merged[k] = lVal; }
+                    else { merged[k] = wVal !== undefined ? wVal : lVal; }
+                }
+                applyData(merged);
+                localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+            }
+            isLoading = false; updateSaveStatus();
+        }).catch(function() { isLoading = false; });
+    }
+    // Auto-Sync bei Fokus (Tab-Wechsel, App-Wechsel auf Mobilgeraeten)
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden && isGistConfigured()) _syncFromGist();
+    });
 
     function autoSave() {
         if (isLoading) return;
