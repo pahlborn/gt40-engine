@@ -3250,10 +3250,10 @@
     function updateSyncBadge() {
         const b = document.getElementById('syncBadge');
         if (isGistConfigured()) {
-            b.innerHTML = '<span class="sync-badge online"><span class="sync-dot online"></span>Cloud Sync v2.4</span>';
+            b.innerHTML = '<span class="sync-badge online"><span class="sync-dot online"></span>Cloud Sync v2.5</span>';
             document.getElementById('syncBtn').disabled = false;
         } else {
-            b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Lokal v2.4</span>';
+            b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Lokal v2.5</span>';
             document.getElementById('syncBtn').disabled = true;
         }
     }
@@ -3309,33 +3309,41 @@
             localStorage.setItem('engineBuildLog', JSON.stringify(merged));
             // Load photos from gist
             var photosFile = gist.files[GIST_PHOTOS_FILE];
-            if (photosFile && photosFile.content) {
+            console.log('[Sync] Foto-Datei im Gist:', photosFile ? 'vorhanden (' + (photosFile.content || '').length + ' Bytes)' : 'FEHLT');
+            if (photosFile) {
                 try {
-                    var cloudPhotos = JSON.parse(photosFile.content);
-                    if (cloudPhotos.photos) {
-                        // Merge: cloud photos fill in groups that are missing locally
-                        var localPhotos = photoData || {};
-                        for (var g in cloudPhotos.photos) {
-                            if (!localPhotos[g] || localPhotos[g].length === 0) {
-                                localPhotos[g] = cloudPhotos.photos[g];
-                            } else if (cloudPhotos.photos[g].length > localPhotos[g].length) {
-                                // Cloud has more photos - use cloud
-                                localPhotos[g] = cloudPhotos.photos[g];
+                    // Handle truncated content (>1MB) - fetch raw URL
+                    var photoContent = photosFile.content;
+                    if (photosFile.truncated && photosFile.raw_url) {
+                        var rawRes = await fetch(photosFile.raw_url, { headers: { 'Authorization': 'Bearer ' + t } });
+                        if (rawRes.ok) photoContent = await rawRes.text();
+                    }
+                    if (photoContent) {
+                        var cloudPhotos = JSON.parse(photoContent);
+                        console.log('[Sync] Cloud-Fotos:', Object.keys(cloudPhotos.photos || {}).length, 'Gruppen');
+                        if (cloudPhotos.photos) {
+                            var localPhotos = photoData || {};
+                            for (var g in cloudPhotos.photos) {
+                                if (!localPhotos[g] || localPhotos[g].length === 0) {
+                                    localPhotos[g] = cloudPhotos.photos[g];
+                                } else if (cloudPhotos.photos[g].length > localPhotos[g].length) {
+                                    localPhotos[g] = cloudPhotos.photos[g];
+                                }
                             }
+                            photoData = localPhotos;
+                            localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData));
                         }
-                        photoData = localPhotos;
-                        localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData));
-                    }
-                    if (cloudPhotos.heroSelection) {
-                        // Merge hero selections
-                        for (var g in cloudPhotos.heroSelection) {
-                            if (!_heroSelection[g]) _heroSelection[g] = cloudPhotos.heroSelection[g];
+                        if (cloudPhotos.heroSelection) {
+                            for (var g in cloudPhotos.heroSelection) {
+                                if (!_heroSelection[g]) _heroSelection[g] = cloudPhotos.heroSelection[g];
+                            }
+                            _saveHeroSelection();
                         }
-                        _saveHeroSelection();
                     }
-                    initCompPhotos();
-                } catch(pe) {}
+                } catch(pe) { console.error('[Sync] Foto-Parse-Fehler:', pe); }
             }
+            // Always refresh photo strips after sync
+            try { initCompPhotos(); } catch(e) {}
             isLoading = false; return true;
         } catch (err) { isLoading = false; return false; }
     }
@@ -5424,13 +5432,16 @@
         // photoData now stores only URLs and metadata (tiny), not base64
         try {
             localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData));
+            console.log('[Photos] Gespeichert:', Object.keys(photoData).length, 'Gruppen');
         } catch(e) {
             showToast('Speicherfehler!');
         }
-        // Sync metadata to Gist
-        if (!isLoading) {
-            clearTimeout(autoSaveTimer);
-            autoSaveTimer = setTimeout(function() { saveData(); }, 1000);
+        // Sync to Gist immediately (photos are just URLs, very small)
+        if (!isLoading && isGistConfigured()) {
+            saveToGist().then(function(ok) {
+                if (ok) console.log('[Photos] Gist-Sync OK');
+                else console.error('[Photos] Gist-Sync fehlgeschlagen');
+            });
         }
     }
 
