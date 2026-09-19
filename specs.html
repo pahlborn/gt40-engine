@@ -3239,12 +3239,23 @@
     }
 
     // ==== GIST API ====
+    var GIST_PHOTOS_FILE = 'engine-build-photos.json';
     async function saveToGist() {
         const t = getGistConfig().token; if (!t) return false;
         try {
+            var files = { [GIST_FILENAME]: { content: localStorage.getItem('engineBuildLog') || '{}' } };
+            // Include photos + hero selection
+            var photoPayload = { photos: photoData, heroSelection: _heroSelection };
+            try {
+                var photoStr = JSON.stringify(photoPayload);
+                // Only include if reasonable size (< 8MB for Gist limit)
+                if (photoStr.length < 8000000) {
+                    files[GIST_PHOTOS_FILE] = { content: photoStr };
+                }
+            } catch(pe) {}
             const res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
                 method: 'PATCH', headers: { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ files: { [GIST_FILENAME]: { content: localStorage.getItem('engineBuildLog') || '{}' } } })
+                body: JSON.stringify({ files: files })
             });
             if (!res.ok) { showToast('Cloud-Fehler (Status ' + res.status + ')'); return false; }
             return true;
@@ -3276,6 +3287,35 @@
             });
             applyData(merged);
             localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+            // Load photos from gist
+            var photosFile = gist.files[GIST_PHOTOS_FILE];
+            if (photosFile && photosFile.content) {
+                try {
+                    var cloudPhotos = JSON.parse(photosFile.content);
+                    if (cloudPhotos.photos) {
+                        // Merge: cloud photos fill in groups that are missing locally
+                        var localPhotos = photoData || {};
+                        for (var g in cloudPhotos.photos) {
+                            if (!localPhotos[g] || localPhotos[g].length === 0) {
+                                localPhotos[g] = cloudPhotos.photos[g];
+                            } else if (cloudPhotos.photos[g].length > localPhotos[g].length) {
+                                // Cloud has more photos - use cloud
+                                localPhotos[g] = cloudPhotos.photos[g];
+                            }
+                        }
+                        photoData = localPhotos;
+                        localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData));
+                    }
+                    if (cloudPhotos.heroSelection) {
+                        // Merge hero selections
+                        for (var g in cloudPhotos.heroSelection) {
+                            if (!_heroSelection[g]) _heroSelection[g] = cloudPhotos.heroSelection[g];
+                        }
+                        _saveHeroSelection();
+                    }
+                    initCompPhotos();
+                } catch(pe) {}
+            }
             isLoading = false; return true;
         } catch (err) { isLoading = false; return false; }
     }
@@ -5136,8 +5176,39 @@
     })();
 
     function savePhotoData() {
-        try { localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData)); } catch(e) {
-            showToast('Foto-Speicher voll! Aeltere Fotos loeschen.');
+        try {
+            localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData));
+        } catch(e) {
+            // localStorage voll - Bilder komprimieren
+            try {
+                _compressPhotoData();
+                localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData));
+            } catch(e2) {
+                showToast('Foto-Speicher voll! Aeltere Fotos loeschen.');
+                return;
+            }
+        }
+        // Trigger cloud sync (debounced) so photos are included in gist
+        if (typeof autoSave === 'function' && !isLoading) {
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(function() { saveData(); }, 1000);
+        }
+    }
+    function _compressPhotoData() {
+        // Re-compress all photos at lower quality to save space
+        for (var group in photoData) {
+            for (var i = 0; i < photoData[group].length; i++) {
+                var d = photoData[group][i].data;
+                if (d && d.length > 200000) { // > ~150KB
+                    var img = new Image(); img.src = d;
+                    var c = document.createElement('canvas');
+                    var maxW = 800, w = img.width, h = img.height;
+                    if (w > maxW) { h = h * maxW / w; w = maxW; }
+                    c.width = w; c.height = h;
+                    c.getContext('2d').drawImage(img, 0, 0, w, h);
+                    photoData[group][i].data = c.toDataURL('image/jpeg', 0.5);
+                }
+            }
         }
     }
 
