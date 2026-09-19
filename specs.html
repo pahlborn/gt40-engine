@@ -4567,10 +4567,10 @@
     }
 
     // Upload photo to GitHub repo and store URL
-    async function _uploadToGitHub(group, base64data, filename) {
+    async function _uploadToGitHub(group, base64data, filename, retries) {
+        if (retries === undefined) retries = 3;
         var token = getGistConfig().token;
         if (!token) throw new Error('Kein GitHub-Token konfiguriert');
-        // base64data is "data:image/jpeg;base64,XXXX" - extract pure base64
         var pure = base64data.split(',')[1];
         var path = 'img/user/' + group + '/' + filename;
         var url = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/' + path;
@@ -4587,23 +4587,16 @@
             var errBody = await res.text().catch(function() { return ''; });
             var errMsg = '';
             try { errMsg = JSON.parse(errBody).message || ''; } catch(e) { errMsg = errBody.substring(0, 200); }
-            console.error('GitHub Upload Error:', res.status, errMsg, 'URL:', url);
-            if (res.status === 403) {
-                throw new Error('403: Zugriff verweigert. ' + errMsg);
+            console.error('GitHub Upload Error:', res.status, errMsg);
+            // Retry on conflict or server error
+            if ((res.status === 409 || res.status === 422 || res.status >= 500) && retries > 0) {
+                await new Promise(function(r) { setTimeout(r, 2000); });
+                return _uploadToGitHub(group, base64data, filename, retries - 1);
             }
-            if (res.status === 404) {
-                throw new Error('404: Repo nicht gefunden. Pruefen Sie Token-Berechtigung "Contents: Read+Write"');
-            }
-            if (res.status === 409) {
-                throw new Error('409: Konflikt - bitte nochmal versuchen');
-            }
-            if (res.status === 422) {
-                throw new Error('422: ' + errMsg);
-            }
+            if (res.status === 403) throw new Error('403: Zugriff verweigert. ' + errMsg);
+            if (res.status === 404) throw new Error('404: Token braucht "Contents: Read+Write"');
             throw new Error(res.status + ': ' + errMsg);
         }
-        var result = await res.json();
-        // Return the raw URL for the uploaded file
         return 'https://raw.githubusercontent.com/' + REPO_OWNER + '/' + REPO_NAME + '/main/' + path;
     }
 
@@ -4629,13 +4622,15 @@
             var toProcess = Math.min(files.length, maxFiles);
             showToast(lang === 'de' ? 'Lade ' + toProcess + ' Foto(s) hoch...' : 'Uploading ' + toProcess + ' photo(s)...');
             var uploaded = 0;
-            // Process files sequentially to avoid GitHub commit conflicts
+            // Process files sequentially with delay to avoid GitHub commit conflicts
             for (var fi = 0; fi < toProcess; fi++) {
                 try {
+                    if (fi > 0) await new Promise(function(r) { setTimeout(r, 1500); });
+                    showToast((fi+1) + '/' + toProcess + ' wird hochgeladen...');
                     var result = await _processAndUpload(files[fi], group, fi);
                     if (result) { uploaded++; }
                 } catch(err) {
-                    showToast('Upload-Fehler (' + (fi+1) + '/' + toProcess + '): ' + err.message);
+                    showToast('Fehler bei Foto ' + (fi+1) + ': ' + err.message);
                 }
             }
             if (uploaded > 0) {
