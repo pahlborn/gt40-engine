@@ -5115,7 +5115,7 @@
         openLightbox(c.group, newIdx);
     }
 
-    // -- Pinch-to-zoom + pan --
+    // -- Pinch-to-zoom + pan + double-tap --
     (function() {
         var wrap = null;
         function getWrap() { if (!wrap) wrap = document.getElementById('lbImgWrap'); return wrap; }
@@ -5127,17 +5127,34 @@
         }
         function pinchDist(t) { var dx = t[0].clientX - t[1].clientX, dy = t[0].clientY - t[1].clientY; return Math.sqrt(dx*dx+dy*dy); }
 
+        // Prevent iOS Safari page zoom on the lightbox
+        var lbEl = document.getElementById('photoLightbox');
+        if (lbEl) {
+            lbEl.addEventListener('gesturestart', function(e) { e.preventDefault(); }, { passive: false });
+            lbEl.addEventListener('gesturechange', function(e) {
+                e.preventDefault();
+                if (_lbDraw.active) return;
+                _lbZoom.scale = Math.max(1, Math.min(8, _lbZoom.scale * e.scale));
+                applyTransform();
+            }, { passive: false });
+            lbEl.addEventListener('gestureend', function(e) { e.preventDefault(); }, { passive: false });
+        }
+
+        // Touch: pinch-zoom + pan
         document.addEventListener('touchstart', function(e) {
             var w = getWrap(); if (!w || !w.closest('.photo-lightbox.show')) return;
             if (!e.target.closest('.lb-img-wrap')) return;
-            if (_lbDraw.active) return; // drawing mode handles its own touches
+            if (_lbDraw.active) return;
             if (e.touches.length === 2) {
                 e.preventDefault();
                 _lbZoom.pinching = true;
                 _lbZoom.dist0 = pinchDist(e.touches);
                 _lbZoom.scale0 = _lbZoom.scale;
-            } else if (e.touches.length === 1 && _lbZoom.scale > 1) {
-                _lbZoom.panStart = { x: e.touches[0].clientX - _lbZoom.tx, y: e.touches[0].clientY - _lbZoom.ty };
+            } else if (e.touches.length === 1) {
+                if (_lbZoom.scale > 1) {
+                    e.preventDefault();
+                    _lbZoom.panStart = { x: e.touches[0].clientX - _lbZoom.tx, y: e.touches[0].clientY - _lbZoom.ty };
+                }
             }
         }, { passive: false });
 
@@ -5161,7 +5178,37 @@
             if (_lbDraw.active) return;
             _lbZoom.pinching = false;
             _lbZoom.panStart = null;
-            // Double-tap to reset zoom
+        });
+
+        // Double-tap to zoom in/out
+        var _lastTap = 0;
+        document.addEventListener('touchend', function(e) {
+            if (_lbDraw.active) return;
+            var w = getWrap(); if (!w || !w.closest('.photo-lightbox.show')) return;
+            if (!e.target.closest('.lb-img-wrap')) return;
+            if (e.touches.length > 0) return; // still other fingers
+            var now = Date.now();
+            if (now - _lastTap < 300) {
+                e.preventDefault();
+                if (_lbZoom.scale > 1.5) {
+                    // Zoom out
+                    _lbZoom.scale = 1; _lbZoom.tx = 0; _lbZoom.ty = 0;
+                } else {
+                    // Zoom in to 3x at tap position
+                    var touch = e.changedTouches[0];
+                    var img = document.getElementById('lbImg');
+                    var rect = img.getBoundingClientRect();
+                    var cx = touch.clientX - rect.left - rect.width / 2;
+                    var cy = touch.clientY - rect.top - rect.height / 2;
+                    _lbZoom.scale = 3;
+                    _lbZoom.tx = -cx * 2;
+                    _lbZoom.ty = -cy * 2;
+                }
+                applyTransform();
+                _lastTap = 0;
+            } else {
+                _lastTap = now;
+            }
         });
 
         // Mouse wheel zoom (desktop)
