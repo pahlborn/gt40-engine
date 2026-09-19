@@ -3387,7 +3387,11 @@
         }
 
         const cr = (swept + clearance) / clearance;
+        const totalCc = swept * 8;
+        const totalCui = totalCc / 16.387064;
         document.getElementById('crResult').textContent = cr.toFixed(2);
+        if (document.getElementById('crDispCui')) document.getElementById('crDispCui').textContent = totalCui.toFixed(2);
+        if (document.getElementById('crDispCc')) document.getElementById('crDispCc').textContent = totalCc.toFixed(1);
         document.getElementById('crSwept').textContent = swept.toFixed(1);
         document.getElementById('crClearance').textContent = clearance.toFixed(1);
         document.getElementById('crGasketVol').textContent = gasketVol.toFixed(1);
