@@ -370,32 +370,39 @@
         .tip-box ul { margin: 0.4rem 0 0 1.2rem; padding: 0; }
         .tip-box li { margin-bottom: 0.3rem; line-height: 1.45; color: #5a4a00; }
 
-        /* ---- Photo Gallery ---- */
-        .photo-gallery { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
-        .photo-thumb {
-            width: 80px; height: 80px; border-radius: 6px; object-fit: cover;
-            border: 2px solid var(--border); cursor: pointer; transition: border-color 0.15s;
-        }
-        .photo-thumb:hover { border-color: var(--primary-light); }
-        .photo-add-btn {
-            display: inline-flex; align-items: center; gap: 0.3rem;
-            font-size: 0.75rem; color: var(--primary-light); font-weight: 600;
-            cursor: pointer; padding: 0.3rem 0.6rem; border-radius: 6px;
-            background: #ebf4ff; border: 1px dashed #90cdf4; margin-top: 0.4rem;
-        }
-        .photo-add-btn:hover { background: #bee3f8; }
-        .photo-caption { font-size: 0.7rem; color: var(--text-light); margin-top: 0.15rem; text-align: center; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .photo-item { display: inline-flex; flex-direction: column; align-items: center; }
-        .photo-lightbox {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 1000; display: none;
-            justify-content: center; align-items: center; flex-direction: column;
-        }
+        /* ---- Component Photo System ---- */
+        .comp-photo-strip { display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0; padding: 0.4rem; background: #f0f5ff; border-radius: 8px; }
+        .comp-hero { width: 100px; height: 75px; object-fit: contain; border-radius: 6px; background: #fff; border: 1px solid #e2e8f0; cursor: pointer; }
+        .comp-hero:hover { border-color: var(--primary-light); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+        .comp-photo-info { font-size: 0.72rem; color: var(--text-light); }
+        .comp-photo-info a { color: var(--primary-light); cursor: pointer; text-decoration: underline; }
+        .comp-photo-add { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.7rem; color: var(--primary-light); cursor: pointer; padding: 0.2rem 0.5rem; border-radius: 4px; background: #ebf4ff; border: 1px dashed #90cdf4; }
+        .comp-photo-add:hover { background: #bee3f8; }
+        /* Gallery Overlay */
+        .gallery-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 1001; display: none; flex-direction: column; }
+        .gallery-overlay.show { display: flex; }
+        .gallery-header { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1rem; color: #fff; }
+        .gallery-header h3 { font-size: 0.95rem; margin: 0; }
+        .gallery-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+        .gallery-grid { flex: 1; overflow-y: auto; padding: 0.5rem 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem; align-content: start; }
+        .gallery-card { position: relative; border-radius: 8px; overflow: hidden; background: #1a202c; cursor: pointer; }
+        .gallery-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+        .gallery-card .gallery-star { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); border: none; color: #a0aec0; font-size: 1.1rem; cursor: pointer; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; }
+        .gallery-card .gallery-star.active { color: #ed8936; }
+        .gallery-card .gallery-star:hover { color: #ed8936; }
+        .gallery-card .gallery-del { position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.6); border: none; color: #fc8181; font-size: 0.75rem; cursor: pointer; border-radius: 4px; padding: 2px 6px; }
+        .gallery-card .gallery-caption { font-size: 0.68rem; color: #cbd5e0; padding: 0.2rem 0.4rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .gallery-add-card { border: 2px dashed #4a5568; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 105px; cursor: pointer; color: #718096; font-size: 0.8rem; }
+        .gallery-add-card:hover { border-color: #90cdf4; color: #90cdf4; }
+        /* Lightbox */
+        .photo-lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1002; display: none; justify-content: center; align-items: center; flex-direction: column; }
         .photo-lightbox.show { display: flex; }
         .photo-lightbox img { max-width: 95%; max-height: 80vh; border-radius: 8px; }
         .photo-lightbox .caption { color: white; font-size: 0.85rem; margin-top: 0.5rem; }
         .photo-lightbox .close-lb { position: absolute; top: 1rem; right: 1rem; color: white; font-size: 1.5rem; cursor: pointer; background: none; border: none; }
-        .photo-lightbox .delete-lb { position: absolute; top: 1rem; left: 1rem; color: #fc8181; font-size: 0.8rem; cursor: pointer; background: rgba(0,0,0,0.5); border: 1px solid #fc8181; border-radius: 4px; padding: 0.3rem 0.6rem; }
+        .photo-lightbox .nav-lb { position: absolute; top: 50%; color: white; font-size: 2rem; cursor: pointer; background: rgba(0,0,0,0.5); border: none; border-radius: 50%; width: 40px; height: 40px; transform: translateY(-50%); }
+        .photo-lightbox .nav-lb.prev { left: 0.5rem; }
+        .photo-lightbox .nav-lb.next { right: 0.5rem; }
 
         /* ---- Check-Item Inline Note ---- */
         .check-item { flex-wrap: wrap; }
@@ -594,9 +601,12 @@
                         <span class="spec-label">Archivierte Kopie</span>
                         <span class="spec-value"><a href="docs/M-6010-BOSS302.html" target="_blank" style="color:var(--primary-light);">M-6010-BOSS302 (lokal archiviert)</a></span>
                     </div>
-                    <div style="text-align:center;margin-top:0.5rem;">
-                        <img src="boss302-block.jpg" alt="BOSS 302 Engine Block" style="max-width:100%;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);">
-                        <div style="font-size:0.7rem;color:#718096;margin-top:0.2rem;">Ford Performance BOSS 302 Engine Block (M-6010-BOSS302)</div>
+                    <div class="comp-photo-strip" data-comp-gallery="block">
+                        <img class="comp-hero" src="boss302-block.jpg" alt="BOSS 302 Engine Block" data-default-src="boss302-block.jpg" onclick="openGallery('block')">
+                        <div class="comp-photo-info">
+                            <a onclick="openGallery('block')"><span id="block-count">0</span> Fotos</a><br>
+                            <label class="comp-photo-add" onclick="addPhoto('block')">+ Foto</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -625,10 +635,7 @@
                         <span class="spec-label">Installation Tips</span>
                         <span class="spec-value"><a href="EngineInstallation_TuningTips.pdf" target="_blank" style="color:var(--primary-light);">Engine Installation &amp; Tuning Tips (PDF, archiviert)</a></span>
                     </div>
-                    <div style="text-align:center;margin-top:0.5rem;">
-                        <img src="m6009-302.jpg" alt="302 BOSS Short Block M-6009-302" style="max-width:100%;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);">
-                        <div style="font-size:0.7rem;color:#718096;margin-top:0.2rem;">Ford Performance 302 BOSS Short Block (M-6009-302)</div>
-                    </div>
+                    <div class="comp-photo-strip" data-comp-gallery="shortblock"><img class="comp-hero" src="img/ford-m6009-302.jpg" alt="" data-default-src="img/ford-m6009-302.jpg" onclick="openGallery('shortblock')"><div class="comp-photo-info"><a onclick="openGallery('shortblock')"><span id="shortblock-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('shortblock')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -661,6 +668,7 @@
                         <span class="spec-label">Hersteller-PDF</span>
                         <span class="spec-value"><a href="https://latemodel.cachefly.net/downloads/instructions/cca-355188.pdf" target="_blank" style="color:var(--primary-light);">Spec Card (PDF)</a></span>
                     </div>
+                    <div class="comp-photo-strip" data-comp-gallery="camshaft"><img class="comp-hero" src="img/comp-35-518-8.jpg" alt="" data-default-src="img/comp-35-518-8.jpg" onclick="openGallery('camshaft')"><div class="comp-photo-info"><a onclick="openGallery('camshaft')"><span id="camshaft-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('camshaft')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -691,8 +699,6 @@
                 <textarea data-field="comment_block" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
             </div>
 
-            <div class="photo-gallery" data-photo-group="block"></div>
-            <label class="photo-add-btn" onclick="addPhoto('block')">&#128247; Foto hinzuf&uuml;gen</label>
         </div>
     </div>
 
@@ -727,6 +733,7 @@
                         <span class="spec-label">Short Block Daten</span>
                         <span class="spec-value"><a href="https://performanceparts.ford.com/part/M-6009-302" target="_blank" style="color:var(--primary-light);">M-6009-302 Produktseite</a></span>
                     </div>
+                    <div class="comp-photo-strip" data-comp-gallery="pistons"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('pistons')"><span id="pistons-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('pistons')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -820,6 +827,7 @@
                         <span class="spec-label">Hersteller</span>
                         <span class="spec-value"><a href="https://www.airflowresearch.com/165cc-sbf-street-cylinder-head/p602" target="_blank" style="color:var(--primary-light);">AFR Produktseite</a> | <a href="https://www.airflowresearch.com/product/download_file/sbf-heads-3.pdf" target="_blank" style="color:var(--primary-light);">Einbauanleitung (PDF)</a></span>
                     </div>
+                    <div class="comp-photo-strip" data-comp-gallery="heads"><img class="comp-hero" src="img/afr-1399.png" alt="" data-default-src="img/afr-1399.png" onclick="openGallery('heads')"><div class="comp-photo-info"><a onclick="openGallery('heads')"><span id="heads-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('heads')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -838,6 +846,7 @@
                     <div class="spec-item"><span class="spec-label">M-6051-CP331 (Std.)</span><span class="spec-value">4.100" Gasket-Bore, 0.042", 9.1 cc (f&uuml;r Prod.-Blocks)</span></div>
                     <div class="spec-item"><span class="spec-label">Fel-Pro #1011-1</span><span class="spec-value">Alternative lt. AFR, f&uuml;r 1962&ndash;95 SBF</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Die Compressed Thickness beeinflusst direkt den Quench-Abstand und die Verdichtung! F&uuml;r den CR-Rechner: 0.040" und 4.160" sind voreingestellt.</div>
+                    <div class="comp-photo-strip" data-comp-gallery="headgasket"><img class="comp-hero" src="img/ford-m6051-cp331.jpg" alt="" data-default-src="img/ford-m6051-cp331.jpg" onclick="openGallery('headgasket')"><div class="comp-photo-info"><a onclick="openGallery('headgasket')"><span id="headgasket-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('headgasket')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -876,8 +885,6 @@
                 <textarea data-field="comment_heads" placeholder="Anmerkungen..." oninput="autoSave()"></textarea>
             </div>
 
-            <div class="photo-gallery" data-photo-group="heads"></div>
-            <label class="photo-add-btn" onclick="addPhoto('heads')">&#128247; Foto hinzuf&uuml;gen</label>
         </div>
     </div>
 
@@ -901,6 +908,7 @@
                     <div class="spec-item"><span class="spec-label">Tip</span><span class="spec-value">Geh&auml;rtete Roller Tips</span></div>
                     <div class="spec-item"><span class="spec-label">Finish</span><span class="spec-value">Black Oxide</span></div>
                     <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">Set of 16 (kompletter V8-Satz)</span></div>
+                    <div class="comp-photo-strip" data-comp-gallery="rockers"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('rockers')"><span id="rockers-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('rockers')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -911,6 +919,7 @@
                     <div class="spec-item"><span class="spec-label">Stud-Gr&ouml;&szlig;e</span><span class="spec-value">7/16"</span></div>
                     <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">16 St&uuml;ck</span></div>
                     <div class="spec-item"><span class="spec-label">Funktion</span><span class="spec-value">Einstellmutter mit integrierter Kontermutter &ndash; h&auml;lt Preload-Einstellung sicher</span></div>
+                    <div class="comp-photo-strip" data-comp-gallery="polylocks"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('polylocks')"><span id="polylocks-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('polylocks')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -927,6 +936,7 @@
                     <div class="spec-item"><span class="spec-label">Preload</span><span class="spec-value">1/4 bis 1/2 Umdrehung nach Nullspiel (HLT: weniger Preload!)</span></div>
                     <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">16 St&uuml;ck</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Bei 302-Blocks m&uuml;ssen die Zylinderkoepfe abgenommen werden, um die Lifter einzubauen!</div>
+                    <div class="comp-photo-strip" data-comp-gallery="lifters"><img class="comp-hero" src="img/morel-5327.jpg" alt="" data-default-src="img/morel-5327.jpg" onclick="openGallery('lifters')"><div class="comp-photo-info"><a onclick="openGallery('lifters')"><span id="lifters-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('lifters')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -945,6 +955,7 @@
                     <div class="spec-item"><span class="spec-label">Max. Ventilhub</span><span class="spec-value">.650"</span></div>
                     <div class="spec-item"><span class="spec-label">Max. Drehzahl</span><span class="spec-value">7.000 U/min</span></div>
                     <div class="spec-item"><span class="spec-label">Coil Bind pr&uuml;fen</span><span class="spec-value">Ja &ndash; bei max. Lift (.555"/.565") sicherstellen!</span></div>
+                    <div class="comp-photo-strip" data-comp-gallery="valvesprings"><img class="comp-hero" src="img/afr-8605.png" alt="" data-default-src="img/afr-8605.png" onclick="openGallery('valvesprings')"><div class="comp-photo-info"><a onclick="openGallery('valvesprings')"><span id="valvesprings-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('valvesprings')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -966,6 +977,7 @@
                     <div class="spec-item"><span class="spec-label">Muttern</span><span class="spec-value">6-Point (Hex) Nuts + geh&auml;rtete Unterlegscheiben</span></div>
                     <div class="spec-item"><span class="spec-label">Innen (lang)</span><span class="spec-value">5.000" Gesamtl&auml;nge</span></div>
                     <div class="spec-item"><span class="spec-label">Au&szlig;en (kurz)</span><span class="spec-value">3.250" Gesamtl&auml;nge</span></div>
+                    <div class="comp-photo-strip" data-comp-gallery="headbolts"><img class="comp-hero" src="img/arp-154-4003.jpg" alt="" data-default-src="img/arp-154-4003.jpg" onclick="openGallery('headbolts')"><div class="comp-photo-info"><a onclick="openGallery('headbolts')"><span id="headbolts-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('headbolts')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -1074,6 +1086,7 @@
                     <div class="spec-item"><span class="spec-label">Pickup</span><span class="spec-value">Bolt-on Pickup erforderlich (nicht im Lieferumfang!)</span></div>
                     <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">Gusseisen, druckgepr&uuml;ft, handdrehgepr&uuml;ft</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Achtung:</strong> Pickup und Wanne m&uuml;ssen zum 5/8" Inlet passen. Wanne noch zu bestimmen (Canton, Aviaid, Armando o.a.).</div>
+                    <div class="comp-photo-strip" data-comp-gallery="oilpump"><img class="comp-hero" src="img/ford-m6600-d2.jpg" alt="" data-default-src="img/ford-m6600-d2.jpg" onclick="openGallery('oilpump')"><div class="comp-photo-info"><a onclick="openGallery('oilpump')"><span id="oilpump-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('oilpump')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -1173,6 +1186,7 @@
                     <div class="spec-item"><span class="spec-label">Verstellpositionen</span><span class="spec-value"><strong>9 Positionen</strong> &ndash; 2&deg;-Schritte, &plusmn;8&deg; oder Gerade</span></div>
                     <div class="spec-item"><span class="spec-label">Inklusive</span><span class="spec-value">Thrust Plate M-6269-A302 + 1" Cam-Dowel Pin</span></div>
                     <div class="spec-item"><span class="spec-label">Kompatibel</span><span class="spec-value">One-Piece Fuel Pump Eccentric M-6287-B302</span></div>
+                    <div class="comp-photo-strip" data-comp-gallery="timingchain"><img class="comp-hero" src="img/ford-m6268-a302.jpg" alt="" data-default-src="img/ford-m6268-a302.jpg" onclick="openGallery('timingchain')"><div class="comp-photo-info"><a onclick="openGallery('timingchain')"><span id="timingchain-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('timingchain')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -1208,6 +1222,7 @@
                     <div class="spec-item"><span class="spec-label">Timing-Markierung</span><span class="spec-value">Lasergeritzt, Passenger Side (11 Uhr) + Driver Side (2 Uhr)</span></div>
                     <div class="spec-item"><span class="spec-label">Montage</span><span class="spec-value">Mit Einpresswerkzeug (Crank Bolt + Adapter) &ndash; NIEMALS mit Hammer!</span></div>
                     <div class="spec-item"><span class="spec-label">Drehmoment Zentralschraube</span><span class="spec-value">70&ndash;90 ft-lbs (95&ndash;122 Nm)</span></div>
+                    <div class="comp-photo-strip" data-comp-gallery="balancer"><img class="comp-hero" src="img/ford-m6316-d302.jpg" alt="" data-default-src="img/ford-m6316-d302.jpg" onclick="openGallery('balancer')"><div class="comp-photo-info"><a onclick="openGallery('balancer')"><span id="balancer-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('balancer')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -1261,6 +1276,7 @@
                     <div class="spec-item"><span class="spec-label">Drehmoment</span><span class="spec-value">15&ndash;22 ft-lbs (20&ndash;30 Nm)</span></div>
                     <div class="spec-item"><span class="spec-label">K&uuml;hlmittel</span><span class="spec-value">50/50 Mischung Frostschutz/Wasser</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Empfehlung:</strong> High-Flow Thermostat verwenden, um den erh&ouml;hten Durchfluss nicht zu drosseln.</div>
+                    <div class="comp-photo-strip" data-comp-gallery="waterpump"><img class="comp-hero" src="img/milodon-16230.jpg" alt="" data-default-src="img/milodon-16230.jpg" onclick="openGallery('waterpump')"><div class="comp-photo-info"><a onclick="openGallery('waterpump')"><span id="waterpump-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('waterpump')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -1289,6 +1305,7 @@
                     <div class="spec-item"><span class="spec-label">Ansaugbr&uuml;cke</span><span class="spec-value">Spezial-Downdraft-Manifold (Hersteller noch offen)</span></div>
                     <div class="spec-item"><span class="spec-label">Abstimmung</span><span class="spec-value">Hauptd&uuml;se, Leerlaufd&uuml;se, Luftkorrekturd&uuml;se, Emulsionsrohr, Pumpend&uuml;se &ndash; alle von oben zug&auml;nglich</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Vorteil:</strong> Einzeldrosselklappen pro Zylinder = sofortiges Ansprechverhalten. Typisch f&uuml;r GT40-Kit-Cars und europ&auml;ische Sportmotoren.</div>
+                    <div class="comp-photo-strip" data-comp-gallery="carbs"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('carbs')"><span id="carbs-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('carbs')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -1315,6 +1332,7 @@
                     <div class="spec-item"><span class="spec-label">Ma&szlig;e / Gewicht</span><span class="spec-value">140 &times; 54 mm, 700 g pro Pumpe</span></div>
                     <div class="spec-item"><span class="spec-label">MTBF</span><span class="spec-value">6.000 Betriebsstunden</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Facet Red Top liefert <strong>6&ndash;8 psi</strong> &ndash; DellOrto DRLA braucht max. <strong>3.5 psi</strong>! <strong>Druckregler zwingend erforderlich!</strong> Empfehlung: Malpassi Filter King. Pumpen m&ouml;glichst tanknahe, vertikal mit Auslass nach oben montieren.</div>
+                    <div class="comp-photo-strip" data-comp-gallery="fuelpump"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('fuelpump')"><span id="fuelpump-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('fuelpump')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -1462,6 +1480,7 @@
                     <div class="spec-item"><span class="spec-label">Spannung</span><span class="spec-value">12V &ndash; Direkt an Batterie (Plus UND Minus!)</span></div>
                     <div class="spec-item"><span class="spec-label">Zylinder-Select</span><span class="spec-value">Werksseitig auf 8-Zylinder eingestellt</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Keine Massivkern-Z&uuml;ndkabel verwenden! Nur Spiral-Core oder Suppression-Type. Empf. Rev Limiter f&uuml;r diesen Build: <strong>6.500 RPM</strong>.</div>
+                    <div class="comp-photo-strip" data-comp-gallery="msd6al"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('msd6al')"><span id="msd6al-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('msd6al')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -1481,6 +1500,7 @@
                     <div class="spec-item"><span class="spec-label">Voraussetzung</span><span class="spec-value">Erfordert MSD 6/7/8-Series Z&uuml;ndbox</span></div>
                     <div class="spec-item"><span class="spec-label">CARB</span><span class="spec-value">E.O. Approved</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis Iron Gear:</strong> Das mitgelieferte Iron Gear ist kompatibel mit Hydraulic Roller Cams. Alternative: PN 84791 mit Steel Gear (Melonized QPQ) f&uuml;r h&ouml;here Haltbarkeit.</div>
+                    <div class="comp-photo-strip" data-comp-gallery="distributor"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('distributor')"><span id="distributor-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('distributor')">+ Foto</label></div></div>
                 </div>
             </div>
 
@@ -2957,11 +2977,20 @@
 <div class="toast" id="toast"></div>
 
 <!-- Photo Lightbox -->
+<!-- Gallery Overlay -->
+<div class="gallery-overlay" id="galleryOverlay">
+    <div class="gallery-header">
+        <h3 id="galleryTitle">Galerie</h3>
+        <button class="gallery-close" onclick="closeGallery()">&times;</button>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+</div>
+
+<!-- Lightbox -->
 <div class="photo-lightbox" id="photoLightbox" onclick="closeLightbox()">
-    <button class="close-lb" onclick="closeLightbox()">&times;</button>
-    <button class="lb-nav lb-prev" onclick="event.stopPropagation();specLightboxNav(-1)" title="Previous" style="position:absolute;top:50%;left:1rem;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:white;font-size:2rem;padding:0.5rem 0.8rem;cursor:pointer;border-radius:4px;">&#10094;</button>
-    <button class="lb-nav lb-next" onclick="event.stopPropagation();specLightboxNav(1)" title="Next" style="position:absolute;top:50%;right:1rem;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:white;font-size:2rem;padding:0.5rem 0.8rem;cursor:pointer;border-radius:4px;">&#10095;</button>
-    <button class="delete-lb" onclick="event.stopPropagation();deleteLightboxPhoto()">&#128465; L&ouml;schen</button>
+    <button class="close-lb" onclick="event.stopPropagation();closeLightbox()">&times;</button>
+    <button class="nav-lb prev" onclick="event.stopPropagation();lightboxNav(-1)">&#10094;</button>
+    <button class="nav-lb next" onclick="event.stopPropagation();lightboxNav(1)">&#10095;</button>
     <img src="" alt="Foto" onclick="event.stopPropagation()">
     <div class="caption"></div>
 </div>
@@ -4382,34 +4411,31 @@
     // ==== PHOTOS ====
     let photoData = {};
 
+    // ==== COMPONENT PHOTO GALLERY SYSTEM ====
     function addPhoto(group) {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.capture = 'environment';
+        var input = document.createElement('input');
+        input.type = 'file'; input.accept = 'image/*';
         input.onchange = function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
+            var file = e.target.files[0]; if (!file) return;
+            var lang = document.documentElement.lang || 'de';
+            var reader = new FileReader();
             reader.onload = function(ev) {
-                const img = new Image();
+                var img = new Image();
                 img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const maxW = 1200;
-                    let w = img.width, h = img.height;
+                    var canvas = document.createElement('canvas');
+                    var maxW = 1200, w = img.width, h = img.height;
                     if (w > maxW) { h = h * maxW / w; w = maxW; }
                     canvas.width = w; canvas.height = h;
                     canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                    const caption = prompt('Bildbeschreibung (optional):') || '';
+                    var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    var caption = prompt(lang === 'de' ? 'Bildbeschreibung (optional):' : 'Caption (optional):') || '';
                     if (!photoData[group]) photoData[group] = [];
-                    photoData[group].push({
-                        data: dataUrl,
-                        caption: caption,
-                        time: new Date().toLocaleString('de-DE')
-                    });
-                    renderPhotos(group);
+                    photoData[group].push({ data: dataUrl, caption: caption, time: new Date().toLocaleString('de-DE'), isHero: false });
+                    if (photoData[group].length === 1) photoData[group][0].isHero = true;
                     savePhotoData();
+                    updateCompStrip(group);
+                    if (document.getElementById('galleryOverlay').classList.contains('show')) renderGallery(group);
+                    showToast(lang === 'de' ? 'Foto gespeichert' : 'Photo saved');
                 };
                 img.src = ev.target.result;
             };
@@ -4418,30 +4444,86 @@
         input.click();
     }
 
-    function renderPhotos(group) {
-        const gallery = document.querySelector('[data-photo-group="' + group + '"]');
-        if (!gallery) return;
-        const photos = photoData[group] || [];
-        gallery.innerHTML = photos.map(function(p, i) {
-            return '<div class="photo-item">' +
-                '<img class="photo-thumb" src="' + p.data + '" onclick="openLightbox(\'' + group + '\',' + i + ')" alt="' + (p.caption || 'Build-Foto') + '">' +
-                '<div class="photo-caption">' + (p.caption || p.time) + '</div></div>';
-        }).join('');
+    function updateCompStrip(group) {
+        var strip = document.querySelector('[data-comp-gallery="' + group + '"]');
+        if (!strip) return;
+        var photos = photoData[group] || [];
+        var heroImg = strip.querySelector('.comp-hero');
+        var countEl = document.getElementById(group + '-count');
+        if (countEl) countEl.textContent = photos.length;
+        // Set hero image: user-selected hero > first uploaded > default
+        var hero = photos.find(function(p) { return p.isHero; }) || photos[0];
+        if (hero && heroImg) {
+            heroImg.src = hero.data;
+        } else if (heroImg && heroImg.dataset.defaultSrc) {
+            heroImg.src = heroImg.dataset.defaultSrc;
+        }
+    }
+
+    function openGallery(group) {
+        var overlay = document.getElementById('galleryOverlay');
+        var title = document.getElementById('galleryTitle');
+        var strip = document.querySelector('[data-comp-gallery="' + group + '"]');
+        var compName = strip ? strip.closest('.comp-body').previousElementSibling.textContent.trim() : group;
+        title.textContent = compName;
+        overlay.dataset.group = group;
+        overlay.classList.add('show');
+        renderGallery(group);
+    }
+
+    function renderGallery(group) {
+        var grid = document.getElementById('galleryGrid');
+        var photos = photoData[group] || [];
+        var lang = document.documentElement.lang || 'de';
+        var html = '';
+        for (var i = 0; i < photos.length; i++) {
+            var p = photos[i];
+            html += '<div class="gallery-card">' +
+                '<img src="' + p.data + '" onclick="openLightbox(\'' + group + '\',' + i + ')">' +
+                '<button class="gallery-star' + (p.isHero ? ' active' : '') + '" onclick="event.stopPropagation();setHero(\'' + group + '\',' + i + ')" title="' + (lang === 'de' ? 'Als Hauptbild' : 'Set as main') + '">&#9733;</button>' +
+                '<button class="gallery-del" onclick="event.stopPropagation();deletePhoto(\'' + group + '\',' + i + ')">&#128465;</button>' +
+                '<div class="gallery-caption">' + (p.caption || p.time) + '</div></div>';
+        }
+        html += '<div class="gallery-add-card" onclick="addPhoto(\'' + group + '\')">+ ' + (lang === 'de' ? 'Foto hinzuf\u00fcgen' : 'Add Photo') + '</div>';
+        grid.innerHTML = html;
+    }
+
+    function closeGallery() {
+        document.getElementById('galleryOverlay').classList.remove('show');
+    }
+
+    function setHero(group, idx) {
+        var photos = photoData[group] || [];
+        for (var i = 0; i < photos.length; i++) photos[i].isHero = (i === idx);
+        savePhotoData();
+        updateCompStrip(group);
+        renderGallery(group);
+    }
+
+    function deletePhoto(group, idx) {
+        var lang = document.documentElement.lang || 'de';
+        if (!confirm(lang === 'de' ? 'Foto wirklich l\u00f6schen?' : 'Delete this photo?')) return;
+        photoData[group].splice(idx, 1);
+        if (photoData[group].length > 0 && !photoData[group].some(function(p) { return p.isHero; })) {
+            photoData[group][0].isHero = true;
+        }
+        savePhotoData();
+        updateCompStrip(group);
+        renderGallery(group);
     }
 
     function openLightbox(group, idx) {
-        const photos = photoData[group] || [];
+        var photos = photoData[group] || [];
         if (!photos[idx]) return;
-        const lb = document.getElementById('photoLightbox');
+        var lb = document.getElementById('photoLightbox');
         lb.querySelector('img').src = photos[idx].data;
-        lb.querySelector('.caption').textContent = (photos[idx].caption ? photos[idx].caption + ' — ' : '') + photos[idx].time;
+        lb.querySelector('.caption').textContent = (photos[idx].caption ? photos[idx].caption + ' \u2014 ' : '') + photos[idx].time;
         lb.dataset.group = group;
         lb.dataset.idx = idx;
         lb.classList.add('show');
     }
 
-
-    function specLightboxNav(dir) {
+    function lightboxNav(dir) {
         var lb = document.getElementById('photoLightbox');
         var group = lb.dataset.group;
         var idx = parseInt(lb.dataset.idx);
@@ -4453,22 +4535,18 @@
     }
     function closeLightbox() { document.getElementById('photoLightbox').classList.remove('show'); }
 
-    function deleteLightboxPhoto() {
-        const lb = document.getElementById('photoLightbox');
-        const group = lb.dataset.group;
-        const idx = parseInt(lb.dataset.idx);
-        if (confirm('Foto wirklich loeschen?')) {
-            photoData[group].splice(idx, 1);
-            renderPhotos(group);
-            savePhotoData();
-            closeLightbox();
-        }
-    }
-
     function savePhotoData() {
         try { localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData)); } catch(e) {
             showToast('Foto-Speicher voll! Aeltere Fotos loeschen.');
         }
+    }
+
+    // Update all comp-strips on load
+    function initCompPhotos() {
+        document.querySelectorAll('[data-comp-gallery]').forEach(function(strip) {
+            var group = strip.dataset.compGallery;
+            updateCompStrip(group);
+        });
     }
 
     function loadPhotoData() {
@@ -4996,7 +5074,7 @@
     })();
 
     // ==== INIT ====
-    generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData(); initUnifiedSearch(); updateBuildDashboard(); setTimeout(runCrossChecks, 500);
+    generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData(); initCompPhotos(); initUnifiedSearch(); updateBuildDashboard(); setTimeout(runCrossChecks, 500);
     if (currentLang === 'en') setTimeout(function() { setLang('en'); }, 100);
 
     // Specs: no scroll/collapse restore - always starts at initial state
