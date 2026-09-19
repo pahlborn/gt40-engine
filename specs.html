@@ -5073,6 +5073,7 @@
             iframe.allowFullscreen = true;
             wrap.appendChild(iframe);
         } else {
+            img.crossOrigin = 'anonymous';
             img.src = _imgSrc(p);
         }
         var cap = p.isDefault ? 'Herstellerbild' : (p.type === 'youtube' ? 'YouTube' : (p.caption || ''));
@@ -5331,28 +5332,41 @@
             showToast('Herstellerbild kann nicht bearbeitet werden');
             _lbExitDraw(); return;
         }
-        // Merge drawing onto image
-        var img = document.getElementById('lbImg');
-        var merge = document.createElement('canvas');
-        merge.width = img.naturalWidth; merge.height = img.naturalHeight;
-        var mctx = merge.getContext('2d');
-        mctx.drawImage(img, 0, 0);
-        // Scale strokes from display to natural size
-        var sx = img.naturalWidth / document.getElementById('lbCanvas').width;
-        var sy = img.naturalHeight / document.getElementById('lbCanvas').height;
-        for (var s = 0; s < _lbDraw.strokes.length; s++) {
-            var st = _lbDraw.strokes[s];
-            mctx.strokeStyle = st.color; mctx.lineWidth = st.width * sx; mctx.lineCap = 'round'; mctx.lineJoin = 'round';
-            mctx.beginPath();
-            for (var p = 0; p < st.points.length; p++) {
-                if (p === 0) mctx.moveTo(st.points[p].x * sx, st.points[p].y * sy);
-                else mctx.lineTo(st.points[p].x * sx, st.points[p].y * sy);
+        try {
+            // Merge drawing onto image
+            var img = document.getElementById('lbImg');
+            var merge = document.createElement('canvas');
+            merge.width = img.naturalWidth; merge.height = img.naturalHeight;
+            var mctx = merge.getContext('2d');
+            mctx.drawImage(img, 0, 0);
+            // Scale strokes from display to natural size
+            var sx = img.naturalWidth / document.getElementById('lbCanvas').width;
+            var sy = img.naturalHeight / document.getElementById('lbCanvas').height;
+            for (var s = 0; s < _lbDraw.strokes.length; s++) {
+                var st = _lbDraw.strokes[s];
+                mctx.strokeStyle = st.color; mctx.lineWidth = st.width * sx; mctx.lineCap = 'round'; mctx.lineJoin = 'round';
+                mctx.beginPath();
+                for (var p = 0; p < st.points.length; p++) {
+                    if (p === 0) mctx.moveTo(st.points[p].x * sx, st.points[p].y * sy);
+                    else mctx.lineTo(st.points[p].x * sx, st.points[p].y * sy);
+                }
+                mctx.stroke();
             }
-            mctx.stroke();
+            var dataUrl = merge.toDataURL('image/jpeg', 0.85);
+        } catch(canvasErr) {
+            console.error('Canvas-Fehler:', canvasErr);
+            showToast('Bild muss neu geladen werden...');
+            // Reload image with crossOrigin and retry
+            var imgReload = new Image();
+            imgReload.crossOrigin = 'anonymous';
+            imgReload.onload = function() {
+                document.getElementById('lbImg').src = imgReload.src;
+                showToast('Bitte Zeichnung nochmal speichern');
+            };
+            imgReload.src = _imgSrc(c.photo) + '?t=' + Date.now();
+            return;
         }
-        var dataUrl = merge.toDataURL('image/jpeg', 0.85);
         // Upload annotated image to GitHub (replaces original)
-        var oldUrl = photoData[c.group][c.photo.userIdx].data;
         var filename = 'annotated_' + Date.now() + '.jpg';
         showToast('Zeichnung wird hochgeladen...');
         _uploadToGitHub(c.group, dataUrl, filename).then(function(ghUrl) {
@@ -5365,7 +5379,7 @@
             showToast('Zeichnung gespeichert');
         }).catch(function(err) {
             _lbExitDraw();
-            showToast('Fehler: ' + err.message);
+            showToast('Speichern fehlgeschlagen: ' + err.message);
         });
     }
 
