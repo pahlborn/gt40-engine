@@ -413,6 +413,9 @@
         .photo-lightbox .nav-lb.next { right: 0.5rem; }
         .lb-drawing .lb-img-wrap img { pointer-events: none; }
         .lb-drawing #lbCanvas { display: block !important; cursor: crosshair; }
+        .gallery-yt { border-color: rgba(255,0,0,0.4); }
+        .gallery-add-card { display: flex; align-items: center; justify-content: center; min-height: 80px; border: 2px dashed var(--border); border-radius: 8px; cursor: pointer; color: var(--text-light); font-size: 0.85rem; transition: border-color 0.2s; }
+        .gallery-add-card:hover { border-color: var(--accent); color: var(--accent); }
 
         /* ---- Check-Item Inline Note ---- */
         .check-item { flex-wrap: wrap; }
@@ -616,6 +619,7 @@
                         <div class="comp-photo-actions">
                             <button class="comp-photo-btn" onclick="openGallery('block')">&#128444; <span id="block-count">0</span> Fotos</button>
                             <button class="comp-photo-btn" onclick="addPhoto('block')">&#128247; Foto hinzuf&uuml;gen</button>
+                            <button class="comp-photo-btn" onclick="addYouTube('block')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
                         </div>
                     </div>
                 </div>
@@ -645,7 +649,7 @@
                         <span class="spec-label">Installation Tips</span>
                         <span class="spec-value"><a href="EngineInstallation_TuningTips.pdf" target="_blank" style="color:var(--primary-light);">Engine Installation &amp; Tuning Tips (PDF, archiviert)</a></span>
                     </div>
-                    <div class="comp-photo-strip" data-comp-gallery="shortblock" data-extra-images="m6009-302.jpg"><img class="comp-hero" src="img/ford-m6009-302.jpg" data-default-src="img/ford-m6009-302.jpg" onclick="openGallery('shortblock')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('shortblock')">&#128444; <span id="shortblock-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('shortblock')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="shortblock" data-extra-images="m6009-302.jpg"><img class="comp-hero" src="img/ford-m6009-302.jpg" data-default-src="img/ford-m6009-302.jpg" onclick="openGallery('shortblock')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('shortblock')">&#128444; <span id="shortblock-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('shortblock')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -678,7 +682,7 @@
                         <span class="spec-label">Hersteller-PDF</span>
                         <span class="spec-value"><a href="https://latemodel.cachefly.net/downloads/instructions/cca-355188.pdf" target="_blank" style="color:var(--primary-light);">Spec Card (PDF)</a></span>
                     </div>
-                    <div class="comp-photo-strip" data-comp-gallery="camshaft"><img class="comp-hero" src="img/comp-35-518-8.jpg" data-default-src="img/comp-35-518-8.jpg" onclick="openGallery('camshaft')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('camshaft')">&#128444; <span id="camshaft-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('camshaft')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="camshaft"><img class="comp-hero" src="img/comp-35-518-8.jpg" data-default-src="img/comp-35-518-8.jpg" onclick="openGallery('camshaft')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('camshaft')">&#128444; <span id="camshaft-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('camshaft')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -743,7 +747,7 @@
                         <span class="spec-label">Short Block Daten</span>
                         <span class="spec-value"><a href="https://performanceparts.ford.com/part/M-6009-302" target="_blank" style="color:var(--primary-light);">M-6009-302 Produktseite</a></span>
                     </div>
-                    <div class="comp-photo-strip" data-comp-gallery="pistons"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('pistons')">&#128444; <span id="pistons-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('pistons')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="pistons"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('pistons')">&#128444; <span id="pistons-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('pistons')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -837,7 +841,7 @@
                         <span class="spec-label">Hersteller</span>
                         <span class="spec-value"><a href="https://www.airflowresearch.com/165cc-sbf-street-cylinder-head/p602" target="_blank" style="color:var(--primary-light);">AFR Produktseite</a> | <a href="https://www.airflowresearch.com/product/download_file/sbf-heads-3.pdf" target="_blank" style="color:var(--primary-light);">Einbauanleitung (PDF)</a></span>
                     </div>
-                    <div class="comp-photo-strip" data-comp-gallery="heads"><img class="comp-hero" src="img/afr-1399.jpg" data-default-src="img/afr-1399.jpg" onclick="openGallery('heads')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('heads')">&#128444; <span id="heads-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('heads')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="heads"><img class="comp-hero" src="img/afr-1399.jpg" data-default-src="img/afr-1399.jpg" onclick="openGallery('heads')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('heads')">&#128444; <span id="heads-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('heads')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -856,7 +860,7 @@
                     <div class="spec-item"><span class="spec-label">M-6051-CP331 (Std.)</span><span class="spec-value">4.100" Gasket-Bore, 0.042", 9.1 cc (f&uuml;r Prod.-Blocks)</span></div>
                     <div class="spec-item"><span class="spec-label">Fel-Pro #1011-1</span><span class="spec-value">Alternative lt. AFR, f&uuml;r 1962&ndash;95 SBF</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Die Compressed Thickness beeinflusst direkt den Quench-Abstand und die Verdichtung! F&uuml;r den CR-Rechner: 0.040" und 4.160" sind voreingestellt.</div>
-                    <div class="comp-photo-strip" data-comp-gallery="headgasket"><img class="comp-hero" src="img/ford-m6051-cp331.jpg" data-default-src="img/ford-m6051-cp331.jpg" onclick="openGallery('headgasket')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('headgasket')">&#128444; <span id="headgasket-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('headgasket')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="headgasket"><img class="comp-hero" src="img/ford-m6051-cp331.jpg" data-default-src="img/ford-m6051-cp331.jpg" onclick="openGallery('headgasket')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('headgasket')">&#128444; <span id="headgasket-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('headgasket')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -918,7 +922,7 @@
                     <div class="spec-item"><span class="spec-label">Tip</span><span class="spec-value">Geh&auml;rtete Roller Tips</span></div>
                     <div class="spec-item"><span class="spec-label">Finish</span><span class="spec-value">Black Oxide</span></div>
                     <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">Set of 16 (kompletter V8-Satz)</span></div>
-                    <div class="comp-photo-strip" data-comp-gallery="rockers"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('rockers')">&#128444; <span id="rockers-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('rockers')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="rockers"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('rockers')">&#128444; <span id="rockers-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('rockers')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -929,7 +933,7 @@
                     <div class="spec-item"><span class="spec-label">Stud-Gr&ouml;&szlig;e</span><span class="spec-value">7/16"</span></div>
                     <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">16 St&uuml;ck</span></div>
                     <div class="spec-item"><span class="spec-label">Funktion</span><span class="spec-value">Einstellmutter mit integrierter Kontermutter &ndash; h&auml;lt Preload-Einstellung sicher</span></div>
-                    <div class="comp-photo-strip" data-comp-gallery="polylocks"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('polylocks')">&#128444; <span id="polylocks-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('polylocks')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="polylocks"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('polylocks')">&#128444; <span id="polylocks-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('polylocks')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -946,7 +950,7 @@
                     <div class="spec-item"><span class="spec-label">Preload</span><span class="spec-value">1/4 bis 1/2 Umdrehung nach Nullspiel (HLT: weniger Preload!)</span></div>
                     <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">16 St&uuml;ck</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Bei 302-Blocks m&uuml;ssen die Zylinderkoepfe abgenommen werden, um die Lifter einzubauen!</div>
-                    <div class="comp-photo-strip" data-comp-gallery="lifters"><img class="comp-hero" src="img/morel-5327.jpg" data-default-src="img/morel-5327.jpg" onclick="openGallery('lifters')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('lifters')">&#128444; <span id="lifters-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('lifters')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="lifters"><img class="comp-hero" src="img/morel-5327.jpg" data-default-src="img/morel-5327.jpg" onclick="openGallery('lifters')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('lifters')">&#128444; <span id="lifters-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('lifters')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -965,7 +969,7 @@
                     <div class="spec-item"><span class="spec-label">Max. Ventilhub</span><span class="spec-value">.650"</span></div>
                     <div class="spec-item"><span class="spec-label">Max. Drehzahl</span><span class="spec-value">7.000 U/min</span></div>
                     <div class="spec-item"><span class="spec-label">Coil Bind pr&uuml;fen</span><span class="spec-value">Ja &ndash; bei max. Lift (.555"/.565") sicherstellen!</span></div>
-                    <div class="comp-photo-strip" data-comp-gallery="valvesprings"><img class="comp-hero" src="img/afr-8605.png" data-default-src="img/afr-8605.png" onclick="openGallery('valvesprings')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('valvesprings')">&#128444; <span id="valvesprings-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('valvesprings')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="valvesprings"><img class="comp-hero" src="img/afr-8605.png" data-default-src="img/afr-8605.png" onclick="openGallery('valvesprings')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('valvesprings')">&#128444; <span id="valvesprings-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('valvesprings')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -987,7 +991,7 @@
                     <div class="spec-item"><span class="spec-label">Muttern</span><span class="spec-value">6-Point (Hex) Nuts + geh&auml;rtete Unterlegscheiben</span></div>
                     <div class="spec-item"><span class="spec-label">Innen (lang)</span><span class="spec-value">5.000" Gesamtl&auml;nge</span></div>
                     <div class="spec-item"><span class="spec-label">Au&szlig;en (kurz)</span><span class="spec-value">3.250" Gesamtl&auml;nge</span></div>
-                    <div class="comp-photo-strip" data-comp-gallery="headbolts"><img class="comp-hero" src="img/arp-154-4003.jpg" data-default-src="img/arp-154-4003.jpg" onclick="openGallery('headbolts')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('headbolts')">&#128444; <span id="headbolts-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('headbolts')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="headbolts"><img class="comp-hero" src="img/arp-154-4003.jpg" data-default-src="img/arp-154-4003.jpg" onclick="openGallery('headbolts')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('headbolts')">&#128444; <span id="headbolts-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('headbolts')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -1096,7 +1100,7 @@
                     <div class="spec-item"><span class="spec-label">Pickup</span><span class="spec-value">Bolt-on Pickup erforderlich (nicht im Lieferumfang!)</span></div>
                     <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">Gusseisen, druckgepr&uuml;ft, handdrehgepr&uuml;ft</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Achtung:</strong> Pickup und Wanne m&uuml;ssen zum 5/8" Inlet passen. Wanne noch zu bestimmen (Canton, Aviaid, Armando o.a.).</div>
-                    <div class="comp-photo-strip" data-comp-gallery="oilpump"><img class="comp-hero" src="img/ford-m6600-d2.jpg" data-default-src="img/ford-m6600-d2.jpg" onclick="openGallery('oilpump')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('oilpump')">&#128444; <span id="oilpump-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('oilpump')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="oilpump"><img class="comp-hero" src="img/ford-m6600-d2.jpg" data-default-src="img/ford-m6600-d2.jpg" onclick="openGallery('oilpump')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('oilpump')">&#128444; <span id="oilpump-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('oilpump')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -1196,7 +1200,7 @@
                     <div class="spec-item"><span class="spec-label">Verstellpositionen</span><span class="spec-value"><strong>9 Positionen</strong> &ndash; 2&deg;-Schritte, &plusmn;8&deg; oder Gerade</span></div>
                     <div class="spec-item"><span class="spec-label">Inklusive</span><span class="spec-value">Thrust Plate M-6269-A302 + 1" Cam-Dowel Pin</span></div>
                     <div class="spec-item"><span class="spec-label">Kompatibel</span><span class="spec-value">One-Piece Fuel Pump Eccentric M-6287-B302</span></div>
-                    <div class="comp-photo-strip" data-comp-gallery="timingchain"><img class="comp-hero" src="img/ford-m6268-a302.jpg" data-default-src="img/ford-m6268-a302.jpg" onclick="openGallery('timingchain')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('timingchain')">&#128444; <span id="timingchain-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('timingchain')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="timingchain"><img class="comp-hero" src="img/ford-m6268-a302.jpg" data-default-src="img/ford-m6268-a302.jpg" onclick="openGallery('timingchain')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('timingchain')">&#128444; <span id="timingchain-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('timingchain')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -1232,7 +1236,7 @@
                     <div class="spec-item"><span class="spec-label">Timing-Markierung</span><span class="spec-value">Lasergeritzt, Passenger Side (11 Uhr) + Driver Side (2 Uhr)</span></div>
                     <div class="spec-item"><span class="spec-label">Montage</span><span class="spec-value">Mit Einpresswerkzeug (Crank Bolt + Adapter) &ndash; NIEMALS mit Hammer!</span></div>
                     <div class="spec-item"><span class="spec-label">Drehmoment Zentralschraube</span><span class="spec-value">70&ndash;90 ft-lbs (95&ndash;122 Nm)</span></div>
-                    <div class="comp-photo-strip" data-comp-gallery="balancer"><img class="comp-hero" src="img/ford-m6316-d302.jpg" data-default-src="img/ford-m6316-d302.jpg" onclick="openGallery('balancer')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('balancer')">&#128444; <span id="balancer-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('balancer')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="balancer"><img class="comp-hero" src="img/ford-m6316-d302.jpg" data-default-src="img/ford-m6316-d302.jpg" onclick="openGallery('balancer')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('balancer')">&#128444; <span id="balancer-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('balancer')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -1286,7 +1290,7 @@
                     <div class="spec-item"><span class="spec-label">Drehmoment</span><span class="spec-value">15&ndash;22 ft-lbs (20&ndash;30 Nm)</span></div>
                     <div class="spec-item"><span class="spec-label">K&uuml;hlmittel</span><span class="spec-value">50/50 Mischung Frostschutz/Wasser</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Empfehlung:</strong> High-Flow Thermostat verwenden, um den erh&ouml;hten Durchfluss nicht zu drosseln.</div>
-                    <div class="comp-photo-strip" data-comp-gallery="waterpump"><img class="comp-hero" src="img/milodon-16230.jpg" data-default-src="img/milodon-16230.jpg" onclick="openGallery('waterpump')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('waterpump')">&#128444; <span id="waterpump-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('waterpump')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="waterpump"><img class="comp-hero" src="img/milodon-16230.jpg" data-default-src="img/milodon-16230.jpg" onclick="openGallery('waterpump')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('waterpump')">&#128444; <span id="waterpump-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('waterpump')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -1315,7 +1319,7 @@
                     <div class="spec-item"><span class="spec-label">Ansaugbr&uuml;cke</span><span class="spec-value">Spezial-Downdraft-Manifold (Hersteller noch offen)</span></div>
                     <div class="spec-item"><span class="spec-label">Abstimmung</span><span class="spec-value">Hauptd&uuml;se, Leerlaufd&uuml;se, Luftkorrekturd&uuml;se, Emulsionsrohr, Pumpend&uuml;se &ndash; alle von oben zug&auml;nglich</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Vorteil:</strong> Einzeldrosselklappen pro Zylinder = sofortiges Ansprechverhalten. Typisch f&uuml;r GT40-Kit-Cars und europ&auml;ische Sportmotoren.</div>
-                    <div class="comp-photo-strip" data-comp-gallery="carbs"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('carbs')">&#128444; <span id="carbs-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('carbs')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="carbs"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('carbs')">&#128444; <span id="carbs-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('carbs')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -1342,7 +1346,7 @@
                     <div class="spec-item"><span class="spec-label">Ma&szlig;e / Gewicht</span><span class="spec-value">140 &times; 54 mm, 700 g pro Pumpe</span></div>
                     <div class="spec-item"><span class="spec-label">MTBF</span><span class="spec-value">6.000 Betriebsstunden</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Facet Red Top liefert <strong>6&ndash;8 psi</strong> &ndash; DellOrto DRLA braucht max. <strong>3.5 psi</strong>! <strong>Druckregler zwingend erforderlich!</strong> Empfehlung: Malpassi Filter King. Pumpen m&ouml;glichst tanknahe, vertikal mit Auslass nach oben montieren.</div>
-                    <div class="comp-photo-strip" data-comp-gallery="fuelpump"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('fuelpump')">&#128444; <span id="fuelpump-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('fuelpump')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="fuelpump"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('fuelpump')">&#128444; <span id="fuelpump-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('fuelpump')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -1490,7 +1494,7 @@
                     <div class="spec-item"><span class="spec-label">Spannung</span><span class="spec-value">12V &ndash; Direkt an Batterie (Plus UND Minus!)</span></div>
                     <div class="spec-item"><span class="spec-label">Zylinder-Select</span><span class="spec-value">Werksseitig auf 8-Zylinder eingestellt</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Keine Massivkern-Z&uuml;ndkabel verwenden! Nur Spiral-Core oder Suppression-Type. Empf. Rev Limiter f&uuml;r diesen Build: <strong>6.500 RPM</strong>.</div>
-                    <div class="comp-photo-strip" data-comp-gallery="msd6al"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('msd6al')">&#128444; <span id="msd6al-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('msd6al')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="msd6al"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('msd6al')">&#128444; <span id="msd6al-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('msd6al')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -1510,7 +1514,7 @@
                     <div class="spec-item"><span class="spec-label">Voraussetzung</span><span class="spec-value">Erfordert MSD 6/7/8-Series Z&uuml;ndbox</span></div>
                     <div class="spec-item"><span class="spec-label">CARB</span><span class="spec-value">E.O. Approved</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis Iron Gear:</strong> Das mitgelieferte Iron Gear ist kompatibel mit Hydraulic Roller Cams. Alternative: PN 84791 mit Steel Gear (Melonized QPQ) f&uuml;r h&ouml;here Haltbarkeit.</div>
-                    <div class="comp-photo-strip" data-comp-gallery="distributor"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('distributor')">&#128444; <span id="distributor-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('distributor')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="distributor"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('distributor')">&#128444; <span id="distributor-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('distributor')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
 
@@ -3056,6 +3060,10 @@
     // ==== CONFIG ====
     const GIST_FILENAME = 'engine-build-log-data.json';
     const FIXED_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
+    const REPO_OWNER = 'pahlborn';
+    const REPO_NAME = 'gt40-engine';
+    const PHOTO_MAX_PER_GROUP = 20;
+    const PHOTO_MAX_BYTES = 500 * 1024; // 500 KB per photo
     let isLoading = false;
 
     function getGistConfig() { return { token: localStorage.getItem('gh_token') || '' }; }
@@ -4558,57 +4566,136 @@
         return null;
     }
 
-    // Multiple file selection support
+    // Upload photo to GitHub repo and store URL
+    async function _uploadToGitHub(group, base64data, filename) {
+        var token = getGistConfig().token;
+        if (!token) throw new Error('Kein GitHub-Token konfiguriert');
+        // base64data is "data:image/jpeg;base64,XXXX" - extract pure base64
+        var pure = base64data.split(',')[1];
+        var path = 'img/user/' + group + '/' + filename;
+        var url = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/' + path;
+        var res = await fetch(url, {
+            method: 'PUT',
+            headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                message: 'Foto: ' + group + '/' + filename,
+                content: pure,
+                branch: 'main'
+            })
+        });
+        if (!res.ok) {
+            var err = await res.json().catch(function() { return {}; });
+            throw new Error('Upload fehlgeschlagen (' + res.status + '): ' + (err.message || ''));
+        }
+        var result = await res.json();
+        // Return the raw URL for the uploaded file
+        return 'https://raw.githubusercontent.com/' + REPO_OWNER + '/' + REPO_NAME + '/main/' + path;
+    }
+
     function addPhoto(group) {
+        var lang = document.documentElement.lang || 'de';
+        if (!getGistConfig().token) {
+            showToast(lang === 'de' ? 'Bitte zuerst GitHub-Token in den Einstellungen konfigurieren' : 'Please configure GitHub token in settings first');
+            return;
+        }
+        var existing = (photoData[group] || []).filter(function(p) { return p.type !== 'youtube'; });
+        if (existing.length >= PHOTO_MAX_PER_GROUP) {
+            showToast(lang === 'de' ? 'Maximum ' + PHOTO_MAX_PER_GROUP + ' Fotos pro Komponente erreicht' : 'Maximum ' + PHOTO_MAX_PER_GROUP + ' photos per component reached');
+            return;
+        }
         var input = document.createElement('input');
         input.type = 'file'; input.accept = 'image/*'; input.multiple = true;
         input.onchange = function(e) {
             var files = e.target.files; if (!files.length) return;
-            var lang = document.documentElement.lang || 'de';
+            var maxFiles = PHOTO_MAX_PER_GROUP - existing.length;
+            if (files.length > maxFiles) {
+                showToast(lang === 'de' ? 'Nur ' + maxFiles + ' weitere Fotos moeglich' : 'Only ' + maxFiles + ' more photos allowed');
+            }
+            var toProcess = Math.min(files.length, maxFiles);
             var processed = 0;
-            for (var fi = 0; fi < files.length; fi++) {
-                (function(file) {
-                    // Read file twice: once as ArrayBuffer for EXIF, once as DataURL for display
+            showToast(lang === 'de' ? 'Lade hoch...' : 'Uploading...');
+            for (var fi = 0; fi < toProcess; fi++) {
+                (function(file, idx) {
                     var exifReader = new FileReader();
                     exifReader.onload = function(exifEv) {
                         var exifDate = _getExifDate(exifEv.target.result);
-                        var photoTime = exifDate || new Date().toLocaleString('de-DE');
-                        // Also check file.lastModified as fallback
+                        var photoTime = exifDate || '';
                         if (!exifDate && file.lastModified) {
                             var d = new Date(file.lastModified);
                             if (d.getFullYear() > 2000) photoTime = d.toLocaleString('de-DE');
                         }
-                    var reader = new FileReader();
-                    reader.onload = function(ev) {
-                        var img = new Image();
-                        img.onload = function() {
-                            var canvas = document.createElement('canvas');
-                            var maxW = 1200, w = img.width, h = img.height;
-                            if (w > maxW) { h = h * maxW / w; w = maxW; }
-                            canvas.width = w; canvas.height = h;
-                            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                            var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                            if (!photoData[group]) photoData[group] = [];
-                            photoData[group].push({ data: dataUrl, caption: '', time: photoTime, isHero: false });
-                            processed++;
-                            if (processed === files.length) {
-                                savePhotoData();
-                                updateCompStrip(group);
-                                if (document.getElementById('galleryOverlay').classList.contains('show')) renderGallery(group);
-                                showToast(processed === 1
-                                    ? (lang === 'de' ? 'Foto gespeichert' : 'Photo saved')
-                                    : processed + (lang === 'de' ? ' Fotos gespeichert' : ' photos saved'));
-                            }
+                        if (!photoTime) photoTime = new Date().toLocaleString('de-DE');
+                        // Compress image
+                        var reader = new FileReader();
+                        reader.onload = function(ev) {
+                            var img = new Image();
+                            img.onload = async function() {
+                                var canvas = document.createElement('canvas');
+                                var maxW = 1200, w = img.width, h = img.height;
+                                if (w > maxW) { h = h * maxW / w; w = maxW; }
+                                canvas.width = w; canvas.height = h;
+                                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                                // Compress to stay under 500KB
+                                var quality = 0.8;
+                                var dataUrl = canvas.toDataURL('image/jpeg', quality);
+                                while (dataUrl.length * 0.75 > PHOTO_MAX_BYTES && quality > 0.3) {
+                                    quality -= 0.1;
+                                    dataUrl = canvas.toDataURL('image/jpeg', quality);
+                                }
+                                // Generate filename with timestamp
+                                var ts = Date.now() + '_' + idx;
+                                var filename = ts + '.jpg';
+                                try {
+                                    var ghUrl = await _uploadToGitHub(group, dataUrl, filename);
+                                    if (!photoData[group]) photoData[group] = [];
+                                    photoData[group].push({ data: ghUrl, caption: '', time: photoTime, isHero: false, type: 'photo' });
+                                    processed++;
+                                    if (processed === toProcess) {
+                                        savePhotoData();
+                                        updateCompStrip(group);
+                                        if (document.getElementById('galleryOverlay').classList.contains('show')) renderGallery(group);
+                                        showToast(processed === 1
+                                            ? (lang === 'de' ? 'Foto hochgeladen' : 'Photo uploaded')
+                                            : processed + (lang === 'de' ? ' Fotos hochgeladen' : ' photos uploaded'));
+                                    }
+                                } catch(err) {
+                                    processed++;
+                                    showToast('Upload-Fehler: ' + err.message);
+                                }
+                            };
+                            img.src = ev.target.result;
                         };
-                        img.src = ev.target.result;
-                    };
-                    reader.readAsDataURL(file);
+                        reader.readAsDataURL(file);
                     };
                     exifReader.readAsArrayBuffer(file);
-                })(files[fi]);
+                })(files[fi], fi);
             }
         };
         input.click();
+    }
+
+    // YouTube link embedding
+    function addYouTube(group) {
+        var lang = document.documentElement.lang || 'de';
+        var url = prompt(lang === 'de' ? 'YouTube-Link einfuegen:' : 'Paste YouTube link:');
+        if (!url) return;
+        // Extract video ID from various YouTube URL formats
+        var vidId = null;
+        var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+        if (m) vidId = m[1];
+        if (!vidId) { showToast(lang === 'de' ? 'Kein gueltiger YouTube-Link' : 'Invalid YouTube link'); return; }
+        if (!photoData[group]) photoData[group] = [];
+        photoData[group].push({
+            data: vidId,
+            caption: '',
+            time: new Date().toLocaleString('de-DE'),
+            isHero: false,
+            type: 'youtube'
+        });
+        savePhotoData();
+        updateCompStrip(group);
+        if (document.getElementById('galleryOverlay').classList.contains('show')) renderGallery(group);
+        showToast(lang === 'de' ? 'Video eingebettet' : 'Video embedded');
     }
 
     function updateCompStrip(group) {
@@ -4657,12 +4744,16 @@
         renderGallery(group);
     }
 
+    function _imgSrc(p) {
+        if (p.type === 'youtube') return 'https://img.youtube.com/vi/' + p.data + '/hqdefault.jpg';
+        return p.data;
+    }
+
     function renderGallery(group) {
         var grid = document.getElementById('galleryGrid');
         var allPhotos = _getAllPhotos(group);
         var lang = document.documentElement.lang || 'de';
         var html = '';
-        // Determine which photo is currently the hero
         var heroInfo = _getHeroInfo(group);
         for (var i = 0; i < allPhotos.length; i++) {
             var p = allPhotos[i];
@@ -4670,19 +4761,30 @@
             if (p.isDefault && heroInfo.type === 'default' && p.defaultIdx === heroInfo.idx) isActive = true;
             if (!p.isDefault && heroInfo.type === 'user' && p.userIdx === heroInfo.idx) isActive = true;
             if (heroInfo.type === 'none' && p.isDefault && p.defaultIdx === 0) isActive = true;
-            // User photos are draggable, defaults are not
-            html += '<div class="gallery-card" data-gallery-idx="' + i + '" data-is-default="' + (p.isDefault ? '1' : '0') + '"' +
-                (!p.isDefault ? ' draggable="true" data-user-idx="' + p.userIdx + '"' : '') +
-                (p.isDefault ? ' data-default-idx="' + p.defaultIdx + '"' : '') + '>' +
-                '<img src="' + p.data + '" onclick="openLightbox(\'' + group + '\',' + i + ')" draggable="false">';
-            // Star button for ALL photos (defaults + user)
-            var starClick = p.isDefault
-                ? 'setHeroDefault(\'' + group + '\',' + p.defaultIdx + ')'
-                : 'setHero(\'' + group + '\',' + p.userIdx + ')';
-            html += '<button class="gallery-star' + (isActive ? ' active' : '') + '" onclick="event.stopPropagation();' + starClick + '" title="' + (lang === 'de' ? 'Als Hauptbild setzen' : 'Set as main image') + '">&#9733;</button>';
-            html += '<div class="gallery-caption">' + (p.isDefault ? (lang === 'de' ? 'Herstellerbild' : 'Manufacturer') : (p.caption || p.time)) + '</div></div>';
+            var isYT = p.type === 'youtube';
+            html += '<div class="gallery-card' + (isYT ? ' gallery-yt' : '') + '" data-gallery-idx="' + i + '" data-is-default="' + (p.isDefault ? '1' : '0') + '"' +
+                (!p.isDefault && !isYT ? ' draggable="true" data-user-idx="' + p.userIdx + '"' : '') +
+                (!p.isDefault && isYT ? ' data-user-idx="' + p.userIdx + '"' : '') +
+                (p.isDefault ? ' data-default-idx="' + p.defaultIdx + '"' : '') + '>';
+            if (isYT) {
+                html += '<div style="position:relative;cursor:pointer" onclick="openLightbox(\'' + group + '\',' + i + ')">' +
+                    '<img src="' + _imgSrc(p) + '" draggable="false">' +
+                    '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2.5rem;text-shadow:0 2px 8px rgba(0,0,0,0.7);">&#9654;</div></div>';
+            } else {
+                html += '<img src="' + _imgSrc(p) + '" onclick="openLightbox(\'' + group + '\',' + i + ')" draggable="false">';
+            }
+            // Star button (not for YouTube)
+            if (!isYT) {
+                var starClick = p.isDefault
+                    ? 'setHeroDefault(\'' + group + '\',' + p.defaultIdx + ')'
+                    : 'setHero(\'' + group + '\',' + p.userIdx + ')';
+                html += '<button class="gallery-star' + (isActive ? ' active' : '') + '" onclick="event.stopPropagation();' + starClick + '" title="' + (lang === 'de' ? 'Als Hauptbild setzen' : 'Set as main image') + '">&#9733;</button>';
+            }
+            var capText = p.isDefault ? (lang === 'de' ? 'Herstellerbild' : 'Manufacturer') : (isYT ? 'YouTube' : (p.caption || p.time));
+            html += '<div class="gallery-caption">' + capText + '</div></div>';
         }
-        html += '<div class="gallery-add-card" onclick="addPhoto(\'' + group + '\')">+ ' + (lang === 'de' ? 'Fotos hinzuf\u00fcgen' : 'Add Photos') + '</div>';
+        html += '<div class="gallery-add-card" onclick="addPhoto(\'' + group + '\')">' + (lang === 'de' ? '&#128247; Fotos' : '&#128247; Photos') + '</div>';
+        html += '<div class="gallery-add-card" onclick="addYouTube(\'' + group + '\')" style="background:rgba(255,0,0,0.15);border-color:rgba(255,0,0,0.3);">' + (lang === 'de' ? '&#9654; YouTube' : '&#9654; YouTube') + '</div>';
         grid.innerHTML = html;
         _initDragDrop(group, grid);
     }
@@ -4851,9 +4953,17 @@
 
     function deletePhoto(group, userIdx) {
         var lang = document.documentElement.lang || 'de';
-        if (!confirm(lang === 'de' ? 'Foto wirklich l\u00f6schen?' : 'Delete this photo?')) return;
+        var photo = photoData[group] ? photoData[group][userIdx] : null;
+        if (!photo) return;
+        var msg = photo.type === 'youtube'
+            ? (lang === 'de' ? 'YouTube-Video entfernen?' : 'Remove YouTube video?')
+            : (lang === 'de' ? 'Foto wirklich l\u00f6schen?' : 'Delete this photo?');
+        if (!confirm(msg)) return;
+        // Delete file from GitHub if it's a repo URL
+        if (photo.type !== 'youtube' && photo.data && photo.data.indexOf('raw.githubusercontent.com') !== -1) {
+            _deleteFromGitHub(photo.data);
+        }
         photoData[group].splice(userIdx, 1);
-        // If the deleted photo was the hero, reset to default
         var hi = _heroSelection[group];
         if (hi && hi.type === 'user' && hi.idx === userIdx) {
             delete _heroSelection[group];
@@ -4865,6 +4975,28 @@
         savePhotoData();
         updateCompStrip(group);
         renderGallery(group);
+    }
+
+    async function _deleteFromGitHub(rawUrl) {
+        var token = getGistConfig().token;
+        if (!token) return;
+        try {
+            // Extract path from raw URL: https://raw.githubusercontent.com/owner/repo/main/path
+            var parts = rawUrl.split('/' + REPO_NAME + '/main/');
+            if (parts.length < 2) return;
+            var path = parts[1];
+            // Get current file SHA first
+            var apiUrl = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/' + path;
+            var res = await fetch(apiUrl, { headers: { 'Authorization': 'Bearer ' + token } });
+            if (!res.ok) return;
+            var fileInfo = await res.json();
+            // Delete file
+            await fetch(apiUrl, {
+                method: 'DELETE',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: 'Foto geloescht: ' + path, sha: fileInfo.sha, branch: 'main' })
+            });
+        } catch(e) {}
     }
 
     // ==== LIGHTBOX with Zoom, Toolbar, Drawing ====
@@ -4881,11 +5013,27 @@
     function openLightbox(group, allIdx) {
         var allPhotos = _getAllPhotos(group);
         if (!allPhotos[allIdx]) return;
+        var p = allPhotos[allIdx];
         var lb = document.getElementById('photoLightbox');
         var img = document.getElementById('lbImg');
-        img.src = allPhotos[allIdx].data;
-        var p = allPhotos[allIdx];
-        var cap = p.isDefault ? 'Herstellerbild' : (p.caption || '');
+        var wrap = document.getElementById('lbImgWrap');
+        // Remove any existing YouTube iframe
+        var oldIframe = wrap.querySelector('iframe');
+        if (oldIframe) oldIframe.remove();
+        img.style.display = '';
+        if (p.type === 'youtube') {
+            // Show YouTube player instead of image
+            img.style.display = 'none';
+            var iframe = document.createElement('iframe');
+            iframe.src = 'https://www.youtube.com/embed/' + p.data + '?autoplay=1&rel=0';
+            iframe.style.cssText = 'width:95%;max-width:800px;aspect-ratio:16/9;border:none;border-radius:8px;';
+            iframe.allow = 'autoplay; encrypted-media; fullscreen';
+            iframe.allowFullscreen = true;
+            wrap.appendChild(iframe);
+        } else {
+            img.src = _imgSrc(p);
+        }
+        var cap = p.isDefault ? 'Herstellerbild' : (p.type === 'youtube' ? 'YouTube' : (p.caption || ''));
         var t = p.time || '';
         lb.querySelector('.caption').textContent = cap + (cap && t ? ' \u2014 ' : '') + t;
         lb.dataset.group = group;
@@ -4893,21 +5041,24 @@
         // Reset zoom
         _lbZoom.scale = 1; _lbZoom.tx = 0; _lbZoom.ty = 0;
         img.style.transform = '';
-        // Reset drawing mode
         _lbExitDraw();
-        // Update toolbar buttons visibility
+        // Update toolbar
+        var isYT = p.type === 'youtube';
         var btnDel = document.getElementById('lbBtnDel');
         var btnEdit = document.getElementById('lbBtnEdit');
         var btnStar = document.getElementById('lbBtnStar');
+        var btnDraw = document.getElementById('lbBtnDraw');
         btnDel.style.display = p.isDefault ? 'none' : '';
-        btnEdit.style.display = p.isDefault ? 'none' : '';
-        btnStar.style.display = '';
-        // Highlight star if this is the hero
-        var heroInfo = _getHeroInfo(group);
-        var isHero = (p.isDefault && heroInfo.type === 'default' && p.defaultIdx === heroInfo.idx)
-            || (!p.isDefault && heroInfo.type === 'user' && p.userIdx === heroInfo.idx)
-            || (heroInfo.type === 'none' && p.isDefault && p.defaultIdx === 0);
-        btnStar.classList.toggle('active', isHero);
+        btnEdit.style.display = (p.isDefault || isYT) ? 'none' : '';
+        btnStar.style.display = isYT ? 'none' : '';
+        btnDraw.style.display = isYT ? 'none' : '';
+        if (!isYT) {
+            var heroInfo = _getHeroInfo(group);
+            var isHero = (p.isDefault && heroInfo.type === 'default' && p.defaultIdx === heroInfo.idx)
+                || (!p.isDefault && heroInfo.type === 'user' && p.userIdx === heroInfo.idx)
+                || (heroInfo.type === 'none' && p.isDefault && p.defaultIdx === 0);
+            btnStar.classList.toggle('active', isHero);
+        }
         lb.classList.add('show');
     }
 
@@ -4923,7 +5074,11 @@
     }
     function closeLightbox() {
         _lbExitDraw();
-        document.getElementById('photoLightbox').classList.remove('show');
+        var lb = document.getElementById('photoLightbox');
+        var iframe = lb.querySelector('iframe');
+        if (iframe) iframe.remove();
+        document.getElementById('lbImg').style.display = '';
+        lb.classList.remove('show');
     }
 
     // -- Toolbar actions --
@@ -5107,13 +5262,22 @@
             mctx.stroke();
         }
         var dataUrl = merge.toDataURL('image/jpeg', 0.85);
-        photoData[c.group][c.photo.userIdx].data = dataUrl;
-        savePhotoData();
-        updateCompStrip(c.group);
-        _lbExitDraw();
-        openLightbox(c.group, c.idx);
-        renderGallery(c.group);
-        showToast('Zeichnung gespeichert');
+        // Upload annotated image to GitHub (replaces original)
+        var oldUrl = photoData[c.group][c.photo.userIdx].data;
+        var filename = 'annotated_' + Date.now() + '.jpg';
+        showToast('Zeichnung wird hochgeladen...');
+        _uploadToGitHub(c.group, dataUrl, filename).then(function(ghUrl) {
+            photoData[c.group][c.photo.userIdx].data = ghUrl;
+            savePhotoData();
+            updateCompStrip(c.group);
+            _lbExitDraw();
+            openLightbox(c.group, c.idx);
+            renderGallery(c.group);
+            showToast('Zeichnung gespeichert');
+        }).catch(function(err) {
+            _lbExitDraw();
+            showToast('Fehler: ' + err.message);
+        });
     }
 
     // Drawing touch/mouse handlers
@@ -5176,39 +5340,16 @@
     })();
 
     function savePhotoData() {
+        // photoData now stores only URLs and metadata (tiny), not base64
         try {
             localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData));
         } catch(e) {
-            // localStorage voll - Bilder komprimieren
-            try {
-                _compressPhotoData();
-                localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData));
-            } catch(e2) {
-                showToast('Foto-Speicher voll! Aeltere Fotos loeschen.');
-                return;
-            }
+            showToast('Speicherfehler!');
         }
-        // Trigger cloud sync (debounced) so photos are included in gist
-        if (typeof autoSave === 'function' && !isLoading) {
+        // Sync metadata to Gist
+        if (!isLoading) {
             clearTimeout(autoSaveTimer);
             autoSaveTimer = setTimeout(function() { saveData(); }, 1000);
-        }
-    }
-    function _compressPhotoData() {
-        // Re-compress all photos at lower quality to save space
-        for (var group in photoData) {
-            for (var i = 0; i < photoData[group].length; i++) {
-                var d = photoData[group][i].data;
-                if (d && d.length > 200000) { // > ~150KB
-                    var img = new Image(); img.src = d;
-                    var c = document.createElement('canvas');
-                    var maxW = 800, w = img.width, h = img.height;
-                    if (w > maxW) { h = h * maxW / w; w = maxW; }
-                    c.width = w; c.height = h;
-                    c.getContext('2d').drawImage(img, 0, 0, w, h);
-                    photoData[group][i].data = c.toDataURL('image/jpeg', 0.5);
-                }
-            }
         }
     }
 
