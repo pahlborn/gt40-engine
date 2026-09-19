@@ -532,6 +532,8 @@
                 <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="showGuide('guide-torque');closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128295; Torque Card</button>
+                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
+                <button onclick="forceReload();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:#718096;font-size:0.78rem;cursor:pointer;">&#128260; Seite neu laden</button>
             </div>
         </div>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
@@ -3075,6 +3077,16 @@
         m.style.display = m.style.display === 'none' ? 'block' : 'none';
     }
     function closeToolMenu() { document.getElementById('toolMenu').style.display = 'none'; }
+    function forceReload() {
+        // Clear Service Worker cache, then reload
+        if ('caches' in window) {
+            caches.keys().then(function(names) {
+                return Promise.all(names.map(function(n) { return caches.delete(n); }));
+            }).then(function() { location.reload(); });
+        } else {
+            location.href = location.pathname + '?v=' + Date.now();
+        }
+    }
     document.addEventListener('click', function(e) {
         var menu = document.getElementById('toolMenu');
         var btn = document.getElementById('toolMenuBtn');
