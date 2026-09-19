@@ -4611,73 +4611,79 @@
         }
         var input = document.createElement('input');
         input.type = 'file'; input.accept = 'image/*'; input.multiple = true;
-        input.onchange = function(e) {
+        input.onchange = async function(e) {
             var files = e.target.files; if (!files.length) return;
             var maxFiles = PHOTO_MAX_PER_GROUP - existing.length;
             if (files.length > maxFiles) {
                 showToast(lang === 'de' ? 'Nur ' + maxFiles + ' weitere Fotos moeglich' : 'Only ' + maxFiles + ' more photos allowed');
             }
             var toProcess = Math.min(files.length, maxFiles);
-            var processed = 0;
-            showToast(lang === 'de' ? 'Lade hoch...' : 'Uploading...');
+            showToast(lang === 'de' ? 'Lade ' + toProcess + ' Foto(s) hoch...' : 'Uploading ' + toProcess + ' photo(s)...');
+            var uploaded = 0;
+            // Process files sequentially to avoid GitHub commit conflicts
             for (var fi = 0; fi < toProcess; fi++) {
-                (function(file, idx) {
-                    var exifReader = new FileReader();
-                    exifReader.onload = function(exifEv) {
-                        var exifDate = _getExifDate(exifEv.target.result);
-                        var photoTime = exifDate || '';
-                        if (!exifDate && file.lastModified) {
-                            var d = new Date(file.lastModified);
-                            if (d.getFullYear() > 2000) photoTime = d.toLocaleString('de-DE');
-                        }
-                        if (!photoTime) photoTime = new Date().toLocaleString('de-DE');
-                        // Compress image
-                        var reader = new FileReader();
-                        reader.onload = function(ev) {
-                            var img = new Image();
-                            img.onload = async function() {
-                                var canvas = document.createElement('canvas');
-                                var maxW = 1200, w = img.width, h = img.height;
-                                if (w > maxW) { h = h * maxW / w; w = maxW; }
-                                canvas.width = w; canvas.height = h;
-                                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                                // Compress to stay under 500KB
-                                var quality = 0.8;
-                                var dataUrl = canvas.toDataURL('image/jpeg', quality);
-                                while (dataUrl.length * 0.75 > PHOTO_MAX_BYTES && quality > 0.3) {
-                                    quality -= 0.1;
-                                    dataUrl = canvas.toDataURL('image/jpeg', quality);
-                                }
-                                // Generate filename with timestamp
-                                var ts = Date.now() + '_' + idx;
-                                var filename = ts + '.jpg';
-                                try {
-                                    var ghUrl = await _uploadToGitHub(group, dataUrl, filename);
-                                    if (!photoData[group]) photoData[group] = [];
-                                    photoData[group].push({ data: ghUrl, caption: '', time: photoTime, isHero: false, type: 'photo' });
-                                    processed++;
-                                    if (processed === toProcess) {
-                                        savePhotoData();
-                                        updateCompStrip(group);
-                                        if (document.getElementById('galleryOverlay').classList.contains('show')) renderGallery(group);
-                                        showToast(processed === 1
-                                            ? (lang === 'de' ? 'Foto hochgeladen' : 'Photo uploaded')
-                                            : processed + (lang === 'de' ? ' Fotos hochgeladen' : ' photos uploaded'));
-                                    }
-                                } catch(err) {
-                                    processed++;
-                                    showToast('Upload-Fehler: ' + err.message);
-                                }
-                            };
-                            img.src = ev.target.result;
-                        };
-                        reader.readAsDataURL(file);
-                    };
-                    exifReader.readAsArrayBuffer(file);
-                })(files[fi], fi);
+                try {
+                    var result = await _processAndUpload(files[fi], group, fi);
+                    if (result) { uploaded++; }
+                } catch(err) {
+                    showToast('Upload-Fehler (' + (fi+1) + '/' + toProcess + '): ' + err.message);
+                }
             }
+            if (uploaded > 0) {
+                savePhotoData();
+                updateCompStrip(group);
+                if (document.getElementById('galleryOverlay').classList.contains('show')) renderGallery(group);
+                showToast(uploaded === 1
+                    ? (lang === 'de' ? 'Foto hochgeladen' : 'Photo uploaded')
+                    : uploaded + (lang === 'de' ? ' Fotos hochgeladen' : ' photos uploaded'));
         };
         input.click();
+    }
+
+    function _processAndUpload(file, group, idx) {
+        return new Promise(function(resolve, reject) {
+            var exifReader = new FileReader();
+            exifReader.onload = function(exifEv) {
+                var exifDate = _getExifDate(exifEv.target.result);
+                var photoTime = exifDate || '';
+                if (!exifDate && file.lastModified) {
+                    var d = new Date(file.lastModified);
+                    if (d.getFullYear() > 2000) photoTime = d.toLocaleString('de-DE');
+                }
+                if (!photoTime) photoTime = new Date().toLocaleString('de-DE');
+                var reader = new FileReader();
+                reader.onload = function(ev) {
+                    var img = new Image();
+                    img.onload = async function() {
+                        try {
+                            var canvas = document.createElement('canvas');
+                            var maxW = 1200, w = img.width, h = img.height;
+                            if (w > maxW) { h = h * maxW / w; w = maxW; }
+                            canvas.width = w; canvas.height = h;
+                            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                            var quality = 0.8;
+                            var dataUrl = canvas.toDataURL('image/jpeg', quality);
+                            while (dataUrl.length * 0.75 > PHOTO_MAX_BYTES && quality > 0.3) {
+                                quality -= 0.1;
+                                dataUrl = canvas.toDataURL('image/jpeg', quality);
+                            }
+                            var ts = Date.now() + '_' + idx;
+                            var filename = ts + '.jpg';
+                            var ghUrl = await _uploadToGitHub(group, dataUrl, filename);
+                            if (!photoData[group]) photoData[group] = [];
+                            photoData[group].push({ data: ghUrl, caption: '', time: photoTime, isHero: false, type: 'photo' });
+                            resolve(true);
+                        } catch(err) { reject(err); }
+                    };
+                    img.onerror = function() { reject(new Error('Bild konnte nicht geladen werden')); };
+                    img.src = ev.target.result;
+                };
+                reader.onerror = function() { reject(new Error('Datei konnte nicht gelesen werden')); };
+                reader.readAsDataURL(file);
+            };
+            exifReader.onerror = function() { reject(new Error('EXIF-Lesefehler')); };
+            exifReader.readAsArrayBuffer(file);
+        });
     }
 
     // YouTube link embedding
