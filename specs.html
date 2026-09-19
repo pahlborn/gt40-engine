@@ -371,28 +371,29 @@
         .tip-box li { margin-bottom: 0.3rem; line-height: 1.45; color: #5a4a00; }
 
         /* ---- Component Photo System ---- */
-        .comp-photo-strip { display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0; padding: 0.4rem; background: #f0f5ff; border-radius: 8px; }
-        .comp-hero { width: 100px; height: 75px; object-fit: contain; border-radius: 6px; background: #fff; border: 1px solid #e2e8f0; cursor: pointer; }
-        .comp-hero:hover { border-color: var(--primary-light); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
-        .comp-photo-info { font-size: 0.72rem; color: var(--text-light); }
-        .comp-photo-info a { color: var(--primary-light); cursor: pointer; text-decoration: underline; }
-        .comp-photo-add { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.7rem; color: var(--primary-light); cursor: pointer; padding: 0.2rem 0.5rem; border-radius: 4px; background: #ebf4ff; border: 1px dashed #90cdf4; }
-        .comp-photo-add:hover { background: #bee3f8; }
+        .comp-photo-strip { margin: 0.6rem 0; text-align: center; }
+        .comp-hero { max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer; }
+        .comp-hero:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
+        .comp-hero-caption { font-size: 0.7rem; color: var(--text-light); margin-top: 0.25rem; }
+        .comp-photo-actions { display: flex; justify-content: center; gap: 0.6rem; margin-top: 0.5rem; }
+        .comp-photo-btn { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.78rem; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; border: 1px solid var(--border); background: #f7fafc; color: var(--text); font-weight: 500; min-height: 36px; }
+        .comp-photo-btn:hover { background: #ebf4ff; border-color: var(--primary-light); color: var(--primary-light); }
         /* Gallery Overlay */
         .gallery-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 1001; display: none; flex-direction: column; }
         .gallery-overlay.show { display: flex; }
         .gallery-header { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1rem; color: #fff; }
         .gallery-header h3 { font-size: 0.95rem; margin: 0; }
-        .gallery-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
-        .gallery-grid { flex: 1; overflow-y: auto; padding: 0.5rem 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem; align-content: start; }
-        .gallery-card { position: relative; border-radius: 8px; overflow: hidden; background: #1a202c; cursor: pointer; }
-        .gallery-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
-        .gallery-card .gallery-star { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); border: none; color: #a0aec0; font-size: 1.1rem; cursor: pointer; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; }
+        .gallery-close { background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; padding: 0.3rem 0.6rem; }
+        .gallery-grid { flex: 1; overflow-y: auto; padding: 0.5rem 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.6rem; align-content: start; }
+        .gallery-card { position: relative; border-radius: 8px; overflow: hidden; background: #1a202c; }
+        .gallery-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; cursor: pointer; }
+        .gallery-card .gallery-star { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.7); border: none; color: #a0aec0; font-size: 1.3rem; cursor: pointer; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
         .gallery-card .gallery-star.active { color: #ed8936; }
         .gallery-card .gallery-star:hover { color: #ed8936; }
-        .gallery-card .gallery-del { position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.6); border: none; color: #fc8181; font-size: 0.75rem; cursor: pointer; border-radius: 4px; padding: 2px 6px; }
-        .gallery-card .gallery-caption { font-size: 0.68rem; color: #cbd5e0; padding: 0.2rem 0.4rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .gallery-add-card { border: 2px dashed #4a5568; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 105px; cursor: pointer; color: #718096; font-size: 0.8rem; }
+        .gallery-card .gallery-del { position: absolute; bottom: 6px; right: 6px; background: rgba(200,0,0,0.8); border: none; color: #fff; font-size: 0.75rem; cursor: pointer; border-radius: 6px; padding: 0.3rem 0.6rem; min-height: 32px; }
+        .gallery-card .gallery-del:hover { background: rgba(255,0,0,0.9); }
+        .gallery-card .gallery-caption { font-size: 0.68rem; color: #cbd5e0; padding: 0.25rem 0.4rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .gallery-add-card { border: 2px dashed #4a5568; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 105px; cursor: pointer; color: #718096; font-size: 0.85rem; font-weight: 500; }
         .gallery-add-card:hover { border-color: #90cdf4; color: #90cdf4; }
         /* Lightbox */
         .photo-lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1002; display: none; justify-content: center; align-items: center; flex-direction: column; }
@@ -602,10 +603,10 @@
                         <span class="spec-value"><a href="docs/M-6010-BOSS302.html" target="_blank" style="color:var(--primary-light);">M-6010-BOSS302 (lokal archiviert)</a></span>
                     </div>
                     <div class="comp-photo-strip" data-comp-gallery="block">
-                        <img class="comp-hero" src="boss302-block.jpg" alt="BOSS 302 Engine Block" data-default-src="boss302-block.jpg" onclick="openGallery('block')">
-                        <div class="comp-photo-info">
-                            <a onclick="openGallery('block')"><span id="block-count">0</span> Fotos</a><br>
-                            <label class="comp-photo-add" onclick="addPhoto('block')">+ Foto</label>
+                        <img class="comp-hero" src="boss302-block.jpg" data-default-src="boss302-block.jpg" onclick="openGallery('block')">
+                        <div class="comp-photo-actions">
+                            <button class="comp-photo-btn" onclick="openGallery('block')">&#128444; <span id="block-count">0</span> Fotos</button>
+                            <button class="comp-photo-btn" onclick="addPhoto('block')">&#128247; Foto hinzuf&uuml;gen</button>
                         </div>
                     </div>
                 </div>
@@ -635,7 +636,7 @@
                         <span class="spec-label">Installation Tips</span>
                         <span class="spec-value"><a href="EngineInstallation_TuningTips.pdf" target="_blank" style="color:var(--primary-light);">Engine Installation &amp; Tuning Tips (PDF, archiviert)</a></span>
                     </div>
-                    <div class="comp-photo-strip" data-comp-gallery="shortblock"><img class="comp-hero" src="img/ford-m6009-302.jpg" alt="" data-default-src="img/ford-m6009-302.jpg" onclick="openGallery('shortblock')"><div class="comp-photo-info"><a onclick="openGallery('shortblock')"><span id="shortblock-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('shortblock')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="shortblock"><img class="comp-hero" src="img/ford-m6009-302.jpg" data-default-src="img/ford-m6009-302.jpg" onclick="openGallery('shortblock')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('shortblock')">&#128444; <span id="shortblock-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('shortblock')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -668,7 +669,7 @@
                         <span class="spec-label">Hersteller-PDF</span>
                         <span class="spec-value"><a href="https://latemodel.cachefly.net/downloads/instructions/cca-355188.pdf" target="_blank" style="color:var(--primary-light);">Spec Card (PDF)</a></span>
                     </div>
-                    <div class="comp-photo-strip" data-comp-gallery="camshaft"><img class="comp-hero" src="img/comp-35-518-8.jpg" alt="" data-default-src="img/comp-35-518-8.jpg" onclick="openGallery('camshaft')"><div class="comp-photo-info"><a onclick="openGallery('camshaft')"><span id="camshaft-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('camshaft')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="camshaft"><img class="comp-hero" src="img/comp-35-518-8.jpg" data-default-src="img/comp-35-518-8.jpg" onclick="openGallery('camshaft')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('camshaft')">&#128444; <span id="camshaft-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('camshaft')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -733,7 +734,7 @@
                         <span class="spec-label">Short Block Daten</span>
                         <span class="spec-value"><a href="https://performanceparts.ford.com/part/M-6009-302" target="_blank" style="color:var(--primary-light);">M-6009-302 Produktseite</a></span>
                     </div>
-                    <div class="comp-photo-strip" data-comp-gallery="pistons"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('pistons')"><span id="pistons-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('pistons')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="pistons"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('pistons')">&#128444; <span id="pistons-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('pistons')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -827,7 +828,7 @@
                         <span class="spec-label">Hersteller</span>
                         <span class="spec-value"><a href="https://www.airflowresearch.com/165cc-sbf-street-cylinder-head/p602" target="_blank" style="color:var(--primary-light);">AFR Produktseite</a> | <a href="https://www.airflowresearch.com/product/download_file/sbf-heads-3.pdf" target="_blank" style="color:var(--primary-light);">Einbauanleitung (PDF)</a></span>
                     </div>
-                    <div class="comp-photo-strip" data-comp-gallery="heads"><img class="comp-hero" src="img/afr-1399.png" alt="" data-default-src="img/afr-1399.png" onclick="openGallery('heads')"><div class="comp-photo-info"><a onclick="openGallery('heads')"><span id="heads-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('heads')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="heads"><img class="comp-hero" src="img/afr-1399.png" data-default-src="img/afr-1399.png" onclick="openGallery('heads')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('heads')">&#128444; <span id="heads-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('heads')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -846,7 +847,7 @@
                     <div class="spec-item"><span class="spec-label">M-6051-CP331 (Std.)</span><span class="spec-value">4.100" Gasket-Bore, 0.042", 9.1 cc (f&uuml;r Prod.-Blocks)</span></div>
                     <div class="spec-item"><span class="spec-label">Fel-Pro #1011-1</span><span class="spec-value">Alternative lt. AFR, f&uuml;r 1962&ndash;95 SBF</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Die Compressed Thickness beeinflusst direkt den Quench-Abstand und die Verdichtung! F&uuml;r den CR-Rechner: 0.040" und 4.160" sind voreingestellt.</div>
-                    <div class="comp-photo-strip" data-comp-gallery="headgasket"><img class="comp-hero" src="img/ford-m6051-cp331.jpg" alt="" data-default-src="img/ford-m6051-cp331.jpg" onclick="openGallery('headgasket')"><div class="comp-photo-info"><a onclick="openGallery('headgasket')"><span id="headgasket-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('headgasket')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="headgasket"><img class="comp-hero" src="img/ford-m6051-cp331.jpg" data-default-src="img/ford-m6051-cp331.jpg" onclick="openGallery('headgasket')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('headgasket')">&#128444; <span id="headgasket-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('headgasket')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -908,7 +909,7 @@
                     <div class="spec-item"><span class="spec-label">Tip</span><span class="spec-value">Geh&auml;rtete Roller Tips</span></div>
                     <div class="spec-item"><span class="spec-label">Finish</span><span class="spec-value">Black Oxide</span></div>
                     <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">Set of 16 (kompletter V8-Satz)</span></div>
-                    <div class="comp-photo-strip" data-comp-gallery="rockers"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('rockers')"><span id="rockers-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('rockers')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="rockers"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('rockers')">&#128444; <span id="rockers-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('rockers')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -919,7 +920,7 @@
                     <div class="spec-item"><span class="spec-label">Stud-Gr&ouml;&szlig;e</span><span class="spec-value">7/16"</span></div>
                     <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">16 St&uuml;ck</span></div>
                     <div class="spec-item"><span class="spec-label">Funktion</span><span class="spec-value">Einstellmutter mit integrierter Kontermutter &ndash; h&auml;lt Preload-Einstellung sicher</span></div>
-                    <div class="comp-photo-strip" data-comp-gallery="polylocks"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('polylocks')"><span id="polylocks-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('polylocks')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="polylocks"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('polylocks')">&#128444; <span id="polylocks-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('polylocks')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -936,7 +937,7 @@
                     <div class="spec-item"><span class="spec-label">Preload</span><span class="spec-value">1/4 bis 1/2 Umdrehung nach Nullspiel (HLT: weniger Preload!)</span></div>
                     <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">16 St&uuml;ck</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Bei 302-Blocks m&uuml;ssen die Zylinderkoepfe abgenommen werden, um die Lifter einzubauen!</div>
-                    <div class="comp-photo-strip" data-comp-gallery="lifters"><img class="comp-hero" src="img/morel-5327.jpg" alt="" data-default-src="img/morel-5327.jpg" onclick="openGallery('lifters')"><div class="comp-photo-info"><a onclick="openGallery('lifters')"><span id="lifters-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('lifters')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="lifters"><img class="comp-hero" src="img/morel-5327.jpg" data-default-src="img/morel-5327.jpg" onclick="openGallery('lifters')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('lifters')">&#128444; <span id="lifters-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('lifters')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -955,7 +956,7 @@
                     <div class="spec-item"><span class="spec-label">Max. Ventilhub</span><span class="spec-value">.650"</span></div>
                     <div class="spec-item"><span class="spec-label">Max. Drehzahl</span><span class="spec-value">7.000 U/min</span></div>
                     <div class="spec-item"><span class="spec-label">Coil Bind pr&uuml;fen</span><span class="spec-value">Ja &ndash; bei max. Lift (.555"/.565") sicherstellen!</span></div>
-                    <div class="comp-photo-strip" data-comp-gallery="valvesprings"><img class="comp-hero" src="img/afr-8605.png" alt="" data-default-src="img/afr-8605.png" onclick="openGallery('valvesprings')"><div class="comp-photo-info"><a onclick="openGallery('valvesprings')"><span id="valvesprings-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('valvesprings')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="valvesprings"><img class="comp-hero" src="img/afr-8605.png" data-default-src="img/afr-8605.png" onclick="openGallery('valvesprings')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('valvesprings')">&#128444; <span id="valvesprings-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('valvesprings')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -977,7 +978,7 @@
                     <div class="spec-item"><span class="spec-label">Muttern</span><span class="spec-value">6-Point (Hex) Nuts + geh&auml;rtete Unterlegscheiben</span></div>
                     <div class="spec-item"><span class="spec-label">Innen (lang)</span><span class="spec-value">5.000" Gesamtl&auml;nge</span></div>
                     <div class="spec-item"><span class="spec-label">Au&szlig;en (kurz)</span><span class="spec-value">3.250" Gesamtl&auml;nge</span></div>
-                    <div class="comp-photo-strip" data-comp-gallery="headbolts"><img class="comp-hero" src="img/arp-154-4003.jpg" alt="" data-default-src="img/arp-154-4003.jpg" onclick="openGallery('headbolts')"><div class="comp-photo-info"><a onclick="openGallery('headbolts')"><span id="headbolts-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('headbolts')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="headbolts"><img class="comp-hero" src="img/arp-154-4003.jpg" data-default-src="img/arp-154-4003.jpg" onclick="openGallery('headbolts')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('headbolts')">&#128444; <span id="headbolts-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('headbolts')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -1086,7 +1087,7 @@
                     <div class="spec-item"><span class="spec-label">Pickup</span><span class="spec-value">Bolt-on Pickup erforderlich (nicht im Lieferumfang!)</span></div>
                     <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">Gusseisen, druckgepr&uuml;ft, handdrehgepr&uuml;ft</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Achtung:</strong> Pickup und Wanne m&uuml;ssen zum 5/8" Inlet passen. Wanne noch zu bestimmen (Canton, Aviaid, Armando o.a.).</div>
-                    <div class="comp-photo-strip" data-comp-gallery="oilpump"><img class="comp-hero" src="img/ford-m6600-d2.jpg" alt="" data-default-src="img/ford-m6600-d2.jpg" onclick="openGallery('oilpump')"><div class="comp-photo-info"><a onclick="openGallery('oilpump')"><span id="oilpump-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('oilpump')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="oilpump"><img class="comp-hero" src="img/ford-m6600-d2.jpg" data-default-src="img/ford-m6600-d2.jpg" onclick="openGallery('oilpump')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('oilpump')">&#128444; <span id="oilpump-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('oilpump')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -1186,7 +1187,7 @@
                     <div class="spec-item"><span class="spec-label">Verstellpositionen</span><span class="spec-value"><strong>9 Positionen</strong> &ndash; 2&deg;-Schritte, &plusmn;8&deg; oder Gerade</span></div>
                     <div class="spec-item"><span class="spec-label">Inklusive</span><span class="spec-value">Thrust Plate M-6269-A302 + 1" Cam-Dowel Pin</span></div>
                     <div class="spec-item"><span class="spec-label">Kompatibel</span><span class="spec-value">One-Piece Fuel Pump Eccentric M-6287-B302</span></div>
-                    <div class="comp-photo-strip" data-comp-gallery="timingchain"><img class="comp-hero" src="img/ford-m6268-a302.jpg" alt="" data-default-src="img/ford-m6268-a302.jpg" onclick="openGallery('timingchain')"><div class="comp-photo-info"><a onclick="openGallery('timingchain')"><span id="timingchain-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('timingchain')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="timingchain"><img class="comp-hero" src="img/ford-m6268-a302.jpg" data-default-src="img/ford-m6268-a302.jpg" onclick="openGallery('timingchain')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('timingchain')">&#128444; <span id="timingchain-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('timingchain')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -1222,7 +1223,7 @@
                     <div class="spec-item"><span class="spec-label">Timing-Markierung</span><span class="spec-value">Lasergeritzt, Passenger Side (11 Uhr) + Driver Side (2 Uhr)</span></div>
                     <div class="spec-item"><span class="spec-label">Montage</span><span class="spec-value">Mit Einpresswerkzeug (Crank Bolt + Adapter) &ndash; NIEMALS mit Hammer!</span></div>
                     <div class="spec-item"><span class="spec-label">Drehmoment Zentralschraube</span><span class="spec-value">70&ndash;90 ft-lbs (95&ndash;122 Nm)</span></div>
-                    <div class="comp-photo-strip" data-comp-gallery="balancer"><img class="comp-hero" src="img/ford-m6316-d302.jpg" alt="" data-default-src="img/ford-m6316-d302.jpg" onclick="openGallery('balancer')"><div class="comp-photo-info"><a onclick="openGallery('balancer')"><span id="balancer-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('balancer')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="balancer"><img class="comp-hero" src="img/ford-m6316-d302.jpg" data-default-src="img/ford-m6316-d302.jpg" onclick="openGallery('balancer')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('balancer')">&#128444; <span id="balancer-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('balancer')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -1276,7 +1277,7 @@
                     <div class="spec-item"><span class="spec-label">Drehmoment</span><span class="spec-value">15&ndash;22 ft-lbs (20&ndash;30 Nm)</span></div>
                     <div class="spec-item"><span class="spec-label">K&uuml;hlmittel</span><span class="spec-value">50/50 Mischung Frostschutz/Wasser</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Empfehlung:</strong> High-Flow Thermostat verwenden, um den erh&ouml;hten Durchfluss nicht zu drosseln.</div>
-                    <div class="comp-photo-strip" data-comp-gallery="waterpump"><img class="comp-hero" src="img/milodon-16230.jpg" alt="" data-default-src="img/milodon-16230.jpg" onclick="openGallery('waterpump')"><div class="comp-photo-info"><a onclick="openGallery('waterpump')"><span id="waterpump-count">0</span> Fotos</a><br><label class="comp-photo-add" onclick="addPhoto('waterpump')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="waterpump"><img class="comp-hero" src="img/milodon-16230.jpg" data-default-src="img/milodon-16230.jpg" onclick="openGallery('waterpump')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('waterpump')">&#128444; <span id="waterpump-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('waterpump')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -1305,7 +1306,7 @@
                     <div class="spec-item"><span class="spec-label">Ansaugbr&uuml;cke</span><span class="spec-value">Spezial-Downdraft-Manifold (Hersteller noch offen)</span></div>
                     <div class="spec-item"><span class="spec-label">Abstimmung</span><span class="spec-value">Hauptd&uuml;se, Leerlaufd&uuml;se, Luftkorrekturd&uuml;se, Emulsionsrohr, Pumpend&uuml;se &ndash; alle von oben zug&auml;nglich</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Vorteil:</strong> Einzeldrosselklappen pro Zylinder = sofortiges Ansprechverhalten. Typisch f&uuml;r GT40-Kit-Cars und europ&auml;ische Sportmotoren.</div>
-                    <div class="comp-photo-strip" data-comp-gallery="carbs"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('carbs')"><span id="carbs-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('carbs')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="carbs"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('carbs')">&#128444; <span id="carbs-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('carbs')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -1332,7 +1333,7 @@
                     <div class="spec-item"><span class="spec-label">Ma&szlig;e / Gewicht</span><span class="spec-value">140 &times; 54 mm, 700 g pro Pumpe</span></div>
                     <div class="spec-item"><span class="spec-label">MTBF</span><span class="spec-value">6.000 Betriebsstunden</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Facet Red Top liefert <strong>6&ndash;8 psi</strong> &ndash; DellOrto DRLA braucht max. <strong>3.5 psi</strong>! <strong>Druckregler zwingend erforderlich!</strong> Empfehlung: Malpassi Filter King. Pumpen m&ouml;glichst tanknahe, vertikal mit Auslass nach oben montieren.</div>
-                    <div class="comp-photo-strip" data-comp-gallery="fuelpump"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('fuelpump')"><span id="fuelpump-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('fuelpump')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="fuelpump"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('fuelpump')">&#128444; <span id="fuelpump-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('fuelpump')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -1480,7 +1481,7 @@
                     <div class="spec-item"><span class="spec-label">Spannung</span><span class="spec-value">12V &ndash; Direkt an Batterie (Plus UND Minus!)</span></div>
                     <div class="spec-item"><span class="spec-label">Zylinder-Select</span><span class="spec-value">Werksseitig auf 8-Zylinder eingestellt</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Keine Massivkern-Z&uuml;ndkabel verwenden! Nur Spiral-Core oder Suppression-Type. Empf. Rev Limiter f&uuml;r diesen Build: <strong>6.500 RPM</strong>.</div>
-                    <div class="comp-photo-strip" data-comp-gallery="msd6al"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('msd6al')"><span id="msd6al-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('msd6al')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="msd6al"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('msd6al')">&#128444; <span id="msd6al-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('msd6al')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -1500,7 +1501,7 @@
                     <div class="spec-item"><span class="spec-label">Voraussetzung</span><span class="spec-value">Erfordert MSD 6/7/8-Series Z&uuml;ndbox</span></div>
                     <div class="spec-item"><span class="spec-label">CARB</span><span class="spec-value">E.O. Approved</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis Iron Gear:</strong> Das mitgelieferte Iron Gear ist kompatibel mit Hydraulic Roller Cams. Alternative: PN 84791 mit Steel Gear (Melonized QPQ) f&uuml;r h&ouml;here Haltbarkeit.</div>
-                    <div class="comp-photo-strip" data-comp-gallery="distributor"><div class="comp-photo-info" style="padding:0.4rem"><a onclick="openGallery('distributor')"><span id="distributor-count">0</span> Fotos</a> &nbsp; <label class="comp-photo-add" onclick="addPhoto('distributor')">+ Foto</label></div></div>
+                    <div class="comp-photo-strip" data-comp-gallery="distributor"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('distributor')">&#128444; <span id="distributor-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('distributor')">&#128247; Foto hinzuf&uuml;gen</button></div></div>
                 </div>
             </div>
 
@@ -4448,15 +4449,25 @@
         var strip = document.querySelector('[data-comp-gallery="' + group + '"]');
         if (!strip) return;
         var photos = photoData[group] || [];
-        var heroImg = strip.querySelector('.comp-hero');
         var countEl = document.getElementById(group + '-count');
         if (countEl) countEl.textContent = photos.length;
-        // Set hero image: user-selected hero > first uploaded > default
+        var heroImg = strip.querySelector('.comp-hero');
+        // Determine what to show: user-marked hero > first uploaded > default image
         var hero = photos.find(function(p) { return p.isHero; }) || photos[0];
         if (hero && heroImg) {
             heroImg.src = hero.data;
+            heroImg.style.display = '';
         } else if (heroImg && heroImg.dataset.defaultSrc) {
             heroImg.src = heroImg.dataset.defaultSrc;
+            heroImg.style.display = '';
+        } else if (!heroImg && hero) {
+            // No img element yet but we have a photo - create one
+            var img = document.createElement('img');
+            img.className = 'comp-hero';
+            img.src = hero.data;
+            img.onclick = function() { openGallery(group); };
+            var actions = strip.querySelector('.comp-photo-actions');
+            if (actions) strip.insertBefore(img, actions);
         }
     }
 
@@ -4480,8 +4491,8 @@
             var p = photos[i];
             html += '<div class="gallery-card">' +
                 '<img src="' + p.data + '" onclick="openLightbox(\'' + group + '\',' + i + ')">' +
-                '<button class="gallery-star' + (p.isHero ? ' active' : '') + '" onclick="event.stopPropagation();setHero(\'' + group + '\',' + i + ')" title="' + (lang === 'de' ? 'Als Hauptbild' : 'Set as main') + '">&#9733;</button>' +
-                '<button class="gallery-del" onclick="event.stopPropagation();deletePhoto(\'' + group + '\',' + i + ')">&#128465;</button>' +
+                '<button class="gallery-star' + (p.isHero ? ' active' : '') + '" onclick="event.stopPropagation();setHero(\'' + group + '\',' + i + ')" title="' + (lang === 'de' ? 'Als Hauptbild setzen' : 'Set as main image') + '">&#9733;</button>' +
+                '<button class="gallery-del" onclick="event.stopPropagation();deletePhoto(\'' + group + '\',' + i + ')">' + (lang === 'de' ? 'L\u00f6schen' : 'Delete') + '</button>' +
                 '<div class="gallery-caption">' + (p.caption || p.time) + '</div></div>';
         }
         html += '<div class="gallery-add-card" onclick="addPhoto(\'' + group + '\')">+ ' + (lang === 'de' ? 'Foto hinzuf\u00fcgen' : 'Add Photo') + '</div>';
