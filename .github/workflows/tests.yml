@@ -25,6 +25,11 @@ jobs:
       - name: Chromium installieren
         run: npx playwright install --with-deps chromium
 
+      # Zuerst: ein kaputtes Workflow-YAML scheitert vor jedem Job und
+      # erzeugt keine Check-Runs - das sieht aus wie "noch nicht gestartet".
+      - name: Workflow-Struktur
+        run: node tests/workflow.test.mjs
+
       - name: Galerie-Tests
         run: node tests/gallery.test.mjs
 
@@ -46,7 +51,7 @@ jobs:
       - name: Kraftstoffsystem
         run: node tests/fuel-system.test.mjs
 
-      - name: Vergaser: Zerlegen, Synchronisieren, Bedueusung
+      - name: "Vergaser: Zerlegen, Synchronisieren, Bedueusung"
         run: node tests/carb-tuning.test.mjs
 
       - name: Exkurs-Seiten und Verlinkung

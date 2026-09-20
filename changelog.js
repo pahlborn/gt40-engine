@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v36',
+      date: '2026-09-20',
+      title: 'CI war 40 Minuten lang blind',
+      changes: [
+        { type: 'fix', text: 'Ein Schrittname im Workflow enthielt einen ungequoteten Doppelpunkt mit Leerzeichen. Das zerlegt das YAML, und der Workflow scheiterte beim Parsen - vor jedem Job. Seit v33 lief damit kein einziger Test mehr, auch nicht auf main.' },
+        { type: 'fix', text: 'Der Fehler blieb unbemerkt, weil ein beim Parsen gescheiterter Lauf gar keine Check-Runs erzeugt. Eine leere Liste sieht aus wie \'noch nicht gestartet\'.' },
+        { type: 'neu', text: 'tests/workflow.test.mjs prueft jetzt den Workflow selbst: keine ungequoteten Doppelpunkte in Werten, einheitliche Einrueckung der Schritte, jede Testdatei ist verdrahtet, und keine verdrahtete Datei fehlt. Laeuft als erster Schritt und braucht keinen Browser.' }
+      ]
+    },
+    {
       version: 'v35',
       date: '2026-09-20',
       title: 'Tuning Guide: Quellenlage statt Behauptung',
