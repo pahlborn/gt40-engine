@@ -465,6 +465,7 @@
     </style>
 <link rel="stylesheet" href="gallery.css">
 <script src="version.js"></script>
+<script src="changelog.js"></script>
 <script src="gallery.js"></script>
 <script src="field-sync.js"></script>
 </head>
@@ -473,7 +474,7 @@
 <!-- ===== HEADER ===== -->
 <div class="header">
     <div class="header-row">
-        <div class="header-title"><span class="ht-name">Engine Build Log<span class="ht-sub">302 BOSS</span></span><span class="ht-version" id="appVersion"></span></div>
+        <div class="header-title"><span class="ht-name">Engine Build Log<span class="ht-sub">302 BOSS</span></span><span class="ht-version" id="appVersion" onclick="openChangelog()" title="Release-Dokumentation"></span></div>
         <a class="nav-item" href="index.html" id="nav-overview">&#128202; Overview</a>
         <button class="nav-item active" onclick="scrollToGroup('grp-specs')" id="nav-specs">&#128295; Specs</button>
         <a class="nav-item" href="build-log.html" id="nav-build">&#128736; Build Log</a>
@@ -495,7 +496,7 @@
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="forceReload();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:#718096;font-size:0.78rem;cursor:pointer;">&#128260; Seite neu laden</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
-                <div style="padding:0.4rem 0.75rem;font-size:0.68rem;color:var(--text-light);">Version <span class="app-version"></span></div>
+                <button type="button" class="menu-version" onclick="openChangelog();closeToolMenu()" title="Release-Dokumentation">Version <span class="app-version"></span> &rsaquo;</button>
             </div>
         </div>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">

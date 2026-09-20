@@ -181,6 +181,73 @@
         .guide-input-row input:focus { border-color: var(--primary-light); background: white; outline: none; }
 
         /* Photo Gallery inline */
+        /* ---- Kapitelstatus: offen / in Arbeit / erledigt ---- */
+        .step-status {
+            width: 22px; height: 22px; flex-shrink: 0; border-radius: 5px; cursor: pointer;
+            border: 2px solid #cbd5e0; background: #fff; padding: 0; position: relative;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; line-height: 1; color: #fff;
+        }
+        .step-status:hover { border-color: var(--primary-light); }
+        .step-status[value="wip"] { border-color: #dd6b20; background: #dd6b20; }
+        .step-status[value="wip"]::after { content: '\25D0'; }
+        .step-status[value="done"] { border-color: var(--success); background: var(--success); }
+        .step-status[value="done"]::after { content: '\2713'; }
+
+        /* ---- Befunde je Kapitel ---- */
+        .findings { margin: 0.3rem 0 0.2rem; }
+        .findings-head {
+            display: flex; align-items: center; gap: 0.5rem; cursor: pointer;
+            font-size: 0.75rem; color: var(--text-light); padding: 0.25rem 0;
+        }
+        .findings-head .fx-caret { transition: transform 0.15s; display: inline-block; }
+        .findings.open .fx-caret { transform: rotate(90deg); }
+        .findings-badge {
+            display: inline-flex; gap: 0.3rem; align-items: center; font-size: 0.7rem;
+        }
+        .fx-pill { padding: 0.05rem 0.4rem; border-radius: 10px; font-weight: 600; }
+        .fx-pill.open { background: #fed7d7; color: #822727; }
+        .fx-pill.wip { background: #feebc8; color: #7b341e; }
+        .fx-pill.done { background: #c6f6d5; color: #22543d; }
+        .fx-pill.none { background: #edf2f7; color: #718096; font-weight: 400; }
+        .findings-body { display: none; padding: 0.2rem 0 0.3rem; }
+        .findings.open .findings-body { display: block; }
+        .fx-row { display: flex; align-items: center; gap: 0.4rem; padding: 0.15rem 0; }
+        .fx-row input[type="text"] {
+            flex: 1; min-width: 0; font-size: 0.8rem; padding: 0.3rem 0.45rem;
+            border: 1px solid var(--border); border-radius: 5px; background: #fff;
+        }
+        .fx-row.done input[type="text"] { text-decoration: line-through; color: var(--text-light); }
+        .fx-status {
+            flex-shrink: 0; width: 22px; height: 22px; border-radius: 5px; cursor: pointer;
+            border: 2px solid #cbd5e0; background: #fff; padding: 0; color: #fff;
+            display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; line-height: 1;
+        }
+        .fx-status[data-status="wip"] { border-color: #dd6b20; background: #dd6b20; }
+        .fx-status[data-status="wip"]::after { content: '\25D0'; }
+        .fx-status[data-status="done"] { border-color: var(--success); background: var(--success); }
+        .fx-status[data-status="done"]::after { content: '\2713'; }
+        .fx-del {
+            flex-shrink: 0; border: none; background: none; cursor: pointer;
+            color: #cbd5e0; font-size: 1rem; padding: 0 0.25rem;
+        }
+        .fx-del:hover { color: #e53e3e; }
+        .fx-add {
+            font-size: 0.72rem; padding: 0.25rem 0.6rem; border: 1px dashed var(--border);
+            border-radius: 5px; background: none; cursor: pointer; color: var(--primary-light); margin-top: 0.2rem;
+        }
+        .fx-add:hover { border-color: var(--primary-light); background: #ebf4ff; }
+
+        /* ---- Uebersicht aller offenen Befunde ---- */
+        .findings-overview { margin: 0.6rem 0; border: 1px solid var(--border); border-radius: 8px; background: #fff; overflow: hidden; }
+        .findings-overview > summary { padding: 0.6rem 0.8rem; cursor: pointer; font-size: 0.82rem; font-weight: 600; color: var(--text); list-style: none; display: flex; align-items: center; gap: 0.5rem; }
+        .findings-overview > summary::-webkit-details-marker { display: none; }
+        .findings-overview .fo-body { padding: 0 0.8rem 0.7rem; }
+        .fo-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0; border-top: 1px solid var(--border); font-size: 0.78rem; }
+        .fo-item a { color: var(--primary-light); text-decoration: none; flex-shrink: 0; font-size: 0.72rem; }
+        .fo-item a:hover { text-decoration: underline; }
+        .fo-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .fo-empty { padding: 0.4rem 0; font-size: 0.78rem; color: var(--text-light); }
         /* Foto-Galerie: Styles stehen in gallery.css */
         .legacy-photo-notice { margin: 0.6rem 0; padding: 0.6rem 0.8rem; background: #fffaf0; border: 1px solid #f6ad55; border-radius: 8px; font-size: 0.8rem; color: #7b341e; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
         .legacy-photo-notice button { padding: 0.35rem 0.8rem; border: 1px solid #dd6b20; background: #dd6b20; color: #fff; border-radius: 6px; cursor: pointer; font-size: 0.78rem; }
@@ -346,6 +413,8 @@
     </style>
 <link rel="stylesheet" href="gallery.css">
 <script src="version.js"></script>
+<script src="changelog.js"></script>
+<script src="findings.js"></script>
 <script src="gallery.js"></script>
 <script src="field-sync.js"></script>
 </head>
@@ -353,7 +422,7 @@
 
 <div class="header">
     <div class="header-row">
-        <a href="./" class="header-title" style="text-decoration:none;color:white;"><span class="ht-name">Engine Build Log<span class="ht-sub">302 BOSS</span></span><span class="ht-version" id="appVersion"></span></a>
+        <a href="./" class="header-title" style="text-decoration:none;color:white;"><span class="ht-name">Engine Build Log<span class="ht-sub">302 BOSS</span></span><span class="ht-version" id="appVersion" onclick="openChangelog()" title="Release-Dokumentation"></span></a>
         <a class="nav-item" href="index.html">Overview</a>
         <a class="nav-item" href="specs.html">Specs</a>
         <a class="nav-item active" href="build-log.html">Build Log</a>
@@ -371,7 +440,7 @@
                 <button onclick="document.getElementById('importFile').click();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
                 <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
-                <div style="padding:0.4rem 0.75rem;font-size:0.68rem;color:var(--text-light);">Version <span class="app-version"></span></div>
+                <button type="button" class="menu-version" onclick="openChangelog();closeToolMenu()" title="Release-Dokumentation">Version <span class="app-version"></span> &rsaquo;</button>
             </div>
         </div>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
@@ -387,6 +456,10 @@
         <div id="subResults" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #e2e8f0;border-radius:8px;max-height:300px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:100;padding:0.5rem;font-size:0.8rem;"></div>
     </div>
     <div class="save-status" id="saveStatus"><span id="syncBadge"></span></div>
+<details class="findings-overview" id="findingsOverview">
+    <summary>&#128203; Offene Befunde <span class="fo-count"></span></summary>
+    <div class="fo-body"></div>
+</details>
 <div class="legacy-photo-notice" id="legacyPhotoNotice" style="display:none;">
     <span>&#9888; <strong class="lpn-count">0</strong> Fotos liegen noch nur auf diesem Ger&auml;t.</span>
     <button type="button" onclick="migrateLegacyPhotos()">Ins Repository &uuml;bertragen</button>
@@ -426,11 +499,12 @@
 <!-- Step 1: Block Visual Inspection -->
 <div class="step-card" id="p1_step1">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_block_visual" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_block_visual" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">1. Block Visual Inspection (Sichtpr&uuml;fung)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_block_visual_n" placeholder="Findings... (Befund...)" oninput="autoSave()">
+    <input type="hidden" data-field="p1_block_visual_n" data-legacy-note="p1_block_visual">
+    <div class="findings" data-findings="p1_block_visual"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -472,11 +546,12 @@
 <!-- Step 2: Chase Threads -->
 <div class="step-card" id="p1_step2">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_threads" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_threads" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">2. Chase Threads &amp; Blow Out Blind Holes (Gewinde durchjagen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_threads_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_threads_n" data-legacy-note="p1_threads">
+    <div class="findings" data-findings="p1_threads"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -502,11 +577,12 @@
 <!-- Step 3: Measure Deck Height -->
 <div class="step-card" id="p1_step3">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_deck_height" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_deck_height" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">3. Measure Deck Height (Deckh&ouml;he messen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_deck_height_n" placeholder="Measured value..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_deck_height_n" data-legacy-note="p1_deck_height">
+    <div class="findings" data-findings="p1_deck_height"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -540,11 +616,12 @@
 <!-- Step 4: Piston Deck Clearance -->
 <div class="step-card" id="p1_step4">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_piston_deck" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_piston_deck" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">4. Piston Deck Clearance (Kolbenstand) &ndash; all 8 cylinders</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_piston_deck_n" placeholder="Cyl.1:___ 2:___ 3:___ 4:___ 5:___ 6:___ 7:___ 8:___" oninput="autoSave()">
+    <input type="hidden" data-field="p1_piston_deck_n" data-legacy-note="p1_piston_deck">
+    <div class="findings" data-findings="p1_piston_deck"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -603,11 +680,12 @@
 <!-- Step 5: Rotate Crankshaft -->
 <div class="step-card" id="p1_step5">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_crank_turn" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_crank_turn" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">5. Rotate Crankshaft by Hand (Kurbelwelle drehen) &ndash; no binding</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_crank_turn_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_crank_turn_n" data-legacy-note="p1_crank_turn">
+    <div class="findings" data-findings="p1_crank_turn"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="measure">Criteria</h4><ul>
@@ -626,11 +704,12 @@
 <!-- Step 6: Oil Gallery Plugs -->
 <div class="step-card" id="p1_step6">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_oil_plug" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_oil_plug" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">6. Check Oil Gallery Plugs (&Ouml;lkanalstopfen pr&uuml;fen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_oil_plug_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_oil_plug_n" data-legacy-note="p1_oil_plug">
+    <div class="findings" data-findings="p1_oil_plug"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="torque">Torque Values (Anzugswerte)</h4>
@@ -655,11 +734,12 @@
 <!-- Step 7: Cam Bearing Type -->
 <div class="step-card" id="p1_step7">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_cam_bearing_type" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_cam_bearing_type" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">7. Determine Cam Bearing Type (Cam-Lagertyp bestimmen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_cam_bearing_type_n" placeholder="Type:..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_cam_bearing_type_n" data-legacy-note="p1_cam_bearing_type">
+    <div class="findings" data-findings="p1_cam_bearing_type"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="measure">Identification &amp; Target Values (Sollwerte)</h4><ul>
@@ -689,11 +769,12 @@
 <!-- Step 8: Main Bearing Clearance – Plastigage (MIGRATED) -->
 <div class="step-card" id="p1_step8">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_main_brg_check" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_main_brg_check" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">8. Main Bearing Clearance &ndash; Plastigage (Hauptlagerspiel)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_main_brg_check_n" placeholder="All 5 mains measured..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_main_brg_check_n" data-legacy-note="p1_main_brg_check">
+    <div class="findings" data-findings="p1_main_brg_check"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Prerequisites (Voraussetzungen)</h4><ul>
@@ -751,11 +832,12 @@
 <!-- Step 9: Crankshaft Endplay (MIGRATED) -->
 <div class="step-card" id="p1_step9">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_crank_endplay_check" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_crank_endplay_check" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">9. Crankshaft Endplay (Kurbelwellen-Axialspiel)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_crank_endplay_check_n" placeholder="Endplay value..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_crank_endplay_check_n" data-legacy-note="p1_crank_endplay_check">
+    <div class="findings" data-findings="p1_crank_endplay_check"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -791,11 +873,12 @@
 <!-- Step 10: XE274HR Lobe & Journal Visual Inspection -->
 <div class="step-card" id="p1_step10">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_cam_visual" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_cam_visual" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">10. XE274HR Lobe &amp; Journal Visual Inspection (Sichtpr&uuml;fung)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_cam_visual_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_cam_visual_n" data-legacy-note="p1_cam_visual">
+    <div class="findings" data-findings="p1_cam_visual"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="measure">Inspection Points</h4><ul>
@@ -815,11 +898,12 @@
 <!-- Step 11: Measure All 5 Cam Journals -->
 <div class="step-card" id="p1_step11">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_cam_journals" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_cam_journals" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">11. Measure All 5 Cam Journals (Cam-Zapfen messen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_cam_journals_n" placeholder="#1:___ #2:___ #3:___ #4:___ #5:___" oninput="autoSave()">
+    <input type="hidden" data-field="p1_cam_journals_n" data-legacy-note="p1_cam_journals">
+    <div class="findings" data-findings="p1_cam_journals"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools</h4><ul>
@@ -853,11 +937,12 @@
 <!-- Step 12: Morel 5327 Lifters -->
 <div class="step-card" id="p1_step12">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_lifters" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_lifters" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">12. Morel 5327 Lifters &ndash; inspect 16 pcs (16 St&uuml;ck pr&uuml;fen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_lifters_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_lifters_n" data-legacy-note="p1_lifters">
+    <div class="findings" data-findings="p1_lifters"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="measure">Inspection Points &amp; Specs</h4><ul>
@@ -880,11 +965,12 @@
 <!-- Step 13: COMP 1632-16 Rockers -->
 <div class="step-card" id="p1_step13">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_rockers" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_rockers" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">13. COMP 1632-16 Rockers &ndash; Trunnion, Ratio</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_rockers_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_rockers_n" data-legacy-note="p1_rockers">
+    <div class="findings" data-findings="p1_rockers"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="measure">Inspection Points</h4><ul>
@@ -904,11 +990,12 @@
 <!-- Step 14: COMP 4600-16 Polylocks -->
 <div class="step-card" id="p1_step14">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_polylocks" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_polylocks" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">14. COMP 4600-16 Polylocks &ndash; 16 pcs, 7/16&quot; (11.11 mm)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_polylocks_n" placeholder="Count confirmed / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_polylocks_n" data-legacy-note="p1_polylocks">
+    <div class="findings" data-findings="p1_polylocks"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="measure">Inspection Points (Pr&uuml;fpunkte)</h4><ul>
             <li><span class="de"><strong>Quantity:</strong> 16 pcs (16 St&uuml;ck) &ndash; count and verify</span><span class="en"><strong>Quantity:</strong> 16 pcs&ndash; count and verify</span></li>
@@ -932,11 +1019,12 @@
 <!-- Step 15: Sealing Surface Flatness -->
 <div class="step-card" id="p1_step15">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_deck_flat" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_deck_flat" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">15. Sealing Surface Flatness (Dichtfl&auml;chen Planheit)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_deck_flat_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_deck_flat_n" data-legacy-note="p1_deck_flat">
+    <div class="findings" data-findings="p1_deck_flat"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools</h4><ul>
@@ -958,11 +1046,12 @@
 <!-- Step 16: Chamber Volume -->
 <div class="step-card" id="p1_step16">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_chamber_vol" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_chamber_vol" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">16. Chamber Volume (Brennraumvolumen) &ndash; Target: 58 cc</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_chamber_vol_n" placeholder="Measured cc..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_chamber_vol_n" data-legacy-note="p1_chamber_vol">
+    <div class="findings" data-findings="p1_chamber_vol"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools</h4><ul>
@@ -995,11 +1084,12 @@
 <!-- Step 17: Rocker Studs -->
 <div class="step-card" id="p1_step17">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_studs" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_studs" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">17. Rocker Studs 7/16&quot; (11.11 mm) #6411 &ndash; confirm</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_studs_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_studs_n" data-legacy-note="p1_studs">
+    <div class="findings" data-findings="p1_studs"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="measure">Inspection Points (Pr&uuml;fpunkte)</h4><ul>
             <li><span class="de"><strong>Teilenummer:</strong> AFR #6411 Schraub-Stehbolzen</span><span class="en"><strong>Part Number:</strong> AFR #6411 screw-in rocker studs (Schraubstehbolzen)</span></li>
@@ -1019,11 +1109,12 @@
 <!-- Step 18: Springs + Retainers -->
 <div class="step-card" id="p1_step18">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_springs" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_springs" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">18. Springs #8605 + Titanium Retainers #8600 &ndash; confirm</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_springs_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_springs_n" data-legacy-note="p1_springs">
+    <div class="findings" data-findings="p1_springs"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="measure">Inspection Points (Pr&uuml;fpunkte)</h4><ul>
             <li><span class="de"><strong>Federn PAC #8605:</strong> 16 Stueck, Doppelfeder, Beehive- oder konventionelles Design</span><span class="en"><strong>Springs PAC #8605:</strong> 16 pcs, dual spring (Doppelfeder), beehive or conventional design</span></li>
@@ -1043,11 +1134,12 @@
 <!-- Step 19: Installed Spring Height -->
 <div class="step-card" id="p1_step19">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_spring_height" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_spring_height" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">19. Installed Spring Height (Federeinbauh&ouml;he) &ndash; all 16</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_spring_height_n" placeholder="Min:___ Max:___ Avg:___" oninput="autoSave()">
+    <input type="hidden" data-field="p1_spring_height_n" data-legacy-note="p1_spring_height">
+    <div class="findings" data-findings="p1_spring_height"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools</h4><ul>
@@ -1074,11 +1166,12 @@
 <!-- Step 20: Coil Bind Clearance -->
 <div class="step-card" id="p1_step20">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_coilbind" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_coilbind" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">20. Coil Bind Clearance &ge; 0.060&quot; (1.52 mm) over max. lift</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_coilbind_n" placeholder="Clearance:___" oninput="autoSave()">
+    <input type="hidden" data-field="p1_coilbind_n" data-legacy-note="p1_coilbind">
+    <div class="findings" data-findings="p1_coilbind"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block guide-full"><h4 class="measure">Calculation (Berechnung)</h4><ul>
@@ -1109,11 +1202,12 @@
 <!-- Step 21: Open Spring Pressure -->
 <div class="step-card" id="p1_step21">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_spring_open" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_spring_open" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">21. Open Spring Pressure at 0.565&quot; (14.35 mm) lift</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_spring_open_n" placeholder="Pressure lbs:___" oninput="autoSave()">
+    <input type="hidden" data-field="p1_spring_open_n" data-legacy-note="p1_spring_open">
+    <div class="findings" data-findings="p1_spring_open"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools</h4><ul><li>Spring tester (Federpr&uuml;fstand) or calculate from rate</li></ul></div>
@@ -1133,11 +1227,12 @@
 <!-- Step 22: Valve Keepers -->
 <div class="step-card" id="p1_step22">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_keepers" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_keepers" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">22. Valve Keepers (Ventilkeile) 7&deg; &ndash; match titanium retainers</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_keepers_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_keepers_n" data-legacy-note="p1_keepers">
+    <div class="findings" data-findings="p1_keepers"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="measure">Inspection Points (Pr&uuml;fpunkte)</h4><ul>
             <li><span class="de"><strong>Winkel:</strong> 7&deg; Ventilkeile &ndash; muessen zu Titan-Federtellern #8600 passen</span><span class="en"><strong>Angle:</strong> 7&deg; keepers (Ventilkeile) &ndash; must match titanium retainers #8600</span></li>
@@ -1162,11 +1257,12 @@
 <!-- Step 23: Rod Bearing Clearance – Plastigage (MIGRATED) -->
 <div class="step-card" id="p1_step23">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_rod_brg_check" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_rod_brg_check" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">23. Rod Bearing Clearance &ndash; Plastigage (Pleuellagerspiel)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_rod_brg_check_n" placeholder="All 8 rods measured..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_rod_brg_check_n" data-legacy-note="p1_rod_brg_check">
+    <div class="findings" data-findings="p1_rod_brg_check"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -1207,11 +1303,12 @@
 <!-- Step 24: Ring End Gap (MIGRATED) -->
 <div class="step-card" id="p1_step24">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_ring_gap_check" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_ring_gap_check" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">24. Ring End Gap &ndash; Top &amp; 2nd Ring (Kolbenringsto&szlig; messen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_ring_gap_check_n" placeholder="All 8 cylinders measured..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_ring_gap_check_n" data-legacy-note="p1_ring_gap_check">
+    <div class="findings" data-findings="p1_ring_gap_check"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -1269,11 +1366,12 @@
 <!-- Step 25: ARP 154-4003 Head Studs -->
 <div class="step-card" id="p1_step25">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_arp_length" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_arp_length" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">25. ARP 154-4003 Head Studs &ndash; measure length (L&auml;nge messen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_arp_length_n" placeholder="Short:___ Long:___" oninput="autoSave()">
+    <input type="hidden" data-field="p1_arp_length_n" data-legacy-note="p1_arp_length">
+    <div class="findings" data-findings="p1_arp_length"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="measure">Target Values &amp; Inspection</h4>
@@ -1308,11 +1406,12 @@
 <!-- Step 26: ARP 254-1001 Cam Bolt -->
 <div class="step-card" id="p1_step26">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_arp_cam" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_arp_cam" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">26. ARP 254-1001 Cam Bolt &ndash; inspect</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_arp_cam_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_arp_cam_n" data-legacy-note="p1_arp_cam">
+    <div class="findings" data-findings="p1_arp_cam"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="measure">Specs &amp; Inspection</h4>
@@ -1334,11 +1433,12 @@
 <!-- Step 27: M-6268-A302 Timing Set -->
 <div class="step-card" id="p1_step27">
     <div class="step-header">
-        <input type="checkbox" data-field="p1_timing_set" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p1_timing_set" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">27. M-6268-A302 Timing Set &ndash; inspect</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p1_timing_set_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p1_timing_set_n" data-legacy-note="p1_timing_set">
+    <div class="findings" data-findings="p1_timing_set"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="measure">Inspection Points</h4><ul>
@@ -1413,11 +1513,12 @@
 <!-- 1. Cam Bearings -->
 <div class="step-card" id="p2_step1">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_cam_bearings" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_cam_bearings" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">1. Cam Bearings (Cam-Lager) &ndash; check / replace if needed</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_cam_bearings_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_cam_bearings_n" data-legacy-note="p2_cam_bearings">
+    <div class="findings" data-findings="p2_cam_bearings"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Prerequisites (Voraussetzungen)</h4><ul>
@@ -1455,11 +1556,12 @@
 <!-- 2. Install Camshaft -->
 <div class="step-card" id="p2_step2">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_cam_install" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_cam_install" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">2. Install Camshaft (Nockenwelle einsetzen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_cam_install_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_cam_install_n" data-legacy-note="p2_cam_install">
+    <div class="findings" data-findings="p2_cam_install"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -1482,11 +1584,12 @@
 <!-- 3. Thrust Plate + Timing Set -->
 <div class="step-card" id="p2_step3">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_thrust_plate" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_thrust_plate" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">3. Thrust Plate + Timing Set &ndash; install (montieren)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_thrust_plate_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_thrust_plate_n" data-legacy-note="p2_thrust_plate">
+    <div class="findings" data-findings="p2_thrust_plate"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
@@ -1506,11 +1609,12 @@
 <!-- 4. Cam Endplay -->
 <div class="step-card" id="p2_step4">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_endplay" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_endplay" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">4. Cam Endplay (Axialspiel) &ndash; 0.001"&ndash;0.007" (0.025&ndash;0.178 mm)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_endplay_n" placeholder="Measured:___" oninput="autoSave()">
+    <input type="hidden" data-field="p2_endplay_n" data-legacy-note="p2_endplay">
+    <div class="findings" data-findings="p2_endplay"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -1542,11 +1646,12 @@
 <!-- 5. Install Lifter #1 -->
 <div class="step-card" id="p2_step5">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_lifter1" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_lifter1" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">5. Install Lifter on Test Cylinder #1 (Pr&uuml;fzylinder)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_lifter1_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_lifter1_n" data-legacy-note="p2_lifter1">
+    <div class="findings" data-findings="p2_lifter1"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -1582,11 +1687,12 @@
 <!-- 6. Degree Camshaft -->
 <div class="step-card" id="p2_step6">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_degree" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_degree" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">6. Degree Camshaft (Nockenwelle degreen) &ndash; verify ICL</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_degree_n" placeholder="ICL target:___ actual:___" oninput="autoSave()">
+    <input type="hidden" data-field="p2_degree_n" data-legacy-note="p2_degree">
+    <div class="findings" data-findings="p2_degree"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -1638,11 +1744,12 @@
 <!-- 7. Install All 16 Lifters -->
 <div class="step-card" id="p2_step7">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_lifters_all" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_lifters_all" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">7. Install All 16 Lifters (alle 16 Lifter einsetzen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_lifters_all_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_lifters_all_n" data-legacy-note="p2_lifters_all">
+    <div class="findings" data-findings="p2_lifters_all"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
@@ -1662,11 +1769,12 @@
 <!-- 8. Mock-up Gasket + Head -->
 <div class="step-card" id="p2_step8">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_mockup_head" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_mockup_head" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">8. Mock-up Gasket + Head &ndash; finger-tight only</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_mockup_head_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_mockup_head_n" data-legacy-note="p2_mockup_head">
+    <div class="findings" data-findings="p2_mockup_head"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="warning-box"><strong>Use Fel-Pro 1011-x as mock-up gasket!</strong> The M-6051-CP331 is a single-use copper gasket &ndash; stays in packaging until Phase 3. Kupfer-Kopfdichtung CP331 ist ein Einwegteil &ndash; niemals f&uuml;r Mock-up verwenden!</div>
@@ -1681,11 +1789,12 @@
 <!-- 9. Install Guide Plates -->
 <div class="step-card" id="p2_step9">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_guideplates" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_guideplates" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">9. Install Guide Plates (F&uuml;hrungsplatten montieren)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_guideplates_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_guideplates_n" data-legacy-note="p2_guideplates">
+    <div class="findings" data-findings="p2_guideplates"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -1722,11 +1831,12 @@
 <!-- 10. Determine Pushrod Length -->
 <div class="step-card" id="p2_step10">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_pushrod" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_pushrod" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">10. Determine Pushrod Length (Pushrod-L&auml;nge ermitteln)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_pushrod_n" placeholder="Intake:___ Exhaust:___" oninput="autoSave()">
+    <input type="hidden" data-field="p2_pushrod_n" data-legacy-note="p2_pushrod">
+    <div class="findings" data-findings="p2_pushrod"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -1776,11 +1886,12 @@
 <!-- 11. Rocker Sweep Check -->
 <div class="step-card" id="p2_step11">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_sweep" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_sweep" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">11. Rocker Sweep Check (Filzstift-Methode)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_sweep_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_sweep_n" data-legacy-note="p2_sweep">
+    <div class="findings" data-findings="p2_sweep"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
@@ -1814,11 +1925,12 @@
 <!-- 12. Piston-to-Valve Clearance -->
 <div class="step-card" id="p2_step12">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_ptv" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_ptv" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">12. Piston-to-Valve Clearance (P-V, Knetmasse)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_ptv_n" placeholder="Intake:___ Exhaust:___" oninput="autoSave()">
+    <input type="hidden" data-field="p2_ptv_n" data-legacy-note="p2_ptv">
+    <div class="findings" data-findings="p2_ptv"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -1869,11 +1981,12 @@
 <!-- 13. Quench Distance – Solder Wire Method -->
 <div class="step-card" id="p2_step13">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_quench" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_quench" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">13. Quench Distance &ndash; Solder Wire Method (Quench-Abstand)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_quench_n" placeholder="Average:___" oninput="autoSave()">
+    <input type="hidden" data-field="p2_quench_n" data-legacy-note="p2_quench">
+    <div class="findings" data-findings="p2_quench"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -1918,11 +2031,12 @@
 <!-- 14. Retainer-to-Seal Clearance -->
 <div class="step-card" id="p2_step14">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_ret_seal" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_ret_seal" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">14. Retainer-to-Seal Clearance at max lift</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_ret_seal_n" placeholder="Measured:___" oninput="autoSave()">
+    <input type="hidden" data-field="p2_ret_seal_n" data-legacy-note="p2_ret_seal">
+    <div class="findings" data-findings="p2_ret_seal"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="measure">Target Value (Sollwert)</h4>
@@ -1955,11 +2069,12 @@
 <!-- 15. Intake Manifold dry fit -->
 <div class="step-card" id="p2_step15">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_intake_dry" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_intake_dry" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">15. Intake Manifold (Ansaugbr&uuml;cke) &ndash; dry fit</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_intake_dry_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_intake_dry_n" data-legacy-note="p2_intake_dry">
+    <div class="findings" data-findings="p2_intake_dry"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block guide-full"><h4 class="measure">Inspection Points (Pr&uuml;fpunkte)</h4><ul>
             <li><span class="de">Port-Fluchtung: Ansaugkanal muss mit Kopf-Kanal fluchten (Markierungen)</span><span class="en">Port alignment: intake port must align with head port (witness marks)</span></li>
@@ -1972,11 +2087,12 @@
 <!-- 16. Oil Pump dry fit -->
 <div class="step-card" id="p2_step16">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_oilpump_dry" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_oilpump_dry" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">16. Oil Pump (&Ouml;lpumpe) + Drive Shaft &ndash; dry fit</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_oilpump_dry_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_oilpump_dry_n" data-legacy-note="p2_oilpump_dry">
+    <div class="findings" data-findings="p2_oilpump_dry"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
             <li><span class="de">Melling M-68 Oelpumpe bereit (oder Ford M-6600-D2)</span><span class="en">Melling M-68 oil pump ready (or Ford M-6600-D2)</span></li>
@@ -2006,11 +2122,12 @@
 <!-- 17. Timing Cover dry fit -->
 <div class="step-card" id="p2_step17">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_timing_cover_dry" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_timing_cover_dry" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">17. Timing Cover &ndash; dry fit</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_timing_cover_dry_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_timing_cover_dry_n" data-legacy-note="p2_timing_cover_dry">
+    <div class="findings" data-findings="p2_timing_cover_dry"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
             <li><span class="de">Steuerkette und Zahnraeder vom Degreeing-Schritt montiert</span><span class="en">Timing chain and sprockets installed from degreeing step</span></li>
@@ -2040,11 +2157,12 @@
 <!-- 18. Oil Pan -->
 <div class="step-card" id="p2_step18">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_oilpan" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_oilpan" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">18. Oil Pan (&Ouml;lwanne) &ndash; clearance, pickup distance</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_oilpan_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_oilpan_n" data-legacy-note="p2_oilpan">
+    <div class="findings" data-findings="p2_oilpan"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
             <li><span class="de">Canton Road Race Wanne #15-644 (oder gewaehlte Wanne) bereit</span><span class="en">Canton Road Race pan #15-644 (or selected pan) ready</span></li>
@@ -2075,11 +2193,12 @@
 <!-- 19. Pickup-to-Pan Bottom -->
 <div class="step-card" id="p2_step19">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_pickup" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_pickup" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">19. Pickup-to-Pan Bottom: 1/4"&ndash;3/8" (6.4&ndash;9.5 mm)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_pickup_n" placeholder="Measured:___" oninput="autoSave()">
+    <input type="hidden" data-field="p2_pickup_n" data-legacy-note="p2_pickup">
+    <div class="findings" data-findings="p2_pickup"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
             <li><span class="de">Lineal, Messschieber oder gebogene Drahtlehre</span><span class="en">Ruler, caliper, or bent wire gauge</span></li>
@@ -2109,11 +2228,12 @@
 <!-- 20. Valve Covers -->
 <div class="step-card" id="p2_step20">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_valvecover" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_valvecover" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">20. Valve Covers (Ventildeckel) &ndash; rocker clearance</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_valvecover_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_valvecover_n" data-legacy-note="p2_valvecover">
+    <div class="findings" data-findings="p2_valvecover"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
             <li><span class="de">Kipphebel + Polylocks auf mindestens einem Testzylinder montiert</span><span class="en">Rockers + polylocks installed on at least test cylinder</span></li>
@@ -2142,11 +2262,12 @@
 <!-- 21. Distributor -->
 <div class="step-card" id="p2_step21">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_distributor" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_distributor" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">21. Distributor (Verteiler) &ndash; intake clearance</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_distributor_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_distributor_n" data-legacy-note="p2_distributor">
+    <div class="findings" data-findings="p2_distributor"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
             <li><span class="de">MSD-Verteiler bereit (Pro-Billet oder Ready-to-Run)</span><span class="en">MSD distributor ready (Pro-Billet or Ready-to-Run)</span></li>
@@ -2181,11 +2302,12 @@
 <!-- 22. Order Final Pushrods -->
 <div class="step-card" id="p2_step22">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_pushrods_order" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_pushrods_order" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">22. Order Final Pushrods (finale Pushrods bestellen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_pushrods_order_n" placeholder="Ordered: Intake:___ Exhaust:___" oninput="autoSave()">
+    <input type="hidden" data-field="p2_pushrods_order_n" data-legacy-note="p2_pushrods_order">
+    <div class="findings" data-findings="p2_pushrods_order"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="prereq">Prerequisites (Voraussetzungen)</h4><ul>
             <li><span class="de">Stoesselstangenlaenge in Schritt 10 bestimmt (Pruef-Stoesselstange)</span><span class="en">Pushrod length determined in step 10 (checking pushrod)</span></li>
@@ -2216,11 +2338,12 @@
 <!-- 23. Complete Teardown -->
 <div class="step-card" id="p2_step23">
     <div class="step-header">
-        <input type="checkbox" data-field="p2_teardown" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p2_teardown" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">23. Complete Teardown &ndash; label all parts (zerlegen &amp; beschriften)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p2_teardown_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p2_teardown_n" data-legacy-note="p2_teardown">
+    <div class="findings" data-findings="p2_teardown"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
             <li><span class="de">Zip-lock bags (verschiedene Gr&ouml;&szlig;en)</span><span class="en">Zip-lock bags</span></li>
@@ -2296,11 +2419,12 @@
 <!-- Step 1: Clean Sealing Surfaces -->
 <div class="step-card" id="p3_clean">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_clean" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_clean" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">1. Clean Sealing Surfaces (Dichtfl&auml;chen reinigen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_clean_n" placeholder="Findings... (Befund...)" oninput="autoSave()">
+    <input type="hidden" data-field="p3_clean_n" data-legacy-note="p3_clean">
+    <div class="findings" data-findings="p3_clean"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="consumables">Consumables (Betriebsmittel)</h4><ul>
             <li><span class="de">Brake cleaner (acetone-based / acetonbasiert)</span><span class="en">Brake cleaner</span></li>
@@ -2318,11 +2442,12 @@
 <!-- Step 2: Blow Out Head Bolt Holes -->
 <div class="step-card" id="p3_blowout">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_blowout" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_blowout" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">2. Blow Out Head Bolt Holes (Kopfbohrungen ausblasen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_blowout_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_blowout_n" data-legacy-note="p3_blowout">
+    <div class="findings" data-findings="p3_blowout"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -2358,11 +2483,12 @@
 <!-- Step 3: All Parts + Consumables Ready -->
 <div class="step-card" id="p3_all_parts">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_all_parts" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_all_parts" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">3. All Parts + Consumables Ready (Teile &amp; Material griffbereit)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_all_parts_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_all_parts_n" data-legacy-note="p3_all_parts">
+    <div class="findings" data-findings="p3_all_parts"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block guide-full"><h4 class="consumables">Consumables Checklist (Betriebsmittel-Checkliste)</h4><ul>
             <li><span class="de">&#9744; ARP Ultra-Torque Schmiermittel (im Stehbolzen-Kit enthalten)</span><span class="en">&#9744; ARP Ultra-Torque lubricant (included in stud kit / im Stehbolzen-Kit enthalten)</span></li>
@@ -2384,11 +2510,12 @@
 <!-- Step 4: Cam lube -->
 <div class="step-card" id="p3_cam_lube">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_cam_lube" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_cam_lube" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">4. Camshaft: assembly lube on ALL lobes + journals (Montagepaste auf ALLE Nocken + Lagerzapfen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_cam_lube_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_cam_lube_n" data-legacy-note="p3_cam_lube">
+    <div class="findings" data-findings="p3_cam_lube"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -2421,11 +2548,12 @@
 <!-- Step 5: Install Cam -->
 <div class="step-card" id="p3_cam_install">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_cam_install" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_cam_install" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">5. Install Cam (long bolt as handle / langer Bolzen als Griff)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_cam_install_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_cam_install_n" data-legacy-note="p3_cam_install">
+    <div class="findings" data-findings="p3_cam_install"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -2463,11 +2591,12 @@
 <!-- Step 6: Timing Set + ARP Cam Bolt -->
 <div class="step-card" id="p3_timing_set">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_timing_set" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_timing_set" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">6. Timing Set + ARP 254-1001 Cam Bolt (Steuerkettensatz + Nockenwellenschraube)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_timing_set_n" placeholder="Torque:___" oninput="autoSave()">
+    <input type="hidden" data-field="p3_timing_set_n" data-legacy-note="p3_timing_set">
+    <div class="findings" data-findings="p3_timing_set"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="torque">Torque Values (Anzugswerte)</h4>
             <div class="spec-line"><span>ARP 254-1001 Cam Bolt</span><span class="spec-val">25&ndash;30 ft-lbs (34&ndash;41 Nm)</span></div>
@@ -2485,11 +2614,12 @@
 <!-- Step 7: Install All 16 Lifters -->
 <div class="step-card" id="p3_lifters">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_lifters" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_lifters" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">7. Install All 16 Lifters (alle 16 Lifter mit Montagepaste einsetzen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_lifters_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_lifters_n" data-legacy-note="p3_lifters">
+    <div class="findings" data-findings="p3_lifters"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -2526,11 +2656,12 @@
 <!-- Step 8: Oil Pump M-6600-D2 -->
 <div class="step-card" id="p3_oilpump">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_oilpump" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_oilpump" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">8. Oil Pump M-6600-D2 &ndash; install (&Ouml;lpumpe montieren)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_oilpump_n" placeholder="Torque:___" oninput="autoSave()">
+    <input type="hidden" data-field="p3_oilpump_n" data-legacy-note="p3_oilpump">
+    <div class="findings" data-findings="p3_oilpump"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="consumables">Consumables (Betriebsmittel)</h4><ul>
             <li><span class="de"><strong>Fill pump COMPLETELY with assembly lube BEFORE installation!</strong> (Pumpe VOR Montage KOMPLETT mit Montagepaste f&uuml;llen!)</span><span class="en"><strong>Fill pump COMPLETELY with assembly lube BEFORE installation!</strong></span></li>
@@ -2555,11 +2686,12 @@
 <!-- Step 9: Oil Pump Drive Shaft -->
 <div class="step-card" id="p3_oilshaft">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_oilshaft" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_oilshaft" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">9. Oil Pump Drive Shaft M-6605-B302 &ndash; install (&Ouml;lpumpen-Antriebswelle)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_oilshaft_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_oilshaft_n" data-legacy-note="p3_oilshaft">
+    <div class="findings" data-findings="p3_oilshaft"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="prereq">Prerequisites (Voraussetzungen)</h4><ul>
             <li><span class="de">Camshaft installed with timing set (Nockenwelle mit Steuertrieb montiert)</span><span class="en">Camshaft installed with timing set</span></li>
@@ -2590,11 +2722,12 @@
 <!-- Step 10: Pickup -->
 <div class="step-card" id="p3_pickup">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_pickup" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_pickup" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">10. Pickup &ndash; install and BOLT (verschrauben, nicht nur stecken!)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_pickup_n" placeholder="Clearance:___" oninput="autoSave()">
+    <input type="hidden" data-field="p3_pickup_n" data-legacy-note="p3_pickup">
+    <div class="findings" data-findings="p3_pickup"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="measure">Pickup-to-Pan Clearance (Abstand Pickup&ndash;Wannenboden)</h4>
             <div class="spec-line"><span>Target Clearance (Sollabstand)</span><span class="spec-val">1/4"&ndash;3/8" (6.4&ndash;9.5 mm)</span></div>
@@ -2618,11 +2751,12 @@
 <!-- Step 11: Head Gasket CP331 -->
 <div class="step-card" id="p3_headgasket">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_headgasket" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_headgasket" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">11. Head Gasket CP331 &ndash; FRONT marking forward! (Kopfdichtung &ndash; FRONT-Markierung nach vorne!)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_headgasket_n" placeholder="FRONT verified / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_headgasket_n" data-legacy-note="p3_headgasket">
+    <div class="findings" data-findings="p3_headgasket"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="warning-box"><strong>&#9888; HEAD GASKET HAS &quot;FRONT&quot; PRINTED ON IT!</strong> Installed backwards = cooling of one bank blocked = engine damage. Most common SBF mistake! (R&uuml;ckw&auml;rts montiert = K&uuml;hlung einer Bankseite unterbrochen = Motorschaden. H&auml;ufigster SBF-Fehler!)</div>
         <div class="guide-block"><h4 class="measure">Gasket Data M-6051-CP331 (Dichtungsdaten)</h4>
@@ -2656,11 +2790,12 @@
 <!-- Step 12: ARP Head Studs -->
 <div class="step-card" id="p3_studs">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_studs" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_studs" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">12. ARP 154-4003 Head Studs &ndash; hand-tight into block (Stehbolzen handfest eindrehen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_studs_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_studs_n" data-legacy-note="p3_studs">
+    <div class="findings" data-findings="p3_studs"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block guide-full"><h4 class="prereq">Stud Installation Info (Einbau-Hinweise)</h4><ul>
             <li><span class="de"><strong>BOSS-Block + AFR #1399</strong> verwenden 1/2" (12,7 mm) Kopfschrauben</span><span class="en"><strong>BOSS Block + AFR #1399</strong> use 1/2" (12.7 mm) head bolts</span></li>
@@ -2674,11 +2809,12 @@
 <!-- Step 13: ARP Ultra-Torque lube -->
 <div class="step-card" id="p3_arp_lube">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_arp_lube" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_arp_lube" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">13. ARP Ultra-Torque on threads + nut face (Gewinde + Mutterauflage)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_arp_lube_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_arp_lube_n" data-legacy-note="p3_arp_lube">
+    <div class="findings" data-findings="p3_arp_lube"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -2719,11 +2855,12 @@
 <!-- Step 14: Set Heads on Dowels -->
 <div class="step-card" id="p3_heads_on">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_heads_on" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_heads_on" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">14. Set Heads on Dowels (K&ouml;pfe auf Passh&uuml;lsen setzen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_heads_on_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_heads_on_n" data-legacy-note="p3_heads_on">
+    <div class="findings" data-findings="p3_heads_on"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -2761,11 +2898,12 @@
 <!-- Step 15: Torque Heads -->
 <div class="step-card" id="p3_heads_torque">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_heads_torque" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_heads_torque" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">15. Torque Heads &ndash; 3 stages, cross pattern (K&ouml;pfe anziehen &ndash; 3 Stufen, Kreuzschema)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_heads_torque_n" placeholder="Stage 1:___ 2:___ 3:___" oninput="autoSave()">
+    <input type="hidden" data-field="p3_heads_torque_n" data-legacy-note="p3_heads_torque">
+    <div class="findings" data-findings="p3_heads_torque"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="torque">Torque Values ARP 154-4003 (Anzugswerte)</h4>
             <div class="spec-line"><span>Stage 1 (Stufe 1)</span><span class="spec-val">35 ft-lbs (47 Nm)</span></div>
@@ -2809,11 +2947,12 @@
 <!-- Step 16: Guide Plates + Pushrods -->
 <div class="step-card" id="p3_guideplates">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_guideplates" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_guideplates" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">16. Guide Plates + Final Pushrods &ndash; install (F&uuml;hrungsplatten + finale Pushrods)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_guideplates_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_guideplates_n" data-legacy-note="p3_guideplates">
+    <div class="findings" data-findings="p3_guideplates"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -2850,11 +2989,12 @@
 <!-- Step 17: Rockers + Preload -->
 <div class="step-card" id="p3_rockers">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_rockers" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_rockers" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">17. Rockers + Preload (1/4&ndash;1/2 turn, on base circle! / Kipphebel + Vorspannung, auf Grundkreis!)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_rockers_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_rockers_n" data-legacy-note="p3_rockers">
+    <div class="findings" data-findings="p3_rockers"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block guide-full"><h4 class="prereq">Preload Procedure (Vorspannungs-Prozedur) &ndash; 7 Steps</h4><ul>
             <li><span class="de"><strong>1.</strong> Rotate crank so this valve&rsquo;s lifter sits on base circle (Grundkreis) &ndash; lobe pointing away from lifter (Nocken zeigt weg vom Lifter)</span><span class="en"><strong>1.</strong> Rotate crank so this valve&rsquo;s lifter sits on base circle (Grundkreis) &ndash; lobe pointing away from lifter</span></li>
@@ -2884,11 +3024,12 @@
 <!-- Step 18: Timing Cover -->
 <div class="step-card" id="p3_timing_cover">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_timing_cover" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_timing_cover" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">18. Timing Cover + Gasket + RTV (Steuerkettendeckel + Dichtung + RTV)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_timing_cover_n" placeholder="Torque:___" oninput="autoSave()">
+    <input type="hidden" data-field="p3_timing_cover_n" data-legacy-note="p3_timing_cover">
+    <div class="findings" data-findings="p3_timing_cover"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
             <li><span class="de">Drehmomentschl&uuml;ssel</span><span class="en">Torque wrench (Drehmomentschl&uuml;ssel)</span></li>
@@ -2920,11 +3061,12 @@
 <!-- Step 19: Balancer -->
 <div class="step-card" id="p3_balancer">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_balancer" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_balancer" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">19. Balancer M-6316-D302 (0-oz, press-on tool! / 0-oz, Aufpresswerkzeug!)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_balancer_n" placeholder="Torque:___" oninput="autoSave()">
+    <input type="hidden" data-field="p3_balancer_n" data-legacy-note="p3_balancer">
+    <div class="findings" data-findings="p3_balancer"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="warning-box"><strong>&#9888; 0-oz balancer (neutral balanced / neutralgewuchtet)!</strong> A 28-oz balancer fits a different rotating assembly and creates vibrations that destroy bearings. (Ein 28-oz-Balancer geh&ouml;rt zu einer anderen Kurbelwelle und erzeugt Vibrationen, die Lager zerst&ouml;ren.)</div>
         <div class="guide-block"><h4 class="torque">Torque Value (Anzugswert)</h4>
@@ -2943,11 +3085,12 @@
 <!-- Step 20: Oil Pan -->
 <div class="step-card" id="p3_oilpan">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_oilpan" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_oilpan" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">20. Oil Pan + Gasket + RTV corners (&Ouml;lwanne + Dichtung + RTV-Ecken)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_oilpan_n" placeholder="Torque:___" oninput="autoSave()">
+    <input type="hidden" data-field="p3_oilpan_n" data-legacy-note="p3_oilpan">
+    <div class="findings" data-findings="p3_oilpan"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="torque">Torque Value (Anzugswert)</h4>
             <div class="spec-line"><span>Oil Pan Bolts (&Ouml;lwannenschrauben)</span><span class="spec-val">10&ndash;12 ft-lbs (14&ndash;16 Nm)</span></div>
@@ -2971,11 +3114,12 @@
 <!-- Step 21: Water Pump -->
 <div class="step-card" id="p3_waterpump">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_waterpump" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_waterpump" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">21. Water Pump MIL-16230 (Wasserpumpe)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_waterpump_n" placeholder="Torque:___" oninput="autoSave()">
+    <input type="hidden" data-field="p3_waterpump_n" data-legacy-note="p3_waterpump">
+    <div class="findings" data-findings="p3_waterpump"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
             <li><span class="de">Drehmomentschl&uuml;ssel</span><span class="en">Torque wrench (Drehmomentschl&uuml;ssel)</span></li>
@@ -3012,11 +3156,12 @@
 <!-- Step 22: Intake Manifold -->
 <div class="step-card" id="p3_intake">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_intake" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_intake" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">22. Intake Manifold + Fel-Pro 1250 (Ansaugbr&uuml;cke + Dichtungen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_intake_n" placeholder="Torque:___" oninput="autoSave()">
+    <input type="hidden" data-field="p3_intake_n" data-legacy-note="p3_intake">
+    <div class="findings" data-findings="p3_intake"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
             <li><span class="de">Drehmomentschl&uuml;ssel</span><span class="en">Torque wrench (Drehmomentschl&uuml;ssel)</span></li>
@@ -3064,8 +3209,8 @@
             </div>
         </div>
         <div class="guide-block guide-full"><h4 class="measure">Montage-Checks</h4>
-            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_intake_rtv" onchange="autoSave()"> <span>RTV-Silikon statt Kork-Enddichtungen verwendet</span></div>
-            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_intake_torqued" onchange="autoSave()"> <span>Ansaugspinne auf 18 ft-lbs angezogen (3-Stufen-Verfahren)</span></div>
+            <div style="margin:0.3rem 0;"><button type="button" class="step-status" data-field="chk_intake_rtv" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button> <span>RTV-Silikon statt Kork-Enddichtungen verwendet</span></div>
+            <div style="margin:0.3rem 0;"><button type="button" class="step-status" data-field="chk_intake_torqued" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button> <span>Ansaugspinne auf 18 ft-lbs angezogen (3-Stufen-Verfahren)</span></div>
         </div>
     </div></div>
 </div>
@@ -3073,11 +3218,12 @@
 <!-- Step 23: Distributor -->
 <div class="step-card" id="p3_distributor">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_distributor" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_distributor" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">23. Distributor &ndash; TDC #1 compression stroke (Verteiler &ndash; OT #1 Kompressionstakt)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_distributor_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_distributor_n" data-legacy-note="p3_distributor">
+    <div class="findings" data-findings="p3_distributor"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -3115,11 +3261,12 @@
 <!-- Step 24: Spark Plugs -->
 <div class="step-card" id="p3_sparkplugs">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_sparkplugs" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_sparkplugs" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">24. Spark Plugs Autolite 3924 &ndash; Gap 0.040" (1.02 mm) (Z&uuml;ndkerzen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_sparkplugs_n" placeholder="Torque:___ Gap verified:___" oninput="autoSave()">
+    <input type="hidden" data-field="p3_sparkplugs_n" data-legacy-note="p3_sparkplugs">
+    <div class="findings" data-findings="p3_sparkplugs"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
             <li><span class="de">Spark plug socket 5/8" / 16 mm (Z&uuml;ndkerzennuss)</span><span class="en">Spark plug socket 5/8" / 16 mm</span></li>
@@ -3145,8 +3292,8 @@
         </div>
         <div class="warning-box"><strong>&#9888; Always install in COLD head!</strong> Cross-threaded aluminum = expensive HeliCoil repair. (Immer im KALTEN Kopf montieren! Quergedr&uuml;cktes Gewinde in Alu = teure HeliCoil-Reparatur.)</div>
         <div class="guide-block guide-full"><h4 class="measure">Montage-Checks</h4>
-            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_spark_antiseize" onchange="autoSave()"> <span>Anti-Seize auf Z&uuml;ndkerzengewinde aufgetragen</span></div>
-            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_spark_torqued" onchange="autoSave()"> <span>Z&uuml;ndkerzen angezogen (15&ndash;22 ft-lbs)</span></div>
+            <div style="margin:0.3rem 0;"><button type="button" class="step-status" data-field="chk_spark_antiseize" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button> <span>Anti-Seize auf Z&uuml;ndkerzengewinde aufgetragen</span></div>
+            <div style="margin:0.3rem 0;"><button type="button" class="step-status" data-field="chk_spark_torqued" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button> <span>Z&uuml;ndkerzen angezogen (15&ndash;22 ft-lbs)</span></div>
         </div>
     </div></div>
 </div>
@@ -3154,11 +3301,12 @@
 <!-- Step 25: Valve Covers -->
 <div class="step-card" id="p3_valvecovers">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_valvecovers" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_valvecovers" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">25. Valve Covers &ndash; 4&ndash;6 ft-lbs (5&ndash;8 Nm), aluminum! (Ventildeckel)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_valvecovers_n" placeholder="Torque:___" oninput="autoSave()">
+    <input type="hidden" data-field="p3_valvecovers_n" data-legacy-note="p3_valvecovers">
+    <div class="findings" data-findings="p3_valvecovers"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -3200,11 +3348,12 @@
 <!-- Step 26: Fuel Pump -->
 <div class="step-card" id="p3_fuelpump">
     <div class="step-header">
-        <input type="checkbox" data-field="p3_fuelpump" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p3_fuelpump" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">26. Fuel Pump Block-Off or Mechanical Pump (Benzinpumpe / Blinddeckel)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p3_fuelpump_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p3_fuelpump_n" data-legacy-note="p3_fuelpump">
+    <div class="findings" data-findings="p3_fuelpump"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block guide-full"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
             <li><span class="de"><strong>1.</strong> Fuel pump pushrod into block bore (Benzinpumpen-Sto&szlig;stange in Blockbohrung)</span><span class="en"><strong>1.</strong> Fuel pump pushrod into block bore</span></li>
@@ -3267,11 +3416,12 @@
 <!-- 1. Pre-Oil -->
 <div class="step-card" id="p4_preoil_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_preoil" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_preoil" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">1. Pre-Oil (Vor&ouml;len) until oil at all 16 rockers</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_preoil_n" placeholder="Findings... (Befund...)" oninput="autoSave()">
+    <input type="hidden" data-field="p4_preoil_n" data-legacy-note="p4_preoil">
+    <div class="findings" data-findings="p4_preoil"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -3296,11 +3446,12 @@
 <!-- 2. Rotate Crank 4× 90° -->
 <div class="step-card" id="p4_preoil_crank_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_preoil_crank" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_preoil_crank" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">2. Rotate Crank 4&times; 90&deg; during pre-oiling (Kurbelwelle drehen beim Vor&ouml;len)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_preoil_crank_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p4_preoil_crank_n" data-legacy-note="p4_preoil_crank">
+    <div class="findings" data-findings="p4_preoil_crank"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -3336,11 +3487,12 @@
 <!-- 3. Oil Pressure during Pre-Oil -->
 <div class="step-card" id="p4_oilpressure_prime_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_oilpressure_prime" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_oilpressure_prime" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">3. Oil Pressure during Pre-Oil (&Ouml;ldruck beim Vor&ouml;len)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_oilpressure_prime_n" placeholder="Pressure:___ psi (___ bar)" oninput="autoSave()">
+    <input type="hidden" data-field="p4_oilpressure_prime_n" data-legacy-note="p4_oilpressure_prime">
+    <div class="findings" data-findings="p4_oilpressure_prime"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -3379,11 +3531,12 @@
 <!-- 4. Fill Break-In Oil (ZDDP!) -->
 <div class="step-card" id="p4_breakin_oil_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_breakin_oil" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_breakin_oil" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">4. Fill Break-In Oil (ZDDP!) &ndash; &Ouml;l einf&uuml;llen</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_breakin_oil_n" placeholder="Product + qty:___" oninput="autoSave()">
+    <input type="hidden" data-field="p4_breakin_oil_n" data-legacy-note="p4_breakin_oil">
+    <div class="findings" data-findings="p4_breakin_oil"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="fill">Fill Quantity (F&uuml;llmenge)</h4>
@@ -3406,11 +3559,12 @@
 <!-- 5. Fill & Bleed Cooling System -->
 <div class="step-card" id="p4_coolant_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_coolant" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_coolant" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">5. Fill &amp; Bleed Cooling System (K&uuml;hlsystem f&uuml;llen &amp; entl&uuml;ften)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_coolant_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p4_coolant_n" data-legacy-note="p4_coolant">
+    <div class="findings" data-findings="p4_coolant"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="fill">Fill Quantity (F&uuml;llmenge)</h4>
             <div class="spec-line"><span>SBF 302 Cooling System</span><span class="spec-val">~14 quarts (13.2 L) total</span></div>
@@ -3442,11 +3596,12 @@
 <!-- 6. Check Fuel System -->
 <div class="step-card" id="p4_fuel_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_fuel" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_fuel" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">6. Check Fuel System (Kraftstoffsystem pr&uuml;fen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_fuel_n" placeholder="Pressure:___ psi" oninput="autoSave()">
+    <input type="hidden" data-field="p4_fuel_n" data-legacy-note="p4_fuel">
+    <div class="findings" data-findings="p4_fuel"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="measure">Fuel Pressure (Kraftstoffdruck)</h4>
@@ -3473,11 +3628,12 @@
 <!-- 7. Static Ignition Timing -->
 <div class="step-card" id="p4_timing_static_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_timing_static" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_timing_static" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">7. Static Ignition Timing ~12&deg; BTDC (Z&uuml;ndzeitpunkt statisch einstellen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_timing_static_n" placeholder="Setting:___&deg; BTDC" oninput="autoSave()">
+    <input type="hidden" data-field="p4_timing_static_n" data-legacy-note="p4_timing_static">
+    <div class="findings" data-findings="p4_timing_static"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
             <li><span class="de">Kurbeldrehwerkzeug oder Knarre auf Schwingungsdaempfer-Schraube</span><span class="en">Crank turning socket or breaker bar on balancer bolt</span></li>
@@ -3506,11 +3662,12 @@
 <!-- 8. MSD 6AL Rev Limiter -->
 <div class="step-card" id="p4_revlimiter_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_revlimiter" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_revlimiter" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">8. MSD 6AL Rev Limiter: 6,500 RPM (Drehzahlbegrenzer)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_revlimiter_n" placeholder="Confirmed / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p4_revlimiter_n" data-legacy-note="p4_revlimiter">
+    <div class="findings" data-findings="p4_revlimiter"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="measure">RPM Module Selection (Modul-Auswahl)</h4>
             <div class="spec-line"><span>Recommended Chip</span><span class="spec-val">6,200&ndash;6,500 RPM</span></div>
@@ -3534,11 +3691,12 @@
 <!-- 9. Recheck Preload -->
 <div class="step-card" id="p4_preload_recheck_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_preload_recheck" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_preload_recheck" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">9. Recheck Preload all 16 valves (Preload nochmals pr&uuml;fen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_preload_recheck_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p4_preload_recheck_n" data-legacy-note="p4_preload_recheck">
+    <div class="findings" data-findings="p4_preload_recheck"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="measure">Target Value (Sollwert)</h4>
             <div class="spec-line"><span>Preload Morel 5327 HLT</span><span class="spec-val">1/2 turn past zero lash (1/2 Umdrehung nach Nullspiel)</span></div>
@@ -3564,11 +3722,12 @@
 <!-- 10. Wiring, Lines, Ground, Firing Order -->
 <div class="step-card" id="p4_wiring_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_wiring" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_wiring" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">10. Wiring, Lines, Ground, Firing Order (Kabel, Leitungen, Masse, Z&uuml;ndfolge)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_wiring_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p4_wiring_n" data-legacy-note="p4_wiring">
+    <div class="findings" data-findings="p4_wiring"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="measure">Firing Order &amp; Cylinder Layout (Z&uuml;ndfolge)</h4>
             <div class="spec-line"><span>Ford 302 Firing Order</span><span class="spec-val">1-5-4-2-6-3-7-8</span></div>
@@ -3595,13 +3754,13 @@
             <li><span class="de">Massekabel vom Motorblock zum Chassis ist Pflicht &ndash; schlechte Masse = kein Start oder schwacher Funke</span><span class="en">Ground strap from engine block to chassis is mandatory &ndash; poor ground = no start or weak spark</span></li>
         </ul></div>
         <div class="guide-block guide-full"><h4 class="measure">Starter &amp; Nebenaggregate &ndash; Montage-Checks</h4>
-            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_starter_visual" onchange="autoSave()"> <span>Starter visuell gepr&uuml;ft, Ritzel OK, Kabel OK</span></div>
-            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_starter_shims" onchange="autoSave()"> <span>Zahnspiel Starter/Schwungrad gepr&uuml;ft (ggf. Shims eingesetzt)</span></div>
-            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_pulleys" onchange="autoSave()"> <span>Pulleys (Kurbel, Wapump, Lima) vorhanden + passend</span></div>
-            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_belt" onchange="autoSave()"> <span>Keilriemen richtige L&auml;nge + Breite</span></div>
-            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_alternator" onchange="autoSave()"> <span>Lichtmaschine vorhanden + min. 65A</span></div>
-            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_mounts" onchange="autoSave()"> <span>Motorlager vorhanden + Ausrichtung gepr&uuml;ft</span></div>
-            <div style="margin:0.3rem 0;"><input type="checkbox" data-field="chk_clutch_pp" onchange="autoSave()"> <span>Druckplatte montiert, Dowels eingesetzt, Drehmoment 12&ndash;24 ft-lbs</span></div>
+            <div style="margin:0.3rem 0;"><button type="button" class="step-status" data-field="chk_starter_visual" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button> <span>Starter visuell gepr&uuml;ft, Ritzel OK, Kabel OK</span></div>
+            <div style="margin:0.3rem 0;"><button type="button" class="step-status" data-field="chk_starter_shims" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button> <span>Zahnspiel Starter/Schwungrad gepr&uuml;ft (ggf. Shims eingesetzt)</span></div>
+            <div style="margin:0.3rem 0;"><button type="button" class="step-status" data-field="chk_pulleys" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button> <span>Pulleys (Kurbel, Wapump, Lima) vorhanden + passend</span></div>
+            <div style="margin:0.3rem 0;"><button type="button" class="step-status" data-field="chk_belt" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button> <span>Keilriemen richtige L&auml;nge + Breite</span></div>
+            <div style="margin:0.3rem 0;"><button type="button" class="step-status" data-field="chk_alternator" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button> <span>Lichtmaschine vorhanden + min. 65A</span></div>
+            <div style="margin:0.3rem 0;"><button type="button" class="step-status" data-field="chk_mounts" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button> <span>Motorlager vorhanden + Ausrichtung gepr&uuml;ft</span></div>
+            <div style="margin:0.3rem 0;"><button type="button" class="step-status" data-field="chk_clutch_pp" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button> <span>Druckplatte montiert, Dowels eingesetzt, Drehmoment 12&ndash;24 ft-lbs</span></div>
         </div>
     </div></div>
 </div>
@@ -3609,11 +3768,12 @@
 <!-- 11. FIRE EXTINGUISHER! HELPER! EXHAUST VENTILATION! -->
 <div class="step-card" id="p4_safety_card" style="border-color: var(--danger);">
     <div class="step-header" style="background: #fff5f5;">
-        <input type="checkbox" data-field="p4_safety" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_safety" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" style="color: var(--danger);">11. FIRE EXTINGUISHER! HELPER! EXHAUST VENTILATION! (Feuerl&ouml;scher! Helfer! Abgasabsaugung!)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_safety_n" placeholder="Confirmed..." oninput="autoSave()">
+    <input type="hidden" data-field="p4_safety_n" data-legacy-note="p4_safety">
+    <div class="findings" data-findings="p4_safety"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="warning-box"><strong>DO NOT START without completing this checklist! Engine fires on first start are more common than you think. (NICHT STARTEN ohne diese Checkliste!)</strong></div>
         <div class="guide-block guide-full"><h4 class="prereq">Safety Checklist (Sicherheits-Checkliste)</h4><ul>
@@ -3638,11 +3798,12 @@
 <!-- 12. START -->
 <div class="step-card" id="p4_start_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_start" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_start" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">12. START &ndash; immediately 2,000&ndash;2,500 RPM! (Sofort auf 2.000&ndash;2.500 U/min!)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_start_n" placeholder="Time:___ Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p4_start_n" data-legacy-note="p4_start">
+    <div class="findings" data-findings="p4_start"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="prereq">Preparation (Vorbereitung)</h4><ul>
@@ -3688,11 +3849,12 @@
 <!-- 13. Oil Pressure at 2,000 RPM -->
 <div class="step-card" id="p4_oil_running_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_oil_running" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_oil_running" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">13. Oil Pressure at 2,000 RPM warm: 40&ndash;55 psi (2.8&ndash;3.8 bar)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_oil_running_n" placeholder="Pressure:___ psi (___ bar)" oninput="autoSave()">
+    <input type="hidden" data-field="p4_oil_running_n" data-legacy-note="p4_oil_running">
+    <div class="findings" data-findings="p4_oil_running"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
@@ -3733,11 +3895,12 @@
 <!-- 14. Visual Inspection: no leaks -->
 <div class="step-card" id="p4_leaks_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_leaks" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_leaks" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">14. Visual Inspection: no leaks (Sichtkontrolle: keine Leckagen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_leaks_n" placeholder="Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p4_leaks_n" data-legacy-note="p4_leaks">
+    <div class="findings" data-findings="p4_leaks"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block guide-full"><h4 class="measure">Inspection Points (Pr&uuml;fpunkte) &ndash; at idle, with helper watching</h4><ul>
             <li><span class="de"><strong>Oil (&Ouml;l):</strong> Valve covers, oil pan gasket, timing cover, oil filter, oil pressure sender, rear main seal, front crank seal</span><span class="en"><strong>Oil:</strong> Valve covers, oil pan gasket, timing cover, oil filter, oil pressure sender, rear main seal, front crank seal</span></li>
@@ -3770,11 +3933,12 @@
 <!-- 15. Coolant Temperature -->
 <div class="step-card" id="p4_temp_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_temp" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_temp" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">15. Coolant Temperature &ndash; thermostat opens (K&uuml;hlmitteltemp. &ndash; Thermostat &ouml;ffnet)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_temp_n" placeholder="Temp:___&deg;F (___&deg;C)" oninput="autoSave()">
+    <input type="hidden" data-field="p4_temp_n" data-legacy-note="p4_temp">
+    <div class="findings" data-findings="p4_temp"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
             <div class="spec-line"><span>Coolant Normal Operating</span><span class="spec-val">180&ndash;195&deg;F (82&ndash;91&deg;C)</span></div>
@@ -3799,11 +3963,12 @@
 <!-- 16. Check Timing Warm -->
 <div class="step-card" id="p4_timing_warm_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_timing_warm" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_timing_warm" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">16. Check Timing Warm (Z&uuml;ndung warm pr&uuml;fen &ndash; Stroboskop)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_timing_warm_n" placeholder="Degrees:___&deg; BTDC" oninput="autoSave()">
+    <input type="hidden" data-field="p4_timing_warm_n" data-legacy-note="p4_timing_warm">
+    <div class="findings" data-findings="p4_timing_warm"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
@@ -3828,11 +3993,12 @@
 <!-- 17. Oil Pressure Idle Warm -->
 <div class="step-card" id="p4_oil_idle_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_oil_idle" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_oil_idle" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">17. Oil Pressure Idle Warm: 25&ndash;35 psi (1.7&ndash;2.4 bar)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_oil_idle_n" placeholder="Pressure:___ psi (___ bar)" oninput="autoSave()">
+    <input type="hidden" data-field="p4_oil_idle_n" data-legacy-note="p4_oil_idle">
+    <div class="findings" data-findings="p4_oil_idle"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
             <div class="spec-line"><span>Hot Idle (Leerlauf warm)</span><span class="spec-val">15&ndash;35 psi (1.0&ndash;2.4 bar) minimum</span></div>
@@ -3856,11 +4022,12 @@
 <!-- 18. Final Timing: 34-36° total advance -->
 <div class="step-card" id="p4_timing_final_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_timing_final" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_timing_final" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">18. Final Timing: 34&ndash;36&deg; total advance (Gesamt-Z&uuml;ndzeitpunkt)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_timing_final_n" placeholder="Initial:___&deg; / Total:___&deg;" oninput="autoSave()">
+    <input type="hidden" data-field="p4_timing_final_n" data-legacy-note="p4_timing_final">
+    <div class="findings" data-findings="p4_timing_final"></div>
     <div class="step-guide">
         <div class="guide-grid">
 
@@ -3960,11 +4127,12 @@
 <!-- 19. Re-Torque Head Nuts -->
 <div class="step-card" id="p4_retorque_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_retorque" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_retorque" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">19. Re-Torque Head Nuts (engine cold! / Motor kalt nachziehen!)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_retorque_n" placeholder="Done / Findings..." oninput="autoSave()">
+    <input type="hidden" data-field="p4_retorque_n" data-legacy-note="p4_retorque">
+    <div class="findings" data-findings="p4_retorque"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="prereq">Prerequisites (Voraussetzungen)</h4><ul>
             <li><span class="de">Engine FULLY cooled (overnight best) &ndash; Motor KOMPLETT abgek&uuml;hlt (am besten &uuml;ber Nacht)</span><span class="en">Engine FULLY cooled (overnight best) &ndash; Motor KOMPLETT abgek&uuml;hlt</span></li>
@@ -3995,11 +4163,12 @@
 <!-- 20. Oil Change – Cut Filter Open -->
 <div class="step-card" id="p4_oilchange_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_oilchange" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_oilchange" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">20. Oil Change &ndash; Cut Filter Open (Filter aufschneiden)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_oilchange_n" placeholder="Filter paper findings:___" oninput="autoSave()">
+    <input type="hidden" data-field="p4_oilchange_n" data-legacy-note="p4_oilchange">
+    <div class="findings" data-findings="p4_oilchange"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block guide-full"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
@@ -4030,11 +4199,12 @@
 <!-- 21. Read Spark Plugs -->
 <div class="step-card" id="p4_sparkread_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_sparkread" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_sparkread" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">21. Read Spark Plugs (Kerzenbild lesen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_sparkread_n" placeholder="Color / Findings:___" oninput="autoSave()">
+    <input type="hidden" data-field="p4_sparkread_n" data-legacy-note="p4_sparkread">
+    <div class="findings" data-findings="p4_sparkread"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
             <li><span class="de">Zuendkerzen-Nuss 5/8&quot; / 16 mm</span><span class="en">Spark plug socket 5/8&quot; / 16 mm</span></li>
@@ -4078,11 +4248,12 @@
 <!-- 22. Synchronize DellOrto, Log Lambda -->
 <div class="step-card" id="p4_sync_card">
     <div class="step-header">
-        <input type="checkbox" data-field="p4_sync" onchange="autoSave()">
+        <button type="button" class="step-status" data-field="p4_sync" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
         <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">22. Synchronize DellOrto, Log Lambda (DellOrto synchronisieren, Lambda loggen)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="text" class="step-note" data-field="p4_sync_n" placeholder="Lambda L:___ R:___" oninput="autoSave()">
+    <input type="hidden" data-field="p4_sync_n" data-legacy-note="p4_sync">
+    <div class="findings" data-findings="p4_sync"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block guide-full"><h4 class="prereq">Procedure &ndash; Carburetor Mounting (Vergaser-Montage)</h4><ul>
@@ -4286,6 +4457,9 @@
             var merged = FieldSync.mergeRecords(cloudData, localData);
             applyData(merged);
             localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+            // Befunde liegen in einer eigenen Gist-Datei und werden pro Eintrag
+            // gemerged - genau wie die Galerie-Metadaten.
+            if (await Findings.pull(gist, getGistConfig().token)) renderAllFindings();
             isLoading = false; updateSaveStatus();
             showToast('Cloud-Daten geladen!');
         } catch (err) { isLoading = false; showToast('Cloud-Fehler: ' + err.message); }
@@ -4356,15 +4530,19 @@
         ['phase1','phase2','phase3','phase4'].forEach(function(pid) {
             var phase = document.getElementById(pid);
             if (!phase) return;
-            var checks = phase.querySelectorAll('input[type="checkbox"][data-field]');
-            var done = Array.from(checks).filter(function(c) { return c.checked; }).length;
+            // Der Kapitelstatus hat drei Stufen. "in Arbeit" zaehlt halb, sonst
+            // steht der Balken tagelang still, obwohl gearbeitet wird.
+            var checks = phase.querySelectorAll('.step-status[data-field]');
+            var arr = Array.from(checks).map(function(c) { return Findings.normalizeStatus(c.value); });
+            var done = arr.filter(function(s) { return s === 'done'; }).length;
+            var wip = arr.filter(function(s) { return s === 'wip'; }).length;
             var total = checks.length;
             totalAll += total; doneAll += done;
             var num = pid.replace('phase','');
             var bar = document.getElementById('prog' + num);
             var txt = document.getElementById('progText' + num);
-            if (bar) bar.style.width = (total > 0 ? (done/total*100) : 0) + '%';
-            if (txt) txt.textContent = done + ' / ' + total + ' completed';
+            if (bar) bar.style.width = (total > 0 ? ((done + wip * 0.5)/total*100) : 0) + '%';
+            if (txt) txt.textContent = done + ' / ' + total + ' completed' + (wip ? ' (' + wip + ' in Arbeit)' : '');
         });
         var overallFill = document.getElementById('overallFill');
         var overallText = document.getElementById('overallText');
@@ -4441,6 +4619,7 @@
         var raw = localStorage.getItem('engineBuildLog');
         if (raw) { try { var data = JSON.parse(raw); applyData(data); } catch(e) {} }
         dataLoaded = true;
+        renderAllStepStatus();
         if (isGistConfigured()) {
             fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
                 headers: { 'Authorization': 'Bearer ' + getGistConfig().token }
@@ -4454,6 +4633,7 @@
                     var merged = FieldSync.mergeRecords(cloudData, localData);
                     applyData(merged);
                     localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+                    Findings.pull(gist, getGistConfig().token).then(function(ch) { if (ch) renderAllFindings(); });
                 }
                 isLoading = false; updateSaveStatus();
             }).catch(function() { isLoading = false; });
@@ -4474,6 +4654,7 @@
                 var merged = FieldSync.mergeRecords(cloudData, localData);
                 applyData(merged);
                 localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+                Findings.pull(gist, getGistConfig().token).then(function(ch) { if (ch) renderAllFindings(); });
             }
             isLoading = false; updateSaveStatus();
         }).catch(function() { isLoading = false; });
@@ -4529,6 +4710,210 @@
     }
 
     // ==== PHOTOS ====
+
+    // ==== KAPITELSTATUS ====
+    // Drei Stufen statt an/aus: eine Checkbox kann "in Arbeit" nicht abbilden,
+    // ein Umschalter genauso wenig. Der Knopf schaltet bei jedem Klick weiter.
+    // Gespeichert wird der Wert ueber das normale Feld-System (data-field).
+    function cycleStepStatus(btn) {
+        btn.value = Findings.nextStatus(btn.value);
+        _paintStepStatus(btn);
+        autoSave();
+        updateProgress();
+    }
+    function _paintStepStatus(btn) {
+        var v = Findings.normalizeStatus(btn.value);
+        btn.value = v;
+        btn.setAttribute('value', v);
+        btn.setAttribute('aria-label', 'Status: ' + Findings.statusLabel(v, document.documentElement.lang));
+    }
+    // Nach jedem Laden noetig: applyData() setzt nur .value, nicht das Attribut,
+    // an dem das CSS haengt. Nimmt zugleich alte Wahrheitswerte entgegen.
+    function renderAllStepStatus() {
+        document.querySelectorAll('.step-status[data-field]').forEach(_paintStepStatus);
+    }
+
+    // ==== BEFUNDE ====
+    // Eine Zeile pro Kapitel reichte nicht: bei einer Sichtpruefung faellt
+    // selten genau eine Sache auf, und jede hat ihren eigenen Verlauf.
+    var _findingsOpen = {};          // welche Listen sind aufgeklappt
+    try {
+        var _fo = localStorage.getItem('engineFindingsOpen');
+        if (_fo) _findingsOpen = JSON.parse(_fo);
+    } catch (e) {}
+    function _saveFindingsOpen() {
+        try { localStorage.setItem('engineFindingsOpen', JSON.stringify(_findingsOpen)); } catch (e) {}
+    }
+
+    function toggleFindings(chapter) {
+        _findingsOpen[chapter] = !_findingsOpen[chapter];
+        _saveFindingsOpen();
+        renderFindings(chapter);
+    }
+
+    function _esc(s) {
+        return String(s == null ? '' : s)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function renderFindings(chapter) {
+        var box = document.querySelector('.findings[data-findings="' + chapter + '"]');
+        if (!box) return;
+        var lang = document.documentElement.lang || 'de';
+        var items = Findings.forChapter(chapter);
+        var c = Findings.counts(chapter);
+        var open = !!_findingsOpen[chapter];
+        box.classList.toggle('open', open);
+
+        var badge;
+        if (!c.total) {
+            badge = '<span class="fx-pill none">' + (lang === 'de' ? 'keine' : 'none') + '</span>';
+        } else {
+            badge = (c.open ? '<span class="fx-pill open">' + c.open + ' ' + (lang === 'de' ? 'offen' : 'open') + '</span>' : '')
+                  + (c.wip ? '<span class="fx-pill wip">' + c.wip + ' ' + (lang === 'de' ? 'in Arbeit' : 'in progress') + '</span>' : '')
+                  + (c.done ? '<span class="fx-pill done">' + c.done + ' ' + (lang === 'de' ? 'erledigt' : 'done') + '</span>' : '');
+        }
+
+        var rows = items.map(function (it) {
+            var s = Findings.normalizeStatus(it.status);
+            return '<div class="fx-row ' + s + '" data-finding="' + it.id + '">'
+                 + '<button type="button" class="fx-status" data-status="' + s + '"'
+                 + ' onclick="cycleFinding(\'' + chapter + '\',\'' + it.id + '\')"'
+                 + ' title="' + _esc(Findings.statusLabel(s, lang)) + '"></button>'
+                 + '<input type="text" value="' + _esc(it.text) + '"'
+                 + ' placeholder="' + (lang === 'de' ? 'Befund...' : 'Finding...') + '"'
+                 + ' oninput="editFinding(\'' + it.id + '\', this.value)">'
+                 + '<button type="button" class="fx-del" onclick="deleteFinding(\'' + chapter + '\',\'' + it.id + '\')"'
+                 + ' title="' + (lang === 'de' ? 'Befund entfernen' : 'Remove finding') + '">&times;</button>'
+                 + '</div>';
+        }).join('');
+
+        box.innerHTML =
+            '<div class="findings-head" onclick="toggleFindings(\'' + chapter + '\')">'
+          + '<span class="fx-caret">&#9656;</span>'
+          + '<span>' + (lang === 'de' ? 'Befunde' : 'Findings') + '</span>'
+          + '<span class="findings-badge">' + badge + '</span>'
+          + '</div>'
+          + '<div class="findings-body">' + rows
+          + '<button type="button" class="fx-add" onclick="addFinding(\'' + chapter + '\')">+ '
+          + (lang === 'de' ? 'Befund' : 'Finding') + '</button></div>';
+    }
+
+    function addFinding(chapter) {
+        Findings.add(chapter, '');
+        _findingsOpen[chapter] = true;
+        _saveFindingsOpen();
+        renderFindings(chapter);
+        renderFindingsOverview();
+        var box = document.querySelector('.findings[data-findings="' + chapter + '"]');
+        var inputs = box ? box.querySelectorAll('.fx-row input[type="text"]') : [];
+        if (inputs.length) inputs[inputs.length - 1].focus();
+    }
+
+    var _findingEditTimer = null;
+    function editFinding(id, text) {
+        clearTimeout(_findingEditTimer);
+        _findingEditTimer = setTimeout(function () {
+            Findings.update(id, { text: text });
+            renderFindingsOverview();
+        }, 400);
+    }
+
+    function cycleFinding(chapter, id) {
+        var items = Findings.forChapter(chapter);
+        var cur = '';
+        for (var i = 0; i < items.length; i++) if (items[i].id === id) cur = items[i].status;
+        Findings.update(id, { status: Findings.nextStatus(cur) });
+        renderFindings(chapter);
+        renderFindingsOverview();
+    }
+
+    function deleteFinding(chapter, id) {
+        var lang = document.documentElement.lang || 'de';
+        if (!confirm(lang === 'de' ? 'Befund entfernen?' : 'Remove finding?')) return;
+        Findings.remove(id);
+        renderFindings(chapter);
+        renderFindingsOverview();
+    }
+
+    function renderAllFindings() {
+        document.querySelectorAll('.findings[data-findings]').forEach(function (b) {
+            renderFindings(b.dataset.findings);
+        });
+        renderFindingsOverview();
+    }
+
+    // Ueberblick ueber alles, was noch offen ist. Ohne den muesste man 100
+    // Kapitel aufklappen, um zu sehen, worauf man gerade wartet.
+    function renderFindingsOverview() {
+        var box = document.getElementById('findingsOverview');
+        if (!box) return;
+        var lang = document.documentElement.lang || 'de';
+        var items = Findings.all(['', 'wip']);
+        var body = box.querySelector('.fo-body');
+        var head = box.querySelector('.fo-count');
+        var c = Findings.counts();
+        head.innerHTML = c.open || c.wip
+            ? '<span class="fx-pill open">' + c.open + ' ' + (lang === 'de' ? 'offen' : 'open') + '</span>'
+              + '<span class="fx-pill wip">' + c.wip + ' ' + (lang === 'de' ? 'in Arbeit' : 'in progress') + '</span>'
+            : '<span class="fx-pill none">' + (lang === 'de' ? 'nichts offen' : 'nothing open') + '</span>';
+        if (!items.length) {
+            body.innerHTML = '<div class="fo-empty">'
+                + (lang === 'de' ? 'Keine offenen Befunde.' : 'No open findings.') + '</div>';
+            return;
+        }
+        body.innerHTML = items.map(function (it) {
+            var s = Findings.normalizeStatus(it.status);
+            var card = document.querySelector('.findings[data-findings="' + it.ch + '"]');
+            var step = card ? card.closest('.step-card') : null;
+            var titleEl = step ? step.querySelector('.step-title') : null;
+            var title = titleEl ? titleEl.textContent.trim() : it.ch;
+            return '<div class="fo-item">'
+                 + '<span class="fx-pill ' + (s === 'wip' ? 'wip' : 'open') + '">'
+                 + Findings.statusLabel(s, lang) + '</span>'
+                 + '<span class="fo-text" title="' + _esc(it.text) + '">'
+                 + (_esc(it.text) || '<em>' + (lang === 'de' ? 'ohne Text' : 'no text') + '</em>') + '</span>'
+                 + (step ? '<a href="#' + step.id + '" onclick="jumpToChapter(\'' + step.id + '\')">'
+                          + _esc(title.length > 34 ? title.slice(0, 33) + '…' : title) + '</a>' : '')
+                 + '</div>';
+        }).join('');
+    }
+
+    function jumpToChapter(stepId) {
+        var el = document.getElementById(stepId);
+        if (!el) return;
+        var body = el.closest('.phase-body');
+        if (body && body.classList.contains('collapsed')) {
+            body.classList.remove('collapsed');
+            var t = document.getElementById('toggle_' + body.id);
+            if (t) t.classList.remove('collapsed');
+        }
+        var chapter = el.querySelector('.findings[data-findings]');
+        if (chapter) {
+            _findingsOpen[chapter.dataset.findings] = true;
+            _saveFindingsOpen();
+            renderFindings(chapter.dataset.findings);
+        }
+        setTimeout(function () {
+            var h = document.querySelector('.header').offsetHeight;
+            window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - h - 10, behavior: 'smooth' });
+        }, 60);
+    }
+
+    // Einmalige Uebernahme der alten Einzelzeile in die Liste.
+    function migrateLegacyNotes() {
+        var changed = 0;
+        document.querySelectorAll('[data-legacy-note]').forEach(function (el) {
+            if (!el.value) return;
+            if (Findings.importLegacyNote(el.dataset.legacyNote, el.value)) changed++;
+        });
+        if (changed) {
+            Findings.scheduleSync();
+            console.log('[Befunde] Alte Notizzeilen uebernommen:', changed);
+        }
+        return changed;
+    }
+
     // ==== FOTOS ====
     // Die Galerie kommt aus gallery.js - dieselbe wie auf der Specs-Seite:
     // Bilder liegen im Repo, Metadaten im Gist, sichtbar auf allen Geraeten.
@@ -5233,6 +5618,10 @@
         if (typeof initUnifiedSearch === 'function') initUnifiedSearch();
         initCompPhotos();
         showLegacyPhotoNotice();
+        Findings.load();
+        migrateLegacyNotes();
+        renderAllStepStatus();
+        renderAllFindings();
         // Render video managers
         document.querySelectorAll('[id^="videoList_"]').forEach(function(el) {
             renderVideos(el.id.replace('videoList_', ''));

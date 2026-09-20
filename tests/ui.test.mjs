@@ -13,6 +13,8 @@ import {
 const { server, base } = await startServer();
 const browser = await chromium.launch();
 const PAGES = ['index.html', 'specs.html', 'build-log.html'];
+const APP_VERSION_ERWARTET = (fs.readFileSync(path.join(REPO_ROOT, 'version.js'), 'utf8')
+  .match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/) || [])[1];
 
 async function open(file, { gallery = false } = {}) {
   const ctx = await browser.newContext();
@@ -79,6 +81,95 @@ await test('Das Sync-Badge nennt keine Version mehr', async () => {
     return document.getElementById('syncBadge').textContent;
   });
   assert(!/v\d/.test(txt), 'Badge enthaelt noch eine Version: ' + txt);
+  await p.close();
+});
+
+// ---------------------------------------------------------------------------
+suite('Release-Dokumentation');
+
+for (const file of PAGES) {
+  await test(file + ': Versionsnummer oeffnet die Release-Dokumentation', async () => {
+    const p = await open(file);
+    const r = await p.page.evaluate(async () => {
+      document.querySelector('.menu-version').click();
+      await new Promise((r) => setTimeout(r, 200));
+      const ov = document.getElementById('changelogOverlay');
+      return {
+        offen: !!ov && ov.classList.contains('show'),
+        releases: ov ? ov.querySelectorAll('.cl-rel').length : 0,
+        aktuell: ov ? (ov.querySelector('.cl-rel.current .cl-ver') || {}).textContent : null
+      };
+    });
+    assert(r.offen, 'Overlay hat sich nicht geoeffnet');
+    assert(r.releases >= 5, 'Nur ' + r.releases + ' Eintraege');
+    assertEqual(r.aktuell, APP_VERSION_ERWARTET, 'Aktuelle Version markiert');
+    await p.close();
+  });
+}
+
+await test('Jeder Eintrag hat Version, Datum, Titel und Aenderungen', async () => {
+  const p = await open('specs.html');
+  const r = await p.page.evaluate(() => {
+    openChangelog();
+    return RELEASES.map((rel) => ({
+      v: /^v\d+$/.test(rel.version),
+      d: /^\d{4}-\d{2}-\d{2}$/.test(rel.date),
+      t: !!(rel.title && rel.title.length > 5),
+      c: Array.isArray(rel.changes) && rel.changes.length > 0,
+      typen: rel.changes.every((x) => ['neu', 'fix', 'intern'].indexOf(x.type) !== -1)
+    }));
+  });
+  assert(r.every((x) => x.v), 'Versionsformat');
+  assert(r.every((x) => x.d), 'Datumsformat');
+  assert(r.every((x) => x.t), 'Titel fehlt');
+  assert(r.every((x) => x.c), 'Keine Aenderungen');
+  assert(r.every((x) => x.typen), 'Unbekannter Aenderungstyp');
+  await p.close();
+});
+
+await test('Die aktuelle Version hat einen Eintrag', async () => {
+  // Sonst waere die Dokumentation beim naechsten Release sofort veraltet.
+  const p = await open('specs.html');
+  const r = await p.page.evaluate(() => ({
+    aktuell: APP_VERSION,
+    versionen: RELEASES.map((x) => x.version)
+  }));
+  assert(r.versionen.indexOf(r.aktuell) === 0,
+    'Neuester Eintrag ist ' + r.versionen[0] + ', APP_VERSION ist ' + r.aktuell);
+  await p.close();
+});
+
+await test('Escape und Klick daneben schliessen das Overlay', async () => {
+  const p = await open('specs.html');
+  const r = await p.page.evaluate(async () => {
+    openChangelog();
+    const ov = document.getElementById('changelogOverlay');
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    const nachEsc = ov.classList.contains('show');
+    openChangelog();
+    ov.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    return { nachEsc, nachKlick: ov.classList.contains('show'),
+             scroll: document.body.style.overflow };
+  });
+  assert(!r.nachEsc, 'Escape schliesst nicht');
+  assert(!r.nachKlick, 'Klick daneben schliesst nicht');
+  assertEqual(r.scroll, '', 'Seiten-Scroll blieb gesperrt');
+  await p.close();
+});
+
+await test('Text wird escaped', async () => {
+  const p = await open('specs.html');
+  const ok = await p.page.evaluate(() => {
+    RELEASES.unshift({ version: 'v999', date: '2026-01-01', title: '<img src=x onerror=alert(1)>',
+                       changes: [{ type: 'neu', text: '<script>alert(1)</scr' + 'ipt>' }] });
+    openChangelog();
+    const body = document.getElementById('changelogBody');
+    const treffer = body.querySelectorAll('img, script').length === 0
+                 && body.textContent.indexOf('<img') !== -1;
+    RELEASES.shift();
+    return treffer;
+  });
+  assert(ok, 'Inhalt wurde als HTML interpretiert');
   await p.close();
 });
 

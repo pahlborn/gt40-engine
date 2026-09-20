@@ -37,6 +37,9 @@ jobs:
       - name: Build-Log-Galerie
         run: node tests/buildlog-gallery.test.mjs
 
+      - name: Kapitelstatus und Befunde
+        run: node tests/findings.test.mjs
+
   # Prueft die tatsaechlich ausgelieferte Seite. Laeuft nur auf main und
   # blockiert nichts, weil ein Aussetzer bei GitHub Pages oder der GitHub-API
   # nichts ueber den Code aussagt.
