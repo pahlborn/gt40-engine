@@ -17,6 +17,9 @@
       date: '2026-09-20',
       title: 'Kapitel 22 macht endlich das, was sein Titel sagt',
       changes: [
+        { type: 'neu', text: 'Exkurs-Seiten unter docs/: Wissen, das sich keinem Arbeitsschritt zuordnen laesst, bricht die Struktur des Build Logs nicht mehr auf, sondern steht als eigene Unterseite - verlinkt von der Stelle, an der die Frage auftaucht. Neu: Kraftstoffdruck am DellOrto DRLA und Ethanol/E10.' },
+        { type: 'fix', text: 'Kraftstoffdruck wird abgelesen, nicht auf einen Sollwert verstellt. Die Anlage lief mit ihrer Einstellung. Eingegriffen wird nur, wenn der Wert ueber 3.5 psi liegt oder die beiden Kreise voneinander abweichen.' },
+        { type: 'fix', text: 'Korrektur an v33: eine Ablesung bei stehendem Motor sei wertlos - das gilt fuer eine mechanische Pumpe, nicht fuer die verbauten elektrischen. Die bauen den Druck bereits bei Zuendung an auf. Vor-Start-Wert und Wert bei laufendem Motor werden jetzt getrennt erfasst.' },
         { type: 'neu', text: 'Leitprinzip Baseline konservieren: die vier Vergaser stammen vom alten 1968er 302, wurden in England professionell mit zwei Lambdasonden abgestimmt und liefen im Trackbetrieb einwandfrei. Seitdem nur gereinigt, keine Einstellaenderung. Die verbaute Bedueusung ist damit kein unbekannter Zustand, sondern ein Ergebnis - Kapitel 27 erfasst und reinigt sie, ohne sie zu veraendern.' },
         { type: 'neu', text: 'STOPP-Punkte im Kapitel: keine Einstellschraube verdrehen, keine Duese zwischen Laeufen vertauschen, keine Reibahle in eine kalibrierte Bohrung, Schwimmerstand nicht auf einen Sollwert biegen, Reglerdruck nicht auf einen Tabellenwert umstellen.' },
         { type: 'neu', text: 'Diagnosebaum in Kapitel 22: Befund, was zuerst zu pruefen ist und was man gerade nicht tun soll. Schlechter Leerlauf ist kein Hauptduesen-Problem, und aus einem einzelnen Lambda-Punkt folgt keine neue Gesamtbedueusung.' },

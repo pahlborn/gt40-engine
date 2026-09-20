@@ -71,12 +71,32 @@ await test('Karte nennt zwei elektrische Facet-Pumpen und beide Regler', async (
   assert(/Zwei getrennte Kreise/.test(txt), 'Zwei-Kreis-Aufbau nicht beschrieben');
 });
 
-await test('Solldruck ist 3.0 psi, Maximum 3.5 psi - nicht der Holley-Wert', async () => {
+await test('Obergrenze 3.5 psi steht, der Holley-Wert nicht mehr', async () => {
   const txt = kartenText();
-  assert(/3\.5 psi/.test(txt), 'Maximum 3.5 psi fehlt');
-  assert(/3\.0 psi/.test(txt), 'Arbeitswert 3.0 psi fehlt');
+  assert(/3\.5 psi/.test(txt), 'Obergrenze 3.5 psi fehlt');
   assert(!/5\.5&ndash;7\.0 psi/.test(txt) && !/5\.5-7\.0 psi/.test(txt),
     'Karte nennt weiterhin den Holley-Druck 5.5-7.0 psi');
+});
+
+await test('Ablesen statt verstellen - die Anlage lief mit ihrer Einstellung', async () => {
+  // Die vorhandene Reglereinstellung ist Teil der bewaehrten Baseline. Ein
+  // Sollwert, auf den man sie "korrigiert", wuerde sie zerstoeren.
+  const txt = kartenText();
+  assert(/Ablesen, nicht verstellen/.test(txt), 'Grundregel fehlt');
+  assert(/&uuml;ber 3\.5 psi/.test(txt), 'Eingriffsschwelle fehlt');
+  assert(/weichen voneinander ab/.test(txt), 'Abweichung der Kreise als Ausloeser fehlt');
+});
+
+await test('Vor-Start- und Laufwert werden getrennt erfasst', async () => {
+  // Elektrische Pumpen bauen den Druck schon bei stehendem Motor auf - dieser
+  // Wert ist gueltig. Was er nicht zeigt, ist das Verhalten unter Durchfluss.
+  const txt = kartenText();
+  assert(/Z&uuml;ndung an und stehendem Motor/.test(txt),
+    'Gueltigkeit der statischen Ablesung nicht benannt');
+  assert(/Nach dem Erststart nachpr&uuml;fen/.test(txt), 'Nachpruefung unter Last fehlt');
+  for (const f of ['p4_fuel_psi_a', 'p4_fuel_psi_b', 'p4_fuel_psi_a_run', 'p4_fuel_psi_b_run']) {
+    assert(txt.includes('data-field="' + f + '"'), 'Feld fehlt: ' + f);
+  }
 });
 
 await test('Bypass-Charakter des Filter King ist benannt', async () => {

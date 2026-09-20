@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exkurs: Kraftstoffdruck am Dell&rsquo;Orto DRLA</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 1rem; background: #f8f9fa; color: #1a202c; line-height: 1.6; }
+        .banner { background: #2b6cb0; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; margin-bottom: 1rem; }
+        .banner a { color: #bee3f8; }
+        h1 { color: #2d3748; border-bottom: 3px solid #2b6cb0; padding-bottom: 0.5rem; font-size: 1.6rem; }
+        h2 { color: #2b6cb0; border-bottom: 1px solid #cbd5e0; padding-bottom: 0.3rem; margin-top: 1.5rem; }
+        h3 { color: #4a5568; margin-top: 1rem; }
+        .section { background: white; padding: 1rem; border-radius: 8px; margin: 1rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .back-link { display: inline-block; margin-bottom: 1rem; color: #2b6cb0; text-decoration: none; font-weight: 600; }
+        table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; font-size: 0.85rem; }
+        th { background: #ebf4ff; text-align: left; padding: 0.4rem 0.6rem; border-bottom: 2px solid #2b6cb0; }
+        td { padding: 0.35rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        .highlight { background: #fffff0; border: 1px solid #fefcbf; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .warning { background: #fff5f5; border: 1px solid #fc8181; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .info { background: #ebf8ff; border: 1px solid #90cdf4; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .success { background: #e6ffed; border: 1px solid #c6f6d5; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .source { font-size: 0.75rem; color: #718096; margin-top: 0.2rem; }
+        ul { padding-left: 1.3rem; }
+        li { margin-bottom: 0.3rem; }
+        .toc { background: #f7fafc; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin: 1rem 0; }
+        .toc a { color: #2b6cb0; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { padding: 0.15rem 0; }
+        .toc li::before { content: '\25B8 '; color: #2b6cb0; }
+        .badge { display: inline-block; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+        .badge-oem { background: #e2e8f0; color: #4a5568; }
+        .badge-lotus { background: #ebf4ff; color: #2b6cb0; }
+        .badge-mod { background: #fefcbf; color: #975a16; }
+        .badge-tested { background: #e6ffed; color: #276749; }
+        details { margin: 1rem 0; }
+        summary { cursor: pointer; font-weight: 700; color: #2b6cb0; font-size: 1.1rem; padding: 0.5rem 0; border-bottom: 1px solid #cbd5e0; }
+        summary:hover { color: #2c5282; }
+        details[open] summary { margin-bottom: 0.5rem; }
+        .video-embed { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin: 0.5rem 0; background: #1a202c; }
+        .video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .video-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #a0aec0; font-size: 1rem; text-align: center; padding: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="banner">Exkurs &ndash; Hintergrund zu einer offenen Frage. Der Arbeitsschritt steht im Build Log, Phase 4, Kapitel 6.</div>
+    <a class="back-link" href="../">&larr; Zur&uuml;ck zum Build Log</a>
+
+    <h1>Exkurs: Kraftstoffdruck am Dell&rsquo;Orto DRLA</h1>
+
+    <div class="toc">
+        <strong>Inhalt</strong>
+        <ul>
+            <li><a href="#frage">Worum es geht</a></li>
+            <li><a href="#warum">Warum es eine Grenze gibt</a></li>
+            <li><a href="#quellen">Was die Quellen hergeben</a></li>
+            <li><a href="#bypass">Der Filter King als Bypass-Regler</a></li>
+            <li><a href="#zweikreis">Folge f&uuml;r die Zwei-Kreis-Anlage</a></li>
+            <li><a href="#handhabung">Praktische Handhabung</a></li>
+            <li><a href="#offen">Offene Punkte</a></li>
+        </ul>
+    </div>
+
+    <div class="section" id="frage">
+        <h2>Worum es geht</h2>
+        <p>In der Dokumentation steht &bdquo;max. 3.5&nbsp;psi&ldquo; als harte Grenze. Der Wert ist plausibel, aber <strong>keine Primaerquelle von Dell&rsquo;Orto</strong> konnte ihn bisher belegen. Dieser Exkurs h&auml;lt fest, was gepr&uuml;ft wurde, warum die Grenze physikalisch &uuml;berhaupt existiert, und was daraus f&uuml;r die konkrete Zwei-Kreis-Anlage dieses Fahrzeugs folgt.</p>
+        <div class="info">Der Arbeitsschritt selbst &ndash; messen und eintragen &ndash; steht im Build Log, Phase&nbsp;4, Kapitel&nbsp;6 (Kraftstoffsystem pr&uuml;fen). Hier steht nur der Hintergrund.</div>
+    </div>
+
+    <div class="section" id="warum">
+        <h2>Warum es &uuml;berhaupt eine Grenze gibt</h2>
+        <p>Das Schwimmernadelventil ist ein druckbeaufschlagtes Absperrventil. Der Schwimmer muss mit seinem Auftrieb die Kraft &uuml;berwinden, die der Kraftstoffdruck auf die Nadelflaeche aus&uuml;bt. Steigt der Druck &uuml;ber das, was der Auftrieb halten kann, <strong>schlie&szlig;t die Nadel nicht mehr sauber</strong>. Der Pegel in der Schwimmerkammer steigt, das Gemisch wird fett, im Extremfall l&auml;uft der Vergaser &uuml;ber.</p>
+        <p>Die Grenze ist also keine Materialfrage des Vergaserk&ouml;rpers, sondern eine <strong>Kr&auml;ftebilanz am Schwimmer</strong>. Sie h&auml;ngt damit auch von der verbauten Nadelventil-Variante und vom Schwimmer ab &ndash; weshalb ein einzelner allgemeiner Zahlenwert die Sache ohnehin nur n&auml;herungsweise beschreibt.</p>
+    </div>
+
+    <div class="section" id="quellen">
+        <h2>Was die Quellen hergeben</h2>
+        <table>
+            <thead><tr><th>Angabe</th><th>Herkunft</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr><td>2.5&ndash;3.5&nbsp;psi als Arbeitsbereich</td><td>mehrere unabh&auml;ngige Vergaser-Spezialisten und H&auml;ndler</td><td><span class="badge badge-mod">Sekund&auml;rquellen</span></td></tr>
+                <tr><td>&bdquo;nicht &uuml;ber 3&ndash;4&nbsp;psi&ldquo;</td><td>Fachforen, Werkstattpraxis</td><td><span class="badge badge-mod">Sekund&auml;rquellen</span></td></tr>
+                <tr><td>Dell&rsquo;Orto-Werksangabe f&uuml;r DRLA</td><td>&ndash;</td><td><span class="badge badge-mod">nicht gefunden</span></td></tr>
+                <tr><td>Facet Red Top 480532: 6&ndash;8&nbsp;psi, ca. 45&nbsp;GPH</td><td>Herstellerbeschreibung und mehrere H&auml;ndler</td><td><span class="badge badge-tested">belegt</span></td></tr>
+                <tr><td>Malpassi Filter King ist ein Bypass-Regler mit R&uuml;cklauf</td><td>Officina Malpassi</td><td><span class="badge badge-tested">Primaerquelle Hersteller</span></td></tr>
+            </tbody>
+        </table>
+        <p class="source">Malpassi belegt die Notwendigkeit einer Druckregelung, nicht den DRLA-Sollwert. Das sind zwei verschiedene Aussagen.</p>
+        <div class="highlight">Die Konsequenz ist unstrittig, auch ohne Primaerquelle: die Pumpe liefert mit 6&ndash;8&nbsp;psi <strong>rund das Doppelte bis Dreifache</strong> dessen, was der Vergaser vertr&auml;gt. Ein Regler ist daher nicht optional, sondern Voraussetzung.</div>
+    </div>
+
+    <div class="section" id="bypass">
+        <h2>Der Filter King ist ein Bypass-Regler &ndash; was das bedeutet</h2>
+        <p>Er regelt nicht, indem er drosselt, sondern indem er &uuml;bersch&uuml;ssigen Kraftstoff in den R&uuml;cklauf abf&uuml;hrt. Der R&uuml;cklauf ist damit kein Zubeh&ouml;r, sondern <strong>Funktionsprinzip</strong>.</p>
+        <p>Gr&ouml;&szlig;enordnung f&uuml;r dieses Fahrzeug: eine Facet f&ouml;rdert etwa 170&nbsp;l/h. Ein 302 verbraucht bei Teillast grob 20&ndash;30&nbsp;l/h, bei Volllast und rund 400&nbsp;PS etwa 120&nbsp;l/h. Im normalen Fahrbetrieb laufen also <strong>weit &uuml;ber 100&nbsp;l/h st&auml;ndig durch den R&uuml;cklauf zur&uuml;ck</strong> &ndash; nicht nur ein Rest bei Volllast.</p>
+    </div>
+
+    <div class="section" id="zweikreis">
+        <h2>Folge f&uuml;r die Zwei-Kreis-Anlage dieses Fahrzeugs</h2>
+        <p>Der Aufbau ist Tornado-Serienstand: zwei Tanks, zwei Facet-Pumpen, zwei Vorfilter, zwei Filter King, zwei Cockpit-Uhren, getrennte Schalter. Daraus ergeben sich zwei Effekte, die man kennen muss:</p>
+        <h3>1. Der h&ouml;her eingestellte Regler gewinnt</h3>
+        <p>Beide Kreise laufen hinter den Reglern zusammen. Steht Regler&nbsp;A auf 3.0 und Regler&nbsp;B auf 3.3&nbsp;psi, liegt die gemeinsame Leitung auf 3.3. Regler&nbsp;A sieht damit stromab mehr als seinen Sollwert und geht in den Voll-Bypass: <strong>seine Pumpe f&ouml;rdert nichts mehr zu den Vergasern</strong>, sondern w&auml;lzt nur noch Kraftstoff in den R&uuml;cklauf um. Da eine Pumpe den Bedarf allein deckt, ist das kein &Uuml;bergangszustand, sondern dauerhaft.</p>
+        <p>Deshalb ist beim Messen nicht nur der Absolutwert wichtig, sondern vor allem, ob <strong>beide Uhren dasselbe zeigen</strong>.</p>
+        <h3>2. Der gemeinsame R&uuml;cklauf verschiebt Kraftstoff</h3>
+        <p>Der R&uuml;cklauf beider Kreise f&uuml;hrt in <em>einen</em> Tank. F&auml;hrt man auf der Pumpe des <em>anderen</em> Tanks, verliert dieser Tank Verbrauch <strong>plus</strong> Bypassmenge, w&auml;hrend der R&uuml;cklauftank die Bypassmenge gewinnt. Netto wandert der Inhalt deutlich schneller hin&uuml;ber, als der Motor verbraucht.</p>
+        <p>Auf kurzen L&auml;ufen f&auml;llt das nicht auf &ndash; es braucht zusammenh&auml;ngende Fahrzeit. Der Tankbilanz-Test in Phase&nbsp;4, Kapitel&nbsp;6 misst genau das. In der GT40-Szene ist der Effekt bekannt; als Abhilfe werden gro&szlig;z&uuml;gig dimensionierte Balanceleitungen zwischen den Tanks oder ein Umschaltventil genannt, w&auml;hrend kleine Querverbindungen &uuml;ber l&auml;ngere Fahrt nicht ausgleichen.</p>
+    </div>
+
+    <div class="section" id="handhabung">
+        <h2>Praktische Handhabung</h2>
+        <div class="success"><strong>Ablesen, nicht verstellen.</strong> Die Anlage lief mit der vorhandenen Reglereinstellung. Eingegriffen wird nur, wenn der Wert <strong>&uuml;ber 3.5&nbsp;psi</strong> liegt oder die <strong>beiden Kreise voneinander abweichen</strong>. Alles dazwischen ist Teil der bew&auml;hrten Baseline.</div>
+        <ul>
+            <li><strong>Vor dem Start:</strong> Z&uuml;ndung an, eine Pumpe an, warten bis das Ticken langsamer wird &ndash; dann ablesen. Bei elektrischen Pumpen ist dieser Wert g&uuml;ltig, der Regler arbeitet bereits.</li>
+            <li><strong>Nach dem Erststart:</strong> bei laufendem Motor und erh&ouml;hter Drehzahl nachpr&uuml;fen. Ein Druck, der erst unter Entnahme einbricht, zeigt sich vorher nicht.</li>
+            <li><strong>Beide Kreise einzeln</strong> messen, nicht nur einen.</li>
+            <li>Vor einer Korrektur den <strong>Ausgangswert notieren</strong>, damit der R&uuml;ckweg offen bleibt.</li>
+        </ul>
+    </div>
+
+    <div class="section" id="offen">
+        <h2>Offen</h2>
+        <ul>
+            <li>Primaerquelle von Dell&rsquo;Orto zum zul&auml;ssigen Kraftstoffdruck des DRLA.</li>
+            <li>Verbaute Nadelventil-Variante und Schwimmerausf&uuml;hrung &ndash; sie bestimmen die tats&auml;chliche Grenze mit.</li>
+            <li>Genaue Ausf&uuml;hrung der beiden Filter King und der beiden Facet-Pumpen (Teilenummern am Bauteil aufnehmen).</li>
+            <li>Topologie des R&uuml;cklaufs: in welchen Tank er f&uuml;hrt, und ob eine Balanceleitung existiert.</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exkurs: Ethanol, E10 und der Dell&rsquo;Orto DRLA</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 1rem; background: #f8f9fa; color: #1a202c; line-height: 1.6; }
+        .banner { background: #2b6cb0; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; margin-bottom: 1rem; }
+        .banner a { color: #bee3f8; }
+        h1 { color: #2d3748; border-bottom: 3px solid #2b6cb0; padding-bottom: 0.5rem; font-size: 1.6rem; }
+        h2 { color: #2b6cb0; border-bottom: 1px solid #cbd5e0; padding-bottom: 0.3rem; margin-top: 1.5rem; }
+        h3 { color: #4a5568; margin-top: 1rem; }
+        .section { background: white; padding: 1rem; border-radius: 8px; margin: 1rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .back-link { display: inline-block; margin-bottom: 1rem; color: #2b6cb0; text-decoration: none; font-weight: 600; }
+        table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; font-size: 0.85rem; }
+        th { background: #ebf4ff; text-align: left; padding: 0.4rem 0.6rem; border-bottom: 2px solid #2b6cb0; }
+        td { padding: 0.35rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        .highlight { background: #fffff0; border: 1px solid #fefcbf; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .warning { background: #fff5f5; border: 1px solid #fc8181; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .info { background: #ebf8ff; border: 1px solid #90cdf4; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .success { background: #e6ffed; border: 1px solid #c6f6d5; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .source { font-size: 0.75rem; color: #718096; margin-top: 0.2rem; }
+        ul { padding-left: 1.3rem; }
+        li { margin-bottom: 0.3rem; }
+        .toc { background: #f7fafc; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin: 1rem 0; }
+        .toc a { color: #2b6cb0; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { padding: 0.15rem 0; }
+        .toc li::before { content: '\25B8 '; color: #2b6cb0; }
+        .badge { display: inline-block; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+        .badge-oem { background: #e2e8f0; color: #4a5568; }
+        .badge-lotus { background: #ebf4ff; color: #2b6cb0; }
+        .badge-mod { background: #fefcbf; color: #975a16; }
+        .badge-tested { background: #e6ffed; color: #276749; }
+        details { margin: 1rem 0; }
+        summary { cursor: pointer; font-weight: 700; color: #2b6cb0; font-size: 1.1rem; padding: 0.5rem 0; border-bottom: 1px solid #cbd5e0; }
+        summary:hover { color: #2c5282; }
+        details[open] summary { margin-bottom: 0.5rem; }
+        .video-embed { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin: 0.5rem 0; background: #1a202c; }
+        .video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .video-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #a0aec0; font-size: 1rem; text-align: center; padding: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="banner">Exkurs &ndash; Hintergrund zu einer offenen Frage. Kein Arbeitsschritt, keine Herstellerangabe. Stand der Pr&uuml;fung dokumentiert.</div>
+    <a class="back-link" href="../">&larr; Zur&uuml;ck zum Build Log</a>
+
+    <h1>Exkurs: Ethanol, E10 und der Dell&rsquo;Orto DRLA</h1>
+
+    <div class="toc">
+        <strong>Inhalt</strong>
+        <ul>
+            <li><a href="#frage">Worum es geht</a></li>
+            <li><a href="#belegt">Was belegt ist</a></li>
+            <li><a href="#nicht-belegt">Was nicht belegt ist</a></li>
+            <li><a href="#regel">Vorgeschlagene Regel statt Verbot</a></li>
+            <li><a href="#offen">Offene Punkte</a></li>
+            <li><a href="#quellen">Quellenlage</a></li>
+        </ul>
+    </div>
+
+    <div class="section" id="frage">
+        <h2>Worum es geht</h2>
+        <p>In der Spezifikation steht bisher: <em>&bdquo;E10 (10&nbsp;% Ethanol) darf NICHT getankt werden &ndash; Ethanol greift die Aluminium-Vergaserk&ouml;rper an.&ldquo;</em> Diese Aussage tr&auml;gt keine Quelle, und sie ist in dieser Sch&auml;rfe nicht haltbar. Gleichzeitig ist die zugrunde liegende Sorge berechtigt. Dieser Exkurs trennt das Belegte vom Behaupteten, damit daraus eine Regel wird, die man auch einhalten kann.</p>
+        <div class="warning">Eine Regel, die in der Praxis nicht einhaltbar ist &ndash; E5 wird an vielen Tankstellen nicht mehr angeboten &ndash; wird irgendwann komplett ignoriert. Mitsamt dem Teil, der stimmt.</div>
+    </div>
+
+    <div class="section" id="belegt">
+        <h2>Was belegt ist</h2>
+        <ul>
+            <li><strong>Ethanol ist hygroskopisch.</strong> Es zieht Wasser aus der Luft. Das Wasser bleibt im Kraftstoff gel&ouml;st, bis der Anteil zu gro&szlig; wird &ndash; dann trennt sich die Phase und unten im Beh&auml;lter steht wasserreicher Alkohol.</li>
+            <li><strong>Stehender ethanolhaltiger Kraftstoff wird sauer.</strong> In dieser Form greift er Aluminium, Zink, verzinkte Werkstoffe, Messing, Kupfer sowie blei- und zinnbeschichtete St&auml;hle an.</li>
+            <li><strong>Weichteile &auml;lterer Bauart sind das erste Opfer.</strong> Dichtungen, Membranen, Schwimmernadel-Dichtungen und Schl&auml;uche aus Werkstoffen, die vor der Ethanol-&Auml;ra spezifiziert wurden, quellen, verh&auml;rten oder l&ouml;sen sich auf.</li>
+            <li><strong>Der Energieinhalt ist geringer.</strong> Ethanolhaltiger Kraftstoff braucht eine gr&ouml;&szlig;ere Menge f&uuml;r dasselbe Gemisch &ndash; grob 3&nbsp;% mehr je Prozent Ethanolanteil. E5 und E10 bed&uuml;sen also nicht identisch.</li>
+        </ul>
+    </div>
+
+    <div class="section" id="nicht-belegt">
+        <h2>Was nicht belegt ist</h2>
+        <p>Dass ein Dell&rsquo;Orto DRLA durch <strong>Fahrbetrieb</strong> mit E10 zu Schaden kommt. Der Korrosionsmechanismus l&auml;uft &uuml;ber Wasseraufnahme und S&auml;urebildung, und beides braucht <strong>Zeit im Stand</strong>, nicht Kilometer. Kraftstoff, der regelm&auml;&szlig;ig durchgesetzt wird, kommt gar nicht erst in diesen Zustand.</p>
+        <p>Dagegen spricht auch die Marktlage: Servicesets f&uuml;r Dell&rsquo;Orto werden inzwischen ausdr&uuml;cklich als E10-tauglich verkauft. W&auml;re der Vergaserk&ouml;rper selbst das Problem, w&auml;re ein Dichtsatz keine L&ouml;sung. Der Malpassi Filter King ist je nach Ausf&uuml;hrung sogar bis E85 freigegeben &ndash; woraus allerdings <em>nicht</em> folgt, dass der Vergaser es auch ist.</p>
+        <div class="info">Auch die Begr&uuml;ndung in der Spezifikation trifft daneben: genannt wird der &bdquo;Aluminium-Vergaserk&ouml;rper&ldquo;, w&auml;hrend die Quellen vor allem <strong>Zink und Messing</strong> als gef&auml;hrdet f&uuml;hren &ndash; also Kleinteile, Schwimmerkammer-Anbauteile und Leitungsarmaturen.</div>
+    </div>
+
+    <div class="section" id="regel">
+        <h2>Vorgeschlagene Regel statt Verbot</h2>
+        <table>
+            <thead><tr><th>Situation</th><th>Regel</th><th>Begr&uuml;ndung</th></tr></thead>
+            <tbody>
+                <tr><td>Regelm&auml;&szlig;iger Fahrbetrieb</td><td>E10 vertretbar, <strong>wenn die Weichteile E10-fest sind</strong></td><td>Durchgesetzter Kraftstoff bildet keine Phase und keine S&auml;ure</td></tr>
+                <tr><td>Standzeit &uuml;ber Wochen</td><td><strong>Das eigentliche Risiko.</strong> Vorher ethanolfrei oder ethanolarm tanken, oder Schwimmerkammern leeren</td><td>Wasseraufnahme und S&auml;urebildung brauchen Standzeit</td></tr>
+                <tr><td>&Uuml;berwinterung</td><td>Schwimmerkammern leerfahren oder ablassen; Tank voll und dicht, oder leer und trocken</td><td>Halbvoller Tank ist die schlechteste Variante &ndash; viel Luft, viel Feuchtigkeit</td></tr>
+                <tr><td>Nach l&auml;ngerem Stand</td><td>Vor dem ersten Start Schwimmerkammern und Filterbecher kontrollieren</td><td>Phasengetrenntes Wasser steht unten und geht als erstes zur D&uuml;se</td></tr>
+                <tr><td>Historischer Referenzbetrieb</td><td>98&ndash;100 ROZ, wie bisher</td><td>Die bew&auml;hrte Abstimmung entstand unter diesem Kraftstoff</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section" id="offen">
+        <h2>Offen &ndash; bei der ersten Vergasersitzung kl&auml;ren</h2>
+        <ul>
+            <li>Welche Dichts&auml;tze sind aktuell verbaut, und sind sie E10-fest? Beim Zerlegen (Phase&nbsp;3, Kapitel&nbsp;27) feststellbar.</li>
+            <li>Ausf&uuml;hrung der Schwimmernadelventile und ihrer Dichtungen.</li>
+            <li>Material der Kraftstoffschl&auml;uche zwischen Filter King und Verteilerblock.</li>
+            <li>Ausf&uuml;hrung des Filter King &ndash; die Freigabe h&auml;ngt am Modell.</li>
+        </ul>
+        <div class="warning"><strong>Bis das gekl&auml;rt ist</strong> bleibt die konservative Handhabung richtig: ethanolarm tanken, wo verf&uuml;gbar, und vor jeder l&auml;ngeren Standzeit die Schwimmerkammern leeren. Das ist keine Vorsichtsma&szlig;nahme gegen E10, sondern gegen <em>stehendes</em> E10.</div>
+    </div>
+
+    <div class="section" id="quellen">
+        <h2>Quellenlage</h2>
+        <table>
+            <thead><tr><th>Aussage</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr><td>Ethanol zieht Wasser, stehendes Gemisch wird sauer, greift Zink/Messing/Aluminium an</td><td><span class="badge badge-tested">belegt</span> mehrere unabh&auml;ngige Fachquellen</td></tr>
+                <tr><td>Weichteile alter Spezifikation sind gef&auml;hrdet</td><td><span class="badge badge-tested">belegt</span></td></tr>
+                <tr><td>E10-taugliche Dell&rsquo;Orto-Servicesets existieren</td><td><span class="badge badge-tested">belegt</span> H&auml;ndlerangaben</td></tr>
+                <tr><td>DRLA-Vergaserk&ouml;rper wird durch Fahrbetrieb mit E10 zerst&ouml;rt</td><td><span class="badge badge-mod">nicht belegt</span></td></tr>
+                <tr><td>Konkrete Herstellerfreigabe von Dell&rsquo;Orto f&uuml;r oder gegen E10</td><td><span class="badge badge-mod">nicht gefunden</span></td></tr>
+            </tbody>
+        </table>
+        <p class="source">Dieser Exkurs ersetzt keine Herstellerangabe. Er h&auml;lt fest, was gepr&uuml;ft wurde und was noch offen ist, damit die Entscheidung nicht auf einem ungepr&uuml;ften Satz in der Spezifikation beruht.</p>
+    </div>
+</body>
+</html>
