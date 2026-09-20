@@ -208,6 +208,25 @@ await test('Beide Duesenvorschlaege stehen nebeneinander und gelten als unbelegt
   assert(/unbelegt/.test(k), 'Quellenlage nicht als unbelegt gekennzeichnet');
 });
 
+await test('Plausibilitaetsrechnung leitet die Groessen her', async () => {
+  // Die beiden Vorschlaege behaupten nur. Erst die Herleitung macht pruefbar,
+  // welcher ueberhaupt in der Groessenordnung liegt.
+  const k = karte('p3_carboverhaul');
+  assert(/Plausibilit&auml;tsrechnung/.test(k), 'Rechnung fehlt');
+  assert(/619 cm&sup3;/.test(k), 'Hubraum je Zylinder fehlt');
+  assert(/Barrel &divide; 1\.25/.test(k), 'Venturi-Formel fehlt');
+  assert(/Venturi &times; 4/.test(k), 'Hauptduesen-Formel fehlt');
+  assert(/Hauptd&uuml;se \+ 50/.test(k), 'Luftkorrektur-Formel fehlt');
+});
+
+await test('Grenzen der Rechnung sind benannt', async () => {
+  // Die Formeln stammen aus einem DHLA-Leitfaden, nicht von DRLA. Ohne diesen
+  // Hinweis wird aus einer Groessenordnung ein vermeintlicher Sollwert.
+  const k = karte('p3_carboverhaul');
+  assert(/DHLA/.test(k), 'Herkunft der Formeln (DHLA) nicht genannt');
+  assert(/nicht als Sollwert/.test(k), 'Einschraenkung "kein Sollwert" fehlt');
+});
+
 await test('Hauptventuri ist als fehlender Wert benannt', async () => {
   // Die Hauptduese haengt von ihr ab, im Leitfaden fehlte sie komplett.
   const k = karte('p3_carboverhaul');
