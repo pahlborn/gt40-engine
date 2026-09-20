@@ -60,7 +60,7 @@
             <li><a href="#hauptduese">6. Hauptd&uuml;se / Volllast (Main Jet / Full Throttle)</a></li>
             <li><a href="#kraftstoffdruck">7. Kraftstoffdruck (Fuel Pressure)</a></li>
             <li><a href="#fehlersuche">8. Fehlersuche Vergaser (Carburetor Troubleshooting)</a></li>
-            <li><a href="#bedusung">9. Empfohlene Bed&uuml;sung als Startpunkt (Baseline Jetting)</a></li>
+            <li><a href="#bedusung">9. Externe Bed&uuml;sungstabelle &ndash; nur Referenz</a></li>
             <li><a href="#videos">10. YouTube Videos</a></li>
         </ul>
     </div>
@@ -211,7 +211,7 @@
 
             <h3>Lambda-Zielwert Leerlauf (Target AFR at Idle)</h3>
             <div class="info">
-                <strong>Ziel-AFR Leerlauf: 13.5&ndash;14.0:1</strong> (leicht fett von st&ouml;chiometrisch 14.7:1)<br>
+                <strong>Ziel-AFR Leerlauf: 13.5&ndash;14.0:1</strong> (leicht fett von st&ouml;chiometrisch 14.7:1) <span class="badge badge-mod">unbelegt</span><br><span class="source">Richtwert ohne Primaerquelle. Am Motor zu verifizieren &ndash; ein wild bedatetes Nockenprofil verlangt im Leerlauf oft fetter.</span><br>
                 Messung mit Wideband-Lambda-Sonde. Schmalband-Sonden sind f&uuml;r exakte Abstimmung nicht geeignet.
             </div>
 
@@ -283,7 +283,7 @@
 
             <h3>Lambda-Zielwert WOT (Target AFR at Wide Open Throttle)</h3>
             <div class="warning">
-                <strong>Ziel-AFR bei Volllast (WOT): 12.5&ndash;12.8:1</strong> &ndash; mit Sicherheitsmarge!<br>
+                <strong>Ziel-AFR bei Volllast (WOT): 12.5&ndash;12.8:1</strong> &ndash; mit Sicherheitsmarge! <span class="badge badge-mod">unbelegt</span><br><span class="source">Richtwert ohne Primaerquelle, aber sicherheitsrelevant: zu mager bei Volllast kostet Kolben. Im Zweifel fetter. Build Log, Phase&nbsp;4, Kapitel&nbsp;22 nennt 12.5&ndash;13.0 als etwas breiteres Startband.</span><br>
                 Niemals magerer als 13.0:1 unter Volllast. Bei Unsicherheit: <strong>IMMER eine D&uuml;sengr&ouml;&szlig;e fetter!</strong>
             </div>
 
@@ -328,7 +328,7 @@
 
             <h3>Maximaler Kraftstoffdruck DellOrto DRLA</h3>
             <div class="warning">
-                <strong>DellOrto DRLA Maximum: 3.5 psi (0.24 bar)!</strong><br>
+                <strong>DellOrto DRLA Maximum: 3.5 psi (0.24 bar)!</strong> <span class="badge badge-mod">Sekund&auml;rquellen</span><br><span class="source">Eine Werksangabe von Dell&rsquo;Orto konnte bisher nicht belegt werden. Hintergrund, Quellenlage und die Folgen f&uuml;r die Zwei-Kreis-Anlage: <a href="exkurs-kraftstoffdruck.html">Exkurs Kraftstoffdruck</a>.</span><br>
                 H&ouml;herer Druck dr&uuml;ckt die Nadelventile auf und f&uuml;hrt zu &Uuml;berflutung (flooding), unkontrolliertem Kraftstofffluss und Brandgefahr.
             </div>
 
@@ -362,8 +362,9 @@
 
             <h3>E10 / Ethanol-Kraftstoff</h3>
             <div class="warning">
-                <strong>&#9888; E10 / ETHANOL: VERBOTEN f&uuml;r DellOrto Aluminium-K&ouml;rper!</strong><br>
-                Ethanol greift das Aluminium-Geh&auml;use, Schwimmer, Dichtungen und Membranen an. Nur bleifreies Super (E5 oder besser) verwenden. Bei l&auml;ngerem Stillstand: Vergaser leerfahren oder Kraftstoff ablassen.
+                <strong>&#9888; E10 / Ethanol &ndash; das Risiko liegt in der Standzeit</strong><br>
+                Ethanol zieht Wasser; stehendes ethanolhaltiges Gemisch wird sauer und greift Zink, Messing und Aluminium an. Weichteile alter Spezifikation quellen oder verh&auml;rten. <strong>Der Mechanismus l&auml;uft &uuml;ber Standzeit, nicht &uuml;ber Kilometer</strong> &ndash; ein pauschales Verbot ist nicht belegt, E10-feste Dell&rsquo;Orto-Dichts&auml;tze gibt es. Differenzierte Regel und Quellenlage: <a href="exkurs-ethanol.html">Exkurs Ethanol</a>.<br>
+                Solange die verbauten Dichts&auml;tze nicht identifiziert sind: ethanolarm tanken, wo verf&uuml;gbar. Bei l&auml;ngerem Stillstand: Vergaser leerfahren oder Kraftstoff ablassen.
             </div>
         </details>
     </div>
@@ -416,9 +417,15 @@
     <!-- ============================================================ -->
     <div class="section" id="bedusung">
         <details>
-            <summary>9. Empfohlene Bed&uuml;sung als Startpunkt (Baseline Jetting)</summary>
+            <summary>9. Externe Bed&uuml;sungstabelle &ndash; nur Referenz (External Jetting Table)</summary>
 
-            <h3>Startpunkt-Bed&uuml;sung f&uuml;r Ford 302ci / 4&times; DellOrto DRLA 45</h3>
+            <div class="warning">
+                <strong>Diese Tabelle ist nicht euer Startpunkt.</strong><br>
+                Die vier DRLA dieses Fahrzeugs wurden am alten 1968er 302 professionell mit zwei Lambdasonden abgestimmt und liefen einwandfrei; seitdem wurde an der Bed&uuml;sung nichts ver&auml;ndert. <strong>Die verbaute Best&uuml;ckung ist die Baseline</strong> &ndash; erfasst in Build Log, Phase&nbsp;3, Kapitel&nbsp;27.<br>
+                Die Werte unten tragen keine Primaerquelle und sind an diesem Motor nicht verifiziert. Sie dienen dazu, eine <em>Abweichung einzuordnen</em>, nicht dazu, eine funktionierende Abstimmung zu ersetzen.
+            </div>
+
+            <h3>Externe Tabellenwerte f&uuml;r Ford 302ci / 4&times; DellOrto DRLA 45</h3>
             <table>
                 <tr><th>D&uuml;se (Jet)</th><th>DellOrto Bezeichnung</th><th>Startpunkt 302 / 4&times;DRLA 45</th></tr>
                 <tr>
