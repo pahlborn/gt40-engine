@@ -31,6 +31,9 @@ jobs:
       - name: Messwert-Feld-Tests
         run: node tests/fields.test.mjs
 
+      - name: UI-Tests (Version, Sync-Datum, Galerie-Beschriftung)
+        run: node tests/ui.test.mjs
+
   # Prueft die tatsaechlich ausgelieferte Seite. Laeuft nur auf main und
   # blockiert nichts, weil ein Aussetzer bei GitHub Pages oder der GitHub-API
   # nichts ueber den Code aussagt.
@@ -38,7 +41,7 @@ jobs:
     name: Smoke-Test gegen die Live-Seite
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     continue-on-error: true
     needs: browser-tests
 

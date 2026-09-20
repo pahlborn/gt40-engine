@@ -47,7 +47,10 @@
             border-right: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center;
             height: 100%; min-width: 0;
         }
-        .header-title span { font-size: 0.62rem; opacity: 0.7; margin-left: 0.35rem; font-weight: 400; }
+        .header-title { flex-direction: column; justify-content: center; align-items: flex-start; gap: 0; }
+        .header-title .ht-name { display: block; line-height: 1.15; }
+        .header-title .ht-sub { font-size: 0.62rem; opacity: 0.7; margin-left: 0.35rem; font-weight: 400; }
+        .header-title .ht-version { font-size: 0.58rem; opacity: 0.55; font-weight: 400; line-height: 1.1; letter-spacing: 0.02em; }
         .header h1, .header p, .toolbar { display: none; }
         .nav-item {
             flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.25rem;
@@ -384,8 +387,8 @@
         .gallery-header { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1rem; color: #fff; }
         .gallery-header h3 { font-size: 0.95rem; margin: 0; }
         .gallery-close { background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; padding: 0.3rem 0.6rem; }
-        .gallery-grid { flex: 1; overflow-y: auto; padding: 0.5rem 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.6rem; align-content: start; }
-        .gallery-card { position: relative; border-radius: 8px; overflow: hidden; background: #1a202c; }
+        .gallery-grid { flex: 1; overflow-y: auto; padding: 0.5rem 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.6rem; align-content: start; align-items: start; grid-auto-rows: max-content; }
+        .gallery-card { position: relative; border-radius: 8px; overflow: hidden; background: #1a202c; display: flex; flex-direction: column; }
         .gallery-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; cursor: pointer; }
         .gallery-card .gallery-star { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.7); border: none; color: #a0aec0; font-size: 1.3rem; cursor: pointer; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
         .gallery-card .gallery-star.active { color: #ed8936; }
@@ -393,7 +396,9 @@
         /* delete is in long-press context menu, no visible button */
         .gallery-card.dragging { opacity: 0.4; transform: scale(0.95); }
         .gallery-card.drag-over { outline: 2px solid #ed8936; outline-offset: 2px; }
-        .gallery-card .gallery-caption { font-size: 0.68rem; color: #cbd5e0; padding: 0.25rem 0.4rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .gallery-card .gallery-caption { font-size: 0.68rem; color: #cbd5e0; padding: 0.25rem 0.4rem 0.35rem; overflow: hidden; }
+        .gallery-card .gc-name { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .gallery-card .gc-date { display: block; font-size: 0.6rem; color: #8fa3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .gallery-add-card { border: 2px dashed #4a5568; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 105px; cursor: pointer; color: #718096; font-size: 0.85rem; font-weight: 500; }
         .gallery-add-card:hover { border-color: #90cdf4; color: #90cdf4; }
         /* Lightbox */
@@ -507,6 +512,7 @@
         @keyframes ptr-spin { from { transform: translateX(-50%) rotate(0deg); } to { transform: translateX(-50%) rotate(360deg); } }
         .ptr-indicator svg { width: 22px; height: 22px; fill: none; stroke: var(--primary-light); stroke-width: 2.5; stroke-linecap: round; }
     </style>
+<script src="version.js"></script>
 <script src="field-sync.js"></script>
 </head>
 <body>
@@ -514,7 +520,7 @@
 <!-- ===== HEADER ===== -->
 <div class="header">
     <div class="header-row">
-        <div class="header-title">Engine Build Log<span>302 BOSS</span></div>
+        <div class="header-title"><span class="ht-name">Engine Build Log<span class="ht-sub">302 BOSS</span></span><span class="ht-version" id="appVersion"></span></div>
         <a class="nav-item" href="index.html" id="nav-overview">&#128202; Overview</a>
         <button class="nav-item active" onclick="scrollToGroup('grp-specs')" id="nav-specs">&#128295; Specs</button>
         <a class="nav-item" href="build-log.html" id="nav-build">&#128736; Build Log</a>
@@ -524,7 +530,6 @@
             <button class="header-gear" onclick="toggleToolMenu()" id="toolMenuBtn">&#9881;</button>
             <div id="toolMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:2px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:180px;z-index:200;overflow:hidden;">
                 <button onclick="syncFromCloud();closeToolMenu()" id="syncBtn" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud Sync</button>
-                <button onclick="reloadGalleryFromRepo();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#8635; Galerie neu laden</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Einstellungen</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
@@ -536,6 +541,8 @@
                 <button onclick="showGuide('guide-torque');closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128295; Torque Card</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="forceReload();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:#718096;font-size:0.78rem;cursor:pointer;">&#128260; Seite neu laden</button>
+                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
+                <div style="padding:0.4rem 0.75rem;font-size:0.68rem;color:var(--text-light);">Version <span class="app-version"></span></div>
             </div>
         </div>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
@@ -3086,6 +3093,15 @@
     function getGistConfig() { return { token: localStorage.getItem('gh_token') || '' }; }
     function isGistConfigured() { return getGistConfig().token.length > 0; }
 
+
+    // ==== VERSION ====
+    // Eine Quelle: version.js. Wird unter dem Titel und im Menue angezeigt.
+    function renderAppVersion() {
+        var v = (typeof APP_VERSION === 'string') ? APP_VERSION : '';
+        document.querySelectorAll('#appVersion, .app-version').forEach(function(el) {
+            el.textContent = v;
+        });
+    }
     // ==== TOOL MENU ====
     function toggleToolMenu() {
         var m = document.getElementById('toolMenu');
@@ -3269,12 +3285,12 @@
         if (btn) btn.disabled = false;
         if (!b) return;
         if (!isGistConfigured()) {
-            b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Galerie v3 &middot; Messwerte lokal</span>';
+            b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Messwerte lokal</span>';
         } else if (_gistError) {
             // Frueher zeigte das Badge auch bei abgelaufenem Token "Verbunden".
             b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Token-Problem: ' + _gistError + '</span>';
         } else {
-            b.innerHTML = '<span class="sync-badge online"><span class="sync-dot online"></span>Cloud Sync v3</span>';
+            b.innerHTML = '<span class="sync-badge online"><span class="sync-dot online"></span>Cloud Sync</span>';
         }
     }
 
@@ -4310,16 +4326,25 @@
         clearTimeout(autoSaveTimer);
         autoSaveTimer = setTimeout(() => { saveData(); runCrossChecks(); }, 500);
     }
+    // Zeigt den juengsten Speicherzeitpunkt - Messwerte UND Galerie. Frueher
+    // stand hier nur engineBuildLog._savedAt, weshalb das Datum beim Speichern
+    // von Fotos unveraendert blieb.
     function updateSaveStatus() {
-        const raw = localStorage.getItem('engineBuildLog');
-        if (raw) {
-            try {
-                const d = new Date(JSON.parse(raw)._savedAt);
-                const badge = document.getElementById('syncBadge').outerHTML;
-                document.getElementById('saveStatus').innerHTML =
-                    'Gespeichert: ' + d.toLocaleDateString('de-DE') + ' ' + d.toLocaleTimeString('de-DE') + ' ' + badge;
-            } catch(e) {}
-        }
+        var el = document.getElementById('saveStatus');
+        var badgeEl = document.getElementById('syncBadge');
+        if (!el || !badgeEl) return;
+        var fieldsAt = 0, galleryAt = 0;
+        try {
+            var raw = localStorage.getItem('engineBuildLog');
+            if (raw) fieldsAt = new Date(JSON.parse(raw)._savedAt || 0).getTime() || 0;
+        } catch(e) {}
+        try { galleryAt = (_galleryMeta && _galleryMeta.savedAt) || 0; } catch(e) {}
+        var last = Math.max(fieldsAt, galleryAt);
+        if (!last) return;
+        var what = galleryAt > fieldsAt ? 'Fotos' : 'Messwerte';
+        var d = new Date(last);
+        el.innerHTML = 'Gespeichert (' + what + '): ' + d.toLocaleDateString('de-DE') + ' '
+            + d.toLocaleTimeString('de-DE') + ' ' + badgeEl.outerHTML;
     }
 
     // ==== EXPORT / IMPORT ====
@@ -4575,6 +4600,7 @@
             out.meta = raw.meta || {};
             out.videos = raw.videos || {};
             out.hero = raw.hero || {};
+            if (raw.savedAt) out.savedAt = raw.savedAt;
             return out;
         }
         // --- Migration aus Schema v1 ---
@@ -4641,6 +4667,7 @@
         for (g in (b.videos || {})) groups[g] = 1;
         for (g in groups) out.videos[g] = _mergeEntryMap((a.videos || {})[g] || {}, (b.videos || {})[g] || {});
         out.hero = _mergeEntryMap(a.hero || {}, b.hero || {});
+        out.savedAt = Math.max(a.savedAt || 0, b.savedAt || 0) || undefined;
         return out;
     }
 
@@ -4669,7 +4696,9 @@
     // damit parallele Aenderungen auf zwei Geraeten sich nicht gegenseitig loeschen.
     var _metaPushTimer = null;
     function scheduleMetaPush() {
+        _galleryMeta.savedAt = _nowMs();
         saveGalleryMeta();
+        updateSaveStatus();          // sonst bliebe das Datum im Header beim Foto-Speichern stehen
         clearTimeout(_metaPushTimer);
         _metaPushTimer = setTimeout(function() { pushGalleryMeta(); }, 800);
     }
@@ -5179,6 +5208,39 @@
         renderGallery(group);
     }
 
+    // Anzeigename eines Bildes: eigene Beschreibung, sonst der Dateiname ohne
+    // den technischen Zeitstempel-Praefix.
+    function _displayName(p, lang) {
+        if (p.isDefault) return lang === 'de' ? 'Herstellerbild' : 'Manufacturer';
+        if (p.caption) return p.caption;
+        if (p.type === 'youtube') return 'YouTube';
+        var f = p.name || (p.key || '').split('/').pop() || '';
+        f = f.replace(/\.[a-z0-9]+$/i, '');
+        var m = f.match(/^(?:annotated_)?\d{10,16}(?:_(\d+))?$/);
+        if (m) {
+            var nr = m[1] !== undefined ? (parseInt(m[1], 10) + 1) : null;
+            var pre = /^annotated_/.test(f) ? (lang === 'de' ? 'Zeichnung' : 'Drawing') : 'Foto';
+            return nr !== null ? pre + ' ' + nr : pre;
+        }
+        return f;
+    }
+
+    // Aufnahmedatum: bevorzugt EXIF (in p.time), sonst aus dem Dateinamen
+    function _displayDate(p) {
+        if (p.isDefault) return '';
+        if (p.time) return p.time;
+        var ts = _tsFromFilename(p.name || (p.key || '').split('/').pop() || '');
+        if (!ts) return '';
+        var d = new Date(ts);
+        return isNaN(d.getTime()) ? '' : d.toLocaleString('de-DE');
+    }
+
+    function _esc(s) {
+        return String(s == null ? '' : s)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
     function _imgSrc(p) {
         if (p.type === 'youtube') return 'https://img.youtube.com/vi/' + p.data + '/hqdefault.jpg';
         return p.data;
@@ -5215,8 +5277,12 @@
                     : 'setHero(\'' + group + '\',' + p.userIdx + ')';
                 html += '<button class="gallery-star' + (isActive ? ' active' : '') + '" onclick="event.stopPropagation();' + starClick + '" title="' + (lang === 'de' ? 'Als Hauptbild setzen' : 'Set as main image') + '">&#9733;</button>';
             }
-            var capText = p.isDefault ? (lang === 'de' ? 'Herstellerbild' : 'Manufacturer') : (isYT ? 'YouTube' : (p.caption || p.time));
-            html += '<div class="gallery-caption">' + capText + '</div></div>';
+            var capName = _displayName(p, lang);
+            var capDate = _displayDate(p);
+            html += '<div class="gallery-caption" title="' + _esc(capName + (capDate ? ' - ' + capDate : '')) + '">'
+                + '<span class="gc-name">' + _esc(capName) + '</span>'
+                + (capDate ? '<span class="gc-date">' + _esc(capDate) + '</span>' : '')
+                + '</div></div>';
         }
         html += '<div class="gallery-add-card" onclick="addPhoto(\'' + group + '\')">' + (lang === 'de' ? '&#128247; Fotos' : '&#128247; Photos') + '</div>';
         html += '<div class="gallery-add-card" onclick="addYouTube(\'' + group + '\')" style="background:rgba(255,0,0,0.15);border-color:rgba(255,0,0,0.3);">' + (lang === 'de' ? '&#9654; YouTube' : '&#9654; YouTube') + '</div>';
@@ -5502,8 +5568,9 @@
             img.crossOrigin = 'anonymous';
             img.src = _imgSrc(p);
         }
-        var cap = p.isDefault ? 'Herstellerbild' : (p.type === 'youtube' ? 'YouTube' : (p.caption || ''));
-        var t = p.time || '';
+        var lbLang = document.documentElement.lang || 'de';
+        var cap = _displayName(p, lbLang);
+        var t = _displayDate(p);
         lb.querySelector('.caption').textContent = cap + (cap && t ? ' \u2014 ' : '') + t;
         lb.dataset.group = group;
         lb.dataset.idx = allIdx;
@@ -5580,7 +5647,9 @@
             _galleryMeta.meta[entry.key] = me;
         }
         scheduleMetaPush();
-        document.querySelector('#photoLightbox .caption').textContent = cap || entry.time;
+        document.querySelector('#photoLightbox .caption').textContent =
+            _displayName(entry, document.documentElement.lang || 'de')
+            + (_displayDate(entry) ? ' \u2014 ' + _displayDate(entry) : '');
         renderGallery(c.group);
     }
     async function lbDeletePhoto() {
@@ -6439,7 +6508,7 @@
     })();
 
     // ==== INIT ====
-    generateQuenchTable(); updateSyncBadge(); loadData(); initCompPhotos();
+    renderAppVersion(); generateQuenchTable(); updateSyncBadge(); loadData(); initCompPhotos();
     // search.js wird erst am Dateiende geladen - initUnifiedSearch() gab es hier
     // also noch gar nicht und die Exception hat updateBuildDashboard() sowie die
     // Cross-Checks mit abgeraeumt. Jeder Schritt jetzt einzeln abgesichert.
