@@ -13,6 +13,18 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v34',
+      date: '2026-09-20',
+      title: 'Referenzhistorie der Vergaseranlage',
+      changes: [
+        { type: 'neu', text: 'Die Vergaser-Komponente in den Specs nennt jetzt ihre Herkunft: die vier DRLA stammen samt Ansaugbruecke, Gestaenge und Trichtern vom alten 1968er 302 dieses Fahrzeugs, wurden dort in England professionell mit zwei Lambdasonden abgestimmt und liefen einwandfrei. Seitdem nur gereinigt. Damit ist begruendet, warum die verbaute Bedueusung die Start-Baseline ist und nicht auf einen Tabellenwert korrigiert wird.' },
+        { type: 'neu', text: 'Ausdruecklich als Owner-Historie gekennzeichnet, nicht als Herstellerfakt - das Abstimmprotokoll existiert nicht mehr. Belastbar als Begruendung fuers Konservieren, nicht als technischer Sollwert.' },
+        { type: 'neu', text: 'Erfassungsfelder fuer die Vergaser-Identitaet: Gehaeusecode je Vergaser V1 bis V4, Trichtermasse, Schwimmer- und Nadelventilausfuehrung, Hersteller der Ansaugbruecke.' },
+        { type: 'neu', text: 'Die vorhandenen Kennzeichnungen stehen mit ehrlichem Status: 8010 2 passt zur DRLA-45-Familie, erlaubt aber keine Variantenbestimmung; R 6205 P ist offen und wird dokumentiert, nicht interpretiert.' },
+        { type: 'fix', text: 'Der Druckwert in den Specs verweist auf den Exkurs zur Quellenlage und nennt 0.24 Bar statt der falsch gerundeten 0.25.' }
+      ]
+    },
+    {
       version: 'v33',
       date: '2026-09-20',
       title: 'Kapitel 22 macht endlich das, was sein Titel sagt',
