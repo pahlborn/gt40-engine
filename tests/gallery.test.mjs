@@ -305,9 +305,9 @@ await test('specs.html laedt ohne Page-Errors', async () => {
   await d.close();
 });
 
-await test('index.html benutzt einen eigenen localStorage-Key', async () => {
-  // Vorher teilten sich beide Seiten 'engineBuildPhotos' mit inkompatiblen
-  // Formaten; "Alle Daten loeschen" riss die Komponenten-Galerie mit.
+await test('index.html hat kein eigenes Foto-System mehr', async () => {
+  // Dort lag eine base64-Galerie ohne Container, ohne Lightbox und ohne
+  // Aufrufer - toter Code. Die Galerien stehen in specs.html und build-log.html.
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
   const errors = [];
@@ -315,15 +315,17 @@ await test('index.html benutzt einen eigenen localStorage-Key', async () => {
   await stubGitHub(page);
   await page.goto(base + '/index.html');
   await page.waitForTimeout(1200);
-  const r = await page.evaluate(() => {
-    photoData = { p1: [{ data: 'x', caption: '', time: '' }] };
-    savePhotoData();
-    return {
-      eigenerKey: !!localStorage.getItem('engineMainPhotos'),
-      galerieKeyUnberuehrt: !localStorage.getItem('engineGalleryMeta')
-    };
-  });
-  assert(r.eigenerKey, 'index.html schreibt nicht auf den eigenen Key');
+  const r = await page.evaluate(() => ({
+    savePhotoData: typeof savePhotoData,
+    renderPhotos: typeof renderPhotos,
+    photoData: typeof photoData,
+    container: document.querySelectorAll('[data-photo-group]').length,
+    galerieKeyUnberuehrt: !localStorage.getItem('engineGalleryMeta')
+  }));
+  assertEqual(r.savePhotoData, 'undefined', 'savePhotoData() existiert noch');
+  assertEqual(r.renderPhotos, 'undefined', 'renderPhotos() existiert noch');
+  assertEqual(r.photoData, 'undefined', 'photoData existiert noch');
+  assertEqual(r.container, 0, 'Alte Container');
   assert(r.galerieKeyUnberuehrt, 'index.html hat den Galerie-Key angefasst');
   assertEqual(errors, [], 'Page-Errors auf index.html');
   await ctx.close();

@@ -1,0 +1,136 @@
+/**
+ * changelog.js - Release-Dokumentation.
+ *
+ * Erreichbar ueber die Versionsnummer im Werkzeugmenue und im Header.
+ * Wird von index.html, specs.html und build-log.html geladen.
+ *
+ * Neuer Eintrag: oben einfuegen und version.js plus die Cache-Version in
+ * sw.js hochzaehlen. tests/ui.test.mjs prueft, dass alle drei zusammenpassen.
+ */
+(function (global) {
+  'use strict';
+
+  // Neueste Version zuerst.
+  var RELEASES = [
+    {
+      version: 'v30',
+      date: '2026-09-20',
+      title: 'Kapitelstatus und Befunde im Build Log',
+      changes: [
+        { type: 'neu', text: 'Kapitel haben drei Stufen statt an/aus: offen, in Arbeit, erledigt. Der Knopf im Kapitelkopf schaltet bei jedem Klick weiter.' },
+        { type: 'neu', text: 'Befunde: beliebig viele pro Kapitel, jeder mit eigenem Status. Ein- und ausklappbar, das Abzeichen zeigt die Zaehlung auch im eingeklappten Zustand.' },
+        { type: 'neu', text: 'Uebersicht aller offenen Befunde ueber alle Phasen hinweg, mit Sprung zum jeweiligen Kapitel.' },
+        { type: 'fix', text: 'Der Fortschrittsbalken zaehlt "in Arbeit" halb - sonst steht er tagelang still, obwohl gearbeitet wird.' },
+        { type: 'fix', text: 'Alte Notizzeilen werden einmalig in die Befundliste uebernommen.' },
+        { type: 'fix', text: 'Die Foto-Galerie in index.html war toter Code ohne Container, Lightbox oder Aufrufer und wurde entfernt.' }
+      ]
+    },
+    {
+      version: 'v29',
+      date: '2026-09-20',
+      title: 'Build Log benutzt dieselbe Galerie wie Specs',
+      changes: [
+        { type: 'fix', text: 'Fotos im Build Log lagen als Base64 nur im Browser des aufnehmenden Geraets und waren nirgends sonst sichtbar. Sie liegen jetzt im Repository.' },
+        { type: 'neu', text: 'Bis zu vier Vorschaubilder je Abschnitt, der Rest hinter einem "+N". Ein Klick oeffnet die volle Galerie.' },
+        { type: 'neu', text: 'Damit auch dort: Mehrfach-Upload, EXIF-Datum, Beschreibung, Hauptbild, Reihenfolge, Zeichnen, YouTube.' },
+        { type: 'neu', text: 'Vorhandene Fotos aus dem alten Format werden gemeldet und lassen sich auf Knopfdruck uebertragen.' },
+        { type: 'intern', text: 'Galerie-Motor in gallery.js und gallery.css herausgeloest, gemeinsam genutzt von beiden Seiten.' }
+      ]
+    },
+    {
+      version: 'v28',
+      date: '2026-09-20',
+      title: 'Versionsanzeige, Sync-Datum, Bildbeschriftung',
+      changes: [
+        { type: 'neu', text: 'Versionsnummer unter dem Titel und im Menue - und diese Release-Dokumentation dahinter.' },
+        { type: 'fix', text: 'Das Sync-Datum in der Kopfzeile blieb beim Speichern von Fotos stehen. Es beruecksichtigt jetzt beides und nennt, was zuletzt gespeichert wurde.' },
+        { type: 'neu', text: 'Galerie-Karten zeigen wieder Name und Aufnahmedatum.' },
+        { type: 'fix', text: 'Die Datumszeile wurde von der Kartenhoehe abgeschnitten, obwohl sie im DOM stand.' },
+        { type: 'fix', text: 'Menuepunkt "Galerie neu laden" entfernt - Cloud Sync laedt die Galerie ohnehin mit.' }
+      ]
+    },
+    {
+      version: 'v27',
+      date: '2026-09-20',
+      title: 'Messwert-Felder lassen sich leeren',
+      changes: [
+        { type: 'fix', text: 'Ein Messwert-Feld zu leeren wurde nicht gespeichert: "leer gewinnt nie" galt beim Speichern und beim Zusammenfuehren. Jedes Feld hat jetzt einen eigenen Zeitstempel, der juengere Stand gewinnt - auch ein leerer.' },
+        { type: 'fix', text: 'Checkboxen liessen sich aus demselben Grund nicht abwaehlen.' },
+        { type: 'fix', text: 'initUnifiedSearch() wurde aufgerufen, bevor search.js geladen war. Die Exception hat den Rest der Initialisierung mit abgeraeumt.' },
+        { type: 'intern', text: 'Automatische Tests bei jedem Push (GitHub Actions), dazu ein Smoke-Test gegen die Live-Seite.' }
+      ]
+    },
+    {
+      version: 'v26',
+      date: '2026-09-20',
+      title: 'Galerie: das Repository ist die Wahrheit',
+      changes: [
+        { type: 'fix', text: 'Fotos erschienen nur auf dem Geraet, das sie hochgeladen hat. Der Foto-Index wurde bei jedem Tastendruck mit dem lokalen Stand ueberschrieben - ein Geraet mit leerer Galerie hat damit die Cloud geleert.' },
+        { type: 'fix', text: 'Welche Bilder existieren, kommt jetzt aus dem Repository und braucht keinen Token. Der Gist traegt nur noch Beschreibung, Zeit, Reihenfolge und Hauptbild.' },
+        { type: 'fix', text: 'Zusammengefuehrt wird pro Eintrag statt pro Liste - parallele Aenderungen auf zwei Geraeten verlieren nichts mehr.' },
+        { type: 'fix', text: 'Ein Fehler beim Anwenden der Messwerte hat den gesamten Sync lautlos abgebrochen, wodurch die Fotos nie geladen wurden.' }
+      ]
+    }
+  ];
+
+  var TYPE_LABEL = { neu: 'Neu', fix: 'Behoben', intern: 'Intern' };
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function ensureChrome() {
+    if (document.getElementById('changelogOverlay')) return;
+    var ov = document.createElement('div');
+    ov.className = 'changelog-overlay';
+    ov.id = 'changelogOverlay';
+    ov.innerHTML =
+        '<div class="cl-panel" role="dialog" aria-label="Release-Dokumentation">'
+      + '<div class="cl-head">'
+      + '<h3>Release-Dokumentation</h3>'
+      + '<button type="button" class="cl-close" onclick="closeChangelog()" aria-label="Schliessen">&times;</button>'
+      + '</div><div class="cl-body" id="changelogBody"></div></div>';
+    ov.addEventListener('click', function (e) { if (e.target === ov) closeChangelog(); });
+    document.body.appendChild(ov);
+  }
+
+  function render() {
+    var current = (typeof APP_VERSION === 'string') ? APP_VERSION : '';
+    document.getElementById('changelogBody').innerHTML = RELEASES.map(function (r) {
+      var istAktuell = r.version === current;
+      return '<section class="cl-rel' + (istAktuell ? ' current' : '') + '">'
+        + '<h4><span class="cl-ver">' + esc(r.version) + '</span>'
+        + (istAktuell ? '<span class="cl-badge">aktuell</span>' : '')
+        + '<span class="cl-date">' + esc(r.date) + '</span></h4>'
+        + '<p class="cl-title">' + esc(r.title) + '</p>'
+        + '<ul>' + r.changes.map(function (c) {
+            return '<li><span class="cl-type ' + esc(c.type) + '">'
+                 + esc(TYPE_LABEL[c.type] || c.type) + '</span>' + esc(c.text) + '</li>';
+          }).join('') + '</ul></section>';
+    }).join('');
+  }
+
+  function openChangelog() {
+    ensureChrome();
+    render();
+    document.getElementById('changelogOverlay').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeChangelog() {
+    var ov = document.getElementById('changelogOverlay');
+    if (ov) ov.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    var ov = document.getElementById('changelogOverlay');
+    if (ov && ov.classList.contains('show')) closeChangelog();
+  });
+
+  global.RELEASES = RELEASES;
+  global.openChangelog = openChangelog;
+  global.closeChangelog = closeChangelog;
+})(typeof window !== 'undefined' ? window : globalThis);

@@ -281,7 +281,9 @@
         @keyframes ptr-spin { from { transform: translateX(-50%) rotate(0deg); } to { transform: translateX(-50%) rotate(360deg); } }
         .ptr-indicator svg { width: 22px; height: 22px; fill: none; stroke: var(--primary-light); stroke-width: 2.5; stroke-linecap: round; }
     </style>
+<link rel="stylesheet" href="gallery.css">
 <script src="version.js"></script>
+<script src="changelog.js"></script>
 <script src="field-sync.js"></script>
 </head>
 <body>
@@ -289,7 +291,7 @@
 <!-- ===== HEADER ===== -->
 <div class="header">
     <div class="header-row">
-        <div class="header-title"><span class="ht-name">Engine Build Log<span class="ht-sub">302 BOSS</span></span><span class="ht-version" id="appVersion"></span></div>
+        <div class="header-title"><span class="ht-name">Engine Build Log<span class="ht-sub">302 BOSS</span></span><span class="ht-version" id="appVersion" onclick="openChangelog()" title="Release-Dokumentation"></span></div>
         <button class="nav-item active" id="nav-overview">&#128202; Overview</button>
         <a class="nav-item" href="specs.html" id="nav-specs">&#128295; Specs</a>
         <a class="nav-item" href="build-log.html" id="nav-build">&#128736; Build Log</a>
@@ -307,7 +309,7 @@
                 <button onclick="document.getElementById('importFile').click();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
                 <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
-                <div style="padding:0.4rem 0.75rem;font-size:0.68rem;color:var(--text-light);">Version <span class="app-version"></span></div>
+                <button type="button" class="menu-version" onclick="openChangelog();closeToolMenu()" title="Release-Dokumentation">Version <span class="app-version"></span> &rsaquo;</button>
             </div>
         </div>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
@@ -2464,7 +2466,6 @@
         const allData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
         const exportObj = {
             fields: allData,
-            photos_main: JSON.parse(localStorage.getItem(MAIN_PHOTOS_KEY) || '{}'),
             photos_buildlog: {}
         };
         ['phase1','phase2','phase3','phase4'].forEach(function(g) {
@@ -2491,11 +2492,6 @@
                     const merged = Object.assign({}, existing, imported.fields);
                     localStorage.setItem('engineBuildLog', JSON.stringify(merged));
                     applyData(merged);
-                    if (imported.photos_main) {
-                        localStorage.setItem(MAIN_PHOTOS_KEY, JSON.stringify(imported.photos_main));
-                        photoData = imported.photos_main;
-                        document.querySelectorAll('[data-photo-group]').forEach(function(g) { renderPhotos(g.dataset.photoGroup); });
-                    }
                     if (imported.photos_buildlog) {
                         Object.keys(imported.photos_buildlog).forEach(function(g) {
                             localStorage.setItem('buildPhotos_' + g, JSON.stringify(imported.photos_buildlog[g]));
@@ -2528,7 +2524,6 @@
         try {
             var backup = {
                 fields: JSON.parse(localStorage.getItem('engineBuildLog') || '{}'),
-                photos_main: JSON.parse(localStorage.getItem(MAIN_PHOTOS_KEY) || '{}'),
                 photos_buildlog: {},
                 _backupBeforeReset: new Date().toISOString()
             };
@@ -2544,18 +2539,16 @@
         } catch(e) {}
         // Jetzt loeschen
         localStorage.removeItem('engineBuildLog');
-        localStorage.removeItem(MAIN_PHOTOS_KEY);
+        localStorage.removeItem('engineMainPhotos');   // Altbestand aus der entfernten Galerie
         ['phase1','phase2','phase3','phase4'].forEach(function(g) {
             localStorage.removeItem('buildPhotos_' + g);
         });
-        // 'engineGalleryMeta' (Komponenten-Galerie in specs.html) bleibt absichtlich
-        // unangetastet - die Bilder dort liegen ohnehin im Repo.
-        photoData = {};
+        // 'engineGalleryMeta' (Galerie in specs.html / build-log.html) bleibt
+        // absichtlich unangetastet - die Bilder dort liegen ohnehin im Repo.
         document.querySelectorAll('[data-field]').forEach(el => {
             if (el.type === 'checkbox') el.checked = false; else el.value = '';
             el.classList.remove('status-ok','status-warn','status-error');
         });
-        document.querySelectorAll('[data-photo-group]').forEach(function(g) { g.innerHTML = ''; });
         document.getElementById('saveStatus').innerHTML = '<span id="syncBadge"></span>';
         updateSyncBadge(); showToast('Alle Daten geloescht. Backup wurde heruntergeladen.');
     }
@@ -2670,101 +2663,9 @@
         }, 100);
     });
 
-    // ==== PHOTOS ====
-    let photoData = {};
-    // Eigener Key: 'engineBuildPhotos' gehoerte frueher gleichzeitig der
-    // Komponenten-Galerie in specs.html, die ein anderes Format speichert.
-    const MAIN_PHOTOS_KEY = 'engineMainPhotos';
-
-    function addPhoto(group) {
-        // Kein capture-Attribut: iOS/Android zeigen nativ "Foto aufnehmen" + "Fotomediathek"
-        var input = document.createElement('input');
-        input.type = 'file'; input.accept = 'image/*';
-        var lang = document.documentElement.lang || 'de';
-        input.onchange = function(e) {
-            var file = e.target.files[0]; if (!file) return;
-            var reader = new FileReader();
-            reader.onload = function(ev) {
-                var img = new Image();
-                img.onload = function() {
-                    var canvas = document.createElement('canvas');
-                    var maxW = 1200;
-                    var w = img.width, h = img.height;
-                    if (w > maxW) { h = h * maxW / w; w = maxW; }
-                    canvas.width = w; canvas.height = h;
-                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                    var caption = prompt(lang === 'de' ? 'Bildbeschreibung (optional):' : 'Caption (optional):') || '';
-                    if (!photoData[group]) photoData[group] = [];
-                    photoData[group].push({ data: dataUrl, caption: caption, time: new Date().toLocaleString('de-DE') });
-                    renderPhotos(group);
-                    savePhotoData();
-                };
-                img.src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-        };
-        input.click();
-    }
-
-    function renderPhotos(group) {
-        const gallery = document.querySelector('[data-photo-group="' + group + '"]');
-        if (!gallery) return;
-        const photos = photoData[group] || [];
-        gallery.innerHTML = photos.map(function(p, i) {
-            return '<div class="photo-item">' +
-                '<img class="photo-thumb" src="' + p.data + '" onclick="openLightbox(\'' + group + '\',' + i + ')" alt="' + (p.caption || 'Build-Foto') + '">' +
-                '<div class="photo-caption">' + (p.caption || p.time) + '</div></div>';
-        }).join('');
-    }
-
-    function openLightbox(group, idx) {
-        const photos = photoData[group] || [];
-        if (!photos[idx]) return;
-        const lb = document.getElementById('photoLightbox');
-        if (!lb) return;
-        lb.querySelector('img').src = photos[idx].data;
-        lb.querySelector('.caption').textContent = (photos[idx].caption ? photos[idx].caption + ' — ' : '') + photos[idx].time;
-        lb.dataset.group = group;
-        lb.dataset.idx = idx;
-        lb.classList.add('show');
-    }
-
-    function closeLightbox() { var lb = document.getElementById('photoLightbox'); if (lb) lb.classList.remove('show'); }
-
-    function deleteLightboxPhoto() {
-        const lb = document.getElementById('photoLightbox');
-        if (!lb) return;
-        const group = lb.dataset.group;
-        const idx = parseInt(lb.dataset.idx);
-        if (confirm('Foto wirklich loeschen?')) {
-            photoData[group].splice(idx, 1);
-            renderPhotos(group);
-            savePhotoData();
-            closeLightbox();
-        }
-    }
-
-    function savePhotoData() {
-        try { localStorage.setItem(MAIN_PHOTOS_KEY, JSON.stringify(photoData)); } catch(e) {
-            showToast('Foto-Speicher voll! Aeltere Fotos loeschen.');
-        }
-    }
-
-    function loadPhotoData() {
-        try {
-            var d = localStorage.getItem(MAIN_PHOTOS_KEY);
-            // Einmalige Uebernahme aus dem frueher geteilten Key
-            if (!d) {
-                var legacy = localStorage.getItem('engineBuildPhotos');
-                if (legacy) { d = legacy; localStorage.setItem(MAIN_PHOTOS_KEY, legacy); }
-            }
-            if (d) photoData = JSON.parse(d);
-        } catch(e) {}
-        document.querySelectorAll('[data-photo-group]').forEach(function(g) {
-            renderPhotos(g.dataset.photoGroup);
-        });
-    }
+    // Die frueher hier liegende Foto-Galerie war toter Code: weder Container
+    // im Markup noch Lightbox noch Aufrufer. Die Galerien liegen in specs.html
+    // und build-log.html und benutzen gallery.js.
 
     // ==== SEARCH (loaded from search.js) ====
 
@@ -3334,7 +3235,6 @@
     restoreCollapseState();
     // loadData is async (may fetch from Gist) - restore scroll AFTER it completes
     loadData().then(function() {
-        loadPhotoData();
         if (typeof initUnifiedSearch === 'function') initUnifiedSearch();
         setTimeout(function() { try { runCrossChecks(); } catch(e) { console.warn('[Init] Cross-Checks:', e.message); } }, 500);
         if (currentLang === 'en') {
@@ -3343,7 +3243,6 @@
             setTimeout(restoreScrollPos, 100);
         }
     }).catch(function() {
-        loadPhotoData();
         if (typeof initUnifiedSearch === 'function') initUnifiedSearch();
         setTimeout(restoreScrollPos, 100);
     });
