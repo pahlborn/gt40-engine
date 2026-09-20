@@ -1546,6 +1546,14 @@
     }
 
     // Copy P1-P4 measurements into corresponding Main Page fields (one-way: Build Log -> Main)
+    // Ein Feld gilt als "nie gesetzt", solange es keinen eigenen Zeitstempel hat.
+    // Wer einen Wert loescht, erzeugt einen - deshalb darf die Uebernahme aus
+    // dem Build Log ihn danach nicht wieder nachfuellen.
+    function _nieGesetzt(data, feld) {
+        var t = data && data[FieldSync.TIMES_KEY];
+        return !(t && t[feld] !== undefined);
+    }
+
     function syncBuildLogToMain(data) {
         // Direct field mappings: build-log field -> main page field
         var fieldMap = {
@@ -1554,7 +1562,7 @@
         };
         Object.keys(fieldMap).forEach(function(src) {
             var dst = fieldMap[src];
-            if (data[src] && !data[dst]) {
+            if (data[src] && !data[dst] && _nieGesetzt(data, dst)) {
                 var el = document.querySelector('[data-field="' + dst + '"]');
                 if (el) { el.value = data[src]; data[dst] = data[src]; }
             }
@@ -1565,7 +1573,7 @@
             var ptvExh = data['p2_ptv_exh'];
             // P2 has per-cylinder quench values
             var q = data['p2_quench_' + i];
-            if (q && !data['quench_a_' + i]) {
+            if (q && !data['quench_a_' + i] && _nieGesetzt(data, 'quench_a_' + i)) {
                 var el = document.querySelector('[data-field="quench_a_' + i + '"]');
                 if (el) { el.value = q; data['quench_a_' + i] = q; }
             }
@@ -1573,7 +1581,7 @@
         // Sync PTV values (P2 has single intake/exhaust values)
         if (data['p2_ptv_int']) {
             for (var i = 1; i <= 8; i++) {
-                if (!data['ptv_intake_' + i]) {
+                if (!data['ptv_intake_' + i] && _nieGesetzt(data, 'ptv_intake_' + i)) {
                     var el = document.querySelector('[data-field="ptv_intake_' + i + '"]');
                     if (el) { el.value = data['p2_ptv_int']; }
                 }
@@ -1581,7 +1589,7 @@
         }
         if (data['p2_ptv_exh']) {
             for (var i = 1; i <= 8; i++) {
-                if (!data['ptv_exhaust_' + i]) {
+                if (!data['ptv_exhaust_' + i] && _nieGesetzt(data, 'ptv_exhaust_' + i)) {
                     var el = document.querySelector('[data-field="ptv_exhaust_' + i + '"]');
                     if (el) { el.value = data['p2_ptv_exh']; }
                 }
@@ -3302,6 +3310,20 @@
         });
     })();
 
+    // Nicht mitten in der Arbeit neu laden. Ein Foto-Upload stoesst einen
+    // Pages-Deploy an, der Sekunden spaeter genau hier landet - bisher wurde
+    // einem dabei die offene Galerie unter den Fingern weggezogen.
+    function reloadWhenIdle() {
+        var versuche = 0;
+        (function warte() {
+            var belegt = (typeof anyOverlayOpen === 'function' && anyOverlayOpen())
+                || (document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName));
+            if (!belegt || versuche > 600) { location.reload(); return; }   // spaetestens nach 10 min
+            versuche++;
+            setTimeout(warte, 1000);
+        })();
+    }
+
     // ==== SERVICE WORKER ====
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js').then(function(reg) {
@@ -3311,7 +3333,7 @@
                 if (newSW) newSW.addEventListener('statechange', function() {
                     if (newSW.state === 'activated') {
                         showToast('Update verfuegbar - Seite wird neu geladen...');
-                        setTimeout(function() { location.reload(); }, 1500);
+                        setTimeout(function() { reloadWhenIdle(); }, 1500);
                     }
                 });
             });

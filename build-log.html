@@ -1471,7 +1471,7 @@
 </div>
 
 <div class="migrated-tips">
-    <h4>Block Praxis-Tipps (Migrated from Main Page)</h4>
+    <h4><span class="de">Block: Praxis-Tipps (von der Hauptseite &uuml;bernommen)</span><span class="en">Block: Practical Tips (moved from Overview)</span></h4>
     <ul>
         <li><strong>Alle Gewindebohrungen mit Tap durchjagen</strong> &ndash; alte Dichtmasse und Schmutz verf&auml;lschen das Drehmoment um bis zu 20% (Chase all threaded holes &ndash; old sealant and debris falsify torque by up to 20%)</li>
         <li><strong>Sacklochbohrungen mit Druckluft trockenblasen</strong> &ndash; &Ouml;l wirkt hydraulisch und kann den Block sprengen (Blow out blind holes with compressed air &ndash; oil acts hydraulically and can crack the block)</li>
@@ -5746,6 +5746,9 @@
 
         var startY = 0, pulling = false, threshold = 80;
         document.addEventListener('touchstart', function(e) {
+            // Nicht, wenn Galerie, Lightbox oder ein anderes Overlay offen ist:
+            // dort scrollt man in der Liste, nicht in der Seite.
+            if (typeof anyOverlayOpen === 'function' && anyOverlayOpen()) { pulling = false; return; }
             if (window.scrollY === 0 && e.touches.length === 1) {
                 startY = e.touches[0].clientY; pulling = true;
             }
@@ -5778,6 +5781,20 @@
         });
     })();
 
+    // Nicht mitten in der Arbeit neu laden. Ein Foto-Upload stoesst einen
+    // Pages-Deploy an, der Sekunden spaeter genau hier landet - bisher wurde
+    // einem dabei die offene Galerie unter den Fingern weggezogen.
+    function reloadWhenIdle() {
+        var versuche = 0;
+        (function warte() {
+            var belegt = (typeof anyOverlayOpen === 'function' && anyOverlayOpen())
+                || (document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName));
+            if (!belegt || versuche > 600) { location.reload(); return; }   // spaetestens nach 10 min
+            versuche++;
+            setTimeout(warte, 1000);
+        })();
+    }
+
     // ==== SERVICE WORKER ====
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js').then(function(reg) {
@@ -5785,7 +5802,7 @@
             reg.addEventListener('updatefound', function() {
                 var newSW = reg.installing;
                 if (newSW) newSW.addEventListener('statechange', function() {
-                    if (newSW.state === 'activated') location.reload();
+                    if (newSW.state === 'activated') reloadWhenIdle();
                 });
             });
         }).catch(function() {});

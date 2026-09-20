@@ -134,6 +134,63 @@ await test('Checkbox abwaehlen ueberlebt den Merge', async () => {
 });
 
 // ---------------------------------------------------------------------------
+suite('Uebernahme aus dem Build Log darf nichts wiederbeleben');
+
+await test('Ein geleertes Feld wird nicht aus dem Build Log nachgefuellt', async () => {
+  // crank_endplay wird aus p1_crank_endplay uebernommen, wenn es leer ist.
+  // Damit kam ein geloeschter Wert bei jedem applyData() zurueck - und der
+  // naechste Tastendruck schrieb ihn wieder in den Speicher.
+  const p = await openPage('specs.html');
+  const r = await p.page.evaluate(async () => {
+    const el = document.querySelector('[data-field="crank_endplay"]');
+    const log = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+    log.p1_crank_endplay = '0.006';
+    log._fieldTimes = Object.assign({}, log._fieldTimes, { p1_crank_endplay: 1000 });
+    localStorage.setItem('engineBuildLog', JSON.stringify(log));
+    el.value = '0.006'; await saveData();
+    el.value = ''; await saveData();                 // Nutzer leert das Feld
+    const nachSave = JSON.parse(localStorage.getItem('engineBuildLog')).crank_endplay;
+    applyData(JSON.parse(localStorage.getItem('engineBuildLog')));   // wie beim Sync
+    return { nachSave, imFeld: el.value };
+  });
+  assertEqual(r.nachSave, '', 'Im Speicher');
+  assertEqual(r.imFeld, '', 'Im Feld nach applyData()');
+  await p.close();
+});
+
+await test('Ein nie gesetztes Feld wird weiterhin uebernommen', async () => {
+  // Die Uebernahme soll ja etwas nuetzen - nur nicht gegen den Nutzer.
+  const p = await openPage('specs.html');
+  const wert = await p.page.evaluate(() => {
+    const el = document.querySelector('[data-field="crank_endplay"]');
+    el.value = '';
+    const daten = { p1_crank_endplay: '0.007' };     // kein _fieldTimes -> nie gesetzt
+    applyData(daten);
+    return el.value;
+  });
+  assertEqual(wert, '0.007', 'Uebernahme findet nicht statt');
+  await p.close();
+});
+
+await test('Das gilt auch fuer Quench- und PTV-Felder', async () => {
+  const p = await openPage('specs.html');
+  const r = await p.page.evaluate(() => {
+    const q = document.querySelector('[data-field="quench_a_1"]');
+    const t = document.querySelector('[data-field="ptv_intake_1"]');
+    q.value = ''; t.value = '';
+    applyData({ p2_quench_1: '0.040', p2_ptv_int: '0.100',
+                _fieldTimes: { quench_a_1: 5000, ptv_intake_1: 5000 } });
+    const geschuetzt = { quench: q.value, ptv: t.value };
+    q.value = ''; t.value = '';
+    applyData({ p2_quench_1: '0.040', p2_ptv_int: '0.100' });        // nie gesetzt
+    return { geschuetzt, offen: { quench: q.value, ptv: t.value } };
+  });
+  assertEqual(r.geschuetzt, { quench: '', ptv: '' }, 'Geleerte Felder');
+  assertEqual(r.offen, { quench: '0.040', ptv: '0.100' }, 'Nie gesetzte Felder');
+  await p.close();
+});
+
+// ---------------------------------------------------------------------------
 suite('Kein Datenverlust durch das neue Verhalten');
 
 await test('Save waehrend des Ladens loescht nichts', async () => {
