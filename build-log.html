@@ -35,7 +35,10 @@
             border-right: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center;
             height: 100%; min-width: 0;
         }
-        .header-title span { font-size: 0.62rem; opacity: 0.7; margin-left: 0.35rem; font-weight: 400; }
+        .header-title { flex-direction: column; justify-content: center; align-items: flex-start; gap: 0; }
+        .header-title .ht-name { display: block; line-height: 1.15; }
+        .header-title .ht-sub { font-size: 0.62rem; opacity: 0.7; margin-left: 0.35rem; font-weight: 400; }
+        .header-title .ht-version { font-size: 0.58rem; opacity: 0.55; font-weight: 400; line-height: 1.1; letter-spacing: 0.02em; }
         .nav-item {
             flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.25rem;
             height: 100%; padding: 0 0.3rem; color: rgba(255,255,255,0.75); font-size: 0.72rem;
@@ -341,13 +344,14 @@
         .fab-btn { border: none; border-radius: 50%; width: 48px; height: 48px; font-size: 1.3rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; color: white; }
         .fab-btn.glossary { background: #ed8936; }
     </style>
+<script src="version.js"></script>
 <script src="field-sync.js"></script>
 </head>
 <body>
 
 <div class="header">
     <div class="header-row">
-        <a href="./" class="header-title" style="text-decoration:none;color:white;">Engine Build Log<span>302 BOSS</span></a>
+        <a href="./" class="header-title" style="text-decoration:none;color:white;"><span class="ht-name">Engine Build Log<span class="ht-sub">302 BOSS</span></span><span class="ht-version" id="appVersion"></span></a>
         <a class="nav-item" href="index.html">Overview</a>
         <a class="nav-item" href="specs.html">Specs</a>
         <a class="nav-item active" href="build-log.html">Build Log</a>
@@ -364,6 +368,8 @@
                 <button onclick="exportJSON();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
                 <button onclick="document.getElementById('importFile').click();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
                 <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
+                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
+                <div style="padding:0.4rem 0.75rem;font-size:0.68rem;color:var(--text-light);">Version <span class="app-version"></span></div>
             </div>
         </div>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
@@ -4141,6 +4147,15 @@
         updateSyncBadge(); updateConnectionStatus();
         showToast('Verbindung getrennt.'); closeSettings();
     }
+    // ==== VERSION ====
+    // Eine Quelle: version.js. Wird unter dem Titel und im Menue angezeigt.
+    function renderAppVersion() {
+        var v = (typeof APP_VERSION === 'string') ? APP_VERSION : '';
+        document.querySelectorAll('#appVersion, .app-version').forEach(function(el) {
+            el.textContent = v;
+        });
+    }
+
     function updateSyncBadge() {
         var b = document.getElementById('syncBadge');
         if (!b) return;
@@ -5082,6 +5097,7 @@
     })();
 
     document.addEventListener('DOMContentLoaded', function() {
+        renderAppVersion();
         updateSyncBadge();
         loadData();
         restoreBuildCollapseState();
