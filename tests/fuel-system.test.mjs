@@ -132,10 +132,15 @@ await test('Ein Vergaser versorgt zwei Zylinder, eine Drosselklappe einen', asyn
   }
 });
 
-await test('Specs nennen den Vergaser nirgends DHLA', async () => {
+await test('Der verbaute Vergaser wird nirgends DHLA genannt', async () => {
+  // Geprueft wird die BEZEICHNUNG unseres Vergasers. DHLA als anderes Modell
+  // zu erwaehnen ist zulaessig und noetig - die Faustformeln in Kapitel 27
+  // stammen aus einem DHLA-Leitfaden, und genau das muss dort stehen duerfen.
+  const falsch = /(Dell.?Orto|DellOrto)\s*DHLA|DHLA\s*4[05]/i;
   for (const datei of ['specs.html', 'index.html', 'build-log.html']) {
     const html = fs.readFileSync(path.join(REPO_ROOT, datei), 'utf8');
-    assert(!/DHLA/.test(html), datei + ' nennt den Vergaser DHLA statt DRLA');
+    const treffer = html.match(falsch);
+    assert(!treffer, datei + ' bezeichnet den Vergaser als DHLA: ' + (treffer || [''])[0]);
   }
 });
 
