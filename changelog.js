@@ -13,6 +13,18 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v35',
+      date: '2026-09-20',
+      title: 'Tuning Guide: Quellenlage statt Behauptung',
+      changes: [
+        { type: 'fix', text: 'Abschnitt 9 hiess "Empfohlene Bedueusung als Startpunkt" und stand damit gegen das Baseline-Prinzip. Er heisst jetzt "Externe Bedueusungstabelle - nur Referenz" und sagt vorweg, dass die verbaute Bestueckung der Startpunkt ist, weil sie auf dem alten 302 funktioniert hat.' },
+        { type: 'fix', text: 'Die AFR-Zielwerte fuer Leerlauf und Volllast sind als unbelegt gekennzeichnet. Beim Volllastwert steht dabei, warum die Richtung wichtiger ist als die Zahl: zu mager kostet Kolben.' },
+        { type: 'fix', text: 'Kraftstoffdruck und Ethanol verweisen auf die Exkurs-Seiten, statt den Inhalt ein zweites Mal zu fuehren. Doppelte Wahrheiten driften auseinander - in diesem Repository bereits passiert.' },
+        { type: 'fix', text: 'Das pauschale Ethanol-Verbot ist durch den tatsaechlichen Mechanismus ersetzt: das Risiko liegt in der Standzeit, nicht in den Kilometern.' },
+        { type: 'fix', text: 'Das Inhaltsverzeichnis trug noch den alten Abschnittstitel.' }
+      ]
+    },
+    {
       version: 'v34',
       date: '2026-09-20',
       title: 'Referenzhistorie der Vergaseranlage',

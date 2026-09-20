@@ -94,6 +94,59 @@ await test('Exkurse brechen die Build-Log-Struktur nicht auf', async () => {
   }
 });
 
+// ---------------------------------------------------------------------------
+suite('Tuning Guide: Quellenlage statt Behauptung');
+
+const GUIDE = 'docs/dellorto-drla-tuning.html';
+
+await test('Die externe Bedueusungstabelle ersetzt die Baseline nicht', async () => {
+  // Abschnitt 9 hiess "Empfohlene Bedueusung als Startpunkt" und stand damit
+  // frontal gegen das Baseline-Prinzip: die verbaute Bestueckung IST der
+  // Startpunkt, weil sie auf dem alten 302 funktioniert hat.
+  const html = fs.readFileSync(path.join(REPO_ROOT, GUIDE), 'utf8');
+  assert(!/Empfohlene Bed&uuml;sung als Startpunkt/.test(html),
+    'Abschnitt 9 empfiehlt die Tabelle weiterhin als Startpunkt');
+  assert(/Diese Tabelle ist nicht euer Startpunkt/.test(html),
+    'Vorrang der verbauten Bestueckung fehlt');
+  assert(/Kapitel&nbsp;27/.test(html), 'Verweis auf die Ist-Erfassung fehlt');
+});
+
+await test('Unbelegte Zielwerte sind als solche gekennzeichnet', async () => {
+  const html = fs.readFileSync(path.join(REPO_ROOT, GUIDE), 'utf8');
+  for (const stelle of ['Ziel-AFR Leerlauf', 'Ziel-AFR bei Volllast']) {
+    const i = html.indexOf(stelle);
+    assert(i > -1, 'Stelle fehlt: ' + stelle);
+    assert(/unbelegt/.test(html.slice(i, i + 400)),
+      stelle + ' ist nicht als unbelegt gekennzeichnet');
+  }
+});
+
+await test('Druck und Ethanol verweisen auf die Exkurse statt sie zu wiederholen', async () => {
+  // Inhalt an zwei Stellen zu pflegen laeuft auseinander - in diesem Repo
+  // bereits passiert (verwaiste build-log-phase4.html).
+  const html = fs.readFileSync(path.join(REPO_ROOT, GUIDE), 'utf8');
+  assert(html.includes('href="exkurs-kraftstoffdruck.html"'),
+    'Kein Verweis auf den Druck-Exkurs');
+  assert(html.includes('href="exkurs-ethanol.html"'),
+    'Kein Verweis auf den Ethanol-Exkurs');
+});
+
+await test('Das pauschale Ethanol-Verbot ist differenziert', async () => {
+  const html = fs.readFileSync(path.join(REPO_ROOT, GUIDE), 'utf8');
+  assert(!/ETHANOL: VERBOTEN/.test(html), 'Pauschales Verbot steht weiterhin');
+  assert(/&uuml;ber Standzeit, nicht &uuml;ber Kilometer/.test(html),
+    'Der eigentliche Mechanismus ist nicht benannt');
+});
+
+await test('Guide-interne Verweise zeigen auf vorhandene Dateien', async () => {
+  const html = fs.readFileSync(path.join(REPO_ROOT, GUIDE), 'utf8');
+  const fehlend = [];
+  for (const m of html.matchAll(/href="(exkurs-[^"#]+)"/g)) {
+    if (!fs.existsSync(path.join(REPO_ROOT, 'docs', m[1]))) fehlend.push(m[1]);
+  }
+  assert(fehlend.length === 0, 'Tote Links im Guide: ' + fehlend.join(', '));
+});
+
 } finally {
   await browser.close();
   server.close();
