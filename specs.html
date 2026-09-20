@@ -523,6 +523,7 @@
             <button class="header-gear" onclick="toggleToolMenu()" id="toolMenuBtn">&#9881;</button>
             <div id="toolMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:2px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:180px;z-index:200;overflow:hidden;">
                 <button onclick="syncFromCloud();closeToolMenu()" id="syncBtn" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud Sync</button>
+                <button onclick="reloadGalleryFromRepo();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#8635; Galerie neu laden</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Einstellungen</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
@@ -2997,6 +2998,7 @@
 <div class="gallery-overlay" id="galleryOverlay">
     <div class="gallery-header">
         <h3 id="galleryTitle">Galerie</h3>
+        <button class="gallery-close" onclick="reloadGalleryFromRepo()" title="Galerie aus dem Repository neu laden" style="margin-left:auto;font-size:1.2rem;">&#8635;</button>
         <button class="gallery-close" onclick="closeGallery()">&times;</button>
     </div>
     <div class="gallery-grid" id="galleryGrid"></div>
@@ -3064,8 +3066,16 @@
     const FIXED_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
     const REPO_OWNER = 'pahlborn';
     const REPO_NAME = 'gt40-engine';
+    const REPO_BRANCH = 'main';
     const PHOTO_MAX_PER_GROUP = 20;
     const PHOTO_MAX_BYTES = 500 * 1024; // 500 KB per photo
+    // Galerie: das Repo ist die Wahrheit (welche Bilder existieren),
+    // der Gist traegt nur noch Metadaten (Caption, Zeit, Reihenfolge, Hero, YouTube).
+    const GIST_PHOTOS_FILE = 'engine-build-photos.json';
+    const GALLERY_META_KEY = 'engineGalleryMeta';      // lokaler Metadaten-Cache
+    const GALLERY_TREE_KEY = 'engineGalleryTree';      // lokaler Offline-Cache des Repo-Listings
+    const GALLERY_DIR = 'img/user/';
+    const TREE_MAX_AGE_MS = 60 * 1000;                 // Repo-Listing hoechstens 1x/Minute neu holen
     let isLoading = false;
 
     function getGistConfig() { return { token: localStorage.getItem('gh_token') || '' }; }
@@ -3249,113 +3259,135 @@
     }
     function updateSyncBadge() {
         const b = document.getElementById('syncBadge');
-        if (isGistConfigured()) {
-            b.innerHTML = '<span class="sync-badge online"><span class="sync-dot online"></span>Cloud Sync v2.5</span>';
-            document.getElementById('syncBtn').disabled = false;
+        const btn = document.getElementById('syncBtn');
+        // Galerie funktioniert auch ohne Token -> Sync-Button bleibt immer aktiv
+        if (btn) btn.disabled = false;
+        if (!b) return;
+        if (!isGistConfigured()) {
+            b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Galerie v3 &middot; Messwerte lokal</span>';
+        } else if (_gistError) {
+            // Frueher zeigte das Badge auch bei abgelaufenem Token "Verbunden".
+            b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Token-Problem: ' + _gistError + '</span>';
         } else {
-            b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Lokal v2.5</span>';
-            document.getElementById('syncBtn').disabled = true;
+            b.innerHTML = '<span class="sync-badge online"><span class="sync-dot online"></span>Cloud Sync v3</span>';
         }
     }
 
     // ==== GIST API ====
-    var GIST_PHOTOS_FILE = 'engine-build-photos.json';
+    // WICHTIG: saveToGist() schreibt ausschliesslich die Messwerte-Datei.
+    // Die Galerie-Metadaten werden NUR von pushGalleryMeta() geschrieben und dort
+    // vorher mit dem Cloud-Stand gemerged. Frueher hat jeder Tastendruck (autoSave ->
+    // saveData -> saveToGist) den kompletten Foto-Index mit dem lokalen Stand
+    // ueberschrieben - ein Geraet mit leerer Galerie hat damit die Cloud geleert.
     async function saveToGist() {
         const t = getGistConfig().token; if (!t) return false;
         try {
             var files = { [GIST_FILENAME]: { content: localStorage.getItem('engineBuildLog') || '{}' } };
-            // Include photos + hero selection
-            var photoPayload = { photos: photoData, heroSelection: _heroSelection };
-            try {
-                var photoStr = JSON.stringify(photoPayload);
-                // Only include if reasonable size (< 8MB for Gist limit)
-                if (photoStr.length < 8000000) {
-                    files[GIST_PHOTOS_FILE] = { content: photoStr };
-                }
-            } catch(pe) {}
             const res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
                 method: 'PATCH', headers: { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ files: files })
             });
             if (!res.ok) { showToast('Cloud-Fehler (Status ' + res.status + ')'); return false; }
+            _gistOk = true;
             return true;
         } catch (err) { showToast('Cloud-Fehler: ' + err.message); return false; }
     }
+    // Gist-Datei lesen und Truncation (>1 MB) aufloesen
+    async function _readGistFile(gist, name, token) {
+        var f = gist.files ? gist.files[name] : null;
+        if (!f) return null;
+        var content = f.content;
+        if (f.truncated && f.raw_url) {
+            var h = token ? { 'Authorization': 'Bearer ' + token } : {};
+            var r = await fetch(f.raw_url, { headers: h });
+            if (r.ok) content = await r.text();
+        }
+        return content || null;
+    }
+
     async function loadFromGist() {
         const t = getGistConfig().token; if (!t) return false;
+        isLoading = true;
+        var gist = null;
         try {
-            isLoading = true;
             const res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { headers: { 'Authorization': 'Bearer ' + t } });
-            if (!res.ok) { isLoading = false; return false; }
-            const gist = await res.json();
-            const file = gist.files[GIST_FILENAME];
-            if (!file) { isLoading = false; return false; }
-            const cloudData = JSON.parse(file.content);
-            const localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-            const cloudTime = new Date(cloudData._savedAt || 0).getTime();
-            const localTime = new Date(localData._savedAt || 0).getTime();
-            // Smart merge: never overwrite a non-empty value with an empty one
-            var merged = {};
-            var allKeys = new Set(Object.keys(localData).concat(Object.keys(cloudData)));
-            var winner = cloudTime > localTime ? cloudData : localData;
-            var loser = cloudTime > localTime ? localData : cloudData;
-            allKeys.forEach(function(k) {
-                var wVal = winner[k], lVal = loser[k];
-                if (wVal !== undefined && wVal !== '' && wVal !== null) { merged[k] = wVal; }
-                else if (lVal !== undefined && lVal !== '' && lVal !== null) { merged[k] = lVal; }
-                else { merged[k] = wVal !== undefined ? wVal : lVal; }
-            });
-            applyData(merged);
-            localStorage.setItem('engineBuildLog', JSON.stringify(merged));
-            // Load photos from gist
-            var photosFile = gist.files[GIST_PHOTOS_FILE];
-            console.log('[Sync] Foto-Datei im Gist:', photosFile ? 'vorhanden (' + (photosFile.content || '').length + ' Bytes)' : 'FEHLT');
-            if (photosFile) {
-                try {
-                    // Handle truncated content (>1MB) - fetch raw URL
-                    var photoContent = photosFile.content;
-                    if (photosFile.truncated && photosFile.raw_url) {
-                        var rawRes = await fetch(photosFile.raw_url, { headers: { 'Authorization': 'Bearer ' + t } });
-                        if (rawRes.ok) photoContent = await rawRes.text();
-                    }
-                    if (photoContent) {
-                        var cloudPhotos = JSON.parse(photoContent);
-                        console.log('[Sync] Cloud-Fotos:', Object.keys(cloudPhotos.photos || {}).length, 'Gruppen');
-                        if (cloudPhotos.photos) {
-                            var localPhotos = photoData || {};
-                            for (var g in cloudPhotos.photos) {
-                                if (!localPhotos[g] || localPhotos[g].length === 0) {
-                                    localPhotos[g] = cloudPhotos.photos[g];
-                                } else if (cloudPhotos.photos[g].length > localPhotos[g].length) {
-                                    localPhotos[g] = cloudPhotos.photos[g];
-                                }
-                            }
-                            photoData = localPhotos;
-                            localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData));
-                        }
-                        if (cloudPhotos.heroSelection) {
-                            for (var g in cloudPhotos.heroSelection) {
-                                if (!_heroSelection[g]) _heroSelection[g] = cloudPhotos.heroSelection[g];
-                            }
-                            _saveHeroSelection();
-                        }
-                    }
-                } catch(pe) { console.error('[Sync] Foto-Parse-Fehler:', pe); }
+            if (!res.ok) {
+                _gistOk = false;
+                _gistError = res.status === 401 ? 'Token ungueltig'
+                    : (res.status === 403 ? 'Token ohne Gist-Rechte'
+                    : (res.status === 404 ? 'Gist nicht gefunden / Token ohne Zugriff' : 'HTTP ' + res.status));
+                console.error('[Sync] Gist-Zugriff fehlgeschlagen:', _gistError);
+                updateSyncBadge();
+                isLoading = false; return false;
             }
-            // Always refresh photo strips after sync
-            try { initCompPhotos(); } catch(e) {}
-            isLoading = false; return true;
-        } catch (err) { isLoading = false; return false; }
+            gist = await res.json();
+            _gistOk = true; _gistError = '';
+        } catch (err) {
+            _gistOk = false; _gistError = err.message;
+            console.error('[Sync] Gist-Netzwerkfehler:', err.message);
+            isLoading = false; return false;
+        }
+
+        // --- Messwerte ---
+        // Eigener try-Block: ein Fehler hier darf die Galerie-Metadaten NICHT mit abraeumen.
+        try {
+            var logContent = await _readGistFile(gist, GIST_FILENAME, t);
+            if (logContent) {
+                const cloudData = JSON.parse(logContent);
+                const localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+                const cloudTime = new Date(cloudData._savedAt || 0).getTime();
+                const localTime = new Date(localData._savedAt || 0).getTime();
+                // Smart merge: never overwrite a non-empty value with an empty one
+                var merged = {};
+                var allKeys = new Set(Object.keys(localData).concat(Object.keys(cloudData)));
+                var winner = cloudTime > localTime ? cloudData : localData;
+                var loser = cloudTime > localTime ? localData : cloudData;
+                allKeys.forEach(function(k) {
+                    var wVal = winner[k], lVal = loser[k];
+                    if (wVal !== undefined && wVal !== '' && wVal !== null) { merged[k] = wVal; }
+                    else if (lVal !== undefined && lVal !== '' && lVal !== null) { merged[k] = lVal; }
+                    else { merged[k] = wVal !== undefined ? wVal : lVal; }
+                });
+                applyData(merged);
+                localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+            }
+        } catch (e) { console.error('[Sync] Messwerte-Fehler (Galerie nicht betroffen):', e); }
+
+        // --- Galerie-Metadaten (Caption/Zeit/Reihenfolge/Hero/YouTube) ---
+        try {
+            var metaContent = await _readGistFile(gist, GIST_PHOTOS_FILE, t);
+            if (metaContent) {
+                var cloudMeta = _normalizeMeta(JSON.parse(metaContent));
+                _galleryMeta = _mergeMeta(_galleryMeta, cloudMeta);
+                saveGalleryMeta();
+                console.log('[Galerie] Metadaten aus Gist:', Object.keys(_galleryMeta.meta).length, 'Eintraege');
+            }
+        } catch (e) { console.error('[Galerie] Metadaten-Parse-Fehler:', e); }
+
+        // --- Bilder selbst kommen aus dem Repo, nicht aus dem Gist ---
+        try { await refreshGallery(true); } catch (e) { console.error('[Galerie] Repo-Refresh fehlgeschlagen:', e); }
+
+        isLoading = false;
+        updateSyncBadge();
+        return true;
     }
     async function syncFromCloud() {
-        if (!isGistConfigured()) { openSettings(); return; }
         showToast('Lade aus Cloud...');
+        if (!isGistConfigured()) {
+            // Ohne Token gibt es keine Messwerte, aber die Galerie kommt aus dem
+            // oeffentlichen Repo und funktioniert trotzdem.
+            var n = await refreshGallery(true);
+            showToast(n >= 0 ? 'Galerie aktualisiert (' + n + ' Fotos)' : 'Galerie-Update fehlgeschlagen');
+            openSettings();
+            return;
+        }
         if (await loadFromGist()) { showToast('Cloud-Daten geladen!'); updateSaveStatus(); }
+        else { showToast('Cloud-Fehler: ' + (_gistError || 'unbekannt')); }
     }
 
     // ==== QUENCH TABLE ====
     function generateQuenchTable() {
-        const tbody = document.getElementById('quenchTableBody'); tbody.innerHTML = '';
+        const tbody = document.getElementById('quenchTableBody'); if (!tbody) return; tbody.innerHTML = '';
         for (let i = 1; i <= 8; i++) {
             const tr = document.createElement('tr');
             tr.innerHTML = '<td class="cyl-label">Zyl. ' + i + '</td>'
@@ -3371,6 +3403,7 @@
         const a = parseFloat(gfv('quench_a_' + cyl)) || 0;
         const b = parseFloat(gfv('quench_b_' + cyl)) || 0;
         const f = document.querySelector('[data-field="quench_total_' + cyl + '"]');
+        if (!f) return;
         if (a > 0 || b > 0) {
             const t = a + b; f.value = t.toFixed(4);
             f.classList.remove('status-ok','status-warn','status-error');
@@ -3382,6 +3415,7 @@
 
     // ==== VALIDATION ====
     function validateRange(input, min, max) {
+        if (!input) return;
         const v = parseFloat(input.value);
         input.classList.remove('status-ok','status-warn','status-error');
         if (!isNaN(v)) input.classList.add(v >= min && v <= max ? 'status-ok' : 'status-error');
@@ -3402,18 +3436,22 @@
             const v = data[el.dataset.field];
             if (v !== undefined) { if (el.type === 'checkbox') el.checked = v; else el.value = v; }
         });
-        for (let i = 1; i <= 8; i++) calcQuench(i);
-        document.querySelectorAll('[data-field="crank_endplay"]').forEach(el => validateRange(el, 0.004, 0.008));
-        document.querySelectorAll('[data-field="cam_endplay"]').forEach(el => validateRange(el, 0.004, 0.009));
-        for (let i = 1; i <= 8; i++) {
-            const a = document.querySelector('[data-field="ptv_intake_' + i + '"]');
-            const b = document.querySelector('[data-field="ptv_exhaust_' + i + '"]');
-            if (a && a.value) validateRange(a, 0.080, 9);
-            if (b && b.value) validateRange(b, 0.100, 9);
-        }
-        if (typeof calcCR === 'function') calcCR();
-        // Sync Build Log measurement values into Main Page fields
-        syncBuildLogToMain(data);
+        // Ab hier alles in try/catch: eine DOM-Exception darf den laufenden Sync
+        // nicht abbrechen (sonst laedt die Galerie stillschweigend nie).
+        try {
+            for (let i = 1; i <= 8; i++) calcQuench(i);
+            document.querySelectorAll('[data-field="crank_endplay"]').forEach(el => validateRange(el, 0.004, 0.008));
+            document.querySelectorAll('[data-field="cam_endplay"]').forEach(el => validateRange(el, 0.004, 0.009));
+            for (let i = 1; i <= 8; i++) {
+                const a = document.querySelector('[data-field="ptv_intake_' + i + '"]');
+                const b = document.querySelector('[data-field="ptv_exhaust_' + i + '"]');
+                if (a && a.value) validateRange(a, 0.080, 9);
+                if (b && b.value) validateRange(b, 0.100, 9);
+            }
+            if (typeof calcCR === 'function') calcCR();
+            // Sync Build Log measurement values into Main Page fields
+            syncBuildLogToMain(data);
+        } catch(e) { console.warn('[applyData] Validierungsfehler (nicht fatal):', e.message); }
     }
 
     // Copy P1-P4 measurements into corresponding Main Page fields (one-way: Build Log -> Main)
@@ -3489,8 +3527,12 @@
     }
     // Auto-Sync bei Fokus (Tab-Wechsel, App-Wechsel auf Mobilgeraeten)
     document.addEventListener('visibilitychange', function() {
-        if (!document.hidden && isGistConfigured() && !isLoading) {
+        if (document.hidden || isLoading) return;
+        if (isGistConfigured()) {
             loadFromGist().then(function(ok) { if (ok) updateSaveStatus(); });
+        } else {
+            // Ohne Token gibt es keine Messwerte, die Galerie aber schon.
+            refreshGallery(true);
         }
     });
     let autoSaveTimer = null;
@@ -4295,7 +4337,8 @@
         const allData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
         const exportObj = {
             fields: allData,
-            photos_main: JSON.parse(localStorage.getItem('engineBuildPhotos') || '{}'),
+            // Die Bilder selbst liegen im Repo; hier wandern nur die Metadaten mit.
+            gallery_meta: _galleryMeta,
             photos_buildlog: {}
         };
         ['phase1','phase2','phase3','phase4'].forEach(function(g) {
@@ -4322,10 +4365,12 @@
                     const merged = Object.assign({}, existing, imported.fields);
                     localStorage.setItem('engineBuildLog', JSON.stringify(merged));
                     applyData(merged);
-                    if (imported.photos_main) {
-                        localStorage.setItem('engineBuildPhotos', JSON.stringify(imported.photos_main));
-                        photoData = imported.photos_main;
-                        document.querySelectorAll('[data-photo-group]').forEach(function(g) { renderPhotos(g.dataset.photoGroup); });
+                    if (imported.gallery_meta || imported.photos_main) {
+                        var incoming = _normalizeMeta(imported.gallery_meta
+                            || { photos: imported.photos_main, heroSelection: imported.heroSelection });
+                        _galleryMeta = _mergeMeta(_galleryMeta, incoming);
+                        scheduleMetaPush();
+                        refreshGallery(true);
                     }
                     if (imported.photos_buildlog) {
                         Object.keys(imported.photos_buildlog).forEach(function(g) {
@@ -4359,7 +4404,7 @@
         try {
             var backup = {
                 fields: JSON.parse(localStorage.getItem('engineBuildLog') || '{}'),
-                photos_main: JSON.parse(localStorage.getItem('engineBuildPhotos') || '{}'),
+                gallery_meta: _galleryMeta,
                 photos_buildlog: {},
                 _backupBeforeReset: new Date().toISOString()
             };
@@ -4376,9 +4421,16 @@
         // Jetzt loeschen
         localStorage.removeItem('engineBuildLog');
         localStorage.removeItem('engineBuildPhotos');
+        localStorage.removeItem('engineBuildHeroSelection');
+        localStorage.removeItem(GALLERY_META_KEY);
+        localStorage.removeItem(GALLERY_TREE_KEY);
         ['phase1','phase2','phase3','phase4'].forEach(function(g) {
             localStorage.removeItem('buildPhotos_' + g);
         });
+        // Nur die Metadaten sind weg - die Bilder liegen weiter im Repo und
+        // erscheinen nach dem naechsten Laden wieder.
+        _galleryMeta = { version: 2, meta: {}, videos: {}, hero: {} };
+        _treeEtag = ''; _treeFetchedAt = 0;
         photoData = {};
         document.querySelectorAll('[data-field]').forEach(el => {
             if (el.type === 'checkbox') el.checked = false; else el.value = '';
@@ -4499,7 +4551,360 @@
     });
 
     // ==== PHOTOS ====
+    // photoData wird NICHT mehr persistiert. Es ist eine abgeleitete Ansicht aus
+    //   (a) dem Repo-Listing  -> welche Bilder existieren  (Wahrheit)
+    //   (b) _galleryMeta      -> Caption/Zeit/Reihenfolge/Hero/YouTube (Beiwerk)
     let photoData = {};
+
+    // ==== GALERIE: REPO = WAHRHEIT ====
+    // Schema v2. Alles per Key adressiert, niemals per Array-Index - damit ein
+    // Merge zwischen zwei Geraeten nichts verlieren kann.
+    //   meta['<group>/<datei>.jpg'] = { caption, time, order, m }
+    //   videos['<group>']['<ytid>'] = { caption, time, order, m, del? }
+    //   hero['<group>']             = { type:'user', key } | { type:'default', idx } (+ m)
+    var _galleryMeta = { version: 2, meta: {}, videos: {}, hero: {} };
+    var _repoFiles = {};          // { group: [filename, ...] }
+    var _treeEtag = '';
+    var _treeFetchedAt = 0;
+    var _gistOk = false;
+    var _gistError = '';
+    var _treeInFlight = null;   // parallele Aufrufe teilen sich einen Request
+    var _treeHeadersBlocked = false;  // Preflight unterwegs geblockt? dann gar nicht erst senden
+    // Eventual consistency: das Repo-Listing hinkt einem frischen Commit kurz hinterher.
+    var PENDING_TTL_MS = 180 * 1000;
+    var _pendingAdds = {};        // key -> { url, time, until }
+    var _pendingDeletes = {};     // key -> until
+
+    function _nowMs() { return Date.now(); }
+
+    function _normalizeMeta(raw) {
+        var out = { version: 2, meta: {}, videos: {}, hero: {} };
+        if (!raw || typeof raw !== 'object') return out;
+        if (raw.version === 2) {
+            out.meta = raw.meta || {};
+            out.videos = raw.videos || {};
+            out.hero = raw.hero || {};
+            return out;
+        }
+        // --- Migration aus Schema v1 ---
+        // v1: { photos: { group: [{data,caption,time,type}] }, heroSelection: { group:{type,idx} } }
+        var stamp = 1; // aelter als alles Neue: v2-Eintraege gewinnen bei Konflikt
+        var photos = raw.photos || {};
+        for (var g in photos) {
+            var arr = photos[g] || [];
+            for (var i = 0; i < arr.length; i++) {
+                var p = arr[i] || {};
+                if (p.type === 'youtube') {
+                    if (!p.data) continue;
+                    if (!out.videos[g]) out.videos[g] = {};
+                    out.videos[g][p.data] = { caption: p.caption || '', time: p.time || '', order: i, m: stamp };
+                } else {
+                    var k = _keyFromUrl(p.data);
+                    if (!k) continue;
+                    out.meta[k] = { caption: p.caption || '', time: p.time || '', order: i, m: stamp };
+                }
+            }
+        }
+        var hs = raw.heroSelection || {};
+        for (var g2 in hs) {
+            var h = hs[g2] || {};
+            if (h.type === 'default') { out.hero[g2] = { type: 'default', idx: h.idx || 0, m: stamp }; }
+            else if (h.type === 'user') {
+                var list = photos[g2] || [];
+                var hp = list[h.idx];
+                var hk = hp ? (hp.type === 'youtube' ? 'yt:' + hp.data : _keyFromUrl(hp.data)) : null;
+                if (hk) out.hero[g2] = { type: 'user', key: hk, m: stamp };
+            }
+        }
+        return out;
+    }
+
+    // 'https://raw.githubusercontent.com/owner/repo/main/img/user/shortblock/x.jpg' -> 'shortblock/x.jpg'
+    function _keyFromUrl(url) {
+        if (!url || typeof url !== 'string') return null;
+        var i = url.indexOf(GALLERY_DIR);
+        if (i === -1) return null;
+        var rest = url.substring(i + GALLERY_DIR.length).split('?')[0];
+        return rest.indexOf('/') === -1 ? null : rest;
+    }
+    function _urlFromKey(key) {
+        return 'https://raw.githubusercontent.com/' + REPO_OWNER + '/' + REPO_NAME + '/' + REPO_BRANCH + '/' + GALLERY_DIR + key;
+    }
+
+    // Per-Key-Merge: der juengere Eintrag gewinnt. Ein fehlender Key bedeutet
+    // "keine Caption", niemals "Foto weg".
+    function _mergeEntryMap(a, b) {
+        var out = {};
+        var k;
+        for (k in a) out[k] = a[k];
+        for (k in b) {
+            if (!out[k] || (b[k].m || 0) >= (out[k].m || 0)) out[k] = b[k];
+        }
+        return out;
+    }
+    function _mergeMeta(a, b) {
+        var out = { version: 2, meta: {}, videos: {}, hero: {} };
+        out.meta = _mergeEntryMap(a.meta || {}, b.meta || {});
+        var groups = {}, g;
+        for (g in (a.videos || {})) groups[g] = 1;
+        for (g in (b.videos || {})) groups[g] = 1;
+        for (g in groups) out.videos[g] = _mergeEntryMap((a.videos || {})[g] || {}, (b.videos || {})[g] || {});
+        out.hero = _mergeEntryMap(a.hero || {}, b.hero || {});
+        return out;
+    }
+
+    function loadGalleryMeta() {
+        try {
+            var d = localStorage.getItem(GALLERY_META_KEY);
+            if (d) { _galleryMeta = _normalizeMeta(JSON.parse(d)); return; }
+        } catch(e) {}
+        // Einmalige Uebernahme der alten, index-basierten Daten
+        try {
+            var legacy = { photos: {}, heroSelection: {} };
+            var op = localStorage.getItem('engineBuildPhotos');
+            if (op) legacy.photos = JSON.parse(op);
+            var oh = localStorage.getItem('engineBuildHeroSelection');
+            if (oh) legacy.heroSelection = JSON.parse(oh);
+            _galleryMeta = _normalizeMeta(legacy);
+            if (Object.keys(_galleryMeta.meta).length) console.log('[Galerie] Alt-Metadaten uebernommen:', Object.keys(_galleryMeta.meta).length);
+        } catch(e) { _galleryMeta = { version: 2, meta: {}, videos: {}, hero: {} }; }
+    }
+    function saveGalleryMeta() {
+        try { localStorage.setItem(GALLERY_META_KEY, JSON.stringify(_galleryMeta)); }
+        catch(e) { console.error('[Galerie] Metadaten nicht speicherbar:', e); }
+    }
+
+    // Schreibt die Metadaten in den Gist - vorher immer gegen den Cloud-Stand mergen,
+    // damit parallele Aenderungen auf zwei Geraeten sich nicht gegenseitig loeschen.
+    var _metaPushTimer = null;
+    function scheduleMetaPush() {
+        saveGalleryMeta();
+        clearTimeout(_metaPushTimer);
+        _metaPushTimer = setTimeout(function() { pushGalleryMeta(); }, 800);
+    }
+    async function pushGalleryMeta() {
+        var t = getGistConfig().token;
+        if (!t) { console.warn('[Galerie] Kein Token - Metadaten bleiben lokal'); return false; }
+        try {
+            var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { headers: { 'Authorization': 'Bearer ' + t } });
+            if (res.ok) {
+                var gist = await res.json();
+                var content = await _readGistFile(gist, GIST_PHOTOS_FILE, t);
+                if (content) _galleryMeta = _mergeMeta(_normalizeMeta(JSON.parse(content)), _galleryMeta);
+            }
+        } catch(e) { console.warn('[Galerie] Cloud-Stand nicht lesbar, schreibe lokalen Stand:', e.message); }
+        _pruneOrphanMeta();
+        _galleryMeta.version = 2;
+        saveGalleryMeta();
+        try {
+            var payload = {};
+            payload[GIST_PHOTOS_FILE] = { content: JSON.stringify(_galleryMeta) };
+            var wr = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
+                method: 'PATCH',
+                headers: { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ files: payload })
+            });
+            if (!wr.ok) { console.error('[Galerie] Metadaten-Sync fehlgeschlagen:', wr.status); return false; }
+            console.log('[Galerie] Metadaten-Sync OK');
+            return true;
+        } catch(e) { console.error('[Galerie] Metadaten-Sync-Fehler:', e.message); return false; }
+    }
+
+    // Metadaten zu Dateien, die es im Repo nicht mehr gibt, wegwerfen.
+    // Bewusst vorsichtig: ein frischer Upload von einem anderen Geraet darf hier
+    // nicht mit weggeraeumt werden, nur weil unser Listing ihn noch nicht kennt.
+    var PRUNE_GRACE_MS = 10 * 60 * 1000;
+    function _pruneOrphanMeta() {
+        // Nur mit einem wirklich aktuellen Listing aufraeumen
+        if (!_treeFetchedAt || (_nowMs() - _treeFetchedAt) > TREE_MAX_AGE_MS) return;
+        if (!Object.keys(_repoFiles).length) return;
+        var cutoff = _nowMs() - PRUNE_GRACE_MS;
+        var removed = 0;
+        for (var key in _galleryMeta.meta) {
+            var e = _galleryMeta.meta[key];
+            if (!e || (e.m || 0) > cutoff) continue;    // zu jung -> Schonfrist
+            var slash = key.indexOf('/');
+            if (slash <= 0) continue;
+            var g = key.substring(0, slash), f = key.substring(slash + 1);
+            if (!_repoFiles[g]) continue;               // Gruppe unbekannt -> Finger weg
+            if (_pendingAdds[key]) continue;            // Upload noch nicht im Listing
+            if (_repoFiles[g].indexOf(f) === -1) { delete _galleryMeta.meta[key]; removed++; }
+        }
+        if (removed) console.log('[Galerie] Verwaiste Metadaten entfernt:', removed);
+    }
+
+    // Ein einziger Request liefert das komplette Repo-Listing aller Gruppen.
+    // Funktioniert auch ohne Token (oeffentliches Repo); mit Token hoeheres Rate-Limit.
+    async function fetchRepoTree(force) {
+        var age = _treeFetchedAt ? (_nowMs() - _treeFetchedAt) : Infinity;
+        var haveData = Object.keys(_repoFiles).length > 0;
+        // Ohne Token sind nur 60 Requests/Stunde erlaubt -> auch ein erzwungener
+        // Refresh haelt einen Mindestabstand ein.
+        if (haveData && age < (force ? 10000 : TREE_MAX_AGE_MS)) return _repoFiles;
+        if (_treeInFlight) return _treeInFlight;
+        _treeInFlight = _fetchRepoTreeInner();
+        try { return await _treeInFlight; } finally { _treeInFlight = null; }
+    }
+    async function _fetchRepoTreeInner() {
+        var cached = null;
+        try { var c = localStorage.getItem(GALLERY_TREE_KEY); if (c) cached = JSON.parse(c); } catch(e) {}
+        if (cached && cached.etag && !_treeEtag) _treeEtag = cached.etag;
+
+        var url = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/git/trees/' + REPO_BRANCH + '?recursive=1';
+        var headers = {};
+        if (!_treeHeadersBlocked) {
+            var tok = getGistConfig().token;
+            if (tok) headers['Authorization'] = 'Bearer ' + tok;   // nur fuers Rate-Limit, Repo ist oeffentlich
+            if (_treeEtag) headers['If-None-Match'] = _treeEtag;   // 304 zaehlt nicht aufs Rate-Limit
+        }
+        try {
+            var res;
+            try {
+                res = await fetch(url, { headers: headers });
+            } catch (headerErr) {
+                // Authorization und If-None-Match loesen einen CORS-Preflight aus.
+                // Wird der irgendwo unterwegs geblockt, lieber ohne Zusatz-Header
+                // erneut fragen als die Galerie auf dem Cache einfrieren zu lassen.
+                if (!Object.keys(headers).length) throw headerErr;
+                console.warn('[Galerie] Request mit Zusatz-Headern blockiert - erneuter Versuch ohne');
+                _treeHeadersBlocked = true; _treeEtag = '';
+                res = await fetch(url);
+            }
+            if (res.status === 304 && cached && cached.files) {
+                _repoFiles = cached.files; _treeFetchedAt = _nowMs();
+                return _repoFiles;
+            }
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            var et = res.headers.get('ETag'); if (et) _treeEtag = et;
+            var data = await res.json();
+            if (data.truncated) console.warn('[Galerie] Repo-Listing gekuerzt - Galerie evtl. unvollstaendig');
+            var files = {};
+            (data.tree || []).forEach(function(e) {
+                if (e.type !== 'blob' || e.path.indexOf(GALLERY_DIR) !== 0) return;
+                var rest = e.path.substring(GALLERY_DIR.length);
+                var slash = rest.indexOf('/');
+                if (slash <= 0) return;
+                var g = rest.substring(0, slash), f = rest.substring(slash + 1);
+                if (!f || f.indexOf('/') !== -1) return;   // keine Unterordner
+                if (!files[g]) files[g] = [];
+                files[g].push(f);
+            });
+            _repoFiles = files; _treeFetchedAt = _nowMs();
+            try { localStorage.setItem(GALLERY_TREE_KEY, JSON.stringify({ etag: _treeEtag, files: files, ts: _treeFetchedAt })); } catch(e) {}
+            return _repoFiles;
+        } catch (err) {
+            console.warn('[Galerie] Repo-Listing nicht erreichbar (' + err.message + ') - nutze Cache');
+            if (cached && cached.files) { _repoFiles = cached.files; return _repoFiles; }
+            return _repoFiles;
+        }
+    }
+
+    function _prunePending() {
+        var now = _nowMs(), k;
+        for (k in _pendingAdds) if (_pendingAdds[k].until < now) delete _pendingAdds[k];
+        for (k in _pendingDeletes) if (_pendingDeletes[k] < now) delete _pendingDeletes[k];
+    }
+
+    // Aus Datei 'annotated_1789838216411.jpg' oder '1789838216411_3.jpg' den Zeitstempel ziehen
+    function _tsFromFilename(f) {
+        var m = String(f).match(/(\d{10,16})/);
+        return m ? parseInt(m[1], 10) : 0;
+    }
+
+    // Baut photoData neu auf: Repo-Dateien + Metadaten + YouTube. Verliert nichts,
+    // weil nichts aus einer gespeicherten Liste kommt.
+    function rebuildPhotoData() {
+        _prunePending();
+        var result = {};
+        var groups = {}, g;
+        for (g in _repoFiles) groups[g] = 1;
+        for (g in (_galleryMeta.videos || {})) groups[g] = 1;
+        document.querySelectorAll('[data-comp-gallery]').forEach(function(st) { groups[st.dataset.compGallery] = 1; });
+        for (var k in _pendingAdds) groups[k.split('/')[0]] = 1;
+
+        Object.keys(groups).forEach(function(group) {
+            var seen = {};
+            var items = [];
+            var files = (_repoFiles[group] || []).slice();
+            // Uploads, die das Listing noch nicht kennt
+            for (var pk in _pendingAdds) {
+                if (pk.indexOf(group + '/') === 0) {
+                    var pf = pk.substring(group.length + 1);
+                    if (files.indexOf(pf) === -1) files.push(pf);
+                }
+            }
+            files.forEach(function(f) {
+                var key = group + '/' + f;
+                if (_pendingDeletes[key]) return;       // gerade geloescht, Listing hinkt nach
+                if (seen[key]) return;
+                seen[key] = 1;
+                var md = _galleryMeta.meta[key] || {};
+                items.push({
+                    key: key,
+                    data: _urlFromKey(key),
+                    caption: md.caption || '',
+                    time: md.time || '',
+                    order: (md.order === undefined ? null : md.order),
+                    sort: _tsFromFilename(f),
+                    name: f,
+                    type: 'photo'
+                });
+            });
+            var vids = (_galleryMeta.videos || {})[group] || {};
+            Object.keys(vids).forEach(function(id) {
+                var v = vids[id];
+                if (!v || v.del) return;
+                items.push({
+                    key: 'yt:' + id,
+                    data: id,
+                    caption: v.caption || '',
+                    time: v.time || '',
+                    order: (v.order === undefined ? null : v.order),
+                    sort: v.m || 0,
+                    name: id,
+                    type: 'youtube'
+                });
+            });
+            items.sort(function(a, b) {
+                var ao = a.order, bo = b.order;
+                if (ao !== null && bo !== null && ao !== bo) return ao - bo;
+                if (ao !== null && bo === null) return -1;
+                if (ao === null && bo !== null) return 1;
+                if (a.sort !== b.sort) return a.sort - b.sort;
+                return a.name < b.name ? -1 : (a.name > b.name ? 1 : 0);
+            });
+            if (items.length) result[group] = items;
+        });
+        photoData = result;
+        return photoData;
+    }
+
+    // Einstiegspunkt: Repo lesen, neu aufbauen, alles neu zeichnen.
+    async function refreshGallery(force) {
+        try {
+            await fetchRepoTree(force);
+            rebuildPhotoData();
+            _renderAllGalleries();
+            var n = 0;
+            for (var g in photoData) n += photoData[g].length;
+            console.log('[Galerie] Aufgebaut:', n, 'Eintraege in', Object.keys(photoData).length, 'Gruppen');
+            return n;
+        } catch (e) { console.error('[Galerie] Refresh-Fehler:', e); return -1; }
+    }
+    function _renderAllGalleries() {
+        document.querySelectorAll('[data-comp-gallery]').forEach(function(strip) {
+            try { updateCompStrip(strip.dataset.compGallery); } catch(e) {}
+        });
+        var ov = document.getElementById('galleryOverlay');
+        if (ov && ov.classList.contains('show') && ov.dataset.group) {
+            try { renderGallery(ov.dataset.group); } catch(e) {}
+        }
+    }
+    function _indexOfKey(group, key) {
+        var arr = photoData[group] || [];
+        for (var i = 0; i < arr.length; i++) if (arr[i].key === key) return i;
+        return -1;
+    }
 
     // ==== COMPONENT PHOTO GALLERY SYSTEM ====
 
@@ -4620,12 +5025,15 @@
         return 'https://raw.githubusercontent.com/' + REPO_OWNER + '/' + REPO_NAME + '/main/' + path;
     }
 
-    function addPhoto(group) {
+    async function addPhoto(group) {
         var lang = document.documentElement.lang || 'de';
         if (!getGistConfig().token) {
             showToast(lang === 'de' ? 'Bitte zuerst GitHub-Token in den Einstellungen konfigurieren' : 'Please configure GitHub token in settings first');
             return;
         }
+        // Gegen den echten Repo-Stand pruefen, nicht gegen eine lokale Liste -
+        // sonst entstehen verwaiste Dateien oberhalb des Limits.
+        try { await fetchRepoTree(true); rebuildPhotoData(); } catch(e) {}
         var existing = (photoData[group] || []).filter(function(p) { return p.type !== 'youtube'; });
         if (existing.length >= PHOTO_MAX_PER_GROUP) {
             showToast(lang === 'de' ? 'Maximum ' + PHOTO_MAX_PER_GROUP + ' Fotos pro Komponente erreicht' : 'Maximum ' + PHOTO_MAX_PER_GROUP + ' photos per component reached');
@@ -4654,9 +5062,8 @@
                 }
             }
             if (uploaded > 0) {
-                savePhotoData();
-                updateCompStrip(group);
-                if (document.getElementById('galleryOverlay').classList.contains('show')) renderGallery(group);
+                scheduleMetaPush();
+                await refreshGallery(true);
                 showToast(uploaded === 1
                     ? (lang === 'de' ? 'Foto hochgeladen' : 'Photo uploaded')
                     : uploaded + (lang === 'de' ? ' Fotos hochgeladen' : ' photos uploaded'));
@@ -4694,9 +5101,12 @@
                             }
                             var ts = Date.now() + '_' + idx;
                             var filename = ts + '.jpg';
-                            var ghUrl = await _uploadToGitHub(group, dataUrl, filename);
-                            if (!photoData[group]) photoData[group] = [];
-                            photoData[group].push({ data: ghUrl, caption: '', time: photoTime, isHero: false, type: 'photo' });
+                            await _uploadToGitHub(group, dataUrl, filename);
+                            var key = group + '/' + filename;
+                            // Datei liegt jetzt im Repo (= Wahrheit). Hier nur noch Beiwerk:
+                            _galleryMeta.meta[key] = { caption: '', time: photoTime, m: _nowMs() };
+                            // Das Repo-Listing hinkt dem Commit kurz nach - solange lokal vormerken.
+                            _pendingAdds[key] = { until: _nowMs() + PENDING_TTL_MS };
                             resolve(true);
                         } catch(err) { reject(err); }
                     };
@@ -4721,17 +5131,11 @@
         var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
         if (m) vidId = m[1];
         if (!vidId) { showToast(lang === 'de' ? 'Kein gueltiger YouTube-Link' : 'Invalid YouTube link'); return; }
-        if (!photoData[group]) photoData[group] = [];
-        photoData[group].push({
-            data: vidId,
-            caption: '',
-            time: new Date().toLocaleString('de-DE'),
-            isHero: false,
-            type: 'youtube'
-        });
-        savePhotoData();
-        updateCompStrip(group);
-        if (document.getElementById('galleryOverlay').classList.contains('show')) renderGallery(group);
+        if (!_galleryMeta.videos[group]) _galleryMeta.videos[group] = {};
+        _galleryMeta.videos[group][vidId] = { caption: '', time: new Date().toLocaleString('de-DE'), m: _nowMs() };
+        scheduleMetaPush();
+        rebuildPhotoData();
+        _renderAllGalleries();
         showToast(lang === 'de' ? 'Video eingebettet' : 'Video embedded');
     }
 
@@ -4808,10 +5212,10 @@
                 (p.isDefault ? ' data-default-idx="' + p.defaultIdx + '"' : '') + '>';
             if (isYT) {
                 html += '<div style="position:relative;cursor:pointer" onclick="openLightbox(\'' + group + '\',' + i + ')">' +
-                    '<img src="' + _imgSrc(p) + '" draggable="false">' +
+                    '<img src="' + _imgSrc(p) + '" loading="lazy" decoding="async" draggable="false">' +
                     '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2.5rem;text-shadow:0 2px 8px rgba(0,0,0,0.7);">&#9654;</div></div>';
             } else {
-                html += '<img src="' + _imgSrc(p) + '" onclick="openLightbox(\'' + group + '\',' + i + ')" draggable="false">';
+                html += '<img src="' + _imgSrc(p) + '" loading="lazy" decoding="async" onclick="openLightbox(\'' + group + '\',' + i + ')" draggable="false">';
             }
             // Star button (not for YouTube)
             if (!isYT) {
@@ -4947,53 +5351,62 @@
         if (!photos || fromIdx < 0 || fromIdx >= photos.length || toIdx < 0 || toIdx >= photos.length) return;
         var item = photos.splice(fromIdx, 1)[0];
         photos.splice(toIdx, 0, item);
-        savePhotoData();
+        // Reihenfolge per Key festschreiben, damit sie einen Neuaufbau ueberlebt
+        var now = _nowMs();
+        for (var i = 0; i < photos.length; i++) {
+            var pk = photos[i].key;
+            photos[i].order = i;
+            if (!pk) continue;
+            if (photos[i].type === 'youtube') {
+                var vid = pk.substring(3);
+                if (!_galleryMeta.videos[group]) _galleryMeta.videos[group] = {};
+                var ve = _galleryMeta.videos[group][vid] || {};
+                ve.order = i; ve.m = now;
+                _galleryMeta.videos[group][vid] = ve;
+            } else {
+                var me = _galleryMeta.meta[pk] || {};
+                me.order = i; me.m = now;
+                _galleryMeta.meta[pk] = me;
+            }
+        }
+        scheduleMetaPush();
         updateCompStrip(group);
         renderGallery(group);
     }
 
-    // Hero selection stored per group in localStorage as heroSelection = {group: {type:'default',idx:0} or {type:'user',idx:2}}
-    var _heroSelection = {};
-    function _loadHeroSelection() {
-        try { var d = localStorage.getItem('engineBuildHeroSelection'); if (d) _heroSelection = JSON.parse(d); } catch(e) {}
-    }
-    function _saveHeroSelection() {
-        try { localStorage.setItem('engineBuildHeroSelection', JSON.stringify(_heroSelection)); } catch(e) {}
-    }
+    // Hero wird per Key gespeichert (_galleryMeta.hero), nicht per Array-Index -
+    // ein Index zeigt nach einem Neuaufbau sonst auf ein anderes Bild.
+    // _getHeroInfo loest den Key bei jedem Aufruf frisch in einen Index auf,
+    // damit der restliche UI-Code unveraendert weiterlaeuft.
     function _getHeroInfo(group) {
-        if (_heroSelection[group]) return _heroSelection[group];
-        // Legacy: check if any user photo has isHero=true
-        var photos = photoData[group] || [];
-        for (var i = 0; i < photos.length; i++) {
-            if (photos[i].isHero) return { type: 'user', idx: i };
+        var h = (_galleryMeta.hero || {})[group];
+        if (h && h.type === 'default') return { type: 'default', idx: h.idx || 0 };
+        if (h && h.type === 'user' && h.key) {
+            var i = _indexOfKey(group, h.key);
+            if (i !== -1) return { type: 'user', idx: i, key: h.key };
+            // Hero-Foto existiert nicht mehr (im Repo geloescht) -> auf Standard zurueck
         }
-        // Default: first default image
         return { type: 'none', idx: 0 };
     }
 
     function setHero(group, userIdx) {
-        // Clear old isHero flags
         var photos = photoData[group] || [];
-        for (var i = 0; i < photos.length; i++) photos[i].isHero = false;
-        _heroSelection[group] = { type: 'user', idx: userIdx };
-        _saveHeroSelection();
-        savePhotoData();
+        var p = photos[userIdx];
+        if (!p || !p.key) return;
+        _galleryMeta.hero[group] = { type: 'user', key: p.key, m: _nowMs() };
+        scheduleMetaPush();
         updateCompStrip(group);
         renderGallery(group);
     }
 
     function setHeroDefault(group, defaultIdx) {
-        // Clear user isHero flags
-        var photos = photoData[group] || [];
-        for (var i = 0; i < photos.length; i++) photos[i].isHero = false;
-        _heroSelection[group] = { type: 'default', idx: defaultIdx };
-        _saveHeroSelection();
-        savePhotoData();
+        _galleryMeta.hero[group] = { type: 'default', idx: defaultIdx, m: _nowMs() };
+        scheduleMetaPush();
         updateCompStrip(group);
         renderGallery(group);
     }
 
-    function deletePhoto(group, userIdx) {
+    async function deletePhoto(group, userIdx) {
         var lang = document.documentElement.lang || 'de';
         var photo = photoData[group] ? photoData[group][userIdx] : null;
         if (!photo) return;
@@ -5001,44 +5414,66 @@
             ? (lang === 'de' ? 'YouTube-Video entfernen?' : 'Remove YouTube video?')
             : (lang === 'de' ? 'Foto wirklich l\u00f6schen?' : 'Delete this photo?');
         if (!confirm(msg)) return;
-        // Delete file from GitHub if it's a repo URL
-        if (photo.type !== 'youtube' && photo.data && photo.data.indexOf('raw.githubusercontent.com') !== -1) {
-            _deleteFromGitHub(photo.data);
+        var now = _nowMs();
+        var hero = (_galleryMeta.hero || {})[group];
+        if (hero && hero.type === 'user' && hero.key === photo.key) delete _galleryMeta.hero[group];
+
+        if (photo.type === 'youtube') {
+            // Videos haben keine Repo-Datei -> explizite Grabstein-Markierung,
+            // sonst taucht das Video beim naechsten Merge wieder auf.
+            var vid = photo.data;
+            if (!_galleryMeta.videos[group]) _galleryMeta.videos[group] = {};
+            _galleryMeta.videos[group][vid] = { del: true, m: now };
+            scheduleMetaPush();
+            rebuildPhotoData();
+            _renderAllGalleries();
+            return;
         }
-        photoData[group].splice(userIdx, 1);
-        var hi = _heroSelection[group];
-        if (hi && hi.type === 'user' && hi.idx === userIdx) {
-            delete _heroSelection[group];
-            _saveHeroSelection();
-        } else if (hi && hi.type === 'user' && hi.idx > userIdx) {
-            _heroSelection[group].idx--;
-            _saveHeroSelection();
+
+        if (!getGistConfig().token) {
+            showToast(lang === 'de' ? 'Loeschen braucht einen GitHub-Token' : 'Deleting requires a GitHub token');
+            return;
         }
-        savePhotoData();
-        updateCompStrip(group);
-        renderGallery(group);
+        // Sofort ausblenden, danach im Repo loeschen.
+        _pendingDeletes[photo.key] = now + PENDING_TTL_MS;
+        delete _galleryMeta.meta[photo.key];
+        scheduleMetaPush();
+        rebuildPhotoData();
+        _renderAllGalleries();
+        var ok = await _deleteFromGitHub(photo.data);
+        if (!ok) {
+            delete _pendingDeletes[photo.key];
+            rebuildPhotoData();
+            _renderAllGalleries();
+            showToast(lang === 'de' ? 'Loeschen fehlgeschlagen' : 'Delete failed');
+            return;
+        }
+        await refreshGallery(true);
     }
 
     async function _deleteFromGitHub(rawUrl) {
         var token = getGistConfig().token;
-        if (!token) return;
+        if (!token) return false;
         try {
             // Extract path from raw URL: https://raw.githubusercontent.com/owner/repo/main/path
-            var parts = rawUrl.split('/' + REPO_NAME + '/main/');
-            if (parts.length < 2) return;
+            var parts = rawUrl.split('/' + REPO_NAME + '/' + REPO_BRANCH + '/');
+            if (parts.length < 2) return false;
             var path = parts[1];
             // Get current file SHA first
             var apiUrl = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/' + path;
             var res = await fetch(apiUrl, { headers: { 'Authorization': 'Bearer ' + token } });
-            if (!res.ok) return;
+            if (res.status === 404) return true;   // schon weg
+            if (!res.ok) return false;
             var fileInfo = await res.json();
             // Delete file
-            await fetch(apiUrl, {
+            var del = await fetch(apiUrl, {
                 method: 'DELETE',
                 headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: 'Foto geloescht: ' + path, sha: fileInfo.sha, branch: 'main' })
+                body: JSON.stringify({ message: 'Foto geloescht: ' + path, sha: fileInfo.sha, branch: REPO_BRANCH })
             });
-        } catch(e) {}
+            if (!del.ok) console.error('[Galerie] Loeschen fehlgeschlagen:', del.status);
+            return del.ok;
+        } catch(e) { console.error('[Galerie] Loesch-Fehler:', e.message); return false; }
     }
 
     // ==== LIGHTBOX with Zoom, Toolbar, Drawing ====
@@ -5134,18 +5569,32 @@
     }
     function lbEditCaption() {
         var c = _lbCurPhoto(); if (!c.photo || c.photo.isDefault) return;
+        var entry = (photoData[c.group] || [])[c.photo.userIdx];
+        if (!entry || !entry.key) return;
         var lang = document.documentElement.lang || 'de';
-        var cap = prompt(lang === 'de' ? 'Bildbeschreibung:' : 'Caption:', photoData[c.group][c.photo.userIdx].caption || '');
-        if (cap !== null) {
-            photoData[c.group][c.photo.userIdx].caption = cap;
-            savePhotoData();
-            document.querySelector('#photoLightbox .caption').textContent = cap || photoData[c.group][c.photo.userIdx].time;
-            renderGallery(c.group);
+        var cap = prompt(lang === 'de' ? 'Bildbeschreibung:' : 'Caption:', entry.caption || '');
+        if (cap === null) return;
+        entry.caption = cap;
+        var now = _nowMs();
+        if (entry.type === 'youtube') {
+            var vid = entry.data;
+            if (!_galleryMeta.videos[c.group]) _galleryMeta.videos[c.group] = {};
+            var ve = _galleryMeta.videos[c.group][vid] || {};
+            ve.caption = cap; ve.m = now;
+            _galleryMeta.videos[c.group][vid] = ve;
+        } else {
+            var me = _galleryMeta.meta[entry.key] || {};
+            me.caption = cap; me.m = now;
+            if (!me.time) me.time = entry.time || '';
+            _galleryMeta.meta[entry.key] = me;
         }
+        scheduleMetaPush();
+        document.querySelector('#photoLightbox .caption').textContent = cap || entry.time;
+        renderGallery(c.group);
     }
-    function lbDeletePhoto() {
+    async function lbDeletePhoto() {
         var c = _lbCurPhoto(); if (!c.photo || c.photo.isDefault) return;
-        deletePhoto(c.group, c.photo.userIdx);
+        await deletePhoto(c.group, c.photo.userIdx);
         // Navigate to next or close
         var allPhotos = _getAllPhotos(c.group);
         if (allPhotos.length === 0) { closeLightbox(); return; }
@@ -5369,13 +5818,37 @@
         // Upload annotated image to GitHub (replaces original)
         var filename = 'annotated_' + Date.now() + '.jpg';
         showToast('Zeichnung wird hochgeladen...');
-        _uploadToGitHub(c.group, dataUrl, filename).then(function(ghUrl) {
-            photoData[c.group][c.photo.userIdx].data = ghUrl;
-            savePhotoData();
-            updateCompStrip(c.group);
+        var oldKey = c.photo.key;
+        var oldUrl = c.photo.data;
+        var oldMeta = _galleryMeta.meta[oldKey] || {};
+        _uploadToGitHub(c.group, dataUrl, filename).then(async function(ghUrl) {
+            var newKey = c.group + '/' + filename;
+            var now = _nowMs();
+            // Metadaten des Originals uebernehmen, Original aus dem Repo entfernen
+            _galleryMeta.meta[newKey] = {
+                caption: oldMeta.caption || c.photo.caption || '',
+                time: oldMeta.time || c.photo.time || '',
+                order: oldMeta.order,
+                m: now
+            };
+            _pendingAdds[newKey] = { until: now + PENDING_TTL_MS };
+            var hero = (_galleryMeta.hero || {})[c.group];
+            if (hero && hero.type === 'user' && hero.key === oldKey) {
+                _galleryMeta.hero[c.group] = { type: 'user', key: newKey, m: now };
+            }
+            if (oldKey) {
+                _pendingDeletes[oldKey] = now + PENDING_TTL_MS;
+                delete _galleryMeta.meta[oldKey];
+                _deleteFromGitHub(oldUrl);
+            }
+            scheduleMetaPush();
             _lbExitDraw();
-            openLightbox(c.group, c.idx);
-            renderGallery(c.group);
+            await refreshGallery(true);
+            var ni = _indexOfKey(c.group, newKey);
+            var all = _getAllPhotos(c.group);
+            for (var ai = 0; ai < all.length; ai++) {
+                if (!all[ai].isDefault && all[ai].userIdx === ni) { openLightbox(c.group, ai); break; }
+            }
             showToast('Zeichnung gespeichert');
         }).catch(function(err) {
             _lbExitDraw();
@@ -5442,37 +5915,22 @@
         });
     })();
 
-    function savePhotoData() {
-        // photoData now stores only URLs and metadata (tiny), not base64
-        try {
-            localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData));
-            console.log('[Photos] Gespeichert:', Object.keys(photoData).length, 'Gruppen');
-        } catch(e) {
-            showToast('Speicherfehler!');
-        }
-        // Sync to Gist immediately (photos are just URLs, very small)
-        if (!isLoading && isGistConfigured()) {
-            saveToGist().then(function(ok) {
-                if (ok) console.log('[Photos] Gist-Sync OK');
-                else console.error('[Photos] Gist-Sync fehlgeschlagen');
-            });
-        }
-    }
-
-    // Init: collect default images and update strips
+    // Init: Herstellerbilder einsammeln, Metadaten laden, Galerie aus dem Repo aufbauen.
     function initCompPhotos() {
         _collectDefaults();
-        _loadHeroSelection();
-        document.querySelectorAll('[data-comp-gallery]').forEach(function(strip) {
-            updateCompStrip(strip.dataset.compGallery);
-        });
+        loadGalleryMeta();
+        rebuildPhotoData();           // sofort aus dem Cache zeichnen (offline-tauglich)
+        _renderAllGalleries();
+        // Danach den echten Repo-Stand holen - braucht keinen Token.
+        refreshGallery(false);
     }
 
-    function loadPhotoData() {
-        try {
-            var d = localStorage.getItem('engineBuildPhotos');
-            if (d) photoData = JSON.parse(d);
-        } catch(e) {}
+    // Manuell ausloesbar, falls jemand auf einem anderen Geraet Fotos hinzugefuegt hat.
+    async function reloadGalleryFromRepo() {
+        showToast('Galerie wird aus dem Repo geladen...');
+        var n = await refreshGallery(true);
+        if (n < 0) { showToast('Galerie-Update fehlgeschlagen'); return; }
+        showToast(n + ' Fotos geladen');
     }
 
     // ==== SEARCH (loaded from search.js) ====
@@ -5990,7 +6448,13 @@
     })();
 
     // ==== INIT ====
-    generateQuenchTable(); updateSyncBadge(); loadData(); loadPhotoData(); initCompPhotos(); initUnifiedSearch(); updateBuildDashboard(); setTimeout(runCrossChecks, 500);
+    generateQuenchTable(); updateSyncBadge(); loadData(); initCompPhotos();
+    // search.js wird erst am Dateiende geladen - initUnifiedSearch() gab es hier
+    // also noch gar nicht und die Exception hat updateBuildDashboard() sowie die
+    // Cross-Checks mit abgeraeumt. Jeder Schritt jetzt einzeln abgesichert.
+    if (typeof initUnifiedSearch === 'function') initUnifiedSearch();
+    try { updateBuildDashboard(); } catch(e) { console.warn('[Init] Dashboard:', e.message); }
+    setTimeout(function() { try { runCrossChecks(); } catch(e) { console.warn('[Init] Cross-Checks:', e.message); } }, 500);
     if (currentLang === 'en') setTimeout(function() { setLang('en'); }, 100);
 
     // Specs: no scroll/collapse restore - always starts at initial state
@@ -6075,5 +6539,6 @@
 
 </script>
 <script src="search.js"></script>
+<script>if (typeof initUnifiedSearch === 'function') initUnifiedSearch();</script>
 </body>
 </html>

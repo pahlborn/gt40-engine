@@ -2459,7 +2459,7 @@
         const allData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
         const exportObj = {
             fields: allData,
-            photos_main: JSON.parse(localStorage.getItem('engineBuildPhotos') || '{}'),
+            photos_main: JSON.parse(localStorage.getItem(MAIN_PHOTOS_KEY) || '{}'),
             photos_buildlog: {}
         };
         ['phase1','phase2','phase3','phase4'].forEach(function(g) {
@@ -2487,7 +2487,7 @@
                     localStorage.setItem('engineBuildLog', JSON.stringify(merged));
                     applyData(merged);
                     if (imported.photos_main) {
-                        localStorage.setItem('engineBuildPhotos', JSON.stringify(imported.photos_main));
+                        localStorage.setItem(MAIN_PHOTOS_KEY, JSON.stringify(imported.photos_main));
                         photoData = imported.photos_main;
                         document.querySelectorAll('[data-photo-group]').forEach(function(g) { renderPhotos(g.dataset.photoGroup); });
                     }
@@ -2523,7 +2523,7 @@
         try {
             var backup = {
                 fields: JSON.parse(localStorage.getItem('engineBuildLog') || '{}'),
-                photos_main: JSON.parse(localStorage.getItem('engineBuildPhotos') || '{}'),
+                photos_main: JSON.parse(localStorage.getItem(MAIN_PHOTOS_KEY) || '{}'),
                 photos_buildlog: {},
                 _backupBeforeReset: new Date().toISOString()
             };
@@ -2539,10 +2539,12 @@
         } catch(e) {}
         // Jetzt loeschen
         localStorage.removeItem('engineBuildLog');
-        localStorage.removeItem('engineBuildPhotos');
+        localStorage.removeItem(MAIN_PHOTOS_KEY);
         ['phase1','phase2','phase3','phase4'].forEach(function(g) {
             localStorage.removeItem('buildPhotos_' + g);
         });
+        // 'engineGalleryMeta' (Komponenten-Galerie in specs.html) bleibt absichtlich
+        // unangetastet - die Bilder dort liegen ohnehin im Repo.
         photoData = {};
         document.querySelectorAll('[data-field]').forEach(el => {
             if (el.type === 'checkbox') el.checked = false; else el.value = '';
@@ -2665,6 +2667,9 @@
 
     // ==== PHOTOS ====
     let photoData = {};
+    // Eigener Key: 'engineBuildPhotos' gehoerte frueher gleichzeitig der
+    // Komponenten-Galerie in specs.html, die ein anderes Format speichert.
+    const MAIN_PHOTOS_KEY = 'engineMainPhotos';
 
     function addPhoto(group) {
         // Kein capture-Attribut: iOS/Android zeigen nativ "Foto aufnehmen" + "Fotomediathek"
@@ -2736,14 +2741,19 @@
     }
 
     function savePhotoData() {
-        try { localStorage.setItem('engineBuildPhotos', JSON.stringify(photoData)); } catch(e) {
+        try { localStorage.setItem(MAIN_PHOTOS_KEY, JSON.stringify(photoData)); } catch(e) {
             showToast('Foto-Speicher voll! Aeltere Fotos loeschen.');
         }
     }
 
     function loadPhotoData() {
         try {
-            const d = localStorage.getItem('engineBuildPhotos');
+            var d = localStorage.getItem(MAIN_PHOTOS_KEY);
+            // Einmalige Uebernahme aus dem frueher geteilten Key
+            if (!d) {
+                var legacy = localStorage.getItem('engineBuildPhotos');
+                if (legacy) { d = legacy; localStorage.setItem(MAIN_PHOTOS_KEY, legacy); }
+            }
             if (d) photoData = JSON.parse(d);
         } catch(e) {}
         document.querySelectorAll('[data-photo-group]').forEach(function(g) {
