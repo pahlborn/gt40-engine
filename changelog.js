@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v37',
+      date: '2026-09-20',
+      title: 'Phase 5: Abstimmung gehoert an die Strecke',
+      changes: [
+        { type: 'neu', text: 'Neue Phase 5 "Abstimmung & Feuertaufe". Phase 4 endet jetzt dort, wo der Motor nachweislich gesund ist. Abstimmen ist etwas anderes: iterativ, ueber Wochen, und zum groessten Teil nicht in der Werkstatt moeglich.' },
+        { type: 'neu', text: 'Drei Unterphasen nach Arbeitsumgebung: 5a Werkstatt nur fuer Grundeinstellungen, 5b Strasse fuer Teillast, 5c Rennstrecke fuer Volllast. Der Hauptduesenkreis braucht weit geoeffnete Drosselklappe ueber mehrere Sekunden - das geht auf einer abgesperrten Strecke oder freien Autobahn, sonst nirgends.' },
+        { type: 'neu', text: 'Die alte 35-KB-Karte von Kapitel 22 ist in acht Kapitel aufgeteilt: Falschluft-Test, Synchronisation, Lambda-Hardware, Bedueusungsentscheidung, Teillast auf der Strasse, Schraubverbindungen, Trackday, Oelwechsel danach.' },
+        { type: 'neu', text: 'Neues Kapitel Schraubverbindungen als Sicherheitstor vor der Strecke - am kalten Motor, mit dem Hinweis auf das Losbrechmoment: ein Drehmomentschluessel auf einer bereits angezogenen Schraube klickt, bevor sich etwas bewegt, und eine lockere Verbindung liest sich als fest.' },
+        { type: 'neu', text: 'Trackday Pannoniaring als erste Feuertaufe: erste Runden nur Systembeobachtung, Boxenstopp mit Tankbilanz, und erst danach ein kurzer Volllastzug - ausgewertet, bevor der naechste gefahren wird. Danach Oelwechsel mit Filterkontrolle und ein zweiter Schraubdurchgang.' },
+        { type: 'fix', text: 'migrateData war definiert, wurde nie aufgerufen und griff dabei auf eine Variable zu, die es in dieser Datei gar nicht gab. Beim ersten Aufruf haette das geworfen - und ein Fehler beim Anwenden der Daten bricht den ganzen Sync ab, genau wie in v26. Die Tabelle ist jetzt definiert, die Funktion verdrahtet, und ein Test prueft, dass ein alter p4-Wert im neuen p5-Feld ankommt.' }
+      ]
+    },
+    {
       version: 'v36',
       date: '2026-09-20',
       title: 'CI war 40 Minuten lang blind',
