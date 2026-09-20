@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v32',
+      date: '2026-09-20',
+      title: 'Kraftstoffsystem: echter Aufbau statt mechanischer Pumpe',
+      changes: [
+        { type: 'fix', text: 'Kapitel 6 "Kraftstoffsystem pruefen" beschrieb durchgehend eine mechanische Pumpe, inklusive Handhebel - den es an diesem Auto nicht gibt. Die Karte bildet jetzt den tatsaechlichen Aufbau ab: zwei elektrische Facet-Pumpen, je Tank eine, mit eigenem Schalter, eigenem Vorfilter, eigenem Filter King und eigener Cockpit-Anzeige.' },
+        { type: 'fix', text: 'Der dort geforderte Druck von 5.5-7.0 psi stammte vom nicht verbauten Holley-Alternativvergaser. Sollwert ist jetzt 3.0 psi, Maximum 3.5 psi.' },
+        { type: 'neu', text: 'Tankbilanz-Test als Pruefschritt: der Filter King ist ein Bypass-Regler, es laeuft weit mehr Kraftstoff in den Ruecklauf zurueck als der Motor verbraucht. Fuehrt der gemeinsame Ruecklauf in den anderen Tank, wandert der Inhalt beim Fahren auf einer Pumpe hinueber. Messfelder fuer beide Pumpen und beide Tanks.' },
+        { type: 'neu', text: 'Pruefschritt, dass beide Regler auf denselben Druck stehen. Weichen sie ab, ist der hoeher eingestellte fuehrend und der andere Kreis foerdert nichts zu den Vergasern.' },
+        { type: 'fix', text: 'Zylinderzuordnung der DellOrto war falsch: ein Vergaser versorgt zwei Zylinder, eine Drosselklappe genau einen. Es stand "jeder Vergaser versorgt 4 Zylinder" (deutsch) bzw. "each barrel feeds 4 cylinders" (englisch).' },
+        { type: 'fix', text: 'Specs nannten den Vergaser einmal DHLA statt DRLA und gaben die Facet-Pumpe mit 7.5 psi an - belegt sind 6-8 psi.' }
+      ]
+    },
+    {
       version: 'v31',
       date: '2026-09-20',
       title: 'Bildnamen, Doubletten, Feld-Leeren',

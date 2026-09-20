@@ -3604,22 +3604,57 @@
     <div class="findings" data-findings="p4_fuel"></div>
     <div class="step-guide">
         <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="prereq">Systemaufbau (System Layout)</h4><ul>
+                <li><span class="de"><strong>Zwei getrennte Kreise</strong>, je Tank einer: Tank &rarr; Vorfilter &rarr; Facet Red Top 480532 (elektrisch) &rarr; Malpassi Filter King (Filter + Bypass-Regler) &rarr; Verteilerblock &rarr; 4 Vergaser.</span><span class="en"><strong>Two separate circuits</strong>, one per tank: tank &rarr; pre-filter &rarr; Facet Red Top 480532 (electric) &rarr; Malpassi Filter King (filter + bypass regulator) &rarr; distribution block &rarr; 4 carburetors.</span></li>
+                <li><span class="de">Jede Pumpe hat einen <strong>eigenen Schalter</strong> und eine <strong>eigene Druckanzeige im Cockpit</strong>. Beide Kreise laufen hinter den Reglern in eine gemeinsame Leitung zusammen.</span><span class="en">Each pump has its <strong>own switch</strong> and its <strong>own pressure gauge in the cockpit</strong>. Both circuits merge into a common line downstream of the regulators.</span></li>
+                <li><span class="de"><strong>Gemeinsamer R&uuml;cklauf in einen Tank.</strong> Der Filter King ist ein Bypass-Regler: der gr&ouml;&szlig;te Teil der F&ouml;rdermenge l&auml;uft st&auml;ndig durch den R&uuml;cklauf zur&uuml;ck, nicht nur der &Uuml;berschuss bei Volllast.</span><span class="en"><strong>Common return into one tank.</strong> The Filter King is a bypass regulator: most of the pump output circulates through the return at all times, not just surplus at full load.</span></li>
+                <li><span class="de">Keine mechanische Pumpe am Motor &ndash; dort sitzt der Blinddeckel (siehe Phase 3, Kapitel 26).</span><span class="en">No mechanical pump on the engine &ndash; block-off plate fitted instead (see Phase 3, chapter 26).</span></li>
+            </ul></div>
             <div class="guide-block"><h4 class="measure">Fuel Pressure (Kraftstoffdruck)</h4>
-                <div class="spec-line"><span>Mechanical pump (mechanische Pumpe)</span><span class="spec-val">5.5&ndash;7.0 psi (0.38&ndash;0.48 bar)</span></div>
+                <div class="spec-line"><span>DellOrto DRLA 45 &ndash; Maximum</span><span class="spec-val">3.5 psi (0.24 bar)</span></div>
+                <div class="spec-line"><span>Arbeitswert (working value)</span><span class="spec-val">3.0 psi (0.21 bar)</span></div>
+                <div class="spec-line"><span>Facet 480532 unreguliert</span><span class="spec-val">6&ndash;8 psi</span></div>
+                <div class="guide-input-row" style="margin-top:0.4rem;">
+                    <div><label>Kreis A psi:</label><input type="text" data-field="p4_fuel_psi_a" placeholder="3.0" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Kreis B psi:</label><input type="text" data-field="p4_fuel_psi_b" placeholder="3.0" oninput="autoSave()" style="width:55px;"></div>
+                </div>
             </div>
             <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
-                <li><span class="de">Alle Kraftstoffleitungen, Schlauchklemmen und Anschl&uuml;sse auf festen Sitz pr&uuml;fen.</span><span class="en">Check all fuel lines, hose clamps, and fittings for tight fit.</span></li>
-                <li><span class="de">Kraftstofffilter auf Sauberkeit kontrollieren (bei Rebuild immer erneuern).</span><span class="en">Check fuel filter for cleanliness (always replace during rebuild).</span></li>
-                <li><span class="de">Mechanische Kraftstoffpumpe von Hand bet&auml;tigen (Hebel an der Pumpe) &ndash; Kraftstoff muss flie&szlig;en.</span><span class="en">Mechanische Kraftstoffpumpe von Hand bet&auml;tigen&ndash; Kraftstoff muss flie&szlig;en.</span></li>
-                <li><span class="de">Kraftstoffdruck-Manometer am Vergaser-Eingang anschlie&szlig;en.</span><span class="en">Connect fuel pressure gauge at carburetor inlet.</span></li>
-                <li><span class="de">Motor anlassen (oder Anlasser drehen lassen) &ndash; Druck ablesen: Soll 5.5&ndash;7.0 psi (0.38&ndash;0.48 bar).</span><span class="en">Start engine (or crank with starter) &ndash; read pressure: target 5.5&ndash;7.0 psi (0.38&ndash;0.48 bar).</span></li>
-                <li><span class="de">Zu hoch: Druckregler einbauen oder Pumpe pr&uuml;fen. Zu niedrig: Pumpe, Filter oder Leitung verstopft.</span><span class="en">Too high: install pressure regulator or check pump. Too low: pump, filter, or line blocked.</span></li>
-                <li><span class="de">Auf Leckagen an allen Verbindungen pr&uuml;fen &ndash; Feuerrisiko!</span><span class="en">Check all connections for leaks &ndash; fire hazard!</span></li>
+                <li><span class="de">Alle Kraftstoffleitungen, Verschraubungen und AN-Anschl&uuml;sse auf festen Sitz pr&uuml;fen &ndash; beide Kreise.</span><span class="en">Check all fuel lines, unions and AN fittings for tight fit &ndash; both circuits.</span></li>
+                <li><span class="de">Vorfilter und Filter-King-Becher auf Sauberkeit kontrollieren, Filtereins&auml;tze beim Rebuild erneuern.</span><span class="en">Check pre-filters and Filter King bowls for cleanliness, replace filter elements during rebuild.</span></li>
+                <li><span class="de"><strong>Pumpe A allein</strong> einschalten (Z&uuml;ndung an, Motor aus). Ticken muss nach wenigen Sekunden langsamer werden &ndash; das zeigt, dass die Schwimmerkammern voll sind.</span><span class="en"><strong>Switch on pump A only</strong> (ignition on, engine off). Ticking must slow down after a few seconds &ndash; that indicates the float bowls are full.</span></li>
+                <li><span class="de">Druck an der Cockpit-Uhr Kreis A ablesen: <strong>Soll 3.0 psi, max. 3.5 psi</strong>. Bei Bedarf am Filter King nachstellen und kontern.</span><span class="en">Read pressure on cockpit gauge circuit A: <strong>target 3.0 psi, max. 3.5 psi</strong>. Adjust at the Filter King and lock the nut if required.</span></li>
+                <li><span class="de">Pumpe A aus, <strong>Pumpe B allein</strong> einschalten, Schritte 3&ndash;4 wiederholen. <strong>Beide Regler auf denselben Wert bringen.</strong></span><span class="en">Switch off pump A, <strong>switch on pump B only</strong>, repeat steps 3&ndash;4. <strong>Set both regulators to the same value.</strong></span></li>
+                <li><span class="de">Beide Pumpen gemeinsam einschalten: <strong>beide Uhren m&uuml;ssen denselben Druck zeigen.</strong> Weichen sie ab, ist der h&ouml;her eingestellte Regler f&uuml;hrend und der andere Kreis f&ouml;rdert nichts zu den Vergasern &ndash; nachstellen.</span><span class="en">Switch on both pumps together: <strong>both gauges must read the same pressure.</strong> If they differ, the higher-set regulator dominates and the other circuit delivers nothing to the carburetors &ndash; readjust.</span></li>
+                <li><span class="de">Zu hoch: Filter King nachstellen. Zu niedrig: Pumpe, Vorfilter oder Leitung verstopft, oder Regler zu weit zu.</span><span class="en">Too high: readjust Filter King. Too low: pump, pre-filter or line blocked, or regulator closed too far.</span></li>
+                <li><span class="de">Alle Verbindungen auf Leckagen pr&uuml;fen &ndash; Feuerrisiko!</span><span class="en">Check all connections for leaks &ndash; fire hazard!</span></li>
             </ol></div>
-            <div class="guide-block"><h4 class="tips">Praxis-Tipps</h4><ul>
-                <li><span class="de">Zu hoher Druck = Vergaser l&auml;uft &uuml;ber (Flooding) &ndash; Druckregler erforderlich</span><span class="en">Excessive pressure = carburetor flooding &ndash; pressure regulator required</span></li>
-                <li><span class="de">Alle Verbindungen auf Dichtheit pr&uuml;fen &ndash; vor dem Erststart!</span><span class="en">Check all connections for leaks &ndash; before first start!</span></li>
-                <li><span class="de">Feuerl&ouml;scher bereithalten</span><span class="en">Have fire extinguisher ready</span></li>
+            <div class="guide-block guide-full"><h4 class="procedure">Tankbilanz-Test (Tank Balance Test)</h4>
+                <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de"><strong>Warum:</strong> Der R&uuml;cklauf f&uuml;hrt in nur einen Tank, es l&auml;uft aber weit mehr Kraftstoff durch den Bypass zur&uuml;ck als der Motor verbraucht. F&auml;hrt man auf dem Tank, der <em>nicht</em> der R&uuml;cklauftank ist, wandert dessen Inhalt in den anderen &ndash; deutlich schneller als der Verbrauch. Auf kurzen L&auml;ufen f&auml;llt das nicht auf.</span><span class="en"><strong>Why:</strong> The return feeds only one tank, but far more fuel circulates through the bypass than the engine consumes. Running on the tank that is <em>not</em> the return tank transfers its contents into the other one &ndash; much faster than consumption. Short runs do not reveal this.</span></p>
+                <ol>
+                <li><span class="de">Beide Tanks auf denselben, <strong>bekannten Stand</strong> f&uuml;llen und notieren.</span><span class="en">Fill both tanks to the same <strong>known level</strong> and record it.</span></li>
+                <li><span class="de">Nur <strong>eine</strong> Pumpe einschalten, Motor im schnellen Leerlauf, <strong>20&ndash;30 Minuten</strong> laufen lassen, Zeit stoppen.</span><span class="en">Switch on <strong>one</strong> pump only, run the engine at fast idle for <strong>20&ndash;30 minutes</strong>, record the time.</span></li>
+                <li><span class="de">Beide Tankst&auml;nde messen und eintragen.</span><span class="en">Measure both tank levels and record them.</span></li>
+                <li><span class="de">Mit der anderen Pumpe wiederholen.</span><span class="en">Repeat with the other pump.</span></li>
+                <li><span class="de"><strong>Auswertung:</strong> Sinkt der Entnahmetank deutlich st&auml;rker, als der Motor in der Zeit verbrennen kann, und steigt der andere &ndash; dann ist dieser Tank <em>nicht</em> der R&uuml;cklauftank. Fahren auf dieser Pumpe allein f&uuml;hrt zu Spritmangel bei halbvollem Fahrzeug.</span><span class="en"><strong>Evaluation:</strong> If the supplying tank drops far more than the engine can burn in that time while the other rises, this tank is <em>not</em> the return tank. Running on this pump alone leads to starvation with fuel still aboard.</span></li>
+                </ol>
+                <div class="guide-input-row" style="margin-top:0.4rem;">
+                    <div><label>R&uuml;cklauf geht in Tank:</label><input type="text" data-field="p4_fuel_return_tank" placeholder="links / rechts" oninput="autoSave()" style="width:90px;"></div>
+                    <div><label>Laufzeit:</label><input type="text" data-field="p4_fuel_bal_time" placeholder="30 min" oninput="autoSave()" style="width:65px;"></div>
+                </div>
+                <div class="guide-input-row" style="margin-top:0.3rem;">
+                    <div><label>Pumpe A &ndash; Tank A:</label><input type="text" data-field="p4_fuel_bal_a_own" placeholder="-8 l" oninput="autoSave()" style="width:60px;"></div>
+                    <div><label>Pumpe A &ndash; Tank B:</label><input type="text" data-field="p4_fuel_bal_a_other" placeholder="+6 l" oninput="autoSave()" style="width:60px;"></div>
+                </div>
+                <div class="guide-input-row" style="margin-top:0.3rem;">
+                    <div><label>Pumpe B &ndash; Tank B:</label><input type="text" data-field="p4_fuel_bal_b_own" placeholder="-2 l" oninput="autoSave()" style="width:60px;"></div>
+                    <div><label>Pumpe B &ndash; Tank A:</label><input type="text" data-field="p4_fuel_bal_b_other" placeholder="0 l" oninput="autoSave()" style="width:60px;"></div>
+                </div>
+            </div>
+            <div class="guide-block"><h4 class="tips">Praxis-Tipps (Practical Tips)</h4><ul>
+                <li><span class="de">Zu hoher Druck = Schwimmernadel schlie&szlig;t nicht, Vergaser l&auml;uft &uuml;ber (Flooding). Die DRLA vertr&auml;gt keine Pumpendr&uuml;cke.</span><span class="en">Excessive pressure = float needle does not close, carburetor floods. The DRLA cannot take raw pump pressure.</span></li>
+                <li><span class="de">Bis der Tankbilanz-Test ausgewertet ist: <strong>auf l&auml;ngeren Fahrten beide Tankst&auml;nde im Blick behalten</strong>, nicht nur den Vorrat insgesamt.</span><span class="en">Until the tank balance test is evaluated: <strong>watch both tank levels on longer drives</strong>, not just total range.</span></li>
+                <li><span class="de">Alle Verbindungen vor dem Erststart auf Dichtheit pr&uuml;fen. Feuerl&ouml;scher bereithalten.</span><span class="en">Check all connections for leaks before first start. Have a fire extinguisher ready.</span></li>
             </ul></div>
         </div>
     </div>
@@ -4227,7 +4262,7 @@
         </ul></div>
         <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
             <li><span class="de">Neue Kerzen vor dem Lese-Lauf einsetzen fuer klarste Ergebnisse</span><span class="en">Install fresh plugs before the reading run for clearest results</span></li>
-            <li><span class="de">DellOrto DRLA 45: jeder Vergaser versorgt 4 Zylinder &ndash; wenn eine Bank abweicht, diesen Vergaser einstellen</span><span class="en">DellOrto DRLA 45: each barrel feeds 4 cylinders &ndash; if one bank is different, adjust that carburetor</span></li>
+            <li><span class="de">DellOrto DRLA 45: jeder Vergaser versorgt 2 Zylinder, jede Drosselklappe genau einen &ndash; 4 Vergaser = 8 Drosselklappen. Weicht ein Zylinder ab, die zugeh&ouml;rige Drosselklappe einstellen</span><span class="en">DellOrto DRLA 45: each carburetor feeds 2 cylinders, each throttle barrel exactly one &ndash; 4 carburetors = 8 barrels. If one cylinder is different, adjust its barrel</span></li>
             <li><span class="de">Jede Kerze fotografieren fuer Vergleich bei spaeteren Tuning-Sitzungen</span><span class="en">Photograph each plug for comparison at later tuning sessions</span></li>
         </ul></div>
         <div class="guide-block"><h4 class="photo">Photo Documentation (Fotodokumentation)</h4><ul>

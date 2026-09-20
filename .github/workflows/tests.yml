@@ -43,6 +43,9 @@ jobs:
       - name: Bildnamen und Doubletten
         run: node tests/photo-identity.test.mjs
 
+      - name: Kraftstoffsystem
+        run: node tests/fuel-system.test.mjs
+
   # Prueft die tatsaechlich ausgelieferte Seite. Laeuft nur auf main und
   # blockiert nichts, weil ein Aussetzer bei GitHub Pages oder der GitHub-API
   # nichts ueber den Code aussagt.
