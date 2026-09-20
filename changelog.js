@@ -13,6 +13,22 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v33',
+      date: '2026-09-20',
+      title: 'Kapitel 22 macht endlich das, was sein Titel sagt',
+      changes: [
+        { type: 'fix', text: 'Kapitel 22 hiess "Synchronize DellOrto, Log Lambda" und enthielt ausschliesslich Vergaser-Montage. Die Montage steht jetzt in Phase 3 als Kapitel 28 - also vor dem Start, wo sie hingehoert, statt zehn Schritte danach.' },
+        { type: 'neu', text: 'Falschluft-Test als Anleitung: Propan-Methode am laufenden Motor, Pruefpunkte je Vergaser (Fussdichtung, beide Wellenenden) und die Ansaugbruecke zum Kopf. Ausdruecklich nicht mit Bremsenreiniger - das liefert Fehlanzeigen, greift die Dichtungen an und spruekt brennbare Fluessigkeit auf einen heissen Motor mit offenen Trichtern.' },
+        { type: 'neu', text: 'Kapitel 22 ist neu aufgebaut: Synchronisation in zwei Ebenen (erst die beiden Drosselklappen innerhalb eines Vergasers, dann die Vergaser untereinander), Gemischschrauben, Lambda-Logging und die Reihenfolge des Abstimmens.' },
+        { type: 'neu', text: 'Bedueusungs-Entscheidungstabelle: Ist, Soll und Begruendung je Duesenart, dazu eine Spalte, wofuer die jeweilige Duese ueberhaupt zustaendig ist. Wer die falsche Duese anfasst, verstellt den falschen Betriebsbereich.' },
+        { type: 'neu', text: 'Bezugsgroessen, von denen die Bedueusung abhaengt: Verdichtung, Nockenprofil, Auspuff, Zuendung, Kraftstoff, Hoehenlage - mit der jeweiligen Wirkungsrichtung. Eine Bedueusung gilt nicht fuer "einen 302", sondern fuer diesen Motor in dieser Konfiguration.' },
+        { type: 'neu', text: 'Phase 3, Kapitel 27: Vergaser zerlegen, reinigen und die verbaute Bedueusung je Vergaser erfassen - inklusive Hauptventuri, die in der bisherigen Dokumentation komplett fehlte, obwohl die Hauptduese von ihr abhaengt.' },
+        { type: 'neu', text: 'Die beiden kursierenden Duesenvorschlaege stehen nebeneinander und sind als unbelegt gekennzeichnet. Die Messung beim Zerlegen entscheidet, welches Dokument diesen Motor ueberhaupt beschreibt.' },
+        { type: 'fix', text: 'Zwei Lambdasonden liefern Bank-Mittelwerte, keine Einzelzylinderwerte - ein fetter und ein magerer Zylinder derselben Bank heben sich auf. Das steht jetzt im Kapitel, statt stillschweigend angenommen zu werden.' },
+        { type: 'fix', text: 'Die Stilregeln fuer Tabellen in den Kapitel-Anleitungen fehlten in build-log.html und standen nur in einer verwaisten Datei. Vier bereits vorhandene Tabellen wurden dadurch ohne Rahmen und Kopfzeile dargestellt.' }
+      ]
+    },
+    {
       version: 'v32',
       date: '2026-09-20',
       title: 'Kraftstoffsystem: echter Aufbau statt mechanischer Pumpe',

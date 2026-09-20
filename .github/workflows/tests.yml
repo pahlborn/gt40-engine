@@ -46,6 +46,9 @@ jobs:
       - name: Kraftstoffsystem
         run: node tests/fuel-system.test.mjs
 
+      - name: Vergaser: Zerlegen, Synchronisieren, Bedueusung
+        run: node tests/carb-tuning.test.mjs
+
   # Prueft die tatsaechlich ausgelieferte Seite. Laeuft nur auf main und
   # blockiert nichts, weil ein Aussetzer bei GitHub Pages oder der GitHub-API
   # nichts ueber den Code aussagt.
