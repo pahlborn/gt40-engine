@@ -341,6 +341,7 @@
         .fab-btn { border: none; border-radius: 50%; width: 48px; height: 48px; font-size: 1.3rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; color: white; }
         .fab-btn.glossary { background: #ed8936; }
     </style>
+<script src="field-sync.js"></script>
 </head>
 <body>
 
@@ -4084,6 +4085,10 @@
     const GIST_FILENAME = 'engine-build-log-data.json';
     const FIXED_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
     let isLoading = false;
+    // Erst wenn die Daten im DOM stehen, darf ein leeres Feld als "bewusst
+    // geleert" gewertet werden. Vorher sind alle Felder leer, weil noch
+    // nichts geladen ist - ein Save in dem Moment wuerde alles ausradieren.
+    var dataLoaded = false;
     let autoSaveTimer = null;
 
     function getGistConfig() { return { token: localStorage.getItem('gh_token') || '' }; }
@@ -4171,18 +4176,9 @@
             if (!file) { isLoading = false; showToast('Keine Cloud-Daten gefunden'); return; }
             var cloudData = JSON.parse(file.content);
             var localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-            var cloudTime = new Date(cloudData._savedAt || 0).getTime();
-            var localTime = new Date(localData._savedAt || 0).getTime();
-            var merged = {}, allKeys = Object.keys(localData).concat(Object.keys(cloudData)), seen = {};
-            var winner = cloudTime > localTime ? cloudData : localData;
-            var loser = cloudTime > localTime ? localData : cloudData;
-            for (var ki = 0; ki < allKeys.length; ki++) {
-                var k = allKeys[ki]; if (seen[k]) continue; seen[k] = 1;
-                var wVal = winner[k], lVal = loser[k];
-                if (wVal !== undefined && wVal !== '' && wVal !== null) { merged[k] = wVal; }
-                else if (lVal !== undefined && lVal !== '' && lVal !== null) { merged[k] = lVal; }
-                else { merged[k] = wVal !== undefined ? wVal : lVal; }
-            }
+            // Feldweise zusammenfuehren: der juengere Zeitstempel gewinnt,
+            // ein geloeschtes Feld also auch (siehe field-sync.js).
+            var merged = FieldSync.mergeRecords(cloudData, localData);
             applyData(merged);
             localStorage.setItem('engineBuildLog', JSON.stringify(merged));
             isLoading = false; updateSaveStatus();
@@ -4302,14 +4298,9 @@
     async function saveData() {
         var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
         var myData = collectData();
-        var merged = Object.assign({}, existing);
-        for (var key in myData) {
-            if (myData[key] === '' || myData[key] === false) {
-                if (existing[key] && existing[key] !== '' && existing[key] !== false) continue;
-            }
-            merged[key] = myData[key];
-        }
-        merged._savedAt = new Date().toISOString();
+        // Pro Feld einen Zeitstempel fuehren - nur so ist das Leeren eines
+        // Feldes vom "noch nie ausgefuellt" unterscheidbar (siehe field-sync.js).
+        var merged = FieldSync.mergeIntoExisting(existing, myData, { recordClears: dataLoaded });
         localStorage.setItem('engineBuildLog', JSON.stringify(merged));
         updateSaveStatus();
         if (isGistConfigured()) {
@@ -4344,6 +4335,7 @@
         isLoading = true;
         var raw = localStorage.getItem('engineBuildLog');
         if (raw) { try { var data = JSON.parse(raw); applyData(data); } catch(e) {} }
+        dataLoaded = true;
         if (isGistConfigured()) {
             fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
                 headers: { 'Authorization': 'Bearer ' + getGistConfig().token }
@@ -4352,18 +4344,9 @@
                 if (file) {
                     var cloudData = JSON.parse(file.content);
                     var localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-                    var cloudTime = new Date(cloudData._savedAt || 0).getTime();
-                    var localTime = new Date(localData._savedAt || 0).getTime();
-                    var merged = {}, allKeys = Object.keys(localData).concat(Object.keys(cloudData)), seen = {};
-                    var winner = cloudTime > localTime ? cloudData : localData;
-                    var loser = cloudTime > localTime ? localData : cloudData;
-                    for (var ki = 0; ki < allKeys.length; ki++) {
-                        var k = allKeys[ki]; if (seen[k]) continue; seen[k] = 1;
-                        var wVal = winner[k], lVal = loser[k];
-                        if (wVal !== undefined && wVal !== '' && wVal !== null) { merged[k] = wVal; }
-                        else if (lVal !== undefined && lVal !== '' && lVal !== null) { merged[k] = lVal; }
-                        else { merged[k] = wVal !== undefined ? wVal : lVal; }
-                    }
+                    // Feldweise zusammenfuehren: der juengere Zeitstempel gewinnt,
+                    // ein geloeschtes Feld also auch (siehe field-sync.js).
+                    var merged = FieldSync.mergeRecords(cloudData, localData);
                     applyData(merged);
                     localStorage.setItem('engineBuildLog', JSON.stringify(merged));
                 }
@@ -4381,18 +4364,9 @@
             if (file) {
                 var cloudData = JSON.parse(file.content);
                 var localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-                var cloudTime = new Date(cloudData._savedAt || 0).getTime();
-                var localTime = new Date(localData._savedAt || 0).getTime();
-                var merged = {}, allKeys = Object.keys(localData).concat(Object.keys(cloudData)), seen = {};
-                var winner = cloudTime > localTime ? cloudData : localData;
-                var loser = cloudTime > localTime ? localData : cloudData;
-                for (var ki = 0; ki < allKeys.length; ki++) {
-                    var k = allKeys[ki]; if (seen[k]) continue; seen[k] = 1;
-                    var wVal = winner[k], lVal = loser[k];
-                    if (wVal !== undefined && wVal !== '' && wVal !== null) { merged[k] = wVal; }
-                    else if (lVal !== undefined && lVal !== '' && lVal !== null) { merged[k] = lVal; }
-                    else { merged[k] = wVal !== undefined ? wVal : lVal; }
-                }
+                // Feldweise zusammenfuehren: der juengere Zeitstempel gewinnt,
+                // ein geloeschtes Feld also auch (siehe field-sync.js).
+                var merged = FieldSync.mergeRecords(cloudData, localData);
                 applyData(merged);
                 localStorage.setItem('engineBuildLog', JSON.stringify(merged));
             }
@@ -5022,14 +4996,9 @@
     function saveFieldsSync() {
         var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
         var current = collectData();
-        var merged = Object.assign({}, existing);
-        for (var key in current) {
-            if (current[key] === '' || current[key] === false) {
-                if (existing[key] && existing[key] !== '' && existing[key] !== false) continue;
-            }
-            merged[key] = current[key];
-        }
-        merged._savedAt = new Date().toISOString();
+        // Pro Feld einen Zeitstempel fuehren - nur so ist das Leeren eines
+        // Feldes vom "noch nie ausgefuellt" unterscheidbar (siehe field-sync.js).
+        var merged = FieldSync.mergeIntoExisting(existing, current, { recordClears: dataLoaded });
         localStorage.setItem('engineBuildLog', JSON.stringify(merged));
     }
     window.addEventListener('beforeunload', function() {
@@ -5116,7 +5085,7 @@
         updateSyncBadge();
         loadData();
         restoreBuildCollapseState();
-        initUnifiedSearch();
+        if (typeof initUnifiedSearch === 'function') initUnifiedSearch();
         document.querySelectorAll('.photo-gallery[data-photo-group]').forEach(function(g) {
             renderPhotos(g.dataset.photoGroup);
         });
@@ -6298,5 +6267,6 @@
     </div><!-- /glossary-body -->
 </div><!-- /guide-glossary -->
 <script src="search.js"></script>
+<script>if (typeof initUnifiedSearch === 'function') initUnifiedSearch();</script>
 </body>
 </html>

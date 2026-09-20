@@ -1,0 +1,59 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  browser-tests:
+    name: Browser-Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Abhaengigkeiten installieren
+        run: npm install --no-audit --no-fund
+
+      - name: Chromium installieren
+        run: npx playwright install --with-deps chromium
+
+      - name: Galerie-Tests
+        run: node tests/gallery.test.mjs
+
+      - name: Messwert-Feld-Tests
+        run: node tests/fields.test.mjs
+
+  # Prueft die tatsaechlich ausgelieferte Seite. Laeuft nur auf main und
+  # blockiert nichts, weil ein Aussetzer bei GitHub Pages oder der GitHub-API
+  # nichts ueber den Code aussagt.
+  smoke-live:
+    name: Smoke-Test gegen die Live-Seite
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    needs: browser-tests
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Abhaengigkeiten installieren
+        run: npm install --no-audit --no-fund
+
+      - name: Chromium installieren
+        run: npx playwright install --with-deps chromium
+
+      - name: Live-Seite pruefen
+        run: node tests/smoke-live.mjs

@@ -278,6 +278,7 @@
         @keyframes ptr-spin { from { transform: translateX(-50%) rotate(0deg); } to { transform: translateX(-50%) rotate(360deg); } }
         .ptr-indicator svg { width: 22px; height: 22px; fill: none; stroke: var(--primary-light); stroke-width: 2.5; stroke-linecap: round; }
     </style>
+<script src="field-sync.js"></script>
 </head>
 <body>
 
@@ -1230,6 +1231,10 @@
     const GIST_FILENAME = 'engine-build-log-data.json';
     const FIXED_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
     let isLoading = false;
+    // Erst wenn die Daten im DOM stehen, darf ein leeres Feld als "bewusst
+    // geleert" gewertet werden. Vorher sind alle Felder leer, weil noch
+    // nichts geladen ist - ein Save in dem Moment wuerde alles ausradieren.
+    let dataLoaded = false;
 
     function getGistConfig() { return { token: localStorage.getItem('gh_token') || '' }; }
     function isGistConfigured() { return getGistConfig().token.length > 0; }
@@ -1442,19 +1447,9 @@
             if (!file) { isLoading = false; return false; }
             const cloudData = JSON.parse(file.content);
             const localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-            const cloudTime = new Date(cloudData._savedAt || 0).getTime();
-            const localTime = new Date(localData._savedAt || 0).getTime();
-            // Smart merge: never overwrite a non-empty value with an empty one
-            var merged = {};
-            var allKeys = new Set(Object.keys(localData).concat(Object.keys(cloudData)));
-            var winner = cloudTime > localTime ? cloudData : localData;
-            var loser = cloudTime > localTime ? localData : cloudData;
-            allKeys.forEach(function(k) {
-                var wVal = winner[k], lVal = loser[k];
-                if (wVal !== undefined && wVal !== '' && wVal !== null) { merged[k] = wVal; }
-                else if (lVal !== undefined && lVal !== '' && lVal !== null) { merged[k] = lVal; }
-                else { merged[k] = wVal !== undefined ? wVal : lVal; }
-            });
+            // Feldweise zusammenfuehren: der juengere Zeitstempel gewinnt,
+            // ein geloeschtes Feld also auch (siehe field-sync.js).
+            var merged = FieldSync.mergeRecords(cloudData, localData);
             applyData(merged);
             localStorage.setItem('engineBuildLog', JSON.stringify(merged));
             isLoading = false; return true;
@@ -1581,14 +1576,9 @@
     async function saveData() {
         const existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
         const current = collectData();
-        const data = Object.assign({}, existing);
-        for (var key in current) {
-            if (current[key] === '' || current[key] === false) {
-                if (existing[key] && existing[key] !== '' && existing[key] !== false) continue;
-            }
-            data[key] = current[key];
-        }
-        data._savedAt = new Date().toISOString();
+        // Pro Feld einen Zeitstempel fuehren - nur so ist das Leeren eines
+        // Feldes vom "noch nie ausgefuellt" unterscheidbar (siehe field-sync.js).
+        var data = FieldSync.mergeIntoExisting(existing, current, { recordClears: dataLoaded });
         localStorage.setItem('engineBuildLog', JSON.stringify(data));
         updateSaveStatus();
         if (isGistConfigured()) {
@@ -1613,7 +1603,7 @@
             } catch(e) {}
         }
         if (isGistConfigured()) await loadFromGist();
-        isLoading = false; updateSaveStatus();
+        isLoading = false; dataLoaded = true; updateSaveStatus();
     }
     // Auto-Sync bei Fokus (Tab-Wechsel, App-Wechsel auf Mobilgeraeten)
     document.addEventListener('visibilitychange', function() {
@@ -3284,14 +3274,9 @@
     function saveFieldsSync() {
         var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
         var current = collectData();
-        var merged = Object.assign({}, existing);
-        for (var key in current) {
-            if (current[key] === '' || current[key] === false) {
-                if (existing[key] && existing[key] !== '' && existing[key] !== false) continue;
-            }
-            merged[key] = current[key];
-        }
-        merged._savedAt = new Date().toISOString();
+        // Pro Feld einen Zeitstempel fuehren - nur so ist das Leeren eines
+        // Feldes vom "noch nie ausgefuellt" unterscheidbar (siehe field-sync.js).
+        var merged = FieldSync.mergeIntoExisting(existing, current, { recordClears: dataLoaded });
         localStorage.setItem('engineBuildLog', JSON.stringify(merged));
     }
     window.addEventListener('beforeunload', function() {
@@ -3334,14 +3319,17 @@
     restoreCollapseState();
     // loadData is async (may fetch from Gist) - restore scroll AFTER it completes
     loadData().then(function() {
-        loadPhotoData(); initUnifiedSearch(); setTimeout(runCrossChecks, 500);
+        loadPhotoData();
+        if (typeof initUnifiedSearch === 'function') initUnifiedSearch();
+        setTimeout(function() { try { runCrossChecks(); } catch(e) { console.warn('[Init] Cross-Checks:', e.message); } }, 500);
         if (currentLang === 'en') {
             setTimeout(function() { setLang('en'); setTimeout(restoreScrollPos, 50); }, 100);
         } else {
             setTimeout(restoreScrollPos, 100);
         }
     }).catch(function() {
-        loadPhotoData(); initUnifiedSearch();
+        loadPhotoData();
+        if (typeof initUnifiedSearch === 'function') initUnifiedSearch();
         setTimeout(restoreScrollPos, 100);
     });
     // bfcache support
@@ -4434,5 +4422,6 @@
     </div><!-- /glossary-body -->
 </div><!-- /guide-glossary -->
 <script src="search.js"></script>
+<script>if (typeof initUnifiedSearch === 'function') initUnifiedSearch();</script>
 </body>
 </html>
