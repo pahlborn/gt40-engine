@@ -34,6 +34,9 @@ jobs:
       - name: UI-Tests (Version, Sync-Datum, Galerie-Beschriftung)
         run: node tests/ui.test.mjs
 
+      - name: Build-Log-Galerie
+        run: node tests/buildlog-gallery.test.mjs
+
   # Prueft die tatsaechlich ausgelieferte Seite. Laeuft nur auf main und
   # blockiert nichts, weil ein Aussetzer bei GitHub Pages oder der GitHub-API
   # nichts ueber den Code aussagt.

@@ -1,7 +1,7 @@
 /**
  * version.js - eine einzige Quelle fuer die App-Version.
  *
- * Muss zur Cache-Version in sw.js passen ('boss302-v<N>'). tests/version.test.mjs
+ * Muss zur Cache-Version in sw.js passen ('boss302-v<N>'). tests/ui.test.mjs
  * prueft das, damit beide nicht auseinanderlaufen.
  *
  * Bei jeder Aenderung an den ausgelieferten Dateien hochzaehlen - sonst holen
@@ -9,5 +9,5 @@
  */
 (function (global) {
   'use strict';
-  global.APP_VERSION = 'v28';
+  global.APP_VERSION = 'v29';
 })(typeof window !== 'undefined' ? window : globalThis);
