@@ -43,6 +43,18 @@ jobs:
       - name: Bildnamen und Doubletten
         run: node tests/photo-identity.test.mjs
 
+      - name: Kraftstoffsystem
+        run: node tests/fuel-system.test.mjs
+
+      - name: Vergaser: Zerlegen, Synchronisieren, Bedueusung
+        run: node tests/carb-tuning.test.mjs
+
+      - name: Exkurs-Seiten und Verlinkung
+        run: node tests/exkurse.test.mjs
+
+      - name: Referenzhistorie der Vergaseranlage
+        run: node tests/referenzhistorie.test.mjs
+
   # Prueft die tatsaechlich ausgelieferte Seite. Laeuft nur auf main und
   # blockiert nichts, weil ein Aussetzer bei GitHub Pages oder der GitHub-API
   # nichts ueber den Code aussagt.

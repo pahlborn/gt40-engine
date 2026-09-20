@@ -13,6 +13,55 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v34',
+      date: '2026-09-20',
+      title: 'Referenzhistorie der Vergaseranlage',
+      changes: [
+        { type: 'neu', text: 'Die Vergaser-Komponente in den Specs nennt jetzt ihre Herkunft: die vier DRLA stammen samt Ansaugbruecke, Gestaenge und Trichtern vom alten 1968er 302 dieses Fahrzeugs, wurden dort in England professionell mit zwei Lambdasonden abgestimmt und liefen einwandfrei. Seitdem nur gereinigt. Damit ist begruendet, warum die verbaute Bedueusung die Start-Baseline ist und nicht auf einen Tabellenwert korrigiert wird.' },
+        { type: 'neu', text: 'Ausdruecklich als Owner-Historie gekennzeichnet, nicht als Herstellerfakt - das Abstimmprotokoll existiert nicht mehr. Belastbar als Begruendung fuers Konservieren, nicht als technischer Sollwert.' },
+        { type: 'neu', text: 'Erfassungsfelder fuer die Vergaser-Identitaet: Gehaeusecode je Vergaser V1 bis V4, Trichtermasse, Schwimmer- und Nadelventilausfuehrung, Hersteller der Ansaugbruecke.' },
+        { type: 'neu', text: 'Die vorhandenen Kennzeichnungen stehen mit ehrlichem Status: 8010 2 passt zur DRLA-45-Familie, erlaubt aber keine Variantenbestimmung; R 6205 P ist offen und wird dokumentiert, nicht interpretiert.' },
+        { type: 'fix', text: 'Der Druckwert in den Specs verweist auf den Exkurs zur Quellenlage und nennt 0.24 Bar statt der falsch gerundeten 0.25.' }
+      ]
+    },
+    {
+      version: 'v33',
+      date: '2026-09-20',
+      title: 'Kapitel 22 macht endlich das, was sein Titel sagt',
+      changes: [
+        { type: 'neu', text: 'Exkurs-Seiten unter docs/: Wissen, das sich keinem Arbeitsschritt zuordnen laesst, bricht die Struktur des Build Logs nicht mehr auf, sondern steht als eigene Unterseite - verlinkt von der Stelle, an der die Frage auftaucht. Neu: Kraftstoffdruck am DellOrto DRLA und Ethanol/E10.' },
+        { type: 'fix', text: 'Kraftstoffdruck wird abgelesen, nicht auf einen Sollwert verstellt. Die Anlage lief mit ihrer Einstellung. Eingegriffen wird nur, wenn der Wert ueber 3.5 psi liegt oder die beiden Kreise voneinander abweichen.' },
+        { type: 'fix', text: 'Korrektur an v33: eine Ablesung bei stehendem Motor sei wertlos - das gilt fuer eine mechanische Pumpe, nicht fuer die verbauten elektrischen. Die bauen den Druck bereits bei Zuendung an auf. Vor-Start-Wert und Wert bei laufendem Motor werden jetzt getrennt erfasst.' },
+        { type: 'neu', text: 'Leitprinzip Baseline konservieren: die vier Vergaser stammen vom alten 1968er 302, wurden in England professionell mit zwei Lambdasonden abgestimmt und liefen im Trackbetrieb einwandfrei. Seitdem nur gereinigt, keine Einstellaenderung. Die verbaute Bedueusung ist damit kein unbekannter Zustand, sondern ein Ergebnis - Kapitel 27 erfasst und reinigt sie, ohne sie zu veraendern.' },
+        { type: 'neu', text: 'STOPP-Punkte im Kapitel: keine Einstellschraube verdrehen, keine Duese zwischen Laeufen vertauschen, keine Reibahle in eine kalibrierte Bohrung, Schwimmerstand nicht auf einen Sollwert biegen, Reglerdruck nicht auf einen Tabellenwert umstellen.' },
+        { type: 'neu', text: 'Diagnosebaum in Kapitel 22: Befund, was zuerst zu pruefen ist und was man gerade nicht tun soll. Schlechter Leerlauf ist kein Hauptduesen-Problem, und aus einem einzelnen Lambda-Punkt folgt keine neue Gesamtbedueusung.' },
+        { type: 'fix', text: 'Die externen Zahlenreihen sind als reine Referenz gekennzeichnet. Das Integrationsreview verwirft seine eigenen Werte ausdruecklich als nicht validiert - das steht jetzt dabei. Massgeblich ist die verbaute Ist-Bestueckung.' },
+        { type: 'fix', text: 'Kapitel 22 hiess "Synchronize DellOrto, Log Lambda" und enthielt ausschliesslich Vergaser-Montage. Die Montage steht jetzt in Phase 3 als Kapitel 28 - also vor dem Start, wo sie hingehoert, statt zehn Schritte danach.' },
+        { type: 'neu', text: 'Falschluft-Test als Anleitung: Propan-Methode am laufenden Motor, Pruefpunkte je Vergaser (Fussdichtung, beide Wellenenden) und die Ansaugbruecke zum Kopf. Ausdruecklich nicht mit Bremsenreiniger - das liefert Fehlanzeigen, greift die Dichtungen an und spruekt brennbare Fluessigkeit auf einen heissen Motor mit offenen Trichtern.' },
+        { type: 'neu', text: 'Kapitel 22 ist neu aufgebaut: Synchronisation in zwei Ebenen (erst die beiden Drosselklappen innerhalb eines Vergasers, dann die Vergaser untereinander), Gemischschrauben, Lambda-Logging und die Reihenfolge des Abstimmens.' },
+        { type: 'neu', text: 'Bedueusungs-Entscheidungstabelle: Ist, Soll und Begruendung je Duesenart, dazu eine Spalte, wofuer die jeweilige Duese ueberhaupt zustaendig ist. Wer die falsche Duese anfasst, verstellt den falschen Betriebsbereich.' },
+        { type: 'neu', text: 'Bezugsgroessen, von denen die Bedueusung abhaengt: Verdichtung, Nockenprofil, Auspuff, Zuendung, Kraftstoff, Hoehenlage - mit der jeweiligen Wirkungsrichtung. Eine Bedueusung gilt nicht fuer "einen 302", sondern fuer diesen Motor in dieser Konfiguration.' },
+        { type: 'neu', text: 'Phase 3, Kapitel 27: Vergaser zerlegen, reinigen und die verbaute Bedueusung je Vergaser erfassen - inklusive Hauptventuri, die in der bisherigen Dokumentation komplett fehlte, obwohl die Hauptduese von ihr abhaengt.' },
+        { type: 'neu', text: 'Plausibilitaetsrechnung: Faustformeln aus einem Dellorto-Leitfaden leiten Venturi, Hauptduese und Luftkorrektur aus Hubraum und Barrelgroesse her, statt Zahlen zu behaupten. Fuer den 302 mit 619 cm3 je Zylinder ergibt das 36 mm Venturi, Hauptduese 144, Luftkorrektur 194 - und zeigt, dass beide kursierenden Vorschlaege bei der Leerlaufduese am unteren Rand liegen. Die Herkunft der Formeln (DHLA statt DRLA) ist als Einschraenkung vermerkt.' },
+        { type: 'neu', text: 'Die beiden kursierenden Duesenvorschlaege stehen nebeneinander und sind als unbelegt gekennzeichnet. Die Messung beim Zerlegen entscheidet, welches Dokument diesen Motor ueberhaupt beschreibt.' },
+        { type: 'fix', text: 'Zwei Lambdasonden liefern Bank-Mittelwerte, keine Einzelzylinderwerte - ein fetter und ein magerer Zylinder derselben Bank heben sich auf. Das steht jetzt im Kapitel, statt stillschweigend angenommen zu werden.' },
+        { type: 'fix', text: 'Die Stilregeln fuer Tabellen in den Kapitel-Anleitungen fehlten in build-log.html und standen nur in einer verwaisten Datei. Vier bereits vorhandene Tabellen wurden dadurch ohne Rahmen und Kopfzeile dargestellt.' }
+      ]
+    },
+    {
+      version: 'v32',
+      date: '2026-09-20',
+      title: 'Kraftstoffsystem: echter Aufbau statt mechanischer Pumpe',
+      changes: [
+        { type: 'fix', text: 'Kapitel 6 "Kraftstoffsystem pruefen" beschrieb durchgehend eine mechanische Pumpe, inklusive Handhebel - den es an diesem Auto nicht gibt. Die Karte bildet jetzt den tatsaechlichen Aufbau ab: zwei elektrische Facet-Pumpen, je Tank eine, mit eigenem Schalter, eigenem Vorfilter, eigenem Filter King und eigener Cockpit-Anzeige.' },
+        { type: 'fix', text: 'Der dort geforderte Druck von 5.5-7.0 psi stammte vom nicht verbauten Holley-Alternativvergaser. Sollwert ist jetzt 3.0 psi, Maximum 3.5 psi.' },
+        { type: 'neu', text: 'Tankbilanz-Test als Pruefschritt: der Filter King ist ein Bypass-Regler, es laeuft weit mehr Kraftstoff in den Ruecklauf zurueck als der Motor verbraucht. Fuehrt der gemeinsame Ruecklauf in den anderen Tank, wandert der Inhalt beim Fahren auf einer Pumpe hinueber. Messfelder fuer beide Pumpen und beide Tanks.' },
+        { type: 'neu', text: 'Pruefschritt, dass beide Regler auf denselben Druck stehen. Weichen sie ab, ist der hoeher eingestellte fuehrend und der andere Kreis foerdert nichts zu den Vergasern.' },
+        { type: 'fix', text: 'Zylinderzuordnung der DellOrto war falsch: ein Vergaser versorgt zwei Zylinder, eine Drosselklappe genau einen. Es stand "jeder Vergaser versorgt 4 Zylinder" (deutsch) bzw. "each barrel feeds 4 cylinders" (englisch).' },
+        { type: 'fix', text: 'Specs nannten den Vergaser einmal DHLA statt DRLA und gaben die Facet-Pumpe mit 7.5 psi an - belegt sind 6-8 psi.' }
+      ]
+    },
+    {
       version: 'v31',
       date: '2026-09-20',
       title: 'Bildnamen, Doubletten, Feld-Leeren',
