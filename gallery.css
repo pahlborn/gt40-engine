@@ -1,0 +1,64 @@
+/* gallery.css - Komponenten-Galerie, gemeinsam von specs.html und build-log.html.
+   Gehoert zu gallery.js. */
+
+/* ---- Component Photo System ---- */
+.comp-photo-strip { margin: 0.6rem 0; text-align: center; }
+.comp-hero { max-width: 100%; max-height: 280px; object-fit: contain; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer; }
+.comp-hero:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
+.comp-hero-caption { font-size: 0.7rem; color: var(--text-light); margin-top: 0.25rem; }
+.comp-photo-actions { display: flex; justify-content: center; gap: 0.6rem; margin-top: 0.5rem; }
+.comp-photo-btn { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.78rem; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; border: 1px solid var(--border); background: #f7fafc; color: var(--text); font-weight: 500; min-height: 36px; }
+.comp-photo-btn:hover { background: #ebf4ff; border-color: var(--primary-light); color: var(--primary-light); }
+/* Gallery Overlay */
+.gallery-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 1001; display: none; flex-direction: column; }
+.gallery-overlay.show { display: flex; }
+.gallery-header { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1rem; color: #fff; }
+.gallery-header h3 { font-size: 0.95rem; margin: 0; }
+.gallery-close { background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; padding: 0.3rem 0.6rem; }
+.gallery-grid { flex: 1; overflow-y: auto; padding: 0.5rem 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.6rem; align-content: start; align-items: start; grid-auto-rows: max-content; }
+.gallery-card { position: relative; border-radius: 8px; overflow: hidden; background: #1a202c; display: flex; flex-direction: column; }
+.gallery-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; cursor: pointer; }
+.gallery-card .gallery-star { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.7); border: none; color: #a0aec0; font-size: 1.3rem; cursor: pointer; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
+.gallery-card .gallery-star.active { color: #ed8936; }
+.gallery-card .gallery-star:hover { color: #ed8936; }
+/* delete is in long-press context menu, no visible button */
+.gallery-card.dragging { opacity: 0.4; transform: scale(0.95); }
+.gallery-card.drag-over { outline: 2px solid #ed8936; outline-offset: 2px; }
+.gallery-card .gallery-caption { font-size: 0.68rem; color: #cbd5e0; padding: 0.25rem 0.4rem 0.35rem; overflow: hidden; }
+.gallery-card .gc-name { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gallery-card .gc-date { display: block; font-size: 0.6rem; color: #8fa3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gallery-add-card { border: 2px dashed #4a5568; border-radius: 8px; display: flex; align-items: center; justify-content: center; min-height: 105px; cursor: pointer; color: #718096; font-size: 0.85rem; font-weight: 500; }
+.gallery-add-card:hover { border-color: #90cdf4; color: #90cdf4; }
+/* Lightbox */
+.photo-lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1002; display: none; flex-direction: column; }
+.photo-lightbox.show { display: flex; }
+.lb-img-wrap { flex: 1; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; touch-action: none; }
+.lb-img-wrap img { max-width: 95%; max-height: calc(100vh - 120px); border-radius: 8px; transition: transform 0.1s ease; transform-origin: center center; user-select: none; -webkit-user-select: none; pointer-events: auto; }
+.photo-lightbox .caption { color: #aaa; font-size: 0.8rem; text-align: center; padding: 0.3rem 0.5rem; }
+.lb-toolbar { display: flex; justify-content: center; gap: 0.3rem; padding: 0.4rem 0.5rem; background: rgba(0,0,0,0.8); flex-shrink: 0; }
+.lb-tool { background: rgba(255,255,255,0.12); border: none; color: #e2e8f0; font-size: 1.1rem; width: 44px; height: 44px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.lb-tool:hover, .lb-tool.active { background: rgba(255,255,255,0.25); }
+.lb-tool.lb-danger { color: #fc8181; }
+.lb-tool.lb-danger:hover { background: rgba(255,80,80,0.3); }
+.photo-lightbox .close-lb { position: absolute; top: 0.5rem; right: 0.5rem; color: white; font-size: 1.5rem; cursor: pointer; background: rgba(0,0,0,0.5); border: none; z-index: 10; width: 36px; height: 36px; border-radius: 50%; }
+.photo-lightbox .nav-lb { position: absolute; top: 50%; color: white; font-size: 2rem; cursor: pointer; background: rgba(0,0,0,0.5); border: none; border-radius: 50%; width: 44px; height: 44px; transform: translateY(-50%); z-index: 10; }
+.photo-lightbox .nav-lb.prev { left: 0.5rem; }
+.photo-lightbox .nav-lb.next { right: 0.5rem; }
+.lb-drawing .lb-img-wrap img { pointer-events: none; }
+.lb-drawing #lbCanvas { display: block !important; cursor: crosshair; }
+.gallery-yt { border-color: rgba(255,0,0,0.4); }
+.gallery-add-card { display: flex; align-items: center; justify-content: center; min-height: 80px; border: 2px dashed var(--border); border-radius: 8px; cursor: pointer; color: var(--text-light); font-size: 0.85rem; transition: border-color 0.2s; }
+.gallery-add-card:hover { border-color: var(--accent); color: var(--accent); }
+/* ---- Thumbnail-Streifen (build-log): hoechstens N Bilder, Rest hinter "+N" ---- */
+.comp-photo-strip .thumb-row { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: flex-start; }
+.comp-photo-strip .thumb-row .thumb {
+    position: relative; width: 80px; height: 80px; border-radius: 6px; overflow: hidden;
+    border: 2px solid var(--border); cursor: pointer; background: #1a202c; flex: 0 0 auto;
+}
+.comp-photo-strip .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.comp-photo-strip .thumb .thumb-more {
+    position: absolute; inset: 0; background: rgba(0,0,0,0.6); color: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 0.95rem; font-weight: 600;
+}
+.comp-photo-strip.build-thumbs { text-align: left; margin: 0.4rem 0; }
+.comp-photo-strip.build-thumbs .comp-photo-actions { justify-content: flex-start; }

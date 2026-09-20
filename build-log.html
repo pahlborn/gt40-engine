@@ -181,9 +181,9 @@
         .guide-input-row input:focus { border-color: var(--primary-light); background: white; outline: none; }
 
         /* Photo Gallery inline */
-        .photo-gallery { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
-        .photo-gallery img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid var(--border); }
-        .photo-add-btn { display: inline-block; padding: 0.35rem 0.7rem; font-size: 0.75rem; background: #ebf4ff; border: 1px dashed #bee3f8; border-radius: 6px; cursor: pointer; color: var(--primary-light); margin-top: 0.3rem; }
+        /* Foto-Galerie: Styles stehen in gallery.css */
+        .legacy-photo-notice { margin: 0.6rem 0; padding: 0.6rem 0.8rem; background: #fffaf0; border: 1px solid #f6ad55; border-radius: 8px; font-size: 0.8rem; color: #7b341e; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+        .legacy-photo-notice button { padding: 0.35rem 0.8rem; border: 1px solid #dd6b20; background: #dd6b20; color: #fff; border-radius: 6px; cursor: pointer; font-size: 0.78rem; }
         /* Pull-to-Refresh */
         .ptr-indicator { position: fixed; top: -50px; left: 50%; transform: translateX(-50%); z-index: 9998;
             background: #fff; border-radius: 50%; width: 40px; height: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
@@ -344,7 +344,9 @@
         .fab-btn { border: none; border-radius: 50%; width: 48px; height: 48px; font-size: 1.3rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; color: white; }
         .fab-btn.glossary { background: #ed8936; }
     </style>
+<link rel="stylesheet" href="gallery.css">
 <script src="version.js"></script>
+<script src="gallery.js"></script>
 <script src="field-sync.js"></script>
 </head>
 <body>
@@ -385,6 +387,10 @@
         <div id="subResults" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #e2e8f0;border-radius:8px;max-height:300px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:100;padding:0.5rem;font-size:0.8rem;"></div>
     </div>
     <div class="save-status" id="saveStatus"><span id="syncBadge"></span></div>
+<div class="legacy-photo-notice" id="legacyPhotoNotice" style="display:none;">
+    <span>&#9888; <strong class="lpn-count">0</strong> Fotos liegen noch nur auf diesem Ger&auml;t.</span>
+    <button type="button" onclick="migrateLegacyPhotos()">Ins Repository &uuml;bertragen</button>
+</div>
 </div>
 
 <div class="container">
@@ -449,8 +455,14 @@
                 <li><span class="de">ID-Plakette / Gussnummer</span><span class="en">ID plate / casting number</span></li>
                 <li><span class="de">Auff&auml;lligkeiten (Gussfehler, Kratzer)</span><span class="en">Any anomalies (casting flaws, scratches)</span></li>
             </ul>
-            <div class="photo-gallery" data-photo-group="p1_block_photos"></div>
-            <label class="photo-add-btn" onclick="addPhoto('p1_block_photos')">&#128247; Add Photo</label>
+            <div class="comp-photo-strip build-thumbs" data-comp-gallery="p1_block_photos" data-thumbs="4">
+                <div class="thumb-row"></div>
+                <div class="comp-photo-actions">
+                    <button type="button" class="comp-photo-btn" onclick="openGallery('p1_block_photos')">&#128444; <span id="p1_block_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="addPhoto('p1_block_photos')">&#128247; Foto hinzuf&uuml;gen</button>
+                    <button type="button" class="comp-photo-btn" onclick="addYouTube('p1_block_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+                </div>
+            </div>
             </div>
             <div class="guide-block"><h4 class="time">Time Estimate (Zeitbedarf)</h4><ul><li>~30 min. incl. unpacking &amp; mounting</li></ul></div>
         </div>
@@ -575,8 +587,14 @@
                 <li><span class="de">Messuhr auf Haarlineal ueber Bohrung (Dokumentation der Methode)</span><span class="en">Dial indicator on straightedge over bore (method documentation)</span></li>
                 <li><span class="de">Messwert bei Zyl. 1 und Zyl. 5</span><span class="en">Reading at Cyl 1 and Cyl 5</span></li>
             </ul>
-            <div class="photo-gallery" data-photo-group="p1_pdeck_photos"></div>
-            <label class="photo-add-btn" onclick="addPhoto('p1_pdeck_photos')">&#128247; Add Photo</label>
+            <div class="comp-photo-strip build-thumbs" data-comp-gallery="p1_pdeck_photos" data-thumbs="4">
+                <div class="thumb-row"></div>
+                <div class="comp-photo-actions">
+                    <button type="button" class="comp-photo-btn" onclick="openGallery('p1_pdeck_photos')">&#128444; <span id="p1_pdeck_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="addPhoto('p1_pdeck_photos')">&#128247; Foto hinzuf&uuml;gen</button>
+                    <button type="button" class="comp-photo-btn" onclick="addYouTube('p1_pdeck_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -717,8 +735,14 @@
                 <li><span class="de">Plastigage-Streifen auf Zapfen (vor Deckelmontage)</span><span class="en">Plastigage strip on journal (before cap install)</span></li>
                 <li><span class="de">Gequetschte Plastigage vs. Skala (Ablesung)</span><span class="en">Crushed Plastigage vs. scale (reading)</span></li>
             </ul>
-            <div class="photo-gallery" data-photo-group="p1_mainbrg_photos"></div>
-            <label class="photo-add-btn" onclick="addPhoto('p1_mainbrg_photos')">&#128247; Add Photo</label>
+            <div class="comp-photo-strip build-thumbs" data-comp-gallery="p1_mainbrg_photos" data-thumbs="4">
+                <div class="thumb-row"></div>
+                <div class="comp-photo-actions">
+                    <button type="button" class="comp-photo-btn" onclick="openGallery('p1_mainbrg_photos')">&#128444; <span id="p1_mainbrg_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="addPhoto('p1_mainbrg_photos')">&#128247; Foto hinzuf&uuml;gen</button>
+                    <button type="button" class="comp-photo-btn" onclick="addYouTube('p1_mainbrg_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -1337,8 +1361,14 @@
 <!--  END OF PHASE: Photo gallery + Migrated tips                           -->
 <!-- ===================================================================== -->
 
-<div class="photo-gallery" data-photo-group="phase1"></div>
-<label class="photo-add-btn" onclick="addPhoto('phase1')">&#128247; Add Phase 1 Photos</label>
+<div class="comp-photo-strip build-thumbs" data-comp-gallery="phase1" data-thumbs="4">
+    <div class="thumb-row"></div>
+    <div class="comp-photo-actions">
+        <button type="button" class="comp-photo-btn" onclick="openGallery('phase1')">&#128444; <span id="phase1-count">0</span> Fotos</button>
+        <button type="button" class="comp-photo-btn" onclick="addPhoto('phase1')">&#128247; Foto hinzuf&uuml;gen</button>
+        <button type="button" class="comp-photo-btn" onclick="addYouTube('phase1')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+    </div>
+</div>
 
 <div class="migrated-tips">
     <h4>Block Praxis-Tipps (Migrated from Main Page)</h4>
@@ -1591,8 +1621,14 @@
                 <li><span class="de">Gradscheibe mit Zeiger bei OT</span><span class="en">Degree wheel with pointer at TDC</span></li>
                 <li><span class="de">Messuhr-Ablesung bei 0,050" Oeffnen und Schliessen</span><span class="en">Dial indicator reading at .050" opening and closing</span></li>
             </ul>
-            <div class="photo-gallery" data-photo-group="p2_degree_photos"></div>
-            <label class="photo-add-btn" onclick="addPhoto('p2_degree_photos')">&#128247; Add Photo</label>
+            <div class="comp-photo-strip build-thumbs" data-comp-gallery="p2_degree_photos" data-thumbs="4">
+                <div class="thumb-row"></div>
+                <div class="comp-photo-actions">
+                    <button type="button" class="comp-photo-btn" onclick="openGallery('p2_degree_photos')">&#128444; <span id="p2_degree_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="addPhoto('p2_degree_photos')">&#128247; Foto hinzuf&uuml;gen</button>
+                    <button type="button" class="comp-photo-btn" onclick="addYouTube('p2_degree_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+                </div>
+            </div>
             </div>
             <div class="guide-block"><h4 class="time">Time Estimate</h4><ul><li>~90 min. (incl. TDC finding)</li></ul></div>
         </div>
@@ -1762,8 +1798,14 @@
             <div class="guide-block"><h4 class="photo">Photo Documentation</h4><ul>
                 <li><span class="de">Sweep pattern on valve stem (document both good and bad patterns)</span><span class="en">Sweep pattern on valve stem (document both good and bad patterns)</span></li>
             </ul>
-            <div class="photo-gallery" data-photo-group="p2_sweep_photos"></div>
-            <label class="photo-add-btn" onclick="addPhoto('p2_sweep_photos')">&#128247; Add Photo</label>
+            <div class="comp-photo-strip build-thumbs" data-comp-gallery="p2_sweep_photos" data-thumbs="4">
+                <div class="thumb-row"></div>
+                <div class="comp-photo-actions">
+                    <button type="button" class="comp-photo-btn" onclick="openGallery('p2_sweep_photos')">&#128444; <span id="p2_sweep_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="addPhoto('p2_sweep_photos')">&#128247; Foto hinzuf&uuml;gen</button>
+                    <button type="button" class="comp-photo-btn" onclick="addYouTube('p2_sweep_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -1811,8 +1853,14 @@
                 <li><span class="de">Knetmasse vor Messung (duennste Stelle markieren)</span><span class="en">Clay before measurement (mark thinnest point)</span></li>
                 <li><span class="de">Messschieber auf Knetmasse-Querschnitt</span><span class="en">Caliper on clay cross-section</span></li>
             </ul>
-            <div class="photo-gallery" data-photo-group="p2_ptv_photos"></div>
-            <label class="photo-add-btn" onclick="addPhoto('p2_ptv_photos')">&#128247; Add Photo</label>
+            <div class="comp-photo-strip build-thumbs" data-comp-gallery="p2_ptv_photos" data-thumbs="4">
+                <div class="thumb-row"></div>
+                <div class="comp-photo-actions">
+                    <button type="button" class="comp-photo-btn" onclick="openGallery('p2_ptv_photos')">&#128444; <span id="p2_ptv_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="addPhoto('p2_ptv_photos')">&#128247; Foto hinzuf&uuml;gen</button>
+                    <button type="button" class="comp-photo-btn" onclick="addYouTube('p2_ptv_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -2205,8 +2253,14 @@
 </div>
 
 <!-- Phase Photos -->
-<div class="photo-gallery" data-photo-group="phase2"></div>
-<label class="photo-add-btn" onclick="addPhoto('phase2')">&#128247; Add Phase 2 Photos</label>
+<div class="comp-photo-strip build-thumbs" data-comp-gallery="phase2" data-thumbs="4">
+    <div class="thumb-row"></div>
+    <div class="comp-photo-actions">
+        <button type="button" class="comp-photo-btn" onclick="openGallery('phase2')">&#128444; <span id="phase2-count">0</span> Fotos</button>
+        <button type="button" class="comp-photo-btn" onclick="addPhoto('phase2')">&#128247; Foto hinzuf&uuml;gen</button>
+        <button type="button" class="comp-photo-btn" onclick="addYouTube('phase2')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+    </div>
+</div>
 
 <!-- Video-Referenzen (user-managed) -->
 <div class="subphase">&#127909; Video-Referenzen (Video References)</div>
@@ -2587,8 +2641,14 @@
         <div class="guide-block"><h4 class="photo">Photo Documentation (Fotodokumentation)</h4><ul>
             <li><span class="de">&quot;FRONT&quot;-Markierung fotografieren (Nachweis korrekte Einbaulage)</span><span class="en">Photograph &quot;FRONT&quot; marking visible (proof of correct installation)</span></li>
         </ul>
-        <div class="photo-gallery" data-photo-group="p3_gasket_photos"></div>
-        <label class="photo-add-btn" onclick="addPhoto('p3_gasket_photos')">&#128247; Add Photo</label>
+        <div class="comp-photo-strip build-thumbs" data-comp-gallery="p3_gasket_photos" data-thumbs="4">
+            <div class="thumb-row"></div>
+            <div class="comp-photo-actions">
+                <button type="button" class="comp-photo-btn" onclick="openGallery('p3_gasket_photos')">&#128444; <span id="p3_gasket_photos-count">0</span> Fotos</button>
+                <button type="button" class="comp-photo-btn" onclick="addPhoto('p3_gasket_photos')">&#128247; Foto hinzuf&uuml;gen</button>
+                <button type="button" class="comp-photo-btn" onclick="addYouTube('p3_gasket_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+            </div>
+        </div>
         </div>
     </div></div>
 </div>
@@ -3165,8 +3225,14 @@
 <!-- Phase 3 Photos + Progress                -->
 <!-- ======================================== -->
 <div style="margin-top: 1rem;">
-    <div class="photo-gallery" data-photo-group="phase3"></div>
-    <label class="photo-add-btn" onclick="addPhoto('phase3')">&#128247; Add Phase 3 Photos (Phase-3-Fotos hinzuf&uuml;gen)</label>
+    <div class="comp-photo-strip build-thumbs" data-comp-gallery="phase3" data-thumbs="4">
+        <div class="thumb-row"></div>
+        <div class="comp-photo-actions">
+            <button type="button" class="comp-photo-btn" onclick="openGallery('phase3')">&#128444; <span id="phase3-count">0</span> Fotos</button>
+            <button type="button" class="comp-photo-btn" onclick="addPhoto('phase3')">&#128247; Foto hinzuf&uuml;gen</button>
+            <button type="button" class="comp-photo-btn" onclick="addYouTube('phase3')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+        </div>
+    </div>
 </div>
 
 <!-- Video-Referenzen (user-managed) -->
@@ -3689,8 +3755,14 @@
             <li><span class="de">Foto des sauberen Motors vor Erststart (Referenz)</span><span class="en">Photo of clean engine before first start (reference)</span></li>
             <li><span class="de">Foto jeder gefundenen Leckstelle</span><span class="en">Photo of any leak location found</span></li>
         </ul>
-        <div class="photo-gallery" data-photo-group="p4_leaks_photos"></div>
-        <label class="photo-add-btn" onclick="addPhoto('p4_leaks_photos')">&#128247; Add Photo</label>
+        <div class="comp-photo-strip build-thumbs" data-comp-gallery="p4_leaks_photos" data-thumbs="4">
+            <div class="thumb-row"></div>
+            <div class="comp-photo-actions">
+                <button type="button" class="comp-photo-btn" onclick="openGallery('p4_leaks_photos')">&#128444; <span id="p4_leaks_photos-count">0</span> Fotos</button>
+                <button type="button" class="comp-photo-btn" onclick="addPhoto('p4_leaks_photos')">&#128247; Foto hinzuf&uuml;gen</button>
+                <button type="button" class="comp-photo-btn" onclick="addYouTube('p4_leaks_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+            </div>
+        </div>
         </div>
     </div></div>
 </div>
@@ -3941,8 +4013,14 @@
                 <li><span class="de">Filterpapier (sauber = Referenz fuer kuenftige Vergleiche)</span><span class="en">Filter paper (clean = reference for future comparisons)</span></li>
                 <li><span class="de">Bei Partikeln: Nahaufnahme + Material bestimmen (Aluminium, Stahl, Kupfer)</span><span class="en">If particles: close-up + determine material (aluminum, steel, copper)</span></li>
             </ul>
-            <div class="photo-gallery" data-photo-group="p4_filter_photos"></div>
-            <label class="photo-add-btn" onclick="addPhoto('p4_filter_photos')">&#128247; Add Photo</label>
+            <div class="comp-photo-strip build-thumbs" data-comp-gallery="p4_filter_photos" data-thumbs="4">
+                <div class="thumb-row"></div>
+                <div class="comp-photo-actions">
+                    <button type="button" class="comp-photo-btn" onclick="openGallery('p4_filter_photos')">&#128444; <span id="p4_filter_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="addPhoto('p4_filter_photos')">&#128247; Foto hinzuf&uuml;gen</button>
+                    <button type="button" class="comp-photo-btn" onclick="addYouTube('p4_filter_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+                </div>
+            </div>
             </div>
             <div class="guide-block"><h4 class="time">Time Estimate (Zeitbedarf)</h4><ul><li>~30 min. incl. drain &amp; inspection</li></ul></div>
         </div>
@@ -3985,8 +4063,14 @@
         <div class="guide-block"><h4 class="photo">Photo Documentation (Fotodokumentation)</h4><ul>
             <li><span class="de">Alle 8 Kerzen in Reihenfolge ausgelegt &ndash; Referenz fuer kuenftige Ablesungen</span><span class="en">All 8 plugs laid out in order &ndash; reference for future readings</span></li>
         </ul>
-        <div class="photo-gallery" data-photo-group="p4_sparkread_photos"></div>
-        <label class="photo-add-btn" onclick="addPhoto('p4_sparkread_photos')">&#128247; Add Photo</label>
+        <div class="comp-photo-strip build-thumbs" data-comp-gallery="p4_sparkread_photos" data-thumbs="4">
+            <div class="thumb-row"></div>
+            <div class="comp-photo-actions">
+                <button type="button" class="comp-photo-btn" onclick="openGallery('p4_sparkread_photos')">&#128444; <span id="p4_sparkread_photos-count">0</span> Fotos</button>
+                <button type="button" class="comp-photo-btn" onclick="addPhoto('p4_sparkread_photos')">&#128247; Foto hinzuf&uuml;gen</button>
+                <button type="button" class="comp-photo-btn" onclick="addYouTube('p4_sparkread_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+            </div>
+        </div>
         </div>
     </div></div>
 </div>
@@ -4016,8 +4100,14 @@
 
 <!-- Phase Photos -->
 <div style="margin-top: 1rem;">
-<div class="photo-gallery" data-photo-group="phase4"></div>
-<label class="photo-add-btn" onclick="addPhoto('phase4')">&#128247; Add Phase 4 Photos</label>
+<div class="comp-photo-strip build-thumbs" data-comp-gallery="phase4" data-thumbs="4">
+    <div class="thumb-row"></div>
+    <div class="comp-photo-actions">
+        <button type="button" class="comp-photo-btn" onclick="openGallery('phase4')">&#128444; <span id="phase4-count">0</span> Fotos</button>
+        <button type="button" class="comp-photo-btn" onclick="addPhoto('phase4')">&#128247; Foto hinzuf&uuml;gen</button>
+        <button type="button" class="comp-photo-btn" onclick="addYouTube('phase4')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+    </div>
+</div>
 </div>
 
 <!-- Video-Referenzen (user-managed) -->
@@ -4439,54 +4529,93 @@
     }
 
     // ==== PHOTOS ====
-    function addPhoto(group) {
-        // Kein capture-Attribut: iOS/Android zeigen nativ "Foto aufnehmen" + "Fotomediathek"
-        var input = document.createElement('input');
-        input.type = 'file'; input.accept = 'image/*';
-        input.onchange = function(e) {
-            var file = e.target.files[0]; if (!file) return;
-            var lang = document.documentElement.lang || 'de';
-            var reader = new FileReader();
-            reader.onload = function(ev) {
-                var img = new Image();
-                img.onload = function() {
-                    var canvas = document.createElement('canvas');
-                    var maxW = 1200;
-                    var scale = img.width > maxW ? maxW / img.width : 1;
-                    canvas.width = img.width * scale;
-                    canvas.height = img.height * scale;
-                    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-                    var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                    try {
-                        var photos = JSON.parse(localStorage.getItem('buildPhotos_' + group) || '[]');
-                        photos.push({ src: dataUrl, caption: '', time: new Date().toISOString() });
-                        localStorage.setItem('buildPhotos_' + group, JSON.stringify(photos));
-                        renderPhotos(group);
-                        showToast(lang === 'de' ? 'Foto gespeichert' : 'Photo saved');
-                    } catch(err) {
-                        showToast(lang === 'de' ? 'Speicher voll - Foto zu gross' : 'Storage full - photo too large');
-                    }
-                };
-                img.src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-        };
-        input.click();
+    // ==== FOTOS ====
+    // Die Galerie kommt aus gallery.js - dieselbe wie auf der Specs-Seite:
+    // Bilder liegen im Repo, Metadaten im Gist, sichtbar auf allen Geraeten.
+    //
+    // Frueher lagen die Fotos hier als Base64 in localStorage
+    // ('buildPhotos_<gruppe>'). Das war nur auf dem aufnehmenden Geraet
+    // sichtbar und hat den Speicher volllaufen lassen.
+
+    // Altbestand einsammeln, der noch im alten Format liegt.
+    function _legacyBuildPhotos() {
+        var out = [];
+        document.querySelectorAll('[data-comp-gallery]').forEach(function(strip) {
+            var g = strip.dataset.compGallery;
+            try {
+                var raw = localStorage.getItem('buildPhotos_' + g);
+                if (!raw) return;
+                var arr = JSON.parse(raw);
+                if (Array.isArray(arr) && arr.length) out.push({ group: g, photos: arr });
+            } catch (e) {}
+        });
+        return out;
     }
 
-    function renderPhotos(group) {
-        var galleries = document.querySelectorAll('.photo-gallery[data-photo-group="' + group + '"]');
-        galleries.forEach(function(gallery) {
-            var photos = JSON.parse(localStorage.getItem('buildPhotos_' + group) || '[]');
-            gallery.innerHTML = '';
-            photos.forEach(function(p, i) {
-                var img = document.createElement('img');
-                img.src = p.src; img.alt = p.caption || 'Photo ' + (i+1);
-                img.onclick = (function(g, j) { return function() { openLightbox(g, j); }; })(group, i);
-                gallery.appendChild(img);
-            });
-        });
+    // Hinweis einblenden, solange Altbestand da ist. Automatisch hochladen waere
+    // ungefragtes Committen - das entscheidet der Nutzer.
+    function showLegacyPhotoNotice() {
+        var legacy = _legacyBuildPhotos();
+        var bar = document.getElementById('legacyPhotoNotice');
+        var total = legacy.reduce(function (n, g) { return n + g.photos.length; }, 0);
+        if (!bar) return;
+        if (!total) { bar.style.display = 'none'; return; }
+        bar.style.display = '';
+        bar.querySelector('.lpn-count').textContent = total;
     }
+
+    // Altbestand ins Repo hochladen, danach lokal entfernen.
+    async function migrateLegacyPhotos() {
+        if (!getGistConfig().token) {
+            showToast('Dafuer wird der GitHub-Token gebraucht (Einstellungen)');
+            return;
+        }
+        var legacy = _legacyBuildPhotos();
+        var total = legacy.reduce(function (n, g) { return n + g.photos.length; }, 0);
+        if (!total) { showToast('Kein Altbestand gefunden'); return; }
+        if (!confirm(total + ' alte Fotos ins Repository hochladen?\n\nDanach sind sie auf allen Geraeten sichtbar.')) return;
+
+        var done = 0, failed = 0;
+        for (var gi = 0; gi < legacy.length; gi++) {
+            var group = legacy[gi].group;
+            var photos = legacy[gi].photos;
+            var uploaded = [];
+            for (var i = 0; i < photos.length; i++) {
+                var src = photos[i].src || photos[i].data;
+                if (!src || src.indexOf('data:') !== 0) { uploaded.push(i); continue; }
+                showToast('Uebertrage ' + (done + 1) + '/' + total + ' ...');
+                try {
+                    var filename = Date.now() + '_' + i + '.jpg';
+                    await _uploadToGitHub(group, src, filename);
+                    var key = group + '/' + filename;
+                    _galleryMeta.meta[key] = {
+                        caption: photos[i].caption || '',
+                        time: photos[i].time ? new Date(photos[i].time).toLocaleString('de-DE') : '',
+                        m: _nowMs()
+                    };
+                    _pendingAdds[key] = { until: _nowMs() + PENDING_TTL_MS };
+                    uploaded.push(i);
+                    done++;
+                } catch (err) {
+                    console.error('[Migration] Fehlgeschlagen:', group, i, err.message);
+                    failed++;
+                }
+                await new Promise(function (r) { setTimeout(r, 1200); });   // GitHub nicht ueberfahren
+            }
+            // Nur entfernen, was wirklich oben angekommen ist.
+            if (uploaded.length === photos.length) {
+                localStorage.removeItem('buildPhotos_' + group);
+            } else {
+                var rest = photos.filter(function (_, i) { return uploaded.indexOf(i) === -1; });
+                localStorage.setItem('buildPhotos_' + group, JSON.stringify(rest));
+            }
+        }
+        scheduleMetaPush();
+        await refreshGallery(true);
+        showLegacyPhotoNotice();
+        showToast(failed ? (done + ' uebertragen, ' + failed + ' fehlgeschlagen') : (done + ' Fotos uebertragen'));
+    }
+
 
     // ==== BUILD-LOG SEARCH ====
     // ==== SEARCH (loaded from search.js) ====
@@ -5102,9 +5231,8 @@
         loadData();
         restoreBuildCollapseState();
         if (typeof initUnifiedSearch === 'function') initUnifiedSearch();
-        document.querySelectorAll('.photo-gallery[data-photo-group]').forEach(function(g) {
-            renderPhotos(g.dataset.photoGroup);
-        });
+        initCompPhotos();
+        showLegacyPhotoNotice();
         // Render video managers
         document.querySelectorAll('[id^="videoList_"]').forEach(function(el) {
             renderVideos(el.id.replace('videoList_', ''));
