@@ -200,12 +200,18 @@ await test('Bezugsgroessen sind erfassbar', async () => {
   }
 });
 
-await test('Beide Duesenvorschlaege stehen nebeneinander und gelten als unbelegt', async () => {
-  // Die Zahlen der Ausarbeitung und die des Leitfadens widersprechen sich, und
-  // keine traegt eine Quelle. Das muss im Dokument stehen, nicht nur im Chat.
+await test('Beide Zahlenreihen stehen nebeneinander und keine gilt als Sollwert', async () => {
+  // Die Zahlen des Reviews und die des Leitfadens widersprechen sich, und keine
+  // traegt eine Primaerquelle. Geprueft wird die Aussage, nicht ein Stichwort -
+  // die Formulierung wurde schon einmal geschaerft und der Test lief ins Leere.
   const k = karte('p3_carboverhaul');
-  assert(/9164\.2/.test(k) && /9164\.3/.test(k), 'Nicht beide Vorschlaege aufgefuehrt');
-  assert(/unbelegt/.test(k), 'Quellenlage nicht als unbelegt gekennzeichnet');
+  assert(/9164\.2/.test(k) && /9164\.3/.test(k), 'Nicht beide Reihen aufgefuehrt');
+  assert(/keine Primaerquelle|keine Primaerquellen|nicht validiert/.test(k),
+    'Fehlende Quellenlage nicht benannt');
+  assert(/Keine dieser Reihen ist ein Sollwert/.test(k),
+    'Reihen sind nicht als Nicht-Sollwert gekennzeichnet');
+  assert(/Ma&szlig;geblich ist die Ist-Best&uuml;ckung/.test(k),
+    'Vorrang der verbauten Baseline nicht benannt');
 });
 
 await test('Plausibilitaetsrechnung leitet die Groessen her', async () => {
@@ -231,6 +237,52 @@ await test('Hauptventuri ist als fehlender Wert benannt', async () => {
   // Die Hauptduese haengt von ihr ab, im Leitfaden fehlte sie komplett.
   const k = karte('p3_carboverhaul');
   assert(/Hauptventuri/.test(k), 'Hauptventuri kommt nicht vor');
+});
+
+// ---------------------------------------------------------------------------
+suite('Die bewaehrte Abstimmung ist die Baseline');
+
+await test('Leitprinzip und Herkunft der Anlage stehen im Kapitel', async () => {
+  // Die Vergaser kamen vom alten 1968er 302, wurden in England mit zwei
+  // Lambdasonden abgestimmt und liefen einwandfrei. Ohne diesen Satz wirkt die
+  // vorhandene Bedueusung wie ein unbekannter Zustand statt wie ein Ergebnis.
+  const k = karte('p3_carboverhaul');
+  assert(/Baseline konservieren/.test(k), 'Leitprinzip fehlt');
+  assert(/bereits abgestimmt/.test(k), 'Herkunft der Abstimmung fehlt');
+  assert(/unver&auml;ndert zur&uuml;ckbauen/.test(k), 'Konservierungs-Arbeitsweise fehlt');
+});
+
+await test('STOPP-Punkte sind benannt', async () => {
+  const k = karte('p3_carboverhaul');
+  assert(/STOPP/.test(k), 'STOPP-Tabelle fehlt');
+  for (const punkt of ['Einstellschraube', 'vertauschen', 'Reibahle', 'Schwimmerstand']) {
+    assert(k.includes(punkt), 'STOPP-Punkt fehlt: ' + punkt);
+  }
+});
+
+await test('Die Plausibilitaetsrechnung ueberschreibt die Baseline nicht', async () => {
+  // Eine Faustformel aus einem DHLA-Leitfaden darf nicht als Sollwert gelesen
+  // werden, wenn die verbaute Bedueusung auf einem echten Motor funktioniert hat.
+  const k = karte('p3_carboverhaul');
+  assert(/&uuml;berschreibt die bew&auml;hrte Baseline nicht/.test(k),
+    'Einordnung der Rechnung gegenueber der Baseline fehlt');
+});
+
+await test('Das Review verwirft seine eigenen Zahlen - das steht dabei', async () => {
+  const k = karte('p3_carboverhaul');
+  assert(/als nicht validiert verwirft/.test(k),
+    'Selbstverwerfung des Reviews nicht vermerkt');
+  assert(/Keine dieser Reihen ist ein Sollwert/.test(k), 'Sollwert-Ausschluss fehlt');
+});
+
+await test('Diagnosebaum verhindert den Duesenwechsel auf Verdacht', async () => {
+  const k = karte('p4_sync_card');
+  assert(/Diagnosebaum/.test(k), 'Diagnosebaum fehlt');
+  assert(/Nicht sofort tun/.test(k), 'Spalte "Nicht sofort tun" fehlt');
+  assert(/einzeln und umkehrbar/.test(k), 'Umkehrbarkeit der Aenderungen fehlt');
+  // Kernaussage: schlechter Leerlauf ist kein Hauptduesen-Problem.
+  assert(/Hauptd&uuml;se &auml;ndern<\/span>/.test(k),
+    'Gegenmassnahme zum Leerlauf-Fehlgriff fehlt');
 });
 
 // ---------------------------------------------------------------------------
