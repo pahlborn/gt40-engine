@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v31',
+      date: '2026-09-20',
+      title: 'Bildnamen, Doubletten, Feld-Leeren',
+      changes: [
+        { type: 'fix', text: 'Ein geleertes Messwert-Feld kam zurueck, sobald es im Build Log noch einen Wert gab: die Uebernahme von dort hat es wieder nachgefuellt. Sie greift jetzt nur noch bei Feldern, die nie gesetzt waren.' },
+        { type: 'neu', text: 'Galerie-Bilder tragen ihren Originalnamen statt einer Nummerierung. Der Name steht auch im Dateinamen im Repository.' },
+        { type: 'neu', text: 'Doubletten werden ueber die Pruefsumme der Bilddaten erkannt. Dasselbe Foto in einer zweiten Galerie wird verknuepft statt ein zweites Mal abgelegt.' },
+        { type: 'neu', text: 'Ein Bild, auf das noch verwiesen wird, laesst sich nicht loeschen - sonst fehlt es in der anderen Galerie.' },
+        { type: 'fix', text: 'Pull-to-Refresh loest bei offener Galerie nicht mehr aus, und ein Update laedt die Seite nicht mehr mitten in der Arbeit neu.' },
+        { type: 'fix', text: 'Englische Uebersetzung der Praxis-Tipps-Ueberschrift im Build Log ergaenzt.' }
+      ]
+    },
+    {
       version: 'v30',
       date: '2026-09-20',
       title: 'Kapitelstatus und Befunde im Build Log',

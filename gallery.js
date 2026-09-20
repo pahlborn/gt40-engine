@@ -218,6 +218,15 @@ function _pruneOrphanMeta() {
     for (var key in _galleryMeta.meta) {
         var e = _galleryMeta.meta[key];
         if (!e || (e.m || 0) > cutoff) continue;    // zu jung -> Schonfrist
+        if (e.ref) {
+            // Verweis auf eine fremde Datei: nur wegraeumen, wenn die weg ist.
+            var rs = e.ref.indexOf('/');
+            var rg = e.ref.slice(0, rs), rf = e.ref.slice(rs + 1);
+            if (_repoFiles[rg] && _repoFiles[rg].indexOf(rf) === -1) {
+                delete _galleryMeta.meta[key]; removed++;
+            }
+            continue;
+        }
         var slash = key.indexOf('/');
         if (slash <= 0) continue;
         var g = key.substring(0, slash), f = key.substring(slash + 1);
@@ -300,6 +309,71 @@ function _prunePending() {
     for (k in _pendingDeletes) if (_pendingDeletes[k] < now) delete _pendingDeletes[k];
 }
 
+// Dateinamen fuer das Repo: Zeitstempel gegen Kollisionen, danach der
+// Originalname. So steht er auch dann noch da, wenn die Metadaten fehlen.
+function _safeFileName(orig) {
+    var base = String(orig || '').replace(/\.[^.]*$/, '');
+    base = base.normalize ? base.normalize('NFKD') : base;
+    base = base.replace(/[^\w-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+    if (base.length > 48) base = base.slice(0, 48);
+    return base || 'foto';
+}
+
+// SHA-256 ueber die Bilddaten. Damit lassen sich Doubletten erkennen, statt
+// dieselbe Datei mehrfach im Repo abzulegen.
+async function _sha256OfDataUrl(dataUrl) {
+    try {
+        if (!global_crypto_subtle()) return null;
+        var b64 = String(dataUrl).split(',')[1] || '';
+        var bin = atob(b64);
+        var bytes = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        var buf = await global_crypto_subtle().digest('SHA-256', bytes);
+        return Array.from(new Uint8Array(buf))
+            .map(function(x) { return x.toString(16).padStart(2, '0'); }).join('');
+    } catch (e) { console.warn('[Galerie] Pruefsumme nicht berechenbar:', e.message); return null; }
+}
+function global_crypto_subtle() {
+    return (typeof crypto !== 'undefined' && crypto.subtle) ? crypto.subtle : null;
+}
+
+// Alle Metadaten-Eintraege mit dieser Pruefsumme - gruppenuebergreifend.
+function _findBySha(sha) {
+    var out = [];
+    if (!sha) return out;
+    for (var key in _galleryMeta.meta) {
+        var e = _galleryMeta.meta[key];
+        if (e && !e.del && e.sha === sha) out.push({ key: key, entry: e });
+    }
+    return out;
+}
+
+// Auf welche Repo-Datei zeigt ein Eintrag? Ein Verweis zeigt auf eine fremde.
+function _targetOf(key) {
+    var e = _galleryMeta.meta[key];
+    return (e && e.ref) ? e.ref : key;
+}
+
+// Verweise, die auf diese Repo-Datei zeigen.
+function _refsTo(target) {
+    var out = [];
+    for (var key in _galleryMeta.meta) {
+        var e = _galleryMeta.meta[key];
+        if (!e || e.del || !e.ref) continue;
+        if (e.ref === target) out.push(key);
+    }
+    return out;
+}
+
+// Wie viele Galerie-Eintraege zeigen auf diese Datei? Die Datei selbst zaehlt
+// mit, solange sie im Repo liegt. Erst bei 0 darf sie geloescht werden.
+function _refCount(target) {
+    var slash = target.indexOf('/');
+    var g = target.slice(0, slash), f = target.slice(slash + 1);
+    var selbst = (_repoFiles[g] && _repoFiles[g].indexOf(f) !== -1 && !_pendingDeletes[target]) ? 1 : 0;
+    return selbst + _refsTo(target).length;
+}
+
 // Aus Datei 'annotated_1789838216411.jpg' oder '1789838216411_3.jpg' den Zeitstempel ziehen
 function _tsFromFilename(f) {
     var m = String(f).match(/(\d{10,16})/);
@@ -334,17 +408,44 @@ function rebuildPhotoData() {
             if (seen[key]) return;
             seen[key] = 1;
             var md = _galleryMeta.meta[key] || {};
+            if (md.ref) return;              // Verweise kommen weiter unten
             items.push({
                 key: key,
                 data: _urlFromKey(key),
                 caption: md.caption || '',
                 time: md.time || '',
+                orig: md.orig || '',
+                sha: md.sha || '',
                 order: (md.order === undefined ? null : md.order),
                 sort: _tsFromFilename(f),
                 name: f,
                 type: 'photo'
             });
         });
+
+        // Verweise auf Dateien anderer Gruppen: haben keine eigene Repo-Datei,
+        // stehen aber genauso in der Galerie.
+        for (var mk in _galleryMeta.meta) {
+            var me2 = _galleryMeta.meta[mk];
+            if (!me2 || me2.del || !me2.ref) continue;
+            if (mk.indexOf(group + '/') !== 0) continue;
+            if (seen[mk] || _pendingDeletes[mk]) continue;
+            seen[mk] = 1;
+            items.push({
+                key: mk,
+                data: _urlFromKey(me2.ref),
+                caption: me2.caption || '',
+                time: me2.time || '',
+                orig: me2.orig || '',
+                sha: me2.sha || '',
+                ref: me2.ref,
+                order: (me2.order === undefined ? null : me2.order),
+                sort: _tsFromFilename(me2.ref.split('/').pop()),
+                name: me2.ref.split('/').pop(),
+                type: 'photo'
+            });
+        }
+
         var vids = (_galleryMeta.videos || {})[group] || {};
         Object.keys(vids).forEach(function(id) {
             var v = vids[id];
@@ -544,22 +645,37 @@ async function addPhoto(group) {
         }
         var toProcess = Math.min(files.length, maxFiles);
         showToast(lang === 'de' ? 'Lade ' + toProcess + ' Foto(s) hoch...' : 'Uploading ' + toProcess + ' photo(s)...');
-        var uploaded = 0;
+        var uploaded = 0, linked = 0, dupes = 0;
         // Process files sequentially with delay to avoid GitHub commit conflicts
         for (var fi = 0; fi < toProcess; fi++) {
             try {
                 if (fi > 0) await new Promise(function(r) { setTimeout(r, 1500); });
                 showToast((fi+1) + '/' + toProcess + ' wird hochgeladen...');
                 var result = await _processAndUpload(files[fi], group, fi);
-                if (result) { uploaded++; }
+                if (!result) continue;
+                if (result.duplicate) { dupes++; }
+                else if (result.linked) { linked++; uploaded++; }
+                else { uploaded++; }
             } catch(err) {
                 showToast('Fehler bei Foto ' + (fi+1) + ': ' + err.message);
             }
         }
+        if (dupes > 0 && uploaded === 0) {
+            showToast(lang === 'de'
+                ? (dupes === 1 ? 'Dieses Foto ist hier schon vorhanden'
+                               : dupes + ' Fotos sind hier schon vorhanden')
+                : (dupes + ' photo(s) already here'));
+        }
+        if (linked > 0) {
+            showToast(lang === 'de'
+                ? (linked === 1 ? 'Foto lag schon im Repository - verknuepft statt doppelt abgelegt'
+                                : linked + ' Fotos verknuepft statt doppelt abgelegt')
+                : (linked + ' photo(s) linked instead of duplicated'));
+        }
         if (uploaded > 0) {
             scheduleMetaPush();
             await refreshGallery(true);
-            showToast(uploaded === 1
+            if (linked < uploaded) showToast(uploaded === 1
                 ? (lang === 'de' ? 'Foto hochgeladen' : 'Photo uploaded')
                 : uploaded + (lang === 'de' ? ' Fotos hochgeladen' : ' photos uploaded'));
         }
@@ -594,12 +710,31 @@ function _processAndUpload(file, group, idx) {
                             quality -= 0.1;
                             dataUrl = canvas.toDataURL('image/jpeg', quality);
                         }
-                        var ts = Date.now() + '_' + idx;
-                        var filename = ts + '.jpg';
+                        var sha = await _sha256OfDataUrl(dataUrl);
+                        // Schon vorhanden? Dann nicht ein zweites Mal ablegen,
+                        // sondern darauf verweisen - spart Platz und haelt die
+                        // Beschreibung an einer Stelle.
+                        var treffer = _findBySha(sha);
+                        if (treffer.length) {
+                            var ziel = _targetOf(treffer[0].key);
+                            var schonHier = treffer.filter(function(t) { return t.key.indexOf(group + '/') === 0; });
+                            if (schonHier.length) { resolve({ duplicate: true, group: group }); return; }
+                            var refKey = group + '/ref-' + sha.slice(0, 12) + '.jpg';
+                            _galleryMeta.meta[refKey] = {
+                                ref: ziel, sha: sha, orig: file.name || '',
+                                caption: '', time: photoTime, m: _nowMs()
+                            };
+                            resolve({ linked: true, target: ziel });
+                            return;
+                        }
+                        var filename = Date.now() + '_' + idx + '_' + _safeFileName(file.name) + '.jpg';
                         await _uploadToGitHub(group, dataUrl, filename);
                         var key = group + '/' + filename;
                         // Datei liegt jetzt im Repo (= Wahrheit). Hier nur noch Beiwerk:
-                        _galleryMeta.meta[key] = { caption: '', time: photoTime, m: _nowMs() };
+                        _galleryMeta.meta[key] = {
+                            caption: '', time: photoTime, m: _nowMs(),
+                            orig: file.name || '', sha: sha
+                        };
                         // Das Repo-Listing hinkt dem Commit kurz nach - solange lokal vormerken.
                         _pendingAdds[key] = { until: _nowMs() + PENDING_TTL_MS };
                         resolve(true);
@@ -745,8 +880,13 @@ function _displayName(p, lang) {
     if (p.isDefault) return lang === 'de' ? 'Herstellerbild' : 'Manufacturer';
     if (p.caption) return p.caption;
     if (p.type === 'youtube') return 'YouTube';
+    // Originalname hat Vorrang - eine Nummerierung sagt nichts ueber das Bild.
+    if (p.orig) return String(p.orig).replace(/\.[a-z0-9]+$/i, '');
     var f = p.name || (p.key || '').split('/').pop() || '';
     f = f.replace(/\.[a-z0-9]+$/i, '');
+    // '<ts>_<idx>_<Originalname>' - den Originalteil herausloesen
+    var mOrig = f.match(/^\d{10,16}_\d+_(.+)$/);
+    if (mOrig) return mOrig[1];
     var m = f.match(/^(?:annotated_)?\d{10,16}(?:_(\d+))?$/);
     if (m) {
         var nr = m[1] !== undefined ? (parseInt(m[1], 10) + 1) : null;
@@ -1015,6 +1155,32 @@ async function deletePhoto(group, userIdx) {
         scheduleMetaPush();
         rebuildPhotoData();
         _renderAllGalleries();
+        return;
+    }
+
+    var ziel = _targetOf(photo.key);
+
+    if (photo.ref) {
+        // War selbst nur ein Verweis: die Datei gehoert einer anderen Galerie
+        // und bleibt dort unberuehrt.
+        delete _galleryMeta.meta[photo.key];
+        scheduleMetaPush();
+        rebuildPhotoData();
+        _renderAllGalleries();
+        showToast(lang === 'de'
+            ? 'Aus dieser Galerie entfernt (Bild bleibt in der anderen)'
+            : 'Removed from this gallery (image stays in the other)');
+        return;
+    }
+
+    // Zeigen noch Verweise auf diese Datei? Dann darf sie nicht weg, sonst
+    // fehlt das Bild in der anderen Galerie.
+    var verweise = _refsTo(ziel);
+    if (verweise.length) {
+        var gruppen = verweise.map(function(k) { return k.split('/')[0]; }).join(', ');
+        showToast(lang === 'de'
+            ? 'Nicht geloescht - das Bild wird noch verwendet in: ' + gruppen
+            : 'Not deleted - still used in: ' + gruppen);
         return;
     }
 
@@ -1509,6 +1675,18 @@ function lbSaveDrawing() {
 // Init: Herstellerbilder einsammeln, Metadaten laden, Galerie aus dem Repo aufbauen.
 // Galerie-Overlay und Lightbox anlegen, falls die Seite sie nicht schon im
 // Markup hat. So braucht eine neue Seite nur die [data-comp-gallery]-Container.
+// Liegt gerade ein Overlay ueber der Seite? Pull-to-Refresh und der
+// automatische Neustart nach einem Update duerfen dann nicht losgehen - sonst
+// wird einem die Seite mitten in der Arbeit unter den Fingern weggezogen.
+function anyOverlayOpen() {
+    var sel = ['#galleryOverlay.show', '#photoLightbox.show', '#changelogOverlay.show',
+               '.guide-overlay.show', '.settings-overlay.show'];
+    for (var i = 0; i < sel.length; i++) {
+        if (document.querySelector(sel[i])) return true;
+    }
+    return document.body.style.overflow === 'hidden';
+}
+
 function ensureGalleryChrome() {
     if (!document.getElementById('galleryOverlay')) {
         var ov = document.createElement('div');

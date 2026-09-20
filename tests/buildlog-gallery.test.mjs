@@ -22,6 +22,7 @@ const MANY = 'p1_block_photos';     // 6 Fotos in der Fixture -> Begrenzung grei
 const FEW = 'p1_pdeck_photos';      // 2 Fotos -> kein "+N"
 const MAX_THUMBS = 4;
 
+
 const { server, base } = await startServer();
 const browser = await chromium.launch();
 
@@ -42,6 +43,7 @@ async function openBuildLog(opts = {}) {
     () => typeof _treeFetchedAt !== 'undefined' && _treeFetchedAt > 0,
     null, { timeout: 30000 });
   await page.waitForTimeout(300);
+  await page.evaluate((g) => { window.MANY_GROUP = g; }, MANY);
   return { ctx, page, errors, close: () => ctx.close() };
 }
 
@@ -177,6 +179,66 @@ await test('Karten zeigen auch hier Name und Aufnahmedatum', async () => {
   }, MANY);
   assert(r.length > 0, 'Keine Karten');
   assert(r.every((c) => c.name && c.date), 'Name oder Datum fehlt: ' + JSON.stringify(r));
+  await p.close();
+});
+
+// ---------------------------------------------------------------------------
+suite('Nichts zieht einem die Seite unter den Fingern weg');
+
+await test('Pull-to-Refresh loest bei offener Galerie nicht aus', async () => {
+  // Beim Wischen in der Galerie-Liste griff die Geste der Seite - und die
+  // laedt neu bzw. synchronisiert, wodurch man woanders herauskommt.
+  const p = await openBuildLog();
+  const r = await p.page.evaluate(async () => {
+    const zu = anyOverlayOpen();
+    openGallery('p1_block_photos');
+    await new Promise((r) => setTimeout(r, 200));
+    const offen = anyOverlayOpen();
+    closeGallery();
+    await new Promise((r) => setTimeout(r, 200));
+    return { zu, offen, wiederZu: anyOverlayOpen() };
+  });
+  assert(!r.zu, 'Ohne Overlay meldet sich faelschlich eines');
+  assert(r.offen, 'Offene Galerie wird nicht erkannt');
+  assert(!r.wiederZu, 'Nach dem Schliessen meldet sich noch eines');
+  await p.close();
+});
+
+await test('Auch die Lightbox zaehlt als Overlay', async () => {
+  const p = await openBuildLog();
+  const offen = await p.page.evaluate(async () => {
+    openGallery(MANY_GROUP);
+    await new Promise((r) => setTimeout(r, 200));
+    const all = _getAllPhotos(MANY_GROUP);
+    openLightbox(MANY_GROUP, all.findIndex((x) => !x.isDefault));
+    await new Promise((r) => setTimeout(r, 200));
+    closeGallery();
+    return anyOverlayOpen();
+  });
+  assert(offen, 'Offene Lightbox wird nicht erkannt');
+  await p.close();
+});
+
+await test('Ein Update laedt nicht neu, solange die Galerie offen ist', async () => {
+  // Ein Foto-Upload stoesst einen Pages-Deploy an, der Sekunden spaeter hier
+  // ankommt. Bisher wurde die Seite dabei sofort neu geladen - mitten in der
+  // Arbeit. location.reload laesst sich nicht abfangen, also wird das
+  // tatsaechliche Verhalten gemessen.
+  const p = await openBuildLog();
+  await p.page.evaluate(async () => {
+    window.__marker = 'vor-dem-reload';
+    openGallery('p1_block_photos');
+    await new Promise((r) => setTimeout(r, 200));
+    reloadWhenIdle();
+  });
+  await p.page.waitForTimeout(2500);
+  const nochDa = await p.page.evaluate(() => window.__marker || null);
+  assertEqual(nochDa, 'vor-dem-reload', 'Die Seite wurde bei offener Galerie neu geladen');
+
+  // Nach dem Schliessen muss der Neustart nachgeholt werden.
+  const navigation = p.page.waitForNavigation({ timeout: 8000 }).then(() => true).catch(() => false);
+  await p.page.evaluate(() => { document.activeElement.blur(); closeGallery(); });
+  assert(await navigation, 'Nach dem Schliessen wurde nicht neu geladen');
   await p.close();
 });
 

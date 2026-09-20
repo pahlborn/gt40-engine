@@ -40,6 +40,9 @@ jobs:
       - name: Kapitelstatus und Befunde
         run: node tests/findings.test.mjs
 
+      - name: Bildnamen und Doubletten
+        run: node tests/photo-identity.test.mjs
+
   # Prueft die tatsaechlich ausgelieferte Seite. Laeuft nur auf main und
   # blockiert nichts, weil ein Aussetzer bei GitHub Pages oder der GitHub-API
   # nichts ueber den Code aussagt.
