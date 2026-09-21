@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v38',
+      date: '2026-09-21',
+      title: 'Komponenten-Referenz mit Herstellerquellen',
+      changes: [
+        { type: 'neu', text: 'Neue Seite docs/komponenten.html: jede verbaute Komponente mit Hersteller, Teilenummer, belegten Eckdaten und Link zur Originalquelle. Jede Zahl traegt einen Quellenvermerk - Hersteller, Haendler oder offen. Verlinkt aus Specs, Build Log und Uebersicht.' },
+        { type: 'neu', text: 'Facet: Hersteller ist Motor Components LLC. Die Kataloge stehen dort. Malpassi Filter King direkt beim Hersteller verlinkt, DellOrto DRLA ueber Fachhaendler mit Explosionszeichnung und Kalibrierteilen - eine Werksseite von DellOrto mit DRLA-Unterlagen war nicht auffindbar, deshalb der Vermerk Sekundaerquelle an allen Grenzwerten.' },
+        { type: 'neu', text: 'Fund zum Vorfilter: das serienmaessige 8-Mikrometer-Papierelement gilt laut Haendlerangabe bis etwa 350 PS, darueber ist ein 55-Mikrometer-Metallelement vorgesehen. Welches verbaut ist, gehoert beim ersten Oeffnen festgehalten - ein zu feines Element zeigt sich als Druckabfall unter Last, nicht im Leerlauf.' },
+        { type: 'intern', text: 'Produktfotos und Datenblaetter werden verlinkt, nicht ins Repository kopiert: es ist oeffentlich, und das waere eine Veroeffentlichung fremder Inhalte. Ein Test wacht darueber, dass keine Fremdbilder eingebunden und keine fremden PDF-Datenblaetter abgelegt werden.' }
+      ]
+    },
+    {
       version: 'v37',
       date: '2026-09-20',
       title: 'Phase 5: Abstimmung gehoert an die Strecke',

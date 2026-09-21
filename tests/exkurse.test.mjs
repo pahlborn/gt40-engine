@@ -26,6 +26,11 @@ const EXKURSE = [
 ];
 const SEITEN = ['index.html', 'specs.html', 'build-log.html'];
 
+// Die Komponenten-Referenz haelt Herstellerangaben mit Quellenvermerk. Sie
+// verlinkt bewusst, statt Produktfotos und Datenblaetter ins oeffentliche
+// Repository zu kopieren - das waere eine Veroeffentlichung fremder Inhalte.
+const KOMPONENTEN = 'docs/komponenten.html';
+
 try {
 
 // ---------------------------------------------------------------------------
@@ -67,6 +72,56 @@ for (const ex of EXKURSE) {
     });
   }
 }
+
+// ---------------------------------------------------------------------------
+suite('Komponenten-Referenz');
+
+await test('Seite existiert, laedt und ist von allen drei Seiten verlinkt', async () => {
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  const resp = await page.goto(base + '/' + KOMPONENTEN);
+  assert(resp && resp.ok(), 'Seite nicht erreichbar');
+  assert(errors.length === 0, 'Page-Errors: ' + errors.join(' | '));
+  await ctx.close();
+  for (const seite of SEITEN) {
+    const html = fs.readFileSync(path.join(REPO_ROOT, seite), 'utf8');
+    assert(html.includes('href="' + KOMPONENTEN + '"'), seite + ' verlinkt sie nicht');
+  }
+});
+
+await test('Jede Komponente traegt Hersteller und Quellenvermerk', async () => {
+  const html = fs.readFileSync(path.join(REPO_ROOT, KOMPONENTEN), 'utf8');
+  // Geprueft wird die UEBERSCHRIFT, nicht das blosse Vorkommen des Namens -
+  // der steht auch im Linktext und wuerde einen Verlust verdecken.
+  for (const teil of ['Facet Red Top 480532', 'Malpassi Filter King', 'Sytec Bullet',
+                      'Dell&rsquo;Orto DRLA 45']) {
+    assert(new RegExp('<h3>' + teil.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).test(html),
+      'Komponente hat keine eigene Ueberschrift: ' + teil);
+  }
+  // Ohne Quellenvermerk waere die Tabelle nur eine Sammlung von Behauptungen.
+  assert(/badge-tested/.test(html) && /badge-mod/.test(html),
+    'Keine Unterscheidung zwischen belegt und offen');
+});
+
+await test('Herstellerseiten sind verlinkt, nicht kopiert', async () => {
+  const html = fs.readFileSync(path.join(REPO_ROOT, KOMPONENTEN), 'utf8');
+  assert(html.includes('facet-purolator.com'), 'Facet-Hersteller fehlt');
+  assert(html.includes('officinamalpassi.it'), 'Malpassi-Hersteller fehlt');
+  // Keine eingebetteten Fremdbilder oder mitgelieferten Datenblaetter.
+  assert(!/<img[^>]+src="https?:/i.test(html), 'Fremdbild eingebunden');
+  const eigene = fs.readdirSync(path.join(REPO_ROOT, 'docs'));
+  assert(!eigene.some((f) => f.toLowerCase().endsWith('.pdf')),
+    'Fremde Datenblaetter im Repository: ' + eigene.filter((f) => f.endsWith('.pdf')).join(', '));
+});
+
+await test('Der Elementhinweis zum Vorfilter steht drin', async () => {
+  // 8 Mikrometer Papier gilt laut Haendlerangabe bis etwa 350 PS - bei diesem
+  // Motor ist das keine akademische Groesse.
+  const html = fs.readFileSync(path.join(REPO_ROOT, KOMPONENTEN), 'utf8');
+  assert(/350/.test(html), 'Leistungsgrenze des Filterelements fehlt');
+});
 
 // ---------------------------------------------------------------------------
 suite('Keine toten Verweise auf docs/');
