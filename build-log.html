@@ -3894,7 +3894,7 @@
     <div class="findings" data-findings="p4_revlimiter"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block guide-full"><h4 class="prereq">Zuerst: welche 6AL ist verbaut? (Identify the box first)</h4>
-            <div class="warning-box"><span class="de"><strong>&#9888; Vor dem Einstellen die Teilenummer am Geh&auml;use ablesen.</strong> Die beiden 6AL-Varianten werden <strong>vollkommen unterschiedlich</strong> eingestellt. Wer nach Steckmodulen sucht, obwohl eine Digital 6AL verbaut ist, findet keine &ndash; und umgekehrt.</span><span class="en"><strong>&#9888; Read the part number off the box before setting anything.</strong> The two 6AL variants are set in completely different ways.</span></div>
+<div class="info-box"><span class="de"><strong>Stand: zwei Drehschalter am Geh&auml;use best&auml;tigt.</strong> Damit ist es eine <strong>Digital 6AL</strong> &ndash; die analoge 6AL (6420) h&auml;tte Steckmodule, die 6AL-2 (6421) h&auml;tte vier Drehschalter. Die aufgedruckte Teilenummer ist trotzdem abzulesen und unten einzutragen; die gel&auml;ufige rote Digital 6AL ist PN 6425.</span><span class="en"><strong>Confirmed: two rotary dials on the case</strong> &ndash; so this is a Digital 6AL. The analog 6AL (6420) would have plug-in modules, the 6AL-2 (6421) four dials. Still read the printed part number and record it below.</span></div>
             <div class="spec-line"><span>Analoge 6AL</span><span class="spec-val">PN 6420 &ndash; RPM-Steckmodule</span></div>
             <div class="spec-line"><span>Digital 6AL</span><span class="spec-val">PN 6425 &ndash; zwei Drehschalter</span></div>
             <div class="guide-input-row" style="margin-top:0.4rem;">
@@ -3911,8 +3911,8 @@
         </ul></div>
         <div class="guide-block"><h4 class="procedure">Variante B &ndash; Digital 6AL (PN 6425)</h4><ul>
             <li><span class="de"><strong>1.</strong> Die zwei versiegelten Drehschalter an der Box suchen &ndash; <strong>keine Module</strong>.</span><span class="en"><strong>1.</strong> Locate the two sealed rotary switches &ndash; there are no modules.</span></li>
-            <li><span class="de"><strong>2.</strong> Einstellbereich 2.000&ndash;11.000 U/min in 100-rpm-Schritten. Der linke Schalter stellt die Tausender, der rechte die Hunderter &ndash; Zuordnung am Geh&auml;useaufdruck pr&uuml;fen, nicht raten.</span><span class="en"><strong>2.</strong> Range 2,000&ndash;11,000 rpm in 100 rpm steps. Check the legend on the case rather than guessing which switch is which.</span></li>
-            <li><span class="de"><strong>3.</strong> Zylinderzahl wird bei der Digital 6AL &uuml;ber Kabelschlaufen gew&auml;hlt, nicht &uuml;ber einen Schalter &ndash; Einstellung auf 8 Zylinder pr&uuml;fen.</span><span class="en"><strong>3.</strong> Cylinder count is selected by wire loops, not a switch &ndash; verify it is set for 8 cylinders.</span></li>
+            <li><span class="de"><strong>2.</strong> Einstellbereich ab 2.000 U/min in 100-rpm-Schritten. Laut MSD-Beiblatt ist der <strong>linke Schalter die Tausender</strong>, der <strong>rechte die Hunderter</strong> &ndash; Beschriftung &bdquo;1,000&rsquo;s&ldquo; und &bdquo;100&rsquo;s&ldquo; am Geh&auml;use gegenpr&uuml;fen.</span><span class="en"><strong>2.</strong> From 2,000 rpm in 100 rpm steps. Per the MSD sheet the <strong>left dial is thousands</strong>, the <strong>right dial hundreds</strong> &ndash; check the &bdquo;1,000&rsquo;s&ldquo; / &bdquo;100&rsquo;s&ldquo; legend on the case.</span></li>
+            <li><span class="de"><strong>3.</strong> Zylinderzahl wird &uuml;ber <strong>Kabelschlaufen</strong> an der Geh&auml;useseite gew&auml;hlt, nicht &uuml;ber einen Schalter. Laut MSD: <strong>8 Zylinder = keine Schlaufe geschnitten</strong>, 6 Zylinder = eine geschnitten, 4 Zylinder = beide geschnitten. <strong>Pr&uuml;fen, ob beide Schlaufen unversehrt sind</strong> &ndash; eine geschnittene Schlaufe l&auml;sst sich nicht einfach r&uuml;ckg&auml;ngig machen und die Box z&uuml;ndet dann falsch.</span><span class="en"><strong>3.</strong> Cylinder count is selected by <strong>wire loops</strong> on the side of the case, not a switch. Per MSD: <strong>8 cylinders = no loop cut</strong>, 6 = one cut, 4 = both cut. <strong>Check that both loops are intact</strong> &ndash; a cut loop is not easily undone.</span></li>
             <li><span class="de"><strong>4.</strong> Eingestellten Wert nach jedem Eingriff ablesen und hier notieren.</span><span class="en"><strong>4.</strong> Read back and record the value after any change.</span></li>
         </ul></div>
         <div class="guide-block guide-full"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
@@ -4207,8 +4207,11 @@
     <div class="findings" data-findings="p4_timing_warm"></div>
     <div class="step-guide">
         <div class="guide-grid">
-            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
-                <li><span class="de">Timing light (NO digital/dial-back with MSD! &ndash; KEIN digitales R&uuml;ckstell-Stroboskop mit MSD!)</span><span class="en">Timing light</span></li>
+            <div class="guide-block guide-full"><h4 class="tools">Tools (Werkzeuge)</h4>
+                <div class="warning-box"><span class="de"><strong>&#9888; Kein digitales und kein R&uuml;ckstell-Stroboskop (dial-back).</strong> Das steht so im MSD-Beiblatt zur Digital 6A/6AL. Die CD-Box feuert unterhalb etwa 3000&nbsp;rpm mehrfach je Z&uuml;ndung; eine Lampe, die die Blitze z&auml;hlt oder zur&uuml;ckrechnet, zeigt dann einen falschen Winkel an. Jeder Wert, den wir unten eintragen, w&auml;re damit unbrauchbar. Einfache Blitzlampe ohne Elektronik verwenden.</span><span class="en"><strong>&#9888; No digital and no dial-back timing light.</strong> The MSD Digital 6A/6AL sheet states this. The CD box fires multiple sparks below roughly 3000&nbsp;rpm, so a light that counts or offsets flashes reads a wrong angle.</span></div>
+                <div class="warning-box" style="margin-top:0.3rem;"><span class="de"><strong>&#9888; Der Einbau der Digital-Box verschiebt den Z&uuml;ndzeitpunkt.</strong> MSD schreibt: &bdquo;When installing a Digital Series Ignition, timing will be affected&ldquo; &ndash; nach dem Einbau neu einstellen, nicht den Wert von vorher &uuml;bernehmen.</span><span class="en"><strong>&#9888; Installing the digital box shifts the timing.</strong> MSD: &bdquo;When installing a Digital Series Ignition, timing will be affected&ldquo; &ndash; re-set it afterwards.</span></div>
+                <ul>
+                <li><span class="de">Einfache Blitzlampe, <strong>nicht</strong> digital, <strong>nicht</strong> dial-back</span><span class="en">Plain timing light &ndash; not digital, not dial-back</span></li>
                 <li><span class="de">Schluessel fuer Verteiler-Klemme</span><span class="en">Wrench for distributor clamp (Verteiler-Klemmschraube)</span></li>
             </ul></div>
             <div class="guide-block"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
@@ -4269,7 +4272,7 @@
 
             <!-- Basics -->
             <div class="guide-block guide-full"><h4 class="prereq">Basics &ndash; Ignition Advance System (Grundlagen &ndash; Z&uuml;ndverstellung)</h4><ul>
-                <li><span class="de"><strong>Initial Timing (Grundz&uuml;ndung):</strong> Set with timing light at idle, vacuum disconnected &ndash; e.g. 10&ndash;14&deg; BTDC</span><span class="en"><strong>Initial Timing:</strong> Set with timing light at idle, vacuum disconnected &ndash; e.g. 10&ndash;14&deg; BTDC</span></li>
+                <li><span class="de"><strong>Initial Timing (Grundz&uuml;ndung):</strong> Am warmen Leerlauf mit der Blitzlampe eingestellt, Unterdruck abgezogen und verschlossen. <strong>Der Zielwert f&uuml;r diesen Motor steht noch nicht fest</strong> &ndash; f&uuml;r den Erststart gilt der konservative Wert aus Kapitel 7, danach wird gemessen und eingetragen.</span><span class="en"><strong>Initial Timing:</strong> set at warm idle with a timing light, vacuum disconnected and plugged. <strong>The target value for this engine is not yet fixed</strong> &ndash; use the conservative first-start figure from chapter 7, then measure and record.</span></li>
                 <li><span class="de"><strong>Fliehkraftverstellung:</strong> Mechanische Verstellung ueber Gewichte &amp; Federn im Verteiler &ndash; fuegt Grade mit steigender Drehzahl hinzu</span><span class="en"><strong>Centrifugal Advance (Fliehkraftverstellung):</strong> Mechanical advance via weights &amp; springs inside distributor &ndash; adds degrees as RPM rises</span></li>
                 <li><span class="de"><strong>Total Mechanical Timing:</strong> Grundz&uuml;ndung + Fliehkraftverstellung, voll ab etwa 3000&ndash;3500 rpm. <strong>Gemessen wird ausschlie&szlig;lich bei abgezogenem und verschlossenem Unterdruckanschluss</strong> &ndash; sonst misst man etwas anderes, als man notiert.</span><span class="en"><strong>Total Mechanical Timing:</strong> initial + centrifugal, all-in by roughly 3000&ndash;3500 rpm. <strong>Measured only with the vacuum line disconnected and the port plugged</strong> &ndash; otherwise you are measuring something other than what you write down.</span></li>
                 <li><span class="de"><strong>Die vollst&auml;ndige Rechnung:</strong> Grundz&uuml;ndung + Fliehkraft = Total Mechanical. Bei aktiver Unterdruckdose kommt im Teillastbetrieb noch die Unterdruckverstellung obendrauf &ndash; der tats&auml;chliche Z&uuml;ndwinkel liegt dort also <strong>h&ouml;her</strong> als der notierte Total-Wert. Diese Verwechslung ist die h&auml;ufigste bei Verteilern mit Unterdruckdose.</span><span class="en"><strong>The full sum:</strong> initial + centrifugal = total mechanical. With an active vacuum canister, vacuum advance is added on top under part load &ndash; the actual timing there is <strong>higher</strong> than the recorded total. This is the most common confusion on distributors with a vacuum canister.</span></li>
@@ -4278,33 +4281,37 @@
 
             <!-- A) Advance-Stop-Bushing -->
             <div class="guide-block guide-full"><h4 class="measure">A) Advance-Stop-Bushing &ndash; Max Centrifugal (Fliehkraft-Begrenzungsh&uuml;lse)</h4>
-                <div class="warning-box"><span class="de"><strong>Diese Tabelle ist gegen das MSD-Beiblatt zu pr&uuml;fen.</strong> Mehrere unabh&auml;ngige Quellen nennen f&uuml;r die Pro-Billet-Familie eine andere Zuordnung &ndash; Rot 28&deg; (kleinste), Silber 25&deg;, Gr&uuml;n 23&deg;, Blau 21&deg; (werksseitig verbaut), Lila 19&deg;, Schwarz 18&deg; (gr&ouml;&szlig;te) &ndash; und damit auch die umgekehrte Logik: <em>kleinere</em> B&uuml;chse = <em>mehr</em> Verstellung. Ein Gold-Wert kommt dort nicht vor. <strong>Ma&szlig;geblich ist die verbaute B&uuml;chse</strong>, aufgenommen in Phase 3, Kapitel 23, und die gemessene Verstellung oben.</span><span class="en"><strong>This table must be checked against the MSD instruction sheet.</strong> Several independent sources give a different mapping for the Pro-Billet family &ndash; red 28&deg; (smallest), silver 25&deg;, green 23&deg;, blue 21&deg; (factory fitted), purple 19&deg;, black 18&deg; (largest) &ndash; and therefore the inverse logic: a <em>smaller</em> bushing gives <em>more</em> advance. No gold value appears there. <strong>What counts is the bushing actually fitted</strong>, recorded in phase 3, chapter 23, and the advance measured above.</span></div>
-                
+                <div class="warning-box"><span class="de"><strong>&#9888; Die kleinste B&uuml;chse gibt die gr&ouml;&szlig;te Verstellung.</strong> Das MSD-Beiblatt f&uuml;hrt Rot ausdr&uuml;cklich als &bdquo;smallest&ldquo; mit 28&deg;. Wer annimmt, gr&ouml;&szlig;ere B&uuml;chse = mehr Vorlauf, verstellt die Kurve in die falsche Richtung und glaubt, er h&auml;tte zur&uuml;ckgenommen. Eine fr&uuml;here Fassung dieser Tabelle nannte Rot 18&deg;, Schwarz 15&deg; und einen Gold-Wert 11&deg; &ndash; beides falsch, einen Gold-Wert gibt es nicht.</span><span class="en"><strong>&#9888; The smallest bushing gives the most advance.</strong> The MSD sheet lists red explicitly as &bdquo;smallest&ldquo; at 28&deg;. Assuming bigger bushing = more advance turns the curve the wrong way.</span></div>
+                <div class="info-box" style="margin-top:0.3rem;"><span class="de">Quelle: MSD-Beiblatt zum Centrifugal Advance Kit PN 8464 (&bdquo;6 &ndash; Advance Bushings, 6 &ndash; Advance Springs&ldquo;). Derselbe Satz liegt jedem Pro-Billet-Verteiler bei. <strong>Trotzdem gilt:</strong> ma&szlig;geblich ist die tats&auml;chlich verbaute B&uuml;chse, aufgenommen in Phase 3, Kapitel 23, und die oben gemessene Verstellung.</span><span class="en">Source: MSD instruction sheet for Centrifugal Advance Kit PN 8464. What still counts is the bushing actually fitted and the advance measured above.</span></div>
                 <table class="guide-table">
-                    <thead><tr><th>Bushing Color (Farbe)</th><th>Max Centrifugal Advance</th></tr></thead>
+                    <thead><tr><th>Bushing Color (Farbe)</th><th>Gr&ouml;&szlig;e</th><th>Max Centrifugal Advance</th></tr></thead>
                     <tbody>
-                        <tr><td>Silver (largest / gr&ouml;&szlig;te)</td><td>25&deg;</td></tr>
-                        <tr><td>Blue (factory / Werk)</td><td>21&deg;</td></tr>
-                        <tr><td>Red (Rot)</td><td>18&deg;</td></tr>
-                        <tr><td>Black (Schwarz)</td><td>15&deg;</td></tr>
-                        <tr><td>Gold (smallest / kleinste)</td><td>11&deg;</td></tr>
+                        <tr><td>Red (Rot)</td><td>kleinste / smallest</td><td>28&deg;</td></tr>
+                        <tr><td>Silver (Silber)</td><td>&darr;</td><td>25&deg;</td></tr>
+                        <tr><td>Green (Gr&uuml;n)</td><td>&darr;</td><td>23&deg;</td></tr>
+                        <tr><td>Blue (Blau)</td><td>&darr;</td><td>21&deg;</td></tr>
+                        <tr><td>Purple (Lila)</td><td>&darr;</td><td>19&deg;</td></tr>
+                        <tr><td>Black (Schwarz)</td><td>gr&ouml;&szlig;te / largest</td><td>18&deg;</td></tr>
                     </tbody>
                 </table>
-                <p style="font-size:0.76rem;margin-top:0.4rem;"><strong>This build:</strong> 12&deg; Initial + 22&deg; Centrifugal = 34&deg; Total &rarr; Blue (21&deg;) or Silver (25&deg;) with adjusted initial timing</p>
+                <p style="font-size:0.76rem;margin-top:0.4rem;"><span class="de"><strong>Kein Sollwert f&uuml;r diesen Motor.</strong> Welche B&uuml;chse am Ende drin bleibt, ergibt sich aus der Ist-Messung und der noch festzulegenden Kurve f&uuml;r AFR&nbsp;165 / XE274HR / 98&ndash;100 ROZ.</span><span class="en"><strong>No target value for this engine yet.</strong></span></p>
             </div>
 
             <!-- B) Advance Springs -->
             <div class="guide-block guide-full"><h4 class="tools">B) Advance Springs &ndash; Rate (Verstellfedern &ndash; Verstellgeschwindigkeit)</h4>
+                <div class="info-box"><span class="de">MSD liefert <strong>drei</strong> Federtypen, nicht &bdquo;heavy/medium/light&ldquo;: <strong>Heavy Silver</strong> (h&auml;rteste, Werksbest&uuml;ckung), <strong>Light Blue</strong> und <strong>Light Silver</strong> (weichste). Daraus bildet das Beiblatt sechs Kombinationen A bis F, von langsamster bis schnellster Verstellung.</span><span class="en">MSD supplies <strong>three</strong> spring types, not heavy/medium/light: Heavy Silver (stiffest, factory fitted), Light Blue and Light Silver (softest), giving six combinations A to F.</span></div>
                 <table class="guide-table">
-                    <thead><tr><th>Spring Combination</th><th>Rate</th><th>Application</th></tr></thead>
+                    <thead><tr><th>Kombination</th><th>Federn</th><th>Verstellung kommt</th></tr></thead>
                     <tbody>
-                        <tr><td>2&times; Heavy (Silver)</td><td>Slowest (Langsamste)</td><td>Factory, conservative</td></tr>
-                        <tr><td>1&times; Heavy + 1&times; Medium</td><td>Moderate</td><td>Good street/strip compromise</td></tr>
-                        <tr><td>2&times; Medium</td><td>Moderate</td><td>Street performance</td></tr>
-                        <tr><td>1&times; Medium + 1&times; Light</td><td>Fast (Schnell)</td><td>Mild cams</td></tr>
-                        <tr><td>2&times; Light</td><td>Fastest (Schnellste)</td><td>Caution &ndash; can cause knock! (Vorsicht &ndash; Klopfgefahr!)</td></tr>
+                        <tr><td>A</td><td>2&times; Heavy Silver</td><td>am sp&auml;testen (Werk)</td></tr>
+                        <tr><td>B</td><td>1&times; Heavy Silver + 1&times; Light Blue</td><td>&darr;</td></tr>
+                        <tr><td>C</td><td>1&times; Heavy Silver + 1&times; Light Silver</td><td>&darr;</td></tr>
+                        <tr><td>D</td><td>2&times; Light Blue</td><td>&darr;</td></tr>
+                        <tr><td>E</td><td>1&times; Light Blue + 1&times; Light Silver</td><td>&darr;</td></tr>
+                        <tr><td>F</td><td>2&times; Light Silver</td><td>am fr&uuml;hesten</td></tr>
                     </tbody>
                 </table>
+                <div class="warning-box" style="margin-top:0.3rem;"><span class="de"><strong>Die Zuordnung A&ndash;F ist aus dem MSD-Beiblatt PN 8464 gelesen und bei der Textextraktion zweispaltig verschachtelt gewesen &ndash; vor dem ersten Federwechsel am gedruckten Blatt im Kit gegenpr&uuml;fen.</strong> Die drei Federtypen und die Richtung (Heavy Silver = sp&auml;t, Light Silver = fr&uuml;h) sind gesichert.</span><span class="en"><strong>Verify the A&ndash;F assignment against the printed sheet in the kit before the first spring change.</strong> The three spring types and the direction are confirmed.</span></div>
             </div>
 
             <!-- D) Total Timing check -->
@@ -4704,10 +4711,10 @@
                             <td><span class="de">Mehr &Uuml;berschneidung = schlechteres Leerlaufvakuum = <strong>gr&ouml;&szlig;ere Leerlaufd&uuml;se</strong> und h&ouml;here Leerlaufdrehzahl</span><span class="en">More overlap = poorer idle vacuum = <strong>larger idle jet</strong> and higher idle speed</span></td></tr>
                         <tr><td>Auspuffanlage</td><td><input type="text" data-field="p5_tune_exhaust" placeholder="Fächer, offen" oninput="autoSave()"></td>
                             <td><span class="de">Freier = tendenziell magerer, meist gr&ouml;&szlig;ere Hauptd&uuml;se n&ouml;tig</span><span class="en">Freer flowing = tends leaner, usually needs a larger main jet</span></td></tr>
-                        <tr><td>Z&uuml;ndung gesamt (total advance)</td><td><input type="text" data-field="p5_tune_timing_total" placeholder="34-36°" oninput="autoSave()"></td>
+                        <tr><td>Z&uuml;ndung gesamt (total advance)</td><td><input type="text" data-field="p5_tune_timing_total" placeholder="gemessen" oninput="autoSave()"></td>
                             <td><span class="de"><strong>Zuerst festnageln.</strong> Zu wenig Fr&uuml;hz&uuml;ndung sieht am Lambda aus wie zu mager und verf&uuml;hrt zur falschen D&uuml;se</span><span class="en"><strong>Lock this down first.</strong> Too little advance looks lean on the lambda and tempts you into the wrong jet</span></td></tr>
                         <tr><td>Kraftstoff (ROZ / Ethanol)</td><td><input type="text" data-field="p5_tune_fuel" placeholder="98, E5" oninput="autoSave()"></td>
-                            <td><span class="de">Ethanol braucht rund 3 % mehr Kraftstoffmenge pro Prozent Anteil &ndash; E5 und E10 bed&uuml;sen nicht gleich</span><span class="en">Ethanol needs roughly 3 % more fuel per percent content &ndash; E5 and E10 do not jet the same</span></td></tr>
+                            <td><span class="de">E5 und E10 unterscheiden sich im erforderlichen Kraftstoff/Luft-Verh&auml;ltnis &ndash; bei Vergaserbetrieb kann das eine Kalibrierungs&auml;nderung erfordern. Siehe <a href="docs/exkurs-ethanol.html">Exkurs Ethanol</a></span><span class="en">E5 and E10 differ in the fuel/air ratio required &ndash; with carburettors this can call for a recalibration</span></td></tr>
                         <tr><td>H&ouml;henlage / Lufttemperatur</td><td><input type="text" data-field="p5_tune_altitude" placeholder="400 m, 20 °C" oninput="autoSave()"></td>
                             <td><span class="de">H&ouml;her oder w&auml;rmer = d&uuml;nnere Luft = wirkt fetter, Hauptd&uuml;se tendenziell kleiner</span><span class="en">Higher or warmer = thinner air = runs richer, main jet tends smaller</span></td></tr>
                     </tbody>

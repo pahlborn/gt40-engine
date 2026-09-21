@@ -115,13 +115,49 @@ await test('Guide fuehrt keine Empfehlungs-Gradzahlen mehr', async () => {
   assert(/noch nicht festgelegt/.test(h), 'Hinweis auf die offene Kurve fehlt');
 });
 
-await test('Die widersprueckliche Bushing-Farbzuordnung ist entschaerft', async () => {
+// ---------------------------------------------------------------------------
+suite('Die Anschlagbuechsen-Zuordnung stammt aus der MSD-Primaerquelle');
+
+// Aufgeloest ueber das MSD-Beiblatt zum Centrifugal Advance Kit PN 8464:
+// Rot 28 (kleinste), Silber 25, Gruen 23, Blau 21, Lila 19, Schwarz 18.
+// Die kleinste Buechse gibt die groesste Verstellung - beide frueheren
+// Projekttabellen hatten das falsch.
+const BUECHSEN = [['Rot', '28'], ['Silber', '25'], ['Gr&uuml;n', '23'],
+                  ['Blau', '21'], ['Lila', '19'], ['Schwarz', '18']];
+
+await test('Guide fuehrt alle sechs Buechsen mit den MSD-Werten', async () => {
   const h = lies('docs/msd-advance-tuning.html');
-  // Drei Quellen im Projekt nennen drei verschiedene Zuordnungen. Keine davon
-  // darf als gesichert dastehen.
-  assert(/Farbzuordnung ungekl&auml;rt/.test(h), 'Warnhinweis zur Farbzuordnung fehlt');
-  assert(/MSD-Beiblatt|MSD-Datenblatt/.test(h), 'Verweis auf die verbindliche Quelle fehlt');
-  assert(!/<td>21&deg;<\/td>/.test(h), 'Bushing-Tabelle behauptet weiterhin feste Gradwerte');
+  for (const [farbe, grad] of BUECHSEN) {
+    const re = new RegExp('<strong>' + farbe + '</strong></td>[\\s\\S]{0,80}?' + grad + '&deg;');
+    assert(re.test(h), farbe + ' ' + grad + ' Grad fehlt oder weicht ab');
+  }
+  assert(/PN 8464/.test(h), 'Quellenangabe zum Beiblatt fehlt');
+});
+
+await test('Build-Log fuehrt dieselben sechs Werte', async () => {
+  const h = lies('build-log.html');
+  for (const [, grad] of BUECHSEN) {
+    assert(new RegExp('<td>' + grad + '&deg;</td>').test(h), grad + ' Grad fehlt in der Build-Log-Tabelle');
+  }
+});
+
+await test('Die falschen Gradwerte stehen nirgends mehr', async () => {
+  // Gold gibt es in der MSD-Reihe nicht; 15 Grad und 11 Grad ebenfalls nicht.
+  const treffer = ALLE_SEITEN.filter((f) => {
+    const h = lies(f);
+    return /Gold \(smallest|Gold \(kleinste|<td>15&deg;<\/td>|<td>11&deg;<\/td>/.test(h);
+  });
+  assert(treffer.length === 0, 'Alte Buechsenwerte stehen noch in: ' + treffer.join(', '));
+});
+
+await test('Die Wirkrichtung ist ausgeschrieben', async () => {
+  // Der eigentliche Fallstrick: kleinere Buechse = mehr Verstellung. Wer das
+  // umgekehrt annimmt, verstellt in die falsche Richtung.
+  for (const f of ['build-log.html', 'docs/msd-advance-tuning.html']) {
+    const h = lies(f);
+    assert(/kleinste[^<]{0,40}gr&ouml;&szlig;te Verstellung|kleinste<\/em>[^<]{0,60}gr&ouml;&szlig;te<\/em>/.test(h),
+      f + ': Wirkrichtung nicht benannt');
+  }
 });
 
 await test('Generische Unterdruckwerte stehen nicht als unser Wert da', async () => {
@@ -175,6 +211,67 @@ await test('Die Titeluebersetzung zieht mit', async () => {
     const h = lies(f);
     assert(/'MSD 6AL Z\\u00fcndbox \(Teilenummer offen\)'/.test(h),
       f + ': Uebersetzungsschluessel nicht nachgezogen');
+  }
+});
+
+// ---------------------------------------------------------------------------
+suite('MSD-Vorgaben zur Messung stehen dort, wo gemessen wird');
+
+await test('Kein digitales und kein dial-back Stroboskop', async () => {
+  // Die CD-Box feuert unter ~3000 rpm mehrfach. Eine Lampe, die Blitze zaehlt
+  // oder zurueckrechnet, zeigt einen falschen Winkel - damit waeren alle
+  // Ist-Werte, die wir gerade erst eingefuehrt haben, unbrauchbar.
+  for (const f of ['build-log.html', 'docs/msd-advance-tuning.html']) {
+    const h = lies(f);
+    // Die deutsche Warnung muss stehen - eine Pruefung auf "dial-back" allein
+    // wuerde auch dann gruen bleiben, wenn nur noch der englische Text da ist.
+    assert(/Kein digitales und kein R&uuml;ckstell-Stroboskop \(dial-back\)/.test(h),
+      f + ': deutsche Warnung vor dial-back fehlt');
+    assert(/Mehrfachfunken|mehrere Funken|mehrfach je Z&uuml;ndung/i.test(h),
+      f + ': Begruendung (Mehrfachfunken) fehlt');
+  }
+});
+
+await test('Der Einbau der Digital-Box verschiebt den Zuendzeitpunkt', async () => {
+  for (const f of ['build-log.html', 'docs/msd-advance-tuning.html']) {
+    assert(/timing will be affected/i.test(lies(f)), f + ': MSD-Hinweis fehlt');
+  }
+});
+
+// ---------------------------------------------------------------------------
+suite('Die Zuendbox ist als Digital 6AL bestimmt');
+
+await test('Zwei Drehschalter grenzen die Varianten ein', async () => {
+  const h = lies('build-log.html');
+  assert(/zwei Drehschalter am Geh&auml;use best&auml;tigt/.test(h), 'Befund nicht dokumentiert');
+  assert(/6AL-2 \(6421\) h&auml;tte vier Drehschalter/.test(h), 'Abgrenzung zur 6AL-2 fehlt');
+});
+
+await test('Zylinderzahl per Kabelschlaufe, 8 Zylinder ungeschnitten', async () => {
+  // Eine geschnittene Schlaufe laesst sich nicht rueckgaengig machen.
+  for (const f of ['build-log.html', 'specs.html']) {
+    const h = lies(f);
+    assert(/Kabelschlaufen/.test(h), f + ': Schlaufen nicht erwaehnt');
+    assert(/8 Zylinder = keine Schlaufe geschnitten/.test(h), f + ': Vorgabe fuer 8 Zylinder fehlt');
+  }
+});
+
+await test('Die Drehschalter-Belegung steht da', async () => {
+  const h = lies('build-log.html');
+  assert(/linke Schalter die Tausender/.test(h), 'Belegung der Schalter fehlt');
+});
+
+// ---------------------------------------------------------------------------
+suite('Das Advance Kit 8464 ist richtig eingeordnet');
+
+await test('Das Kit erweitert den Einstellbereich nicht', async () => {
+  // Es ist derselbe Satz, der dem Verteiler ohnehin beiliegt. Wer glaubt, das
+  // Kit bringe zusaetzliche Moeglichkeiten, aendert womoeglich etwas, bevor der
+  // Ist-Zustand aufgenommen ist.
+  for (const f of ['specs.html', 'docs/msd-advance-tuning.html']) {
+    const h = lies(f);
+    assert(/8464/.test(h), f + ': Kit nicht benannt');
+    assert(/derselbe Satz/.test(h), f + ': Einordnung des Kits fehlt');
   }
 });
 

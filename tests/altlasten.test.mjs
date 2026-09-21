@@ -16,6 +16,10 @@ import { REPO_ROOT, suite, test, assert, summary } from './helpers.mjs';
 const DATEIEN = ['specs.html', 'index.html', 'build-log.html',
                  'docs/troubleshooting.html', 'docs/dellorto-drla-tuning.html'];
 
+// Der Ethanol-Exkurs zitiert die widerlegten Saetze absichtlich, um sie zu
+// widerlegen - er gehoert deshalb nicht in die allgemeine Verbotsliste. Der
+// Rechenfehler dagegen war seine eigene Aussage und wird dort mitgeprueft.
+
 function lies(f) { return fs.readFileSync(path.join(REPO_ROOT, f), 'utf8'); }
 
 // Muster, die nirgends mehr vorkommen duerfen, mit Begruendung.
@@ -76,6 +80,25 @@ await test('Unbelegte Sollwerte sind als solche gekennzeichnet', async () => {
   // Nadelventil: Groesse ist unbekannt, nicht "typisch 200".
   assert(!/Typische Nadelventilgr/.test(guide), 'Nadelventilgroesse weiterhin behauptet');
   assert(/Verbaute Gr&ouml;&szlig;e beim Zerlegen ablesen/.test(guide), 'Hinweis aufs Auslesen fehlt');
+});
+
+await test('Die Ethanol-Mehrmenge je Prozent ist nirgends mehr behauptet', async () => {
+  // "3 % mehr je Prozent Ethanolanteil" haette bei E10 rund 30 % Mehrmenge
+  // bedeutet. Die Bezugsgroesse war falsch, nicht nur die Zahl.
+  const muster = /% mehr je Prozent|mehr Kraftstoffmenge pro Prozent|more fuel per percent/i;
+  const treffer = DATEIEN.concat(['docs/exkurs-ethanol.html']).filter((f) => muster.test(lies(f)));
+  assert(treffer.length === 0, 'Steht noch in: ' + treffer.join(', '));
+});
+
+await test('Ethanol: das Prinzip statt einer falschen Zahl', async () => {
+  // Der Mechanismus stimmt - E5 und E10 brauchen nicht dieselbe Bedueusung.
+  // Die frueher genannte Groessenordnung war um etwa den Faktor zehn daneben.
+  for (const f of ['docs/exkurs-ethanol.html', 'build-log.html']) {
+    const h = lies(f);
+    assert(/erforderlichen Kraftstoff\/Luft-Verh&auml;ltnis|erforderliche Kraftstoff\/Luft-Verh&auml;ltnis/.test(h),
+      f + ': Prinzipaussage fehlt');
+    assert(/Kalibrierungs&auml;nderung/.test(h), f + ': Konsequenz fuer den Vergaser fehlt');
+  }
 });
 
 await test('Ethanol-Abschnitt verweist auf den Exkurs', async () => {

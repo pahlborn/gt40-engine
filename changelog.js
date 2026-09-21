@@ -13,6 +13,22 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v42',
+      date: '2026-09-21',
+      title: 'Anschlagbuechsen aus der MSD-Primaerquelle, Digital 6AL bestimmt',
+      changes: [
+        { type: 'fix', text: 'Die Farb-/Gradzuordnung der Anschlagbuechsen ist geklaert. Das MSD-Beiblatt zum Centrifugal Advance Kit PN 8464 fuehrt sechs Buechsen: Rot 28 Grad (ausdruecklich als "smallest" bezeichnet), Silber 25, Gruen 23, Blau 21, Lila 19, Schwarz 18. Beide bisherigen Projekttabellen waren falsch - einen Gold-Wert gibt es in der MSD-Reihe nicht, und die frueheren 15 und 11 Grad ebenso wenig.' },
+        { type: 'fix', text: 'Die Wirkrichtung steht jetzt ausgeschrieben da: die kleinste Buechse gibt die groesste Verstellung, weil sie den Fliehgewichten am meisten Weg laesst. Wer das umgekehrt annimmt, verstellt die Kurve in die falsche Richtung und glaubt, er haette zurueckgenommen.' },
+        { type: 'fix', text: 'Die Federtabelle nannte "heavy/medium/light". MSD liefert drei benannte Typen - Heavy Silver (haerteste, Werksbestueckung), Light Blue und Light Silver (weichste) - und bildet daraus sechs Kombinationen A bis F. Die Federn bestimmen, wann die Verstellung kommt, die Buechse wie viel: zwei unabhaengige Stellschrauben, nie beide gleichzeitig aendern.' },
+        { type: 'neu', text: 'Zwei Vorgaben aus dem MSD-Beiblatt zur Digital 6A/6AL, die im Projekt fehlten und beide die Messung betreffen: kein digitales und kein Rueckstell-Stroboskop (dial-back), weil die CD-Box unterhalb etwa 3000 rpm mehrfach feuert und eine zaehlende Lampe einen falschen Winkel zeigt - damit waeren alle Ist-Werte unbrauchbar. Und: der Einbau der Digital-Box verschiebt den Zuendzeitpunkt, er ist danach neu einzustellen.' },
+        { type: 'neu', text: 'Die Zuendbox ist bestimmt: zwei Drehschalter am Gehaeuse schliessen die analoge 6AL (Steckmodule) und die 6AL-2 (vier Drehschalter) aus - es ist eine Digital 6AL. Linker Schalter Tausender, rechter Hunderter. Die Zylinderzahl wird ueber Kabelschlaufen gewaehlt: acht Zylinder heisst keine Schlaufe geschnitten, und eine geschnittene Schlaufe laesst sich nicht rueckgaengig machen.' },
+        { type: 'fix', text: 'Das Advance Kit 8464 ist richtig eingeordnet: es ist derselbe Satz aus sechs Buechsen und sechs Federn, der dem Verteiler ohnehin beiliegt. Es erweitert den Einstellbereich nicht - es ersetzt fehlende Teile und bringt das gedruckte Beiblatt mit.' },
+        { type: 'fix', text: 'Zwei verbliebene Sollwerte entfernt: "12 Grad Initial + 22 Grad Centrifugal = 34 Grad Total" unter der Buechsentabelle und der Platzhalter "34-36" im Abstimmungsblatt. Solange die Kurve fuer AFR 165 / XE274HR / 98-100 ROZ nicht festgelegt ist, steht dort keine Gradzahl.' },
+        { type: 'fix', text: 'Der Ethanol-Exkurs behauptete "grob 3 % mehr je Prozent Ethanolanteil", und derselbe Satz war ins Build-Log gewandert. Das ist rechnerisch um etwa den Faktor zehn daneben - hochgerechnet auf E10 waere es eine absurd hohe Mehrmenge. Beide Stellen fuehren jetzt nur noch das Prinzip: E5 und E10 unterscheiden sich im erforderlichen Kraftstoff/Luft-Verhaeltnis, und bei Vergaserbetrieb kann das eine Kalibrierungsaenderung erfordern.' },
+        { type: 'neu', text: 'tests/zuendung.test.mjs auf 27 Pruefungen, tests/altlasten.test.mjs auf 16. Neu darunter: alle sechs Buechsenwerte muessen in Guide und Build-Log uebereinstimmen, die Wirkrichtung muss ausgeschrieben sein, und die deutsche dial-back-Warnung wird namentlich geprueft - eine Suche nur nach "dial-back" waere auch dann gruen geblieben, wenn nur noch der englische Text dasteht.' }
+      ]
+    },
+    {
       version: 'v41',
       date: '2026-09-21',
       title: 'Zuendung: MSD 8479 mit Unterdruckdose, 6AL nur Drehzahlbegrenzer',
