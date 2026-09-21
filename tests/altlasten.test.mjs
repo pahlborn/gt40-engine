@@ -90,15 +90,27 @@ await test('Die Ethanol-Mehrmenge je Prozent ist nirgends mehr behauptet', async
   assert(treffer.length === 0, 'Steht noch in: ' + treffer.join(', '));
 });
 
-await test('Ethanol: das Prinzip statt einer falschen Zahl', async () => {
-  // Der Mechanismus stimmt - E5 und E10 brauchen nicht dieselbe Bedueusung.
-  // Die frueher genannte Groessenordnung war um etwa den Faktor zehn daneben.
-  for (const f of ['docs/exkurs-ethanol.html', 'build-log.html']) {
-    const h = lies(f);
-    assert(/erforderlichen Kraftstoff\/Luft-Verh&auml;ltnis|erforderliche Kraftstoff\/Luft-Verh&auml;ltnis/.test(h),
-      f + ': Prinzipaussage fehlt');
-    assert(/Kalibrierungs&auml;nderung/.test(h), f + ': Konsequenz fuer den Vergaser fehlt');
-  }
+await test('Ethanol: die korrigierte Groessenordnung ist hergeleitet', async () => {
+  const g = lies('docs/exkurs-ethanol.html');
+  // Die Mischungsrechnung selbst muss dastehen. Eine Suche nur nach "14,7"
+  // waere auch dann gruen geblieben, wenn nur noch die Tabelle daruber steht.
+  assert(/0,895 &times; 14,7\s*\+\s*0,105 &times; 9,0\s*=/.test(g),
+    'Mischungsrechnung fehlt - die 4 % waeren dann eine Behauptung');
+  assert(/14,7 \/ 14,1 = 1,043/.test(g), 'Umrechnung auf die Mehrmenge fehlt');
+  assert(/4 % mehr Kraftstoff/.test(g), 'Ergebnis fehlt');
+
+  // Der eigentliche Nutzen der Zahl: sie liegt unter einem Duesenschritt.
+  // Je Sprache getrennt pruefen - sonst deckt der englische Text den
+  // fehlenden deutschen zu (derselbe Fehler wie bei der dial-back-Pruefung).
+  assert(/unterhalb eines D&uuml;senschritts/.test(g), 'Exkurs: Einordnung fehlt');
+  assert(/7,5/.test(g), 'Exkurs: Vergleichswert 7,5 % fehlt');
+
+  const b = lies('build-log.html');
+  assert(/unterhalb eines D&uuml;senschritts<\/strong>: 135&rarr;140/.test(b),
+    'Build-Log: deutsche Einordnung gegen den Duesenschritt fehlt');
+  assert(/less than one jet step/.test(b), 'Build-Log: englische Einordnung fehlt');
+  assert(/am Lambda entscheiden|Decide on the lambda/.test(b),
+    'Build-Log: Handlungsanweisung (Lambda statt Kraftstoffsorte) fehlt');
 });
 
 await test('Ethanol-Abschnitt verweist auf den Exkurs', async () => {
