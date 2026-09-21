@@ -60,7 +60,7 @@
             <li><a href="#hauptduese">6. Hauptd&uuml;se / Volllast (Main Jet / Full Throttle)</a></li>
             <li><a href="#kraftstoffdruck">7. Kraftstoffdruck (Fuel Pressure)</a></li>
             <li><a href="#fehlersuche">8. Fehlersuche Vergaser (Carburetor Troubleshooting)</a></li>
-            <li><a href="#bedusung">9. Externe Bed&uuml;sungstabelle &ndash; nur Referenz</a></li>
+            <li><a href="#bedusung">9. Hintergrund und Einordnung &ndash; externe Zahlenreihen</a></li>
             <li><a href="#videos">10. YouTube Videos</a></li>
         </ul>
     </div>
@@ -235,9 +235,9 @@
                 </tr>
             </table>
 
-            <h3>Typische Startbed&uuml;sung Leerlauf (Typical Baseline Idle Jetting)</h3>
-            <div class="success">
-                <strong>302ci / 4&times; DRLA 45:</strong> Leerlaufd&uuml;se (Idle Jet / Getto Minimo) = <strong>55&ndash;60</strong>
+            <h3>Externer Referenzwert Leerlaufd&uuml;se</h3>
+            <div class="highlight">
+                <strong>Kein Sollwert.</strong> Fremdquellen nennen f&uuml;r 302ci mit 4&times; DRLA 45 eine Leerlaufd&uuml;se im Bereich <strong>55&ndash;60</strong>. Der Wert tr&auml;gt keine Dell&rsquo;Orto-Primaerquelle und dient nur dazu, die <em>vorgefundene</em> Best&uuml;ckung einzuordnen. Ma&szlig;geblich ist die Ist-Best&uuml;ckung aus Phase&nbsp;3, Kapitel&nbsp;27.
             </div>
         </details>
     </div>
@@ -256,15 +256,15 @@
 
             <h3>Luftkorrekturd&uuml;se (Air Corrector Jet)</h3>
             <ul>
-                <li>Die Luftkorrekturd&uuml;se bestimmt, <strong>wie fr&uuml;h die Hauptd&uuml;se wirksam wird</strong></li>
-                <li><strong>Gr&ouml;&szlig;ere Luftkorrekturd&uuml;se = Hauptd&uuml;se kommt fr&uuml;her</strong> (mehr Luft im Emulsionsrohr = fr&uuml;heres Signal)</li>
-                <li>Kleinere Luftkorrekturd&uuml;se = Hauptd&uuml;se kommt sp&auml;ter, oben herum fetter</li>
-                <li>Hilft direkt bei Progressions-Problemen</li>
+                <li>Die Luftkorrekturd&uuml;se beeinflusst <strong>zusammen mit Hauptd&uuml;se und Emulsionsrohr</strong> den Gemischverlauf des Hauptsystems. Sie wirkt nicht allein und l&auml;sst sich nicht isoliert betrachten.</li>
+                <li>Eine <strong>gr&ouml;&szlig;ere</strong> Luftkorrekturd&uuml;se f&uuml;hrt bei zunehmendem Luftdurchsatz tendenziell zu st&auml;rkerer Luftbeimischung im Emulsionsrohr und damit zu einer <strong>Abmagerung des oberen Last- und Drehzahlbereichs</strong>.</li>
+                <li>Eine <strong>kleinere</strong> Luftkorrekturd&uuml;se wirkt entsprechend umgekehrt: oben herum fetter.</li>
+                <li><strong>Der &Uuml;bergang des Hauptsystems darf daraus nicht allein abgeleitet werden.</strong> Wann das Hauptsystem einsetzt, h&auml;ngt vom Zusammenspiel aus Venturi, Emulsionsrohr, Hauptd&uuml;se und Drosselklappenstellung ab &ndash; nicht von der Luftkorrekturd&uuml;se allein.</li>
             </ul>
 
-            <h3>Typische Startbed&uuml;sung Luftkorrekturd&uuml;se (Baseline Air Corrector)</h3>
-            <div class="success">
-                <strong>302ci / 4&times; DRLA 45:</strong> Luftkorrekturd&uuml;se (Air Corrector / Getto Aria) = <strong>180&ndash;200</strong>
+            <h3>Externer Referenzwert Luftkorrekturd&uuml;se</h3>
+            <div class="highlight">
+                <strong>Kein Sollwert.</strong> Fremdquellen nennen <strong>180&ndash;200</strong>. Ohne Primaerquelle, nur zur Einordnung der vorgefundenen Best&uuml;ckung.
             </div>
 
             <h3>Drossel-Cutaway (Throttle Cutaway)</h3>
@@ -295,9 +295,9 @@
                 <li>Alternativ: Z&uuml;ndkerzen-Lesung (Porcelain Reading) &ndash; heller Haselnuss-Farbton = korrekt</li>
             </ul>
 
-            <h3>Typische Hauptd&uuml;se (Typical Main Jet)</h3>
-            <div class="success">
-                <strong>302ci / 4&times; DRLA 45:</strong> Hauptd&uuml;se (Main Jet / Getto Massimo) = <strong>Start mit 135&ndash;140</strong>, dann anpassen nach Wideband-Ablesung
+            <h3>Externer Referenzwert Hauptd&uuml;se</h3>
+            <div class="highlight">
+                <strong>Kein Sollwert und kein Startpunkt.</strong> Fremdquellen nennen <strong>135&ndash;140</strong>. Die Anlage lief mit einer anderen Best&uuml;ckung; der Startpunkt dieser Abstimmung ist das, was in den Vergasern steckt, nicht eine Tabelle. Angepasst wird nach Wideband-Ablesung.
             </div>
 
             <h3>Einfluss H&ouml;henlage (Altitude Effect)</h3>
@@ -328,8 +328,9 @@
 
             <h3>Maximaler Kraftstoffdruck DellOrto DRLA</h3>
             <div class="warning">
-                <strong>DellOrto DRLA Maximum: 3.5 psi (0.24 bar)!</strong> <span class="badge badge-mod">Sekund&auml;rquellen</span><br><span class="source">Eine Werksangabe von Dell&rsquo;Orto konnte bisher nicht belegt werden. Hintergrund, Quellenlage und die Folgen f&uuml;r die Zwei-Kreis-Anlage: <a href="exkurs-kraftstoffdruck.html">Exkurs Kraftstoffdruck</a>.</span><br>
-                H&ouml;herer Druck dr&uuml;ckt die Nadelventile auf und f&uuml;hrt zu &Uuml;berflutung (flooding), unkontrolliertem Kraftstofffluss und Brandgefahr.
+                <strong>Derzeitiger Arbeitsbereich: 2,5&ndash;3,5 psi (0,17&ndash;0,24 bar)</strong> nach verf&uuml;gbaren Sekund&auml;rquellen. <span class="badge badge-mod">Sekund&auml;rquellen</span><br>
+                <span class="source">Eine <strong>Dell&rsquo;Orto-Primaerquelle f&uuml;r eine harte 3,5-psi-Grenze liegt derzeit nicht vor.</strong> Der Wert wird hier als Arbeitsbereich gef&uuml;hrt, nicht als belegte Werksgrenze. Hintergrund und Quellenlage: <a href="exkurs-kraftstoffdruck.html">Exkurs Kraftstoffdruck</a>.</span><br>
+                <strong>Vor jeder Ver&auml;nderung zun&auml;chst den vorhandenen Druck beider Kreise dokumentieren.</strong> Der Mechanismus ist unstrittig: zu hoher Druck dr&uuml;ckt die Schwimmernadel auf und f&uuml;hrt zu &Uuml;berflutung, unkontrolliertem Kraftstofffluss und Brandgefahr. Strittig ist allein, wo genau die Grenze liegt.
             </div>
 
             <h3>Kraftstoffpumpe &amp; Druckregler (Fuel Pump &amp; Regulator)</h3>
@@ -348,7 +349,7 @@
                 <tr>
                     <td>Druckregler-Einstellung</td>
                     <td>2.5&ndash;3.0 psi</td>
-                    <td>Sicherheitsmarge unter dem 3.5 psi Maximum</td>
+                    <td>Liegt im Arbeitsbereich. Erst den Ist-Druck beider Kreise dokumentieren, dann entscheiden</td>
                 </tr>
             </table>
 
@@ -384,7 +385,7 @@
                 <tr>
                     <td><strong>Schwarzer Rauch / ru&szlig;ige Kerzen</strong> (Black smoke / sooty plugs)</td>
                     <td>ZU FETT &ndash; Schwimmerstand zu hoch, Nadelventil undicht, Hauptd&uuml;se zu gro&szlig;</td>
-                    <td>Schwimmerstand pr&uuml;fen (5.5&ndash;6 mm), Nadelventil auf Dichtheit pr&uuml;fen, D&uuml;sen verkleinern</td>
+                    <td>Ist-Ma&szlig; des Schwimmerstands mit der dokumentierten Baseline vergleichen; Nadelventil und Kraftstoffniveau auf Auff&auml;lligkeiten pr&uuml;fen. <strong>Ein Sollma&szlig; wird erst nach einer gesicherten DRLA-spezifischen Quelle festgelegt</strong> &ndash; bis dahin ist die Abweichung von der Baseline der Befund, nicht ein Tabellenwert.</td>
                 </tr>
                 <tr>
                     <td><strong>Motor s&auml;uft ab bei Kaltstart</strong> (Floods on cold start)</td>
@@ -417,7 +418,7 @@
     <!-- ============================================================ -->
     <div class="section" id="bedusung">
         <details>
-            <summary>9. Externe Bed&uuml;sungstabelle &ndash; nur Referenz (External Jetting Table)</summary>
+            <summary>9. Hintergrund und Einordnung &ndash; externe Zahlenreihen (Reference Only)</summary>
 
             <div class="warning">
                 <strong>Diese Tabelle ist nicht euer Startpunkt.</strong><br>
@@ -470,6 +471,44 @@
                     <li><strong>Ansauganlage</strong> (Intake Manifold) &ndash; Runner-L&auml;nge und Plenum-Volumen</li>
                 </ul>
             </div>
+
+            <h3 id="einordnung">Hintergrund und Einordnung &ndash; woher die Zahlen stammen</h3>
+            <div class="warning">
+                <strong>&#9888; Nichts hier ist ein Sollwert f&uuml;r diesen Motor.</strong> Ma&szlig;geblich ist die Ist-Best&uuml;ckung, die beim Zerlegen aufgenommen wird (Build Log, Phase&nbsp;3, Kapitel&nbsp;27). Dieser Abschnitt existiert nur, um eine <em>Abweichung einzuordnen</em> &ndash; etwa wenn der Motor im &Uuml;bergang mager ruckelt.
+            </div>
+            <h3>Externe Zahlenreihen &ndash; nur Referenz (External Figures &ndash; Reference Only)</h3>
+                <table>
+                    <thead><tr><th>D&uuml;se</th><th>Integrationsreview</th><th>Einstellungsleitfaden</th></tr></thead>
+                    <tbody>
+                        <tr><td>Hauptd&uuml;se</td><td>160</td><td>135&ndash;140</td></tr>
+                        <tr><td>Leerlaufd&uuml;se</td><td>58</td><td>55&ndash;60</td></tr>
+                        <tr><td>Luftkorrektur</td><td>180</td><td>180&ndash;200</td></tr>
+                        <tr><td>Emulsionsrohr</td><td>9164.2</td><td>7772.3 / 9164.3</td></tr>
+                        <tr><td>Pumpjet</td><td>45</td><td>40&ndash;50</td></tr>
+                        <tr><td>Hauptventuri</td><td>38 mm</td><td>nicht genannt</td></tr>
+                    </tbody>
+                </table>
+                <div class="warning"><strong>Keine dieser Reihen ist ein Sollwert.</strong> Die linke Spalte stammt aus dem Integrationsreview &ndash; <strong>das dieses Dokument seine eigenen Zahlen ausdr&uuml;cklich als nicht validiert verwirft</strong> und sie nur als historische Altangabe f&uuml;hrt. Die rechte stammt aus dem Einstellungsleitfaden und tr&auml;gt ebenfalls keine Primaerquelle. Beide widersprechen sich. <strong>Ma&szlig;geblich ist die Ist-Best&uuml;ckung oben</strong>, weil sie auf dem alten 302 nachweislich funktioniert hat. Die Reihen stehen hier nur, damit erkennbar ist, wie weit sie davon abweichen.</div>
+
+            <h3>Plausibilit&auml;tsrechnung (Sanity Check by Formula)</h3>
+                <div class="warning"><strong>Diese Rechnung &uuml;berschreibt die bew&auml;hrte Baseline nicht.</strong> Sie dient dazu, eine Abweichung <em>einzuordnen</em> &ndash; etwa wenn der neue Motor im &Uuml;bergang mager ruckelt. Eine Faustformel schl&auml;gt keine Abstimmung, die auf einem echten Motor funktioniert hat.</div>
+                <p style="font-size:0.78rem;line-height:1.5;margin:0.4rem 0 0.4rem;">Die Zahlenreihen oben behaupten Werte. Die folgenden Faustformeln <strong>leiten</strong> sie her &ndash; damit l&auml;sst sich pr&uuml;fen, welcher Vorschlag &uuml;berhaupt in der Gr&ouml;&szlig;enordnung liegt. Ford 302 = <strong>4949 cm&sup3;, also 619 cm&sup3; je Zylinder</strong>; jede Drosselklappe versorgt genau einen Zylinder.</p>
+                <table>
+                    <thead><tr><th>Gr&ouml;&szlig;e</th><th>Faustformel</th><th>Ergebnis 302 / DRLA 45</th><th>Bewertung der Vorschl&auml;ge</th></tr></thead>
+                    <tbody>
+                        <tr><td>Hauptventuri</td><td>Barrel &divide; 1.25</td><td><strong>36 mm</strong></td>
+                            <td>Review nennt 38 mm &ndash; gr&ouml;&szlig;er als die Formel, also eine Drehzahl-Auslegung. Leitfaden nennt nichts.</td></tr>
+                        <tr><td>Hauptd&uuml;se</td><td>Venturi &times; 4</td><td><strong>144</strong> (bei 36 mm)</td>
+                            <td>Leitfaden 135&ndash;140 liegt darunter, Review 160 dar&uuml;ber. 144 liegt dazwischen.</td></tr>
+                        <tr><td>Luftkorrektur</td><td>Hauptd&uuml;se + 50</td><td><strong>194</strong></td>
+                            <td>Leitfaden 180&ndash;200 umschlie&szlig;t den Wert. Review 180 liegt am unteren Rand.</td></tr>
+                        <tr><td>Emulsionsrohr</td><td>Tabelle endet bei 450&ndash;575 cm&sup3; &rarr; 7772.5</td><td><strong>619 cm&sup3; liegt dar&uuml;ber</strong> &ndash; Reihe l&auml;uft abw&auml;rts, also 7772.4 oder kleiner</td>
+                            <td>Leitfaden 7772.3 passt zur Richtung der Extrapolation.</td></tr>
+                        <tr><td>Leerlaufd&uuml;se</td><td>Tabelle endet bei 525 cm&sup3;/Zyl. &rarr; 55/60</td><td><strong>619 cm&sup3; liegt dar&uuml;ber</strong> &ndash; eher 60 aufw&auml;rts</td>
+                            <td>Beide Vorschl&auml;ge (55&ndash;60 / 58) liegen am unteren Rand oder darunter.</td></tr>
+                    </tbody>
+                </table>
+                <div class="warning"><strong>Grenzen dieser Rechnung:</strong> Die Formeln stammen aus einem Leitfaden f&uuml;r <strong>DHLA</strong> (Flachstrom, Reihenmotor), nicht f&uuml;r DRLA (Fallstrom). Dieselbe Dellorto-Familie und dieselbe D&uuml;senlogik, aber <strong>nicht identisch</strong> &ndash; sie taugen als Gr&ouml;&szlig;enordnung und Plausibilit&auml;tspr&uuml;fung, nicht als Sollwert. Zwei Punkte bleiben trotzdem belastbar: die <strong>Hauptventuri ist zu messen</strong> (sie bestimmt die Hauptd&uuml;se), und die <strong>Leerlaufd&uuml;se koennte bei 619 cm&sup3;/Zylinder zu klein</strong> sein &ndash; das zeigt sich als mageres Ruckeln im &Uuml;bergang.</div>
         </details>
     </div>
 

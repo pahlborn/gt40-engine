@@ -69,6 +69,9 @@ jobs:
       - name: "Zuendung: MSD 8479 und 6AL"
         run: node tests/zuendung.test.mjs
 
+      - name: Unbelegte Pauschalaussagen
+        run: node tests/pauschalaussagen.test.mjs
+
   # Prueft die tatsaechlich ausgelieferte Seite. Laeuft nur auf main und
   # blockiert nichts, weil ein Aussetzer bei GitHub Pages oder der GitHub-API
   # nichts ueber den Code aussagt.
