@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v43',
+      date: '2026-09-21',
+      title: 'Ethanol: die Zahl kommt zurueck, diesmal mit Herleitung',
+      changes: [
+        { type: 'neu', text: 'Der Ethanol-Exkurs hat einen neuen Abschnitt "Wie viel genau". Er rechnet die Mehrmenge her, statt sie zu behaupten: Benzin braucht stoechiometrisch rund 14,7 Teile Luft je Teil Kraftstoff, Ethanol nur rund 9,0, weil es Sauerstoff im Molekuel traegt. Ueber die Massenanteile gemischt ergibt E10 rund 14,1 : 1 - das sind rund 4 % mehr Kraftstoff bei gleicher Luftmenge.' },
+        { type: 'neu', text: 'Wichtiger als die 4 % ist ihre Einordnung: sie liegen unterhalb eines Duesenschritts. Der Durchfluss einer Duese geht naeherungsweise mit dem Quadrat des Durchmessers, 4 % mehr Durchfluss heisst also nur rund 2 % mehr Durchmesser - von Hauptduese 135 aus rechnerisch eine 138. Die naechste lieferbare Groesse ist 140, und der Schritt 135 auf 140 bringt bereits rund 7,5 %. Wer beim Wechsel auf E10 reflexhaft eine Duese groesser geht, ueberfettet den Motor staerker, als Ethanol ihn abmagert.' },
+        { type: 'fix', text: 'Die Zeile im Abstimmungsblatt fuehrt jetzt wieder eine Groessenordnung, aber mit der richtigen Bezugsgroesse und mit der Handlungsanweisung dahinter: nicht umduesen, sondern am Lambda entscheiden. Die in v42 gestrichene Angabe war nicht falsch berechnet, sondern falsch bezogen - gemeint war die Gesamtdifferenz bei E10, nicht ein Wert je Prozentpunkt.' },
+        { type: 'fix', text: 'Zwei Gegenproben zum neuen Test blieben zunaechst gruen und haben ihn entlarvt: eine Suche nach "14,7" fand den Wert noch in der Tabelle darueber, obwohl die Rechnung entfernt war, und die Duesenschritt-Pruefung wurde vom englischen Text getragen, obwohl der deutsche fehlte. Beides ist derselbe Fehler wie bei der dial-back-Pruefung in v42. Der Test prueft jetzt die Rechenzeile woertlich und beide Sprachfassungen getrennt.' }
+      ]
+    },
+    {
       version: 'v42',
       date: '2026-09-21',
       title: 'Anschlagbuechsen aus der MSD-Primaerquelle, Digital 6AL bestimmt',

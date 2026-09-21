@@ -57,6 +57,7 @@
             <li><a href="#nicht-belegt">Was nicht belegt ist</a></li>
             <li><a href="#regel">Vorgeschlagene Regel statt Verbot</a></li>
             <li><a href="#offen">Offene Punkte</a></li>
+            <li><a href="#rechnung">Wie viel genau &ndash; und warum die Zahl vor unn&ouml;tigem Umd&uuml;sen sch&uuml;tzt</a></li>
             <li><a href="#quellen">Quellenlage</a></li>
         </ul>
     </div>
@@ -73,8 +74,36 @@
             <li><strong>Ethanol ist hygroskopisch.</strong> Es zieht Wasser aus der Luft. Das Wasser bleibt im Kraftstoff gel&ouml;st, bis der Anteil zu gro&szlig; wird &ndash; dann trennt sich die Phase und unten im Beh&auml;lter steht wasserreicher Alkohol.</li>
             <li><strong>Stehender ethanolhaltiger Kraftstoff wird sauer.</strong> In dieser Form greift er Aluminium, Zink, verzinkte Werkstoffe, Messing, Kupfer sowie blei- und zinnbeschichtete St&auml;hle an.</li>
             <li><strong>Weichteile &auml;lterer Bauart sind das erste Opfer.</strong> Dichtungen, Membranen, Schwimmernadel-Dichtungen und Schl&auml;uche aus Werkstoffen, die vor der Ethanol-&Auml;ra spezifiziert wurden, quellen, verh&auml;rten oder l&ouml;sen sich auf.</li>
-            <li><strong>Das erforderliche Kraftstoff/Luft-Verh&auml;ltnis &auml;ndert sich.</strong> E5 und E10 unterscheiden sich darin, wie viel Kraftstoff auf dieselbe Luftmenge geh&ouml;rt. Bei Vergaserbetrieb kann das eine <strong>Kalibrierungs&auml;nderung</strong> erfordern &ndash; E5 und E10 bed&uuml;sen nicht zwangsl&auml;ufig identisch.<br><span style="font-size:0.85rem;color:#4a5568;"><strong>Zur&uuml;ckgezogen:</strong> hier stand eine Mehrmenge, bezogen auf <em>jedes einzelne</em> Prozent Ethanolanteil. Diese Bezugsgr&ouml;&szlig;e war falsch &ndash; hochgerechnet auf E10 h&auml;tte sie eine absurd hohe Mehrmenge ergeben. Ein Zahlenwert steht hier bewusst nicht mehr; ma&szlig;geblich ist die Abstimmung am Motor.</span></li>
+            <li><strong>Das erforderliche Kraftstoff/Luft-Verh&auml;ltnis &auml;ndert sich.</strong> Ethanol tr&auml;gt Sauerstoff im Molek&uuml;l und braucht deshalb weniger Luft je Kilogramm Kraftstoff. Bei Vergaserbetrieb kann das eine <strong>Kalibrierungs&auml;nderung</strong> erfordern. Wie viel das ausmacht, steht im Abschnitt <a href="#rechnung">Wie viel genau</a> &ndash; die Gr&ouml;&szlig;enordnung ist kleiner, als die meisten erwarten.</li>
         </ul>
+    </div>
+
+    <div class="section" id="rechnung">
+        <h2>Wie viel genau &ndash; und warum die Zahl vor unn&ouml;tigem Umd&uuml;sen sch&uuml;tzt</h2>
+        <p>Jeder Kraftstoff braucht ein bestimmtes Massenverh&auml;ltnis Luft zu Kraftstoff, um vollst&auml;ndig zu verbrennen &ndash; das <strong>st&ouml;chiometrische Verh&auml;ltnis</strong>:</p>
+        <table>
+            <thead><tr><th>Kraftstoff</th><th>St&ouml;chiometrisches Luft/Kraftstoff-Verh&auml;ltnis</th></tr></thead>
+            <tbody>
+                <tr><td>Benzin (E0)</td><td>rund <strong>14,7&nbsp;:&nbsp;1</strong></td></tr>
+                <tr><td>Ethanol</td><td>rund <strong>9,0&nbsp;:&nbsp;1</strong> &ndash; Ethanol tr&auml;gt bereits Sauerstoff im Molek&uuml;l</td></tr>
+            </tbody>
+        </table>
+        <p>E10 ist eine Mischung. &Uuml;ber die Massenanteile gerechnet (10&nbsp;Volumenprozent Ethanol entsprechen wegen der h&ouml;heren Dichte gut 10,5&nbsp;Massenprozent):</p>
+        <pre style="background:#edf2f7;padding:0.6rem;border-radius:6px;font-size:0.85rem;overflow-x:auto;">0,895 &times; 14,7  +  0,105 &times; 9,0  =  <strong>14,1 : 1</strong>
+
+14,7 / 14,1 = 1,043   &rarr;   rund <strong>4 % mehr Kraftstoff</strong> bei gleicher Luftmenge</pre>
+        <div class="info">
+            <strong>Was daran wichtig ist:</strong> nicht die 4&nbsp;% selbst, sondern dass sie <strong>unterhalb eines D&uuml;senschritts liegen</strong>.<br><br>
+            Der Durchfluss einer D&uuml;se geht n&auml;herungsweise mit der Querschnittsfl&auml;che, also mit dem <em>Quadrat</em> des Durchmessers. 4&nbsp;% mehr Durchfluss hei&szlig;t also nur rund 2&nbsp;% mehr Durchmesser. Von einer Hauptd&uuml;se 135 (= 1,35&nbsp;mm) aus:<br><br>
+            1,35&nbsp;mm &times; 1,021 = 1,378&nbsp;mm &rarr; rechnerisch D&uuml;se <strong>138</strong>.<br><br>
+            Die n&auml;chste lieferbare Gr&ouml;&szlig;e ist <strong>140</strong>. Der Schritt 135&rarr;140 bringt aber bereits rund <strong>7,5&nbsp;%</strong> mehr Durchfluss &ndash; fast das Doppelte dessen, was E10 verlangt.
+        </div>
+        <div class="warning">
+            <strong>Daraus folgt die eigentliche Regel:</strong> Der Ethanol-Unterschied l&auml;sst sich an einem DRLA gar nicht sauber nachbilden. Wer beim Wechsel auf E10 reflexhaft eine D&uuml;se gr&ouml;&szlig;er geht, &uuml;berfettet den Motor <em>st&auml;rker</em>, als Ethanol ihn abmagert. Entschieden wird am <strong>Lambda</strong>, nicht an der Kraftstoffsorte.
+        </div>
+        <div class="info" style="font-size:0.85rem;">
+            <strong>Zur&uuml;ckgezogen:</strong> Hier stand fr&uuml;her eine Mehrmenge, bezogen auf <em>jedes einzelne</em> Prozent Ethanolanteil. Die Bezugsgr&ouml;&szlig;e war falsch &ndash; hochgerechnet auf E10 h&auml;tte sie rund das Zehnfache des tats&auml;chlichen Werts ergeben. Die Zahl selbst war brauchbar, nur der Bezug nicht: gemeint war die Gesamtdifferenz bei E10, nicht ein Wert je Prozentpunkt.
+        </div>
     </div>
 
     <div class="section" id="nicht-belegt">
