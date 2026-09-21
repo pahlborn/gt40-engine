@@ -13,6 +13,23 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v46',
+      date: '2026-09-21',
+      title: 'Acht Mischkammern statt vier Vergaser, DRLA-Teilezeichnung, Schwimmerstand korrigiert',
+      changes: [
+        { type: 'fix', text: 'Die Ist-Beduesung war je Vergaser angelegt - vier Spalten fuer vier Vergaser. Ein DRLA 45 ist aber ein Doppel-Fallstromvergaser: jede der beiden Mischkammern hat ihre eigene Haupt-, Leerlauf- und Luftkorrekturduese, ihr eigenes Emulsionsrohr, ihren eigenen Pumpjet und ihren eigenen Venturi. Die Tabelle konnte die reale Bestueckung also gar nicht aufnehmen - wer sie ausfuellte, musste mitteln oder eine Kammer weglassen. Jetzt 48 Felder in acht Spalten.' },
+        { type: 'neu', text: 'Dazu zwei neue Tabellen: was je Vergaser nur einmal vorkommt (Gehaeusecode, Nadelventil, Schwimmerstand-Ist, Pumpenmembran, Befund) und die Zuordnungskette Mischkammer zu Zylinder zu Collector. Ohne diese Kette laesst sich eine Lambda-Abweichung spaeter nicht auf bestimmte Duesen zurueckfuehren - zwei Sonden liefern nur Bank-Mittelwerte.' },
+        { type: 'fix', text: 'Bereits eingetragene Werte gehen beim Umbau nicht verloren: 24 Migrationseintraege fuehren die alten Felder je Vergaser in die A-Kammer ueber. Welche Kammer der Wert wirklich betraf, ist nicht rekonstruierbar - B bleibt leer und faellt dadurch auf.' },
+        { type: 'fix', text: 'Begriff vereinheitlicht: "Mischkammer" statt "Lauf" oder "Kanal". Belegt in der Definition des Doppelvergasers. Verworfen wurden "Lufttrichter" und "Mischrohr" - beide sind im deutschen Weber-Teilekatalog fuer den Venturi-Einsatz bzw. das Emulsionsrohr besetzt, also fuer Teile IN der Mischkammer - sowie "Stufe": Stufen hat ein Registervergaser, dessen zweite Klappe erst unter Last oeffnet, beim DRLA oeffnen beide gleichzeitig.' },
+        { type: 'neu', text: 'Neue Glossar-Kategorie "18. Vergaser" mit vier Eintraegen: Mischkammer, Hauptventuri, Hilfsventuri, Emulsionsrohr - jeweils mit der Abgrenzung gegen die verwechselbaren Begriffe. Darin auch die Klarstellung, dass die 45 in "DRLA 45" die Bohrung der Mischkammer meint und nicht den Venturi; der Hauptventuri ist ein separater Einsatz von etwa 28 bis 38 mm und muss gemessen werden.' },
+        { type: 'fix', text: 'Die englischen Glossar-Uebersetzungen standen noch immer dreifach in den HTML-Dateien - v45 hatte nur den deutschen Text zusammengefuehrt. Und sie waren ebenfalls auseinandergelaufen: dieselben vier Eintraege zu Kolbenmulde und Kolbenboden trugen nur in specs.html den vollstaendigen Text. Beide Woerterbuecher liegen jetzt in glossar.js.' },
+        { type: 'fix', text: 'Dabei ein echter Fehler gefunden: ein Glossarfeld trug data-fidx="37b", die Sprachumschaltung macht darauf parseInt - das ergibt 37. In der englischen Ansicht erschien deshalb der Effect-Text doppelt, und die englische Vorzeichen-Warnung zu den Verdichtungsrechnern wurde nie angezeigt. Genau die Warnung, die v45 abgesichert hatte - im Deutschen geschuetzt, im Englischen unerreichbar. Umnummeriert und im Browser gegengeprueft.' },
+        { type: 'fix', text: 'Schwimmerstand: es gibt jetzt ein DRLA-spezifisches Verfahren, und zwei unserer Angaben waren falsch. Nicht 5,5-6 mm sondern 5 bis 6 mm, und gemessen wird gegen die Dichtung des Schwimmerkammerdeckels, nicht gegen die Schwimmerspitze. Die Dichtung muss dabei montiert, der Deckel senkrecht gehalten und das Nadelventil nur leicht beruehrt sein. Ohne diese Bedingungen misst man systematisch etwas anderes - die Zahl allein haette nicht gereicht.' },
+        { type: 'neu', text: 'Explosionszeichnung des DRLA mit den Positionen 1 bis 154 und das Schwimmerstand-Blatt liegen jetzt im Repository und sind im Guide eingebunden. Die Positionsnummern entsprechen den Nummern-Praefixen der Haendler-Teileliste, damit laesst sich von der Zeichnung direkt auf die Bestellnummer schliessen. Dazu drei gepruefte Bezugsquellen.' },
+        { type: 'neu', text: 'Neue Testreihe tests/mischkammern.test.mjs mit 17 Pruefungen, im Workflow verdrahtet. Darunter: die Vorzeichen-Warnung muss den Sprachwechsel in beide Richtungen ueberleben, kein data-fidx darf von parseInt verfaelscht werden, und die beiden neuen Bilder muessen im Browser tatsaechlich laden. Vier Gegenproben verifiziert.' }
+      ]
+    },
+    {
       version: 'v45',
       date: '2026-09-21',
       title: 'Glossar aus drei Kopien zusammengefuehrt, verwaiste Phasendateien geloescht',
