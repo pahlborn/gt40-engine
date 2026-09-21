@@ -18,6 +18,10 @@ import {
 const { server, base } = await startServer();
 const browser = await chromium.launch();
 const HTML = fs.readFileSync(path.join(REPO_ROOT, 'build-log.html'), 'utf8');
+// Die externen Zahlenreihen und die Plausibilitaetsrechnung sind in v44 aus dem
+// Arbeitsablauf in den Guide gewandert: BUILD fuehrt die Ist-Bestueckung, der
+// Guide ordnet sie ein. Der Inhalt selbst wurde nicht veraendert.
+const GUIDE = fs.readFileSync(path.join(REPO_ROOT, 'docs/dellorto-drla-tuning.html'), 'utf8');
 
 // Bedueusung je Vergaser (Kapitel 27) - 4 Vergaser x 6 Positionen.
 const JET_FELDER = [];
@@ -202,37 +206,42 @@ await test('Bezugsgroessen sind erfassbar', async () => {
   }
 });
 
-await test('Beide Zahlenreihen stehen nebeneinander und keine gilt als Sollwert', async () => {
+await test('Beide Zahlenreihen stehen im Guide und keine gilt als Sollwert', async () => {
   // Die Zahlen des Reviews und die des Leitfadens widersprechen sich, und keine
-  // traegt eine Primaerquelle. Geprueft wird die Aussage, nicht ein Stichwort -
-  // die Formulierung wurde schon einmal geschaerft und der Test lief ins Leere.
-  const k = karte('p3_carboverhaul');
-  assert(/9164\.2/.test(k) && /9164\.3/.test(k), 'Nicht beide Reihen aufgefuehrt');
-  assert(/keine Primaerquelle|keine Primaerquellen|nicht validiert/.test(k),
+  // traegt eine Primaerquelle. Geprueft wird die Aussage, nicht ein Stichwort.
+  assert(/9164\.2/.test(GUIDE) && /9164\.3/.test(GUIDE), 'Nicht beide Reihen aufgefuehrt');
+  assert(/keine Primaerquelle|keine Primaerquellen|nicht validiert/.test(GUIDE),
     'Fehlende Quellenlage nicht benannt');
-  assert(/Keine dieser Reihen ist ein Sollwert/.test(k),
+  assert(/Keine dieser Reihen ist ein Sollwert/.test(GUIDE),
     'Reihen sind nicht als Nicht-Sollwert gekennzeichnet');
-  assert(/Ma&szlig;geblich ist die Ist-Best&uuml;ckung/.test(k),
+  assert(/Ma&szlig;geblich ist die Ist-Best&uuml;ckung/.test(GUIDE),
     'Vorrang der verbauten Baseline nicht benannt');
+});
+
+await test('Der BUILD-Arbeitsablauf verweist darauf, fuehrt sie aber nicht selbst', async () => {
+  const k = karte('p3_carboverhaul');
+  assert(!/9164\.2/.test(k), 'Fremde Zahlenreihe steht wieder im Arbeitsablauf');
+  assert(k.includes('docs/dellorto-drla-tuning.html#einordnung'), 'Verweis auf den Guide fehlt');
 });
 
 await test('Plausibilitaetsrechnung leitet die Groessen her', async () => {
   // Die beiden Vorschlaege behaupten nur. Erst die Herleitung macht pruefbar,
-  // welcher ueberhaupt in der Groessenordnung liegt.
-  const k = karte('p3_carboverhaul');
-  assert(/Plausibilit&auml;tsrechnung/.test(k), 'Rechnung fehlt');
-  assert(/619 cm&sup3;/.test(k), 'Hubraum je Zylinder fehlt');
-  assert(/Barrel &divide; 1\.25/.test(k), 'Venturi-Formel fehlt');
-  assert(/Venturi &times; 4/.test(k), 'Hauptduesen-Formel fehlt');
-  assert(/Hauptd&uuml;se \+ 50/.test(k), 'Luftkorrektur-Formel fehlt');
+  // welcher ueberhaupt in der Groessenordnung liegt. Steht seit v44 im Guide.
+  assert(/Plausibilit&auml;tsrechnung/.test(GUIDE), 'Rechnung fehlt');
+  assert(/619 cm&sup3;/.test(GUIDE), 'Hubraum je Zylinder fehlt');
+  assert(/Barrel &divide; 1\.25/.test(GUIDE), 'Venturi-Formel fehlt');
+});
+
+await test('Auch die uebrigen Formeln stehen im Guide', async () => {
+  assert(/Venturi &times; 4/.test(GUIDE), 'Hauptduesen-Formel fehlt');
+  assert(/Hauptd&uuml;se \+ 50/.test(GUIDE), 'Luftkorrektur-Formel fehlt');
 });
 
 await test('Grenzen der Rechnung sind benannt', async () => {
   // Die Formeln stammen aus einem DHLA-Leitfaden, nicht von DRLA. Ohne diesen
   // Hinweis wird aus einer Groessenordnung ein vermeintlicher Sollwert.
-  const k = karte('p3_carboverhaul');
-  assert(/DHLA/.test(k), 'Herkunft der Formeln (DHLA) nicht genannt');
-  assert(/nicht als Sollwert/.test(k), 'Einschraenkung "kein Sollwert" fehlt');
+  assert(/DHLA/.test(GUIDE), 'Herkunft der Formeln (DHLA) nicht genannt');
+  assert(/nicht als Sollwert/.test(GUIDE), 'Einschraenkung "kein Sollwert" fehlt');
 });
 
 await test('Hauptventuri ist als fehlender Wert benannt', async () => {
@@ -265,16 +274,14 @@ await test('STOPP-Punkte sind benannt', async () => {
 await test('Die Plausibilitaetsrechnung ueberschreibt die Baseline nicht', async () => {
   // Eine Faustformel aus einem DHLA-Leitfaden darf nicht als Sollwert gelesen
   // werden, wenn die verbaute Bedueusung auf einem echten Motor funktioniert hat.
-  const k = karte('p3_carboverhaul');
-  assert(/&uuml;berschreibt die bew&auml;hrte Baseline nicht/.test(k),
+  assert(/&uuml;berschreibt die bew&auml;hrte Baseline nicht/.test(GUIDE),
     'Einordnung der Rechnung gegenueber der Baseline fehlt');
 });
 
 await test('Das Review verwirft seine eigenen Zahlen - das steht dabei', async () => {
-  const k = karte('p3_carboverhaul');
-  assert(/als nicht validiert verwirft/.test(k),
+  assert(/als nicht validiert verwirft/.test(GUIDE),
     'Selbstverwerfung des Reviews nicht vermerkt');
-  assert(/Keine dieser Reihen ist ein Sollwert/.test(k), 'Sollwert-Ausschluss fehlt');
+  assert(/Keine dieser Reihen ist ein Sollwert/.test(GUIDE), 'Sollwert-Ausschluss fehlt');
 });
 
 await test('Diagnosebaum verhindert den Duesenwechsel auf Verdacht', async () => {

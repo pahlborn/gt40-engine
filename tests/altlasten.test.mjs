@@ -59,7 +59,9 @@ await test('Troubleshooting kennt die elektrische Anlage', async () => {
   const h = lies('docs/troubleshooting.html');
   assert(/elektrische<\/strong> Facet-Pumpen|elektrische Facet/.test(h),
     'Elektrische Pumpen nicht benannt');
-  assert(/Obergrenze 3\.5 psi/.test(h), 'Druckgrenze des DRLA fehlt');
+  // Seit v44 als Arbeitsbereich formuliert - der Punkt bleibt, dass die
+  // Troubleshooting-Seite den Druck ueberhaupt beziffert.
+  assert(/Arbeitsbereich 2,5&ndash;3,5 psi/.test(h), 'Druckangabe fuer den DRLA fehlt');
 });
 
 await test('Troubleshooting beschreibt den Rollen-Ventiltrieb', async () => {

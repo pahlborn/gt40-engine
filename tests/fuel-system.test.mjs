@@ -68,7 +68,7 @@ await test('Karte nennt zwei elektrische Facet-Pumpen und beide Regler', async (
   assert(/Facet Red Top 480532/.test(txt), 'Pumpentyp fehlt');
   assert(/elektrisch/.test(txt), 'Hinweis "elektrisch" fehlt');
   assert(/Filter King/.test(txt), 'Filter King fehlt');
-  assert(/Zwei getrennte Kreise/.test(txt), 'Zwei-Kreis-Aufbau nicht beschrieben');
+  assert(/zwei getrennte Kreise/i.test(txt), 'Zwei-Kreis-Aufbau nicht beschrieben');
 });
 
 await test('Obergrenze 3.5 psi steht, der Holley-Wert nicht mehr', async () => {
@@ -83,7 +83,10 @@ await test('Ablesen statt verstellen - die Anlage lief mit ihrer Einstellung', a
   // Sollwert, auf den man sie "korrigiert", wuerde sie zerstoeren.
   const txt = kartenText();
   assert(/Ablesen, nicht verstellen/.test(txt), 'Grundregel fehlt');
-  assert(/&uuml;ber 3\.5 psi/.test(txt), 'Eingriffsschwelle fehlt');
+  // Die Schwelle ist seit v44 als Arbeitsbereich formuliert, weil fuer eine
+  // harte 3,5-psi-Grenze keine Dell'Orto-Primaerquelle vorliegt.
+  assert(/deutlich &uuml;ber dem Arbeitsbereich/.test(txt), 'Eingriffsschwelle fehlt');
+  assert(/2,5&ndash;3,5 psi/.test(txt), 'Arbeitsbereich nicht beziffert');
   assert(/weichen voneinander ab/.test(txt), 'Abweichung der Kreise als Ausloeser fehlt');
 });
 

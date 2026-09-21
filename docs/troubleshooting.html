@@ -44,7 +44,7 @@
     <a class="back-link" href="../">&larr; Zur&uuml;ck zum Build Log</a>
 
     <h1>Troubleshooting &ndash; Small Block Ford (SBF)</h1>
-    <p style="font-size:0.9rem;color:#4a5568;">Fehlersuche-Leitfaden f&uuml;r klassische Ford Small Block Motoren (289, 302, 347, 363 ci) mit Vergaser, konventioneller Z&uuml;ndung (MSD 6AL / Verteiler) und ohne elektronisches Motormanagement. Zweisprachig: Deutsch (prim&auml;r) mit englischen Begriffen in Klammern.</p>
+    <p style="font-size:0.9rem;color:#4a5568;">Fehlersuche f&uuml;r <strong>diesen</strong> Build: GT40 mit Ford 302, AFR-165-K&ouml;pfen, Hydraulic Roller XE274HR, vier Dell&rsquo;Orto DRLA 45, MSD 8479 / Digital 6AL und Vergaser-Kraftstoffsystem mit zwei Kreisen. Erg&auml;nzend werden allgemeine Small-Block-Ford-Grundlagen erkl&auml;rt, wo sie zum Verst&auml;ndnis der Diagnose beitragen &ndash; damit man nicht nur einer Anleitung folgt, sondern wei&szlig;, warum ein Wert aussagekr&auml;ftig ist. Zweisprachig: Deutsch (prim&auml;r) mit englischen Begriffen in Klammern.</p>
 
     <div class="toc">
         <strong>Inhalt (Table of Contents)</strong>
@@ -88,7 +88,7 @@
             <h3>Kein Kraftstoff (No Fuel)</h3>
             <ul>
                 <li><strong>Pumpen einschalten</strong> &ndash; Dieses Fahrzeug hat zwei <strong>elektrische</strong> Facet-Pumpen, je Tank eine, mit eigenem Schalter. Z&uuml;ndung an, eine Pumpe an: das Ticken muss nach einigen Sekunden langsamer werden &ndash; dann sind die Schwimmerkammern voll. Bleibt es schnell, saugt die Pumpe nicht an oder die Leitung ist leer.</li>
-                <li><strong>Druck pr&uuml;fen</strong> &ndash; Cockpit-Uhr je Kreis ablesen. <strong>Obergrenze 3.5 psi</strong> f&uuml;r den DRLA; dar&uuml;ber schlie&szlig;t die Schwimmernadel nicht. Beide Kreise einzeln pr&uuml;fen &ndash; weichen sie voneinander ab, f&ouml;rdert der niedriger eingestellte nichts zu den Vergasern. Hintergrund: <a href="exkurs-kraftstoffdruck.html">Exkurs Kraftstoffdruck</a>.</li>
+                <li><strong>Druck pr&uuml;fen</strong> &ndash; Cockpit-Uhr je Kreis ablesen. <strong>Arbeitsbereich 2,5&ndash;3,5 psi</strong> nach Sekund&auml;rquellen &ndash; eine Dell&rsquo;Orto-Primaerquelle f&uuml;r eine harte Grenze liegt nicht vor. Deutlich dar&uuml;ber schlie&szlig;t die Schwimmernadel nicht. Beide Kreise einzeln pr&uuml;fen &ndash; weichen sie voneinander ab, f&ouml;rdert der niedriger eingestellte nichts zu den Vergasern. Hintergrund: <a href="exkurs-kraftstoffdruck.html">Exkurs Kraftstoffdruck</a>.</li>
                 <li><strong>DellOrto DRLA Schwimmerstand (Float Level)</strong> &ndash; Zu hoch = &Uuml;berlauf, zu niedrig = Aushungern. <strong>Ist-Ma&szlig; dokumentieren, nicht auf einen Tabellenwert biegen:</strong> ein DRLA-Sollma&szlig; ist derzeit nicht primaerquellenbelegt, und die verbaute Einstellung stammt aus einer funktionierenden Abstimmung. Siehe Build Log, Phase 3, Kapitel 27.</li>
                 <li><strong>Verstopfte D&uuml;sen (Clogged Jets)</strong> &ndash; Besonders nach Standzeiten: Haupt&shy;d&uuml;se (Main Jet), Leerlaufd&uuml;se (Idle Jet), Emulsionsrohr (Emulsion Tube) ausbauen und mit Druckluft durchblasen.</li>
             </ul>
@@ -206,7 +206,8 @@
             <ul>
                 <li><strong>Ansaugbr&uuml;cke oder Vergaser-Flansch undicht</strong> &ndash; Bremsenreiniger-Test (Brake Cleaner Test): Motor im Leerlauf laufen lassen, Bremsenreiniger um die Dichtfl&auml;chen spr&uuml;hen. Wenn die Drehzahl sich &auml;ndert = Leck an dieser Stelle.</li>
                 <li>Vakuumleitungen pr&uuml;fen: Bremskraftverst&auml;rker, Verteiler-Unterdruckdose (Vacuum Advance), PCV-Ventil.</li>
-                <li>Vakuum im Leerlauf messen: SBF gesund = <strong>15&ndash;18 inHg</strong>. Unter 12 inHg deutet auf Leck oder Ventilproblem hin.</li>
+                <li><strong>Vakuum im Leerlauf messen &ndash; aber gegen die eigene Baseline, nicht gegen eine Faustregel.</strong> Der Leerlaufunterdruck h&auml;ngt stark von Nockenwelle, Z&uuml;ndzeitpunkt, Leerlaufdrehzahl und Motorzustand ab. Eine Performance-Nockenwelle mit gr&ouml;&szlig;erer &Uuml;berschneidung &ndash; wie die verbaute XE274HR &ndash; kann einen <strong>niedrigeren und unruhigeren</strong> Unterdruck erzeugen, ohne dass ein Defekt vorliegt. Die verbreitete Angabe &bdquo;15&ndash;18 inHg = gesund&ldquo; gilt f&uuml;r seriennahe Motoren und ist hier <strong>kein Gesundheitskriterium</strong>.<br>
+                Aussagekr&auml;ftig sind: die <strong>Abweichung vom einmal dokumentierten Wert dieses Motors</strong> und das <strong>Verhalten der Anzeige</strong> &ndash; ruhig stehend, langsam pendelnd, schnell zitternd oder beim Gasgeben einbrechend sagt mehr als die absolute Zahl.</li>
             </ul>
 
             <h3>Falsche Ventileinstellung (Incorrect Valve Adjustment)</h3>
@@ -226,7 +227,8 @@
             <h3>DellOrto DRLA: Synchronisation &amp; Gemisch (Sync &amp; Mixture)</h3>
             <ul>
                 <li><strong>Schmetterlingsklappen nicht synchron (Throttle Plates Not Synchronized)</strong> &ndash; Mit Synchron-Tester (Uni-Syn oder Manometer-Bank) abgleichen. Synchronisiert wird in <strong>zwei Ebenen</strong>: erst die beiden L&auml;ufe <em>innerhalb</em> jedes Vergasers &uuml;ber die Leerlauf-Bypassschraube, dann die vier Vergaser <em>untereinander</em> &uuml;ber das Gest&auml;nge. Am Ende m&uuml;ssen alle <strong>acht L&auml;ufe</strong> denselben Luftdurchsatz zeigen. Ausf&uuml;hrlich: Build Log, Phase 5, Kapitel 2.</li>
-                <li><strong>Leerlaufgemisch-Schrauben (Idle Mixture Screws)</strong> &ndash; Ausgangsposition: 1.5 Umdrehungen auf (from fully seated). Dann jede Schraube einzeln auf h&ouml;chste Drehzahl einstellen, danach Leerlaufdrehzahl korrigieren.</li>
+                <li><strong>Leerlaufgemisch-Schrauben (Idle Mixture Screws) &ndash; vorhandene Stellung zuerst dokumentieren und erhalten.</strong> Die vier Vergaser stammen aus einer Abstimmung, die auf dem alten 302 funktioniert hat; ihre Schraubenstellungen sind ein Messwert, kein Ausgangszustand zum &Uuml;berschreiben. Je Schraube die Umdrehungen von ganz zu z&auml;hlen und notieren, <em>bevor</em> etwas ver&auml;ndert wird.<br>
+                Eine generische Grundeinstellung ist allenfalls nach <strong>vollst&auml;ndiger Zerlegung</strong> ein Thema, wenn die alte Stellung verloren ist &ndash; und eine belastbare DRLA-spezifische Vorgabe daf&uuml;r liegt uns nicht vor. Dann wird von ganz zu aus schrittweise auf h&ouml;chste Leerlaufdrehzahl gedreht und danach die Leerlaufdrehzahl korrigiert, statt eine Zahl aus einer Weber-Anleitung zu &uuml;bernehmen.</li>
                 <li>Beschleunigerpumpe (Accelerator Pump) pr&uuml;fen: Beim Gasgeben muss ein kr&auml;ftiger Strahl in den Ansaugkanal spritzen. Schwache/keine Pumpe = Stottern bei Gasstoss (Stumble/Hesitation).</li>
             </ul>
 
@@ -385,8 +387,8 @@
                 </tr>
                 <tr>
                     <td style="background:#c4a265;color:white;"><strong>Hellbraun / Rehbraun (Light Tan)</strong></td>
-                    <td><strong>Ideal (Perfect)</strong></td>
-                    <td>Keine Aktion n&ouml;tig. Gemisch stimmt.</td>
+                    <td><strong>Unauff&auml;llig</strong></td>
+                    <td>Kein Befund am Kerzenbild. <strong>Das ist keine Gemischmessung</strong> &ndash; die Farbe h&auml;ngt auch von W&auml;rmewert, Kraftstoffadditiven, Betriebsdauer und Lastkollektiv ab. Das Gemisch wird an den beiden Widebands beurteilt; das Kerzenbild liefert erg&auml;nzend die <em>Einzelzylinder</em>-Information, die ein Bank-Mittelwert nicht hergibt.</td>
                 </tr>
                 <tr>
                     <td style="background:#fff5f5;"><strong>Aluminium-Spritzer auf Elektrode</strong></td>
