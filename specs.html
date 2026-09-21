@@ -1477,12 +1477,14 @@
         </div>
         <div class="section-body">
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">MSD 6AL Z&uuml;ndbox (PN 6420)</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">MSD 6AL Z&uuml;ndbox (Teilenummer offen)</div>
                 <div class="comp-body">
                     <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Capacitive Discharge Ignition (CDI)</span></div>
                     <div class="spec-item"><span class="spec-label">Funkenenergie</span><span class="spec-value">Mehrfachfunken bis 3.000 RPM, Einzelfunke dar&uuml;ber</span></div>
-                    <div class="spec-item"><span class="spec-label">Rev Limiter</span><span class="spec-value">Eingebaut &ndash; Soft Touch, einstellbar mit Steckmodulen (100er-Schritte)</span></div>
-                    <div class="spec-item"><span class="spec-label">Mitgelieferte Module</span><span class="spec-value">3.000, 6.000, 7.000, 8.000 RPM</span></div>
+                    <div class="spec-item"><span class="spec-label">Teilenummer</span><span class="spec-value"><strong>Noch am Fahrzeug abzulesen.</strong> Welche 6AL verbaut ist, entscheidet, wie der Drehzahlbegrenzer eingestellt wird</span></div>
+                    <div class="spec-item"><span class="spec-label">Rev Limiter &ndash; analoge 6AL (6420)</span><span class="spec-value">Soft Touch, eingestellt &uuml;ber <strong>Steckmodule</strong> (RPM-Pills, 2-Pin-Stecker)</span></div>
+                    <div class="spec-item"><span class="spec-label">Rev Limiter &ndash; Digital 6AL (6425)</span><span class="spec-value">Soft Touch, eingestellt &uuml;ber <strong>zwei Drehschalter</strong>, 2.000&ndash;11.000 RPM in 100-rpm-Schritten &ndash; <strong>keine Module</strong></span></div>
+                    <div class="spec-item"><span class="spec-label">Z&uuml;ndzeitpunkt</span><span class="spec-value">Die 6AL regelt <strong>keinen</strong> Z&uuml;ndzeitpunkt und keine Verstellkurve. Beides passiert im Verteiler 8479</span></div>
                     <div class="spec-item"><span class="spec-label">Spannung</span><span class="spec-value">12V &ndash; Direkt an Batterie (Plus UND Minus!)</span></div>
                     <div class="spec-item"><span class="spec-label">Zylinder-Select</span><span class="spec-value">Werksseitig auf 8-Zylinder eingestellt</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Wichtig:</strong> Keine Massivkern-Z&uuml;ndkabel verwenden! Nur Spiral-Core oder Suppression-Type. Empf. Rev Limiter f&uuml;r diesen Build: <strong>6.500 RPM</strong>.</div>
@@ -1504,6 +1506,10 @@
                     <div class="spec-item"><span class="spec-label">Antriebszahnrad</span><span class="spec-value">Iron Gear (im Lieferumfang)</span></div>
                     <div class="spec-item"><span class="spec-label">Kappe/Rotor</span><span class="spec-value">Small Diameter Cap (HEI-Style) + Race Rotor mitgeliefert</span></div>
                     <div class="spec-item"><span class="spec-label">Voraussetzung</span><span class="spec-value">Erfordert MSD 6/7/8-Series Z&uuml;ndbox</span></div>
+                    <div class="spec-item"><span class="spec-label">Unterdruck-Abgriff</span><span class="spec-value"><strong>Ported Vacuum</strong> (Herstellervorgabe) &ndash; konkreter Anschluss an der DRLA-Anlage <strong>noch zu verifizieren</strong></span></div>
+                    <div class="spec-item"><span class="spec-label">Z&uuml;ndbox</span><span class="spec-value">MSD 6AL &ndash; vorhandene Teilenummer am Fahrzeug noch zu best&auml;tigen</span></div>
+                    <div class="spec-item"><span class="spec-label">Drehzahlbegrenzer</span><span class="spec-value">&uuml;ber die 6AL (zwei Drehschalter, 100-rpm-Schritte)</span></div>
+                    <div class="spec-item"><span class="spec-label">Z&uuml;ndkurve</span><span class="spec-value">&uuml;ber den Verteiler 8479 &ndash; Grundz&uuml;ndung + Federn + Anschlagb&uuml;chse + Unterdruckdose. <strong>Nicht</strong> &uuml;ber die 6AL: die regelt keinen Z&uuml;ndzeitpunkt</span></div>
                     <div class="spec-item"><span class="spec-label">CARB</span><span class="spec-value">E.O. Approved</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis Iron Gear:</strong> Das mitgelieferte Iron Gear ist kompatibel mit Hydraulic Roller Cams. Alternative: PN 84791 mit Steel Gear (Melonized QPQ) f&uuml;r h&ouml;here Haltbarkeit.</div>
                     <div class="comp-photo-strip" data-comp-gallery="distributor"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('distributor')">&#128444; <span id="distributor-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('distributor')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
@@ -1637,7 +1643,7 @@
                     <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
                         <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Total Timing 5.0L (302): <strong>36&ndash;38&deg;</strong></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Empf. 32&ndash;36&deg; (9.8:1 CR, konservativer)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Vacuum Advance an <strong>Ported Vacuum</strong> (nicht Manifold!)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MSD 8479 + Ported Vacuum dokumentiert</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Vacuum Advance an <strong>Ported Vacuum</strong> (nicht Manifold!)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">8479 mit Unterdruckdose vorhanden &ndash; <strong>Abgriff an der DRLA-Anlage noch offen</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">teilweise</td></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndkabel-Routing: Inductive Crossfire vermeiden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Dokumentiert</strong> (s.u.)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Verteilerzahnrad: Material passend zur Nockenwelle</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MSD 8479: Iron Gear f&uuml;r Hyd. Roller &#10004;</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
                         <tr><td style="padding:0.2rem;">Falsche H&ouml;he des Verteilerzahnrads vermeiden</td><td style="padding:0.2rem;">MSD Werks-Einstellung, nicht ver&auml;ndert</td><td style="text-align:center;padding:0.2rem;color:#276749;font-weight:700;">&#10004;</td></tr>
@@ -4720,7 +4726,7 @@
         'Steuerkettendeckel (Timing Chain Cover)':'Timing Chain Cover',
         'Harmonic Balancer \u2013 Ford Perf. M-6316-D302':'Harmonic Balancer \u2013 Ford Perf. M-6316-D302',
         'Wasserpumpe \u2013 Milodon 16230 High Volume Aluminium':'Water Pump \u2013 Milodon 16230 High Volume Aluminum',
-        'MSD 6AL Z\u00fcndbox (PN 6420)':'MSD 6AL Ignition Box (PN 6420)',
+        'MSD 6AL Z\u00fcndbox (Teilenummer offen)':'MSD 6AL Ignition Box (part number TBC)',
         'Z\u00fcndverteiler \u2013 MSD 8479 Street Pro-Billet':'Distributor \u2013 MSD 8479 Street Pro-Billet',
         'Z\u00fcndspule (Ignition Coil)':'Ignition Coil',
         'Kappe & Rotor \u2013 MSD 84315 Kit':'Cap & Rotor \u2013 MSD 84315 Kit',

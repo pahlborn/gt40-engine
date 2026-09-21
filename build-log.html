@@ -3259,9 +3259,27 @@
                 <li><span class="de"><strong>Verteilerfinger-Position pruefen:</strong> Bei vollstaendig eingesetztem Verteiler muss Verteilerfinger auf #1 Anschlussposition zeigen</span><span class="en"><strong>Verify rotor position:</strong> With distributor fully seated, rotor must point at #1 terminal position</span></li>
                 <li><span class="de"><strong>Snug hold-down:</strong> Tighten hold-down clamp just enough to hold position &ndash; final timing adjustment comes later (Klemmschraube leicht anziehen &ndash; Feineinstellung sp&auml;ter)</span><span class="en"><strong>Snug hold-down:</strong> Tighten hold-down clamp just enough to hold position &ndash; final timing adjustment comes later</span></li>
             </ol></div>
+            <div class="guide-block guide-full"><h4 class="measure">Ist-Aufnahme vor dem Einbau (Record Before Installing)</h4>
+                <div class="warning-box"><span class="de"><strong>Die vorhandene Feder- und B&uuml;chsenkombination zun&auml;chst nicht ver&auml;ndern.</strong> Wie bei den Vergasern gilt: erst aufnehmen, was verbaut ist. Die Verstellkurve l&auml;sst sich sp&auml;ter gezielt &auml;ndern &ndash; aber nur, wenn der Ausgangszustand dokumentiert ist.</span><span class="en"><strong>Do not change the existing spring and bushing combination yet.</strong> As with the carburetors: record what is fitted first. The advance curve can be changed later on purpose &ndash; but only if the starting point is documented.</span></div>
+                <div class="guide-input-row" style="margin-top:0.4rem;">
+                    <div><label>Verteiler PN:</label><input type="text" data-field="p3_dist_pn" placeholder="8479" oninput="autoSave()" style="width:70px;"></div>
+                    <div><label>Antriebszahnrad:</label><input type="text" data-field="p3_dist_gear" placeholder="Iron / Steel" oninput="autoSave()" style="width:90px;"></div>
+                    <div><label>Stop Bushing:</label><input type="text" data-field="p3_dist_bushing" placeholder="Farbe" oninput="autoSave()" style="width:80px;"></div>
+                </div>
+                <div class="guide-input-row" style="margin-top:0.3rem;">
+                    <div><label>Feder 1:</label><input type="text" data-field="p3_dist_spring1" placeholder="Farbe / St&auml;rke" oninput="autoSave()" style="width:95px;"></div>
+                    <div><label>Feder 2:</label><input type="text" data-field="p3_dist_spring2" placeholder="Farbe / St&auml;rke" oninput="autoSave()" style="width:95px;"></div>
+                    <div><label>Unterdruckdose:</label><input type="text" data-field="p3_dist_vac" placeholder="vorhanden / gesperrt" oninput="autoSave()" style="width:130px;"></div>
+                </div>
+                <ul style="margin-top:0.5rem;">
+                <li><span class="de"><strong>Welle und Zahnrad sichtpr&uuml;fen:</strong> Zahnflanken auf Einlaufspuren und Ausbr&uuml;che, Welle auf Radialspiel. Ein eingelaufenes Zahnrad ist der h&auml;ufigste Grund, den Verteiler gleich wieder auszubauen.</span><span class="en"><strong>Visually check shaft and gear:</strong> tooth flanks for wear and chipping, shaft for radial play. A worn gear is the most common reason to pull the distributor straight back out.</span></li>
+                <li><span class="de"><strong>Rotor- und Kappenposition dokumentieren:</strong> Foto vom eingesetzten Verteiler mit Blick auf die #1-Position. Beim Wiedereinbau spart das Raterei.</span><span class="en"><strong>Document rotor and cap position:</strong> photo of the fitted distributor showing the #1 position. Saves guesswork on reassembly.</span></li>
+                <li><span class="de">Die Fliehkraftverstellung sitzt <strong>oben auf der Welle</strong> und ist bei abgenommener Kappe und abgezogenem Rotor einsehbar &ndash; dort sitzen auch Federn und Anschlagb&uuml;chse.</span><span class="en">The centrifugal advance assembly sits <strong>on top of the shaft</strong> and is visible with cap and rotor removed &ndash; springs and stop bushing are there too.</span></li>
+                </ul>
+            </div>
             <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
                 <li><span class="de">Ford 302 Zuendfolge: 1-5-4-2-6-3-7-8, Verteiler dreht gegen den Uhrzeigersinn</span><span class="en">Ford 302 firing order: 1-5-4-2-6-3-7-8, distributor rotates counter-clockwise (gegen Uhrzeigersinn)</span></li>
-                <li><span class="de">MSD-Verteiler haben keine Unterdruckverstellung (keine Dose) &ndash; gesamte Verstellung elektronisch ueber MSD 6AL Box</span><span class="en">MSD distributors have no vacuum advance (no canister) &ndash; all advance is electronic via MSD 6AL box</span></li>
+                <li><span class="de"><strong>Der verbaute MSD 8479 hat eine Unterdruckdose.</strong> Die Verstellung passiert im <strong>Verteiler</strong>, nicht in der Z&uuml;ndbox: Grundz&uuml;ndung + Fliehkraftverstellung (Federn und Anschlagb&uuml;chse) + gegebenenfalls Unterdruckverstellung. Die Digital 6AL setzt <strong>nur den Drehzahlbegrenzer</strong> &ndash; ihre beiden Drehschalter haben mit dem Z&uuml;ndzeitpunkt nichts zu tun.</span><span class="en"><strong>The fitted MSD 8479 has a vacuum advance canister.</strong> Advance happens in the <strong>distributor</strong>, not in the ignition box: initial timing + centrifugal advance (springs and stop bushing) + vacuum advance where used. The Digital 6AL only sets the <strong>rev limiter</strong> &ndash; its two rotary switches have nothing to do with ignition timing.</span></li>
                 <li><span class="de">Das Verteiler-Zahnrad greift schraeg in das Nocken-Zahnrad &ndash; Verteilerfinger dreht sich ~15&deg; beim Einsetzen. Entsprechend vorhalten</span><span class="en">The distributor gear meshes with the cam gear at a helical angle &ndash; rotor rotates ~15&deg; as it drops in. Pre-offset accordingly</span></li>
                 <li><span class="de">Ansaugspinne am Verteilerfuss markieren um zu pruefen ob er sich beim Transport nicht verdreht hat</span><span class="en">Mark the intake manifold at the distributor base so you can verify it hasn&rsquo;t rotated during transport/handling</span></li>
             </ul></div>
@@ -3875,21 +3893,33 @@
     <input type="hidden" data-field="p4_revlimiter_n" data-legacy-note="p4_revlimiter">
     <div class="findings" data-findings="p4_revlimiter"></div>
     <div class="step-guide"><div class="guide-grid">
-        <div class="guide-block"><h4 class="measure">RPM Module Selection (Modul-Auswahl)</h4>
-            <div class="spec-line"><span>Recommended Chip</span><span class="spec-val">6,200&ndash;6,500 RPM</span></div>
-            <div class="spec-line"><span>Module Type</span><span class="spec-val">MSD RPM Module (2-pin plug)</span></div>
-            <div class="spec-line"><span>XE274HR Max RPM</span><span class="spec-val">~6,500 RPM (per COMP cam card)</span></div>
+        <div class="guide-block guide-full"><h4 class="prereq">Zuerst: welche 6AL ist verbaut? (Identify the box first)</h4>
+            <div class="warning-box"><span class="de"><strong>&#9888; Vor dem Einstellen die Teilenummer am Geh&auml;use ablesen.</strong> Die beiden 6AL-Varianten werden <strong>vollkommen unterschiedlich</strong> eingestellt. Wer nach Steckmodulen sucht, obwohl eine Digital 6AL verbaut ist, findet keine &ndash; und umgekehrt.</span><span class="en"><strong>&#9888; Read the part number off the box before setting anything.</strong> The two 6AL variants are set in completely different ways.</span></div>
+            <div class="spec-line"><span>Analoge 6AL</span><span class="spec-val">PN 6420 &ndash; RPM-Steckmodule</span></div>
+            <div class="spec-line"><span>Digital 6AL</span><span class="spec-val">PN 6425 &ndash; zwei Drehschalter</span></div>
+            <div class="guide-input-row" style="margin-top:0.4rem;">
+                <div><label>Verbaute Box (PN am Geh&auml;use):</label><input type="text" data-field="p4_6al_pn" placeholder="6420 / 6425 / andere" oninput="autoSave()" style="width:150px;"></div>
+                <div><label>Eingestellte Begrenzung:</label><input type="text" data-field="p4_6al_limit" placeholder="U/min" oninput="autoSave()" style="width:80px;"></div>
+            </div>
+            <div class="spec-line"><span>XE274HR Max RPM</span><span class="spec-val">~6.500 RPM (laut COMP Cam Card)</span></div>
         </div>
-        <div class="guide-block"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
-            <li><span class="de"><strong>1.</strong> MSD 6AL Box finden &ndash; RPM-Modul-Stecker (2-Pin-Stecker) suchen</span><span class="en"><strong>1.</strong> Locate MSD 6AL box &ndash; find RPM module plug (2-pin connector)</span></li>
-            <li><span class="de"><strong>2.</strong> Passenden RPM-Chip waehlen: 6.200 U/min (konservativ) oder 6.500 U/min (passend zur Nockenwelle)</span><span class="en"><strong>2.</strong> Select appropriate RPM pill/chip: 6,200 RPM (conservative) or 6,500 RPM (matches cam)</span></li>
-            <li><span class="de"><strong>3.</strong> Modul fest in Stecker einklicken &ndash; hoerbares Klicken sicherstellen</span><span class="en"><strong>3.</strong> Plug module firmly into connector &ndash; ensure positive click</span></li>
-            <li><span class="de"><strong>4.</strong> Ohne Modul: MSD laeuft auf ~9.000 U/min (kein Schutz!)</span><span class="en"><strong>4.</strong> If no module installed: MSD defaults to ~9,000 RPM (no protection!)</span></li>
+        <div class="guide-block"><h4 class="procedure">Variante A &ndash; analoge 6AL (PN 6420)</h4><ul>
+            <li><span class="de"><strong>1.</strong> RPM-Modul-Stecker (2-Pin) an der Box suchen</span><span class="en"><strong>1.</strong> Locate the RPM module plug (2-pin) on the box</span></li>
+            <li><span class="de"><strong>2.</strong> Passendes RPM-Modul w&auml;hlen: 6.200 U/min (konservativ) oder 6.500 U/min (passend zur Nockenwelle)</span><span class="en"><strong>2.</strong> Select the RPM pill: 6,200 rpm (conservative) or 6,500 rpm (matches the cam)</span></li>
+            <li><span class="de"><strong>3.</strong> Modul fest in den Stecker einklicken &ndash; h&ouml;rbares Klicken sicherstellen</span><span class="en"><strong>3.</strong> Plug the module in firmly &ndash; ensure a positive click</span></li>
+            <li><span class="de"><strong>4.</strong> <strong>Ohne Modul gibt es keinen Drehzahlschutz.</strong> Die kursierende Angabe &bdquo;dann l&auml;uft sie auf ~9.000 U/min&ldquo; ist nicht belegt &ndash; verlass dich nicht darauf, sondern setze ein Modul ein.</span><span class="en"><strong>4.</strong> <strong>No module means no rev protection.</strong> Do not rely on a default figure &ndash; fit a module.</span></li>
         </ul></div>
-        <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
-            <li><span class="de">Zum Einlaufen: 6.200 U/min Chip verwenden &ndash; nach Einlaufen auf 6.500 wechseln</span><span class="en">For break-in: use 6,200 RPM chip &ndash; swap to 6,500 after break-in complete</span></li>
-            <li><span class="de">Ersatz-Modul-Chips mit verschiedenen Drehzahlwerten im Werkzeugkasten mitfuehren</span><span class="en">Carry spare module chips of different RPM values in toolbox</span></li>
-            <li><span class="de">MSD 6AL hat auch 2-Step Launch Control &ndash; optional fuer Rennstrecke</span><span class="en">MSD 6AL also has 2-step launch control &ndash; optional for track use</span></li>
+        <div class="guide-block"><h4 class="procedure">Variante B &ndash; Digital 6AL (PN 6425)</h4><ul>
+            <li><span class="de"><strong>1.</strong> Die zwei versiegelten Drehschalter an der Box suchen &ndash; <strong>keine Module</strong>.</span><span class="en"><strong>1.</strong> Locate the two sealed rotary switches &ndash; there are no modules.</span></li>
+            <li><span class="de"><strong>2.</strong> Einstellbereich 2.000&ndash;11.000 U/min in 100-rpm-Schritten. Der linke Schalter stellt die Tausender, der rechte die Hunderter &ndash; Zuordnung am Geh&auml;useaufdruck pr&uuml;fen, nicht raten.</span><span class="en"><strong>2.</strong> Range 2,000&ndash;11,000 rpm in 100 rpm steps. Check the legend on the case rather than guessing which switch is which.</span></li>
+            <li><span class="de"><strong>3.</strong> Zylinderzahl wird bei der Digital 6AL &uuml;ber Kabelschlaufen gew&auml;hlt, nicht &uuml;ber einen Schalter &ndash; Einstellung auf 8 Zylinder pr&uuml;fen.</span><span class="en"><strong>3.</strong> Cylinder count is selected by wire loops, not a switch &ndash; verify it is set for 8 cylinders.</span></li>
+            <li><span class="de"><strong>4.</strong> Eingestellten Wert nach jedem Eingriff ablesen und hier notieren.</span><span class="en"><strong>4.</strong> Read back and record the value after any change.</span></li>
+        </ul></div>
+        <div class="guide-block guide-full"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
+            <li><span class="de"><strong>Die 6AL stellt keinen Z&uuml;ndzeitpunkt ein.</strong> Sie begrenzt nur die Drehzahl. Grundz&uuml;ndung, Fliehkraft- und Unterdruckverstellung sitzen im Verteiler 8479.</span><span class="en"><strong>The 6AL sets no ignition timing.</strong> It only limits rpm. Initial, centrifugal and vacuum advance all live in the 8479 distributor.</span></li>
+            <li><span class="de">Zum Einlaufen konservativer begrenzen (z.&nbsp;B. 6.200 U/min), nach dem Einlaufen anheben.</span><span class="en">Limit conservatively for break-in (e.g. 6,200 rpm), raise it afterwards.</span></li>
+            <li><span class="de">Bei der analogen 6AL: Ersatzmodule mit verschiedenen Drehzahlwerten im Werkzeugkasten mitf&uuml;hren.</span><span class="en">With the analog 6AL: carry spare modules in the toolbox.</span></li>
+            <li><span class="de"><strong>2-Step Launch Control hat die 6AL nicht.</strong> Zwei Drehzahlstufen bietet erst die 6AL-2 (PN 6421) beziehungsweise die 7er-Serie. Eine fr&uuml;here Fassung dieses Kapitels behauptete das Gegenteil.</span><span class="en"><strong>The 6AL has no 2-step launch control.</strong> Two-stage rev limiting starts with the 6AL-2 (PN 6421) or the 7-series.</span></li>
         </ul></div>
     </div></div>
 </div>
@@ -4241,12 +4271,15 @@
             <div class="guide-block guide-full"><h4 class="prereq">Basics &ndash; Ignition Advance System (Grundlagen &ndash; Z&uuml;ndverstellung)</h4><ul>
                 <li><span class="de"><strong>Initial Timing (Grundz&uuml;ndung):</strong> Set with timing light at idle, vacuum disconnected &ndash; e.g. 10&ndash;14&deg; BTDC</span><span class="en"><strong>Initial Timing:</strong> Set with timing light at idle, vacuum disconnected &ndash; e.g. 10&ndash;14&deg; BTDC</span></li>
                 <li><span class="de"><strong>Fliehkraftverstellung:</strong> Mechanische Verstellung ueber Gewichte &amp; Federn im Verteiler &ndash; fuegt Grade mit steigender Drehzahl hinzu</span><span class="en"><strong>Centrifugal Advance (Fliehkraftverstellung):</strong> Mechanical advance via weights &amp; springs inside distributor &ndash; adds degrees as RPM rises</span></li>
-                <li><span class="de"><strong>Total Timing (Gesamtz&uuml;ndung):</strong> Initial + Centrifugal &ndash; all-in by ~3,000&ndash;3,500 RPM. Target: 32&ndash;36&deg; total</span><span class="en"><strong>Total Timing:</strong> Initial + Centrifugal &ndash; all-in by ~3,000&ndash;3,500 RPM. Target: 32&ndash;36&deg; total</span></li>
-                <li><span class="de"><strong>Unterdruckverstellung:</strong> Zusaetzliche Verstellung bei Teillast-Fahrt fuer Verbrauch &amp; niedrigere Zylindertemperaturen &ndash; +8&ndash;10&deg;</span><span class="en"><strong>Vacuum Advance (Unterdruckverstellung):</strong> Additional advance at part-load cruise for economy &amp; lower cylinder temps &ndash; +8&ndash;10&deg;</span></li>
+                <li><span class="de"><strong>Total Mechanical Timing:</strong> Grundz&uuml;ndung + Fliehkraftverstellung, voll ab etwa 3000&ndash;3500 rpm. <strong>Gemessen wird ausschlie&szlig;lich bei abgezogenem und verschlossenem Unterdruckanschluss</strong> &ndash; sonst misst man etwas anderes, als man notiert.</span><span class="en"><strong>Total Mechanical Timing:</strong> initial + centrifugal, all-in by roughly 3000&ndash;3500 rpm. <strong>Measured only with the vacuum line disconnected and the port plugged</strong> &ndash; otherwise you are measuring something other than what you write down.</span></li>
+                <li><span class="de"><strong>Die vollst&auml;ndige Rechnung:</strong> Grundz&uuml;ndung + Fliehkraft = Total Mechanical. Bei aktiver Unterdruckdose kommt im Teillastbetrieb noch die Unterdruckverstellung obendrauf &ndash; der tats&auml;chliche Z&uuml;ndwinkel liegt dort also <strong>h&ouml;her</strong> als der notierte Total-Wert. Diese Verwechslung ist die h&auml;ufigste bei Verteilern mit Unterdruckdose.</span><span class="en"><strong>The full sum:</strong> initial + centrifugal = total mechanical. With an active vacuum canister, vacuum advance is added on top under part load &ndash; the actual timing there is <strong>higher</strong> than the recorded total. This is the most common confusion on distributors with a vacuum canister.</span></li>
+                <li><span class="de"><strong>Unterdruckverstellung:</strong> Zus&auml;tzliche Verstellung bei Teillast f&uuml;r Verbrauch und niedrigere Zylindertemperaturen. Der MSD 8479 hat eine Unterdruckdose. <strong>Wie viel Grad sie tats&auml;chlich beitr&auml;gt, wird gemessen</strong> &ndash; ein Katalogwert gilt hier nicht als unser Wert.</span><span class="en"><strong>Vacuum advance:</strong> additional advance at part load for economy and lower cylinder temperatures. The MSD 8479 has a vacuum canister. <strong>How many degrees it actually contributes is measured</strong> &ndash; a catalogue figure is not our value.</span></li>
             </ul></div>
 
             <!-- A) Advance-Stop-Bushing -->
             <div class="guide-block guide-full"><h4 class="measure">A) Advance-Stop-Bushing &ndash; Max Centrifugal (Fliehkraft-Begrenzungsh&uuml;lse)</h4>
+                <div class="warning-box"><span class="de"><strong>Diese Tabelle ist gegen das MSD-Beiblatt zu pr&uuml;fen.</strong> Mehrere unabh&auml;ngige Quellen nennen f&uuml;r die Pro-Billet-Familie eine andere Zuordnung &ndash; Rot 28&deg; (kleinste), Silber 25&deg;, Gr&uuml;n 23&deg;, Blau 21&deg; (werksseitig verbaut), Lila 19&deg;, Schwarz 18&deg; (gr&ouml;&szlig;te) &ndash; und damit auch die umgekehrte Logik: <em>kleinere</em> B&uuml;chse = <em>mehr</em> Verstellung. Ein Gold-Wert kommt dort nicht vor. <strong>Ma&szlig;geblich ist die verbaute B&uuml;chse</strong>, aufgenommen in Phase 3, Kapitel 23, und die gemessene Verstellung oben.</span><span class="en"><strong>This table must be checked against the MSD instruction sheet.</strong> Several independent sources give a different mapping for the Pro-Billet family &ndash; red 28&deg; (smallest), silver 25&deg;, green 23&deg;, blue 21&deg; (factory fitted), purple 19&deg;, black 18&deg; (largest) &ndash; and therefore the inverse logic: a <em>smaller</em> bushing gives <em>more</em> advance. No gold value appears there. <strong>What counts is the bushing actually fitted</strong>, recorded in phase 3, chapter 23, and the advance measured above.</span></div>
+                
                 <table class="guide-table">
                     <thead><tr><th>Bushing Color (Farbe)</th><th>Max Centrifugal Advance</th></tr></thead>
                     <tbody>
@@ -4309,9 +4342,47 @@
                 <li><span class="de"><strong>Build-Daten:</strong> ~9,7:1 Verdichtung, CNC-Koepfe (AFR 1399), MSD CDI, 98 ROZ Kraftstoff</span><span class="en"><strong>Build specs:</strong> ~9.7:1 CR, CNC heads (AFR 1399), MSD CDI, 98 ROZ fuel</span></li>
                 <li><span class="de"><strong>Initial Timing (Grundz&uuml;ndung):</strong> 10&ndash;14&deg; BTDC</span><span class="en"><strong>Initial Timing:</strong> 10&ndash;14&deg; BTDC</span></li>
                 <li><span class="de"><strong>Gesamtvorverstellung:</strong> 32&ndash;36&deg;</span><span class="en"><strong>Total Timing (Gesamtvorverstellen):</strong> 32&ndash;36&deg;</span></li>
-                <li><span class="de"><strong>Unterdruckverstellung:</strong> +8&ndash;10&deg; bei Teillast</span><span class="en"><strong>Vacuum Advance (Unterdruck):</strong> +8&ndash;10&deg; at part load (Teillast)</span></li>
+                <li><span class="de"><strong>Unterdruckverstellung:</strong> vorhanden (MSD 8479) &ndash; tats&auml;chliche Zusatzverstellung messen und unten eintragen</span><span class="en"><strong>Vacuum advance:</strong> fitted (MSD 8479) &ndash; measure the actual additional advance and record it below</span></li>
             </ul></div>
 
+            <div class="guide-block guide-full"><h4 class="measure">Ist-Zustand Z&uuml;ndkurve (Actual Ignition Curve)</h4>
+                <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de">Erst aufnehmen, was der Verteiler tut &ndash; dann entscheiden, ob etwas ge&auml;ndert wird. <strong>Noch keine Sollwerte eintragen</strong>, solange die endg&uuml;ltige Kurve f&uuml;r AFR&nbsp;1399 / XE274HR / 98&ndash;100&nbsp;ROZ nicht festgelegt ist.</span><span class="en">First record what the distributor actually does &ndash; then decide whether to change anything. <strong>No target values yet</strong> while the final curve for AFR&nbsp;1399 / XE274HR / 98&ndash;100&nbsp;RON is not settled.</span></p>
+                <table class="guide-table">
+                    <thead><tr><th>Parameter</th><th>Ist</th><th>Anmerkung</th></tr></thead>
+                    <tbody>
+                        <tr><td>Initial Timing</td><td><input type="text" data-field="p4_tim_initial" placeholder="&deg;BTDC" oninput="autoSave()"></td>
+                            <td><span class="de">Leerlauf, Unterdruck ab und verschlossen</span><span class="en">At idle, vacuum disconnected and plugged</span></td></tr>
+                        <tr><td>Stop Bushing</td><td><input type="text" data-field="p4_tim_bushing" placeholder="Farbe" oninput="autoSave()"></td>
+                            <td><span class="de">begrenzt den <strong>Verstellweg</strong></span><span class="en">limits the <strong>amount</strong> of advance</span></td></tr>
+                        <tr><td>Mechanical Advance</td><td><input type="text" data-field="p4_tim_mech" placeholder="&deg;" oninput="autoSave()"></td>
+                            <td><span class="de">tats&auml;chlich gemessen, nicht aus der Tabelle</span><span class="en">measured, not taken from the table</span></td></tr>
+                        <tr><td>Feder 1</td><td><input type="text" data-field="p4_tim_spring1" placeholder="Farbe" oninput="autoSave()"></td>
+                            <td rowspan="2"><span class="de">bestimmen die <strong>Verstellkurve</strong> &ndash; wann die Verstellung einsetzt und wann sie voll ist</span><span class="en">determine the <strong>rate</strong> &ndash; when advance starts and when it is all-in</span></td></tr>
+                        <tr><td>Feder 2</td><td><input type="text" data-field="p4_tim_spring2" placeholder="Farbe" oninput="autoSave()"></td></tr>
+                        <tr><td>Beginn Mechanical Advance</td><td><input type="text" data-field="p4_tim_start_rpm" placeholder="rpm" oninput="autoSave()"></td>
+                            <td><span class="de">Drehzahl, ab der die Verstellung einsetzt</span><span class="en">rpm at which advance begins</span></td></tr>
+                        <tr><td>Full Mechanical Advance</td><td><input type="text" data-field="p4_tim_full_rpm" placeholder="rpm" oninput="autoSave()"></td>
+                            <td><span class="de">Drehzahl, ab der nichts mehr dazukommt</span><span class="en">rpm from which nothing more is added</span></td></tr>
+                        <tr><td><strong>Total Mechanical Timing</strong></td><td><input type="text" data-field="p4_tim_total" placeholder="&deg;BTDC" oninput="autoSave()"></td>
+                            <td><span class="de">Initial + Mechanical, Unterdruck ab</span><span class="en">initial + mechanical, vacuum disconnected</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="guide-block guide-full"><h4 class="measure">Ist-Zustand Unterdruckverstellung (Actual Vacuum Advance)</h4>
+                <table class="guide-table">
+                    <thead><tr><th>Parameter</th><th>Ist</th><th>Anmerkung</th></tr></thead>
+                    <tbody>
+                        <tr><td>Anschlussart</td><td><input type="text" data-field="p4_vac_source" placeholder="Ported Vacuum" oninput="autoSave()"></td>
+                            <td><span class="de">MSD sieht f&uuml;r diese Verteilerfamilie <strong>ported vacuum</strong> vor</span><span class="en">MSD specifies <strong>ported vacuum</strong> for this distributor family</span></td></tr>
+                        <tr><td>Beginn bei</td><td><input type="text" data-field="p4_vac_start" placeholder="inHg" oninput="autoSave()"></td><td></td></tr>
+                        <tr><td>vollst&auml;ndig bei</td><td><input type="text" data-field="p4_vac_full" placeholder="inHg" oninput="autoSave()"></td><td></td></tr>
+                        <tr><td>max. zus&auml;tzliche Verstellung</td><td><input type="text" data-field="p4_vac_max" placeholder="&deg;" oninput="autoSave()"></td>
+                            <td><span class="de">kommt im Teillastbetrieb <em>zus&auml;tzlich</em> zum Total Mechanical dazu</span><span class="en">added <em>on top of</em> total mechanical under part load</span></td></tr>
+                        <tr><td>Status</td><td><input type="text" data-field="p4_vac_status" placeholder="aktiv / gesperrt" oninput="autoSave()"></td><td></td></tr>
+                    </tbody>
+                </table>
+                <div class="warning-box"><span class="de"><strong>Noch offen an diesem Fahrzeug:</strong> wo das geeignete Ported-Vacuum-Signal an der Anlage mit vier DRLA abgenommen wird. Ein Anschluss unterhalb der Drosselklappe liefert Manifold Vacuum und damit ein anderes Verhalten &ndash; volle Verstellung bereits im Leerlauf. Bis das gekl&auml;rt ist, gilt der Abgriff als <strong>nicht festgelegt</strong>.</span><span class="en"><strong>Still open on this car:</strong> where the suitable ported vacuum signal is taken from on the four-DRLA installation. A port below the throttle plate gives manifold vacuum and therefore different behaviour &ndash; full advance already at idle. Until that is settled the take-off point counts as <strong>not determined</strong>.</span></div>
+            </div>
             <div class="warning-box"><strong>Bei Klopfen sofort Timing zur&uuml;cknehmen!</strong> (If detonation/knock occurs, immediately retard timing!)</div>
 
             <!-- Measurement inputs -->
@@ -5817,7 +5888,7 @@
         'Steuerkettendeckel (Timing Chain Cover)':'Timing Chain Cover',
         'Harmonic Balancer \u2013 Ford Perf. M-6316-D302':'Harmonic Balancer \u2013 Ford Perf. M-6316-D302',
         'Wasserpumpe \u2013 Milodon 16230 High Volume Aluminium':'Water Pump \u2013 Milodon 16230 High Volume Aluminum',
-        'MSD 6AL Z\u00fcndbox (PN 6420)':'MSD 6AL Ignition Box (PN 6420)',
+        'MSD 6AL Z\u00fcndbox (Teilenummer offen)':'MSD 6AL Ignition Box (part number TBC)',
         'Z\u00fcndverteiler \u2013 MSD 8479 Street Pro-Billet':'Distributor \u2013 MSD 8479 Street Pro-Billet',
         'Z\u00fcndspule (Ignition Coil)':'Ignition Coil',
         'Kappe & Rotor \u2013 MSD 84315 Kit':'Cap & Rotor \u2013 MSD 84315 Kit',

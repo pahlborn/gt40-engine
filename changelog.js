@@ -13,6 +13,24 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v41',
+      date: '2026-09-21',
+      title: 'Zuendung: MSD 8479 mit Unterdruckdose, 6AL nur Drehzahlbegrenzer',
+      changes: [
+        { type: 'fix', text: 'Gestrichen: "MSD-Verteiler haben keine Unterdruckverstellung" und "die gesamte Verstellung laeuft elektronisch ueber die MSD 6AL Box". Beides war falsch. Der verbaute MSD 8479 hat eine Unterdruckdose, und die Verstellung sitzt im Verteiler: Grundzuendung plus Fliehkraftverstellung ueber Federn und Anschlagbuechse plus Unterdruckdose. Die 6AL setzt ausschliesslich den Drehzahlbegrenzer. Wer der alten Aussage folgte, suchte die Zuendkurve an der falschen Komponente.' },
+        { type: 'neu', text: 'Neuer Block "Ist-Aufnahme vor dem Einbau" im Verteiler-Kapitel: Teilenummer, Antriebszahnrad, Anschlagbuechse, beide Federn, Unterdruckdose vorhanden oder gesperrt. Ausdruecklich mit dem Hinweis, die vorhandene Feder- und Buechsenkombination zunaechst nicht zu veraendern - dieselbe Logik wie bei den Vergasern: erst aufnehmen, was verbaut ist.' },
+        { type: 'fix', text: '"Total Timing" ist jetzt eindeutig definiert. Gemeint ist immer das Total Mechanical Timing, gemessen mit abgezogenem und verschlossenem Unterdruckschlauch. Der Unterdruckanteil kommt bei Teillast obendrauf und zaehlt nicht dazu - genau hier entsteht die haeufigste Verwechslung.' },
+        { type: 'neu', text: 'Zwei Ist-Datenbloecke im Kapitel Zuendzeitpunkt: einer fuer die mechanische Kurve (Grundzuendung, Anschlagbuechse, mechanischer Vorlauf, beide Federn, Beginn und Ende der Verstellung in rpm, Total Mechanical Timing), einer fuer die Unterdruckverstellung (Anschlussart, Beginn und Ende in inHg, maximale Zusatzverstellung, Status). Bewusst ohne Sollwerte: die endgueltige Kurve fuer AFR 165, XE274HR und 98-100 ROZ wird separat festgelegt.' },
+        { type: 'fix', text: 'Die generische Angabe "Vacuum Advance bringt 8-12 Grad bei Teillast" stand da, als waere es unser Wert. Das ist ein Marktumfang ueber verschiedene Dosen hinweg. Gemessen wird am Fahrzeug.' },
+        { type: 'fix', text: 'Die Farb-/Gradzuordnung der MSD-Anschlagbuechsen war im Projekt dreimal unterschiedlich dokumentiert, und die externen Quellen beschreiben die Wirkrichtung zusaetzlich umgekehrt. Keine der Zuordnungen ist belegt. Der Zuendungs-Guide fuehrt die Widersprueche jetzt offen auf und verweist auf das dem Verteiler beiliegende MSD-Datenblatt als einzige verbindliche Quelle.' },
+        { type: 'fix', text: 'Aus dem Zuendungs-Guide entfernt: die Bloecke "Empfehlung START" und "Empfehlung NACH EINFAHREN" mit konkreten Gradzahlen. Sie beruhten auf der ungeklaerten Buechsenzuordnung und widersprachen sich selbst - 37 Grad Total gegen eine Obergrenze von 36 Grad im selben Dokument. An ihre Stelle tritt die Reihenfolge: Ist-Zustand dokumentieren, messen, eintragen, dann erst die Sollkurve festlegen.' },
+        { type: 'fix', text: 'Der Ported-Vacuum-Abgriff an der Vierfach-DRLA-Anlage galt als geklaert. Er ist es nicht. Welcher Anschluss tatsaechlich Ported Vacuum fuehrt, ist noch zu verifizieren - im Leerlauf darf dort kein nennenswerter Unterdruck anliegen. Die Checkliste in den Specs steht entsprechend auf teilweise erledigt statt auf erledigt.' },
+        { type: 'fix', text: 'Die Specs fuehrten die Zuendbox als "PN 6420" und beschrieben zugleich Drehschalter - das sind zwei verschiedene Geraete. Die analoge 6AL (6420) wird ueber Steckmodule eingestellt, die Digital 6AL (6425) ueber zwei Drehschalter in 100-rpm-Schritten. Welche verbaut ist, wird am Gehaeuse abgelesen. Das Kapitel Drehzahlbegrenzer beschreibt jetzt beide Wege.' },
+        { type: 'fix', text: 'Gestrichen: "MSD 6AL hat auch 2-Step Launch Control". Zwei Drehzahlstufen bietet erst die 6AL-2 (6421) beziehungsweise die 7er-Serie.' },
+        { type: 'neu', text: 'Neue Testreihe tests/zuendung.test.mjs mit 18 Pruefungen: die widerlegten Saetze duerfen auf keiner Seite mehr stehen - auch nicht in den verwaisten Phasendateien, die per URL weiterhin erreichbar sind -, die Begriffsdefinition muss in Build-Log und Guide identisch sein, und jedes neue Ist-Feld muss ein echtes Eingabefeld sein. Ein contenteditable-Feld saehe bedienbar aus und wuerde nie gespeichert.' }
+      ]
+    },
+    {
       version: 'v40',
       date: '2026-09-21',
       title: 'Altlasten aus einem frueheren Fahrzeugstand',
