@@ -88,7 +88,7 @@
                 <tr>
                     <td><strong>Unterdruckverstellung</strong></td>
                     <td>Vacuum Advance</td>
-                    <td>Zus&auml;tzlich <strong>8&ndash;12&deg;</strong> bei Teillast. <strong>NUR an Ported Vacuum anschlie&szlig;en</strong> (nicht Manifold Vacuum!). Wirkt nur bei Teillast/Cruising &ndash; bei Volllast f&auml;llt der Unterdruck weg.</td>
+                    <td>Zus&auml;tzliche Fr&uuml;hverstellung bei Teillast, abh&auml;ngig vom verbauten Dosentyp (branchen&uuml;blich liegen Dosen im Bereich <strong>8&ndash;15&deg;</strong> &ndash; das ist ein Marktumfang, <strong>kein Wert f&uuml;r unseren Motor</strong>; der Ist-Wert wird am Fahrzeug gemessen und im Build-Log erfasst). <strong>NUR an Ported Vacuum anschlie&szlig;en</strong> (nicht Manifold Vacuum!). Wirkt nur bei Teillast/Cruising &ndash; bei Volllast f&auml;llt der Unterdruck weg.</td>
                 </tr>
                 <tr>
                     <td><strong>All-In RPM</strong></td>
@@ -97,9 +97,10 @@
                 </tr>
             </table>
             <div class="info">
-                <strong>Formel:</strong> Total Timing = Initial Timing + Centrifugal Advance<br>
-                Beispiel: 12&deg; Initial + 21&deg; Centrifugal = <strong>33&deg; Total</strong><br>
-                Vacuum Advance kommt on top, z&auml;hlt aber nicht zum &bdquo;Total Timing&ldquo; im klassischen Sinne.
+                <strong>Formel:</strong> Initial Timing + Mechanical Advance = <strong>Total Mechanical Timing</strong><br>
+                Rechenbeispiel (generisch, kein Sollwert f&uuml;r diesen Motor): 12&deg; Initial + 21&deg; mechanisch = 33&deg; Total Mechanical Timing<br>
+                <strong>Definition:</strong> &bdquo;Total Timing&ldquo; meint in diesem Projekt <em>immer</em> das Total Mechanical Timing, <strong>gemessen mit abgezogenem und verschlossenem Unterdruckschlauch</strong>.<br>
+                Der Vacuum Advance kommt bei Teillast zus&auml;tzlich oben drauf (Initial + Mechanical + Vacuum). Er z&auml;hlt <strong>nicht</strong> zum Total Mechanical Timing &ndash; genau hier entsteht die h&auml;ufigste Verwechslung.
             </div>
         </details>
     </div>
@@ -111,8 +112,9 @@
             <ul>
                 <li><strong>2x Heavy Silver Springs</strong> (Werksauslieferung = langsamste Kurve)</li>
                 <li>Zus&auml;tzliche Federn im <strong>Advance Kit MSD 8464</strong> (separat erh&auml;ltlich)</li>
-                <li><strong>Advance Stop Bushings:</strong> Silber (21&deg;), Blau (25&deg;), Schwarz (28&deg;)</li>
-                <li><strong>Vacuum Advance Dose MSD 8463</strong> (separate Teilenummer, nicht im Lieferumfang)</li>
+                <li><strong>Advance Stop Bushings:</strong> Satz farbcodierter Anschlagb&uuml;chsen. <strong>Die Zuordnung Farbe &rarr; Grad ist aus dem dem Verteiler beiliegenden MSD-Datenblatt zu entnehmen</strong> &ndash; siehe Warnhinweis im Abschnitt &bdquo;Advance Stop Bushings&ldquo;.</li>
+                <li><strong>Vacuum Advance:</strong> Der <strong>MSD 8479</strong> wird <strong>mit Unterdruckdose ausgeliefert</strong>. Die separat erh&auml;ltliche Dose MSD 8463 ist ein Ersatz-/Nachr&uuml;stteil f&uuml;r MSD-Verteiler ohne Dose &ndash; f&uuml;r unseren 8479 <strong>nicht erforderlich</strong>.</li>
+                <li><strong>Verteilerzahnrad:</strong> Der 8479 wird mit Gusseisen-Zahnrad ausgeliefert (Paarung mit der Nockenwelle vor Einbau pr&uuml;fen).</li>
             </ul>
 
             <h3>Federkombinationen &amp; Kurvencharakteristik</h3>
@@ -152,27 +154,35 @@
         <details>
             <summary>3. Advance Stop Bushings (Begrenzungsbuchsen)</summary>
             <p>Die Stop Bushings begrenzen den <strong>maximalen mechanischen Vorlauf</strong> (Centrifugal Advance). Sie sitzen auf dem Advance-Mechanismus und limitieren den Weg der Fliehgewichte.</p>
+            <div class="warning">
+                <strong>&#9888; Farbzuordnung ungekl&auml;rt &ndash; nicht aus dieser Seite &uuml;bernehmen:</strong><br>
+                F&uuml;r die MSD-Anschlagb&uuml;chsen kursieren mehrere, einander <strong>widersprechende</strong> Farb-/Grad-Zuordnungen. Solange das dem Verteiler beiliegende MSD-Datenblatt nicht vorliegt, ist <strong>keine</strong> dieser Zuordnungen belastbar.<br>
+                <strong>Verbindlich ist ausschlie&szlig;lich:</strong> das MSD-Beiblatt zum vorhandenen Verteiler &ndash; hilfsweise der am ausgebauten Verteiler <strong>gemessene</strong> mechanische Vorlauf.
+            </div>
             <table>
-                <tr><th>Bushing-Farbe</th><th>Mech. Vorlauf</th><th>Rechenbeispiel</th></tr>
+                <tr><th>Quelle</th><th>Angegebene Zuordnung</th><th>Status</th></tr>
                 <tr>
-                    <td><strong>Silber</strong></td>
-                    <td>21&deg;</td>
-                    <td>12&deg; Initial + 21&deg; = <strong>33&deg; Total</strong></td>
+                    <td>Build-Log-Tabelle (Kapitel Z&uuml;ndung)</td>
+                    <td>Silber 25&deg;, Blau 21&deg;, Rot 18&deg;, Schwarz 15&deg;, Gold 11&deg;</td>
+                    <td>ungepr&uuml;ft</td>
                 </tr>
                 <tr>
-                    <td><strong>Blau</strong></td>
-                    <td>25&deg;</td>
-                    <td>10&deg; Initial + 25&deg; = <strong>35&deg; Total</strong></td>
+                    <td>Fr&uuml;here Fassung dieser Seite</td>
+                    <td>Silber 21&deg;, Blau 25&deg;, Schwarz 28&deg;</td>
+                    <td>zur&uuml;ckgezogen (widerspr&uuml;chlich)</td>
                 </tr>
                 <tr>
-                    <td><strong>Schwarz</strong></td>
-                    <td>28&deg;</td>
-                    <td>8&deg; Initial + 28&deg; = <strong>36&deg; Total</strong></td>
+                    <td>Externe Foren-/H&auml;ndlerquellen</td>
+                    <td>Rot 28&deg;, Silber 25&deg;, Gr&uuml;n 23&deg;, Blau 21&deg;, Lila 19&deg;, Schwarz 18&deg;</td>
+                    <td>ungepr&uuml;ft, Sekund&auml;rquelle</td>
                 </tr>
             </table>
+            <div class="info">
+                <strong>Zus&auml;tzlicher Stolperstein &ndash; Wirkrichtung:</strong> Die externen Quellen beschreiben die Logik <em>umgekehrt</em> zur fr&uuml;heren Fassung dieser Seite: dort ergibt die <strong>kleinere</strong> B&uuml;chse <strong>mehr</strong> Vorlauf (sie l&auml;sst den Fliehgewichten mehr Weg), die gr&ouml;&szlig;ere B&uuml;chse weniger. Wer die Wirkrichtung falsch annimmt, verstellt die Kurve in die falsche Richtung. Vor dem ersten Wechsel: Wirkrichtung am Datenblatt verifizieren oder vorher/nachher messen.
+            </div>
             <div class="warning">
                 <strong>&#9888; ACHTUNG:</strong> Zu viel Total Advance = Detonation/Klopfen = <strong>MOTORSCHADEN!</strong><br>
-                Niemals mehr als 36&deg; Total Timing an einem SBF mit Gusseisen-K&ouml;pfen und Stra&szlig;enbenzin. Bei hoher Verdichtung (&gt;10:1) oder schlechtem Kraftstoff entsprechend weniger.
+                Die Obergrenze f&uuml;r diesen Motor (AFR 165 Alu-K&ouml;pfe, XE274HR, 98&ndash;100 ROZ) ist <strong>noch nicht festgelegt</strong> und wird separat bestimmt. Aluminiumk&ouml;pfe vertragen typischerweise mehr Vorz&uuml;ndung als Gusseisenk&ouml;pfe &ndash; die verbreitete Faustregel &bdquo;max. 36&deg;&ldquo; stammt aus dem Gusseisen-Kontext und ist hier <strong>nicht ungepr&uuml;ft &uuml;bertragbar</strong>. Ma&szlig;geblich ist die klopffreie Abstimmung am Fahrzeug.
             </div>
         </details>
     </div>
@@ -191,24 +201,19 @@
                 <tr><td>Nockenwelle</td><td>Hydraulik-Roller <strong>XE274HR</strong></td></tr>
             </table>
 
-            <h3>Start-Setup (Erstinbetriebnahme / Einfahren)</h3>
-            <div class="success">
-                <strong>Empfehlung START:</strong><br>
-                Federn: <strong>2x Heavy Silver</strong> (Werksauslieferung, langsamste Kurve)<br>
-                Bushing: <strong>Silber (21&deg;)</strong><br>
-                Initial Timing: <strong>10&ndash;14&deg; BTDC</strong><br>
-                &rarr; Ergibt <strong>31&ndash;35&deg; Total Timing</strong><br>
-                All-In bei ca. 3500&ndash;4000 RPM
+            <h3>Vorgehen statt Vorgabe</h3>
+            <div class="warning">
+                <strong>&#9888; Diese Seite enth&auml;lt bewusst keine Soll-Z&uuml;ndkurve.</strong><br>
+                Die endg&uuml;ltige Kurve f&uuml;r diese Kombination (AFR 165, XE274HR, 98&ndash;100 ROZ) ist <strong>noch nicht festgelegt</strong>. Fr&uuml;here &bdquo;Empfehlung START&ldquo;- und &bdquo;Empfehlung NACH EINFAHREN&ldquo;-Bl&ouml;cke standen hier mit konkreten Gradzahlen &ndash; sie beruhten auf der ungekl&auml;rten Bushing-Zuordnung und waren untereinander widerspr&uuml;chlich (u.&nbsp;a. 37&deg; Total gegen eine Obergrenze von 36&deg; im selben Dokument). Sie wurden entfernt.
             </div>
-
-            <h3>Optimiertes Setup (nach Einfahren &amp; Testfahrten)</h3>
-            <div class="highlight">
-                <strong>Empfehlung NACH EINFAHREN:</strong><br>
-                Federn: <strong>1x Heavy Silver + 1x Light Blue</strong> (mittlere Kurve)<br>
-                Bushing: <strong>Blau (25&deg;) testen</strong><br>
-                Initial Timing: <strong>12&deg; BTDC</strong><br>
-                &rarr; Ergibt <strong>37&deg; Total</strong> &ndash; nur wenn klopffrei!<br>
-                Falls Klopfen: zur&uuml;ck auf Silber-Bushing (21&deg;) = 33&deg; Total
+            <div class="info">
+                <strong>Reihenfolge, die belastbar ist:</strong>
+                <ol>
+                    <li><strong>Ist-Zustand dokumentieren</strong>, bevor etwas ver&auml;ndert wird: vorhandene Federkombination, eingebaute Anschlagb&uuml;chse, Unterdruckdose vorhanden/gesperrt. Die vorhandene Feder-/B&uuml;chsenkombination <strong>zun&auml;chst nicht ver&auml;ndern</strong>.</li>
+                    <li><strong>Messen statt annehmen:</strong> Initial Timing, Beginn und Ende der mechanischen Verstellung (rpm), Total Mechanical Timing &ndash; jeweils mit abgezogenem und verschlossenem Unterdruckschlauch.</li>
+                    <li><strong>Werte eintragen</strong> in die Ist-Datenbl&ouml;cke im Build-Log (Kapitel Verteiler-Einbau und Kapitel Z&uuml;ndzeitpunkt).</li>
+                    <li><strong>Erst danach</strong> Sollkurve festlegen und schrittweise, klopf&uuml;berwacht ann&auml;hern.</li>
+                </ol>
             </div>
 
             <div class="info">
@@ -296,8 +301,8 @@
                 <li><strong>Stop Bushing wechseln</strong> (Change advance stop bushing): Sicherungsring (C-Clip) entfernen, alten Bushing herausnehmen, neuen einsetzen, Sicherungsring wieder befestigen.</li>
                 <li><strong>Zusammenbauen</strong> (Reassemble): Rotor aufsetzen, Verteilerkappe montieren.</li>
                 <li><strong>Initial Timing einstellen</strong> (Set base timing): Motor starten, Stroboskoplampe (Timing Light) an Z&uuml;ndkabel #1 anschlie&szlig;en. Markierung am Harmonic Balancer ablesen. Verteiler verdrehen bis gew&uuml;nschtes Initial Timing erreicht ist. Verteiler-Klemmschraube festziehen.</li>
-                <li><strong>Total Timing pr&uuml;fen</strong> (Check total timing): Motor auf <strong>3000&ndash;3500 RPM</strong> bringen. Total Timing mit Stroboskoplampe ablesen. Sollte bei 32&ndash;36&deg; BTDC liegen.</li>
-                <li><strong>Falls Total zu hoch:</strong> Kleineren Bushing einbauen (z.B. Blau &rarr; Silber) ODER st&auml;rkere/schwerere Federn verwenden.</li>
+                <li><strong>Total Mechanical Timing pr&uuml;fen</strong> (Check total timing): Motor auf <strong>3000&ndash;3500 RPM</strong> bringen, Unterdruckschlauch weiterhin abgezogen und verschlossen. Wert mit Stroboskoplampe ablesen und <strong>als Ist-Wert notieren</strong> &ndash; ein Sollfenster ist f&uuml;r diesen Motor noch nicht festgelegt.</li>
+                <li><strong>Falls Total zu hoch:</strong> Anschlagb&uuml;chse mit <strong>geringerem Vorlaufwert laut MSD-Beiblatt</strong> einbauen (nicht nach Farbe raten &ndash; siehe Warnhinweis oben) ODER Initial Timing zur&uuml;cknehmen. Nach jedem Wechsel erneut messen.</li>
                 <li><strong>Falls All-In RPM zu sp&auml;t</strong> (Timing kommt erst bei &gt;4000 RPM voll rein): Leichtere Federn w&auml;hlen.</li>
                 <li><strong>Vakuum-Dose anschlie&szlig;en</strong> (Connect vacuum advance): Schlauch an <strong>Ported Vacuum</strong> am Vergaser anschlie&szlig;en &ndash; <strong>NICHT an Manifold Vacuum!</strong></li>
                 <li><strong>TESTFAHRT</strong> (Road test): Auf Klopfen/Ping achten unter Last (bergauf, niedriger Gang, Volllast). Bei Klopfen: sofort Total Timing reduzieren!</li>
@@ -331,8 +336,9 @@
 
             <h3>DellOrto DRLA 45 &ndash; Unterdruckanschluss</h3>
             <ul>
-                <li>Unterdruckanschluss am Vergaserk&ouml;rper vorhanden (Ported Vacuum)</li>
-                <li>Vakuumschlauch vom DellOrto-Anschluss zur <strong>MSD 8463 Vacuum Advance Dose</strong> f&uuml;hren</li>
+                <li><strong>Offen:</strong> Welcher Anschluss an der Vierfach-DRLA-Anlage tats&auml;chlich <strong>Ported Vacuum</strong> f&uuml;hrt, ist <strong>noch nicht verifiziert</strong>. Vor dem Anschlie&szlig;en pr&uuml;fen: im Leerlauf darf am gew&auml;hlten Abgriff <strong>kein</strong> nennenswerter Unterdruck anliegen (Manifold Vacuum liegt im Leerlauf voll an).</li>
+                <li>Bei vier Vergasern: gepr&uuml;ften Abgriff festlegen und dokumentieren &ndash; kein Abgriff &bdquo;irgendwo&ldquo; an einem der vier Geh&auml;use.</li>
+                <li>Vakuumschlauch vom gepr&uuml;ften DellOrto-Abgriff zur <strong>Unterdruckdose des 8479</strong> f&uuml;hren</li>
                 <li>Schlauch auf Dichtheit pr&uuml;fen &ndash; undichte Schl&auml;uche verf&auml;lschen die Kurve</li>
             </ul>
         </details>
@@ -347,7 +353,7 @@
                 <tr>
                     <td><strong>Klopfen bei Beschleunigung</strong><br>(Detonation under acceleration)</td>
                     <td>Total Advance zu hoch</td>
-                    <td>Bushing verkleinern (z.B. Blau &rarr; Silber) oder Initial Timing zur&uuml;cknehmen</td>
+                    <td>Anschlagb&uuml;chse mit geringerem Vorlaufwert <strong>laut MSD-Beiblatt</strong> einbauen (Farbzuordnung ist ungekl&auml;rt) oder Initial Timing zur&uuml;cknehmen</td>
                 </tr>
                 <tr>
                     <td><strong>Tr&auml;ge Gasannahme</strong><br>(Sluggish throttle response)</td>
@@ -362,7 +368,7 @@
                 <tr>
                     <td><strong>Ping auf der Autobahn bei Teillast</strong><br>(Cruise pinging)</td>
                     <td>Vacuum Advance zu viel</td>
-                    <td>Einstellbare Vacuum-Dose verwenden (MSD 8463 hat Innensechskant-Schraube), oder Dose gegen schw&auml;chere tauschen</td>
+                    <td>Unterdruckabgriff pr&uuml;fen (Ported statt Manifold?), Dose auf Verstellbarkeit pr&uuml;fen oder gegen schw&auml;chere tauschen. Zuvor den tats&auml;chlichen Vacuum-Beitrag messen &ndash; nicht sch&auml;tzen</td>
                 </tr>
                 <tr>
                     <td><strong>Unruhiger Leerlauf</strong><br>(Rough idle)</td>
