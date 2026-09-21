@@ -87,9 +87,9 @@
 
             <h3>Kein Kraftstoff (No Fuel)</h3>
             <ul>
-                <li><strong>Mechanische Benzinpumpe</strong> &ndash; Bei Erststart nach Rebuild: Schwimmer&shy;kammern manuell f&uuml;llen (mit Spritze oder kleinem Trichter). Pumpe braucht mehrere Umdrehungen zum Ansaugen.</li>
-                <li><strong>Elektrische Pumpe</strong> &ndash; Flie&szlig;t Kraftstoff am Vergaser-Eingang? Druck pr&uuml;fen: 3&ndash;5 PSI f&uuml;r Vergaser (NICHT Einspritz-Druck!).</li>
-                <li><strong>DellOrto DRLA Schwimmerstand (Float Level)</strong> &ndash; Soll: <strong>5.5&ndash;6.0 mm</strong> unter Oberkante Schwimmerkammer (gemessen bei umgedrehtem Oberteil, ohne Dichtung). Zu hoch = &Uuml;berlauf, zu niedrig = Aushungern.</li>
+                <li><strong>Pumpen einschalten</strong> &ndash; Dieses Fahrzeug hat zwei <strong>elektrische</strong> Facet-Pumpen, je Tank eine, mit eigenem Schalter. Z&uuml;ndung an, eine Pumpe an: das Ticken muss nach einigen Sekunden langsamer werden &ndash; dann sind die Schwimmerkammern voll. Bleibt es schnell, saugt die Pumpe nicht an oder die Leitung ist leer.</li>
+                <li><strong>Druck pr&uuml;fen</strong> &ndash; Cockpit-Uhr je Kreis ablesen. <strong>Obergrenze 3.5 psi</strong> f&uuml;r den DRLA; dar&uuml;ber schlie&szlig;t die Schwimmernadel nicht. Beide Kreise einzeln pr&uuml;fen &ndash; weichen sie voneinander ab, f&ouml;rdert der niedriger eingestellte nichts zu den Vergasern. Hintergrund: <a href="exkurs-kraftstoffdruck.html">Exkurs Kraftstoffdruck</a>.</li>
+                <li><strong>DellOrto DRLA Schwimmerstand (Float Level)</strong> &ndash; Zu hoch = &Uuml;berlauf, zu niedrig = Aushungern. <strong>Ist-Ma&szlig; dokumentieren, nicht auf einen Tabellenwert biegen:</strong> ein DRLA-Sollma&szlig; ist derzeit nicht primaerquellenbelegt, und die verbaute Einstellung stammt aus einer funktionierenden Abstimmung. Siehe Build Log, Phase 3, Kapitel 27.</li>
                 <li><strong>Verstopfte D&uuml;sen (Clogged Jets)</strong> &ndash; Besonders nach Standzeiten: Haupt&shy;d&uuml;se (Main Jet), Leerlaufd&uuml;se (Idle Jet), Emulsionsrohr (Emulsion Tube) ausbauen und mit Druckluft durchblasen.</li>
             </ul>
 
@@ -225,19 +225,20 @@
 
             <h3>DellOrto DRLA: Synchronisation &amp; Gemisch (Sync &amp; Mixture)</h3>
             <ul>
-                <li><strong>Schmetterlingsklappen nicht synchron (Throttle Plates Not Synchronized)</strong> &ndash; Mit Synchron-Tester (Uni-Syn oder Manometer-Bank) abgleichen. Beide Vergaser m&uuml;ssen identischen Luftdurchsatz bei Leerlauf liefern.</li>
+                <li><strong>Schmetterlingsklappen nicht synchron (Throttle Plates Not Synchronized)</strong> &ndash; Mit Synchron-Tester (Uni-Syn oder Manometer-Bank) abgleichen. Synchronisiert wird in <strong>zwei Ebenen</strong>: erst die beiden L&auml;ufe <em>innerhalb</em> jedes Vergasers &uuml;ber die Leerlauf-Bypassschraube, dann die vier Vergaser <em>untereinander</em> &uuml;ber das Gest&auml;nge. Am Ende m&uuml;ssen alle <strong>acht L&auml;ufe</strong> denselben Luftdurchsatz zeigen. Ausf&uuml;hrlich: Build Log, Phase 5, Kapitel 2.</li>
                 <li><strong>Leerlaufgemisch-Schrauben (Idle Mixture Screws)</strong> &ndash; Ausgangsposition: 1.5 Umdrehungen auf (from fully seated). Dann jede Schraube einzeln auf h&ouml;chste Drehzahl einstellen, danach Leerlaufdrehzahl korrigieren.</li>
                 <li>Beschleunigerpumpe (Accelerator Pump) pr&uuml;fen: Beim Gasgeben muss ein kr&auml;ftiger Strahl in den Ansaugkanal spritzen. Schwache/keine Pumpe = Stottern bei Gasstoss (Stumble/Hesitation).</li>
             </ul>
 
-            <h3>Nockenwelle: Lobe Wipe erkennen (Detecting Cam Lobe Failure)</h3>
+            <h3>Ventiltrieb: Rollen-Lifter &uuml;berwachen (Monitoring Roller Lifters)</h3>
             <div class="warning">
                 <strong>&Ouml;lfilter aufschneiden! (Cut Open the Oil Filter!)</strong><br>
-                Nach dem Einlaufen (Break-In) und nach den ersten 100 km den &Ouml;lfilter aufschneiden und das Filtermedium auf metallische Sp&auml;ne untersuchen. Gl&auml;nzende, silbrige Partikel = Lobe Wipe (Nocken abgerieben). Sofort Motor abstellen und Nockenwelle + Lifter ersetzen.
+                Nach dem Einlaufen (Break-In) und nach den ersten 100 km den &Ouml;lfilter aufschneiden und das Filtermedium auf metallische Sp&auml;ne untersuchen. Gl&auml;nzende, silbrige Partikel oder feine Nadeln = Sch&auml;digung im Ventiltrieb. Sofort Motor abstellen und Nockenwelle + Lifter ersetzen.
             </div>
             <ul>
-                <li><strong>Ursachen f&uuml;r Lobe Wipe:</strong> Falsches Einlauf&ouml;l (zu wenig ZDDP/Zink), zu niedriger Federdruck beim Einlaufen, Motor nicht sofort auf 2000+ RPM gehalten, falsche Lifter-zu-Lobe-Kombination.</li>
-                <li><strong>Pr&auml;vention:</strong> Einlauf&ouml;l mit hohem ZDDP-Anteil (z.B. Brad Penn, Comp Cams Break-In Oil), neue Flat-Tappet-Lifter immer mit Assembly Lube auf Nockenlauff&auml;chen, Motor sofort nach Start auf 2000&ndash;2500 RPM halten f&uuml;r 20 Minuten.</li>
+                <li><strong>Was hier wirklich ausf&auml;llt:</strong> Dieser Motor hat einen <strong>Hydraulic Roller</strong> (COMP XE274HR mit Morel 5327), keinen Flat Tappet. Nocken werden hier nicht abgerieben. Die typische Ausfallart ist das <strong>Nadellager der Laufrolle</strong>: bei Mangelschmierung verschwei&szlig;en die Nadeln mit der Achse, die Rolle blockiert und arbeitet dann wie ein Flachst&ouml;&szlig;el gegen die Nocke. Vorboten sind ein Quietschen oder ein neues, hartes Ticken.</li>
+                <li><strong>Was hier gilt:</strong> <strong>Kein Flat-Tappet-Einlaufverfahren.</strong> Die 20 Minuten bei 2000&ndash;2500 rpm und das ZDDP-reiche Einlauf&ouml;l dienen dem Einlaufen von Flachst&ouml;&szlig;eln &ndash; ein Rollen-Ventiltrieb braucht das nicht. Erh&ouml;hte Drehzahl nach dem Start bleibt trotzdem richtig, aber wegen Kolbenringen, Lagern und Schmierung, nicht wegen der Nocke.</li>
+                <li><strong>Was dem Roller schadet:</strong> l&auml;ngeres Standgas mit niedriger Drehzahl &ndash; die Lifter bekommen dann wenig &Ouml;l &ndash;, Federdr&uuml;cke &uuml;ber der Vorgabe der Cam Card bei hoher Drehzahl, und Schmutz im &Ouml;l. Federdr&uuml;cke nach Cam Card pr&uuml;fen, &Ouml;lwechselintervalle kurz halten.</li>
             </ul>
         </div>
     </details>
@@ -357,7 +358,7 @@
             <div class="info">
                 <strong>10W-30 vs. 20W-50: Dickeres &Ouml;l kaschiert nur das Problem!</strong><br>
                 Wenn der &Ouml;ldruck nur mit 20W-50 akzeptabel ist, sind die Lagerspiele zu gro&szlig;. Das dicke &Ouml;l flie&szlig;t langsamer durch die vergr&ouml;&szlig;erten Spalte und erzeugt h&ouml;heren Druck &ndash; die Ursache (Verschlei&szlig;) wird dadurch nicht behoben.<br><br>
-                <strong>Empfehlung:</strong> 10W-30 mit ZDDP-Zusatz (Zinc) f&uuml;r Flat-Tappet-Nockenwellen. Bei korrekten Lagerspielen reicht 10W-30 f&uuml;r alle Temperaturen.
+                <strong>Empfehlung:</strong> 10W-30. Bei korrekten Lagerspielen reicht das f&uuml;r alle Temperaturen. <strong>Ein ZDDP-Zusatz ist f&uuml;r diesen Motor nicht erforderlich</strong> &ndash; hohe Zinkanteile sch&uuml;tzen die Gleitpaarung eines Flachst&ouml;&szlig;els, und dieser Motor hat einen Rollen-Ventiltrieb.
             </div>
         </div>
     </details>
@@ -397,7 +398,7 @@
             <h3>DellOrto DRLA: Alle 8 Kerzen vergleichen</h3>
             <div class="highlight">
                 <strong>Warum alle 8 vergleichen?</strong><br>
-                Bei Dual-DellOrto-DRLA-Setup versorgt jeder Vergaser 4 Zylinder. Wenn eine Seite (z.B. Zyl. 1&ndash;4) magerer l&auml;uft als die andere (Zyl. 5&ndash;8), deutet das auf:<br>
+                Die Anlage hat <strong>vier DRLA 45 mit acht L&auml;ufen &ndash; ein Lauf je Zylinder</strong>, ein Vergaser versorgt also zwei Zylinder. Ein auff&auml;lliges Kerzenbild l&auml;sst sich damit bis auf den einzelnen Lauf eingrenzen. Zeigen mehrere Zylinder desselben Vergasers dasselbe Bild, deutet das auf:<br>
                 <ul>
                     <li>Unterschiedliche Bed&uuml;sung (Jetting) zwischen den Vergasern</li>
                     <li>Ungleichen Schwimmerstand (Float Level)</li>
