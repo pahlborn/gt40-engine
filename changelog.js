@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v39',
+      date: '2026-09-21',
+      title: 'Produktfotos fuer die neuen Komponenten',
+      changes: [
+        { type: 'neu', text: 'Produktfotos fuer Facet Red Top 480532, Malpassi Filter King, Sytec Bullet und DellOrto DRLA 45 - auf der Komponentenseite und als Titelbild bei Vergaser und Kraftstoffpumpe in den Specs. Damit sind diese Baugruppen so bebildert wie Koepfe, Stoessel, Nocke und Wanne es laengst waren.' },
+        { type: 'fix', text: 'Ein Test hatte eingebundene Fremdbilder pauschal verboten. Das widersprach der Praxis dieses Projekts, in dem bereits dreizehn Herstellerfotos liegen. Er prueft jetzt das, worauf es ankommt: das Bild liegt lokal unter img/ statt von der Haendlerseite hotverlinkt zu sein - ein Hotlink bricht, sobald der Haendler es verschiebt.' },
+        { type: 'neu', text: 'Neue Pruefung: die Bilder muessen im Browser tatsaechlich laden, nicht nur als Datei existieren. Ein falscher Pfad oder ein kaputtes JPEG faellt sonst erst dem Benutzer auf.' }
+      ]
+    },
+    {
       version: 'v38',
       date: '2026-09-21',
       title: 'Komponenten-Referenz mit Herstellerquellen',

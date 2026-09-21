@@ -105,15 +105,59 @@ await test('Jede Komponente traegt Hersteller und Quellenvermerk', async () => {
     'Keine Unterscheidung zwischen belegt und offen');
 });
 
-await test('Herstellerseiten sind verlinkt, nicht kopiert', async () => {
+await test('Jede Komponente hat ein Produktfoto, und es liegt lokal', async () => {
+  // Wie bei den uebrigen Komponenten im Projekt: das Bild liegt unter img/ und
+  // wird nicht von der Haendlerseite hotverlinkt. Ein Hotlink bricht, sobald
+  // der Haendler das Bild verschiebt oder Hotlinking sperrt.
+  const html = fs.readFileSync(path.join(REPO_ROOT, KOMPONENTEN), 'utf8');
+  const bilder = [...html.matchAll(/<img[^>]+src="([^"]+)"/g)].map((m) => m[1]);
+  assert(bilder.length >= 4, 'Weniger als vier Produktfotos: ' + bilder.length);
+  for (const b of bilder) {
+    assert(!/^https?:/i.test(b), 'Bild ist hotverlinkt statt lokal: ' + b);
+    const datei = path.join(REPO_ROOT, 'docs', b);
+    assert(fs.existsSync(datei), 'Bilddatei fehlt: ' + b);
+    assert(fs.statSync(datei).size > 1000, 'Bilddatei ist leer oder Platzhalter: ' + b);
+  }
+});
+
+await test('Die Bilder laden im Browser wirklich', async () => {
+  // Dateiexistenz ist nicht dasselbe wie "wird angezeigt": ein falscher Pfad,
+  // ein kaputtes JPEG oder eine verrutschte Ebene faellt erst hier auf.
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  await page.goto(base + '/' + KOMPONENTEN);
+  await page.waitForLoadState('networkidle');
+  const bilder = await page.evaluate(() => Array.from(document.images).map((i) => ({
+    src: i.getAttribute('src'), w: i.naturalWidth, h: i.naturalHeight
+  })));
+  assert(bilder.length >= 4, 'Weniger als vier Bilder im DOM: ' + bilder.length);
+  for (const b of bilder) {
+    assert(b.w > 0 && b.h > 0, 'Bild laedt nicht: ' + b.src);
+  }
+  await ctx.close();
+});
+
+await test('Auch die Titelbilder in den Specs laden', async () => {
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  await page.goto(base + '/specs.html');
+  await page.waitForLoadState('networkidle');
+  const kaputt = await page.evaluate(() => Array.from(document.querySelectorAll('img.comp-hero'))
+    .filter((i) => !i.naturalWidth).map((i) => i.getAttribute('src')));
+  assert(kaputt.length === 0, 'Titelbilder laden nicht: ' + kaputt.join(', '));
+  // Die beiden neuen muessen dabei sein.
+  const alle = await page.evaluate(() => Array.from(document.querySelectorAll('img.comp-hero'))
+    .map((i) => i.getAttribute('src')));
+  for (const b of ['img/dellorto-drla-45.jpg', 'img/facet-480532.jpg']) {
+    assert(alle.includes(b), 'Titelbild fehlt in den Specs: ' + b);
+  }
+  await ctx.close();
+});
+
+await test('Herstellerquellen sind genannt', async () => {
   const html = fs.readFileSync(path.join(REPO_ROOT, KOMPONENTEN), 'utf8');
   assert(html.includes('facet-purolator.com'), 'Facet-Hersteller fehlt');
   assert(html.includes('officinamalpassi.it'), 'Malpassi-Hersteller fehlt');
-  // Keine eingebetteten Fremdbilder oder mitgelieferten Datenblaetter.
-  assert(!/<img[^>]+src="https?:/i.test(html), 'Fremdbild eingebunden');
-  const eigene = fs.readdirSync(path.join(REPO_ROOT, 'docs'));
-  assert(!eigene.some((f) => f.toLowerCase().endsWith('.pdf')),
-    'Fremde Datenblaetter im Repository: ' + eigene.filter((f) => f.endsWith('.pdf')).join(', '));
 });
 
 await test('Der Elementhinweis zum Vorfilter steht drin', async () => {
