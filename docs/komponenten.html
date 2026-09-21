@@ -21,6 +21,10 @@
         .info { background: #ebf8ff; border: 1px solid #90cdf4; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
         .success { background: #e6ffed; border: 1px solid #c6f6d5; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
         .source { font-size: 0.75rem; color: #718096; margin-top: 0.2rem; }
+        .komp-bild { float: right; max-width: 190px; max-height: 210px; margin: 0 0 0.6rem 1rem;
+                     border: 1px solid #e2e8f0; border-radius: 6px; background: white; padding: 0.3rem; }
+        .komp-bild-quelle { clear: both; }
+        @media (max-width: 560px) { .komp-bild { float: none; display: block; margin: 0.5rem auto; } }
         ul { padding-left: 1.3rem; }
         li { margin-bottom: 0.3rem; }
         .toc { background: #f7fafc; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin: 1rem 0; }
@@ -64,13 +68,14 @@
     <div class="section" id="hinweis">
         <h2>Wozu diese Seite</h2>
         <p>Jede Komponente, die in Specs oder Build Log genannt wird, mit <strong>Hersteller, Teilenummer und belegten Eckdaten</strong> &ndash; plus dem Link zur Originalquelle. Damit l&auml;sst sich am Bauteil nachschlagen, ohne zu raten, und jede Zahl ist bis zu ihrer Herkunft verfolgbar.</p>
-        <div class="info"><strong>Warum hier nur Links stehen:</strong> Produktfotos und Datenbl&auml;tter sind urheberrechtlich gesch&uuml;tzt. Dieses Repository ist &ouml;ffentlich &ndash; sie hier abzulegen w&auml;re eine Ver&ouml;ffentlichung fremder Inhalte. Der Link leistet dasselbe und bleibt aktuell. <strong>Eigene Fotos der verbauten Teile</strong> geh&ouml;ren in die Galerie der jeweiligen Baugruppe.</div>
+        <div class="info"><strong>Fotos und Quellen:</strong> Die Produktfotos zeigen das jeweilige Bauteil zur Wiedererkennung und liegen im Repository, wie bei den &uuml;brigen Komponenten auch. Sie stammen von Hersteller- und H&auml;ndlerseiten, die darunter verlinkt sind. <strong>Ein Katalogfoto zeigt aber nur die Baureihe</strong> &ndash; welche Variante tats&auml;chlich verbaut ist, beantwortet erst ein eigenes Foto mit lesbarer Teilenummer. Das geh&ouml;rt in die Galerie der jeweiligen Baugruppe.</div>
     </div>
 
     <div class="section" id="kraftstoff">
         <h2>Kraftstoffsystem</h2>
 
         <h3>Facet Red Top 480532 &ndash; Kraftstoffpumpe (2&times;)</h3>
+        <img class="komp-bild" src="../img/facet-480532.jpg" alt="Facet Red Top 480532">
         <table>
             <tr><th>Angabe</th><th>Wert</th><th>Quelle</th></tr>
             <tr><td>Hersteller</td><td>Motor Components LLC (Facet / Purolator), Elmira NY</td><td><span class="badge badge-tested">Hersteller</span></td></tr>
@@ -87,6 +92,7 @@
         <div class="warning"><strong>Konsequenz f&uuml;r dieses Fahrzeug:</strong> 6&ndash;8 psi sind rund das Doppelte bis Dreifache dessen, was der DRLA vertr&auml;gt. Ein Druckregler ist Voraussetzung, nicht Zubeh&ouml;r. Die geringe Trocken-Ansaugh&ouml;he ist der Grund f&uuml;r die Montageregel &bdquo;m&ouml;glichst tanknah, vertikal, Auslass nach oben&ldquo;. Details: <a href="exkurs-kraftstoffdruck.html">Exkurs Kraftstoffdruck</a>.</div>
 
         <h3>Malpassi Filter King &ndash; Druckregler mit Filter (2&times;)</h3>
+        <img class="komp-bild" src="../img/malpassi-filter-king.jpg" alt="Malpassi Filter King">
         <table>
             <tr><th>Angabe</th><th>Wert</th><th>Quelle</th></tr>
             <tr><td>Hersteller</td><td>Officina Malpassi, Italien</td><td><span class="badge badge-tested">Hersteller</span></td></tr>
@@ -100,6 +106,7 @@
         </ul>
 
         <h3>Sytec Bullet &ndash; Inline-Filter (vermutlich die blauen Zylinder)</h3>
+        <img class="komp-bild" src="../img/sytec-bullet.jpg" alt="Sytec Bullet Inline-Filter">
         <table>
             <tr><th>Angabe</th><th>Wert</th><th>Quelle</th></tr>
             <tr><td>Bauform</td><td>Billet-Aluminium, blau eloxiert, 110 mm &times; 50 mm</td><td><span class="badge badge-tested">H&auml;ndler</span></td></tr>
@@ -117,6 +124,7 @@
     <div class="section" id="vergaser">
         <h2>Vergaser</h2>
         <h3>Dell&rsquo;Orto DRLA 45 &ndash; Doppel-Downdraft (4&times;)</h3>
+        <img class="komp-bild" src="../img/dellorto-drla-45.jpg" alt="Dell&rsquo;Orto DRLA 45">
         <table>
             <tr><th>Angabe</th><th>Wert</th><th>Quelle</th></tr>
             <tr><td>Bauart</td><td>Twin-Choke Downdraft, 45 mm Drosseldurchmesser</td><td><span class="badge badge-tested">belegt</span></td></tr>
