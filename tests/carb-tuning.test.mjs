@@ -23,11 +23,14 @@ const HTML = fs.readFileSync(path.join(REPO_ROOT, 'build-log.html'), 'utf8');
 // Guide ordnet sie ein. Der Inhalt selbst wurde nicht veraendert.
 const GUIDE = fs.readFileSync(path.join(REPO_ROOT, 'docs/dellorto-drla-tuning.html'), 'utf8');
 
-// Bedueusung je Vergaser (Kapitel 27) - 4 Vergaser x 6 Positionen.
+// Ist-Bestueckung je Mischkammer (Kapitel 27). Seit v46 acht Spalten statt
+// vier: ein DRLA 45 hat zwei Mischkammern, jede mit eigener Beduesung.
 const JET_FELDER = [];
-for (const c of ['c1', 'c2', 'c3', 'c4']) {
-  for (const j of ['main', 'idle', 'air', 'emul', 'pump', 'aux']) {
-    JET_FELDER.push('p3_jet_' + c + '_' + j);
+for (const v of ['1', '2', '3', '4']) {
+  for (const k of ['a', 'b']) {
+    for (const j of ['main', 'idle', 'air', 'emul', 'pump', 'aux']) {
+      JET_FELDER.push('p3_jet_v' + v + k + '_' + j);
+    }
   }
 }
 // Entscheidungstabelle (Kapitel 22) - Ist/Soll/Begruendung je Duesenart.
@@ -183,7 +186,7 @@ await test('Falschluft-Test steht als eigenes Kapitel vor der Synchronisation', 
 // ---------------------------------------------------------------------------
 suite('Bedueusung: Ist, Soll, Begruendung');
 
-await test('Ist-Erfassung je Vergaser vollstaendig (Kapitel 27)', async () => {
+await test('Ist-Erfassung je Mischkammer vollstaendig (Kapitel 27)', async () => {
   const k = karte('p3_carboverhaul');
   for (const f of JET_FELDER) {
     assert(k.includes('data-field="' + f + '"'), 'Feld fehlt in Kapitel 27: ' + f);

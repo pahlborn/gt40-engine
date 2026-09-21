@@ -51,7 +51,9 @@ suite('Und der richtige Inhalt steht stattdessen da');
 
 await test('Troubleshooting kennt vier Vergaser und acht Laeufe', async () => {
   const h = lies('docs/troubleshooting.html');
-  assert(/acht L&auml;ufe|ein Lauf je Zylinder/.test(h), 'Zylinderzuordnung nicht korrigiert');
+  // Begriff seit v46 vereinheitlicht: Mischkammer statt Lauf oder Kanal.
+  assert(/acht Mischkammern|eine Mischkammer je Zylinder/.test(h),
+    'Zylinderzuordnung nicht korrigiert');
   assert(/zwei Ebenen/.test(h), 'Zwei-Ebenen-Synchronisation fehlt');
 });
 
@@ -76,8 +78,13 @@ await test('Troubleshooting beschreibt den Rollen-Ventiltrieb', async () => {
 await test('Unbelegte Sollwerte sind als solche gekennzeichnet', async () => {
   const guide = lies('docs/dellorto-drla-tuning.html');
   const ts = lies('docs/troubleshooting.html');
-  // Schwimmerstand: Ist-Mass erfassen statt auf Tabellenwert biegen.
-  assert(/Ist-Ma&szlig; dokumentieren/.test(guide), 'Schwimmerstand im Guide nicht entschaerft');
+  // Schwimmerstand: Ist-Mass erfassen statt auf Tabellenwert biegen. Seit v46
+  // liegt ein DRLA-spezifisches Verfahren vor - die Regel bleibt trotzdem,
+  // dass zuerst erfasst und nur bei Befund korrigiert wird.
+  assert(/Ist-Ma&szlig; wird beim Zerlegen erfasst/.test(guide),
+    'Schwimmerstand im Guide nicht entschaerft');
+  assert(/Korrigiert wird nur bei einem Befund/.test(guide),
+    'Vorrang der vorhandenen Einstellung fehlt');
   assert(/Ist-Ma&szlig; dokumentieren/.test(ts), 'Schwimmerstand im Troubleshooting nicht entschaerft');
   // Nadelventil: Groesse ist unbekannt, nicht "typisch 200".
   assert(!/Typische Nadelventilgr/.test(guide), 'Nadelventilgroesse weiterhin behauptet');

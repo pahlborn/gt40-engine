@@ -23,6 +23,9 @@ import {
 } from './helpers.mjs';
 
 const SEITEN = ['build-log.html', 'index.html', 'specs.html'];
+// Fest verdrahtet, damit ein versehentlich geloeschter Eintrag auffaellt.
+// Bei einer bewussten Erweiterung hier mitziehen.
+const ERWARTETE_EINTRAEGE = 144;
 function lies(f) { return fs.readFileSync(path.join(REPO_ROOT, f), 'utf8'); }
 
 const { server, base } = await startServer();
@@ -76,12 +79,13 @@ await test('Keine HTML-Datei enthaelt Glossar-Eintraege im Quelltext', async () 
     'Glossar wieder in HTML einkopiert: ' + treffer.join(', '));
 });
 
-await test('glossar.js traegt alle 140 Eintraege', async () => {
+await test('glossar.js traegt alle Eintraege', async () => {
   const js = lies('glossar.js');
   const eintraege = (js.match(/class="glossary-entry"/g) || []).length;
-  assert(eintraege === 140, 'Erwartet 140 Eintraege, gefunden: ' + eintraege);
+  assert(eintraege === ERWARTETE_EINTRAEGE,
+    'Erwartet ' + ERWARTETE_EINTRAEGE + ' Eintraege, gefunden: ' + eintraege);
   const kategorien = (js.match(/class="glossary-category"/g) || []).length;
-  assert(kategorien === 17, 'Erwartet 17 Kategorien, gefunden: ' + kategorien);
+  assert(kategorien === 18, 'Erwartet 18 Kategorien, gefunden: ' + kategorien);
 });
 
 await test('Alle drei Seiten binden glossar.js ein', async () => {
@@ -124,11 +128,12 @@ await test('Kolbenunterstand traegt das vollstaendige Messverfahren', async () =
 suite('Im Browser landet das Glossar tatsaechlich im DOM');
 
 for (const datei of SEITEN) {
-  await test(datei + ': 140 Eintraege werden eingesetzt', async () => {
+  await test(datei + ': alle Eintraege werden eingesetzt', async () => {
     const { daten, fehler } = await glossarImDom(datei);
     assert(fehler.length === 0, 'Page-Errors: ' + fehler.join(' | '));
-    assert(daten.anzahl === 140, 'Im DOM: ' + daten.anzahl + ' statt 140');
-    assert(daten.kategorien === 17, 'Kategorien im DOM: ' + daten.kategorien);
+    assert(daten.anzahl === ERWARTETE_EINTRAEGE,
+      'Im DOM: ' + daten.anzahl + ' statt ' + ERWARTETE_EINTRAEGE);
+    assert(daten.kategorien === 18, 'Kategorien im DOM: ' + daten.kategorien);
   });
 }
 
@@ -138,8 +143,9 @@ await test('search.js findet die Eintraege ueber seinen eigenen Selektor', async
   // Fehler, die erst dem Benutzer auffaellt.
   for (const datei of SEITEN) {
     const { daten } = await glossarImDom(datei);
-    assert(daten.ueberSuchSelektor === 140,
-      datei + ': search.js sieht ' + daten.ueberSuchSelektor + ' statt 140 Eintraege');
+    assert(daten.ueberSuchSelektor === ERWARTETE_EINTRAEGE,
+      datei + ': search.js sieht ' + daten.ueberSuchSelektor + ' statt '
+      + ERWARTETE_EINTRAEGE + ' Eintraege');
   }
 });
 

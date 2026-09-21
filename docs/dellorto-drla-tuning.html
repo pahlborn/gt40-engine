@@ -71,7 +71,7 @@
             <summary>1. Grundlagen DRLA 45 (Basics)</summary>
 
             <h3>Aufbau (Construction)</h3>
-            <p>Der DellOrto DRLA 45 ist ein <strong>Doppel-Downdraft-Vergaser</strong> (Twin-Choke Downdraft) mit zwei identischen, spiegelbildlichen Venturi-Kan&auml;len. Jeder Kanal hat eine eigene Drosselklappe, Hauptd&uuml;se, Leerlaufd&uuml;se und Luftkorrekturd&uuml;se. Die <strong>Beschleunigerpumpe</strong> arbeitet mit einer Membrane (diaphragm-type accelerator pump) und versorgt beide Kan&auml;le &uuml;ber je einen Pumpjet.</p>
+            <p>Der DellOrto DRLA 45 ist ein <strong>Doppel-Downdraft-Vergaser</strong> (Twin-Choke Downdraft) mit zwei identischen, spiegelbildlichen <strong>Mischkammern</strong>. Jede Mischkammer hat eine eigene Drosselklappe, Hauptd&uuml;se, Leerlaufd&uuml;se, Luftkorrekturd&uuml;se, ein eigenes Emulsionsrohr und einen eigenen Venturi &ndash; vier Vergaser sind also <strong>acht Mischkammern</strong>, eine je Zylinder. <span class="source">Zur Begriffswahl: der deutsche Weber-Teilekatalog verwendet <em>Lufttrichter</em> f&uuml;r den Venturi-Einsatz und <em>Mischrohr</em> f&uuml;r das Emulsionsrohr &ndash; beides Teile <em>in</em> der Mischkammer. &bdquo;Stufe&ldquo; w&auml;re ebenfalls falsch: Stufen hat ein Registervergaser, dessen zweite Klappe erst unter Last &ouml;ffnet; beim DRLA &ouml;ffnen beide gleichzeitig.</span> Die <strong>Beschleunigerpumpe</strong> arbeitet mit einer Membrane (diaphragm-type accelerator pump) und versorgt beide Kan&auml;le &uuml;ber je einen Pumpjet.</p>
 
             <h3>Kreisl&auml;ufe (Circuits)</h3>
             <table>
@@ -109,13 +109,31 @@
         <details>
             <summary>2. Ersteinstellung nach Zusammenbau (Initial Setup)</summary>
 
-            <h3>Schwimmerstand (Float Level)</h3>
-            <ul>
-                <li><strong>Ist-Ma&szlig; dokumentieren, nicht einstellen</strong> <span class="badge badge-mod">unbelegt</span> &ndash; gemessen an der Spitze der Schwimmer (tip of floats). Die verbreitete Angabe 5.5&ndash;6 mm tr&auml;gt keine Primaerquelle von Dell&rsquo;Orto, und die verbaute Einstellung stammt aus einer Abstimmung, die auf dem alten 302 funktioniert hat. Erst erfassen (Build Log, Phase 3, Kapitel 27), erst bei einem Befund korrigieren.</li>
-                <li>Vergaser auf die Seite legen (nicht auf den Kopf!), Schwimmerkammerdeckel mit aufgelegter Dichtung</li>
-                <li>Ma&szlig; von der Dichtungsfl&auml;che (gasket surface) bis zur h&ouml;chsten Stelle des Schwimmers</li>
-                <li>Einstellung durch vorsichtiges Biegen der Schwimmerzunge (float tang)</li>
-            </ul>
+            <h3 id="schwimmerstand">Schwimmerstand (Float Level)</h3>
+            <div class="info">
+                <strong>Stand v46: es gibt jetzt ein DRLA-spezifisches Verfahren.</strong> <span class="badge badge-mod">Sekund&auml;rquelle</span><br>
+                Das unten abgebildete Blatt gibt ein Verfahren <em>f&uuml;r den DRLA</em> an. Es stammt von einem Dell&rsquo;Orto-H&auml;ndler und gibt offensichtlich eine Werkszeichnung wieder, tr&auml;gt aber keine Dokumentnummer &ndash; deshalb gef&uuml;hrt als <strong>starke Sekund&auml;rquelle</strong>, nicht als Werksangabe.
+            </div>
+            <div class="warning">
+                <strong>&#9888; Zwei unserer bisherigen Angaben waren falsch.</strong><br>
+                Hier stand <em>&bdquo;5,5&ndash;6 mm, gemessen an der Spitze der Schwimmer&ldquo;</em>. Das Blatt nennt <strong>5 bis 6 mm</strong> &ndash; und misst gegen die <strong>Dichtung des Schwimmerkammerdeckels</strong>, nicht gegen die Schwimmerspitze. Wer ohne montierte Dichtung oder mit anderer Bezugsfl&auml;che misst, erh&auml;lt systematisch einen anderen Wert. Die Zahl allein h&auml;tte nicht gereicht; entscheidend ist das Verfahren.
+            </div>
+            <p><strong>Verfahren laut Blatt:</strong></p>
+            <ol>
+                <li>Gewicht des Schwimmers gegen die Angabe auf seinem K&ouml;rper pr&uuml;fen; auf Besch&auml;digung und Undichtigkeit achten.</li>
+                <li><strong>Deckeldichtung in normaler Lage montieren</strong> &ndash; ohne sie stimmt die Bezugsfl&auml;che nicht.</li>
+                <li>Schwimmer einsetzen und pr&uuml;fen, dass er sich frei um seinen Achsstift dreht.</li>
+                <li><strong>Deckel senkrecht halten</strong>, so dass der Schwimmerarm das Nadelventil nur <strong>leicht ber&uuml;hrt</strong> &ndash; die Nadel darf nicht eingedr&uuml;ckt werden.</li>
+                <li>In dieser Stellung pr&uuml;fen, dass die <strong>beiden Halbschwimmer 5 bis 6 mm</strong> zur Deckeldichtung stehen.</li>
+                <li>Bei Bedarf durch vorsichtiges Biegen der Schwimmerarme korrigieren.</li>
+            </ol>
+            <div class="warning">
+                <strong>Trotzdem gilt weiterhin: erst dokumentieren, dann entscheiden.</strong> Die verbaute Einstellung stammt aus einer Abstimmung, die auf dem alten 302 funktioniert hat. Das Ist-Ma&szlig; wird beim Zerlegen erfasst (Build Log, Phase&nbsp;3, Kapitel&nbsp;27, Spalte &bdquo;Schwimmerstand Ist&ldquo;). Korrigiert wird nur bei einem Befund &ndash; oder wenn das Ist-Ma&szlig; deutlich au&szlig;erhalb von 5&ndash;6 mm liegt.
+            </div>
+            <figure style="margin:0.8rem 0;">
+                <img src="../img/dellorto-drla-schwimmerstand.jpg" alt="Dell'Orto DRLA Schwimmerstand-Anleitung" style="max-width:100%;height:auto;border:1px solid #cbd5e0;border-radius:6px;">
+                <figcaption class="source">Schwimmerstand-Anleitung DRLA. Bemerkenswert: das Blatt spricht von <em>&bdquo;the two half-floats&ldquo;</em> und best&auml;tigt damit den Doppelschwimmer in einer gemeinsamen Kammer.</figcaption>
+            </figure>
 
             <h3>Nadelventil pr&uuml;fen (Check Needle Valve)</h3>
             <ul>
@@ -471,6 +489,18 @@
                     <li><strong>Ansauganlage</strong> (Intake Manifold) &ndash; Runner-L&auml;nge und Plenum-Volumen</li>
                 </ul>
             </div>
+
+            <h3 id="teilezeichnung">Explosionszeichnung und Teilenummern</h3>
+            <p>Die Positionsnummern der Zeichnung entsprechen den Nummern-Pr&auml;fixen in der Teileliste des H&auml;ndlers &ndash; &bdquo;(3) Main jet&ldquo;, &bdquo;(1) Main Choke Venturi&ldquo;, &bdquo;(12) Float Assembly&ldquo;. Damit l&auml;sst sich von der Zeichnung direkt auf die Bestellnummer schlie&szlig;en.</p>
+            <figure style="margin:0.8rem 0;">
+                <img src="../img/dellorto-drla-explosionszeichnung.jpg" alt="Dell'Orto DRLA Explosionszeichnung mit Positionsnummern" style="max-width:100%;height:auto;border:1px solid #cbd5e0;border-radius:6px;">
+                <figcaption class="source">Dell&rsquo;Orto DRLA, Positionen 1&ndash;154.</figcaption>
+            </figure>
+            <ul>
+                <li><a href="https://www.dellortoshop.com/contents/en-us/d11_Dellorto_DRLA_Parts_Shop.html">Teileliste DRLA &ndash; Nummern passend zur Zeichnung</a></li>
+                <li><a href="https://www.dellorto.co.uk/product-category/dellorto-car-carburettors-parts/parts/drla-parts/">Eurocarb &ndash; offizieller Dell&rsquo;Orto-Vertrieb UK</a></li>
+                <li><a href="https://www.carbparts.eu/exploded_view/DELLORTO_45_DRLA">carbparts.eu &ndash; interaktive Zeichnung mit Preisen</a> <span class="source">(die Seite liefert auch f&uuml;r erfundene Modellnamen eine Ausgabe; DRLA 45 ist dort aber echt gef&uuml;hrt)</span></li>
+            </ul>
 
             <h3 id="einordnung">Hintergrund und Einordnung &ndash; woher die Zahlen stammen</h3>
             <div class="warning">
