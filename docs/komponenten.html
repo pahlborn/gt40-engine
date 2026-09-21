@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Komponenten &ndash; Hersteller, Teilenummern, Quellen</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 1rem; background: #f8f9fa; color: #1a202c; line-height: 1.6; }
+        .banner { background: #2b6cb0; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; margin-bottom: 1rem; }
+        .banner a { color: #bee3f8; }
+        h1 { color: #2d3748; border-bottom: 3px solid #2b6cb0; padding-bottom: 0.5rem; font-size: 1.6rem; }
+        h2 { color: #2b6cb0; border-bottom: 1px solid #cbd5e0; padding-bottom: 0.3rem; margin-top: 1.5rem; }
+        h3 { color: #4a5568; margin-top: 1rem; }
+        .section { background: white; padding: 1rem; border-radius: 8px; margin: 1rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .back-link { display: inline-block; margin-bottom: 1rem; color: #2b6cb0; text-decoration: none; font-weight: 600; }
+        table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; font-size: 0.85rem; }
+        th { background: #ebf4ff; text-align: left; padding: 0.4rem 0.6rem; border-bottom: 2px solid #2b6cb0; }
+        td { padding: 0.35rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        .highlight { background: #fffff0; border: 1px solid #fefcbf; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .warning { background: #fff5f5; border: 1px solid #fc8181; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .info { background: #ebf8ff; border: 1px solid #90cdf4; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .success { background: #e6ffed; border: 1px solid #c6f6d5; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .source { font-size: 0.75rem; color: #718096; margin-top: 0.2rem; }
+        ul { padding-left: 1.3rem; }
+        li { margin-bottom: 0.3rem; }
+        .toc { background: #f7fafc; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin: 1rem 0; }
+        .toc a { color: #2b6cb0; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { padding: 0.15rem 0; }
+        .toc li::before { content: '\25B8 '; color: #2b6cb0; }
+        .badge { display: inline-block; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+        .badge-oem { background: #e2e8f0; color: #4a5568; }
+        .badge-lotus { background: #ebf4ff; color: #2b6cb0; }
+        .badge-mod { background: #fefcbf; color: #975a16; }
+        .badge-tested { background: #e6ffed; color: #276749; }
+        details { margin: 1rem 0; }
+        summary { cursor: pointer; font-weight: 700; color: #2b6cb0; font-size: 1.1rem; padding: 0.5rem 0; border-bottom: 1px solid #cbd5e0; }
+        summary:hover { color: #2c5282; }
+        details[open] summary { margin-bottom: 0.5rem; }
+        .video-embed { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin: 0.5rem 0; background: #1a202c; }
+        .video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .video-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #a0aec0; font-size: 1rem; text-align: center; padding: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="banner">Komponenten-Referenz &ndash; Hersteller, Teilenummern und belegte Eckdaten mit Quellenangabe. Produktfotos und Datenbl&auml;tter sind verlinkt, nicht kopiert.</div>
+    <a class="back-link" href="../">&larr; Zur&uuml;ck zum Build Log</a>
+
+    <h1>Komponenten &ndash; Hersteller, Teilenummern, Quellen</h1>
+
+    <div class="toc">
+        <strong>Inhalt</strong>
+        <ul>
+            <li><a href="#hinweis">Wozu diese Seite</a></li>
+            <li><a href="#kraftstoff">Kraftstoffsystem</a></li>
+            <li><a href="#vergaser">Vergaser</a></li>
+            <li><a href="#messmittel">Messmittel f&uuml;r die Abstimmung</a></li>
+            <li><a href="#zuendung">Z&uuml;ndung</a></li>
+            <li><a href="#pflege">Seite aktuell halten</a></li>
+        </ul>
+    </div>
+
+    <div class="section" id="hinweis">
+        <h2>Wozu diese Seite</h2>
+        <p>Jede Komponente, die in Specs oder Build Log genannt wird, mit <strong>Hersteller, Teilenummer und belegten Eckdaten</strong> &ndash; plus dem Link zur Originalquelle. Damit l&auml;sst sich am Bauteil nachschlagen, ohne zu raten, und jede Zahl ist bis zu ihrer Herkunft verfolgbar.</p>
+        <div class="info"><strong>Warum hier nur Links stehen:</strong> Produktfotos und Datenbl&auml;tter sind urheberrechtlich gesch&uuml;tzt. Dieses Repository ist &ouml;ffentlich &ndash; sie hier abzulegen w&auml;re eine Ver&ouml;ffentlichung fremder Inhalte. Der Link leistet dasselbe und bleibt aktuell. <strong>Eigene Fotos der verbauten Teile</strong> geh&ouml;ren in die Galerie der jeweiligen Baugruppe.</div>
+    </div>
+
+    <div class="section" id="kraftstoff">
+        <h2>Kraftstoffsystem</h2>
+
+        <h3>Facet Red Top 480532 &ndash; Kraftstoffpumpe (2&times;)</h3>
+        <table>
+            <tr><th>Angabe</th><th>Wert</th><th>Quelle</th></tr>
+            <tr><td>Hersteller</td><td>Motor Components LLC (Facet / Purolator), Elmira NY</td><td><span class="badge badge-tested">Hersteller</span></td></tr>
+            <tr><td>Druck</td><td>6&ndash;8 psi unreguliert</td><td><span class="badge badge-tested">mehrere H&auml;ndler</span></td></tr>
+            <tr><td>F&ouml;rdermenge</td><td>bis 45 GPH (Zylinderbauform); bis 132,5 l/h bei 0,68 bar</td><td><span class="badge badge-tested">Hersteller</span></td></tr>
+            <tr><td>Anschluss</td><td>1/4&quot; NPT, 12 V</td><td><span class="badge badge-tested">H&auml;ndler</span></td></tr>
+            <tr><td>Trocken-Ansaugh&ouml;he</td><td>ca. 0,6 m</td><td><span class="badge badge-mod">H&auml;ndlerangabe</span></td></tr>
+        </table>
+        <ul>
+            <li><a href="https://facet-purolator.com/">Motor Components LLC &ndash; Hersteller</a> &middot; <a href="https://facet-purolator.com/catalogs/">Kataloge und Datenbl&auml;tter</a></li>
+            <li><a href="https://www.pegasusautoracing.com/productdetails.asp?RecID=8462">Pegasus Auto Racing &ndash; 480532 Produktseite</a></li>
+            <li><a href="https://www.merlinmotorsport.co.uk/p/facet-red-top-electric-fuel-pump-only-6-5-7-0-psi-fac-rt">Merlin Motorsport &ndash; Red Top</a></li>
+        </ul>
+        <div class="warning"><strong>Konsequenz f&uuml;r dieses Fahrzeug:</strong> 6&ndash;8 psi sind rund das Doppelte bis Dreifache dessen, was der DRLA vertr&auml;gt. Ein Druckregler ist Voraussetzung, nicht Zubeh&ouml;r. Die geringe Trocken-Ansaugh&ouml;he ist der Grund f&uuml;r die Montageregel &bdquo;m&ouml;glichst tanknah, vertikal, Auslass nach oben&ldquo;. Details: <a href="exkurs-kraftstoffdruck.html">Exkurs Kraftstoffdruck</a>.</div>
+
+        <h3>Malpassi Filter King &ndash; Druckregler mit Filter (2&times;)</h3>
+        <table>
+            <tr><th>Angabe</th><th>Wert</th><th>Quelle</th></tr>
+            <tr><td>Hersteller</td><td>Officina Malpassi, Italien</td><td><span class="badge badge-tested">Hersteller</span></td></tr>
+            <tr><td>Bauart</td><td><strong>Bypass-Regler</strong> f&uuml;r Saugmotoren mit Vergaser &ndash; R&uuml;cklauf ist Funktionsprinzip</td><td><span class="badge badge-tested">Hersteller</span></td></tr>
+            <tr><td>Ausf&uuml;hrungen</td><td>67 mm und 85 mm, Glas- oder Alubecher, mit und ohne Manometer</td><td><span class="badge badge-tested">Hersteller</span></td></tr>
+            <tr><td>Verbaute Variante</td><td>noch aufzunehmen</td><td><span class="badge badge-mod">offen</span></td></tr>
+        </table>
+        <ul>
+            <li><a href="https://www.officinamalpassi.it/en/carburetter-fuel-pressure-regulators/filter-king/fk-67-npt-detail.html">Officina Malpassi &ndash; Filter King, Hersteller</a></li>
+            <li><a href="https://www.dellortoshop.com/contents/en-us/d115_Filter_King_Malpassi_Fuel_Filters_and_Pressure_Regulators.html">Filter-King-&Uuml;bersicht mit Varianten</a></li>
+        </ul>
+
+        <h3>Sytec Bullet &ndash; Inline-Filter (vermutlich die blauen Zylinder)</h3>
+        <table>
+            <tr><th>Angabe</th><th>Wert</th><th>Quelle</th></tr>
+            <tr><td>Bauform</td><td>Billet-Aluminium, blau eloxiert, 110 mm &times; 50 mm</td><td><span class="badge badge-tested">H&auml;ndler</span></td></tr>
+            <tr><td>Durchfluss</td><td>bis 300 l/h</td><td><span class="badge badge-tested">H&auml;ndler</span></td></tr>
+            <tr><td>Element</td><td><strong>8 &micro;m Papier serienm&auml;&szlig;ig &ndash; bis ca. 350 PS.</strong> Dar&uuml;ber 55 &micro;m Metallelement, reinigbar</td><td><span class="badge badge-tested">H&auml;ndler</span></td></tr>
+            <tr><td>Identifikation am Fahrzeug</td><td>noch zu best&auml;tigen</td><td><span class="badge badge-mod">offen</span></td></tr>
+        </table>
+        <ul>
+            <li><a href="https://www.demon-tweeks.com/sytec-high-flow-motorsport-fuel-filter-2010167/">Demon Tweeks &ndash; Sytec High Flow, technische Daten</a></li>
+            <li><a href="https://www.glencoeltd.co.uk/malpassi-sytec-fuel-filters-swirl-pots-water-separators/sytec-motorsport-fuel-filters-bullet/">Glencoe &ndash; Sytec Bullet-Baureihe</a></li>
+        </ul>
+        <div class="warning"><strong>Zu pr&uuml;fen beim Zerlegen:</strong> Die Leistungsgrenze des serienm&auml;&szlig;igen 8-&micro;m-Papierelements liegt laut H&auml;ndlerangabe bei etwa <strong>350 PS</strong>. Ein 302 mit vier DRLA 45 liegt darunter oder dar&uuml;ber &ndash; je nach Ausbaustufe. Welches Element verbaut ist, sollte beim ersten &Ouml;ffnen festgehalten werden; ein zu feines Element auf der Druckseite zeigt sich als Druckabfall unter Last, nicht im Leerlauf.</div>
+    </div>
+
+    <div class="section" id="vergaser">
+        <h2>Vergaser</h2>
+        <h3>Dell&rsquo;Orto DRLA 45 &ndash; Doppel-Downdraft (4&times;)</h3>
+        <table>
+            <tr><th>Angabe</th><th>Wert</th><th>Quelle</th></tr>
+            <tr><td>Bauart</td><td>Twin-Choke Downdraft, 45 mm Drosseldurchmesser</td><td><span class="badge badge-tested">belegt</span></td></tr>
+            <tr><td>Anordnung</td><td>4 Vergaser &rarr; 8 L&auml;ufe, <strong>ein Lauf je Zylinder</strong></td><td><span class="badge badge-tested">belegt</span></td></tr>
+            <tr><td>Max. Kraftstoffdruck</td><td>3,5 psi (0,24 bar)</td><td><span class="badge badge-mod">Sekund&auml;rquellen</span></td></tr>
+            <tr><td>Verbaute Bed&uuml;sung</td><td>beim Zerlegen zu erfassen &ndash; Phase 3, Kapitel 27</td><td><span class="badge badge-mod">offen</span></td></tr>
+            <tr><td>Geh&auml;usecodes, 8010&nbsp;2, R&nbsp;6205&nbsp;P</td><td>aufzunehmen bzw. ungekl&auml;rt</td><td><span class="badge badge-mod">offen</span></td></tr>
+        </table>
+        <ul>
+            <li><a href="https://www.dellortoshop.com/contents/en-us/d11_Dellorto_DRLA_Parts_Shop.html">DellortoShop &ndash; DRLA-Teile mit Explosionszeichnung</a></li>
+            <li><a href="https://www.dellortoshop.com/contents/en-us/d1981_Dellorto-DRLA-Calibrated-Parts.html">DRLA Kalibrierteile &ndash; D&uuml;sen, Emulsionsrohre, Venturis</a></li>
+            <li><a href="https://www.dellortoshop.com/contents/en-us/d1983_Dellorto-DRLA-Service-Kits.html">DRLA Servicekits und Dichts&auml;tze</a></li>
+            <li><a href="https://www.dellorto.co.uk/product-category/dellorto-car-carburettors-parts/">Eurocarb (UK) &ndash; Dell&rsquo;Orto Pkw-Vergaser und Teile</a></li>
+            <li><a href="https://www.carburetion.com/dellorto/dellortodrlaparts.asp">Carburetion.com &ndash; DRLA-Teile</a></li>
+        </ul>
+        <p class="source">Eine offizielle Herstellerseite von Dell&rsquo;Orto mit DRLA-Werksunterlagen konnte bisher nicht gefunden werden &ndash; die genannten Adressen sind Fachh&auml;ndler mit Originalteilen. Deshalb tragen die technischen Grenzwerte in dieser Dokumentation den Vermerk &bdquo;Sekund&auml;rquelle&ldquo;.</p>
+        <ul>
+            <li>Weiterf&uuml;hrend im Projekt: <a href="dellorto-drla-tuning.html">Einstellungsleitfaden</a> &middot; <a href="exkurs-kraftstoffdruck.html">Exkurs Kraftstoffdruck</a> &middot; <a href="exkurs-ethanol.html">Exkurs Ethanol</a></li>
+        </ul>
+    </div>
+
+    <div class="section" id="messmittel">
+        <h2>Messmittel f&uuml;r die Abstimmung</h2>
+        <p>Diese Werkzeuge werden in Phase 5 gebraucht und sind noch zu beschaffen. <strong>Kein D&uuml;sensatz vorab</strong> &ndash; erst messen, dann kaufen.</p>
+        <table>
+            <tr><th>Werkzeug</th><th>Wozu</th><th>Hinweis</th></tr>
+            <tr><td>Synchrontester / Str&ouml;mungsmesser</td><td>Alle 8 L&auml;ufe auf gleiche Str&ouml;mung bringen</td><td>Muss auf die vorhandenen Ansaugtrichter passen &ndash; vor dem Kauf Trichterma&szlig; aufnehmen</td></tr>
+            <tr><td>Dual-Breitband-Lambda mit Logger</td><td>Collector A und B <strong>gleichzeitig</strong> aufzeichnen</td><td>Zwei getrennte Kan&auml;le sind Pflicht; die vorhandenen Bungs im Bundle of Snakes weiterverwenden</td></tr>
+            <tr><td>Drehzahlsignal am Logger</td><td>Lambda-Wert einer Drehzahl zuordnen</td><td>Ohne Drehzahl ist ein Lambda-Log kaum auswertbar; Gasstellung w&auml;re zus&auml;tzlich w&uuml;nschenswert</td></tr>
+            <tr><td>D&uuml;senlehren / Pin Gauges</td><td>Verbaute D&uuml;sen pr&uuml;fen</td><td>Nur zum Messen &ndash; niemals zum Aufreiben</td></tr>
+            <tr><td>Kraftstoffdruck-Manometer</td><td>Ist-Druck je Kreis am Vergasereingang</td><td>Cockpit-Uhren sind vorhanden; ein Pr&uuml;fmanometer dient dem Abgleich</td></tr>
+        </table>
+    </div>
+
+    <div class="section" id="zuendung">
+        <h2>Z&uuml;ndung</h2>
+        <h3>MSD Pro-Billet Distributor und 6AL</h3>
+        <ul>
+            <li><a href="https://www.msdperformance.com/">MSD Performance &ndash; Hersteller</a></li>
+            <li>Im Projekt: <a href="msd-advance-tuning.html">MSD 8479 &ndash; Advance-Kurve einstellen</a></li>
+        </ul>
+        <p class="source">Die Z&uuml;ndung wird <strong>vor</strong> der Bed&uuml;sung festgenagelt. Zu wenig Fr&uuml;hz&uuml;ndung sieht am Lambda aus wie ein zu mageres Gemisch und verf&uuml;hrt zur falschen D&uuml;se &ndash; siehe Phase 5, Kapitel 4.</p>
+    </div>
+
+    <div class="section" id="pflege">
+        <h2>Diese Seite aktuell halten</h2>
+        <ul>
+            <li>Neue Komponente verbaut &rarr; hier eintragen: Hersteller, Teilenummer, Eckdaten, Quelle.</li>
+            <li>Jede Zahl bekommt einen <strong>Quellenvermerk</strong>: Hersteller, H&auml;ndler oder offen. Eine Zahl ohne Herkunft ist eine Behauptung.</li>
+            <li>Teilenummern werden <strong>am Bauteil abgelesen</strong>, nicht aus dem Katalog &uuml;bernommen.</li>
+            <li>Eigene Fotos in die Galerie der jeweiligen Baugruppe, nicht hierher.</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -351,6 +351,7 @@
         .phase-banner.p2 { background: linear-gradient(135deg, #7c6f50, #b8a47a); }
         .phase-banner.p3 { background: linear-gradient(135deg, #276749, #38a169); }
         .phase-banner.p4 { background: linear-gradient(135deg, #9b2c2c, #e53e3e); }
+        .phase-banner.p5 { background: linear-gradient(135deg, #44337a, #6b46c1); }
         /* ---- Glossary ---- */
         .glossary-search {
             position: sticky; top: 0; z-index: 502; background: var(--primary);
@@ -3462,6 +3463,7 @@
                     </tbody>
                 </table>
                 <div style="margin-top:0.5rem;font-size:0.78rem;"><a href="docs/exkurs-ethanol.html" style="color:#2b6cb0;font-weight:600;text-decoration:none;">&#128214; Exkurs: Ethanol, E10 und der DellOrto DRLA &ndash; was belegt ist und was nicht &rarr;</a></div>
+                <div style="margin-top:0.5rem;font-size:0.78rem;"><a href="docs/komponenten.html" style="color:#2b6cb0;font-weight:600;text-decoration:none;">&#128295; Komponenten-Referenz &ndash; Hersteller, Teilenummern und Quellen &rarr;</a></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
                     <div><label>Hauptventuri gemessen (mm):</label><input type="text" data-field="p3_jet_venturi" placeholder="36 / 38" oninput="autoSave()" style="width:70px;"></div>
                     <div><label>Wellenspiel auff&auml;llig bei:</label><input type="text" data-field="p3_carb_shaft_play" placeholder="keiner" oninput="autoSave()" style="width:90px;"></div>
@@ -3823,7 +3825,8 @@
                 <li><span class="de">Zu hoher Druck = Schwimmernadel schlie&szlig;t nicht, Vergaser l&auml;uft &uuml;ber (Flooding). Die DRLA vertr&auml;gt keine Pumpendr&uuml;cke.</span><span class="en">Excessive pressure = float needle does not close, carburetor floods. The DRLA cannot take raw pump pressure.</span></li>
                 <li><span class="de">Bis der Tankbilanz-Test ausgewertet ist: <strong>auf l&auml;ngeren Fahrten beide Tankst&auml;nde im Blick behalten</strong>, nicht nur den Vorrat insgesamt.</span><span class="en">Until the tank balance test is evaluated: <strong>watch both tank levels on longer drives</strong>, not just total range.</span></li>
                 <li><span class="de">Alle Verbindungen vor dem Erststart auf Dichtheit pr&uuml;fen. Feuerl&ouml;scher bereithalten.</span><span class="en">Check all connections for leaks before first start. Have a fire extinguisher ready.</span></li>
-            </ul><div style="margin-top:0.5rem;font-size:0.78rem;"><a href="docs/exkurs-kraftstoffdruck.html" style="color:#2b6cb0;font-weight:600;text-decoration:none;">&#128214; Exkurs: Kraftstoffdruck am DellOrto DRLA &ndash; Quellenlage, Bypass-Regler, Zwei-Kreis-Anlage &rarr;</a></div></div>
+            </ul><div style="margin-top:0.5rem;font-size:0.78rem;"><a href="docs/exkurs-kraftstoffdruck.html" style="color:#2b6cb0;font-weight:600;text-decoration:none;">&#128214; Exkurs: Kraftstoffdruck am DellOrto DRLA &ndash; Quellenlage, Bypass-Regler, Zwei-Kreis-Anlage &rarr;</a></div>
+                <div style="margin-top:0.5rem;font-size:0.78rem;"><a href="docs/komponenten.html" style="color:#2b6cb0;font-weight:600;text-decoration:none;">&#128295; Komponenten-Referenz &ndash; Hersteller, Teilenummern und Quellen &rarr;</a></div></div>
         </div>
     </div>
 </div>
@@ -4448,15 +4451,86 @@
     </div></div>
 </div>
 
-<!-- 22. Synchronize DellOrto, Log Lambda -->
-<div class="step-card" id="p4_sync_card">
+<!-- Phase Photos -->
+<div style="margin-top: 1rem;">
+<div class="comp-photo-strip build-thumbs" data-comp-gallery="phase4" data-thumbs="4">
+    <div class="thumb-row"></div>
+    <div class="comp-photo-actions">
+        <button type="button" class="comp-photo-btn" onclick="openGallery('phase4')">&#128444; <span id="phase4-count">0</span> Fotos</button>
+        <button type="button" class="comp-photo-btn" onclick="addPhoto('phase4')">&#128247; Foto hinzuf&uuml;gen</button>
+        <button type="button" class="comp-photo-btn" onclick="addYouTube('phase4')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+    </div>
+</div>
+</div>
+
+<!-- Video-Referenzen (user-managed) -->
+<div class="subphase">&#127909; Video-Referenzen (Video References)</div>
+<div id="videoList_phase4" class="video-list"></div>
+<div style="display:flex;gap:0.3rem;align-items:center;margin-top:0.4rem;">
+    <input type="text" id="videoUrl_phase4" placeholder="YouTube-URL eingeben..." style="flex:1;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.78rem;">
+    <input type="text" id="videoTitle_phase4" placeholder="Titel (optional)" style="width:180px;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.78rem;">
+    <button onclick="addVideo('phase4')" style="padding:0.4rem 0.7rem;background:var(--primary-light);color:white;border:none;border-radius:6px;font-size:0.78rem;cursor:pointer;white-space:nowrap;">+ Video</button>
+</div>
+
+</div><!-- /phase4body -->
+</div><!-- /phase4 -->
+
+<div id="phase5">
+<div class="phase-banner p5" onclick="togglePhase('phase5body')">
+    <div class="phase-num">5</div>
+    <div class="phase-info">
+        <h2>Abstimmung &amp; Feuertaufe (Fine Tuning &amp; Shakedown)</h2>
+        <p>Werkstatt nur f&uuml;r Grundeinstellungen &ndash; Teillast auf der Stra&szlig;e, Volllast nur auf der Strecke</p>
+    </div>
+    <span class="phase-toggle" id="toggle_phase5body">&#9660;</span>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="prog5" style="width:0%"></div></div>
+<div class="progress-text" id="progText5">0 / 0</div>
+
+<div class="phase-body collapsed" id="phase5body">
+
+<div class="subphase">5a &ndash; Werkstatt: Grundeinstellungen (Workshop: Base Settings)</div>
+
+<div class="step-card" id="p5_leak_card">
     <div class="step-header">
-        <button type="button" class="step-status" data-field="p4_sync" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
-        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">22. Synchronize DellOrto, Log Lambda (DellOrto synchronisieren, Lambda loggen)</span>
+        <button type="button" class="step-status" data-field="p5_leak" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">1. False Air Test (Falschluft-Test)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
-    <input type="hidden" data-field="p4_sync_n" data-legacy-note="p4_sync">
-    <div class="findings" data-findings="p4_sync"></div>
+    <input type="hidden" data-field="p5_leak_n" data-legacy-note="p5_leak">
+    <div class="findings" data-findings="p5_leak"></div>
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="procedure">Falschluft-Test (False Air / Vacuum Leak Test)</h4>
+                <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de"><strong>Das ist das Tor zu allem Weiteren.</strong> Eine undichte Stelle zieht Luft an der Drosselklappe vorbei. Der betroffene Zylinder l&auml;uft mager, und wer das mit einer gr&ouml;&szlig;eren D&uuml;se auszugleichen versucht, macht alle anderen fett. Erst dicht, dann synchronisieren, dann bed&uuml;sen.</span><span class="en"><strong>This is the gate to everything else.</strong> A leak draws air past the throttle plate. The affected cylinder runs lean, and compensating with a larger jet makes all the others rich. Seal first, then synchronize, then jet.</span></p>
+                <ol>
+                <li><span class="de">Motor betriebswarm im Leerlauf laufen lassen, Drehzahlmesser im Blick.</span><span class="en">Run the engine at idle at operating temperature, watch the tachometer.</span></li>
+                <li><span class="de"><strong>Propan-Methode (empfohlen):</strong> Gasbrenner oder Campinggas-Kartusche mit Schlauch, <strong>nicht angez&uuml;ndet</strong> &ndash; nur Gas str&ouml;men lassen. Den Schlauch langsam an die Verdachtsstellen f&uuml;hren.</span><span class="en"><strong>Propane method (recommended):</strong> torch or camping gas cartridge with a hose, <strong>unlit</strong> &ndash; gas flow only. Move the hose slowly along the suspected points.</span></li>
+                <li><span class="de"><strong>Steigt die Drehzahl kurz an</strong>, wird dort Gas angesaugt &ndash; Leck gefunden. Stelle notieren, weitersuchen, es gibt oft mehr als eine.</span><span class="en"><strong>If rpm briefly rises</strong>, gas is being drawn in there &ndash; leak found. Note the spot, keep looking, there is often more than one.</span></li>
+                <li><span class="de">Systematisch absuchen, je Vergaser: <strong>Fu&szlig;dichtung ringsum</strong>, <strong>beide Drosselklappenwellen-Enden</strong>, Gemischschrauben-Sitze, Unterdruckanschl&uuml;sse und Verschlussstopfen.</span><span class="en">Search systematically, per carburetor: <strong>base gasket all round</strong>, <strong>both throttle shaft ends</strong>, mixture screw seats, vacuum ports and blanking plugs.</span></li>
+                <li><span class="de">Danach die <strong>Ansaugbr&uuml;cke zum Zylinderkopf</strong> absuchen &ndash; eine undichte Br&uuml;ckendichtung sieht am Lambda genauso aus wie ein undichter Vergaser.</span><span class="en">Then check the <strong>intake manifold to cylinder head</strong> joint &ndash; a leaking manifold gasket looks exactly like a leaking carburetor on the lambda.</span></li>
+                <li><span class="de">Gefundene Lecks beheben, dann <strong>erneut pr&uuml;fen</strong>. Erst wenn nichts mehr anschl&auml;gt, geht es weiter.</span><span class="en">Fix any leaks found, then <strong>test again</strong>. Only when nothing responds any more does work continue.</span></li>
+                </ol>
+                <div class="guide-input-row" style="margin-top:0.4rem;">
+                    <div><label>Methode:</label><input type="text" data-field="p5_leak_method" placeholder="Propan" oninput="autoSave()" style="width:80px;"></div>
+                    <div><label>Befund Vergaser 1&ndash;4:</label><input type="text" data-field="p5_leak_result" placeholder="dicht" oninput="autoSave()" style="width:120px;"></div>
+                    <div><label>Nachpr&uuml;fung dicht:</label><input type="text" data-field="p5_leak_recheck" placeholder="ja" oninput="autoSave()" style="width:55px;"></div>
+                </div>
+                <div class="warning-box"><strong>Nicht mit Bremsenreiniger oder Startpilot.</strong> <span class="de">Die Methode ist verbreitet, aber sie liefert Fehlanzeigen, greift die Dichtungen an, die man gerade pr&uuml;fen will, und spr&uuml;ht brennbare Fl&uuml;ssigkeit auf einen hei&szlig;en Motor mit offenen Ansaugtrichtern. Propan ist unkritischer und zuverl&auml;ssiger. <strong>Feuerl&ouml;scher trotzdem bereithalten</strong>, und bei laufendem Motor auf Abstand zum Gest&auml;nge achten.</span><span class="en">The method is common, but it gives false readings, attacks the very gaskets you are testing, and sprays flammable liquid onto a hot engine with open velocity stacks. Propane is less critical and more reliable. <strong>Keep a fire extinguisher ready anyway</strong>, and keep clear of the linkage while the engine runs.</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="step-card" id="p5_sync_card">
+    <div class="step-header">
+        <button type="button" class="step-status" data-field="p5_sync" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">2. Synchronize &amp; Idle Mixture (Synchronisieren &amp; Leerlaufgemisch)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
+    </div>
+    <input type="hidden" data-field="p5_sync_n" data-legacy-note="p5_sync">
+    <div class="findings" data-findings="p5_sync"></div>
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block guide-full"><h4 class="prereq">Voraussetzungen (Prerequisites)</h4><ul>
@@ -4475,103 +4549,9 @@
                 <div class="spec-line"><span>Gemischschrauben Startwert</span><span class="spec-val">2.5 Umdrehungen heraus</span></div>
                 <div class="spec-line"><span>Str&ouml;mungsabweichung (flow spread)</span><span class="spec-val">&le; 5 % zwischen allen 8</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Leerlauf erreicht:</label><input type="text" data-field="p4_sync_rpm" placeholder="950" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Max. Abweichung:</label><input type="text" data-field="p4_sync_spread" placeholder="3 %" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Leerlauf erreicht:</label><input type="text" data-field="p5_sync_rpm" placeholder="950" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Max. Abweichung:</label><input type="text" data-field="p5_sync_spread" placeholder="3 %" oninput="autoSave()" style="width:55px;"></div>
                 </div>
-            </div>
-
-            <div class="guide-block guide-full"><h4 class="prereq">Bezugsgr&ouml;&szlig;en (What the Jetting Depends On)</h4>
-                <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de">Eine Bed&uuml;sung gilt nicht f&uuml;r &bdquo;einen 302&ldquo;, sondern f&uuml;r <strong>diesen</strong> Motor in <strong>dieser</strong> Konfiguration. &Auml;ndert sich einer der Werte unten, &auml;ndert sich die Bed&uuml;sung mit. Vor dem Abstimmen ausf&uuml;llen &ndash; sonst ist sp&auml;ter nicht mehr rekonstruierbar, wof&uuml;r die gew&auml;hlten D&uuml;sen eigentlich gut waren.</span><span class="en">Jetting does not apply to &quot;a 302&quot;, it applies to <strong>this</strong> engine in <strong>this</strong> configuration. If one of the values below changes, the jetting changes with it. Fill this in before tuning &ndash; otherwise it is no longer reconstructable what the chosen jets were actually good for.</span></p>
-                <table class="guide-table">
-                    <thead><tr><th>Bezugsgr&ouml;&szlig;e</th><th>Wert</th><th>Wirkung auf die Bed&uuml;sung</th></tr></thead>
-                    <tbody>
-                        <tr><td>Verdichtung</td><td><input type="text" data-field="p4_tune_compression" placeholder="10.5:1" oninput="autoSave()"></td>
-                            <td><span class="de">H&ouml;her = klopfempfindlicher, vertr&auml;gt weniger Magerkeit bei Volllast</span><span class="en">Higher = more knock-sensitive, tolerates less lean at full load</span></td></tr>
-                        <tr><td>Nockenwelle (Dauer / &Uuml;berschneidung)</td><td><input type="text" data-field="p4_tune_cam" placeholder="224/232 @.050" oninput="autoSave()"></td>
-                            <td><span class="de">Mehr &Uuml;berschneidung = schlechteres Leerlaufvakuum = <strong>gr&ouml;&szlig;ere Leerlaufd&uuml;se</strong> und h&ouml;here Leerlaufdrehzahl</span><span class="en">More overlap = poorer idle vacuum = <strong>larger idle jet</strong> and higher idle speed</span></td></tr>
-                        <tr><td>Auspuffanlage</td><td><input type="text" data-field="p4_tune_exhaust" placeholder="Fächer, offen" oninput="autoSave()"></td>
-                            <td><span class="de">Freier = tendenziell magerer, meist gr&ouml;&szlig;ere Hauptd&uuml;se n&ouml;tig</span><span class="en">Freer flowing = tends leaner, usually needs a larger main jet</span></td></tr>
-                        <tr><td>Z&uuml;ndung gesamt (total advance)</td><td><input type="text" data-field="p4_tune_timing_total" placeholder="34-36°" oninput="autoSave()"></td>
-                            <td><span class="de"><strong>Zuerst festnageln.</strong> Zu wenig Fr&uuml;hz&uuml;ndung sieht am Lambda aus wie zu mager und verf&uuml;hrt zur falschen D&uuml;se</span><span class="en"><strong>Lock this down first.</strong> Too little advance looks lean on the lambda and tempts you into the wrong jet</span></td></tr>
-                        <tr><td>Kraftstoff (ROZ / Ethanol)</td><td><input type="text" data-field="p4_tune_fuel" placeholder="98, E5" oninput="autoSave()"></td>
-                            <td><span class="de">Ethanol braucht rund 3 % mehr Kraftstoffmenge pro Prozent Anteil &ndash; E5 und E10 bed&uuml;sen nicht gleich</span><span class="en">Ethanol needs roughly 3 % more fuel per percent content &ndash; E5 and E10 do not jet the same</span></td></tr>
-                        <tr><td>H&ouml;henlage / Lufttemperatur</td><td><input type="text" data-field="p4_tune_altitude" placeholder="400 m, 20 °C" oninput="autoSave()"></td>
-                            <td><span class="de">H&ouml;her oder w&auml;rmer = d&uuml;nnere Luft = wirkt fetter, Hauptd&uuml;se tendenziell kleiner</span><span class="en">Higher or warmer = thinner air = runs richer, main jet tends smaller</span></td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="guide-block guide-full"><h4 class="measure">Bed&uuml;sung: Ist, Soll, Begr&uuml;ndung (Jetting Decision Log)</h4>
-                <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de">Ist-Werte je Vergaser stehen in <strong>Phase 3, Kapitel 27</strong>. Hier wird entschieden und begr&uuml;ndet. Die Spalte <em>Wof&uuml;r zust&auml;ndig</em> sagt, welcher Betriebsbereich sich &uuml;berhaupt &auml;ndert &ndash; wer die falsche D&uuml;se anfasst, verstellt den falschen Bereich.</span><span class="en">Actual values per carburetor are in <strong>phase 3, chapter 27</strong>. Decisions and reasons go here. The <em>governs</em> column says which operating range actually changes &ndash; touching the wrong jet adjusts the wrong range.</span></p>
-                <table class="guide-table">
-                    <thead><tr><th>D&uuml;se</th><th>Wof&uuml;r zust&auml;ndig (governs)</th><th>Ist</th><th>Soll</th><th>Begr&uuml;ndung</th></tr></thead>
-                    <tbody>
-                        <tr><td>Hauptd&uuml;se</td>
-                            <td><span class="de">Volllast ab ca. 3000 rpm. <strong>Zu mager kostet Kolben.</strong></span><span class="en">Full load from approx. 3000 rpm. <strong>Too lean costs pistons.</strong></span></td>
-                            <td><input type="text" data-field="p4_jd_main_ist" oninput="autoSave()"></td>
-                            <td><input type="text" data-field="p4_jd_main_soll" oninput="autoSave()"></td>
-                            <td><input type="text" data-field="p4_jd_main_why" oninput="autoSave()"></td></tr>
-                        <tr><td>Leerlaufd&uuml;se</td>
-                            <td><span class="de">Leerlauf und &Uuml;bergang bis ca. 2500 rpm. H&auml;ngt am Nockenprofil.</span><span class="en">Idle and progression up to approx. 2500 rpm. Depends on cam profile.</span></td>
-                            <td><input type="text" data-field="p4_jd_idle_ist" oninput="autoSave()"></td>
-                            <td><input type="text" data-field="p4_jd_idle_soll" oninput="autoSave()"></td>
-                            <td><input type="text" data-field="p4_jd_idle_why" oninput="autoSave()"></td></tr>
-                        <tr><td>Luftkorrektur</td>
-                            <td><span class="de">Magert mit steigender Drehzahl ab. Korrigiert das obere Drittel, ohne die Hauptd&uuml;se anzufassen.</span><span class="en">Leans out as rpm rises. Corrects the top third without touching the main jet.</span></td>
-                            <td><input type="text" data-field="p4_jd_air_ist" oninput="autoSave()"></td>
-                            <td><input type="text" data-field="p4_jd_air_soll" oninput="autoSave()"></td>
-                            <td><input type="text" data-field="p4_jd_air_why" oninput="autoSave()"></td></tr>
-                        <tr><td>Emulsionsrohr</td>
-                            <td><span class="de">Form des &Uuml;bergangs Teillast &rarr; Volllast. Zuletzt anfassen, wirkt breit.</span><span class="en">Shape of the part-load to full-load transition. Touch last, acts broadly.</span></td>
-                            <td><input type="text" data-field="p4_jd_emul_ist" oninput="autoSave()"></td>
-                            <td><input type="text" data-field="p4_jd_emul_soll" oninput="autoSave()"></td>
-                            <td><input type="text" data-field="p4_jd_emul_why" oninput="autoSave()"></td></tr>
-                        <tr><td>Pumpjet</td>
-                            <td><span class="de">Anreicherung beim Gasgeben. Zu klein = Loch beim Antippen, zu gro&szlig; = schwarze Wolke.</span><span class="en">Enrichment on throttle opening. Too small = flat spot, too large = black puff.</span></td>
-                            <td><input type="text" data-field="p4_jd_pump_ist" oninput="autoSave()"></td>
-                            <td><input type="text" data-field="p4_jd_pump_soll" oninput="autoSave()"></td>
-                            <td><input type="text" data-field="p4_jd_pump_why" oninput="autoSave()"></td></tr>
-                        <tr><td>Hauptventuri</td>
-                            <td><span class="de">Luftgeschwindigkeit. Gr&ouml;&szlig;er = mehr Spitzenleistung, schlechteres Ansprechen unten. Bestimmt die Hauptd&uuml;se mit.</span><span class="en">Air velocity. Larger = more peak power, poorer low-end response. Co-determines the main jet.</span></td>
-                            <td><input type="text" data-field="p4_jd_vent_ist" oninput="autoSave()"></td>
-                            <td><input type="text" data-field="p4_jd_vent_soll" oninput="autoSave()"></td>
-                            <td><input type="text" data-field="p4_jd_vent_why" oninput="autoSave()"></td></tr>
-                    </tbody>
-                </table>
-                <div class="warning-box"><span class="de"><strong>Immer nur eine D&uuml;senart je Durchgang</strong> &auml;ndern, Ergebnis loggen, dann die n&auml;chste. Zwei &Auml;nderungen gleichzeitig machen beide unlesbar &ndash; und wer die Begr&uuml;ndung nicht eintr&auml;gt, wiederholt in der n&auml;chsten Saison dieselbe Runde.</span><span class="en"><strong>Change only one jet type per round</strong>, log the result, then the next. Two changes at once make both unreadable &ndash; and whoever skips the reason will repeat the same round next season.</span></div>
-            </div>
-
-            <div class="guide-block guide-full"><h4 class="procedure">Reihenfolge des Abstimmens (Tuning Order)</h4>
-                <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de">Die Reihenfolge ist kein Stil, sondern Voraussetzung: jeder Schritt setzt voraus, dass die vorherigen stimmen. Wer sie umdreht, kompensiert einen Fehler mit dem n&auml;chsten.</span><span class="en">The order is not a matter of style but a prerequisite: each step assumes the previous ones are correct. Reversing it compensates one error with the next.</span></p>
-                <ol>
-                <li><span class="de"><strong>Mechanik.</strong> Wellenspiel, Schwimmerstand, Dichtheit &ndash; Kapitel 27. Dann der <strong>Falschluft-Test</strong> unten, am laufenden Motor. Auf einem undichten Vergaser ist jede Abstimmung Zufall.</span><span class="en"><strong>Mechanics.</strong> False air, shaft play, float level, leaks &ndash; chapter 27. On a leaking carburetor, any tuning is coincidence.</span></li>
-                <li><span class="de"><strong>Kraftstoffdruck.</strong> 3.0 psi, beide Kreise gleich &ndash; Kapitel 6. Schwankender Druck verschiebt den Schwimmerstand und damit alles Weitere.</span><span class="en"><strong>Fuel pressure.</strong> 3.0 psi, both circuits equal &ndash; chapter 6. Fluctuating pressure shifts the float level and everything downstream.</span></li>
-                <li><span class="de"><strong>Z&uuml;ndung.</strong> Gesamtfr&uuml;hz&uuml;ndung 34&ndash;36&deg; festnageln &ndash; Kapitel 18. <strong>Vor</strong> der Bed&uuml;sung, nicht danach.</span><span class="en"><strong>Ignition.</strong> Lock total advance at 34&ndash;36&deg; &ndash; chapter 18. <strong>Before</strong> jetting, not after.</span></li>
-                <li><span class="de"><strong>Synchronisation.</strong> Erst innerhalb der Vergaser, dann zwischen ihnen (siehe unten).</span><span class="en"><strong>Synchronization.</strong> First within the carburetors, then between them (see below).</span></li>
-                <li><span class="de"><strong>Leerlaufgemisch</strong> &uuml;ber die Gemischschrauben, danach Synchronisation nachpr&uuml;fen.</span><span class="en"><strong>Idle mixture</strong> via the mixture screws, then re-check synchronization.</span></li>
-                <li><span class="de"><strong>&Uuml;bergang</strong> (Leerlaufd&uuml;se): Ruckeln oder Loch zwischen Leerlauf und 2500 rpm geh&ouml;rt hierher, nicht zur Hauptd&uuml;se.</span><span class="en"><strong>Progression</strong> (idle jet): stumble or flat spot between idle and 2500 rpm belongs here, not to the main jet.</span></li>
-                <li><span class="de"><strong>Volllast</strong> (Hauptd&uuml;se): nur unter Last messen, mit Lambda-Log. <strong>Kurze Z&uuml;ge</strong>, sofort auswerten.</span><span class="en"><strong>Full load</strong> (main jet): measure only under load, with lambda logging. <strong>Short pulls</strong>, evaluate immediately.</span></li>
-                <li><span class="de"><strong>Oberes Drittel</strong> (Luftkorrektur), dann <strong>Pumpjet</strong> zuletzt f&uuml;rs Ansprechverhalten.</span><span class="en"><strong>Top third</strong> (air corrector), then <strong>pump jet</strong> last for throttle response.</span></li>
-                <li><span class="de"><strong>Kerzenbild lesen</strong> (Kapitel 21) und mit dem Lambda-Log gegenpr&uuml;fen &ndash; es ist die einzige Einzelzylinder-Information, die ihr habt.</span><span class="en"><strong>Read the spark plugs</strong> (chapter 21) and cross-check against the lambda log &ndash; it is the only per-cylinder information you have.</span></li>
-                </ol>
-            </div>
-
-            <div class="guide-block guide-full"><h4 class="procedure">Falschluft-Test (False Air / Vacuum Leak Test)</h4>
-                <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de"><strong>Das ist das Tor zu allem Weiteren.</strong> Eine undichte Stelle zieht Luft an der Drosselklappe vorbei. Der betroffene Zylinder l&auml;uft mager, und wer das mit einer gr&ouml;&szlig;eren D&uuml;se auszugleichen versucht, macht alle anderen fett. Erst dicht, dann synchronisieren, dann bed&uuml;sen.</span><span class="en"><strong>This is the gate to everything else.</strong> A leak draws air past the throttle plate. The affected cylinder runs lean, and compensating with a larger jet makes all the others rich. Seal first, then synchronize, then jet.</span></p>
-                <ol>
-                <li><span class="de">Motor betriebswarm im Leerlauf laufen lassen, Drehzahlmesser im Blick.</span><span class="en">Run the engine at idle at operating temperature, watch the tachometer.</span></li>
-                <li><span class="de"><strong>Propan-Methode (empfohlen):</strong> Gasbrenner oder Campinggas-Kartusche mit Schlauch, <strong>nicht angez&uuml;ndet</strong> &ndash; nur Gas str&ouml;men lassen. Den Schlauch langsam an die Verdachtsstellen f&uuml;hren.</span><span class="en"><strong>Propane method (recommended):</strong> torch or camping gas cartridge with a hose, <strong>unlit</strong> &ndash; gas flow only. Move the hose slowly along the suspected points.</span></li>
-                <li><span class="de"><strong>Steigt die Drehzahl kurz an</strong>, wird dort Gas angesaugt &ndash; Leck gefunden. Stelle notieren, weitersuchen, es gibt oft mehr als eine.</span><span class="en"><strong>If rpm briefly rises</strong>, gas is being drawn in there &ndash; leak found. Note the spot, keep looking, there is often more than one.</span></li>
-                <li><span class="de">Systematisch absuchen, je Vergaser: <strong>Fu&szlig;dichtung ringsum</strong>, <strong>beide Drosselklappenwellen-Enden</strong>, Gemischschrauben-Sitze, Unterdruckanschl&uuml;sse und Verschlussstopfen.</span><span class="en">Search systematically, per carburetor: <strong>base gasket all round</strong>, <strong>both throttle shaft ends</strong>, mixture screw seats, vacuum ports and blanking plugs.</span></li>
-                <li><span class="de">Danach die <strong>Ansaugbr&uuml;cke zum Zylinderkopf</strong> absuchen &ndash; eine undichte Br&uuml;ckendichtung sieht am Lambda genauso aus wie ein undichter Vergaser.</span><span class="en">Then check the <strong>intake manifold to cylinder head</strong> joint &ndash; a leaking manifold gasket looks exactly like a leaking carburetor on the lambda.</span></li>
-                <li><span class="de">Gefundene Lecks beheben, dann <strong>erneut pr&uuml;fen</strong>. Erst wenn nichts mehr anschl&auml;gt, geht es weiter.</span><span class="en">Fix any leaks found, then <strong>test again</strong>. Only when nothing responds any more does work continue.</span></li>
-                </ol>
-                <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Methode:</label><input type="text" data-field="p4_leak_method" placeholder="Propan" oninput="autoSave()" style="width:80px;"></div>
-                    <div><label>Befund Vergaser 1&ndash;4:</label><input type="text" data-field="p4_leak_result" placeholder="dicht" oninput="autoSave()" style="width:120px;"></div>
-                    <div><label>Nachpr&uuml;fung dicht:</label><input type="text" data-field="p4_leak_recheck" placeholder="ja" oninput="autoSave()" style="width:55px;"></div>
-                </div>
-                <div class="warning-box"><strong>Nicht mit Bremsenreiniger oder Startpilot.</strong> <span class="de">Die Methode ist verbreitet, aber sie liefert Fehlanzeigen, greift die Dichtungen an, die man gerade pr&uuml;fen will, und spr&uuml;ht brennbare Fl&uuml;ssigkeit auf einen hei&szlig;en Motor mit offenen Ansaugtrichtern. Propan ist unkritischer und zuverl&auml;ssiger. <strong>Feuerl&ouml;scher trotzdem bereithalten</strong>, und bei laufendem Motor auf Abstand zum Gest&auml;nge achten.</span><span class="en">The method is common, but it gives false readings, attacks the very gaskets you are testing, and sprays flammable liquid onto a hot engine with open velocity stacks. Propane is less critical and more reliable. <strong>Keep a fire extinguisher ready anyway</strong>, and keep clear of the linkage while the engine runs.</span></div>
             </div>
             <div class="guide-block guide-full"><h4 class="procedure">Synchronisation (Synchronization)</h4>
                 <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de">Vier Vergaser, <strong>acht Drosselklappen, eine je Zylinder</strong>. Synchronisiert wird in zwei Ebenen: erst die beiden Drosselklappen <em>innerhalb</em> eines Vergasers, dann die Vergaser <em>untereinander</em>. Wer gleich am Gest&auml;nge dreht, verschiebt beides zugleich und kommt nie zur Ruhe.</span><span class="en">Four carburetors, <strong>eight barrels, one per cylinder</strong>. Synchronize on two levels: first the two barrels <em>within</em> each carburetor, then the carburetors <em>against each other</em>. Starting at the linkage moves both at once and never settles.</span></p>
@@ -4587,31 +4567,134 @@
                 <li><span class="de">Ergebnis: ruhiger Leerlauf <strong>ohne Schaukeln</strong> des Motors. Pulsieren, Spucken oder Pendeln hei&szlig;t: Gemisch oder Balance stimmen noch nicht.</span><span class="en">Result: steady idle with <strong>no rocking</strong> of the engine. Pulsing, spitting or hunting means mixture or balance are not right yet.</span></li>
                 </ol>
             </div>
+        </div>
+    </div>
+</div>
 
+
+<div class="step-card" id="p5_lambda_card">
+    <div class="step-header">
+        <button type="button" class="step-status" data-field="p5_lambda" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">3. Lambda Hardware &amp; Collector Mapping (Lambda-Hardware &amp; Collector-Zuordnung)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
+    </div>
+    <input type="hidden" data-field="p5_lambda_n" data-legacy-note="p5_lambda">
+    <div class="findings" data-findings="p5_lambda"></div>
+    <div class="step-guide">
+        <div class="guide-grid">
             <div class="guide-block guide-full"><h4 class="measure">Lambda-Logging</h4>
                 <div class="warning-box"><span class="de"><strong>Was zwei Sonden k&ouml;nnen und was nicht:</strong> Zwei Collectors liefern zwei <strong>Bank-Mittelwerte</strong>, keine Einzelzylinderwerte. Ein zu fetter und ein zu magerer Zylinder derselben Bank heben sich in der Anzeige auf. Ein auff&auml;lliger Bankwert sagt also <em>dass</em> etwas nicht stimmt, nicht <em>wo</em>. Das Kerzenbild (Kapitel 21) bleibt die Einzelzylinder-Information.</span><span class="en"><strong>What two probes can and cannot do:</strong> Two collectors give two <strong>bank averages</strong>, not per-cylinder values. One rich and one lean cylinder on the same bank cancel out in the reading. An abnormal bank value tells you <em>that</em> something is wrong, not <em>where</em>. Spark plug reading (chapter 21) remains the per-cylinder information.</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Collector A &ndash; Zylinder:</label><input type="text" data-field="p4_collector_a" placeholder="1-3-5-7?" oninput="autoSave()" style="width:80px;"></div>
-                    <div><label>Collector B &ndash; Zylinder:</label><input type="text" data-field="p4_collector_b" placeholder="2-4-6-8?" oninput="autoSave()" style="width:80px;"></div>
+                    <div><label>Collector A &ndash; Zylinder:</label><input type="text" data-field="p5_collector_a" placeholder="1-3-5-7?" oninput="autoSave()" style="width:80px;"></div>
+                    <div><label>Collector B &ndash; Zylinder:</label><input type="text" data-field="p5_collector_b" placeholder="2-4-6-8?" oninput="autoSave()" style="width:80px;"></div>
                 </div>
                 <p style="font-size:0.78rem;line-height:1.5;margin:0.4rem 0 0.3rem;"><span class="de">Zylinderzuordnung am Auto feststellen, nicht annehmen: bei betriebswarmem Motor eine Z&uuml;ndleitung kurz abziehen und beobachten, welcher Collector reagiert.</span><span class="en">Determine the cylinder assignment on the car, do not assume it: with the engine warm, briefly pull one plug lead and watch which collector responds.</span></p>
                 <table class="guide-table">
                     <thead><tr><th>Betriebspunkt</th><th>AFR Collector A</th><th>AFR Collector B</th></tr></thead>
                     <tbody>
                         <tr><td>Leerlauf (idle)</td>
-                            <td><input type="text" data-field="p4_afr_idle_a" oninput="autoSave()" style="width:52px;"></td>
-                            <td><input type="text" data-field="p4_afr_idle_b" oninput="autoSave()" style="width:52px;"></td></tr>
+                            <td><input type="text" data-field="p5_afr_idle_a" oninput="autoSave()" style="width:52px;"></td>
+                            <td><input type="text" data-field="p5_afr_idle_b" oninput="autoSave()" style="width:52px;"></td></tr>
                         <tr><td>Teillast (cruise)</td>
-                            <td><input type="text" data-field="p4_afr_cruise_a" oninput="autoSave()" style="width:52px;"></td>
-                            <td><input type="text" data-field="p4_afr_cruise_b" oninput="autoSave()" style="width:52px;"></td></tr>
+                            <td><input type="text" data-field="p5_afr_cruise_a" oninput="autoSave()" style="width:52px;"></td>
+                            <td><input type="text" data-field="p5_afr_cruise_b" oninput="autoSave()" style="width:52px;"></td></tr>
                         <tr><td>Volllast (WOT)</td>
-                            <td><input type="text" data-field="p4_afr_wot_a" oninput="autoSave()" style="width:52px;"></td>
-                            <td><input type="text" data-field="p4_afr_wot_b" oninput="autoSave()" style="width:52px;"></td></tr>
+                            <td><input type="text" data-field="p5_afr_wot_a" oninput="autoSave()" style="width:52px;"></td>
+                            <td><input type="text" data-field="p5_afr_wot_b" oninput="autoSave()" style="width:52px;"></td></tr>
                     </tbody>
                 </table>
                 <div class="warning-box"><strong>Volllast zuerst:</strong> <span class="de">Ein zu mageres Gemisch bei Volllast kostet Kolben. Vor dem ersten Ausdrehen unter Last einen kurzen Volllastzug loggen und auswerten, bevor l&auml;nger Vollgas gefahren wird. Als sicherer Ausgangsbereich gilt fuer einen Saugmotor mit Vergaser <strong>12.5&ndash;13.0 AFR</strong> bei Volllast &ndash; <strong>unbelegt</strong>, am Motor zu verifizieren. Der Leitfaden nennt fuer Leerlauf 13.5&ndash;14.0 AFR, ebenfalls ohne Quelle.</span><span class="en">A lean mixture at full load costs pistons. Log and evaluate one short full-load pull before running extended wide-open throttle. A commonly used safe starting range for a naturally aspirated carbureted engine is <strong>12.5&ndash;13.0 AFR</strong> at full load &ndash; <strong>unsourced</strong>, to be verified on this engine. The guide gives 13.5&ndash;14.0 AFR at idle, also without a source.</span></div>
             </div>
+        </div>
+    </div>
+</div>
 
+
+<div class="subphase">5b &ndash; Stra&szlig;e: Teillast (Road: Part Load)</div>
+
+<div class="step-card" id="p5_jetting_card">
+    <div class="step-header">
+        <button type="button" class="step-status" data-field="p5_jetting" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">4. Jetting Decisions (Bed&uuml;sung entscheiden &amp; dokumentieren)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
+    </div>
+    <input type="hidden" data-field="p5_jetting_n" data-legacy-note="p5_jetting">
+    <div class="findings" data-findings="p5_jetting"></div>
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="prereq">Bezugsgr&ouml;&szlig;en (What the Jetting Depends On)</h4>
+                <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de">Eine Bed&uuml;sung gilt nicht f&uuml;r &bdquo;einen 302&ldquo;, sondern f&uuml;r <strong>diesen</strong> Motor in <strong>dieser</strong> Konfiguration. &Auml;ndert sich einer der Werte unten, &auml;ndert sich die Bed&uuml;sung mit. Vor dem Abstimmen ausf&uuml;llen &ndash; sonst ist sp&auml;ter nicht mehr rekonstruierbar, wof&uuml;r die gew&auml;hlten D&uuml;sen eigentlich gut waren.</span><span class="en">Jetting does not apply to &quot;a 302&quot;, it applies to <strong>this</strong> engine in <strong>this</strong> configuration. If one of the values below changes, the jetting changes with it. Fill this in before tuning &ndash; otherwise it is no longer reconstructable what the chosen jets were actually good for.</span></p>
+                <table class="guide-table">
+                    <thead><tr><th>Bezugsgr&ouml;&szlig;e</th><th>Wert</th><th>Wirkung auf die Bed&uuml;sung</th></tr></thead>
+                    <tbody>
+                        <tr><td>Verdichtung</td><td><input type="text" data-field="p5_tune_compression" placeholder="10.5:1" oninput="autoSave()"></td>
+                            <td><span class="de">H&ouml;her = klopfempfindlicher, vertr&auml;gt weniger Magerkeit bei Volllast</span><span class="en">Higher = more knock-sensitive, tolerates less lean at full load</span></td></tr>
+                        <tr><td>Nockenwelle (Dauer / &Uuml;berschneidung)</td><td><input type="text" data-field="p5_tune_cam" placeholder="224/232 @.050" oninput="autoSave()"></td>
+                            <td><span class="de">Mehr &Uuml;berschneidung = schlechteres Leerlaufvakuum = <strong>gr&ouml;&szlig;ere Leerlaufd&uuml;se</strong> und h&ouml;here Leerlaufdrehzahl</span><span class="en">More overlap = poorer idle vacuum = <strong>larger idle jet</strong> and higher idle speed</span></td></tr>
+                        <tr><td>Auspuffanlage</td><td><input type="text" data-field="p5_tune_exhaust" placeholder="Fächer, offen" oninput="autoSave()"></td>
+                            <td><span class="de">Freier = tendenziell magerer, meist gr&ouml;&szlig;ere Hauptd&uuml;se n&ouml;tig</span><span class="en">Freer flowing = tends leaner, usually needs a larger main jet</span></td></tr>
+                        <tr><td>Z&uuml;ndung gesamt (total advance)</td><td><input type="text" data-field="p5_tune_timing_total" placeholder="34-36°" oninput="autoSave()"></td>
+                            <td><span class="de"><strong>Zuerst festnageln.</strong> Zu wenig Fr&uuml;hz&uuml;ndung sieht am Lambda aus wie zu mager und verf&uuml;hrt zur falschen D&uuml;se</span><span class="en"><strong>Lock this down first.</strong> Too little advance looks lean on the lambda and tempts you into the wrong jet</span></td></tr>
+                        <tr><td>Kraftstoff (ROZ / Ethanol)</td><td><input type="text" data-field="p5_tune_fuel" placeholder="98, E5" oninput="autoSave()"></td>
+                            <td><span class="de">Ethanol braucht rund 3 % mehr Kraftstoffmenge pro Prozent Anteil &ndash; E5 und E10 bed&uuml;sen nicht gleich</span><span class="en">Ethanol needs roughly 3 % more fuel per percent content &ndash; E5 and E10 do not jet the same</span></td></tr>
+                        <tr><td>H&ouml;henlage / Lufttemperatur</td><td><input type="text" data-field="p5_tune_altitude" placeholder="400 m, 20 °C" oninput="autoSave()"></td>
+                            <td><span class="de">H&ouml;her oder w&auml;rmer = d&uuml;nnere Luft = wirkt fetter, Hauptd&uuml;se tendenziell kleiner</span><span class="en">Higher or warmer = thinner air = runs richer, main jet tends smaller</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="guide-block guide-full"><h4 class="measure">Bed&uuml;sung: Ist, Soll, Begr&uuml;ndung (Jetting Decision Log)</h4>
+                <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de">Ist-Werte je Vergaser stehen in <strong>Phase 3, Kapitel 27</strong>. Hier wird entschieden und begr&uuml;ndet. Die Spalte <em>Wof&uuml;r zust&auml;ndig</em> sagt, welcher Betriebsbereich sich &uuml;berhaupt &auml;ndert &ndash; wer die falsche D&uuml;se anfasst, verstellt den falschen Bereich.</span><span class="en">Actual values per carburetor are in <strong>phase 3, chapter 27</strong>. Decisions and reasons go here. The <em>governs</em> column says which operating range actually changes &ndash; touching the wrong jet adjusts the wrong range.</span></p>
+                <table class="guide-table">
+                    <thead><tr><th>D&uuml;se</th><th>Wof&uuml;r zust&auml;ndig (governs)</th><th>Ist</th><th>Soll</th><th>Begr&uuml;ndung</th></tr></thead>
+                    <tbody>
+                        <tr><td>Hauptd&uuml;se</td>
+                            <td><span class="de">Volllast ab ca. 3000 rpm. <strong>Zu mager kostet Kolben.</strong></span><span class="en">Full load from approx. 3000 rpm. <strong>Too lean costs pistons.</strong></span></td>
+                            <td><input type="text" data-field="p5_jd_main_ist" oninput="autoSave()"></td>
+                            <td><input type="text" data-field="p5_jd_main_soll" oninput="autoSave()"></td>
+                            <td><input type="text" data-field="p5_jd_main_why" oninput="autoSave()"></td></tr>
+                        <tr><td>Leerlaufd&uuml;se</td>
+                            <td><span class="de">Leerlauf und &Uuml;bergang bis ca. 2500 rpm. H&auml;ngt am Nockenprofil.</span><span class="en">Idle and progression up to approx. 2500 rpm. Depends on cam profile.</span></td>
+                            <td><input type="text" data-field="p5_jd_idle_ist" oninput="autoSave()"></td>
+                            <td><input type="text" data-field="p5_jd_idle_soll" oninput="autoSave()"></td>
+                            <td><input type="text" data-field="p5_jd_idle_why" oninput="autoSave()"></td></tr>
+                        <tr><td>Luftkorrektur</td>
+                            <td><span class="de">Magert mit steigender Drehzahl ab. Korrigiert das obere Drittel, ohne die Hauptd&uuml;se anzufassen.</span><span class="en">Leans out as rpm rises. Corrects the top third without touching the main jet.</span></td>
+                            <td><input type="text" data-field="p5_jd_air_ist" oninput="autoSave()"></td>
+                            <td><input type="text" data-field="p5_jd_air_soll" oninput="autoSave()"></td>
+                            <td><input type="text" data-field="p5_jd_air_why" oninput="autoSave()"></td></tr>
+                        <tr><td>Emulsionsrohr</td>
+                            <td><span class="de">Form des &Uuml;bergangs Teillast &rarr; Volllast. Zuletzt anfassen, wirkt breit.</span><span class="en">Shape of the part-load to full-load transition. Touch last, acts broadly.</span></td>
+                            <td><input type="text" data-field="p5_jd_emul_ist" oninput="autoSave()"></td>
+                            <td><input type="text" data-field="p5_jd_emul_soll" oninput="autoSave()"></td>
+                            <td><input type="text" data-field="p5_jd_emul_why" oninput="autoSave()"></td></tr>
+                        <tr><td>Pumpjet</td>
+                            <td><span class="de">Anreicherung beim Gasgeben. Zu klein = Loch beim Antippen, zu gro&szlig; = schwarze Wolke.</span><span class="en">Enrichment on throttle opening. Too small = flat spot, too large = black puff.</span></td>
+                            <td><input type="text" data-field="p5_jd_pump_ist" oninput="autoSave()"></td>
+                            <td><input type="text" data-field="p5_jd_pump_soll" oninput="autoSave()"></td>
+                            <td><input type="text" data-field="p5_jd_pump_why" oninput="autoSave()"></td></tr>
+                        <tr><td>Hauptventuri</td>
+                            <td><span class="de">Luftgeschwindigkeit. Gr&ouml;&szlig;er = mehr Spitzenleistung, schlechteres Ansprechen unten. Bestimmt die Hauptd&uuml;se mit.</span><span class="en">Air velocity. Larger = more peak power, poorer low-end response. Co-determines the main jet.</span></td>
+                            <td><input type="text" data-field="p5_jd_vent_ist" oninput="autoSave()"></td>
+                            <td><input type="text" data-field="p5_jd_vent_soll" oninput="autoSave()"></td>
+                            <td><input type="text" data-field="p5_jd_vent_why" oninput="autoSave()"></td></tr>
+                    </tbody>
+                </table>
+                <div class="warning-box"><span class="de"><strong>Immer nur eine D&uuml;senart je Durchgang</strong> &auml;ndern, Ergebnis loggen, dann die n&auml;chste. Zwei &Auml;nderungen gleichzeitig machen beide unlesbar &ndash; und wer die Begr&uuml;ndung nicht eintr&auml;gt, wiederholt in der n&auml;chsten Saison dieselbe Runde.</span><span class="en"><strong>Change only one jet type per round</strong>, log the result, then the next. Two changes at once make both unreadable &ndash; and whoever skips the reason will repeat the same round next season.</span></div>
+            </div>
+            <div class="guide-block guide-full"><h4 class="procedure">Reihenfolge des Abstimmens (Tuning Order)</h4>
+                <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de">Die Reihenfolge ist kein Stil, sondern Voraussetzung: jeder Schritt setzt voraus, dass die vorherigen stimmen. Wer sie umdreht, kompensiert einen Fehler mit dem n&auml;chsten.</span><span class="en">The order is not a matter of style but a prerequisite: each step assumes the previous ones are correct. Reversing it compensates one error with the next.</span></p>
+                <ol>
+                <li><span class="de"><strong>Mechanik.</strong> Wellenspiel, Schwimmerstand, Dichtheit &ndash; Kapitel 27. Dann der <strong>Falschluft-Test</strong> unten, am laufenden Motor. Auf einem undichten Vergaser ist jede Abstimmung Zufall.</span><span class="en"><strong>Mechanics.</strong> False air, shaft play, float level, leaks &ndash; chapter 27. On a leaking carburetor, any tuning is coincidence.</span></li>
+                <li><span class="de"><strong>Kraftstoffdruck.</strong> 3.0 psi, beide Kreise gleich &ndash; Kapitel 6. Schwankender Druck verschiebt den Schwimmerstand und damit alles Weitere.</span><span class="en"><strong>Fuel pressure.</strong> 3.0 psi, both circuits equal &ndash; chapter 6. Fluctuating pressure shifts the float level and everything downstream.</span></li>
+                <li><span class="de"><strong>Z&uuml;ndung.</strong> Gesamtfr&uuml;hz&uuml;ndung 34&ndash;36&deg; festnageln &ndash; Kapitel 18. <strong>Vor</strong> der Bed&uuml;sung, nicht danach.</span><span class="en"><strong>Ignition.</strong> Lock total advance at 34&ndash;36&deg; &ndash; chapter 18. <strong>Before</strong> jetting, not after.</span></li>
+                <li><span class="de"><strong>Synchronisation.</strong> Erst innerhalb der Vergaser, dann zwischen ihnen (siehe unten).</span><span class="en"><strong>Synchronization.</strong> First within the carburetors, then between them (see below).</span></li>
+                <li><span class="de"><strong>Leerlaufgemisch</strong> &uuml;ber die Gemischschrauben, danach Synchronisation nachpr&uuml;fen.</span><span class="en"><strong>Idle mixture</strong> via the mixture screws, then re-check synchronization.</span></li>
+                <li><span class="de"><strong>&Uuml;bergang</strong> (Leerlaufd&uuml;se): Ruckeln oder Loch zwischen Leerlauf und 2500 rpm geh&ouml;rt hierher, nicht zur Hauptd&uuml;se.</span><span class="en"><strong>Progression</strong> (idle jet): stumble or flat spot between idle and 2500 rpm belongs here, not to the main jet.</span></li>
+                <li><span class="de"><strong>Volllast</strong> (Hauptd&uuml;se): nur unter Last messen, mit Lambda-Log. <strong>Kurze Z&uuml;ge</strong>, sofort auswerten.</span><span class="en"><strong>Full load</strong> (main jet): measure only under load, with lambda logging. <strong>Short pulls</strong>, evaluate immediately.</span></li>
+                <li><span class="de"><strong>Oberes Drittel</strong> (Luftkorrektur), dann <strong>Pumpjet</strong> zuletzt f&uuml;rs Ansprechverhalten.</span><span class="en"><strong>Top third</strong> (air corrector), then <strong>pump jet</strong> last for throttle response.</span></li>
+                <li><span class="de"><strong>Kerzenbild lesen</strong> (Kapitel 21) und mit dem Lambda-Log gegenpr&uuml;fen &ndash; es ist die einzige Einzelzylinder-Information, die ihr habt.</span><span class="en"><strong>Read the spark plugs</strong> (chapter 21) and cross-check against the lambda log &ndash; it is the only per-cylinder information you have.</span></li>
+                </ol>
+            </div>
             <div class="guide-block guide-full"><h4 class="procedure">Diagnosebaum (Diagnosis Tree)</h4>
                 <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de">Symptom zuerst einordnen, dann handeln. Die rechte Spalte verhindert den h&auml;ufigsten Fehler: den <strong>D&uuml;senwechsel auf Verdacht</strong>, der die bew&auml;hrte Baseline zerst&ouml;rt, ohne die Ursache zu treffen.</span><span class="en">Classify the symptom first, then act. The right-hand column prevents the most common mistake: <strong>changing jets on suspicion</strong>, which destroys the proven baseline without addressing the cause.</span></p>
                 <table class="guide-table">
@@ -4643,29 +4726,164 @@
     </div>
 </div>
 
+
+<div class="step-card" id="p5_road_card">
+    <div class="step-header">
+        <button type="button" class="step-status" data-field="p5_road" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">5. Part Load Tuning on the Road (Teillast-Abstimmung auf der Stra&szlig;e)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
+    </div>
+    <input type="hidden" data-field="p5_road_n" data-legacy-note="p5_road">
+    <div class="findings" data-findings="p5_road"></div>
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4>
+                <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de">Teillast l&auml;sst sich stehend nicht abstimmen: der Motor braucht Last, und die gibt es nur unter Fahrt. Diese Sitzung geh&ouml;rt auf eine ruhige Landstra&szlig;e mit Beifahrer am Logger &ndash; nicht auf die Rennstrecke, dort ist der Teillastbereich kaum reproduzierbar.</span><span class="en">Part load cannot be tuned standing still: the engine needs load, and load only exists while driving. This session belongs on a quiet country road with a passenger operating the logger &ndash; not on track, where the part-load range is barely reproducible.</span></p>
+                <ol>
+                <li><span class="de"><strong>Beifahrer bedient den Logger.</strong> Wer f&auml;hrt, f&auml;hrt. Ablesen und Notieren w&auml;hrend der Fahrt ist der h&auml;ufigste Grund f&uuml;r unbrauchbare Daten.</span><span class="en"><strong>A passenger operates the logger.</strong> Whoever drives, drives. Reading and noting while driving is the most common reason for unusable data.</span></li>
+                <li><span class="de">Gleichm&auml;&szlig;ige Fahrt bei <strong>2000&ndash;3000 rpm</strong>, konstante Gasstellung, mindestens 30 Sekunden. Lambda A und B mitschreiben.</span><span class="en">Steady driving at <strong>2000&ndash;3000 rpm</strong>, constant throttle, at least 30 seconds. Log lambda A and B.</span></li>
+                <li><span class="de"><strong>&Uuml;bergang pr&uuml;fen:</strong> aus dem Leerlauf sanft Gas geben. Ruckeln, Loch oder Zaudern zwischen Leerlauf und etwa 2500&nbsp;rpm geh&ouml;rt zur <strong>Leerlaufd&uuml;se</strong> und zur Beschleunigerpumpe &ndash; nicht zur Hauptd&uuml;se.</span><span class="en"><strong>Check progression:</strong> open the throttle gently from idle. Stumble, flat spot or hesitation between idle and roughly 2500&nbsp;rpm belongs to the <strong>idle jet</strong> and the accelerator pump &ndash; not to the main jet.</span></li>
+                <li><span class="de">Auff&auml;lligkeiten <strong>als Befund festhalten</strong>, mit Drehzahl, Gasstellung und Lambda-Wert. Erst danach im Entscheidungsprotokoll (Kapitel 4) entscheiden.</span><span class="en">Record anomalies <strong>as findings</strong>, with rpm, throttle position and lambda value. Only then decide in the decision log (chapter 4).</span></li>
+                <li><span class="de">Nach jeder &Auml;nderung dieselbe Fahrt wiederholen. <strong>Gleiche Strecke, gleiche Drehzahl, gleiche Gasstellung</strong> &ndash; sonst vergleicht man zwei verschiedene Dinge.</span><span class="en">Repeat the same drive after every change. <strong>Same road, same rpm, same throttle</strong> &ndash; otherwise you are comparing two different things.</span></li>
+                </ol>
+                <div class="guide-input-row" style="margin-top:0.4rem;">
+                    <div><label>Teillast AFR A:</label><input type="text" data-field="p5_road_afr_a" placeholder="13.8" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Teillast AFR B:</label><input type="text" data-field="p5_road_afr_b" placeholder="13.8" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>&Uuml;bergang sauber:</label><input type="text" data-field="p5_road_progression" placeholder="ja / Loch bei 2200" oninput="autoSave()" style="width:130px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="subphase">5c &ndash; Rennstrecke: Volllast (Track: Full Load)</div>
+
+<div class="step-card" id="p5_bolts_card">
+    <div class="step-header">
+        <button type="button" class="step-status" data-field="p5_bolts" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">6. Check &amp; Re-Torque Fasteners (Schraubverbindungen pr&uuml;fen &amp; nachziehen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
+    </div>
+    <input type="hidden" data-field="p5_bolts_n" data-legacy-note="p5_bolts">
+    <div class="findings" data-findings="p5_bolts"></div>
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="prereq">Warum vor der Strecke (Why Before the Track)</h4>
+                <p style="font-size:0.78rem;line-height:1.5;margin:0;"><span class="de">Ein frisch aufgebauter Motor setzt sich. Dichtungen kriechen, Aluminium dehnt sich anders als Stahl, und die ersten Betriebsstunden bringen Schraubverbindungen auf ihren endg&uuml;ltigen Sitz. Auf der Rennstrecke kommen dann Drehzahl, Dauerlast und Querbeschleunigung dazu. <strong>Dieser Durchgang ist kein Ritual, sondern das Sicherheitstor vor der ersten harten Fahrt.</strong></span><span class="en">A freshly built engine settles. Gaskets creep, aluminium expands differently from steel, and the first operating hours bring fasteners to their final seat. On track, rpm, sustained load and lateral acceleration are added. <strong>This pass is not a ritual but the safety gate before the first hard drive.</strong></span></p>
+            </div>
+            <div class="guide-block guide-full"><h4 class="procedure">Durchgang (Procedure)</h4>
+                <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de"><strong>Motor kalt.</strong> Drehmomente gelten am kalten Motor; warm gemessen ergibt sich ein Fantasiewert.</span><span class="en"><strong>Engine cold.</strong> Torque figures apply to a cold engine; measured warm they are fiction.</span></p>
+                <ol>
+                <li><span class="de"><strong>Zylinderkopf</strong> nach Herstellerfolge nachziehen &ndash; siehe Phase 4, Kapitel 19.</span><span class="en"><strong>Cylinder heads</strong> re-torqued in the manufacturer sequence &ndash; see phase 4, chapter 19.</span></li>
+                <li><span class="de"><strong>Ansaugbr&uuml;cke</strong> und <strong>Vergaser-Fu&szlig;muttern</strong>: handfest plus max. 1/4 Umdrehung. Der Flansch ist empfindlich, und ein verzogener Flansch zieht Falschluft.</span><span class="en"><strong>Intake manifold</strong> and <strong>carburetor base nuts</strong>: hand-tight plus max. 1/4 turn. The flange is delicate, and a warped flange draws false air.</span></li>
+                <li><span class="de"><strong>Kr&uuml;mmer und Auspuffanlage</strong> &ndash; die l&ouml;sen sich durch Waermewechsel am zuverl&auml;ssigsten.</span><span class="en"><strong>Headers and exhaust</strong> &ndash; these loosen most reliably through thermal cycling.</span></li>
+                <li><span class="de"><strong>Kraftstoffsystem</strong>: alle AN-Verschraubungen, Pumpenhalterungen, Filter- und Reglerbefestigungen. Undicht ist hier gleichbedeutend mit Feuer.</span><span class="en"><strong>Fuel system</strong>: all AN unions, pump mounts, filter and regulator brackets. A leak here means fire.</span></li>
+                <li><span class="de"><strong>&Ouml;l- und K&uuml;hlkreis</strong>: Leitungen, Schellen, Wasserpumpe, Thermostatgeh&auml;use, &Ouml;lwanne.</span><span class="en"><strong>Oil and cooling circuit</strong>: lines, clamps, water pump, thermostat housing, oil pan.</span></li>
+                <li><span class="de"><strong>Motoraufh&auml;ngung, Getriebeglocke, Gest&auml;nge</strong> und alle elektrischen Massepunkte.</span><span class="en"><strong>Engine mounts, bellhousing, linkage</strong> and all electrical ground points.</span></li>
+                <li><span class="de"><strong>Ventildeckel zuletzt</strong> &ndash; Aluminium, 4&ndash;6 ft-lbs. Hier wird am h&auml;ufigsten &uuml;berzogen.</span><span class="en"><strong>Valve covers last</strong> &ndash; aluminium, 4&ndash;6 ft-lbs. This is where overtightening happens most.</span></li>
+                <li><span class="de">Was sich <strong>merklich nachziehen liess</strong>, als Befund notieren &ndash; und nach dem Trackday erneut pr&uuml;fen.</span><span class="en">Note anything that <strong>moved noticeably</strong> as a finding &ndash; and check it again after the track day.</span></li>
+                </ol>
+                <div class="guide-input-row" style="margin-top:0.4rem;">
+                    <div><label>Durchgang am:</label><input type="text" data-field="p5_bolts_date" placeholder="TT.MM." oninput="autoSave()" style="width:70px;"></div>
+                    <div><label>Nachgezogen bei:</label><input type="text" data-field="p5_bolts_found" placeholder="nichts auffaellig" oninput="autoSave()" style="width:150px;"></div>
+                </div>
+                <div class="warning-box"><span class="de"><strong>Kein Drehmomentschluessel auf eine bereits angezogene Schraube ohne L&ouml;sen.</strong> Der Losbrechmoment ist h&ouml;her als das Anzugsmoment; der Schl&uuml;ssel klickt, bevor sich etwas bewegt, und man haelt eine lockere Verbindung f&uuml;r fest. Wo es darauf ankommt: eine Sechstelumdrehung l&ouml;sen, dann auf Sollwert anziehen.</span><span class="en"><strong>Do not put a torque wrench on an already tightened fastener without loosening it.</strong> Breakaway torque exceeds tightening torque; the wrench clicks before anything moves and a loose joint reads as tight. Where it matters: back off a sixth of a turn, then torque to spec.</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="step-card" id="p5_track_card">
+    <div class="step-header">
+        <button type="button" class="step-status" data-field="p5_track" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">7. Full Load &amp; Track Day (Volllast &amp; Trackday Pannoniaring)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
+    </div>
+    <input type="hidden" data-field="p5_track_n" data-legacy-note="p5_track">
+    <div class="findings" data-findings="p5_track"></div>
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="prereq">Warum die Strecke (Why the Track)</h4>
+                <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.4rem;"><span class="de"><strong>Volllast ist auf der Stra&szlig;e nicht sinnvoll zu ermitteln.</strong> Der Hauptd&uuml;senkreis arbeitet erst ab etwa 3000&nbsp;rpm bei weit ge&ouml;ffneter Drosselklappe, und er braucht diesen Zustand mehrere Sekunden am St&uuml;ck. Das geht auf einer abgesperrten Strecke oder einer freien Autobahn &ndash; sonst nirgends.</span><span class="en"><strong>Full load cannot sensibly be determined on public roads.</strong> The main jet circuit only works from roughly 3000&nbsp;rpm at wide open throttle, and it needs that state for several seconds at a time. That is possible on a closed track or an unrestricted motorway &ndash; nowhere else.</span></p>
+                <div class="warning-box"><span class="de"><strong>Zu mager bei Volllast kostet Kolben.</strong> Darum gilt die Reihenfolge: <strong>erst einen kurzen Zug loggen und auswerten</strong>, dann entscheiden, ob l&auml;nger Vollgas gefahren wird. Nicht umgekehrt. Im Zweifel fetter &ndash; ein fetter Motor l&auml;uft schlecht, ein magerer l&auml;uft einmal.</span><span class="en"><strong>Lean at full load costs pistons.</strong> Hence the order: <strong>log and evaluate one short pull first</strong>, then decide whether to run extended wide-open throttle. Not the other way round. When in doubt, richer &ndash; a rich engine runs badly, a lean one runs once.</span></div>
+            </div>
+            <div class="guide-block guide-full"><h4 class="procedure">Ablauf Pannoniaring (Procedure)</h4><ol>
+                <li><span class="de"><strong>Vor der ersten Runde:</strong> Schraubdurchgang abgeschlossen (Kapitel 6), Kraftstoffdruck beider Kreise notiert, &Ouml;lstand und K&uuml;hlmittel gepr&uuml;ft, Logger scharf.</span><span class="en"><strong>Before the first lap:</strong> fastener pass complete (chapter 6), fuel pressure of both circuits noted, oil and coolant checked, logger armed.</span></li>
+                <li><span class="de"><strong>Erste Runden nur Systembeobachtung</strong> &ndash; &Ouml;ldruck, &Ouml;ltemperatur, K&uuml;hlmitteltemperatur, Kraftstoffdruck. Noch keine Abstimmung. Dies ist die Feuertaufe, nicht die Abstimmfahrt.</span><span class="en"><strong>First laps for system observation only</strong> &ndash; oil pressure, oil temperature, coolant temperature, fuel pressure. No tuning yet. This is the shakedown, not the tuning session.</span></li>
+                <li><span class="de"><strong>Boxenstopp und Sichtkontrolle:</strong> Leckagen, Ger&uuml;che, Ger&auml;usche, Tankst&auml;nde beider Tanks vergleichen (siehe Phase 4, Kapitel 6 &ndash; Tankbilanz).</span><span class="en"><strong>Pit stop and visual check:</strong> leaks, smells, noises, compare levels in both tanks (see phase 4, chapter 6 &ndash; tank balance).</span></li>
+                <li><span class="de"><strong>Dann erst ein kurzer Volllastzug</strong> im h&ouml;chsten sinnvollen Gang, 3000&nbsp;rpm bis Drehzahlbegrenzer-Nahbereich. Log auswerten, <strong>bevor</strong> der n&auml;chste gefahren wird.</span><span class="en"><strong>Only then one short full-load pull</strong> in the highest sensible gear, 3000&nbsp;rpm up to near the rev limiter. Evaluate the log <strong>before</strong> the next one.</span></li>
+                <li><span class="de">Abweichung zwischen Collector A und B? Erst Zylinderzuordnung und Synchronisation pr&uuml;fen &ndash; siehe Diagnosebaum, Kapitel 4. <strong>Nicht beide Seiten gleichzeitig umbed&uuml;sen.</strong></span><span class="en">Deviation between collector A and B? Check cylinder assignment and synchronization first &ndash; see the diagnosis tree, chapter 4. <strong>Do not re-jet both sides at once.</strong></span></li>
+                <li><span class="de">Nach dem letzten Einsatz <strong>Kerzenbild lesen</strong> und mit dem Lambda-Log gegenpr&uuml;fen. Das ist die einzige Einzelzylinder-Information.</span><span class="en">After the final session, <strong>read the spark plugs</strong> and cross-check against the lambda log. That is the only per-cylinder information available.</span></li>
+                </ol>
+                <div class="guide-input-row" style="margin-top:0.4rem;">
+                    <div><label>Datum / Strecke:</label><input type="text" data-field="p5_track_date" placeholder="Pannoniaring" oninput="autoSave()" style="width:120px;"></div>
+                    <div><label>&Ouml;ldruck hei&szlig;:</label><input type="text" data-field="p5_track_oil_psi" placeholder="45 psi" oninput="autoSave()" style="width:65px;"></div>
+                    <div><label>&Ouml;ltemp max:</label><input type="text" data-field="p5_track_oil_temp" placeholder="110 °C" oninput="autoSave()" style="width:65px;"></div>
+                </div>
+                <div class="guide-input-row" style="margin-top:0.3rem;">
+                    <div><label>K&uuml;hlmittel max:</label><input type="text" data-field="p5_track_coolant" placeholder="95 °C" oninput="autoSave()" style="width:65px;"></div>
+                    <div><label>Volllast AFR A:</label><input type="text" data-field="p5_track_afr_a" placeholder="12.8" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Volllast AFR B:</label><input type="text" data-field="p5_track_afr_b" placeholder="12.8" oninput="autoSave()" style="width:55px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="step-card" id="p5_oil_card">
+    <div class="step-header">
+        <button type="button" class="step-status" data-field="p5_oil" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">8. After the Session: Oil &amp; Inspection (Nach dem Einsatz: &Ouml;lwechsel &amp; Kontrolle)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
+    </div>
+    <input type="hidden" data-field="p5_oil_n" data-legacy-note="p5_oil">
+    <div class="findings" data-findings="p5_oil"></div>
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="guide-block guide-full"><h4 class="procedure">Nach dem Einsatz (After the Session)</h4><ol>
+                <li><span class="de"><strong>&Ouml;lwechsel warm ablassen</strong> &ndash; warmes &Ouml;l nimmt Schwebstoffe mit, kaltes l&auml;sst sie in der Wanne.</span><span class="en"><strong>Drain the oil warm</strong> &ndash; warm oil carries suspended particles out, cold oil leaves them in the pan.</span></li>
+                <li><span class="de"><strong>Filter aufschneiden und auswerten.</strong> Glitzernde Sp&auml;ne, Metallflocken oder Lagerbronze sind ein Stoppsignal &ndash; nicht weiterfahren, Ursache suchen. Vergleich mit dem Filter aus Phase 4, Kapitel 20.</span><span class="en"><strong>Cut the filter open and inspect it.</strong> Glitter, metal flakes or bearing bronze are a stop signal &ndash; do not continue, find the cause. Compare with the filter from phase 4, chapter 20.</span></li>
+                <li><span class="de"><strong>Schraubdurchgang wiederholen</strong> (Kapitel 6) &ndash; Trackbetrieb ist die haerteste Waermewechselbelastung, die der Motor bisher gesehen hat.</span><span class="en"><strong>Repeat the fastener pass</strong> (chapter 6) &ndash; track use is the harshest thermal cycling the engine has seen so far.</span></li>
+                <li><span class="de">Sichtkontrolle auf Leckagen, Scheuerstellen an Leitungen, Zustand der Ansaugtrichter und Filter.</span><span class="en">Visual check for leaks, chafing on lines, condition of velocity stacks and filters.</span></li>
+                <li><span class="de"><strong>Befunde festhalten</strong> und offene Punkte in die Befundliste &uuml;bernehmen &ndash; der n&auml;chste Einsatz beginnt dort.</span><span class="en"><strong>Record findings</strong> and move open items into the findings list &ndash; the next session starts there.</span></li>
+                </ol>
+                <div class="guide-input-row" style="margin-top:0.4rem;">
+                    <div><label>&Ouml;lwechsel bei km/h:</label><input type="text" data-field="p5_oil_hours" placeholder="Betriebsstunden" oninput="autoSave()" style="width:110px;"></div>
+                    <div><label>Filterbefund:</label><input type="text" data-field="p5_oil_filter" placeholder="sauber" oninput="autoSave()" style="width:130px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Phase Photos -->
 <div style="margin-top: 1rem;">
-<div class="comp-photo-strip build-thumbs" data-comp-gallery="phase4" data-thumbs="4">
+<div class="comp-photo-strip build-thumbs" data-comp-gallery="phase5" data-thumbs="4">
     <div class="thumb-row"></div>
     <div class="comp-photo-actions">
-        <button type="button" class="comp-photo-btn" onclick="openGallery('phase4')">&#128444; <span id="phase4-count">0</span> Fotos</button>
-        <button type="button" class="comp-photo-btn" onclick="addPhoto('phase4')">&#128247; Foto hinzuf&uuml;gen</button>
-        <button type="button" class="comp-photo-btn" onclick="addYouTube('phase4')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
+        <button type="button" class="comp-photo-btn" onclick="openGallery('phase5')">&#128444; <span id="phase5-count">0</span> Fotos</button>
+        <button type="button" class="comp-photo-btn" onclick="addPhoto('phase5')">&#128247; Foto hinzuf&uuml;gen</button>
+        <button type="button" class="comp-photo-btn" onclick="addYouTube('phase5')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
     </div>
 </div>
 </div>
 
 <!-- Video-Referenzen (user-managed) -->
 <div class="subphase">&#127909; Video-Referenzen (Video References)</div>
-<div id="videoList_phase4" class="video-list"></div>
+<div id="videoList_phase5" class="video-list"></div>
 <div style="display:flex;gap:0.3rem;align-items:center;margin-top:0.4rem;">
-    <input type="text" id="videoUrl_phase4" placeholder="YouTube-URL eingeben..." style="flex:1;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.78rem;">
-    <input type="text" id="videoTitle_phase4" placeholder="Titel (optional)" style="width:180px;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.78rem;">
-    <button onclick="addVideo('phase4')" style="padding:0.4rem 0.7rem;background:var(--primary-light);color:white;border:none;border-radius:6px;font-size:0.78rem;cursor:pointer;white-space:nowrap;">+ Video</button>
+    <input type="text" id="videoUrl_phase5" placeholder="YouTube-URL eingeben..." style="flex:1;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.78rem;">
+    <input type="text" id="videoTitle_phase5" placeholder="Titel (optional)" style="width:180px;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.78rem;">
+    <button onclick="addVideo('phase5')" style="padding:0.4rem 0.7rem;background:var(--primary-light);color:white;border:none;border-radius:6px;font-size:0.78rem;cursor:pointer;white-space:nowrap;">+ Video</button>
 </div>
 
-</div><!-- /phase4body -->
-</div><!-- /phase4 -->
+</div><!-- /phase5body -->
+</div><!-- /phase5 -->
+
 
 </div><!-- /container -->
 
@@ -4901,7 +5119,7 @@
     // ==== PROGRESS ====
     function updateProgress() {
         var totalAll = 0, doneAll = 0;
-        ['phase1','phase2','phase3','phase4'].forEach(function(pid) {
+        ['phase1','phase2','phase3','phase4','phase5'].forEach(function(pid) {
             var phase = document.getElementById(pid);
             if (!phase) return;
             // Der Kapitelstatus hat drei Stufen. "in Arbeit" zaehlt halb, sonst
@@ -4924,6 +5142,31 @@
         if (overallText) overallText.textContent = doneAll + ' / ' + totalAll + ' completed';
     }
 
+    // Umbenannte Feldschluessel. Ohne diese Tabelle waere ein Umbenennen
+    // gleichbedeutend mit Datenverlust: der alte Wert liegt im Gist und die
+    // Seite sucht unter einem Namen, den es dort nicht gibt.
+    // Phase 5 wurde aus Phase 4 herausgeloest (v37) - die Abstimmung gehoert
+    // an die Strecke, nicht in die Erstinbetriebnahme.
+    var FIELD_MIGRATION = {
+        'p4_sync': 'p5_sync', 'p4_sync_n': 'p5_sync_n',
+        'p4_leak_method': 'p5_leak_method', 'p4_leak_result': 'p5_leak_result',
+        'p4_leak_recheck': 'p5_leak_recheck',
+        'p4_sync_rpm': 'p5_sync_rpm', 'p4_sync_spread': 'p5_sync_spread',
+        'p4_collector_a': 'p5_collector_a', 'p4_collector_b': 'p5_collector_b',
+        'p4_afr_idle_a': 'p5_afr_idle_a', 'p4_afr_idle_b': 'p5_afr_idle_b',
+        'p4_afr_cruise_a': 'p5_afr_cruise_a', 'p4_afr_cruise_b': 'p5_afr_cruise_b',
+        'p4_afr_wot_a': 'p5_afr_wot_a', 'p4_afr_wot_b': 'p5_afr_wot_b',
+        'p4_tune_compression': 'p5_tune_compression', 'p4_tune_cam': 'p5_tune_cam',
+        'p4_tune_exhaust': 'p5_tune_exhaust', 'p4_tune_timing_total': 'p5_tune_timing_total',
+        'p4_tune_fuel': 'p5_tune_fuel', 'p4_tune_altitude': 'p5_tune_altitude',
+        'p4_jd_main_ist': 'p5_jd_main_ist', 'p4_jd_main_soll': 'p5_jd_main_soll', 'p4_jd_main_why': 'p5_jd_main_why',
+        'p4_jd_idle_ist': 'p5_jd_idle_ist', 'p4_jd_idle_soll': 'p5_jd_idle_soll', 'p4_jd_idle_why': 'p5_jd_idle_why',
+        'p4_jd_air_ist': 'p5_jd_air_ist', 'p4_jd_air_soll': 'p5_jd_air_soll', 'p4_jd_air_why': 'p5_jd_air_why',
+        'p4_jd_emul_ist': 'p5_jd_emul_ist', 'p4_jd_emul_soll': 'p5_jd_emul_soll', 'p4_jd_emul_why': 'p5_jd_emul_why',
+        'p4_jd_pump_ist': 'p5_jd_pump_ist', 'p4_jd_pump_soll': 'p5_jd_pump_soll', 'p4_jd_pump_why': 'p5_jd_pump_why',
+        'p4_jd_vent_ist': 'p5_jd_vent_ist', 'p4_jd_vent_soll': 'p5_jd_vent_soll', 'p4_jd_vent_why': 'p5_jd_vent_why'
+    };
+
     function migrateData(data) {
         var migrated = false;
         for (var oldKey in FIELD_MIGRATION) {
@@ -4945,6 +5188,7 @@
         return data;
     }
     function applyData(data) {
+        migrateData(data);
         document.querySelectorAll('[data-field]').forEach(function(el) {
             var v = data[el.dataset.field];
             if (v !== undefined) { if (el.type === 'checkbox') el.checked = v; else el.value = v; }

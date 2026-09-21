@@ -30,13 +30,13 @@ for (const c of ['c1', 'c2', 'c3', 'c4']) {
 const ENTSCHEID_FELDER = [];
 for (const j of ['main', 'idle', 'air', 'emul', 'pump', 'vent']) {
   for (const s of ['ist', 'soll', 'why']) {
-    ENTSCHEID_FELDER.push('p4_jd_' + j + '_' + s);
+    ENTSCHEID_FELDER.push('p5_jd_' + j + '_' + s);
   }
 }
-const LEAK_FELDER = ['p4_leak_method','p4_leak_result','p4_leak_recheck'];
+const LEAK_FELDER = ['p5_leak_method','p5_leak_result','p5_leak_recheck'];
 const BEZUGS_FELDER = [
-  'p4_tune_compression', 'p4_tune_cam', 'p4_tune_exhaust',
-  'p4_tune_timing_total', 'p4_tune_fuel', 'p4_tune_altitude'
+  'p5_tune_compression', 'p5_tune_cam', 'p5_tune_exhaust',
+  'p5_tune_timing_total', 'p5_tune_fuel', 'p5_tune_altitude'
 ];
 
 function karte(id) {
@@ -74,7 +74,7 @@ await test('Kapitel 22 enthaelt keine Montageschritte mehr', async () => {
   // Der eigentliche Fehler: montieren kann man nicht zehn Schritte nach dem Start.
   // Geprueft wird die Montage-ANWEISUNG. Die Fussdichtung als Falschluft-Quelle
   // im Praxis-Tipp zu nennen ist richtig und darf nicht anschlagen.
-  const k = karte('p4_sync_card');
+  const k = karte('p5_sync_card');
   assert(!/Fu&szlig;dichtung <strong>trocken<\/strong> einlegen/.test(k),
     'Kapitel 22 enthaelt weiterhin die Montageanweisung zur Fussdichtung');
   assert(!/&uuml;ber Kreuz anziehen/.test(k), 'Kapitel 22 nennt weiterhin das Anziehen');
@@ -116,7 +116,7 @@ await test('Synchronisation in zwei Ebenen beschrieben', async () => {
   // Wer gleich am Gestaenge dreht, verschiebt beide Ebenen zugleich. Geprueft
   // wird der Inhalt beider Ebenen, nicht nur die Beschriftung "Ebene 1" - die
   // steht auch im Wiederholungshinweis und wuerde einen Verlust verdecken.
-  const k = karte('p4_sync_card');
+  const k = karte('p5_sync_card');
   const innen = k.indexOf('innerhalb jedes Vergasers');
   const zwischen = k.indexOf('zwischen den Vergasern');
   assert(innen > -1, 'Ebene 1 (innerhalb eines Vergasers) fehlt');
@@ -130,13 +130,13 @@ await test('Synchronisation in zwei Ebenen beschrieben', async () => {
 await test('Lambda-Logging samt Grenze der Aussage', async () => {
   // Zwei Sonden = zwei Bankmittelwerte. Ein fetter und ein magerer Zylinder
   // derselben Bank heben sich auf - das darf nicht stillschweigend angenommen werden.
-  const k = karte('p4_sync_card');
+  const k = karte('p5_lambda_card');
   assert(/Bank-Mittelwerte/.test(k), 'Einschraenkung auf Bankmittel fehlt');
   assert(/Collector A/.test(k) && /Collector B/.test(k), 'Collector-Zuordnung fehlt');
 });
 
 await test('Reihenfolge des Abstimmens ist festgehalten', async () => {
-  const k = karte('p4_sync_card');
+  const k = karte('p5_jetting_card');
   assert(/Reihenfolge des Abstimmens/.test(k), 'Reihenfolge-Block fehlt');
   // Zuendung vor Bedueusung: sonst kompensiert man Zuendfehler mit Kraftstoff.
   const zuend = k.indexOf('Gesamtfr&uuml;hz&uuml;ndung 34&ndash;36&deg; festnageln');
@@ -147,13 +147,13 @@ await test('Reihenfolge des Abstimmens ist festgehalten', async () => {
 
 await test('Falschluft-Test ist als Anleitung vorhanden', async () => {
   // Ohne Methode ist der Hinweis "Falschluft macht alles zunichte" wertlos.
-  const k = karte('p4_sync_card');
+  const k = karte('p5_leak_card');
   assert(/Falschluft-Test/.test(k), 'Falschluft-Test fehlt');
   assert(/Propan/.test(k), 'Propan-Methode nicht beschrieben');
   assert(/nicht angez&uuml;ndet/.test(k), 'Warnung "unangezuendet" fehlt');
   assert(/Drosselklappenwellen-Enden/.test(k), 'Wellenenden als Pruefpunkt fehlen');
   assert(/Ansaugbr&uuml;cke zum Zylinderkopf/.test(k), 'Bruecke/Kopf als Pruefpunkt fehlt');
-  for (const f of ['p4_leak_method', 'p4_leak_result', 'p4_leak_recheck']) {
+  for (const f of LEAK_FELDER) {
     assert(k.includes('data-field="' + f + '"'), 'Feld fehlt: ' + f);
   }
 });
@@ -161,16 +161,18 @@ await test('Falschluft-Test ist als Anleitung vorhanden', async () => {
 await test('Bremsenreiniger ist ausdruecklich ausgeschlossen', async () => {
   // Verbreitete Methode, aber Fehlanzeigen plus brennbare Fluessigkeit auf
   // heissem Motor mit offenen Trichtern.
-  const k = karte('p4_sync_card');
+  const k = karte('p5_leak_card');
   assert(/Nicht mit Bremsenreiniger oder Startpilot/.test(k),
     'Warnung vor Bremsenreiniger fehlt');
 });
 
-await test('Falschluft-Test steht vor der Synchronisation', async () => {
-  const k = karte('p4_sync_card');
-  const leak = k.indexOf('Falschluft-Test (False Air');
-  const sync = k.indexOf('Synchronisation (Synchronization)');
-  assert(leak > -1 && sync > -1, 'Ein Block fehlt');
+await test('Falschluft-Test steht als eigenes Kapitel vor der Synchronisation', async () => {
+  // Getrennte Kapitel seit Phase 5: dicht sein ist die Voraussetzung, nicht
+  // ein Unterpunkt der Synchronisation.
+  const leak = HTML.indexOf('id="p5_leak_card"');
+  const sync = HTML.indexOf('id="p5_sync_card"');
+  assert(leak > -1, 'Falschluft-Kapitel fehlt');
+  assert(sync > -1, 'Synchronisations-Kapitel fehlt');
   assert(leak < sync, 'Falschluft-Test steht nach der Synchronisation');
 });
 
@@ -185,8 +187,8 @@ await test('Ist-Erfassung je Vergaser vollstaendig (Kapitel 27)', async () => {
   assert(k.includes('data-field="p3_jet_venturi"'), 'Hauptventuri-Feld fehlt');
 });
 
-await test('Entscheidungstabelle mit Begruendungsspalte (Kapitel 22)', async () => {
-  const k = karte('p4_sync_card');
+await test('Entscheidungstabelle mit Begruendungsspalte', async () => {
+  const k = karte('p5_jetting_card');
   for (const f of ENTSCHEID_FELDER) {
     assert(k.includes('data-field="' + f + '"'), 'Feld fehlt in Kapitel 22: ' + f);
   }
@@ -194,7 +196,7 @@ await test('Entscheidungstabelle mit Begruendungsspalte (Kapitel 22)', async () 
 
 await test('Bezugsgroessen sind erfassbar', async () => {
   // Eine Bedueusung gilt fuer diesen Motor in dieser Konfiguration, nicht allgemein.
-  const k = karte('p4_sync_card');
+  const k = karte('p5_jetting_card');
   for (const f of BEZUGS_FELDER) {
     assert(k.includes('data-field="' + f + '"'), 'Bezugsgroesse fehlt: ' + f);
   }
@@ -276,7 +278,7 @@ await test('Das Review verwirft seine eigenen Zahlen - das steht dabei', async (
 });
 
 await test('Diagnosebaum verhindert den Duesenwechsel auf Verdacht', async () => {
-  const k = karte('p4_sync_card');
+  const k = karte('p5_jetting_card');
   assert(/Diagnosebaum/.test(k), 'Diagnosebaum fehlt');
   assert(/Nicht sofort tun/.test(k), 'Spalte "Nicht sofort tun" fehlt');
   assert(/einzeln und umkehrbar/.test(k), 'Umkehrbarkeit der Aenderungen fehlt');
@@ -311,7 +313,7 @@ await test('Die Tabellen sind sichtbar breit genug (keine abgeschnittene Spalte)
   // Frueher schon passiert: Inhalt im DOM, aber von der Kartenhoehe abgeschnitten.
   const p = await open('build-log.html');
   const mass = await p.page.evaluate(() => {
-    const el = document.querySelector('[data-field="p4_jd_main_why"]');
+    const el = document.querySelector('[data-field="p5_jd_main_why"]');
     if (!el) return null;
     const guide = el.closest('.step-guide');
     if (guide) guide.style.display = 'block';

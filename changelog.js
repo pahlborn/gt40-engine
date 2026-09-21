@@ -13,6 +13,30 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v38',
+      date: '2026-09-21',
+      title: 'Komponenten-Referenz mit Herstellerquellen',
+      changes: [
+        { type: 'neu', text: 'Neue Seite docs/komponenten.html: jede verbaute Komponente mit Hersteller, Teilenummer, belegten Eckdaten und Link zur Originalquelle. Jede Zahl traegt einen Quellenvermerk - Hersteller, Haendler oder offen. Verlinkt aus Specs, Build Log und Uebersicht.' },
+        { type: 'neu', text: 'Facet: Hersteller ist Motor Components LLC. Die Kataloge stehen dort. Malpassi Filter King direkt beim Hersteller verlinkt, DellOrto DRLA ueber Fachhaendler mit Explosionszeichnung und Kalibrierteilen - eine Werksseite von DellOrto mit DRLA-Unterlagen war nicht auffindbar, deshalb der Vermerk Sekundaerquelle an allen Grenzwerten.' },
+        { type: 'neu', text: 'Fund zum Vorfilter: das serienmaessige 8-Mikrometer-Papierelement gilt laut Haendlerangabe bis etwa 350 PS, darueber ist ein 55-Mikrometer-Metallelement vorgesehen. Welches verbaut ist, gehoert beim ersten Oeffnen festgehalten - ein zu feines Element zeigt sich als Druckabfall unter Last, nicht im Leerlauf.' },
+        { type: 'intern', text: 'Produktfotos und Datenblaetter werden verlinkt, nicht ins Repository kopiert: es ist oeffentlich, und das waere eine Veroeffentlichung fremder Inhalte. Ein Test wacht darueber, dass keine Fremdbilder eingebunden und keine fremden PDF-Datenblaetter abgelegt werden.' }
+      ]
+    },
+    {
+      version: 'v37',
+      date: '2026-09-20',
+      title: 'Phase 5: Abstimmung gehoert an die Strecke',
+      changes: [
+        { type: 'neu', text: 'Neue Phase 5 "Abstimmung & Feuertaufe". Phase 4 endet jetzt dort, wo der Motor nachweislich gesund ist. Abstimmen ist etwas anderes: iterativ, ueber Wochen, und zum groessten Teil nicht in der Werkstatt moeglich.' },
+        { type: 'neu', text: 'Drei Unterphasen nach Arbeitsumgebung: 5a Werkstatt nur fuer Grundeinstellungen, 5b Strasse fuer Teillast, 5c Rennstrecke fuer Volllast. Der Hauptduesenkreis braucht weit geoeffnete Drosselklappe ueber mehrere Sekunden - das geht auf einer abgesperrten Strecke oder freien Autobahn, sonst nirgends.' },
+        { type: 'neu', text: 'Die alte 35-KB-Karte von Kapitel 22 ist in acht Kapitel aufgeteilt: Falschluft-Test, Synchronisation, Lambda-Hardware, Bedueusungsentscheidung, Teillast auf der Strasse, Schraubverbindungen, Trackday, Oelwechsel danach.' },
+        { type: 'neu', text: 'Neues Kapitel Schraubverbindungen als Sicherheitstor vor der Strecke - am kalten Motor, mit dem Hinweis auf das Losbrechmoment: ein Drehmomentschluessel auf einer bereits angezogenen Schraube klickt, bevor sich etwas bewegt, und eine lockere Verbindung liest sich als fest.' },
+        { type: 'neu', text: 'Trackday Pannoniaring als erste Feuertaufe: erste Runden nur Systembeobachtung, Boxenstopp mit Tankbilanz, und erst danach ein kurzer Volllastzug - ausgewertet, bevor der naechste gefahren wird. Danach Oelwechsel mit Filterkontrolle und ein zweiter Schraubdurchgang.' },
+        { type: 'fix', text: 'migrateData war definiert, wurde nie aufgerufen und griff dabei auf eine Variable zu, die es in dieser Datei gar nicht gab. Beim ersten Aufruf haette das geworfen - und ein Fehler beim Anwenden der Daten bricht den ganzen Sync ab, genau wie in v26. Die Tabelle ist jetzt definiert, die Funktion verdrahtet, und ein Test prueft, dass ein alter p4-Wert im neuen p5-Feld ankommt.' }
+      ]
+    },
+    {
       version: 'v36',
       date: '2026-09-20',
       title: 'CI war 40 Minuten lang blind',
