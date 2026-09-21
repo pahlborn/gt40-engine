@@ -13,6 +13,20 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v45',
+      date: '2026-09-21',
+      title: 'Glossar aus drei Kopien zusammengefuehrt, verwaiste Phasendateien geloescht',
+      changes: [
+        { type: 'fix', text: 'Das Motoren-Glossar stand wortgleich in build-log.html, index.html und specs.html - 140 Eintraege, rund 97 kB je Kopie. Es liegt jetzt einmal in glossar.js und wird von allen drei Seiten eingebunden. Die HTML-Dateien sind dadurch zusammen rund 285 kB kleiner.' },
+        { type: 'fix', text: 'Die drei Kopien waren bereits auseinandergelaufen, und einer der Unterschiede war eine Falle: die Warnung, dass Verdichtungsrechner unterschiedliche Vorzeichenkonventionen fuer die Kolbenmulde verwenden - Summit Racing erwartet positive Werte, andere Rechner negative - stand NUR in specs.html. Wer das Glossar im Build-Log oder auf der Startseite aufschlug, bekam die aermere Fassung und konnte das Vorzeichen falsch setzen, ohne Hinweis. Die zusammengefuehrte Fassung traegt sie ueberall.' },
+        { type: 'fix', text: 'Zweiter Unterschied: "Kolbenunterstand" hatte in index.html ein anderes Messverfahren als in den beiden anderen Dateien - ohne den Schritt, den exakten OT ueber den hoechsten Ausschlag zu bestaetigen, und ohne die Messung an Druck- und Gegenseite. Uebernommen wurde die vollstaendige Fassung.' },
+        { type: 'fix', text: 'Die vier verwaisten Dateien build-log-phase1 bis -phase4 sind geloescht. Zusammen 472 kB, null eingehende Links - aber per URL oeffentlich abrufbar. Genau deshalb lieferten sie bis vor Kurzem noch Aussagen aus, die im Build-Log laengst korrigiert waren: die Behauptung, MSD-Verteiler haetten keine Unterdruckdose (bis v41), die 2-Step-Behauptung und die falsche Buechsentabelle (bis v42). Was niemand verlinkt, prueft auch niemand.' },
+        { type: 'neu', text: 'glossar.js ist in den Service-Worker-Cache aufgenommen - ohne diesen Eintrag haette die PWA offline das komplette Glossar verloren.' },
+        { type: 'neu', text: 'Neue Testreihe tests/glossar.test.mjs mit 14 Pruefungen: keine HTML-Datei darf wieder Glossar-Eintraege im Quelltext tragen, alle drei Seiten muessen im Browser dieselben 140 Eintraege zeigen, search.js muss sie ueber seinen eigenen Selektor finden, und die Vorzeichen-Warnung muss auf jeder Seite im DOM ankommen. Vier Gegenproben verifiziert.' },
+        { type: 'fix', text: 'Nebenbefund aus der Dublettensuche: dieselbe Theorie steht NICHT mehrfach in der Prosa. Ueber 585 Textbloecke hinweg liegt die hoechste Aehnlichkeit zwischen zwei Seiten bei 16 Prozent, und jeder dieser Faelle ist ein bewusster Querverweis mit Link. Dort war nichts zu tun.' }
+      ]
+    },
+    {
       version: 'v44',
       date: '2026-09-21',
       title: 'Unbelegte Pauschalaussagen entschaerft, Troubleshooting auf diesen Build bezogen',

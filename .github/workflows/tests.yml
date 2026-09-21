@@ -72,6 +72,9 @@ jobs:
       - name: Unbelegte Pauschalaussagen
         run: node tests/pauschalaussagen.test.mjs
 
+      - name: Gemeinsames Glossar
+        run: node tests/glossar.test.mjs
+
   # Prueft die tatsaechlich ausgelieferte Seite. Laeuft nur auf main und
   # blockiert nichts, weil ein Aussetzer bei GitHub Pages oder der GitHub-API
   # nichts ueber den Code aussagt.

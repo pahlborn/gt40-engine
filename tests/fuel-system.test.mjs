@@ -146,13 +146,12 @@ suite('Zylinderzuordnung der DellOrto');
 await test('Ein Vergaser versorgt zwei Zylinder, eine Drosselklappe einen', async () => {
   // Stand vorher in beiden Sprachen falsch und widersprach sich dabei selbst:
   // "jeder Vergaser versorgt 4 Zylinder" gegen "each barrel feeds 4 cylinders".
-  for (const datei of ['build-log.html', 'build-log-phase4.html']) {
-    const html = fs.readFileSync(path.join(REPO_ROOT, datei), 'utf8');
-    assert(!/each barrel feeds 4 cylinders/.test(html),
-      datei + ': englische Fassung weiterhin falsch');
-    assert(!/jeder Vergaser versorgt 4 Zylinder/.test(html),
-      datei + ': deutsche Fassung weiterhin falsch');
-  }
+  // Die verwaiste build-log-phase4.html wurde in v45 geloescht - sie war per
+  // URL erreichbar, aber nirgends verlinkt, und lieferte deshalb ungeprueft
+  // laengst korrigierte Aussagen weiter aus.
+  const html = fs.readFileSync(path.join(REPO_ROOT, 'build-log.html'), 'utf8');
+  assert(!/each barrel feeds 4 cylinders/.test(html), 'englische Fassung weiterhin falsch');
+  assert(!/jeder Vergaser versorgt 4 Zylinder/.test(html), 'deutsche Fassung weiterhin falsch');
 });
 
 await test('Der verbaute Vergaser wird nirgends DHLA genannt', async () => {
