@@ -63,6 +63,9 @@ jobs:
       - name: Phase 5 - Abstimmung und Feuertaufe
         run: node tests/phase5.test.mjs
 
+      - name: Altlasten aus fruehrem Fahrzeugstand
+        run: node tests/altlasten.test.mjs
+
   # Prueft die tatsaechlich ausgelieferte Seite. Laeuft nur auf main und
   # blockiert nichts, weil ein Aussetzer bei GitHub Pages oder der GitHub-API
   # nichts ueber den Code aussagt.

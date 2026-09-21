@@ -13,6 +13,21 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v40',
+      date: '2026-09-21',
+      title: 'Altlasten aus einem frueheren Fahrzeugstand',
+      changes: [
+        { type: 'fix', text: 'Troubleshooting ging von zwei Vergasern aus: "jeder Vergaser versorgt 4 Zylinder" und "beide Vergaser muessen identischen Luftdurchsatz liefern". Es sind vier DRLA mit acht Laeufen, ein Lauf je Zylinder. Synchronisiert wird in zwei Ebenen.' },
+        { type: 'fix', text: 'Die Anweisung "mechanische Benzinpumpe von Hand betaetigen" beim Erststart ist ersetzt: zwei elektrische Facet-Pumpen, je Tank eine, Ticken wird langsamer wenn die Schwimmerkammern voll sind. Der Druckwert 3-5 psi ist auf die DRLA-Obergrenze 3.5 psi korrigiert.' },
+        { type: 'fix', text: 'Der Nockenwellen-Abschnitt beschrieb Lobe Wipe an einem Flat Tappet samt ZDDP-Einlaufoel und 20 Minuten bei 2000-2500 rpm. Dieser Motor hat einen Hydraulic Roller. Ein Roller faellt am Nadellager der Laufrolle aus, nicht durch abgeriebene Nocken - und er braucht kein Flat-Tappet-Einlaufverfahren. Auch die Oelempfehlung mit ZDDP-Zusatz ist korrigiert.' },
+        { type: 'fix', text: 'Gestrichen: "Leerlaufkanal mit duennem Draht reinigen". Draht in einer kalibrierten Bohrung veraendert den Querschnitt unwiederbringlich. Jetzt Vergaserreiniger und Druckluft.' },
+        { type: 'fix', text: 'Der Schwimmerstand 5.5-6 mm stand in zwei Dokumenten als fester Sollwert. Er traegt keine Primaerquelle, und die verbaute Einstellung stammt aus einer funktionierenden Abstimmung. Jetzt: Ist-Mass dokumentieren, nicht biegen.' },
+        { type: 'fix', text: 'Die Nadelventilgroesse 200 galt als "typisch fuer 302 mit 4x DRLA 45". Welche verbaut ist, weiss niemand - sie bestimmt den vertraeglichen Kraftstoffdruck mit und wird beim Zerlegen abgelesen.' },
+        { type: 'fix', text: 'Das pauschale E10-Verbot in den Specs widersprach der eigenen Ethanol-Unterseite. Jetzt derselbe Stand: der Mechanismus laeuft ueber die Standzeit, nicht ueber die Kilometer.' },
+        { type: 'fix', text: 'Die Facet-Teilenummer 480532 ist als noch zu bestaetigen gekennzeichnet - sie wurde nie am Bauteil abgelesen. Und "2x Facet = 120 l/h total" widersprach dem eigenen Exkurs: eine Pumpe foerdert bereits rund 170 l/h, die Randbedingung ist der Druck, nicht die Menge.' }
+      ]
+    },
+    {
       version: 'v39',
       date: '2026-09-21',
       title: 'Produktfotos fuer die neuen Komponenten',
