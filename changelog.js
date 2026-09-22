@@ -21,21 +21,26 @@
         { type: 'neu', text: 'Neuer Exkurs "Stroboskop-Auswahl bei CD-Zuendung": warum MSD digitale und Rueckstell-Lampen fuer die Digital 6A/6AL ausschliesst, was die Mehrfachfunken unter etwa 3000 min-1 mit dem Abnehmer der Lampe machen, und welche der beiden vorhandenen Lampen deshalb zum Einsatz kommt.' },
         { type: 'neu', text: 'Der offene Punkt "welches Stroboskop" ist beantwortet: gemessen wird mit der Hella Gutmann 8PD 004 835-001, einer reinen Xenon-Blitzlampe ohne Verstellung und ohne Anzeige. Die ebenfalls vorhandene Equus/Innova 5568 Pro Digital ist ausgeschlossen - Innova nennt sie selbst fuer Multi-Spark-Anlagen ungeeignet.' },
         { type: 'neu', text: 'An die Stelle des geschlossenen Punktes tritt ein neuer Pruefschritt in Kapitel 18: Ohne Rueckstellung zeigt die Lampe nur, was physisch auf der Riemenscheibe markiert ist. Reicht die Gradteilung nicht, ist Total Mechanical Timing nicht ablesbar - Gradband oder graduierte Scheibe, und zwar vor der Aufnahme von Buchse und Federn.' },
-        { type: 'intern', text: 'Zwei Tests halten den Stand fest: beide Geraete namentlich benannt, und der Skalen-Pruefschritt mit seiner Reihenfolge gegenueber der Federmessung.' }
+        { type: 'intern', text: 'Zwei Tests halten den Stand fest: beide Geraete namentlich benannt, und der Skalen-Pruefschritt mit seiner Reihenfolge gegenueber der Federmessung.' },
+        { type: 'neu', text: 'Ebenfalls unter v56 ausgeliefert: neues validation.js. Numerische Eingabefelder werden beim Verlassen geprueft, Buchstaben in Zahlfeldern rot markiert, Komma automatisch zu Punkt normalisiert. Unterstuetzt data-validate="numeric", "numeric:min:max" und "integer".' },
+        { type: 'neu', text: 'Annotierte Felder in specs.html: Lagerspiele (main 1-5), Pleuellager (rod 1-8), Ring Gaps (topring/secring 1-8), Pushrod-Laengen, Quench-Tabelle (PTD, Gasket, PTV), Endplay.' },
+        { type: 'neu', text: 'Annotierte Felder in build-log.html: 79 Messwertfelder (Deck Height, Piston Deck, Main Bearings, Cam Journals, Rod Bearings, Ring Gaps und weitere).' },
+        { type: 'neu', text: 'Annotierte Felder in index.html: Target HP, Quench-Tabelle, PTV.' },
+        { type: 'intern', text: 'validation.js ist als Shared Library angelegt und wird identisch auch im Jerico-Repo verwendet.' },
+        { type: 'fix', text: 'Die Validierung wurde ohne Versionssprung gepusht und stand deshalb unter v55, obwohl sie erst mit v56 auf die Geraete kommt - wer v55 geladen hat, hat sie nicht. Hier unter v56 eingeordnet. Der dabei ueberschriebene v55-Eintrag ist wiederhergestellt; er beschreibt jetzt wieder, was v55 tatsaechlich enthielt. Inhaltlich geht nichts verloren, nur die Zuordnung ist richtiggestellt.' }
       ]
     },
     {
       version: 'v55',
       date: '2026-09-22',
-      time: '14:30',
-      title: 'Eingabevalidierung fuer numerische Felder',
+      time: '13:54',
+      title: 'Luecke im Versions-Journal geschlossen',
       changes: [
-        { type: 'neu', text: 'Neues validation.js: numerische Eingabefelder werden beim Verlassen geprueft. Buchstaben in Zahlfeldern werden rot markiert, Komma wird automatisch zu Punkt normalisiert. Unterstuetzt data-validate="numeric", "numeric:min:max" und "integer".' },
-        { type: 'neu', text: 'Annotierte Felder in specs.html: Lagerspiele (main 1-5), Pleuellager (rod 1-8), Ring Gaps (topring/secring 1-8), Pushrod-Laengen, Quench-Tabelle (PTD, Gasket, PTV), Endplay.' },
-        { type: 'neu', text: 'Annotierte Felder in build-log.html: 79 Messwertfelder (Deck Height, Piston Deck, Main Bearings, Cam Journals, Rod Bearings, Ring Gaps, etc.).' },
-        { type: 'neu', text: 'Annotierte Felder in index.html: Target HP, Quench-Tabelle, PTV.' },
-        { type: 'intern', text: 'validation.js ist als Shared Library angelegt und wird identisch auch im Jerico-Repo verwendet.' },
-        { type: 'fix', text: 'v50 bis v53 fehlten im Versions-Journal - nachgetragen aus Commit-Botschaften. v54-Eintrag um Sync-Fehlermeldungen ergaenzt.' }
+        { type: 'fix', text: 'v50 bis v53 fehlten in dieser Dokumentation vollstaendig - das Journal sprang von v54 direkt auf v49. Die vier Eintraege sind aus den Commit-Botschaften nachgetragen; erfunden wurde nichts.' },
+        { type: 'fix', text: 'Der v54-Eintrag nennt jetzt auch die Verbesserung der Sync-Fehlermeldungen. Sie ging unter derselben Versionsnummer raus, ohne dass die Nummer hochgezaehlt wurde, und fehlte deshalb hier.' },
+        { type: 'fix', text: 'Der Freigabezeitpunkt von v54 stand auf 13:14, ausgeliefert wurde aber der Stand von 13:27. Richtiggestellt.' },
+        { type: 'intern', text: 'Neuer Test: die Versionsfolge darf keine Luecke haben. Bisher wurde nur geprueft, ob die oberste Nummer zu APP_VERSION passt - das war vier Releases lang rot und ist erst durch den v54-Eintrag wieder gruen geworden, ohne dass die Luecke verschwunden war.' },
+        { type: 'intern', text: 'Neuer Test gegen implizite globale Variablen: _gistOk und _gistError werden von drei Seiten geteilt, aber nur in gallery.js deklariert. Wer sie ohne Deklaration zuweist, erzeugt still eine globale Variable, die erst im strict mode auffaellt. Der Test unterscheidet beide Faelle am Property-Deskriptor.' }
       ]
     },
     {
