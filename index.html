@@ -1249,6 +1249,7 @@
     const GIST_FILENAME = 'engine-build-log-data.json';
     const FIXED_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
     let isLoading = false;
+    var _gistError = '';
     // Erst wenn die Daten im DOM stehen, darf ein leeres Feld als "bewusst
     // geleert" gewertet werden. Vorher sind alle Felder leer, weil noch
     // nichts geladen ist - ein Save in dem Moment wuerde alles ausradieren.
@@ -1464,9 +1465,14 @@
                 method: 'PATCH', headers: { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ files: { [GIST_FILENAME]: { content: localStorage.getItem('engineBuildLog') || '{}' } } })
             });
-            if (!res.ok) { showToast('Cloud-Fehler (Status ' + res.status + ')'); return false; }
+            if (!res.ok) {
+                var errText = ''; try { errText = (await res.json()).message || ''; } catch(e) {}
+                _gistError = 'Status ' + res.status + (errText ? ': ' + errText : '');
+                return false;
+            }
+            _gistError = '';
             return true;
-        } catch (err) { showToast('Cloud-Fehler: ' + err.message); return false; }
+        } catch (err) { _gistError = err.message; return false; }
     }
     async function loadFromGist() {
         const t = getGistConfig().token; if (!t) return false;
@@ -1624,7 +1630,7 @@
         if (isGistConfigured()) {
             if (!navigator.onLine) { showToast('Offline gespeichert'); }
             else if (await saveToGist()) { showToast('Gespeichert'); }
-            else { showToast('Offline gespeichert (Sync-Fehler)'); }
+            else { showToast('Gespeichert, Sync-Fehler: ' + (_gistError || 'unbekannt')); }
         } else { showToast('Lokal gespeichert (kein Sync)'); }
     }
     async function loadData() {

@@ -2411,14 +2411,23 @@
         const t = getGistConfig().token; if (!t) return false;
         try {
             var files = { [GIST_FILENAME]: { content: localStorage.getItem('engineBuildLog') || '{}' } };
+            var bodyStr = JSON.stringify({ files: files });
+            console.log('[Sync] saveToGist: ' + (bodyStr.length / 1024).toFixed(1) + ' KB');
             const res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
                 method: 'PATCH', headers: { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ files: files })
+                body: bodyStr
             });
-            if (!res.ok) { showToast('Cloud-Fehler (Status ' + res.status + ')'); return false; }
-            _gistOk = true;
+            if (!res.ok) {
+                var errText = '';
+                try { errText = (await res.json()).message || ''; } catch(e) {}
+                console.error('[Sync] saveToGist fehlgeschlagen: ' + res.status + ' ' + errText);
+                _gistError = 'Status ' + res.status + (errText ? ': ' + errText : '');
+                _gistOk = false; updateSyncBadge();
+                return false;
+            }
+            _gistOk = true; _gistError = ''; updateSyncBadge();
             return true;
-        } catch (err) { showToast('Cloud-Fehler: ' + err.message); return false; }
+        } catch (err) { console.error('[Sync] saveToGist error:', err); _gistError = err.message; _gistOk = false; updateSyncBadge(); return false; }
     }
     async function loadFromGist() {
         const t = getGistConfig().token; if (!t) return false;
@@ -2625,7 +2634,7 @@
         if (isGistConfigured()) {
             if (!navigator.onLine) { showToast('Offline gespeichert'); }
             else if (await saveToGist()) { showToast('Gespeichert'); }
-            else { showToast('Offline gespeichert (Sync-Fehler)'); }
+            else { showToast('Gespeichert, Sync-Fehler: ' + (_gistError || 'unbekannt')); }
         } else { showToast('Lokal gespeichert (kein Sync)'); }
     }
     async function loadData() {

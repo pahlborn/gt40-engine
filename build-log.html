@@ -5380,8 +5380,11 @@
                 if (res.ok) {
                     localStorage.setItem('engineBuildLog', JSON.stringify(merged));
                     showToast('Gespeichert');
-                } else { showToast('Offline gespeichert (Sync-Fehler)'); }
-            } catch (e) { showToast('Offline gespeichert (Sync-Fehler)'); }
+                } else {
+                    var errMsg = ''; try { errMsg = (await res.json()).message || ''; } catch(e2) {}
+                    showToast('Gespeichert, Sync-Fehler: ' + (errMsg || 'Status ' + res.status));
+                }
+            } catch (e) { showToast('Gespeichert, Sync-Fehler: ' + e.message); }
         } else { showToast('Lokal gespeichert (kein Sync)'); }
     }
 
