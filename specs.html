@@ -236,6 +236,14 @@
         .comp-sub { font-size: 0.8rem; font-weight: 600; color: var(--primary); margin: 0.5rem 0 0.25rem; padding-top: 0.3rem; border-top: 1px solid #c3dafe; }
         .comp-sub:first-child { border-top: none; margin-top: 0; padding-top: 0; }
 
+        /* ---- Source / Verification Links ---- */
+        .src-link { font-size: 0.6rem; text-decoration: none; opacity: 0.5; margin-left: 0.3rem; vertical-align: super; cursor: pointer; }
+        .src-link:hover { opacity: 1; }
+        .src-link.doc { color: #2b6cb0; }
+        .src-link.unverified { color: #c53030; font-weight: 700; }
+        .src-link.unverified::after { content: '?'; }
+        .spec-value .src-link { vertical-align: baseline; font-size: 0.55rem; }
+
         /* ---- Unit Converter ---- */
         .fab-stack {
             position: fixed; bottom: 16px; right: 16px; z-index: 900;
@@ -550,7 +558,7 @@
         <div class="section-body">
             <!-- Komponenten -->
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">Motorblock &ndash; Ford Performance M-6010-BOSS302</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">Motorblock &ndash; Ford Performance M-6010-BOSS302 <a class="src-link doc" href="docs/M-6010-BOSS302.html" onclick="event.stopPropagation()" title="Herstellerdaten">&#128196;</a></div>
                 <div class="comp-body">
                     <div class="comp-sub">Block-Daten (Hersteller)</div>
                     <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">Gusseisen (Diesel Grade Iron), CNC-bearbeitet</span></div>
@@ -591,7 +599,7 @@
             </div>
 
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">Short Block &ndash; Ford Performance M-6009-302</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">Short Block &ndash; Ford Performance M-6009-302 <a class="src-link doc" href="docs/M-6009-302.html" onclick="event.stopPropagation()" title="Herstellerdaten">&#128196;</a></div>
                 <div class="comp-body">
                     <div class="comp-sub">Kurbeltrieb (Hersteller: alle geschmiedet)</div>
                     <div class="spec-item"><span class="spec-label">Hubraum</span><span class="spec-value">302 ci (4.942 L)</span></div>
@@ -602,7 +610,7 @@
                     <div class="spec-item"><span class="spec-label">Auswuchtung</span><span class="spec-value"><strong>Zero Balance (Neutral Balanced)</strong> &ndash; Zero-Balance Schwungrad/Flexplate erforderlich!</span></div>
                     <div class="spec-item"><span class="spec-label">Pleuel</span><span class="spec-value">Geschmiedeter Stahl (Forged Steel)</span></div>
                     <div class="spec-item"><span class="spec-label">Kolben</span><span class="spec-value">Geschmiedet, f&uuml;r 20&deg; Ventilwinkel-K&ouml;pfe</span></div>
-                    <div class="spec-item"><span class="spec-label">Verdichtung (nominal)</span><span class="spec-value">9.0:1 (mit 64cc Brennraum-K&ouml;pfen)</span></div>
+                    <div class="spec-item"><span class="spec-label">Verdichtung (nominal)</span><span class="spec-value">9.0:1 (mit 64cc Brennraum-K&ouml;pfen) <a class="src-link unverified" title="CR-Rechner ergibt ~8.6:1 mit 6.5cc Dish+64cc. Kolben-Dish (Mahle) und PTD am realen Motor pruefen!"></a></span></div>
                     <div class="spec-item"><span class="spec-label">Empf. Balancer</span><span class="spec-value">M-6316-D302 (Zero Balance)</span></div>
                     <div class="spec-item"><span class="spec-label">Empf. &Ouml;lpumpe</span><span class="spec-value">M-6600-D2 (High Volume)</span></div>
                     <div class="spec-item"><span class="spec-label">Gewicht (Short Block)</span><span class="spec-value">271 lbs</span></div>
@@ -698,7 +706,7 @@
                     <div class="spec-item"><span class="spec-label">Bohrung</span><span class="spec-value">4.000"</span></div>
                     <div class="spec-item"><span class="spec-label">Ventilwinkel-Kompatibilit&auml;t</span><span class="spec-value">20&deg; Valve Angle Heads (Std. SBF + Aftermarket)</span></div>
                     <div class="spec-item"><span class="spec-label">Valve Reliefs</span><span class="spec-value">Ja &ndash; f&uuml;r stock und spread valve guide centerlines</span></div>
-                    <div class="spec-item"><span class="spec-label">Kolbenmulde (Dish)</span><span class="spec-value">6.5 cc (Mahle SBF600000FPF / 101P35+, Flat Top mit Valve Reliefs)</span></div>
+                    <div class="spec-item"><span class="spec-label">Kolbenmulde (Dish)</span><span class="spec-value">6.5 cc (Mahle SBF600000FPF / 101P35+, Flat Top mit Valve Reliefs) <a class="src-link unverified" title="Mahle Datenblatt pruefen! Verschiedene Quellen nennen 2.3-6.5cc. CR-Berechnung haengt davon ab."></a></span></div>
                     <div class="spec-item"><span class="spec-label">Piston-to-Deck (nominal)</span><span class="spec-value">0.010&quot; (0.25 mm)</span></div>
                     <div class="spec-item"><span class="spec-label">Nominale Verdichtung</span><span class="spec-value">9.0:1 (mit 64cc Brennraumvolumen)</span></div>
                     <div class="spec-item"><span class="spec-label">Verdichtung mit AFR 58cc</span><span class="spec-value">~9.2:1 (berechnet: 58cc Brennraum + 8.9cc Dichtung + 2.1cc Deck + 6.5cc Kolbenmulde = 75.5cc Totvolumen)</span></div>
@@ -831,7 +839,7 @@
 
             <div class="info-box">
                 <strong>Ziel-Quench:</strong> 0.035" &ndash; 0.045" &nbsp;|&nbsp;
-                <strong>Min. Ventilfreiraum:</strong> Einlass &ge; 0.080" / Auslass &ge; 0.100"
+                <strong>Min. Ventilfreiraum:</strong> Einlass &ge; 0.080" / Auslass &ge; 0.100" <a class="src-link unverified" title="Ford Performance empfiehlt 0.100&quot;/0.125&quot;. Aktuelle Werte sind weniger konservativ."></a>
             </div>
 
             <div class="table-wrapper">
@@ -1036,7 +1044,7 @@
                     <div class="spec-item"><span class="spec-label">Alternativen</span><span class="spec-value">NGK FR5 / Champion RC9YC</span></div>
                     <div class="spec-item"><span class="spec-label">Gewinde</span><span class="spec-value">14mm, 0.750" (Long Reach)</span></div>
                     <div class="spec-item"><span class="spec-label">Sitzform</span><span class="spec-value">Dichtscheibe (Gasket Seat)</span></div>
-                    <div class="spec-item"><span class="spec-label">Elektrodenabstand</span><span class="spec-value">0.040" (NGK Pre-Set ab Werk)</span></div>
+                    <div class="spec-item"><span class="spec-label">Elektrodenabstand</span><span class="spec-value">0.040" <a class="src-link unverified" title="Autolite 3924 wird ab Werk mit 0.044&quot; geliefert. 0.040&quot; ist enger - bewusst so?"></a></span></div>
                     <div class="spec-item"><span class="spec-label">Drehmoment</span><span class="spec-value">15 &ndash; 22 ft-lbs</span></div>
                 </div>
             </div>
@@ -1125,7 +1133,7 @@
 
             <!-- OILING SYSTEM -->
             <div class="comp-box" style="background:#fff5f5;border-color:#fc8181;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#c53030;">&#128373; &Ouml;lsystem &ndash; Herstellerhinweise</div>
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#c53030;">&#128373; &Ouml;lsystem &ndash; Herstellerhinweise <a class="src-link doc" href="docs/komponenten.html" onclick="event.stopPropagation()" title="Komponenten-Details">&#128196;</a></div>
                 <div class="comp-body">
                     <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
                         <tr style="background:#fed7d7;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
@@ -1274,7 +1282,7 @@
         </div>
         <div class="section-body">
             <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#276749;">Vergaser &ndash; DellOrto DRLA 45 Downdraft (4 St&uuml;ck)</div>
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#276749;">Vergaser &ndash; DellOrto DRLA 45 Downdraft (4 St&uuml;ck) <a class="src-link doc" href="docs/dellorto-drla-tuning.html" onclick="event.stopPropagation()" title="Tuning-Guide">&#128196;</a></div>
                 <div class="comp-body">
                     <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">DellOrto DRLA 45 &ndash; Doppel-Downdraft (Twin-Choke)</span></div>
                     <div class="spec-item"><span class="spec-label">Drosseldurchmesser</span><span class="spec-value">45 mm (je 2 Drosselklappen pro Vergaser)</span></div>
@@ -1343,7 +1351,7 @@
 
             <!-- FUEL DELIVERY -->
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#9981; Kraftstoffversorgung &ndash; Herstellerhinweise</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">&#9981; Kraftstoffversorgung &ndash; Herstellerhinweise <a class="src-link doc" href="docs/exkurs-kraftstoffdruck.html" onclick="event.stopPropagation()" title="Kraftstoffdruck-Exkurs">&#128196;</a></div>
                 <div class="comp-body">
                     <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
                         <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
@@ -1360,7 +1368,7 @@
             </div>
 
             <div class="comp-box" style="margin-top:0.3rem;background:#fff5f5;border-color:#fc8181;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#c53030;">&#9888; Warnung: E10 &amp; DellOrto-Vergaser</div>
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#c53030;">&#9888; Warnung: E10 &amp; DellOrto-Vergaser <a class="src-link doc" href="docs/exkurs-ethanol.html" onclick="event.stopPropagation()" title="Ethanol-Exkurs">&#128196;</a></div>
                 <div class="comp-body">
                     <div style="margin-top:0.5rem;font-size:0.78rem;"><a href="docs/exkurs-ethanol.html" style="color:#2b6cb0;font-weight:600;text-decoration:none;">&#128214; Exkurs: Ethanol, E10 und der DellOrto DRLA &rarr;</a></div>
                     <p style="font-size:0.8rem;line-height:1.5;margin:0 0 0.3rem;"><strong>Ethanol: das Risiko liegt in der Standzeit, nicht in den Kilometern.</strong> Der Schadensmechanismus l&auml;uft &uuml;ber Wasseraufnahme und S&auml;urebildung, und beides braucht Zeit im Stand:</p>
@@ -1495,7 +1503,7 @@
             </div>
 
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">Z&uuml;ndverteiler &ndash; MSD 8479 Street Pro-Billet</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">Z&uuml;ndverteiler &ndash; MSD 8479 Street Pro-Billet <a class="src-link doc" href="docs/msd-advance-tuning.html" onclick="event.stopPropagation()" title="Advance-Tuning Guide">&#128196;</a></div>
                 <div class="comp-body">
                     <div class="spec-item"><span class="spec-label">PN</span><span class="spec-value"><strong>MSD 8479</strong></span></div>
                     <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Street Pro-Billet, Small Diameter (5/8" kleiner als Serie)</span></div>
@@ -1575,7 +1583,7 @@
             </div>
 
             <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#276749;">&#128295; MSD 8479 &ndash; Advance Springs &amp; Bushings (Quelle: MSD 8479.pdf)</div>
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#276749;">&#128295; MSD 8479 &ndash; Advance Springs &amp; Bushings (Quelle: MSD 8479.pdf) <a class="src-link doc" href="docs/msd-advance-tuning.html" onclick="event.stopPropagation()" title="MSD Advance Guide">&#128196;</a></div>
                 <div class="comp-body">
                     <p style="font-size:0.76rem;margin-bottom:0.4rem;">Die Advance-Kurve bestimmt, wie schnell der Z&uuml;ndzeitpunkt von Initial auf Total steigt. Langsame Kurve = weniger Klopfneigung. MSD liefert 2x Heavy Silver (langsamste Kurve). Kombinationen:</p>
                     <table style="width:100%;font-size:0.76rem;border-collapse:collapse;margin-bottom:0.5rem;">
@@ -1587,7 +1595,7 @@
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>E</strong></td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">1&times; Light Silver + 1&times; Light Blue</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">Schnell</td></tr>
                         <tr><td style="padding:0.25rem;"><strong>F</strong></td><td style="padding:0.25rem;text-align:center;">2&times; Light Silver</td><td style="padding:0.25rem;text-align:center;">Schnellste</td></tr>
                     </table>
-                    <p style="font-size:0.76rem;margin-bottom:0.3rem;"><strong>Advance Stop Bushings</strong> begrenzen den mechanischen Verstellwinkel:</p>
+                    <p style="font-size:0.76rem;margin-bottom:0.3rem;"><strong>Advance Stop Bushings</strong> begrenzen den mechanischen Verstellwinkel: <a class="src-link unverified" title="Gegen MSD 8464 Instruction Sheet pruefen! Farb-/Grad-Zuordnung variiert je nach Quelle."></a></p>
                     <table style="width:100%;font-size:0.76rem;border-collapse:collapse;margin-bottom:0.5rem;">
                         <tr style="background:#c6f6d5;"><th style="padding:0.3rem;text-align:left;">Bushing-Farbe</th><th style="padding:0.3rem;">Mech. Advance</th><th style="padding:0.3rem;">Bei 12&deg; Initial = Total</th></tr>
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Silber (Werks)</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">21&deg;</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">33&deg;</td></tr>
@@ -1824,7 +1832,7 @@
         <div class="section-body">
 
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">Getriebe &ndash; Renault UN1-13 Transaxle</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">Getriebe &ndash; Renault UN1-13 Transaxle <a class="src-link doc" href="docs/un1-13.html" onclick="event.stopPropagation()" title="UN1-13 Daten">&#128196;</a></div>
                 <div class="comp-body">
                     <div class="spec-item"><span class="spec-label">Typ</span><span class="spec-value">Renault UN1-013 (Renault 21 Turbo Basis)</span></div>
                     <div class="spec-item"><span class="spec-label">Konfiguration</span><span class="spec-value">RH Change (Drehrichtung umgekehrt f&uuml;r Mid-Engine)</span></div>
@@ -1930,7 +1938,7 @@
         <h3 style="color:#2c5282;">Cam &amp; Timing</h3>
         <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
             <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.35rem;">Connection</th><th style="text-align:right;padding:0.35rem;">Torque</th><th style="text-align:left;padding:0.35rem;">Lubricant</th></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Cam Bolt (ARP 254-1001)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">25&ndash;30 ft-lbs (34&ndash;41 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Cam Bolt (ARP 254-1001)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">25&ndash;30 ft-lbs (34&ndash;41 Nm) <a class="src-link unverified" title="ARP Instruction Sheet 254-1001 pruefen! Forum nennt 35-40 ft-lbs"></a></td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque</td></tr>
             <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Oil Pump to Block</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">22&ndash;25 ft-lbs (30&ndash;34 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Engine Oil</td></tr>
             <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Timing Cover</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">12&ndash;18 ft-lbs (16&ndash;24 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
             <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Harmonic Balancer Center Bolt</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">70&ndash;90 ft-lbs (95&ndash;122 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
@@ -1939,8 +1947,8 @@
         <h3 style="color:#2c5282;">Cylinder Heads (Zylinderk&ouml;pfe)</h3>
         <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
             <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.35rem;">Connection</th><th style="text-align:right;padding:0.35rem;">Torque</th><th style="text-align:left;padding:0.35rem;">Lubricant</th></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Head Studs ARP 154-4003 &ndash; Upper (1-5, blind)<br><span style="font-size:0.72rem;color:#718096;">3 stages: 35 &rarr; 55 &rarr; 80 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">80 ft-lbs (108 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Head Studs ARP 154-4003 &ndash; Lower (6-10, water)<br><span style="font-size:0.72rem;color:#718096;">3 stages: 35 &rarr; 55 &rarr; 70 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">70 ft-lbs (95 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque + Thread Sealant</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Head Studs ARP 154-4003 &ndash; Upper (1-5, blind)<br><span style="font-size:0.72rem;color:#718096;">3 stages: 35 &rarr; 55 &rarr; 80 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">80 ft-lbs (108 Nm) <a class="src-link unverified" title="ARP Instruction Sheet 154-4003 pruefen! Generalkatalog nennt ~100 ft-lbs fuer 1/2&quot; Studs"></a></td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Head Studs ARP 154-4003 &ndash; Lower (6-10, water)<br><span style="font-size:0.72rem;color:#718096;">3 stages: 35 &rarr; 55 &rarr; 70 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">70 ft-lbs (95 Nm) <a class="src-link unverified" title="ARP Instruction Sheet 154-4003 pruefen!"></a></td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque + Thread Sealant</td></tr>
             <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;font-size:0.72rem;color:#718096;" colspan="3">Cross pattern center &rarr; outward</td></tr>
         </table>
 
@@ -1959,7 +1967,7 @@
         <h3 style="color:#2c5282;">Drivetrain (Antriebsstrang)</h3>
         <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
             <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.35rem;">Connection</th><th style="text-align:right;padding:0.35rem;">Torque</th><th style="text-align:left;padding:0.35rem;">Lubricant</th></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Pressure Plate / Clutch (Kupplung)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">12&ndash;24 ft-lbs (16&ndash;33 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
+            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Pressure Plate / Clutch (Kupplung)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">12&ndash;24 ft-lbs (16&ndash;33 Nm) <a class="src-link unverified" title="Kupplungshersteller pruefen! Typisch SBF: 25-35 ft-lbs"></a></td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
             <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Flywheel Bolts (Schwungrad)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">75&ndash;85 ft-lbs (102&ndash;115 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
         </table>
 
