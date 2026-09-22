@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exkurs: Stroboskop-Auswahl bei CD-Z&uuml;ndung</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 1rem; background: #f8f9fa; color: #1a202c; line-height: 1.6; }
+        .banner { background: #2b6cb0; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; margin-bottom: 1rem; }
+        .banner a { color: #bee3f8; }
+        h1 { color: #2d3748; border-bottom: 3px solid #2b6cb0; padding-bottom: 0.5rem; font-size: 1.6rem; }
+        h2 { color: #2b6cb0; border-bottom: 1px solid #cbd5e0; padding-bottom: 0.3rem; margin-top: 1.5rem; }
+        h3 { color: #4a5568; margin-top: 1rem; }
+        .section { background: white; padding: 1rem; border-radius: 8px; margin: 1rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .back-link { display: inline-block; margin-bottom: 1rem; color: #2b6cb0; text-decoration: none; font-weight: 600; }
+        table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; font-size: 0.85rem; }
+        th { background: #ebf4ff; text-align: left; padding: 0.4rem 0.6rem; border-bottom: 2px solid #2b6cb0; }
+        td { padding: 0.35rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        .highlight { background: #fffff0; border: 1px solid #fefcbf; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .warning { background: #fff5f5; border: 1px solid #fc8181; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .info { background: #ebf8ff; border: 1px solid #90cdf4; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .success { background: #e6ffed; border: 1px solid #c6f6d5; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .source { font-size: 0.75rem; color: #718096; margin-top: 0.2rem; }
+        ul { padding-left: 1.3rem; }
+        li { margin-bottom: 0.3rem; }
+        .toc { background: #f7fafc; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin: 1rem 0; }
+        .toc a { color: #2b6cb0; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { padding: 0.15rem 0; }
+        .toc li::before { content: '\25B8 '; color: #2b6cb0; }
+        .badge { display: inline-block; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+        .badge-oem { background: #e2e8f0; color: #4a5568; }
+        .badge-lotus { background: #ebf4ff; color: #2b6cb0; }
+        .badge-mod { background: #fefcbf; color: #975a16; }
+        .badge-tested { background: #e6ffed; color: #276749; }
+        details { margin: 1rem 0; }
+        summary { cursor: pointer; font-weight: 700; color: #2b6cb0; font-size: 1.1rem; padding: 0.5rem 0; border-bottom: 1px solid #cbd5e0; }
+        summary:hover { color: #2c5282; }
+        details[open] summary { margin-bottom: 0.5rem; }
+        .video-embed { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin: 0.5rem 0; background: #1a202c; }
+        .video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .video-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #a0aec0; font-size: 1rem; text-align: center; padding: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="banner">Exkurs &ndash; Hintergrund zu einer Werkzeugfrage. Die Arbeitsschritte stehen im Build Log, Phase 4, Kapitel 16 und 18.</div>
+    <a class="back-link" href="../">&larr; Zur&uuml;ck zum Build Log</a>
+
+    <h1>Exkurs: Stroboskop-Auswahl bei CD-Z&uuml;ndung</h1>
+
+    <div class="toc">
+        <strong>Inhalt</strong>
+        <ul>
+            <li><a href="#frage">Worum es geht</a></li>
+            <li><a href="#mechanismus">Warum MSD zwei Bauarten ausschlie&szlig;t</a></li>
+            <li><a href="#geraete">Die beiden vorhandenen Ger&auml;te</a></li>
+            <li><a href="#folge">Was die einfache Lampe nicht kann</a></li>
+            <li><a href="#quellen">Quellenlage</a></li>
+        </ul>
+    </div>
+
+    <div class="section" id="frage">
+        <h2>Worum es geht</h2>
+        <p>Die Grundz&uuml;ndung, das Total Mechanical Timing und der Unterdruckanteil werden alle drei mit derselben Blitzlampe abgelesen. Ist die Lampe f&uuml;r diese Z&uuml;ndanlage die falsche Bauart, sind alle drei Werte falsch &ndash; und zwar <strong>ohne dass es auff&auml;llt</strong>, weil die Anzeige plausible Zahlen liefert.</p>
+        <p>Deshalb steht die Ger&auml;tefrage <em>vor</em> der ersten Messung. Sie entwertet sonst r&uuml;ckwirkend auch die Aufnahme von Anschlagbuchse und Federn, deren Wirkung nur &uuml;ber den gemessenen Winkel nachweisbar ist.</p>
+    </div>
+
+    <div class="section" id="mechanismus">
+        <h2>Warum MSD zwei Bauarten ausschlie&szlig;t</h2>
+        <p>Im Beiblatt zur Digital 6A/6AL steht der Satz: <em>&bdquo;Do not use digital or dial-back timing lights.&ldquo;</em> Das ist keine Empfehlung, sondern eine Ausschlussangabe des Herstellers.</p>
+        <p>Der Grund liegt in der Mehrfachfunken-Funktion der CD-Box. Unterhalb von etwa 3000&nbsp;min<sup>&minus;1</sup> gibt sie <strong>mehrere Funken je Z&uuml;ndung</strong> ab, oberhalb davon einen. Der induktive Abnehmer der Lampe erwartet eine Entladung je Arbeitsspiel und sieht stattdessen mehrere.</p>
+        <ul>
+            <li>Eine <strong>digitale</strong> Lampe wertet die Impulse elektronisch aus, um Drehzahl und Winkel zu errechnen. Bei mehreren Impulsen je Z&uuml;ndung verschiebt sich ihr Bezug.</li>
+            <li>Eine <strong>R&uuml;ckstell-Lampe</strong> (dial-back) verz&ouml;gert den Blitz um einen eingestellten Winkel, damit man die Markierung auf OT ablesen kann. Sie braucht dazu denselben eindeutigen Ausl&ouml;sepunkt.</li>
+        </ul>
+        <div class="warning">Der T&uuml;ckische daran: Die Lampe zeigt keinen Fehler an, sondern eine glaubw&uuml;rdige Gradzahl. Der Fehler f&auml;llt erst auf, wenn der Motor nicht so l&auml;uft, wie die notierten Werte es erwarten lassen.</div>
+        <p>Genau der betroffene Drehzahlbereich ist der, in dem gemessen wird: Grundz&uuml;ndung im warmen Leerlauf, Fliehkraftkurve beim Hochdrehen bis etwa 3000&ndash;3500&nbsp;min<sup>&minus;1</sup>.</p>
+    </div>
+
+    <div class="section" id="geraete">
+        <h2>Die beiden vorhandenen Ger&auml;te</h2>
+
+        <h3>Equus / Innova 5568 Pro Digital &ndash; <span class="badge badge-mod">nicht verwenden</span></h3>
+        <ul>
+            <li>Digitalanzeige mit Hintergrundbeleuchtung, vier Funktionen</li>
+            <li>Z&uuml;ndzeitpunkt-Verstellung 0&ndash;90&deg; (R&uuml;ckstellfunktion)</li>
+            <li>Drehzahl 249&ndash;9990&nbsp;min<sup>&minus;1</sup>, Schlie&szlig;winkel 0&ndash;180&deg;, Spannung 10&ndash;16&nbsp;V</li>
+        </ul>
+        <p>Das Ger&auml;t vereint beide ausgeschlossenen Merkmale: digital <em>und</em> r&uuml;ckstellend. Innova nennt auf der eigenen Produktseite ausdr&uuml;cklich, dass es f&uuml;r Multi-Spark- bzw. MSD-Anlagen nicht geeignet ist. Damit best&auml;tigt der Ger&auml;tehersteller, was der Z&uuml;ndungshersteller vorgibt.</p>
+        <div class="source">Innova Produktseite 5568A; Funktionsumfang auch bei JEGS zum Equus 5568.</div>
+
+        <h3>Hella Gutmann 8PD 004 835-001 &ndash; <span class="badge badge-tested">das richtige Ger&auml;t</span></h3>
+        <ul>
+            <li>Reine Xenon-Blitzlampe, keine Elektronik zur Winkelauswertung</li>
+            <li>Keine Verstellung, keine Anzeige, keine Drehzahlmessung</li>
+            <li>Zange f&uuml;r das Z&uuml;ndkabel, Versorgung von der Fahrzeugbatterie</li>
+            <li>Ausdr&uuml;cklich f&uuml;r Elektronik- <em>und</em> Unterbrecherz&uuml;ndung</li>
+        </ul>
+        <p>Das ist die Bauart, die MSD als einzige &uuml;brig l&auml;sst: eine Lampe, die schlicht blitzt, wenn ein Impuls kommt, und nichts daraus errechnet. Mehrere Funken je Z&uuml;ndung erzeugen dann mehrere Blitze am selben Punkt &ndash; die Markierung steht trotzdem still.</p>
+        <div class="source">Hella Gutmann Produktangaben zu 8PD 004 835-001 (ATP Autoteile, TKM Racing).</div>
+
+        <div class="success"><strong>Ergebnis f&uuml;r dieses Fahrzeug:</strong> Die passende Lampe ist vorhanden. Der offene Punkt &bdquo;welches Stroboskop&ldquo; ist damit beantwortet &ndash; gemessen wird mit der Hella, die Equus bleibt f&uuml;r diesen Motor im Schrank.</div>
+    </div>
+
+    <div class="section" id="folge">
+        <h2>Was die einfache Lampe nicht kann</h2>
+        <p>Die R&uuml;ckstellfunktion, die hier ausgeschlossen ist, hat einen praktischen Zweck: Sie erlaubt, gro&szlig;e Z&uuml;ndwinkel an der OT-Markierung abzulesen. Ohne sie blitzt die Lampe stur auf den tats&auml;chlichen Z&uuml;ndzeitpunkt &ndash; sichtbar wird nur, <strong>was physisch auf der Riemenscheibe markiert ist</strong>.</p>
+        <div class="highlight"><strong>Daraus folgt ein neuer Pr&uuml;fschritt:</strong> Bevor Total Mechanical Timing gemessen werden kann, muss feststehen, bis zu welchem Winkel die Riemenscheibe graduiert ist. Reicht die Skala nicht bis in den erwarteten Bereich, ist die Messung nicht ablesbar &ndash; unabh&auml;ngig davon, dass die Lampe die richtige ist.</div>
+        <p>Abhilfe, falls die Skala nicht reicht:</p>
+        <ul>
+            <li>Gradband auf die Riemenscheibe kleben (timing tape, passend zum Durchmesser)</li>
+            <li>oder eine bereits graduierte Riemenscheibe verwenden</li>
+        </ul>
+        <p>Beides geh&ouml;rt <em>vor</em> die erste Federmessung. Sonst wird zweimal gemessen &ndash; und die erste Messung ist die, auf die man sich sp&auml;ter nicht mehr verlassen kann.</p>
+    </div>
+
+    <div class="section" id="quellen">
+        <h2>Quellenlage</h2>
+        <table>
+            <tr><th>Aussage</th><th>Status</th></tr>
+            <tr><td>MSD schlie&szlig;t digitale und R&uuml;ckstell-Stroboskope f&uuml;r die Digital 6A/6AL aus</td><td><strong>belegt</strong> &ndash; Herstellerbeiblatt, w&ouml;rtlich</td></tr>
+            <tr><td>Mehrfachfunken unterhalb etwa 3000&nbsp;min<sup>&minus;1</sup> als Ursache</td><td><strong>belegt</strong> &ndash; Funktionsbeschreibung der Box</td></tr>
+            <tr><td>Innova 5568 hat Digitalanzeige und 0&ndash;90&deg;-Verstellung</td><td><strong>belegt</strong> &ndash; Herstellerangabe</td></tr>
+            <tr><td>Innova 5568 ist nicht f&uuml;r Multi-Spark-Anlagen geeignet</td><td><strong>belegt</strong> &ndash; Angabe des Ger&auml;teherstellers</td></tr>
+            <tr><td>Hella 8PD 004 835-001 ist eine reine Blitzlampe ohne Verstellung</td><td><strong>belegt</strong> &ndash; Herstellerangaben des Ger&auml;ts</td></tr>
+            <tr><td>Skalenumfang der verbauten Riemenscheibe</td><td><strong>offen</strong> &ndash; am Fahrzeug abzulesen</td></tr>
+        </table>
+        <div class="info"><strong>Offen bleibt</strong> allein der Skalenumfang der Riemenscheibe. Er entscheidet, ob ein Gradband n&ouml;tig wird, nicht ob die Lampe taugt.</div>
+    </div>
+
+</body>
+</html>

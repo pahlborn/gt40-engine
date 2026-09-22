@@ -112,6 +112,29 @@ await test('Die rueckwirkende Folge ist benannt', async () => {
     'Rueckwirkung auf die Verteiler-Aufnahme fehlt');
 });
 
+await test('Das verwendete Geraet steht fest, das ausgeschlossene auch', async () => {
+  // Der Punkt war offen, weil die Bauart der Lampe jede Messung entwertet.
+  // Beantwortet zaehlt er erst, wenn beide Geraete benannt sind - sonst
+  // bleibt beim naechsten Mal wieder offen, welches genommen wurde.
+  const h = BL();
+  assert(/Hella Gutmann 8PD 004 835-001/.test(h), 'Verwendetes Geraet nicht benannt');
+  assert(/Equus\/Innova 5568 Pro Digital/.test(h), 'Ausgeschlossenes Geraet nicht benannt');
+  assert(/Innova selbst nennt sie f&uuml;r Multi-Spark-Anlagen ungeeignet/.test(h),
+    'Die Angabe des Geraeteherstellers fehlt - sie traegt den Ausschluss');
+  const sp = lies('specs.html');
+  assert(/Hella 8PD 004 835-001/.test(sp), 'specs.html nennt das Geraet nicht');
+});
+
+await test('An die Stelle tritt der Skalenumfang der Riemenscheibe', async () => {
+  // Ohne Rueckstellung zeigt die Lampe nur, was auf der Scheibe steht. Das
+  // ersetzt den geschlossenen Punkt, es kommt nicht zusaetzlich dazu.
+  const h = BL();
+  assert(/Skalenumfang der Riemenscheibe pr&uuml;fen/.test(h), 'Pruefschritt fehlt');
+  assert(/Gradband/.test(h), 'Abhilfe nicht benannt');
+  assert(/geh&ouml;rt <strong>vor<\/strong> die Aufnahme von Buchse und Federn/.test(h),
+    'Reihenfolge gegenueber der Federmessung fehlt');
+});
+
 // ---------------------------------------------------------------------------
 suite('Ported Vacuum: Auswirkung des falschen Abgriffs');
 
