@@ -78,6 +78,9 @@ jobs:
       - name: Mischkammern und Begriffswahl
         run: node tests/mischkammern.test.mjs
 
+      - name: Offene Punkte und ihre Auswirkungen
+        run: node tests/offene-punkte.test.mjs
+
   # Prueft die tatsaechlich ausgelieferte Seite. Laeuft nur auf main und
   # blockiert nichts, weil ein Aussetzer bei GitHub Pages oder der GitHub-API
   # nichts ueber den Code aussagt.
