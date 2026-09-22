@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v48',
+      date: '2026-09-22',
+      title: '6AL-Kabelschlaufen erledigt, der eingestellte Drehzahlwert bleibt offen',
+      changes: [
+        { type: 'fix', text: 'Die Kabelschlaufen sind durch die Betriebsgeschichte beantwortet: die Box lief im Fahrzeug, und der Motor lief auf acht Zylindern. Waere eine Schlaufe durchtrennt, wuerde die Box fuer sechs Zylinder zuenden - das waere nicht unbemerkt geblieben. Der Punkt ist damit vom Pruefpunkt zur dokumentierten Schlussfolgerung geworden; ein Blick beim Ausbau macht daraus eine Beobachtung statt einer Annahme.' },
+        { type: 'neu', text: 'Dafuer steht jetzt ausdruecklich da, was die Betriebsgeschichte NICHT beantwortet: bei welcher Drehzahl der Begrenzer steht. Dass die Box lief, sagt nichts ueber den eingestellten Wert - er kann bei 6.500 stehen oder bei 11.000, und im zweiten Fall gibt es praktisch keinen Schutz. Die Nockenwelle gibt etwa 6.500 U/min her. Der Wert steht auf den beiden Drehschaltern und ist in einer Minute abgelesen.' },
+        { type: 'fix', text: 'Die Teilenummer ist als nicht blockierend eingeordnet. Bisher stand dort, sie halte die Startfreigabe auf - das war nach der Bestaetigung der zwei Drehschalter nicht mehr richtig: die Bedienung ist damit geklaert, der Begrenzer wird ueber die Schalter gesetzt. Die aufgedruckte Nummer braucht es nur noch fuer Ersatzteile und das passende Beiblatt.' },
+        { type: 'fix', text: 'Layoutfehler aus v47 behoben: die Zeile mit der Maximaldrehzahl der Nockenwelle war hinter den Warnkasten gerutscht statt zu den anderen Kennwerten oberhalb der Eingabefelder.' }
+      ]
+    },
+    {
       version: 'v47',
       date: '2026-09-22',
       title: 'Auswirkungs-Hinweise an den offenen Werkstattpunkten',

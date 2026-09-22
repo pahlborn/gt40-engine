@@ -69,12 +69,35 @@ await test('Die Kabelschlaufen sind erfassbar', async () => {
   assert(da === 'INPUT', 'Feld p4_6al_loops fehlt oder ist kein Eingabefeld');
 });
 
-await test('Die Folge eines Schnitts steht dabei', async () => {
+await test('Die Schlaufen gelten als durch die Betriebsgeschichte beantwortet', async () => {
+  // Die Box lief im Fahrzeug auf acht Zylindern. Eine durchtrennte Schlaufe
+  // haette die Box fuer sechs zuenden lassen - das waere aufgefallen.
   const h = BL();
-  assert(/keine geschnitten/.test(h), 'Vorgabe fuer acht Zylinder fehlt');
-  assert(/z&uuml;ndet die Box f&uuml;r sechs Zylinder/.test(h), 'Fehlerbild fehlt');
-  assert(/nicht r&uuml;ckg&auml;ngig zu machen/.test(h), 'Irreversibilitaet nicht benannt');
-  assert(/Vor dem ersten Startversuch pr&uuml;fen/.test(h), 'Zeitpunkt der Pruefung fehlt');
+  assert(/durch die Betriebsgeschichte beantwortet/.test(h), 'Schlussfolgerung fehlt');
+  assert(/z&uuml;ndet die Box f&uuml;r sechs Zylinder|w&uuml;rde die Box f&uuml;r sechs Zylinder z&uuml;nden/.test(h),
+    'Begruendung (Fehlerbild bei sechs Zylindern) fehlt');
+  assert(/Annahme in eine Beobachtung verwandelt/.test(h),
+    'Hinweis auf die billige Sichtpruefung fehlt');
+});
+
+await test('Der eingestellte Drehzahlwert bleibt ausdruecklich offen', async () => {
+  // Das ist der Punkt, den "sie lief" gerade nicht beantwortet - und der mit
+  // der schaerfsten Folge: ein zu hoch gesetzter Begrenzer schuetzt nichts.
+  const h = BL();
+  assert(/nicht<\/em> beantwortet: bei welcher Drehzahl der Begrenzer steht/.test(h),
+    'Abgrenzung gegen die Betriebsgeschichte fehlt');
+  assert(/praktisch keinen Schutz/.test(h), 'Folge eines zu hohen Werts fehlt');
+  assert(/etwa 6\.500 U\/min her/.test(h), 'Bezug zur Nockenwelle fehlt');
+});
+
+await test('Die Teilenummer ist als nicht blockierend eingeordnet', async () => {
+  // Zwei Drehschalter genuegen zur Bedienung; die Nummer braucht es nur fuer
+  // Ersatzteile. Sie darf die Startfreigabe nicht aufhalten.
+  const h = BL();
+  assert(/Kein Hindernis f&uuml;r die Startfreigabe/.test(h),
+    'Einordnung der Teilenummer fehlt');
+  assert(!/l&auml;sst sich der Eintrag in der Startfreigabe \(Kapitel 19\) nicht abschlie&szlig;en/.test(h),
+    'Alte, jetzt falsche Blockade-Aussage steht noch da');
 });
 
 // ---------------------------------------------------------------------------
