@@ -5381,10 +5381,10 @@
                 });
                 if (res.ok) {
                     localStorage.setItem('engineBuildLog', JSON.stringify(merged));
-                    showToast('Gespeichert (lokal + Cloud)');
-                } else { showToast('Lokal gespeichert (Cloud-Fehler)'); }
-            } catch (e) { showToast('Lokal gespeichert (Cloud-Fehler)'); }
-        } else { showToast('Lokal gespeichert'); }
+                    showToast('Gespeichert');
+                } else { showToast('Offline gespeichert (Sync-Fehler)'); }
+            } catch (e) { showToast('Offline gespeichert (Sync-Fehler)'); }
+        } else { showToast('Lokal gespeichert (kein Sync)'); }
     }
 
     function loadData() {

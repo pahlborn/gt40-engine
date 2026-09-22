@@ -2611,9 +2611,10 @@
         localStorage.setItem('engineBuildLog', JSON.stringify(data));
         updateSaveStatus();
         if (isGistConfigured()) {
-            if (await saveToGist()) showToast('Gespeichert (lokal + Cloud)');
-            else showToast('Lokal gespeichert (Cloud-Fehler)');
-        } else { showToast('Lokal gespeichert'); }
+            if (!navigator.onLine) { showToast('Offline gespeichert'); }
+            else if (await saveToGist()) { showToast('Gespeichert'); }
+            else { showToast('Offline gespeichert (Sync-Fehler)'); }
+        } else { showToast('Lokal gespeichert (kein Sync)'); }
     }
     async function loadData() {
         isLoading = true;
@@ -3749,7 +3750,7 @@
         // == NAV & UI ==
         '\u00dcbersicht':'Overview', 'Spezifikationen':'Specifications', 'Referenz':'Reference',
         'Alles einklappen':'Collapse all', 'Alles aufklappen':'Expand all',
-        'Gespeichert':'Saved', 'Exportiert':'Exported', 'Importiert':'Imported',
+        'Gespeichert':'Saved', 'Offline gespeichert':'Saved offline', 'Offline gespeichert (Sync-Fehler)':'Saved offline (sync error)', 'Lokal gespeichert (kein Sync)':'Saved locally (no sync)', 'Exportiert':'Exported', 'Importiert':'Imported',
         'Treffer':'matches', 'keine':'none', 'Suchen...':'Search...',
         'Einheiten-Umrechner':'Unit Converter', 'Verbinden':'Connect', 'Trennen':'Disconnect', 'Abbrechen':'Cancel',
         'Speichern':'Save', 'Drucken':'Print', 'Einstellungen':'Settings', 'Zur\u00fccksetzen':'Reset',
