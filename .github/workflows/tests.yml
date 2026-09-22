@@ -81,6 +81,26 @@ jobs:
       - name: Offene Punkte und ihre Auswirkungen
         run: node tests/offene-punkte.test.mjs
 
+  # Wer eine ausgelieferte Datei aendert, zaehlt die Version hoch. Sonst gehen
+  # zwei verschiedene Staende unter derselben Nummer raus - genau so ist v54
+  # zweimal passiert. Braucht die Historie, deshalb fetch-depth: 0.
+  versionsdisziplin:
+    name: Versionsdisziplin
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Version passt zum ausgelieferten Stand
+        run: node tests/release-guard.test.mjs
+
   # Prueft die tatsaechlich ausgelieferte Seite. Laeuft nur auf main und
   # blockiert nichts, weil ein Aussetzer bei GitHub Pages oder der GitHub-API
   # nichts ueber den Code aussagt.
