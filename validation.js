@@ -22,6 +22,21 @@
   /** Punkt und Komma normalisieren -> Punkt. */
   function norm(v) { return (v || '').replace(/,/g, '.').trim(); }
 
+  /**
+   * Wert setzen und die Seite davon in Kenntnis setzen.
+   *
+   * Die Messwertfelder haengen mit oninput="autoSave()" am input-Ereignis.
+   * Eine Zuweisung an el.value loest das nicht aus - der normalisierte Wert
+   * stuende dann nur in der Anzeige, waehrend gespeichert die Fassung mit
+   * Komma bliebe. Beim naechsten Laden schreibt applyData() sie zurueck und
+   * die Normalisierung ist wieder weg.
+   */
+  function setzeWert(el, wert) {
+    if (el.value === wert) return;
+    el.value = wert;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
   /** Visuelles Feedback: ok / warn / error. */
   function setStatus(el, status) {
     el.classList.remove('status-ok', 'status-warn', 'status-error');
@@ -45,11 +60,14 @@
         return false;
       }
       var iv = parseInt(n, 10);
+      // '-' allein passt auf INTEGER_RE, ergibt aber NaN. Ohne diese Pruefung
+      // landet der String "NaN" im Messwertfeld.
+      if (isNaN(iv)) { setStatus(el, 'error'); return false; }
       if (rule[1] !== undefined && rule[2] !== undefined) {
         var imin = parseInt(rule[1], 10), imax = parseInt(rule[2], 10);
         setStatus(el, iv >= imin && iv <= imax ? 'ok' : 'error');
       } else { setStatus(el, 'ok'); }
-      el.value = iv.toString();
+      setzeWert(el, iv.toString());
       return true;
     }
 
@@ -66,7 +84,7 @@
         else setStatus(el, 'error');
       } else { setStatus(el, 'ok'); }
       // Komma -> Punkt normalisieren
-      if (raw.indexOf(',') !== -1) el.value = n;
+      if (raw.indexOf(',') !== -1) setzeWert(el, n);
       return true;
     }
 
