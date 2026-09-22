@@ -239,10 +239,21 @@
         /* ---- Source / Verification Links ---- */
         .src-link { font-size: 0.6rem; text-decoration: none; opacity: 0.5; margin-left: 0.3rem; vertical-align: super; cursor: pointer; }
         .src-link:hover { opacity: 1; }
-        .src-link.doc { color: #2b6cb0; }
+        .src-link.doc { color: #276749; }
+        .src-link.ext { color: #b7791f; }
         .src-link.unverified { color: #c53030; font-weight: 700; }
         .src-link.unverified::after { content: '?'; }
         .spec-value .src-link { vertical-align: baseline; font-size: 0.55rem; }
+        /* Inline-Quellenlinks: einheitlich lokal vs extern */
+        .ref-local, .ref-ext { font-size: 0.78rem; text-decoration: none; font-weight: 600; }
+        .ref-local { color: #276749; }
+        .ref-local::before { content: '\1F4C4 '; font-size: 0.7rem; }
+        .ref-ext { color: #b7791f; }
+        .ref-ext::before { content: '\1F310 '; font-size: 0.7rem; }
+        .ref-ext::after { content: ' \2197'; font-size: 0.6rem; }
+        .ref-badge { display: inline-block; font-size: 0.55rem; padding: 0.05rem 0.25rem; border-radius: 3px; vertical-align: middle; margin-left: 0.2rem; font-weight: 600; }
+        .ref-badge.local { background: #c6f6d5; color: #276749; }
+        .ref-badge.online { background: #fefcbf; color: #975a16; }
 
         /* ---- Unit Converter ---- */
         .fab-stack {
@@ -580,12 +591,14 @@
                     <div class="spec-item"><span class="spec-label">Gewicht (Block)</span><span class="spec-value">175 lbs</span></div>
                     <div class="spec-item"><span class="spec-label">Max. Hubraum</span><span class="spec-value">363 ci</span></div>
                     <div class="spec-item" style="padding-top:0.4rem;border-top:1px solid #c3dafe;">
-                        <span class="spec-label">Hersteller-PDF</span>
-                        <span class="spec-value"><a href="https://performanceparts.ford.com/download/pdfs/boss_blocks.pdf" target="_blank" style="color:var(--primary-light);">BOSS Blocks (PDF)</a> | <a href="https://performanceparts.ford.com/part/M-6010-BOSS302" target="_blank" style="color:var(--primary-light);">Produktseite (extern)</a></span>
-                    </div>
-                    <div class="spec-item">
-                        <span class="spec-label">Archivierte Kopie</span>
-                        <span class="spec-value"><a href="docs/M-6010-BOSS302.html" target="_blank" style="color:var(--primary-light);">M-6010-BOSS302 (lokal archiviert)</a></span>
+                        <span class="spec-label">Quellen</span>
+                        <span class="spec-value">
+                            <a class="ref-local" href="docs/M-6010-BOSS302.html">Herstellerdaten</a><span class="ref-badge local">offline</span>
+                            &nbsp;|&nbsp;
+                            <a class="ref-ext" href="https://performanceparts.ford.com/part/M-6010-BOSS302" target="_blank">Ford Produktseite</a><span class="ref-badge online">online</span>
+                            &nbsp;|&nbsp;
+                            <a class="ref-ext" href="https://performanceparts.ford.com/download/pdfs/boss_blocks.pdf" target="_blank">BOSS Blocks PDF</a><span class="ref-badge online">online</span>
+                        </span>
                     </div>
                     <div class="comp-photo-strip" data-comp-gallery="block" data-extra-images="boss302-block.jpg">
                         <img class="comp-hero" src="img/ford-m6010-boss302.jpg" data-default-src="img/ford-m6010-boss302.jpg" onclick="openGallery('block')">
@@ -615,12 +628,14 @@
                     <div class="spec-item"><span class="spec-label">Empf. &Ouml;lpumpe</span><span class="spec-value">M-6600-D2 (High Volume)</span></div>
                     <div class="spec-item"><span class="spec-label">Gewicht (Short Block)</span><span class="spec-value">271 lbs</span></div>
                     <div class="spec-item" style="padding-top:0.4rem;border-top:1px solid #c3dafe;">
-                        <span class="spec-label">Hersteller</span>
-                        <span class="spec-value"><a href="https://performanceparts.ford.com/part/M-6009-302" target="_blank" style="color:var(--primary-light);">Produktseite (extern)</a> | <a href="docs/M-6009-302.html" target="_blank" style="color:var(--primary-light);">Lokal archiviert</a></span>
-                    </div>
-                    <div class="spec-item">
-                        <span class="spec-label">Installation Tips</span>
-                        <span class="spec-value"><a href="EngineInstallation_TuningTips.pdf" target="_blank" style="color:var(--primary-light);">Engine Installation &amp; Tuning Tips (PDF, archiviert)</a></span>
+                        <span class="spec-label">Quellen</span>
+                        <span class="spec-value">
+                            <a class="ref-local" href="docs/M-6009-302.html">Herstellerdaten</a><span class="ref-badge local">offline</span>
+                            &nbsp;|&nbsp;
+                            <a class="ref-local" href="EngineInstallation_TuningTips.pdf">Installation Tips (PDF)</a><span class="ref-badge local">offline</span>
+                            &nbsp;|&nbsp;
+                            <a class="ref-ext" href="https://performanceparts.ford.com/part/M-6009-302" target="_blank">Ford Produktseite</a><span class="ref-badge online">online</span>
+                        </span>
                     </div>
                     <div class="comp-photo-strip" data-comp-gallery="shortblock" data-extra-images="m6009-302.jpg"><img class="comp-hero" src="img/ford-m6009-302.jpg" data-default-src="img/ford-m6009-302.jpg" onclick="openGallery('shortblock')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('shortblock')">&#128444; <span id="shortblock-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('shortblock')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
@@ -652,8 +667,8 @@
                     <div class="spec-item"><span class="spec-label">Guide Plates</span><span class="spec-value">Erforderlich (COMP #1442-16 bei Studs + Guideplates)</span></div>
                     <div class="spec-item"><span class="spec-label">Axialspiel Soll</span><span class="spec-value">0.001" &ndash; 0.007" (lt. Ford IS-1850-0427)</span></div>
                     <div class="spec-item" style="padding-top:0.4rem;border-top:1px solid #c3dafe;">
-                        <span class="spec-label">Hersteller-PDF</span>
-                        <span class="spec-value"><a href="https://latemodel.cachefly.net/downloads/instructions/cca-355188.pdf" target="_blank" style="color:var(--primary-light);">Spec Card (PDF)</a></span>
+                        <span class="spec-label">Quellen</span>
+                        <span class="spec-value"><a class="ref-ext" href="https://latemodel.cachefly.net/downloads/instructions/cca-355188.pdf" target="_blank">COMP Cams Spec Card (PDF)</a><span class="ref-badge online">online</span></span>
                     </div>
                     <div class="comp-photo-strip" data-comp-gallery="camshaft"><img class="comp-hero" src="img/comp-35-518-8.jpg" data-default-src="img/comp-35-518-8.jpg" onclick="openGallery('camshaft')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('camshaft')">&#128444; <span id="camshaft-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('camshaft')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
@@ -717,8 +732,12 @@
                     <div class="spec-item"><span class="spec-label">Konfiguration</span><span class="spec-value">3-Ring (Top, Second, Oil)</span></div>
                     <div class="spec-item"><span class="spec-label">Ring End Gap</span><span class="spec-value">Jeden Ring im jeweiligen Zylinder messen!</span></div>
                     <div class="spec-item" style="padding-top:0.4rem;border-top:1px solid #c3dafe;">
-                        <span class="spec-label">Short Block Daten</span>
-                        <span class="spec-value"><a href="https://performanceparts.ford.com/part/M-6009-302" target="_blank" style="color:var(--primary-light);">M-6009-302 Produktseite</a></span>
+                        <span class="spec-label">Quellen</span>
+                        <span class="spec-value">
+                            <a class="ref-local" href="docs/M-6009-302.html">Short Block Daten</a><span class="ref-badge local">offline</span>
+                            &nbsp;|&nbsp;
+                            <a class="ref-ext" href="https://performanceparts.ford.com/part/M-6009-302" target="_blank">Ford Produktseite</a><span class="ref-badge online">online</span>
+                        </span>
                     </div>
                     <div class="comp-photo-strip" data-comp-gallery="pistons"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('pistons')">&#128444; <span id="pistons-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('pistons')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
@@ -811,8 +830,12 @@
                     <div class="spec-item"><span class="spec-label">Empfohlen</span><span class="spec-value">M-6065-BOSS (Bolts) oder M-6014-BOSS (Studs)</span></div>
                     <div class="spec-item"><span class="spec-label">Valve Cover</span><span class="spec-value">Perimeter Bolt Pattern</span></div>
                     <div class="spec-item" style="padding-top:0.4rem;border-top:1px solid #c3dafe;">
-                        <span class="spec-label">Hersteller</span>
-                        <span class="spec-value"><a href="https://www.airflowresearch.com/165cc-sbf-street-cylinder-head/p602" target="_blank" style="color:var(--primary-light);">AFR Produktseite</a> | <a href="https://www.airflowresearch.com/product/download_file/sbf-heads-3.pdf" target="_blank" style="color:var(--primary-light);">Einbauanleitung (PDF)</a></span>
+                        <span class="spec-label">Quellen</span>
+                        <span class="spec-value">
+                            <a class="ref-ext" href="https://www.airflowresearch.com/165cc-sbf-street-cylinder-head/p602" target="_blank">AFR Produktseite</a><span class="ref-badge online">online</span>
+                            &nbsp;|&nbsp;
+                            <a class="ref-ext" href="https://www.airflowresearch.com/product/download_file/sbf-heads-3.pdf" target="_blank">Einbauanleitung (PDF)</a><span class="ref-badge online">online</span>
+                        </span>
                     </div>
                     <div class="comp-photo-strip" data-comp-gallery="heads"><img class="comp-hero" src="img/afr-1399.jpg" data-default-src="img/afr-1399.jpg" onclick="openGallery('heads')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="openGallery('heads')">&#128444; <span id="heads-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('heads')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
