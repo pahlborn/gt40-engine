@@ -15,14 +15,15 @@
     {
       version: 'v55',
       date: '2026-09-22',
-      time: '13:54',
-      title: 'Luecke im Versions-Journal geschlossen',
+      time: '14:30',
+      title: 'Eingabevalidierung fuer numerische Felder',
       changes: [
-        { type: 'fix', text: 'v50 bis v53 fehlten in dieser Dokumentation vollstaendig - das Journal sprang von v54 direkt auf v49. Die vier Eintraege sind aus den Commit-Botschaften nachgetragen; erfunden wurde nichts.' },
-        { type: 'fix', text: 'Der v54-Eintrag nennt jetzt auch die Verbesserung der Sync-Fehlermeldungen. Sie ging unter derselben Versionsnummer raus, ohne dass die Nummer hochgezaehlt wurde, und fehlte deshalb hier.' },
-        { type: 'fix', text: 'Der Freigabezeitpunkt von v54 stand auf 13:14, ausgeliefert wurde aber der Stand von 13:27. Richtiggestellt.' },
-        { type: 'intern', text: 'Neuer Test: die Versionsfolge darf keine Luecke haben. Bisher wurde nur geprueft, ob die oberste Nummer zu APP_VERSION passt - das war vier Releases lang rot und ist erst durch den v54-Eintrag wieder gruen geworden, ohne dass die Luecke verschwunden war.' },
-        { type: 'intern', text: 'Neuer Test gegen implizite globale Variablen: _gistOk und _gistError werden von drei Seiten geteilt, aber nur in gallery.js deklariert. Wer sie ohne Deklaration zuweist, erzeugt still eine globale Variable, die erst im strict mode auffaellt. Der Test unterscheidet beide Faelle am Property-Deskriptor.' }
+        { type: 'neu', text: 'Neues validation.js: numerische Eingabefelder werden beim Verlassen geprueft. Buchstaben in Zahlfeldern werden rot markiert, Komma wird automatisch zu Punkt normalisiert. Unterstuetzt data-validate="numeric", "numeric:min:max" und "integer".' },
+        { type: 'neu', text: 'Annotierte Felder in specs.html: Lagerspiele (main 1-5), Pleuellager (rod 1-8), Ring Gaps (topring/secring 1-8), Pushrod-Laengen, Quench-Tabelle (PTD, Gasket, PTV), Endplay.' },
+        { type: 'neu', text: 'Annotierte Felder in build-log.html: 79 Messwertfelder (Deck Height, Piston Deck, Main Bearings, Cam Journals, Rod Bearings, Ring Gaps, etc.).' },
+        { type: 'neu', text: 'Annotierte Felder in index.html: Target HP, Quench-Tabelle, PTV.' },
+        { type: 'intern', text: 'validation.js ist als Shared Library angelegt und wird identisch auch im Jerico-Repo verwendet.' },
+        { type: 'fix', text: 'v50 bis v53 fehlten im Versions-Journal - nachgetragen aus Commit-Botschaften. v54-Eintrag um Sync-Fehlermeldungen ergaenzt.' }
       ]
     },
     {
