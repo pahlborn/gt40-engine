@@ -544,8 +544,10 @@
 <!-- ===== SETTINGS MODAL ===== -->
 <div class="modal-overlay" id="settingsModal">
     <div class="modal">
-        <h3>GitHub-Einstellungen</h3>
+        <h3>Einstellungen</h3>
         <div class="status-line" id="connectionStatus"></div>
+        <label for="deviceName" style="font-size:0.78rem;font-weight:600;">Ger&auml;tename</label>
+        <input type="text" id="deviceName" placeholder="z.B. iPad Werkstatt" style="margin-bottom:0.5rem;" oninput="if(typeof FieldSync!=='undefined')FieldSync.setDeviceName(this.value)">
         <label for="ghToken">GitHub Personal Access Token</label>
         <input type="password" id="ghToken" placeholder="github_pat_...">
         <div class="hint">GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens<br>Berechtigung: <strong>Gists (Read and Write)</strong></div>
@@ -2185,7 +2187,11 @@
     }
     // ==== CONFIG ====
     const GIST_FILENAME = 'engine-build-log-data.json';
-    const FIXED_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
+    const LEGACY_GIST_ID = 'c334383b43c034694cafc1a925a6579e';
+    const GIST_ID_KEY = 'engine_gist_id';
+    // Kompatibilitaet: bestehende Geraete haben die alte feste ID genutzt.
+    // Neue Geraete finden den Gist automatisch beim Verbinden.
+    var FIXED_GIST_ID = localStorage.getItem(GIST_ID_KEY) || LEGACY_GIST_ID;
     // Galerie-Konstanten und -Funktionen stehen in gallery.js
     let isLoading = false;
     // Erst wenn die Daten im DOM stehen, darf ein leeres Feld als "bewusst
@@ -2194,7 +2200,37 @@
     let dataLoaded = false;
 
     function getGistConfig() { return { token: localStorage.getItem('gh_token') || '' }; }
-    function isGistConfigured() { return getGistConfig().token.length > 0; }
+    function isGistConfigured() { return getGistConfig().token.length > 0 && !!FIXED_GIST_ID; }
+
+    // Sucht einen bestehenden Gist anhand des Dateinamens.
+    async function findGistByFilename(token) {
+        var page = 1;
+        while (page <= 5) {
+            var res = await fetch('https://api.github.com/gists?per_page=100&page=' + page,
+                { headers: { 'Authorization': 'Bearer ' + token } });
+            if (!res.ok) return null;
+            var gists = await res.json();
+            if (gists.length === 0) break;
+            for (var i = 0; i < gists.length; i++) {
+                if (gists[i].files && gists[i].files[GIST_FILENAME]) return gists[i].id;
+            }
+            page++;
+        }
+        return null;
+    }
+    // Erstellt einen neuen Gist.
+    async function createGist(token) {
+        var files = {};
+        files[GIST_FILENAME] = { content: localStorage.getItem('engineBuildLog') || '{}' };
+        var res = await fetch('https://api.github.com/gists', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ description: 'GT40 Engine Build - Geraeteabgleich', public: false, files: files })
+        });
+        if (!res.ok) return null;
+        var gist = await res.json();
+        return gist.id;
+    }
 
 
     // ==== VERSION ====
@@ -2347,6 +2383,8 @@
     // ==== SETTINGS ====
     function openSettings() {
         document.getElementById('ghToken').value = getGistConfig().token;
+        var dn = document.getElementById('deviceName');
+        if (dn && typeof FieldSync !== 'undefined') dn.value = FieldSync.getDeviceName();
         updateConnectionStatus();
         document.getElementById('settingsModal').classList.add('show');
         window.scrollTo(0, 0);
@@ -2360,11 +2398,24 @@
         const token = document.getElementById('ghToken').value.trim();
         if (!token) { showToast('Bitte Token eingeben!'); return; }
         try {
+            showToast('Verbinde...');
             const res = await fetch('https://api.github.com/user', { headers: { 'Authorization': 'Bearer ' + token } });
             if (!res.ok) { showToast('Token ungueltig!'); return; }
             const user = await res.json();
             localStorage.setItem('gh_token', token);
-            showToast('Verbunden als ' + user.login + '!');
+            // Gist automatisch finden oder erstellen
+            showToast('Suche Gist...');
+            var gid = await findGistByFilename(token);
+            if (gid) {
+                showToast('Gist gefunden - verbinde...');
+            } else {
+                showToast('Kein Gist gefunden - lege neuen an...');
+                gid = await createGist(token);
+                if (!gid) { showToast('Gist konnte nicht erstellt werden'); return; }
+            }
+            localStorage.setItem(GIST_ID_KEY, gid);
+            FIXED_GIST_ID = gid;
+            showToast('Verbunden als ' + user.login);
             updateSyncBadge(); updateConnectionStatus(); closeSettings();
             const ok = await loadFromGist();
             if (ok) showToast('Cloud-Daten geladen!');
@@ -2372,6 +2423,8 @@
     }
     function disconnectGist() {
         localStorage.removeItem('gh_token');
+        localStorage.removeItem(GIST_ID_KEY);
+        FIXED_GIST_ID = LEGACY_GIST_ID;
         document.getElementById('ghToken').value = '';
         updateSyncBadge(); updateConnectionStatus();
         showToast('Verbindung getrennt.'); closeSettings();
@@ -2380,7 +2433,8 @@
         const el = document.getElementById('connectionStatus');
         if (getGistConfig().token) {
             el.className = 'status-line connected';
-            el.innerHTML = 'Verbunden &mdash; Gist: <code>' + FIXED_GIST_ID.substring(0,10) + '...</code>';
+            var devId = typeof FieldSync !== 'undefined' ? FieldSync.getDeviceId() : '';
+            el.innerHTML = 'Verbunden &mdash; Ger&auml;t: <code>' + (devId ? devId.substring(0, 12) : '?') + '</code>';
         } else {
             el.className = 'status-line disconnected';
             el.textContent = 'Nicht verbunden';

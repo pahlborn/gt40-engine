@@ -15,6 +15,18 @@
     {
       version: 'v57',
       date: '2026-09-22',
+      time: '16:00',
+      title: 'Gist automatisch, Geraete-Tracking',
+      changes: [
+        { type: 'neu', text: 'Beim Verbinden sucht die App den Gist automatisch anhand des Dateinamens. Wird keiner gefunden, wird einer angelegt. Auf einem zweiten Geraet genuegt derselbe Token.' },
+        { type: 'neu', text: 'Jedes Geraet bekommt eine eindeutige ID und einen Namen (z.B. "iPad Werkstatt"). Das Geraeteregister wird im Gist gespeichert - sichtbar ist, welche Geraete verbunden sind und wann sie zuletzt aktiv waren.' },
+        { type: 'neu', text: 'Geraetename-Feld im Einstellungsdialog. Wird automatisch aus dem User-Agent erraten, kann manuell ueberschrieben werden.' },
+        { type: 'fix', text: 'Die fest verdrahtete Gist-ID ist durch eine dynamische Suche ersetzt. Bestehende Geraete nutzen die bekannte ID als Fallback.' }
+      ]
+    },
+    {
+      version: 'v56',
+      date: '2026-09-22',
       time: '15:46',
       title: 'Eingabepruefung: zwei Fehler behoben, Tests nachgezogen',
       changes: [

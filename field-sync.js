@@ -27,6 +27,48 @@
   'use strict';
 
   var TIMES_KEY = '_fieldTimes';
+  var DEVICES_KEY = '_devices';
+  var DEVICE_KEY = '_lastDevice';
+  var LOCAL_DEVICE_KEY = 'device_id';
+  var LOCAL_DEVICE_NAME_KEY = 'device_name';
+
+  /** Geraete-ID: einmal generiert, bleibt im localStorage. */
+  function getDeviceId() {
+    var id = localStorage.getItem(LOCAL_DEVICE_KEY);
+    if (!id) {
+      id = 'dev-' + Date.now().toString(36) + '-' + Math.random().toString(36).substr(2, 6);
+      localStorage.setItem(LOCAL_DEVICE_KEY, id);
+    }
+    return id;
+  }
+
+  /** Geraetename: vom User benennbar, sonst aus User-Agent erraten. */
+  function getDeviceName() {
+    var name = localStorage.getItem(LOCAL_DEVICE_NAME_KEY);
+    if (name) return name;
+    var ua = navigator.userAgent || '';
+    if (/iPad/.test(ua)) return 'iPad';
+    if (/iPhone/.test(ua)) return 'iPhone';
+    if (/Android/.test(ua)) return 'Android';
+    if (/Mac/.test(ua)) return 'Mac';
+    if (/Win/.test(ua)) return 'Windows PC';
+    if (/Linux/.test(ua)) return 'Linux';
+    return 'Unbekannt';
+  }
+
+  function setDeviceName(name) {
+    localStorage.setItem(LOCAL_DEVICE_NAME_KEY, (name || '').trim());
+  }
+
+  /** Geraeteregister im Datensatz aktualisieren. */
+  function stampDevice(data) {
+    var devices = data[DEVICES_KEY] || {};
+    var id = getDeviceId();
+    devices[id] = { name: getDeviceName(), lastSeen: new Date().toISOString() };
+    data[DEVICES_KEY] = devices;
+    data[DEVICE_KEY] = id;
+    return data;
+  }
 
   function isBlank(v) { return v === undefined || v === '' || v === null; }
 
@@ -72,6 +114,7 @@
 
     data[TIMES_KEY] = times;
     data._savedAt = new Date(now).toISOString();
+    stampDevice(data);
     return data;
   }
 
@@ -123,6 +166,18 @@
 
     merged[TIMES_KEY] = mergedTimes;
     merged._savedAt = new Date(Math.max(cloudFallback, localFallback) || Date.now()).toISOString();
+    // Geraeteregister aus beiden Quellen zusammenfuehren
+    var cDevices = cloudData[DEVICES_KEY] || {};
+    var lDevices = localData[DEVICES_KEY] || {};
+    var allDevices = {};
+    var dk;
+    for (dk in cDevices) { if (Object.prototype.hasOwnProperty.call(cDevices, dk)) allDevices[dk] = cDevices[dk]; }
+    for (dk in lDevices) {
+      if (!Object.prototype.hasOwnProperty.call(lDevices, dk)) continue;
+      if (!allDevices[dk] || (lDevices[dk].lastSeen > (allDevices[dk].lastSeen || ''))) allDevices[dk] = lDevices[dk];
+    }
+    merged[DEVICES_KEY] = allDevices;
+    stampDevice(merged);
     return merged;
   }
 
@@ -137,9 +192,15 @@
 
   global.FieldSync = {
     TIMES_KEY: TIMES_KEY,
+    DEVICES_KEY: DEVICES_KEY,
+    DEVICE_KEY: DEVICE_KEY,
     isBlank: isBlank,
     collectFields: collectFields,
     mergeIntoExisting: mergeIntoExisting,
-    mergeRecords: mergeRecords
+    mergeRecords: mergeRecords,
+    getDeviceId: getDeviceId,
+    getDeviceName: getDeviceName,
+    setDeviceName: setDeviceName,
+    stampDevice: stampDevice
   };
 })(typeof window !== 'undefined' ? window : globalThis);
