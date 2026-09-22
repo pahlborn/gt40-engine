@@ -13,6 +13,22 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v47',
+      date: '2026-09-22',
+      title: 'Auswirkungs-Hinweise an den offenen Werkstattpunkten',
+      changes: [
+        { type: 'neu', text: 'An den fuenf Stellen, die nur am Fahrzeug beantwortet werden koennen, steht jetzt dabei, was passiert, wenn der Punkt offen bleibt oder falsch beantwortet wird. Drei davon haben Folgen, die man erst merkt, wenn es zu spaet ist.' },
+        { type: 'neu', text: 'Verteiler: die Zeile mit Buechse und Federn ist als Baseline der Zuendkurve gekennzeichnet - ohne sie ist kein Wechsel mehr ruecknehmbar, weil es keinen Zustand gibt, auf den man zurueck koennte. Dazu die Warnung zum Advance Kit 8464: es enthaelt alle sechs Buechsen und sechs Federn, also muessen die ausgebauten Teile getrennt vom Kit beschriftet aufbewahrt werden. Einmal im Kit-Behaelter gelandet, ist die Baseline verloren.' },
+        { type: 'neu', text: '6AL: neues Feld fuer den Zustand der Kabelschlaufen, mit der Folge dabei. Acht Zylinder heisst keine geschnitten; ist eine durchtrennt, zuendet die Box fuer sechs Zylinder, der Motor laeuft unrund oder gar nicht, und die Ursache sucht man zuletzt dort. Ein Schnitt ist nicht rueckgaengig zu machen - also vor dem ersten Startversuch pruefen.' },
+        { type: 'neu', text: 'Stroboskop: der Punkt entwertet rueckwirkend auch die Aufnahme von Buechse und Federn, weil deren Wirkung nur ueber den gemessenen Winkel nachweisbar ist. Die Tuecke ist, dass eine digitale oder Rueckstell-Lampe plausible Zahlen liefert - es faellt nicht auf.' },
+        { type: 'neu', text: 'Ported Vacuum: das Fehlerbild steht jetzt dabei. An Manifold Vacuum zieht die Dose schon im Leerlauf Fruehzuendung hinzu, der Leerlauf wird unruhig und hoeher, die Leerlaufeinstellung laeuft ins Leere, und bei Teillast kann der Gesamtwinkel in den Klopfbereich geraten. Pruefkriterium: am richtigen Abgriff liegt im Leerlauf kein nennenswerter Unterdruck an.' },
+        { type: 'neu', text: 'Dichtsaetze: der Befund entscheidet die Kraftstoffregel. E10-feste Weichteile heissen, dass E10 im regelmaessigen Fahrbetrieb unkritisch ist und nur die Standzeit bleibt; andernfalls bleibt ethanolarm tanken Pflicht.' },
+        { type: 'fix', text: 'Drei Altlasten in denselben Messwertfeldern mitgenommen: die Platzhalter "e.g. 34" und "e.g. 12" waren implizite Sollwerte und stehen jetzt auf "gemessen", das Total-Feld nennt die Messbedingung (Unterdruck ab), und die Federbenennung folgt den echten MSD-Typen - MSD liefert Heavy Silver, Light Blue und Light Silver, ein "Medium" gibt es nicht.' },
+        { type: 'fix', text: 'Schreibweise korrigiert: Buchse, nicht Buechse. Eine Buchse ist das Bauteil, eine Buechse die Dose oder das Gewehr. 27 Stellen in vier Dateien - Anschlagbuchse, Buchsenkombination, Buchsenwechsel.' },
+        { type: 'neu', text: 'Neue Testreihe tests/offene-punkte.test.mjs mit 12 Pruefungen, im Workflow verdrahtet. Darunter eine Pruefung, die die falsche Schreibweise projektweit sperrt. Fuenf Gegenproben verifiziert.' }
+      ]
+    },
+    {
       version: 'v46',
       date: '2026-09-21',
       title: 'Acht Mischkammern statt vier Vergaser, DRLA-Teilezeichnung, Schwimmerstand korrigiert',
