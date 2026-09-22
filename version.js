@@ -9,5 +9,5 @@
  */
 (function (global) {
   'use strict';
-  global.APP_VERSION = 'v48';
+  global.APP_VERSION = 'v49';
 })(typeof window !== 'undefined' ? window : globalThis);

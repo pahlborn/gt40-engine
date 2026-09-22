@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v49',
+      date: '2026-09-22',
+      title: 'Verteiler-Fotos in der Galerie, Federbestimmung praezisiert',
+      changes: [
+        { type: 'neu', text: 'Drei Fotos in der Verteiler-Galerie: die Fliehkraftverstellung mit den verbauten Federn, das Typenschild mit PN 8479 und das Produktfoto des Advance Kit 8464. Skaliert auf 1200 px wie alle anderen Nutzerfotos - gallery.js macht das beim Upload genauso, groessere Dateien blaehen Repository und PWA-Cache auf, ohne mehr zu zeigen.' },
+        { type: 'fix', text: 'Die Teilenummer 8479 ist jetzt fotografisch belegt, nicht nur muendlich bestaetigt. Das Typenschild am Gehaeuse ist lesbar.' },
+        { type: 'neu', text: 'Neuer Warnhinweis im Zuendungs-Guide: Heavy Silver und Light Silver sind an der Farbe nicht zu unterscheiden. Nur Light Blue ist optisch eindeutig; die beiden silbernen Typen unterscheiden sich allein in der Drahtstaerke. Daraus folgt eine brauchbare Ableitung - ist keine blaue Feder verbaut, fallen alle Kombinationen mit Light Blue heraus. Welche der silbernen es dann ist, entscheidet der direkte Vergleich mit den Federn aus dem 8464-Kit.' },
+        { type: 'fix', text: 'Die Stroboskop-Anforderung stand nur als Warnkasten in Kapitel 16. Die Werkzeuglisten der anderen Kapitel nannten die Blitzlampe ohne Einschraenkung - ausgerechnet Kapitel 18, wo die Zuendkurve gemessen wird, fuehrte schlicht \'Blitzlampe / Stroboskop\'. Jetzt traegt jede Werkzeugliste die Einschraenkung, Kapitel 18 zusaetzlich die Begruendung mit Verweis.' },
+        { type: 'fix', text: 'Sollwert aus dem Kapiteltitel entfernt: Kapitel 18 hiess \'Final Timing: 34-36 Grad total advance\'. Ein Sollwert in der Ueberschrift steht auch in der Fortschrittsliste und im Inhaltsverzeichnis - prominenter geht es nicht, und er widerspricht der Regel, dass die Kurve noch nicht festgelegt ist. Jetzt: \'Zuendkurve messen und eintragen (Total Mechanical Timing)\'. Dieselbe Angabe stand auch in der Abstimmreihenfolge in Phase 5.' },
+        { type: 'neu', text: 'tests/mischkammern.test.mjs auf 21 Pruefungen: die drei Fotos muessen in img/user/distributor liegen, der Namenskonvention der App folgen und im Browser mit maximal 1200 px laden. Drei Gegenproben verifiziert.' }
+      ]
+    },
+    {
       version: 'v48',
       date: '2026-09-22',
       title: '6AL-Kabelschlaufen erledigt, der eingestellte Drehzahlwert bleibt offen',

@@ -3937,7 +3937,7 @@
             <li><span class="de"><strong>5.</strong> Klemme anziehen &ndash; fest, aber nicht endgueltig (Motor braucht Blitzlampen-Einstellung bei warmem Leerlauf)</span><span class="en"><strong>5.</strong> Tighten hold-down clamp &ndash; snug, not final (engine will need timing light adjustment at warm idle)</span></li>
         </ul></div>
         <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
-            <li><span class="de">10&ndash;12&deg; ist ein sicherer Startwert &ndash; mit Blitzlampe nach Motorstart einstellen</span><span class="en">10&ndash;12&deg; is a safe starting point &ndash; adjust with timing light after engine is running</span></li>
+            <li><span class="de">10&ndash;12&deg; ist ein sicherer Startwert gegen R&uuml;ckschlag &ndash; nach dem Motorstart mit der Blitzlampe nachstellen (<strong>einfache Ausf&uuml;hrung</strong>, siehe Kapitel 16)</span><span class="en">10&ndash;12&deg; is a safe starting point &ndash; adjust with timing light after engine is running</span></li>
             <li><span class="de">Zuendfolge pruefen: 1-5-4-2-6-3-7-8 (Ford 302) &ndash; Kabel muessen an korrekten Verteilerkappe-Anschluessen sitzen</span><span class="en">Verify firing order: 1-5-4-2-6-3-7-8 (Ford 302) &ndash; wires must be in correct cap terminals</span></li>
             <li><span class="de">MSD Magnetischer Pickup: keine Prueflampe noetig &ndash; Verteilerfinger einfach auf #1 bei statischer Zuendposition ausrichten</span><span class="en">MSD magnetic pickup: no test light needed &ndash; just align rotor to #1 at static timing position</span></li>
         </ul></div>
@@ -4120,7 +4120,7 @@
                 <li><span class="de">Drehzahlmesser (ueber MSD 6AL graues Tachokabel)</span><span class="en">Tachometer (via MSD 6AL gray tach wire)</span></li>
                 <li><span class="de">Oeldruck-Manometer (mechanisch bevorzugt)</span><span class="en">Oil pressure gauge (mechanical preferred)</span></li>
                 <li><span class="de">Kuehlmittel-Temperaturanzeige</span><span class="en">Coolant temperature gauge</span></li>
-                <li><span class="de">Blitzlampe (zur Einstellung nach Motorstart)</span><span class="en">Timing light (for adjustment after startup)</span></li>
+                <li><span class="de">Blitzlampe zur Einstellung nach Motorstart &ndash; <strong>einfache Ausf&uuml;hrung, nicht digital, nicht dial-back</strong> (siehe Kapitel 16)</span><span class="en">Timing light for adjustment after startup &ndash; <strong>plain type, not digital, not dial-back</strong> (see chapter 16)</span></li>
                 <li><span class="de">Schluessel fuer Verteiler-Klemme (Zuendungseinstellung)</span><span class="en">Wrench for distributor hold-down (timing adjustment)</span></li>
             </ul></div>
             <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ol>
@@ -4327,7 +4327,7 @@
 <div class="step-card" id="p4_timing_final_card">
     <div class="step-header">
         <button type="button" class="step-status" data-field="p4_timing_final" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
-        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">18. Final Timing: 34&ndash;36&deg; total advance (Gesamt-Z&uuml;ndzeitpunkt)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">18. Z&uuml;ndkurve messen und eintragen (Total Mechanical Timing)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="hidden" data-field="p4_timing_final_n" data-legacy-note="p4_timing_final">
@@ -4392,7 +4392,7 @@
                 <li><span class="de">MSD Advance Kit 8464 (Federn + Buchsen)</span><span class="en">MSD Advance Kit 8464 (springs + bushings)</span></li>
                 <li><span class="de">Spitzzange</span><span class="en">Small pliers (Spitzzange)</span></li>
                 <li><span class="de">Allen key (Inbusschl&uuml;ssel)</span><span class="en">Allen key</span></li>
-                <li><span class="de">Blitzlampe / Stroboskop</span><span class="en">Timing light</span></li>
+                <li><span class="de"><strong>Einfache Blitzlampe &ndash; nicht digital, nicht dial-back.</strong> MSD schliesst beide Bauarten f&uuml;r die Digital 6A/6AL aus; die CD-Box feuert unterhalb etwa 3000&nbsp;rpm mehrfach je Z&uuml;ndung, eine z&auml;hlende oder zur&uuml;ckrechnende Lampe zeigt dann einen falschen Winkel. Begr&uuml;ndung in Kapitel 16.</span><span class="en"><strong>Plain timing light &ndash; not digital, not dial-back.</strong> MSD rules out both for the Digital 6A/6AL. See chapter 16.</span></li>
             </ul></div>
 
             <!-- E) Timing Reference Table -->
@@ -4829,7 +4829,7 @@
                 <ol>
                 <li><span class="de"><strong>Mechanik.</strong> Wellenspiel, Schwimmerstand, Dichtheit &ndash; Kapitel 27. Dann der <strong>Falschluft-Test</strong> unten, am laufenden Motor. Auf einem undichten Vergaser ist jede Abstimmung Zufall.</span><span class="en"><strong>Mechanics.</strong> False air, shaft play, float level, leaks &ndash; chapter 27. On a leaking carburetor, any tuning is coincidence.</span></li>
                 <li><span class="de"><strong>Kraftstoffdruck.</strong> 3.0 psi, beide Kreise gleich &ndash; Kapitel 6. Schwankender Druck verschiebt den Schwimmerstand und damit alles Weitere.</span><span class="en"><strong>Fuel pressure.</strong> 3.0 psi, both circuits equal &ndash; chapter 6. Fluctuating pressure shifts the float level and everything downstream.</span></li>
-                <li><span class="de"><strong>Z&uuml;ndung.</strong> Gesamtfr&uuml;hz&uuml;ndung 34&ndash;36&deg; festnageln &ndash; Kapitel 18. <strong>Vor</strong> der Bed&uuml;sung, nicht danach.</span><span class="en"><strong>Ignition.</strong> Lock total advance at 34&ndash;36&deg; &ndash; chapter 18. <strong>Before</strong> jetting, not after.</span></li>
+                <li><span class="de"><strong>Z&uuml;ndung.</strong> Z&uuml;ndkurve festnageln und eintragen &ndash; Kapitel 18. <strong>Vor</strong> der Bed&uuml;sung, nicht danach: zu wenig Fr&uuml;hz&uuml;ndung sieht am Lambda aus wie zu mager.</span><span class="en"><strong>Ignition.</strong> Lock total advance at 34&ndash;36&deg; &ndash; chapter 18. <strong>Before</strong> jetting, not after.</span></li>
                 <li><span class="de"><strong>Synchronisation.</strong> Erst innerhalb der Vergaser, dann zwischen ihnen (siehe unten).</span><span class="en"><strong>Synchronization.</strong> First within the carburetors, then between them (see below).</span></li>
                 <li><span class="de"><strong>Leerlaufgemisch</strong> &uuml;ber die Gemischschrauben, danach Synchronisation nachpr&uuml;fen.</span><span class="en"><strong>Idle mixture</strong> via the mixture screws, then re-check synchronization.</span></li>
                 <li><span class="de"><strong>&Uuml;bergang</strong> (Leerlaufd&uuml;se): Ruckeln oder Loch zwischen Leerlauf und 2500 rpm geh&ouml;rt hierher, nicht zur Hauptd&uuml;se.</span><span class="en"><strong>Progression</strong> (idle jet): stumble or flat spot between idle and 2500 rpm belongs here, not to the main jet.</span></li>
