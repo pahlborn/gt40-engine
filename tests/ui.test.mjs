@@ -46,6 +46,73 @@ await test('version.js und sw.js nennen dieselbe Version', async () => {
     'sw.js (' + cacheName + ') passt nicht zu version.js (' + appVersion + ')');
 });
 
+await test('version.js nennt einen Freigabezeitpunkt, der zum Journal passt', async () => {
+  // Es gibt keinen Build-Schritt, der den Zeitstempel stempeln koennte. Ohne
+  // diese Pruefung bleibt er beim naechsten Hochzaehlen einfach stehen und
+  // behauptet dann ein falsches Freigabedatum.
+  const vjs = fs.readFileSync(path.join(REPO_ROOT, 'version.js'), 'utf8');
+  const cjs = fs.readFileSync(path.join(REPO_ROOT, 'changelog.js'), 'utf8');
+  const built = (vjs.match(/APP_BUILT\s*=\s*['"]([^'"]+)['"]/) || [])[1];
+  assert(built, 'APP_BUILT nicht gefunden');
+  assert(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/.test(built),
+    'APP_BUILT ist kein ISO-8601 mit Zonenangabe: ' + built);
+
+  // Der oberste Eintrag im Journal ist der aktuelle Release.
+  const ersterBlock = cjs.slice(cjs.indexOf('var RELEASES'), cjs.indexOf('var RELEASES') + 600);
+  const datum = (ersterBlock.match(/date:\s*'([^']+)'/) || [])[1];
+  const zeit = (ersterBlock.match(/time:\s*'([^']+)'/) || [])[1];
+  assertEqual(built.slice(0, 10), datum,
+    'APP_BUILT (' + built + ') und das Datum des obersten Journal-Eintrags (' + datum + ')');
+  assert(zeit, 'Der oberste Journal-Eintrag hat keine Uhrzeit');
+  assertEqual(built.slice(11, 16), zeit, 'Uhrzeit in version.js und changelog.js');
+});
+
+for (const file of PAGES) {
+  await test(file + ': Freigabezeitpunkt steht neben der Version', async () => {
+    const p = await open(file);
+    const r = await p.page.evaluate(() => {
+      const kopf = document.querySelector('.header-title .ht-built');
+      const menue = document.querySelector('.menu-version .app-built');
+      return {
+        kopf: kopf ? kopf.textContent.trim() : null,
+        menue: menue ? menue.textContent.trim() : null,
+        tip: kopf ? kopf.title : null,
+        formatiert: typeof formatBuilt === 'function' ? formatBuilt('2026-01-05T07:09:00+01:00') : null,
+        ohneZeit: typeof formatBuilt === 'function' ? formatBuilt('2026-01-05') : null
+      };
+    });
+    const muster = /^\d{2}\.\d{2}\.\d{4}, \d{2}:\d{2}$/;
+    assert(muster.test(r.kopf), 'Kopfzeile zeigt: ' + r.kopf);
+    assertEqual(r.menue, r.kopf, 'Menue und Kopfzeile zeigen Verschiedenes');
+    assert(/^Freigegeben \d{4}-/.test(r.tip), 'Tooltip ohne vollen Zeitstempel: ' + r.tip);
+    // Bewusst ohne new Date(): sonst verschiebt die Zeitzone des Betrachters
+    // den Zeitpunkt, und derselbe Release sieht auf zwei Geraeten anders aus.
+    assertEqual(r.formatiert, '05.01.2026, 07:09', 'Formatierung');
+    assertEqual(r.ohneZeit, '05.01.2026', 'Datum ohne Uhrzeit');
+    assertEqual(p.errors.length, 0, 'Page-Errors: ' + p.errors.join(' | '));
+    await p.close();
+  });
+}
+
+for (const file of PAGES) {
+  await test(file + ': Klick auf die Version oeffnet die Dokumentation', async () => {
+    // Im Build Log steckt die Anzeige in einem <a href="./">. Ohne
+    // preventDefault navigiert der Klick zur Startseite und das Overlay
+    // erscheint nie - genau so war es bis v53.
+    const p = await open(file);
+    const vorher = p.page.url();
+    await p.page.click('.ht-meta');
+    await p.page.waitForTimeout(400);
+    const r = await p.page.evaluate(() => {
+      const o = document.getElementById('changelogOverlay');
+      return { offen: !!o && o.classList.contains('show'), url: location.pathname };
+    });
+    assert(r.offen, 'Dokumentation hat sich nicht geoeffnet');
+    assert(vorher.endsWith(r.url), 'Klick hat navigiert: ' + vorher + ' -> ' + r.url);
+    await p.close();
+  });
+}
+
 for (const file of PAGES) {
   await test(file + ': Version steht unter dem Titel', async () => {
     const p = await open(file);
@@ -124,6 +191,22 @@ await test('Jeder Eintrag hat Version, Datum, Titel und Aenderungen', async () =
   assert(r.every((x) => x.t), 'Titel fehlt');
   assert(r.every((x) => x.c), 'Keine Aenderungen');
   assert(r.every((x) => x.typen), 'Unbekannter Aenderungstyp');
+  await p.close();
+});
+
+await test('Das Journal zeigt deutsche Daten, der aktuelle Eintrag mit Uhrzeit', async () => {
+  const p = await open('specs.html');
+  const r = await p.page.evaluate(() => {
+    openChangelog();
+    const ov = document.getElementById('changelogOverlay');
+    return Array.from(ov.querySelectorAll('.cl-date')).map((e) => e.textContent.trim());
+  });
+  assert(r.length >= 5, 'Nur ' + r.length + ' Datumsangaben');
+  assert(r.every((t) => /^\d{2}\.\d{2}\.\d{4}(, \d{2}:\d{2})?$/.test(t)),
+    'Kein deutsches Datum: ' + JSON.stringify(r.filter((t) => !/^\d{2}\./.test(t))));
+  assert(/, \d{2}:\d{2}$/.test(r[0]), 'Der aktuelle Eintrag hat keine Uhrzeit: ' + r[0]);
+  // Aeltere Eintraege haben keine - die wird nicht nachtraeglich erfunden.
+  assert(r.slice(1).some((t) => !/, /.test(t)), 'Allen alten Eintraegen wurde eine Uhrzeit angedichtet');
   await p.close();
 });
 

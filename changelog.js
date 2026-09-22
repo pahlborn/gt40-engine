@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v54',
+      date: '2026-09-22',
+      time: '13:14',
+      title: 'Freigabezeitpunkt sichtbar, Sammelliste der Befunde entfernt',
+      changes: [
+        { type: 'neu', text: 'Neben der Versionsnummer steht jetzt der Freigabezeitpunkt - unter dem Titel, im Werkzeugmenue und in dieser Dokumentation. Damit ist ohne Nachfragen erkennbar, ob ein Geraet den aktuellen Stand hat.' },
+        { type: 'intern', text: 'Gepflegt wird der Zeitpunkt in version.js. Die Seite hat keinen Build-Schritt, der ihn stempeln koennte; tests/ui.test.mjs prueft dafuer, dass er zum obersten Eintrag hier passt, damit er beim Hochzaehlen nicht stehenbleibt.' },
+        { type: 'fix', text: 'Datumsangaben in dieser Dokumentation stehen einheitlich als 22.09.2026 statt 2026-09-22. Aeltere Eintraege haben keine Uhrzeit - die wird nicht nachtraeglich erfunden.' },
+        { type: 'intern', text: 'Die Sammelliste "Offene Befunde" oben im Build Log ist entfernt. Sie war eine Sprungliste ueber alle Kapitel, aber jede dort aufgefuehrte Arbeit ist ohnehin ein offener Punkt, und den Fortschritt zeigen die Phasenbalken. Zwei Tests halten sie draussen.' },
+        { type: 'intern', text: 'Drei Zeilen in changelog.js hatten Windows-Zeilenenden in einer sonst reinen Unix-Datei. Begradigt.' }
+      ]
+    },
+    {
       version: 'v49',
       date: '2026-09-22',
       title: 'Verteiler-Fotos in der Galerie, Federbestimmung praezisiert',
@@ -343,6 +356,13 @@
 
   var TYPE_LABEL = { neu: 'Neu', fix: 'Behoben', intern: 'Intern' };
 
+  // Datum - und wo vorhanden die Uhrzeit - in der Schreibweise der Seite.
+  // Aeltere Eintraege haben keine Uhrzeit, die wird nicht erfunden.
+  function stempel(r) {
+    var iso = r.date + (r.time ? 'T' + r.time : '');
+    return (typeof formatBuilt === 'function') ? formatBuilt(iso) : iso;
+  }
+
   function esc(s) {
     return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -370,7 +390,7 @@
       return '<section class="cl-rel' + (istAktuell ? ' current' : '') + '">'
         + '<h4><span class="cl-ver">' + esc(r.version) + '</span>'
         + (istAktuell ? '<span class="cl-badge">aktuell</span>' : '')
-        + '<span class="cl-date">' + esc(r.date) + '</span></h4>'
+        + '<span class="cl-date">' + esc(stempel(r)) + '</span></h4>'
         + '<p class="cl-title">' + esc(r.title) + '</p>'
         + '<ul>' + r.changes.map(function (c) {
             return '<li><span class="cl-type ' + esc(c.type) + '">'

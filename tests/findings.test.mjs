@@ -211,58 +211,45 @@ await test('Text wird escaped', async () => {
 });
 
 // ---------------------------------------------------------------------------
-suite('Uebersicht ueber alle offenen Befunde');
+suite('Keine Sammelliste offener Befunde mehr');
 
-await test('Offene und laufende Befunde stehen phasenuebergreifend drin', async () => {
-  // Ohne die muesste man 100 Kapitel aufklappen, um zu sehen, worauf man wartet.
+// Die Sprungliste oben auf der Seite ist bewusst entfernt worden: alle darin
+// aufgefuehrten Arbeiten sind ohnehin offene Punkte, und der Fortschritt steht
+// schon in den Phasenbalken. Der Test haelt sie draussen - sonst kommt sie bei
+// der naechsten Aenderung an den Befunden unbemerkt zurueck.
+await test('Die Uebersicht ist weg und niemand ruft sie noch auf', async () => {
   const p = await openBuildLog();
-  const r = await p.page.evaluate(() => {
-    const boxes = Array.from(document.querySelectorAll('.findings[data-findings]'));
-    const a = Findings.add(boxes[0].dataset.findings, 'Kolbenringe bestellen');
-    Findings.update(a, { status: 'wip' });
-    Findings.add(boxes[5].dataset.findings, 'Kurbelwelle vermessen lassen');
-    const fertig = Findings.add(boxes[9].dataset.findings, 'laengst erledigt');
-    Findings.update(fertig, { status: 'done' });
-    renderFindingsOverview();
-    const ov = document.getElementById('findingsOverview');
-    return {
-      eintraege: ov.querySelectorAll('.fo-item').length,
-      text: ov.querySelector('.fo-body').textContent,
-      kopf: ov.querySelector('.fo-count').textContent
-    };
-  });
-  assertEqual(r.eintraege, 2, 'Nur Offene und Laufende');
-  assert(/Kolbenringe bestellen/.test(r.text), 'Laufender Befund fehlt');
-  assert(/Kurbelwelle vermessen/.test(r.text), 'Offener Befund fehlt');
-  assert(!/laengst erledigt/.test(r.text), 'Erledigter Befund steht drin');
-  assert(/1 offen/.test(r.kopf) && /1 in Arbeit/.test(r.kopf), 'Kopfzeile: ' + r.kopf);
+  const r = await p.page.evaluate(() => ({
+    block: !!document.getElementById('findingsOverview'),
+    reste: document.querySelectorAll('.findings-overview, .fo-item, .fo-count, .fo-body').length,
+    renderer: typeof renderFindingsOverview,
+    sprung: typeof jumpToChapter
+  }));
+  assertEqual(r.block, false, 'Der Sammelblock steht wieder in der Seite');
+  assertEqual(r.reste, 0, 'Reste der Sammelliste im DOM: ' + r.reste);
+  assertEqual(r.renderer, 'undefined', 'renderFindingsOverview lebt noch');
+  assertEqual(r.sprung, 'undefined', 'jumpToChapter lebt noch');
+  assertEqual(p.errors.length, 0, 'Page-Errors: ' + p.errors.join(' | '));
   await p.close();
 });
 
-await test('Jeder Eintrag verlinkt auf sein Kapitel', async () => {
+await test('Befunde anlegen und umschalten geht ohne die Uebersicht weiter', async () => {
+  // Die fuenf Aufrufe von renderFindingsOverview standen mitten in diesen
+  // Funktionen. Faellt dabei einer zu viel weg, merkt man es genau hier.
   const p = await openBuildLog();
   const r = await p.page.evaluate(() => {
-    const box = document.querySelector('.findings[data-findings]');
-    Findings.add(box.dataset.findings, 'Testbefund');
-    renderFindingsOverview();
-    const a = document.querySelector('#findingsOverview .fo-item a');
-    return { href: a ? a.getAttribute('href') : null, text: a ? a.textContent : null,
-             stepId: box.closest('.step-card').id };
+    const ch = document.querySelector('.findings[data-findings]').dataset.findings;
+    const id = Findings.add(ch, 'Pleuelschrauben nachbestellen');
+    renderFindings(ch);
+    const box = document.querySelector('.findings[data-findings="' + ch + '"]');
+    const vorher = box.querySelector('.findings-badge').textContent;
+    Findings.update(id, { status: 'done' });
+    renderAllFindings();
+    return { vorher, nachher: box.querySelector('.findings-badge').textContent };
   });
-  assertEqual(r.href, '#' + r.stepId, 'Sprungziel');
-  assert(r.text && r.text.length > 2, 'Kapitelname fehlt: ' + r.text);
-  await p.close();
-});
-
-await test('Ohne offene Befunde sagt die Uebersicht das auch', async () => {
-  const p = await openBuildLog();
-  const r = await p.page.evaluate(() => {
-    renderFindingsOverview();
-    const ov = document.getElementById('findingsOverview');
-    return { body: ov.querySelector('.fo-body').textContent, kopf: ov.querySelector('.fo-count').textContent };
-  });
-  assert(/Keine offenen/.test(r.body), 'Leermeldung: ' + r.body);
-  assert(/nichts offen/.test(r.kopf), 'Kopfzeile: ' + r.kopf);
+  assert(/1 offen/.test(r.vorher), 'Abzeichen vorher: ' + r.vorher);
+  assert(/1 erledigt/.test(r.nachher), 'Abzeichen nachher: ' + r.nachher);
+  assertEqual(p.errors.length, 0, 'Page-Errors: ' + p.errors.join(' | '));
   await p.close();
 });
 

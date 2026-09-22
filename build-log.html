@@ -39,6 +39,13 @@
         .header-title .ht-name { display: block; line-height: 1.15; }
         .header-title .ht-sub { font-size: 0.62rem; opacity: 0.7; margin-left: 0.35rem; font-weight: 400; }
         .header-title .ht-version { font-size: 0.58rem; opacity: 0.55; font-weight: 400; line-height: 1.1; letter-spacing: 0.02em; }
+        .header-title .ht-meta { display: flex; align-items: baseline; gap: 0.35rem; min-width: 0; cursor: pointer; }
+        .header-title .ht-built { font-size: 0.55rem; opacity: 0.4; font-weight: 400; line-height: 1.1; white-space: nowrap; }
+        .header-title .ht-built::before { content: '\00B7'; margin-right: 0.35rem; }
+        .header-title .ht-built:empty { display: none; }
+        .menu-version .app-built { margin-left: 0.35rem; font-size: 0.7rem; opacity: 0.6; font-weight: 400; }
+        .menu-version .app-built::before { content: '\00B7'; margin-right: 0.35rem; }
+        .menu-version .app-built:empty { display: none; }
         .nav-item {
             flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.25rem;
             height: 100%; padding: 0 0.3rem; color: rgba(255,255,255,0.75); font-size: 0.72rem;
@@ -248,16 +255,6 @@
         }
         .fx-add:hover { border-color: var(--primary-light); background: #ebf4ff; }
 
-        /* ---- Uebersicht aller offenen Befunde ---- */
-        .findings-overview { margin: 0.6rem 0; border: 1px solid var(--border); border-radius: 8px; background: #fff; overflow: hidden; }
-        .findings-overview > summary { padding: 0.6rem 0.8rem; cursor: pointer; font-size: 0.82rem; font-weight: 600; color: var(--text); list-style: none; display: flex; align-items: center; gap: 0.5rem; }
-        .findings-overview > summary::-webkit-details-marker { display: none; }
-        .findings-overview .fo-body { padding: 0 0.8rem 0.7rem; }
-        .fo-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0; border-top: 1px solid var(--border); font-size: 0.78rem; }
-        .fo-item a { color: var(--primary-light); text-decoration: none; flex-shrink: 0; font-size: 0.72rem; }
-        .fo-item a:hover { text-decoration: underline; }
-        .fo-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .fo-empty { padding: 0.4rem 0; font-size: 0.78rem; color: var(--text-light); }
         /* Foto-Galerie: Styles stehen in gallery.css */
         .legacy-photo-notice { margin: 0.6rem 0; padding: 0.6rem 0.8rem; background: #fffaf0; border: 1px solid #f6ad55; border-radius: 8px; font-size: 0.8rem; color: #7b341e; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
         .legacy-photo-notice button { padding: 0.35rem 0.8rem; border: 1px solid #dd6b20; background: #dd6b20; color: #fff; border-radius: 6px; cursor: pointer; font-size: 0.78rem; }
@@ -433,7 +430,7 @@
 
 <div class="header">
     <div class="header-row">
-        <a href="./" class="header-title" style="text-decoration:none;color:white;"><span class="ht-name">Engine Build Log<span class="ht-sub">302 BOSS</span></span><span class="ht-version" id="appVersion" onclick="openChangelog()" title="Release-Dokumentation"></span></a>
+        <a href="./" class="header-title" style="text-decoration:none;color:white;"><span class="ht-name">Engine Build Log<span class="ht-sub">302 BOSS</span></span><span class="ht-meta" onclick="event.preventDefault();event.stopPropagation();openChangelog()" title="Release-Dokumentation"><span class="ht-version" id="appVersion"></span><span class="ht-built app-built"></span></span></a>
         <a class="nav-item" href="index.html">Overview</a>
         <a class="nav-item" href="specs.html">Specs</a>
         <a class="nav-item active" href="build-log.html">Build Log</a>
@@ -451,7 +448,7 @@
                 <button onclick="document.getElementById('importFile').click();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
                 <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
-                <button type="button" class="menu-version" onclick="openChangelog();closeToolMenu()" title="Release-Dokumentation">Version <span class="app-version"></span> &rsaquo;</button>
+                <button type="button" class="menu-version" onclick="openChangelog();closeToolMenu()" title="Release-Dokumentation">Version <span class="app-version"></span><span class="app-built"></span> &rsaquo;</button>
             </div>
         </div>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
@@ -467,10 +464,6 @@
         <div id="subResults" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #e2e8f0;border-radius:8px;max-height:300px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:100;padding:0.5rem;font-size:0.8rem;"></div>
     </div>
     <div class="save-status" id="saveStatus"><span id="syncBadge"></span></div>
-<details class="findings-overview" id="findingsOverview">
-    <summary>&#128203; Offene Befunde <span class="fo-count"></span></summary>
-    <div class="fo-body"></div>
-</details>
 <div class="legacy-photo-notice" id="legacyPhotoNotice" style="display:none;">
     <span>&#9888; <strong class="lpn-count">0</strong> Fotos liegen noch nur auf diesem Ger&auml;t.</span>
     <button type="button" onclick="migrateLegacyPhotos()">Ins Repository &uuml;bertragen</button>
@@ -5147,8 +5140,13 @@
     // Eine Quelle: version.js. Wird unter dem Titel und im Menue angezeigt.
     function renderAppVersion() {
         var v = (typeof APP_VERSION === 'string') ? APP_VERSION : '';
+        var t = (typeof formatBuilt === 'function') ? formatBuilt() : '';
         document.querySelectorAll('#appVersion, .app-version').forEach(function(el) {
             el.textContent = v;
+        });
+        document.querySelectorAll('.app-built').forEach(function(el) {
+            el.textContent = t;
+            if (t && typeof APP_BUILT === 'string') el.title = 'Freigegeben ' + APP_BUILT;
         });
     }
 
@@ -5577,7 +5575,6 @@
         _findingsOpen[chapter] = true;
         _saveFindingsOpen();
         renderFindings(chapter);
-        renderFindingsOverview();
         var box = document.querySelector('.findings[data-findings="' + chapter + '"]');
         var inputs = box ? box.querySelectorAll('.fx-row input[type="text"]') : [];
         if (inputs.length) inputs[inputs.length - 1].focus();
@@ -5588,7 +5585,6 @@
         clearTimeout(_findingEditTimer);
         _findingEditTimer = setTimeout(function () {
             Findings.update(id, { text: text });
-            renderFindingsOverview();
         }, 400);
     }
 
@@ -5598,7 +5594,6 @@
         for (var i = 0; i < items.length; i++) if (items[i].id === id) cur = items[i].status;
         Findings.update(id, { status: Findings.nextStatus(cur) });
         renderFindings(chapter);
-        renderFindingsOverview();
     }
 
     function deleteFinding(chapter, id) {
@@ -5606,71 +5601,12 @@
         if (!confirm(lang === 'de' ? 'Befund entfernen?' : 'Remove finding?')) return;
         Findings.remove(id);
         renderFindings(chapter);
-        renderFindingsOverview();
     }
 
     function renderAllFindings() {
         document.querySelectorAll('.findings[data-findings]').forEach(function (b) {
             renderFindings(b.dataset.findings);
         });
-        renderFindingsOverview();
-    }
-
-    // Ueberblick ueber alles, was noch offen ist. Ohne den muesste man 100
-    // Kapitel aufklappen, um zu sehen, worauf man gerade wartet.
-    function renderFindingsOverview() {
-        var box = document.getElementById('findingsOverview');
-        if (!box) return;
-        var lang = document.documentElement.lang || 'de';
-        var items = Findings.all(['', 'wip']);
-        var body = box.querySelector('.fo-body');
-        var head = box.querySelector('.fo-count');
-        var c = Findings.counts();
-        head.innerHTML = c.open || c.wip
-            ? '<span class="fx-pill open">' + c.open + ' ' + (lang === 'de' ? 'offen' : 'open') + '</span>'
-              + '<span class="fx-pill wip">' + c.wip + ' ' + (lang === 'de' ? 'in Arbeit' : 'in progress') + '</span>'
-            : '<span class="fx-pill none">' + (lang === 'de' ? 'nichts offen' : 'nothing open') + '</span>';
-        if (!items.length) {
-            body.innerHTML = '<div class="fo-empty">'
-                + (lang === 'de' ? 'Keine offenen Befunde.' : 'No open findings.') + '</div>';
-            return;
-        }
-        body.innerHTML = items.map(function (it) {
-            var s = Findings.normalizeStatus(it.status);
-            var card = document.querySelector('.findings[data-findings="' + it.ch + '"]');
-            var step = card ? card.closest('.step-card') : null;
-            var titleEl = step ? step.querySelector('.step-title') : null;
-            var title = titleEl ? titleEl.textContent.trim() : it.ch;
-            return '<div class="fo-item">'
-                 + '<span class="fx-pill ' + (s === 'wip' ? 'wip' : 'open') + '">'
-                 + Findings.statusLabel(s, lang) + '</span>'
-                 + '<span class="fo-text" title="' + _esc(it.text) + '">'
-                 + (_esc(it.text) || '<em>' + (lang === 'de' ? 'ohne Text' : 'no text') + '</em>') + '</span>'
-                 + (step ? '<a href="#' + step.id + '" onclick="jumpToChapter(\'' + step.id + '\')">'
-                          + _esc(title.length > 34 ? title.slice(0, 33) + '…' : title) + '</a>' : '')
-                 + '</div>';
-        }).join('');
-    }
-
-    function jumpToChapter(stepId) {
-        var el = document.getElementById(stepId);
-        if (!el) return;
-        var body = el.closest('.phase-body');
-        if (body && body.classList.contains('collapsed')) {
-            body.classList.remove('collapsed');
-            var t = document.getElementById('toggle_' + body.id);
-            if (t) t.classList.remove('collapsed');
-        }
-        var chapter = el.querySelector('.findings[data-findings]');
-        if (chapter) {
-            _findingsOpen[chapter.dataset.findings] = true;
-            _saveFindingsOpen();
-            renderFindings(chapter.dataset.findings);
-        }
-        setTimeout(function () {
-            var h = document.querySelector('.header').offsetHeight;
-            window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - h - 10, behavior: 'smooth' });
-        }, 60);
     }
 
     // Einmalige Uebernahme der alten Einzelzeile in die Liste.
