@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v57',
+      date: '2026-09-22',
+      time: '15:46',
+      title: 'Eingabepruefung: zwei Fehler behoben, Tests nachgezogen',
+      changes: [
+        { type: 'fix', text: 'Die Komma-zu-Punkt-Normalisierung kam nie im Speicher an. Die Pruefung hat den Feldwert beschrieben, ohne ein input-Ereignis auszuloesen - die Messwertfelder haengen aber mit oninput="autoSave()" genau daran. Angezeigt wurde der normalisierte Wert, gespeichert blieb die Fassung mit Komma, und beim naechsten Laden schrieb applyData() sie zurueck.' },
+        { type: 'fix', text: 'Ein einzelnes Minus in einem Ganzzahlfeld ergab den Text "NaN" im Messwertfeld. Die Zeichenpruefung laesst ein alleinstehendes Minus durch, die Umwandlung in eine Zahl scheitert daran - anders als bei den Kommazahlen fehlte die Pruefung darauf.' },
+        { type: 'intern', text: 'validation.js hatte keine Testabdeckung, obwohl es in 122 Felder eingreift, von denen jedes gespeichert wird. Zehn Tests decken sie jetzt ab: Einbindung auf allen drei Seiten, Normalisierung bis in den Speicher, kein ueberfluessiges Speichern bei unveraendertem Wert, abgewiesene Eingaben, leere Felder, Bereichspruefung und die Unversehrtheit von Freitextfeldern.' }
+      ]
+    },
+    {
       version: 'v56',
       date: '2026-09-22',
       time: '14:57',
