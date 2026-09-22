@@ -13,6 +13,18 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v56',
+      date: '2026-09-22',
+      time: '14:57',
+      title: 'Stroboskop-Frage beantwortet, neuer Exkurs',
+      changes: [
+        { type: 'neu', text: 'Neuer Exkurs "Stroboskop-Auswahl bei CD-Zuendung": warum MSD digitale und Rueckstell-Lampen fuer die Digital 6A/6AL ausschliesst, was die Mehrfachfunken unter etwa 3000 min-1 mit dem Abnehmer der Lampe machen, und welche der beiden vorhandenen Lampen deshalb zum Einsatz kommt.' },
+        { type: 'neu', text: 'Der offene Punkt "welches Stroboskop" ist beantwortet: gemessen wird mit der Hella Gutmann 8PD 004 835-001, einer reinen Xenon-Blitzlampe ohne Verstellung und ohne Anzeige. Die ebenfalls vorhandene Equus/Innova 5568 Pro Digital ist ausgeschlossen - Innova nennt sie selbst fuer Multi-Spark-Anlagen ungeeignet.' },
+        { type: 'neu', text: 'An die Stelle des geschlossenen Punktes tritt ein neuer Pruefschritt in Kapitel 18: Ohne Rueckstellung zeigt die Lampe nur, was physisch auf der Riemenscheibe markiert ist. Reicht die Gradteilung nicht, ist Total Mechanical Timing nicht ablesbar - Gradband oder graduierte Scheibe, und zwar vor der Aufnahme von Buchse und Federn.' },
+        { type: 'intern', text: 'Zwei Tests halten den Stand fest: beide Geraete namentlich benannt, und der Skalen-Pruefschritt mit seiner Reihenfolge gegenueber der Federmessung.' }
+      ]
+    },
+    {
       version: 'v55',
       date: '2026-09-22',
       time: '13:54',

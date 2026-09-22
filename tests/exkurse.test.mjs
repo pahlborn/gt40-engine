@@ -22,6 +22,8 @@ const EXKURSE = [
   { datei: 'docs/exkurs-kraftstoffdruck.html', stichwort: 'Kraftstoffdruck',
     verlinktVon: ['build-log.html', 'index.html'] },
   { datei: 'docs/exkurs-ethanol.html', stichwort: 'Ethanol',
+    verlinktVon: ['build-log.html', 'specs.html', 'index.html'] },
+  { datei: 'docs/exkurs-stroboskop.html', stichwort: 'Stroboskop',
     verlinktVon: ['build-log.html', 'specs.html', 'index.html'] }
 ];
 const SEITEN = ['index.html', 'specs.html', 'build-log.html'];
