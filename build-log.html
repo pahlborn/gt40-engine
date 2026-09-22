@@ -425,6 +425,7 @@
 <script src="findings.js"></script>
 <script src="gallery.js"></script>
 <script src="field-sync.js"></script>
+<script src="validation.js"></script>
 </head>
 <body>
 
@@ -637,14 +638,14 @@
                 <div class="spec-line"><span>Deck Clearance (Kolbenstand)</span><span class="spec-val">~0.010&quot; (0.25 mm) below deck</span></div>
                 <div class="spec-line"><span>Method</span><span class="spec-val">Straightedge + dial indicator</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Cyl 1:</label><input type="text" data-field="p1_pd_cyl1" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 2:</label><input type="text" data-field="p1_pd_cyl2" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 3:</label><input type="text" data-field="p1_pd_cyl3" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 4:</label><input type="text" data-field="p1_pd_cyl4" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 5:</label><input type="text" data-field="p1_pd_cyl5" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 6:</label><input type="text" data-field="p1_pd_cyl6" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 7:</label><input type="text" data-field="p1_pd_cyl7" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 8:</label><input type="text" data-field="p1_pd_cyl8" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 1:</label><input type="text" data-field="p1_pd_cyl1" data-validate="numeric" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 2:</label><input type="text" data-field="p1_pd_cyl2" data-validate="numeric" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 3:</label><input type="text" data-field="p1_pd_cyl3" data-validate="numeric" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 4:</label><input type="text" data-field="p1_pd_cyl4" data-validate="numeric" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 5:</label><input type="text" data-field="p1_pd_cyl5" data-validate="numeric" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 6:</label><input type="text" data-field="p1_pd_cyl6" data-validate="numeric" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 7:</label><input type="text" data-field="p1_pd_cyl7" data-validate="numeric" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 8:</label><input type="text" data-field="p1_pd_cyl8" data-validate="numeric" placeholder=".010" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
             <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
@@ -757,8 +758,8 @@
                 <div class="spec-line"><span>Bearing Clearance (Lagerspiel)</span><span class="spec-val">0.001&quot;&ndash;0.003&quot; (0.025&ndash;0.076 mm)</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
                     <div><label>Type found:</label><input type="text" data-field="p1_cam_brg_type" placeholder="R351 / J351" oninput="autoSave()" style="width:80px;"></div>
-                    <div><label>Brg I.D. #1:</label><input type="text" data-field="p1_cam_brg_id1" placeholder="2.130" oninput="autoSave()" style="width:65px;"></div>
-                    <div><label>Brg I.D. #3:</label><input type="text" data-field="p1_cam_brg_id3" placeholder="2.084" oninput="autoSave()" style="width:65px;"></div>
+                    <div><label>Brg I.D. #1:</label><input type="text" data-field="p1_cam_brg_id1" data-validate="numeric" placeholder="2.130" oninput="autoSave()" style="width:65px;"></div>
+                    <div><label>Brg I.D. #3:</label><input type="text" data-field="p1_cam_brg_id3" data-validate="numeric" placeholder="2.084" oninput="autoSave()" style="width:65px;"></div>
                 </div>
             </div>
             <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
@@ -805,11 +806,11 @@
             <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
                 <div class="spec-line"><span>Main Bearing Clearance</span><span class="spec-val">0.001&quot;&ndash;0.003&quot; (0.025&ndash;0.076 mm)</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Main #1:</label><input type="text" data-field="main_1" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Main #2:</label><input type="text" data-field="main_2" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Main #3:</label><input type="text" data-field="main_3" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Main #4:</label><input type="text" data-field="main_4" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Main #5:</label><input type="text" data-field="main_5" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Main #1:</label><input type="text" data-field="main_1" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Main #2:</label><input type="text" data-field="main_2" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Main #3:</label><input type="text" data-field="main_3" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Main #4:</label><input type="text" data-field="main_4" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Main #5:</label><input type="text" data-field="main_5" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
             <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
@@ -858,7 +859,7 @@
                 <div class="spec-line"><span>Crank Endplay</span><span class="spec-val">0.004&quot;&ndash;0.008&quot; (0.10&ndash;0.20 mm)</span></div>
                 <div class="spec-line"><span>Controlled by</span><span class="spec-val">Thrust bearing shell (position 3 on SBF 302)</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Endplay measured:</label><input type="text" data-field="crank_endplay" placeholder=".006" oninput="autoSave()" style="width:65px;"></div>
+                    <div><label>Endplay measured:</label><input type="text" data-field="crank_endplay" data-validate="numeric" placeholder=".006" oninput="autoSave()" style="width:65px;"></div>
                 </div>
             </div>
             <div class="guide-block"><h4 class="tips">Practical Tips</h4><ul>
@@ -919,11 +920,11 @@
                 <div class="spec-line"><span>Max. Ovality (Ovalit&auml;t)</span><span class="spec-val">&le; 0.001&quot; (0.025 mm)</span></div>
                 <div class="spec-line"><span>Bearing Clearance (Lagerspiel)</span><span class="spec-val">0.001&quot;&ndash;0.003&quot; (0.025&ndash;0.076 mm)</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>#1:</label><input type="text" data-field="p1_camj1" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
-                    <div><label>#2:</label><input type="text" data-field="p1_camj2" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
-                    <div><label>#3:</label><input type="text" data-field="p1_camj3" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
-                    <div><label>#4:</label><input type="text" data-field="p1_camj4" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
-                    <div><label>#5:</label><input type="text" data-field="p1_camj5" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
+                    <div><label>#1:</label><input type="text" data-field="p1_camj1" data-validate="numeric" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
+                    <div><label>#2:</label><input type="text" data-field="p1_camj2" data-validate="numeric" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
+                    <div><label>#3:</label><input type="text" data-field="p1_camj3" data-validate="numeric" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
+                    <div><label>#4:</label><input type="text" data-field="p1_camj4" data-validate="numeric" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
+                    <div><label>#5:</label><input type="text" data-field="p1_camj5" data-validate="numeric" placeholder="2.082" oninput="autoSave()" style="width:60px;"></div>
                 </div>
             </div>
             <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
@@ -1039,8 +1040,8 @@
                 <div class="spec-line"><span>Max. Warpage (Verzug)</span><span class="spec-val">&le; 0.003&quot; (0.076 mm) over length</span></div>
                 <div class="spec-line"><span>Method</span><span class="spec-val">Straightedge diagonal + crosswise, 6 positions</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>LH max:</label><input type="text" data-field="p1_flat_lh" placeholder=".001" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>RH max:</label><input type="text" data-field="p1_flat_rh" placeholder=".001" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>LH max:</label><input type="text" data-field="p1_flat_lh" data-validate="numeric" placeholder=".001" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>RH max:</label><input type="text" data-field="p1_flat_rh" data-validate="numeric" placeholder=".001" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
         </div>
@@ -1069,10 +1070,10 @@
                 <div class="spec-line"><span>Tolerance</span><span class="spec-val">&plusmn; 1 cc</span></div>
                 <div class="spec-line"><span>Sample Size</span><span class="spec-val">Min. 2 chambers per head</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>LH #1:</label><input type="text" data-field="p1_cc_lh1" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
-                    <div><label>LH #2:</label><input type="text" data-field="p1_cc_lh2" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
-                    <div><label>RH #1:</label><input type="text" data-field="p1_cc_rh1" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
-                    <div><label>RH #2:</label><input type="text" data-field="p1_cc_rh2" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
+                    <div><label>LH #1:</label><input type="text" data-field="p1_cc_lh1" data-validate="numeric" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
+                    <div><label>LH #2:</label><input type="text" data-field="p1_cc_lh2" data-validate="numeric" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
+                    <div><label>RH #1:</label><input type="text" data-field="p1_cc_rh1" data-validate="numeric" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
+                    <div><label>RH #2:</label><input type="text" data-field="p1_cc_rh2" data-validate="numeric" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
                 </div>
             </div>
             <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
@@ -1290,14 +1291,14 @@
             <div class="guide-block guide-full"><h4 class="measure">Target Values &amp; Measurements</h4>
                 <div class="spec-line"><span>Rod Bearing Clearance</span><span class="spec-val">0.001&quot;&ndash;0.003&quot; (0.025&ndash;0.076 mm)</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Rod #1:</label><input type="text" data-field="rod_1" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Rod #2:</label><input type="text" data-field="rod_2" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Rod #3:</label><input type="text" data-field="rod_3" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Rod #4:</label><input type="text" data-field="rod_4" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Rod #5:</label><input type="text" data-field="rod_5" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Rod #6:</label><input type="text" data-field="rod_6" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Rod #7:</label><input type="text" data-field="rod_7" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Rod #8:</label><input type="text" data-field="rod_8" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Rod #1:</label><input type="text" data-field="rod_1" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Rod #2:</label><input type="text" data-field="rod_2" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Rod #3:</label><input type="text" data-field="rod_3" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Rod #4:</label><input type="text" data-field="rod_4" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Rod #5:</label><input type="text" data-field="rod_5" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Rod #6:</label><input type="text" data-field="rod_6" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Rod #7:</label><input type="text" data-field="rod_7" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Rod #8:</label><input type="text" data-field="rod_8" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
         </div>
@@ -1329,27 +1330,27 @@
             <div class="guide-block guide-full"><h4 class="measure">Target Values &ndash; Top Ring</h4>
                 <div class="spec-line"><span>Top Ring End Gap</span><span class="spec-val">0.016&quot;&ndash;0.022&quot; (0.41&ndash;0.56 mm)</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Cyl 1:</label><input type="text" data-field="topring_1" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 2:</label><input type="text" data-field="topring_2" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 3:</label><input type="text" data-field="topring_3" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 4:</label><input type="text" data-field="topring_4" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 5:</label><input type="text" data-field="topring_5" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 6:</label><input type="text" data-field="topring_6" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 7:</label><input type="text" data-field="topring_7" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 8:</label><input type="text" data-field="topring_8" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 1:</label><input type="text" data-field="topring_1" data-validate="numeric" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 2:</label><input type="text" data-field="topring_2" data-validate="numeric" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 3:</label><input type="text" data-field="topring_3" data-validate="numeric" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 4:</label><input type="text" data-field="topring_4" data-validate="numeric" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 5:</label><input type="text" data-field="topring_5" data-validate="numeric" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 6:</label><input type="text" data-field="topring_6" data-validate="numeric" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 7:</label><input type="text" data-field="topring_7" data-validate="numeric" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 8:</label><input type="text" data-field="topring_8" data-validate="numeric" placeholder=".018" oninput="autoSave()" style="width:52px;"></div>
                 </div>
             </div>
             <div class="guide-block guide-full"><h4 class="measure">Target Values &ndash; 2nd Ring</h4>
                 <div class="spec-line"><span>2nd Ring End Gap</span><span class="spec-val">0.018&quot;&ndash;0.028&quot; (0.46&ndash;0.71 mm)</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Cyl 1:</label><input type="text" data-field="secring_1" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 2:</label><input type="text" data-field="secring_2" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 3:</label><input type="text" data-field="secring_3" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 4:</label><input type="text" data-field="secring_4" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 5:</label><input type="text" data-field="secring_5" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 6:</label><input type="text" data-field="secring_6" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 7:</label><input type="text" data-field="secring_7" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Cyl 8:</label><input type="text" data-field="secring_8" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 1:</label><input type="text" data-field="secring_1" data-validate="numeric" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 2:</label><input type="text" data-field="secring_2" data-validate="numeric" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 3:</label><input type="text" data-field="secring_3" data-validate="numeric" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 4:</label><input type="text" data-field="secring_4" data-validate="numeric" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 5:</label><input type="text" data-field="secring_5" data-validate="numeric" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 6:</label><input type="text" data-field="secring_6" data-validate="numeric" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 7:</label><input type="text" data-field="secring_7" data-validate="numeric" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Cyl 8:</label><input type="text" data-field="secring_8" data-validate="numeric" placeholder=".022" oninput="autoSave()" style="width:52px;"></div>
                 </div>
             </div>
             <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
@@ -1384,8 +1385,8 @@
                 <div class="spec-line"><span>Tolerance (L&auml;ngentoleranz)</span><span class="spec-val">&plusmn; 0.010&quot; (0.25 mm)</span></div>
                 <div class="spec-line"><span>Thread</span><span class="spec-val">7/16&quot;-14 block side, 7/16&quot;-14 nut side</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Long measured:</label><input type="text" data-field="p1_arp_long" placeholder="6.800" oninput="autoSave()" style="width:65px;"></div>
-                    <div><label>Short measured:</label><input type="text" data-field="p1_arp_short" placeholder="5.750" oninput="autoSave()" style="width:65px;"></div>
+                    <div><label>Long measured:</label><input type="text" data-field="p1_arp_long" data-validate="numeric" placeholder="6.800" oninput="autoSave()" style="width:65px;"></div>
+                    <div><label>Short measured:</label><input type="text" data-field="p1_arp_short" data-validate="numeric" placeholder="5.750" oninput="autoSave()" style="width:65px;"></div>
                 </div>
             </div>
             <div class="guide-block"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
@@ -1532,7 +1533,7 @@
             </ul>
                 <div class="spec-line"><span>Required Clearance</span><span class="spec-val">0.001"&ndash;0.003" (0.025&ndash;0.076 mm)</span></div>
                 <div class="guide-input-row" style="margin-top:0.3rem;">
-                    <div><label>Actual clearance:</label><input type="text" data-field="p2_cam_brg_clr" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Actual clearance:</label><input type="text" data-field="p2_cam_brg_clr" data-validate="numeric" placeholder=".002" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
             <div class="guide-block"><h4 class="tools">Tools (only if replacing)</h4><ul>
@@ -1629,7 +1630,7 @@
                 <div class="spec-line"><span>Cam Endplay (Ford Spec)</span><span class="spec-val">0.001"&ndash;0.007" (0.025&ndash;0.178 mm)</span></div>
                 <div class="spec-line"><span>Service Limit</span><span class="spec-val">0.009" (0.229 mm)</span></div>
                 <div class="guide-input-row" style="margin-top:0.3rem;">
-                    <div><label>Measured:</label><input type="text" data-field="cam_endplay" placeholder=".004" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Measured:</label><input type="text" data-field="cam_endplay" data-validate="numeric" placeholder=".004" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
             <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
@@ -1947,8 +1948,8 @@
                 <div class="spec-line"><span>P-V Intake min.</span><span class="spec-val">&ge; 0.080" (2.03 mm)</span></div>
                 <div class="spec-line"><span>P-V Exhaust min.</span><span class="spec-val">&ge; 0.100" (2.54 mm)</span></div>
                 <div class="guide-input-row" style="margin-top:0.3rem;">
-                    <div><label>Intake P-V:</label><input type="text" data-field="p2_ptv_int" placeholder=".080" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Exhaust P-V:</label><input type="text" data-field="p2_ptv_exh" placeholder=".100" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Intake P-V:</label><input type="text" data-field="p2_ptv_int" data-validate="numeric" placeholder=".080" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Exhaust P-V:</label><input type="text" data-field="p2_ptv_exh" data-validate="numeric" placeholder=".100" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
             <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
@@ -2016,16 +2017,16 @@
             </ul></div>
             <div class="guide-block guide-full"><h4 class="measure">Per-Cylinder Measurements (8 Zylinder)</h4>
                 <div class="guide-input-row">
-                    <div><label>Cyl 1:</label><input type="text" data-field="p2_quench_1" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 2:</label><input type="text" data-field="p2_quench_2" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 3:</label><input type="text" data-field="p2_quench_3" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 4:</label><input type="text" data-field="p2_quench_4" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 1:</label><input type="text" data-field="p2_quench_1" data-validate="numeric" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 2:</label><input type="text" data-field="p2_quench_2" data-validate="numeric" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 3:</label><input type="text" data-field="p2_quench_3" data-validate="numeric" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 4:</label><input type="text" data-field="p2_quench_4" data-validate="numeric" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
                 </div>
                 <div class="guide-input-row" style="margin-top:0.2rem;">
-                    <div><label>Cyl 5:</label><input type="text" data-field="p2_quench_5" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 6:</label><input type="text" data-field="p2_quench_6" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 7:</label><input type="text" data-field="p2_quench_7" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Cyl 8:</label><input type="text" data-field="p2_quench_8" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 5:</label><input type="text" data-field="p2_quench_5" data-validate="numeric" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 6:</label><input type="text" data-field="p2_quench_6" data-validate="numeric" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 7:</label><input type="text" data-field="p2_quench_7" data-validate="numeric" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Cyl 8:</label><input type="text" data-field="p2_quench_8" data-validate="numeric" placeholder=".040" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
         </div>
@@ -2046,7 +2047,7 @@
             <div class="guide-block"><h4 class="measure">Target Value (Sollwert)</h4>
                 <div class="spec-line"><span>Min. Retainer&ndash;Seal gap</span><span class="spec-val">&ge; 0.060" (1.52 mm)</span></div>
                 <div class="guide-input-row" style="margin-top:0.3rem;">
-                    <div><label>Measured:</label><input type="text" data-field="p2_retseal_val" placeholder=".060" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Measured:</label><input type="text" data-field="p2_retseal_val" data-validate="numeric" placeholder=".060" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
             <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
@@ -3255,7 +3256,7 @@
             <div class="guide-block guide-full"><h4 class="measure">Ist-Aufnahme vor dem Einbau (Record Before Installing)</h4>
                 <div class="warning-box"><span class="de"><strong>Die vorhandene Feder- und Buchsenkombination zun&auml;chst nicht ver&auml;ndern.</strong> Wie bei den Vergasern gilt: erst aufnehmen, was verbaut ist. Die Verstellkurve l&auml;sst sich sp&auml;ter gezielt &auml;ndern &ndash; aber nur, wenn der Ausgangszustand dokumentiert ist.</span><span class="en"><strong>Do not change the existing spring and bushing combination yet.</strong> As with the carburetors: record what is fitted first. The advance curve can be changed later on purpose &ndash; but only if the starting point is documented.</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Verteiler PN:</label><input type="text" data-field="p3_dist_pn" placeholder="8479" oninput="autoSave()" style="width:70px;"></div>
+                    <div><label>Verteiler PN:</label><input type="text" data-field="p3_dist_pn" data-validate="numeric" placeholder="8479" oninput="autoSave()" style="width:70px;"></div>
                     <div><label>Antriebszahnrad:</label><input type="text" data-field="p3_dist_gear" placeholder="Iron / Steel" oninput="autoSave()" style="width:90px;"></div>
                     <div><label>Stop Bushing:</label><input type="text" data-field="p3_dist_bushing" placeholder="Farbe" oninput="autoSave()" style="width:80px;"></div>
                 </div>
@@ -3740,7 +3741,7 @@
                 <div class="spec-line"><span>Good reading</span><span class="spec-val">25&ndash;40 psi (1.7&ndash;2.8 bar)</span></div>
                 <div class="spec-line"><span>Time to pressure</span><span class="spec-val">&lt; 30 seconds</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Pre-oil psi:</label><input type="text" data-field="p4_preoil_psi" placeholder="25" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Pre-oil psi:</label><input type="text" data-field="p4_preoil_psi" data-validate="numeric" placeholder="25" oninput="autoSave()" style="width:55px;"></div>
                     <div><label>Time to pressure:</label><input type="text" data-field="p4_preoil_time" placeholder="10 sec" oninput="autoSave()" style="width:70px;"></div>
                 </div>
             </div>
@@ -3852,12 +3853,12 @@
                 <div class="spec-line"><span>Facet 480532 unreguliert</span><span class="spec-val">6&ndash;8 psi</span></div>
                 <div class="warning-box" style="margin-top:0.4rem;"><span class="de"><strong>Ablesen, nicht verstellen.</strong> Die Anlage lief mit der vorhandenen Einstellung. Eingegriffen wird nur in zwei F&auml;llen: der Wert liegt <strong>deutlich &uuml;ber dem Arbeitsbereich von 2,5&ndash;3,5 psi</strong>, oder die <strong>beiden Kreise weichen voneinander ab</strong>. Alles dazwischen ist Baseline und bleibt (siehe Phase 3, Kapitel 27). Die 3,5 psi stammen aus Sekund&auml;rquellen, es ist keine belegte Werksgrenze &ndash; deshalb z&auml;hlt der dokumentierte Ist-Druck mehr als die Tabelle.</span><span class="en"><strong>Read it, do not adjust it.</strong> The system ran with the existing setting. Intervene only in two cases: the value is <strong>above 3.5 psi</strong>, or the <strong>two circuits differ from each other</strong>. Anything in between is baseline and stays (see phase 3, chapter 27).</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Kreis A vor Start:</label><input type="text" data-field="p4_fuel_psi_a" placeholder="3.0" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Kreis B vor Start:</label><input type="text" data-field="p4_fuel_psi_b" placeholder="3.0" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Kreis A vor Start:</label><input type="text" data-field="p4_fuel_psi_a" data-validate="numeric" placeholder="3.0" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Kreis B vor Start:</label><input type="text" data-field="p4_fuel_psi_b" data-validate="numeric" placeholder="3.0" oninput="autoSave()" style="width:52px;"></div>
                 </div>
                 <div class="guide-input-row" style="margin-top:0.3rem;">
-                    <div><label>Kreis A laufend:</label><input type="text" data-field="p4_fuel_psi_a_run" placeholder="2.9" oninput="autoSave()" style="width:52px;"></div>
-                    <div><label>Kreis B laufend:</label><input type="text" data-field="p4_fuel_psi_b_run" placeholder="2.9" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Kreis A laufend:</label><input type="text" data-field="p4_fuel_psi_a_run" data-validate="numeric" placeholder="2.9" oninput="autoSave()" style="width:52px;"></div>
+                    <div><label>Kreis B laufend:</label><input type="text" data-field="p4_fuel_psi_b_run" data-validate="numeric" placeholder="2.9" oninput="autoSave()" style="width:52px;"></div>
                 </div>
             </div>
             <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
@@ -4302,8 +4303,8 @@
             <div class="spec-line"><span>At 2,500 RPM warm</span><span class="spec-val">40&ndash;60 psi (2.8&ndash;4.1 bar)</span></div>
             <div class="spec-line"><span>Rule of Thumb</span><span class="spec-val">~10 psi per 1,000 RPM minimum</span></div>
             <div class="guide-input-row" style="margin-top:0.4rem;">
-                <div><label>Idle psi:</label><input type="text" data-field="p4_oil_idle_psi" placeholder="25" oninput="autoSave()" style="width:55px;"></div>
-                <div><label>2500 RPM psi:</label><input type="text" data-field="p4_oil_2500_psi" placeholder="50" oninput="autoSave()" style="width:55px;"></div>
+                <div><label>Idle psi:</label><input type="text" data-field="p4_oil_idle_psi" data-validate="numeric" placeholder="25" oninput="autoSave()" style="width:55px;"></div>
+                <div><label>2500 RPM psi:</label><input type="text" data-field="p4_oil_2500_psi" data-validate="numeric" placeholder="50" oninput="autoSave()" style="width:55px;"></div>
             </div>
         </div>
         <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
@@ -4685,7 +4686,7 @@
                 <div class="spec-line"><span>Gemischschrauben Startwert</span><span class="spec-val">2.5 Umdrehungen heraus</span></div>
                 <div class="spec-line"><span>Str&ouml;mungsabweichung (flow spread)</span><span class="spec-val">&le; 5 % zwischen allen 8</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Leerlauf erreicht:</label><input type="text" data-field="p5_sync_rpm" placeholder="950" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Leerlauf erreicht:</label><input type="text" data-field="p5_sync_rpm" data-validate="numeric" placeholder="950" oninput="autoSave()" style="width:55px;"></div>
                     <div><label>Max. Abweichung:</label><input type="text" data-field="p5_sync_spread" placeholder="3 %" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
@@ -4883,8 +4884,8 @@
                 <li><span class="de">Nach jeder &Auml;nderung dieselbe Fahrt wiederholen. <strong>Gleiche Strecke, gleiche Drehzahl, gleiche Gasstellung</strong> &ndash; sonst vergleicht man zwei verschiedene Dinge.</span><span class="en">Repeat the same drive after every change. <strong>Same road, same rpm, same throttle</strong> &ndash; otherwise you are comparing two different things.</span></li>
                 </ol>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>Teillast AFR A:</label><input type="text" data-field="p5_road_afr_a" placeholder="13.8" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Teillast AFR B:</label><input type="text" data-field="p5_road_afr_b" placeholder="13.8" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Teillast AFR A:</label><input type="text" data-field="p5_road_afr_a" data-validate="numeric" placeholder="13.8" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Teillast AFR B:</label><input type="text" data-field="p5_road_afr_b" data-validate="numeric" placeholder="13.8" oninput="autoSave()" style="width:55px;"></div>
                     <div><label>&Uuml;bergang sauber:</label><input type="text" data-field="p5_road_progression" placeholder="ja / Loch bei 2200" oninput="autoSave()" style="width:130px;"></div>
                 </div>
             </div>
@@ -4960,8 +4961,8 @@
                 </div>
                 <div class="guide-input-row" style="margin-top:0.3rem;">
                     <div><label>K&uuml;hlmittel max:</label><input type="text" data-field="p5_track_coolant" placeholder="95 °C" oninput="autoSave()" style="width:65px;"></div>
-                    <div><label>Volllast AFR A:</label><input type="text" data-field="p5_track_afr_a" placeholder="12.8" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Volllast AFR B:</label><input type="text" data-field="p5_track_afr_b" placeholder="12.8" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Volllast AFR A:</label><input type="text" data-field="p5_track_afr_a" data-validate="numeric" placeholder="12.8" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Volllast AFR B:</label><input type="text" data-field="p5_track_afr_b" data-validate="numeric" placeholder="12.8" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
         </div>
@@ -6329,6 +6330,7 @@
         restoreBuildCollapseState();
         if (typeof initUnifiedSearch === 'function') initUnifiedSearch();
         initCompPhotos();
+        if (typeof Validation !== 'undefined') Validation.init();
         showLegacyPhotoNotice();
         Findings.load();
         migrateLegacyNotes();
