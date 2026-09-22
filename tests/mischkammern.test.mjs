@@ -150,6 +150,68 @@ await test('Das Glossar fuehrt die Vergaser-Begriffe', async () => {
 });
 
 // ---------------------------------------------------------------------------
+suite('Verteiler-Fotos in der Galerie');
+
+await test('Die drei Fotos liegen in der Verteiler-Galerie', async () => {
+  // Die Galerie liest img/user/<gruppe>/ ueber die GitHub-Tree-API.
+  const dir = path.join(REPO_ROOT, 'img', 'user', 'distributor');
+  assert(fs.existsSync(dir), 'Verzeichnis img/user/distributor fehlt');
+  const bilder = fs.readdirSync(dir).filter((f) => /\.jpg$/i.test(f));
+  assert(bilder.length >= 3, 'Erwartet mindestens 3 Fotos, gefunden: ' + bilder.length);
+  for (const teil of ['federn', 'pn-8479', '8464']) {
+    assert(bilder.some((f) => f.includes(teil)), 'Kein Foto zu "' + teil + '"');
+  }
+});
+
+await test('Die Dateinamen folgen der Konvention der App', async () => {
+  // gallery.js legt sie als <epoch-ms>_<idx>_<name>.jpg ab; der Name wird in
+  // Karte und Lightbox angezeigt.
+  const dir = path.join(REPO_ROOT, 'img', 'user', 'distributor');
+  for (const f of fs.readdirSync(dir).filter((x) => /\.jpg$/i.test(x))) {
+    assert(/^\d{13}_\d+_[\w-]+\.jpg$/.test(f), 'Name weicht ab: ' + f);
+  }
+});
+
+await test('Die Fotos sind auf die Breite der App skaliert', async () => {
+  // gallery.js skaliert beim Upload auf maximal 1200 px Breite. Groessere
+  // Dateien blaehen Repository und PWA-Cache auf, ohne mehr zu zeigen.
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  const dir = 'img/user/distributor';
+  const bilder = fs.readdirSync(path.join(REPO_ROOT, 'img', 'user', 'distributor'))
+    .filter((f) => /\.jpg$/i.test(f));
+  const masse = await page.evaluate(async (liste) => {
+    const out = [];
+    for (const src of liste) {
+      const im = new Image();
+      im.src = src;
+      await new Promise((r) => { im.onload = r; im.onerror = r; });
+      out.push({ src: src, w: im.naturalWidth, h: im.naturalHeight });
+    }
+    return out;
+  }, bilder.map((f) => base + '/' + dir + '/' + f));
+  await ctx.close();
+  for (const m of masse) {
+    assert(m.w > 0, 'Laedt nicht: ' + m.src);
+    assert(m.w <= 1200, 'Breiter als 1200 px: ' + m.src + ' (' + m.w + ')');
+  }
+});
+
+// ---------------------------------------------------------------------------
+suite('Federn: Farbe genuegt nicht zur Bestimmung');
+
+await test('Der Guide sagt, dass die silbernen Federn gleich aussehen', async () => {
+  const g = lies('docs/msd-advance-tuning.html');
+  assert(/Heavy Silver und Light Silver sind an der Farbe nicht zu unterscheiden/.test(g),
+    'Hinweis fehlt');
+  assert(/allein in der <strong>Drahtst&auml;rke<\/strong>/.test(g),
+    'Unterscheidungsmerkmal nicht benannt');
+  assert(/fallen alle Kombinationen mit Light Blue heraus/.test(g),
+    'Ableitungsregel ohne blaue Feder fehlt');
+  assert(/direkter Vergleich/.test(g), 'Vergleich gegen das Kit fehlt');
+});
+
+// ---------------------------------------------------------------------------
 suite('Sprachumschaltung des Glossars');
 
 await test('Kein data-fidx, das parseInt verfaelscht', async () => {

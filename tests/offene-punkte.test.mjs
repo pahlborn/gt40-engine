@@ -135,6 +135,62 @@ await test('Der Zusammenhang zum Ethanol-Exkurs steht dabei', async () => {
 });
 
 // ---------------------------------------------------------------------------
+suite('Die Stroboskop-Anforderung steht in jeder Werkzeugliste');
+
+await test('Keine Werkzeugliste nennt die Blitzlampe ohne Einschraenkung', async () => {
+  // Die Warnung stand nur in Kapitel 16. Ausgerechnet Kapitel 18, wo die
+  // Kurve gemessen wird, listete "Blitzlampe / Stroboskop" ohne Zusatz.
+  // Geprueft werden nur Werkzeuglisten - in Arbeitsschritten waere die
+  // Wiederholung Ballast, dort genuegt der Verweis.
+  const h = BL();
+  // An der Ueberschrift festmachen, nicht an der Klasse: "tools" wird auch
+  // als reine Stilangabe fuer Nicht-Werkzeugbloecke verwendet.
+  const bloecke = [...h.matchAll(/<h4 class="tools">Tools[^<]*<\/h4>[\s\S]*?<\/ul>/g)].map((m) => m[0]);
+  assert(bloecke.length > 20, 'Zu wenige Werkzeugbloecke gefunden: ' + bloecke.length);
+  const eintraege = [];
+  for (const b of bloecke) {
+    for (const li of b.match(/<li>[\s\S]*?<\/li>/g) || []) {
+      if (/Blitzlampe|Stroboskop|[Tt]iming light/.test(li)) eintraege.push(li);
+    }
+  }
+  assert(eintraege.length >= 3,
+    'Erwartet mindestens drei Werkzeugeintraege, gefunden: ' + eintraege.length);
+  const ohne = eintraege.filter((z) =>
+    !/dial-back|nicht digital|einfache Ausf&uuml;hrung/i.test(z));
+  assert(ohne.length === 0,
+    'Ohne Einschraenkung: ' + ohne.map((z) => z.replace(/<[^>]+>/g, '').trim().slice(0, 60)).join(' | '));
+});
+
+await test('Kapitel 18 nennt die Begruendung, nicht nur die Regel', async () => {
+  const h = BL();
+  assert(/Einfache Blitzlampe &ndash; nicht digital, nicht dial-back/.test(h),
+    'Regel in Kapitel 18 fehlt');
+  assert(/Begr&uuml;ndung in Kapitel 16/.test(h), 'Verweis auf die Begruendung fehlt');
+});
+
+// ---------------------------------------------------------------------------
+suite('Keine Sollwerte mehr in Kapiteltiteln und Reihenfolgen');
+
+await test('Kapitel 18 traegt keinen Gradwert im Titel', async () => {
+  // Ein Sollwert in der Ueberschrift steht auch in der Fortschrittsliste und
+  // im Inhaltsverzeichnis - prominenter geht es nicht.
+  const h = BL();
+  assert(!/18\. Final Timing: 34&ndash;36&deg; total advance/.test(h),
+    'Alter Titel mit Gradwert steht noch da');
+  assert(/18\. Z&uuml;ndkurve messen und eintragen \(Total Mechanical Timing\)/.test(h),
+    'Neuer Titel fehlt');
+});
+
+await test('Die Abstimmreihenfolge nennt keinen Gradwert', async () => {
+  const h = BL();
+  assert(!/Gesamtfr&uuml;hz&uuml;ndung 34&ndash;36&deg; festnageln/.test(h),
+    'Sollwert in der Reihenfolge steht noch da');
+  assert(/Z&uuml;ndkurve festnageln und eintragen/.test(h), 'Ersatzformulierung fehlt');
+  // Der Grund fuer die Reihenfolge gehoert dazu.
+  assert(/sieht am Lambda aus wie zu mager/.test(h), 'Begruendung der Reihenfolge fehlt');
+});
+
+// ---------------------------------------------------------------------------
 suite('Schreibweise: Buchse, nicht Buechse');
 
 await test('Die falsche Schreibweise steht nirgends mehr', async () => {

@@ -146,7 +146,8 @@ await test('Reihenfolge des Abstimmens ist festgehalten', async () => {
   const k = karte('p5_jetting_card');
   assert(/Reihenfolge des Abstimmens/.test(k), 'Reihenfolge-Block fehlt');
   // Zuendung vor Bedueusung: sonst kompensiert man Zuendfehler mit Kraftstoff.
-  const zuend = k.indexOf('Gesamtfr&uuml;hz&uuml;ndung 34&ndash;36&deg; festnageln');
+  // Seit v49 ohne Sollwert im Text - die Kurve ist noch nicht festgelegt.
+  const zuend = k.indexOf('Z&uuml;ndkurve festnageln und eintragen');
   const voll = k.indexOf('<strong>Volllast</strong>');
   assert(zuend > -1 && voll > -1, 'Zuendung oder Volllast fehlen in der Reihenfolge');
   assert(zuend < voll, 'Zuendung steht nicht vor der Volllast-Bedueusung');
