@@ -51,6 +51,13 @@
         .header-title .ht-name { display: block; line-height: 1.15; }
         .header-title .ht-sub { font-size: 0.62rem; opacity: 0.7; margin-left: 0.35rem; font-weight: 400; }
         .header-title .ht-version { font-size: 0.58rem; opacity: 0.55; font-weight: 400; line-height: 1.1; letter-spacing: 0.02em; }
+        .header-title .ht-meta { display: flex; align-items: baseline; gap: 0.35rem; min-width: 0; cursor: pointer; }
+        .header-title .ht-built { font-size: 0.55rem; opacity: 0.4; font-weight: 400; line-height: 1.1; white-space: nowrap; }
+        .header-title .ht-built::before { content: '\00B7'; margin-right: 0.35rem; }
+        .header-title .ht-built:empty { display: none; }
+        .menu-version .app-built { margin-left: 0.35rem; font-size: 0.7rem; opacity: 0.6; font-weight: 400; }
+        .menu-version .app-built::before { content: '\00B7'; margin-right: 0.35rem; }
+        .menu-version .app-built:empty { display: none; }
         .header h1, .header p, .toolbar { display: none; }
         .nav-item {
             flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.25rem;
@@ -493,7 +500,7 @@
 <!-- ===== HEADER ===== -->
 <div class="header">
     <div class="header-row">
-        <div class="header-title"><span class="ht-name">Engine Build Log<span class="ht-sub">302 BOSS</span></span><span class="ht-version" id="appVersion" onclick="openChangelog()" title="Release-Dokumentation"></span></div>
+        <div class="header-title"><span class="ht-name">Engine Build Log<span class="ht-sub">302 BOSS</span></span><span class="ht-meta" onclick="event.preventDefault();event.stopPropagation();openChangelog()" title="Release-Dokumentation"><span class="ht-version" id="appVersion"></span><span class="ht-built app-built"></span></span></div>
         <a class="nav-item" href="index.html" id="nav-overview">&#128202; Overview</a>
         <button class="nav-item active" onclick="scrollToGroup('grp-specs')" id="nav-specs">&#128295; Specs</button>
         <a class="nav-item" href="build-log.html" id="nav-build">&#128736; Build Log</a>
@@ -515,7 +522,7 @@
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="forceReload();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:#718096;font-size:0.78rem;cursor:pointer;">&#128260; Seite neu laden</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
-                <button type="button" class="menu-version" onclick="openChangelog();closeToolMenu()" title="Release-Dokumentation">Version <span class="app-version"></span> &rsaquo;</button>
+                <button type="button" class="menu-version" onclick="openChangelog();closeToolMenu()" title="Release-Dokumentation">Version <span class="app-version"></span><span class="app-built"></span> &rsaquo;</button>
             </div>
         </div>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
@@ -2193,8 +2200,13 @@
     // Eine Quelle: version.js. Wird unter dem Titel und im Menue angezeigt.
     function renderAppVersion() {
         var v = (typeof APP_VERSION === 'string') ? APP_VERSION : '';
+        var t = (typeof formatBuilt === 'function') ? formatBuilt() : '';
         document.querySelectorAll('#appVersion, .app-version').forEach(function(el) {
             el.textContent = v;
+        });
+        document.querySelectorAll('.app-built').forEach(function(el) {
+            el.textContent = t;
+            if (t && typeof APP_BUILT === 'string') el.title = 'Freigegeben ' + APP_BUILT;
         });
     }
     // ==== TOOL MENU ====
