@@ -5,6 +5,7 @@ var urlsToCache = [
   '/gt40-engine/build-log.html',
   '/gt40-engine/specs.html',
   '/gt40-engine/field-sync.js',
+  '/gt40-engine/validation.js',
   '/gt40-engine/version.js',
   '/gt40-engine/gallery.js',
   '/gt40-engine/gallery.css',

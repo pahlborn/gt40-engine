@@ -292,6 +292,7 @@
 <script src="version.js"></script>
 <script src="changelog.js"></script>
 <script src="field-sync.js"></script>
+<script src="validation.js"></script>
 </head>
 <body>
 
@@ -379,7 +380,7 @@
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 0.8rem;">
                     <div class="form-group" style="margin-bottom:0.2rem;">
                         <label style="font-size:0.72rem;">Angestrebte Leistung (BHP)</label>
-                        <input type="text" data-field="target_hp" placeholder='z.B. 350' oninput="autoSave()" style="padding:0.25rem 0.4rem;">
+                        <input type="text" data-field="target_hp" data-validate="numeric" placeholder='z.B. 350' oninput="autoSave()" style="padding:0.25rem 0.4rem;">
                     </div>
                     <div class="form-group" style="margin-bottom:0.2rem;">
                         <label style="font-size:0.72rem;">Ziel-Verdichtung</label>
@@ -1506,11 +1507,11 @@
         for (let i = 1; i <= 8; i++) {
             const tr = document.createElement('tr');
             tr.innerHTML = '<td class="cyl-label">Zyl. ' + i + '</td>'
-                + '<td><input type="text" data-field="quench_a_' + i + '" placeholder="0.000" oninput="calcQuench(' + i + '); autoSave()"></td>'
-                + '<td><input type="text" data-field="quench_b_' + i + '" placeholder="0.000" oninput="calcQuench(' + i + '); autoSave()"></td>'
+                + '<td><input type="text" data-field="quench_a_' + i + '" data-validate="numeric" placeholder="0.000" oninput="calcQuench(' + i + '); autoSave()"></td>'
+                + '<td><input type="text" data-field="quench_b_' + i + '" data-validate="numeric" placeholder="0.000" oninput="calcQuench(' + i + '); autoSave()"></td>'
                 + '<td><input type="text" data-field="quench_total_' + i + '" class="calculated" readonly placeholder="auto"></td>'
-                + '<td><input type="text" data-field="ptv_intake_' + i + '" placeholder="0.000" oninput="validateRange(this, 0.080, 9); autoSave()"></td>'
-                + '<td><input type="text" data-field="ptv_exhaust_' + i + '" placeholder="0.000" oninput="validateRange(this, 0.100, 9); autoSave()"></td>';
+                + '<td><input type="text" data-field="ptv_intake_' + i + '" data-validate="numeric:0.080:9" placeholder="0.000" oninput="autoSave()"></td>'
+                + '<td><input type="text" data-field="ptv_exhaust_' + i + '" data-validate="numeric:0.100:9" placeholder="0.000" oninput="autoSave()"></td>';
             tbody.appendChild(tr);
         }
     }
@@ -3263,6 +3264,7 @@
 
     // ==== INIT ====
     renderAppVersion(); generateQuenchTable(); updateSyncBadge(); updateBuildDashboard();
+    if (typeof Validation !== 'undefined') Validation.init();
     restoreCollapseState();
     // loadData is async (may fetch from Gist) - restore scroll AFTER it completes
     loadData().then(function() {

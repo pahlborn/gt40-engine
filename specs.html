@@ -494,6 +494,7 @@
 <script src="changelog.js"></script>
 <script src="gallery.js"></script>
 <script src="field-sync.js"></script>
+<script src="validation.js"></script>
 </head>
 <body>
 
@@ -684,20 +685,20 @@
             <!-- Messwerte -->
             <div class="form-group">
                 <label>Kurbelwelle Axialspiel (Crankshaft End Play) <span class="tolerance">Soll: 0.004" &ndash; 0.008"</span></label>
-                <input type="text" data-field="crank_endplay" placeholder='z.B. 0.005"' oninput="validateRange(this, 0.004, 0.008); autoSave()">
+                <input type="text" data-field="crank_endplay" data-validate="numeric:0.004:0.008" placeholder='z.B. 0.005"' oninput="autoSave()">
             </div>
             <div class="form-group">
                 <label>Nockenwelle Axialspiel (Camshaft End Play) <span class="tolerance">Soll: 0.001" &ndash; 0.007"</span></label>
-                <input type="text" data-field="cam_endplay" placeholder='z.B. 0.004"' oninput="validateRange(this, 0.001, 0.007); autoSave()">
+                <input type="text" data-field="cam_endplay" data-validate="numeric:0.001:0.007" placeholder='z.B. 0.004"' oninput="autoSave()">
             </div>
             <div class="form-group">
                 <label>Hauptlagerspiel (Main Bearing Clearance)</label>
                 <div class="measurement-grid">
-                    <div class="measurement-cell"><label>Lager 1</label><input type="text" data-field="main_1" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Lager 2</label><input type="text" data-field="main_2" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Lager 3</label><input type="text" data-field="main_3" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Lager 4</label><input type="text" data-field="main_4" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Lager 5</label><input type="text" data-field="main_5" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Lager 1</label><input type="text" data-field="main_1" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Lager 2</label><input type="text" data-field="main_2" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Lager 3</label><input type="text" data-field="main_3" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Lager 4</label><input type="text" data-field="main_4" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Lager 5</label><input type="text" data-field="main_5" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
                 </div>
             </div>
 
@@ -754,40 +755,40 @@
             <div class="form-group">
                 <label>Pleuellagerspiel (Rod Bearing Clearance)</label>
                 <div class="measurement-grid">
-                    <div class="measurement-cell"><label>Zyl. 1</label><input type="text" data-field="rod_1" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 2</label><input type="text" data-field="rod_2" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 3</label><input type="text" data-field="rod_3" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 4</label><input type="text" data-field="rod_4" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 5</label><input type="text" data-field="rod_5" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 6</label><input type="text" data-field="rod_6" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 7</label><input type="text" data-field="rod_7" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 8</label><input type="text" data-field="rod_8" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 1</label><input type="text" data-field="rod_1" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 2</label><input type="text" data-field="rod_2" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 3</label><input type="text" data-field="rod_3" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 4</label><input type="text" data-field="rod_4" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 5</label><input type="text" data-field="rod_5" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 6</label><input type="text" data-field="rod_6" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 7</label><input type="text" data-field="rod_7" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 8</label><input type="text" data-field="rod_8" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
                 </div>
             </div>
             <div class="form-group">
                 <label>Kolbenring-Sto&szlig;spiel &ndash; Top Ring (Oberer Kompressionsring)</label>
                 <div class="measurement-grid">
-                    <div class="measurement-cell"><label>Zyl. 1</label><input type="text" data-field="topring_1" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 2</label><input type="text" data-field="topring_2" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 3</label><input type="text" data-field="topring_3" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 4</label><input type="text" data-field="topring_4" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 5</label><input type="text" data-field="topring_5" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 6</label><input type="text" data-field="topring_6" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 7</label><input type="text" data-field="topring_7" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 8</label><input type="text" data-field="topring_8" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 1</label><input type="text" data-field="topring_1" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 2</label><input type="text" data-field="topring_2" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 3</label><input type="text" data-field="topring_3" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 4</label><input type="text" data-field="topring_4" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 5</label><input type="text" data-field="topring_5" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 6</label><input type="text" data-field="topring_6" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 7</label><input type="text" data-field="topring_7" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 8</label><input type="text" data-field="topring_8" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
                 </div>
             </div>
             <div class="form-group">
                 <label>Kolbenring-Sto&szlig;spiel &ndash; Second Ring (Zweiter Kompressionsring)</label>
                 <div class="measurement-grid">
-                    <div class="measurement-cell"><label>Zyl. 1</label><input type="text" data-field="secring_1" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 2</label><input type="text" data-field="secring_2" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 3</label><input type="text" data-field="secring_3" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 4</label><input type="text" data-field="secring_4" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 5</label><input type="text" data-field="secring_5" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 6</label><input type="text" data-field="secring_6" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 7</label><input type="text" data-field="secring_7" placeholder="0.000" oninput="autoSave()"></div>
-                    <div class="measurement-cell"><label>Zyl. 8</label><input type="text" data-field="secring_8" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 1</label><input type="text" data-field="secring_1" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 2</label><input type="text" data-field="secring_2" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 3</label><input type="text" data-field="secring_3" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 4</label><input type="text" data-field="secring_4" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 5</label><input type="text" data-field="secring_5" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 6</label><input type="text" data-field="secring_6" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 7</label><input type="text" data-field="secring_7" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
+                    <div class="measurement-cell"><label>Zyl. 8</label><input type="text" data-field="secring_8" data-validate="numeric" placeholder="0.000" oninput="autoSave()"></div>
                 </div>
             </div>
 
@@ -1003,15 +1004,15 @@
             <!-- Messwerte -->
             <div class="form-group">
                 <label>Sto&szlig;stangenl&auml;nge (Pushrod Checker) &ndash; Einlass</label>
-                <input type="text" data-field="pushrod_intake" placeholder='z.B. 7.100"' oninput="autoSave()">
+                <input type="text" data-field="pushrod_intake" data-validate="numeric" placeholder='z.B. 7.100"' oninput="autoSave()">
             </div>
             <div class="form-group">
                 <label>Sto&szlig;stangenl&auml;nge (Pushrod Checker) &ndash; Auslass</label>
-                <input type="text" data-field="pushrod_exhaust" placeholder='z.B. 7.100"' oninput="autoSave()">
+                <input type="text" data-field="pushrod_exhaust" data-validate="numeric" placeholder='z.B. 7.100"' oninput="autoSave()">
             </div>
             <div class="form-group">
                 <label>Tats&auml;chlich verbaute Sto&szlig;stangenl&auml;nge</label>
-                <input type="text" data-field="pushrod_actual" placeholder='z.B. 7.100"' oninput="autoSave()">
+                <input type="text" data-field="pushrod_actual" data-validate="numeric" placeholder='z.B. 7.100"' oninput="autoSave()">
             </div>
             <div class="form-group">
                 <label>Kipphebel-Vorspannung (Lifter Preload) <span class="tolerance">Empf.: 1/4 bis 1/2 Umdrehung nach Nullspiel</span></label>
@@ -2505,11 +2506,11 @@
         for (let i = 1; i <= 8; i++) {
             const tr = document.createElement('tr');
             tr.innerHTML = '<td class="cyl-label">Zyl. ' + i + '</td>'
-                + '<td><input type="text" data-field="quench_a_' + i + '" placeholder="0.000" oninput="calcQuench(' + i + '); autoSave()"></td>'
-                + '<td><input type="text" data-field="quench_b_' + i + '" placeholder="0.000" oninput="calcQuench(' + i + '); autoSave()"></td>'
+                + '<td><input type="text" data-field="quench_a_' + i + '" data-validate="numeric" placeholder="0.000" oninput="calcQuench(' + i + '); autoSave()"></td>'
+                + '<td><input type="text" data-field="quench_b_' + i + '" data-validate="numeric" placeholder="0.000" oninput="calcQuench(' + i + '); autoSave()"></td>'
                 + '<td><input type="text" data-field="quench_total_' + i + '" class="calculated" readonly placeholder="auto"></td>'
-                + '<td><input type="text" data-field="ptv_intake_' + i + '" placeholder="0.000" oninput="validateRange(this, 0.080, 9); autoSave()"></td>'
-                + '<td><input type="text" data-field="ptv_exhaust_' + i + '" placeholder="0.000" oninput="validateRange(this, 0.100, 9); autoSave()"></td>';
+                + '<td><input type="text" data-field="ptv_intake_' + i + '" data-validate="numeric:0.080:9" placeholder="0.000" oninput="autoSave()"></td>'
+                + '<td><input type="text" data-field="ptv_exhaust_' + i + '" data-validate="numeric:0.100:9" placeholder="0.000" oninput="autoSave()"></td>';
             tbody.appendChild(tr);
         }
     }
@@ -4193,6 +4194,7 @@
 
     // ==== INIT ====
     renderAppVersion(); generateQuenchTable(); updateSyncBadge(); loadData(); initCompPhotos();
+    if (typeof Validation !== 'undefined') Validation.init();
     // search.js wird erst am Dateiende geladen - initUnifiedSearch() gab es hier
     // also noch gar nicht und die Exception hat updateBuildDashboard() sowie die
     // Cross-Checks mit abgeraeumt. Jeder Schritt jetzt einzeln abgesichert.
