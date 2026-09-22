@@ -13,16 +13,72 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v55',
+      date: '2026-09-22',
+      time: '13:54',
+      title: 'Luecke im Versions-Journal geschlossen',
+      changes: [
+        { type: 'fix', text: 'v50 bis v53 fehlten in dieser Dokumentation vollstaendig - das Journal sprang von v54 direkt auf v49. Die vier Eintraege sind aus den Commit-Botschaften nachgetragen; erfunden wurde nichts.' },
+        { type: 'fix', text: 'Der v54-Eintrag nennt jetzt auch die Verbesserung der Sync-Fehlermeldungen. Sie ging unter derselben Versionsnummer raus, ohne dass die Nummer hochgezaehlt wurde, und fehlte deshalb hier.' },
+        { type: 'fix', text: 'Der Freigabezeitpunkt von v54 stand auf 13:14, ausgeliefert wurde aber der Stand von 13:27. Richtiggestellt.' },
+        { type: 'intern', text: 'Neuer Test: die Versionsfolge darf keine Luecke haben. Bisher wurde nur geprueft, ob die oberste Nummer zu APP_VERSION passt - das war vier Releases lang rot und ist erst durch den v54-Eintrag wieder gruen geworden, ohne dass die Luecke verschwunden war.' },
+        { type: 'intern', text: 'Neuer Test gegen implizite globale Variablen: _gistOk und _gistError werden von drei Seiten geteilt, aber nur in gallery.js deklariert. Wer sie ohne Deklaration zuweist, erzeugt still eine globale Variable, die erst im strict mode auffaellt. Der Test unterscheidet beide Faelle am Property-Deskriptor.' }
+      ]
+    },
+    {
       version: 'v54',
       date: '2026-09-22',
-      time: '13:14',
+      time: '13:27',
       title: 'Freigabezeitpunkt sichtbar, Sammelliste der Befunde entfernt',
       changes: [
         { type: 'neu', text: 'Neben der Versionsnummer steht jetzt der Freigabezeitpunkt - unter dem Titel, im Werkzeugmenue und in dieser Dokumentation. Damit ist ohne Nachfragen erkennbar, ob ein Geraet den aktuellen Stand hat.' },
         { type: 'intern', text: 'Gepflegt wird der Zeitpunkt in version.js. Die Seite hat keinen Build-Schritt, der ihn stempeln koennte; tests/ui.test.mjs prueft dafuer, dass er zum obersten Eintrag hier passt, damit er beim Hochzaehlen nicht stehenbleibt.' },
         { type: 'fix', text: 'Datumsangaben in dieser Dokumentation stehen einheitlich als 22.09.2026 statt 2026-09-22. Aeltere Eintraege haben keine Uhrzeit - die wird nicht nachtraeglich erfunden.' },
         { type: 'intern', text: 'Die Sammelliste "Offene Befunde" oben im Build Log ist entfernt. Sie war eine Sprungliste ueber alle Kapitel, aber jede dort aufgefuehrte Arbeit ist ohnehin ein offener Punkt, und den Fortschritt zeigen die Phasenbalken. Zwei Tests halten sie draussen.' },
-        { type: 'intern', text: 'Drei Zeilen in changelog.js hatten Windows-Zeilenenden in einer sonst reinen Unix-Datei. Begradigt.' }
+        { type: 'intern', text: 'Drei Zeilen in changelog.js hatten Windows-Zeilenenden in einer sonst reinen Unix-Datei. Begradigt.' },
+        { type: 'fix', text: 'Ebenfalls unter v54 ausgeliefert, nachgetragen: Beim Speichern nennt die Meldung jetzt den konkreten Fehlergrund - "Gespeichert, Sync-Fehler: Status 422: ..." statt pauschal "Offline gespeichert (Sync-Fehler)". Der HTTP-Status und die Fehlermeldung der GitHub-API stehen dabei.' },
+        { type: 'fix', text: 'Kein doppelter Hinweis mehr: die Sync-Funktion meldet nicht mehr selbst, sondern reicht den Grund an die aufrufende Stelle weiter. Vorher erschienen "Cloud-Fehler" und "Sync-Fehler" nacheinander.' },
+        { type: 'intern', text: 'Payload-Groesse und Fehlerdetails landen zur Fehlersuche in der Browser-Konsole.' }
+      ]
+    },
+    {
+      version: 'v53',
+      date: '2026-09-22',
+      time: '09:45',
+      title: 'Klarere Speicher-Meldungen',
+      changes: [
+        { type: 'neu', text: 'Die Rueckmeldung beim Speichern unterscheidet vier Faelle statt einem: online mit erfolgreichem Sync, offline, online mit Sync-Fehler, und ohne hinterlegten Token.' },
+        { type: 'intern', text: 'In allen drei Seiten gleich, samt Uebersetzung der neuen Meldungen.' }
+      ]
+    },
+    {
+      version: 'v52',
+      date: '2026-09-22',
+      time: '09:37',
+      title: 'Externe Dokumente lokal archiviert',
+      changes: [
+        { type: 'neu', text: 'docs/afr-1399.html mit den Produktdaten, Flow-Werten und Spezifikationen des AFR 1399 liegt jetzt im Repository.' },
+        { type: 'neu', text: 'Spec Card von COMP Cams, AFR-Produktseite samt Einbauanleitung und die Ford-BOSS-Block-Uebersicht liegen als lokale Dateien vor und werden von dort verlinkt.' }
+      ]
+    },
+    {
+      version: 'v51',
+      date: '2026-09-22',
+      time: '09:28',
+      title: 'Quellenlinks einheitlich: lokal oder extern',
+      changes: [
+        { type: 'neu', text: 'Jeder Quellenverweis in den Specs zeigt an, woher er kommt: gruen mit "offline" fuer ein Dokument im Repository, orange mit "online" fuer eine Herstellerseite im Netz.' },
+        { type: 'intern', text: 'Betrifft Block, Short Block, Nockenwelle, Kolben und Zylinderkoepfe. Die Verweise auf DellOrto, MSD, UN1-13 und Ethanol lagen bereits lokal.' }
+      ]
+    },
+    {
+      version: 'v50',
+      date: '2026-09-22',
+      time: '09:24',
+      title: 'Quellenlage und offene Verifikationen sichtbar gemacht',
+      changes: [
+        { type: 'neu', text: 'Komponenten mit hinterlegten Herstellerdaten tragen ein Dokument-Zeichen - Block, Short Block, DellOrto, MSD, UN1-13 sowie die Exkurse zu Ethanol und Kraftstoffdruck.' },
+        { type: 'neu', text: 'Werte, die gegen ein Hersteller-Blatt zu pruefen sind, tragen ein Fragezeichen statt eines stillen Sollwerts: ARP-154-4003- und ARP-254-1001-Drehmoment, Kolbenunterstand 6.5 ccm, Verdichtung 9.0:1 bei 64 ccm, PTV-Minima, MSD-Buchsenfarben, Zuendkerzenspalt und Druckplatten-Drehmoment.' }
       ]
     },
     {

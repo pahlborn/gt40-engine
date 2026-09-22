@@ -222,6 +222,51 @@ await test('Die aktuelle Version hat einen Eintrag', async () => {
   await p.close();
 });
 
+await test('Die Versionsfolge hat keine Luecke', async () => {
+  // Die Pruefung darunter sieht nur die oberste Nummer. Genau daran ist v50
+  // bis v53 vorbeigerutscht: jede dieser Versionen ging ohne Eintrag raus, die
+  // CI war vier Releases lang rot, und der v54-Eintrag hat sie wieder gruen
+  // gemacht, ohne dass die Luecke verschwunden war.
+  const p = await open('specs.html');
+  const nummern = await p.page.evaluate(() => RELEASES.map((r) => Number(r.version.slice(1))));
+  const luecken = [];
+  for (let i = 0; i < nummern.length - 1; i++) {
+    for (let n = nummern[i] - 1; n > nummern[i + 1]; n--) luecken.push('v' + n);
+  }
+  assertEqual(luecken.length, 0, 'Ohne Eintrag: ' + luecken.join(', '));
+  assert(nummern.every((n, i) => i === 0 || n < nummern[i - 1]),
+    'Die Eintraege stehen nicht absteigend: ' + nummern.join(', '));
+  await p.close();
+});
+
+// _gistOk und _gistError halten den Sync-Zustand. Deklariert sind sie in
+// gallery.js, das specs.html und build-log.html laden; index.html laedt es
+// nicht und deklariert sein _gistError selbst. Faellt eine Deklaration weg,
+// entsteht bei der ersten Zuweisung still eine globale Variable - das laeuft,
+// bis jemand strict mode einschaltet. Deshalb wird hier auf Anwesenheit
+// geprueft, nicht auf Abwesenheit: eine implizit angelegte Eigenschaft gibt es
+// beim Laden noch gar nicht, eine per var deklarierte schon.
+const SYNC_GLOBALS = {
+  'index.html': ['_gistError'],
+  'specs.html': ['_gistOk', '_gistError'],
+  'build-log.html': ['_gistOk', '_gistError']
+};
+
+for (const file of PAGES) {
+  await test(file + ': der Sync-Zustand ist deklariert, nicht implizit', async () => {
+    const p = await open(file);
+    const r = await p.page.evaluate((namen) => namen.map((n) => {
+      const d = Object.getOwnPropertyDescriptor(window, n);
+      return { n, da: !!d, konfigurierbar: !!d && d.configurable };
+    }), SYNC_GLOBALS[file]);
+    const fehlt = r.filter((x) => !x.da).map((x) => x.n);
+    const implizit = r.filter((x) => x.da && x.konfigurierbar).map((x) => x.n);
+    assertEqual(fehlt.length, 0, 'Keine Deklaration gefunden fuer: ' + fehlt.join(', '));
+    assertEqual(implizit.length, 0, 'Implizit angelegt statt deklariert: ' + implizit.join(', '));
+    await p.close();
+  });
+}
+
 await test('Escape und Klick daneben schliessen das Overlay', async () => {
   const p = await open('specs.html');
   const r = await p.page.evaluate(async () => {
