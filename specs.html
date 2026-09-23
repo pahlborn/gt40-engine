@@ -496,6 +496,7 @@
 <script src="gallery.js"></script>
 <script src="field-sync.js"></script>
 <script src="validation.js"></script>
+<script src="reference.js"></script>
 </head>
 <body>
 
@@ -518,7 +519,7 @@
                 <button onclick="document.getElementById('importFile').click();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
                 <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
-                <button onclick="showGuide('guide-torque');closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128295; Torque Card</button>
+                <button onclick="showReference();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128295; Torque Card</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="forceReload();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:#718096;font-size:0.78rem;cursor:pointer;">&#128260; Seite neu laden</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
@@ -1951,65 +1952,6 @@
 
 </div><!-- /container -->
 
-<!-- ===== TORQUE QUICK-REFERENCE OVERLAY ===== -->
-<div class="guide-overlay" id="guide-torque">
-    <div class="guide-header" style="background:linear-gradient(135deg,#2c5282,#2b6cb0);">
-        <button class="guide-back" onclick="hideGuide('guide-torque')">&larr; Zur&uuml;ck</button>
-        <h2>Torque Quick-Reference (Drehmoment-Schnellkarte)</h2>
-    </div>
-    <div class="guide-content">
-        <p style="font-size:0.8rem;color:#718096;margin-bottom:0.8rem;">All torque values in assembly order. Print: <strong>Ctrl+P</strong> while this card is open.</p>
-
-        <h3 style="color:#2c5282;">Short Block (pre-assembled)</h3>
-        <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
-            <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.35rem;">Connection</th><th style="text-align:right;padding:0.35rem;">Torque</th><th style="text-align:left;padding:0.35rem;">Lubricant</th></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Main Caps upper row (1&ndash;5)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">80 ft-lbs (108 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">30wt Oil</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Main Caps lower row (6&ndash;10)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">70 ft-lbs (95 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">30wt Oil + Thread Sealant</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Oil Gallery Plugs -4 AN</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">8&ndash;10 ft-lbs (11&ndash;14 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Teflon Tape</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Thrust Plate</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">9&ndash;12 ft-lbs (12&ndash;16 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
-        </table>
-
-        <h3 style="color:#2c5282;">Cam &amp; Timing</h3>
-        <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
-            <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.35rem;">Connection</th><th style="text-align:right;padding:0.35rem;">Torque</th><th style="text-align:left;padding:0.35rem;">Lubricant</th></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Cam Bolt (ARP 254-1001)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">25&ndash;30 ft-lbs (34&ndash;41 Nm) <a class="src-link unverified" title="ARP Instruction Sheet 254-1001 pruefen! Forum nennt 35-40 ft-lbs"></a></td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Oil Pump to Block</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">22&ndash;25 ft-lbs (30&ndash;34 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Engine Oil</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Timing Cover</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">12&ndash;18 ft-lbs (16&ndash;24 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Harmonic Balancer Center Bolt</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">70&ndash;90 ft-lbs (95&ndash;122 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
-        </table>
-
-        <h3 style="color:#2c5282;">Cylinder Heads (Zylinderk&ouml;pfe)</h3>
-        <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
-            <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.35rem;">Connection</th><th style="text-align:right;padding:0.35rem;">Torque</th><th style="text-align:left;padding:0.35rem;">Lubricant</th></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Head Studs ARP 154-4003 &ndash; Upper (1-5, blind)<br><span style="font-size:0.72rem;color:#718096;">3 stages: 35 &rarr; 55 &rarr; 80 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">80 ft-lbs (108 Nm) <a class="src-link unverified" title="ARP Instruction Sheet 154-4003 pruefen! Generalkatalog nennt ~100 ft-lbs fuer 1/2&quot; Studs"></a></td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Head Studs ARP 154-4003 &ndash; Lower (6-10, water)<br><span style="font-size:0.72rem;color:#718096;">3 stages: 35 &rarr; 55 &rarr; 70 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">70 ft-lbs (95 Nm) <a class="src-link unverified" title="ARP Instruction Sheet 154-4003 pruefen!"></a></td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">ARP Ultra-Torque + Thread Sealant</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;font-size:0.72rem;color:#718096;" colspan="3">Cross pattern center &rarr; outward</td></tr>
-        </table>
-
-        <h3 style="color:#2c5282;">Intake, Ignition &amp; Accessories</h3>
-        <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
-            <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.35rem;">Connection</th><th style="text-align:right;padding:0.35rem;">Torque</th><th style="text-align:left;padding:0.35rem;">Lubricant</th></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Intake Manifold (Fel-Pro 1250)<br><span style="font-size:0.72rem;color:#718096;">3 stages: 5 &rarr; 12 &rarr; 18 ft-lbs</span></td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">18 ft-lbs (24 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Engine Oil</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Spark Plugs (Aluminum Head)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">15&ndash;22 ft-lbs (20&ndash;30 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Anti-Seize (threads only)</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Water Pump (Wasserpumpe)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">15&ndash;22 ft-lbs (20&ndash;30 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Oil Pan (Oelwanne)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">10&ndash;12 ft-lbs (14&ndash;16 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Oil Pan Drain Plug</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">15&ndash;25 ft-lbs (20&ndash;34 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Valve Covers (Ventildeckel)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">4&ndash;6 ft-lbs (5&ndash;8 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Fuel Pump (Kraftstoffpumpe)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">18&ndash;22 ft-lbs (24&ndash;30 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
-        </table>
-
-        <h3 style="color:#2c5282;">Drivetrain (Antriebsstrang)</h3>
-        <table style="width:100%;font-size:0.8rem;border-collapse:collapse;margin-bottom:1rem;">
-            <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.35rem;">Connection</th><th style="text-align:right;padding:0.35rem;">Torque</th><th style="text-align:left;padding:0.35rem;">Lubricant</th></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Pressure Plate / Clutch (Kupplung)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">12&ndash;24 ft-lbs (16&ndash;33 Nm) <a class="src-link unverified" title="Kupplungshersteller pruefen! Typisch SBF: 25-35 ft-lbs"></a></td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
-            <tr><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Flywheel Bolts (Schwungrad)</td><td style="text-align:right;padding:0.3rem;border-bottom:1px solid #e2e8f0;font-weight:700;">75&ndash;85 ft-lbs (102&ndash;115 Nm)</td><td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Trocken (dry)</td></tr>
-        </table>
-
-        <div style="background:#ebf4ff;padding:0.6rem;border-radius:8px;border:1px solid #bee3f8;font-size:0.78rem;margin-top:0.5rem;">
-            <strong style="color:#2c5282;">Important:</strong> ARP fasteners require <strong>ARP Ultra-Torque</strong> (100-9908). Torque values are ONLY valid with this lubricant! Without ARP Lube = different clamp load at the same torque reading.
-        </div>
-    </div>
-</div>
 
 <!-- ===== GLOSSARY OVERLAY ===== -->
 <div class="guide-overlay" id="guide-glossary">
@@ -2050,6 +1992,7 @@
 <!-- Floating Action Buttons -->
 <div class="fab-stack">
     <button class="fab-btn glossary" onclick="showGuide('guide-glossary')" title="Glossary">&#128214;</button>
+    <button class="fab-btn reference" onclick="showReference()" title="Betriebsmittel &amp; Anzugswerte">&#128295;</button>
     <button class="fab-btn" onclick="document.getElementById('convPanel').classList.toggle('open')" title="Unit Converter">&#8644;</button>
     <button class="fab-btn" onclick="document.getElementById('unitsPanel').classList.toggle('open')" title="Units Reference" style="background:#4a5568;font-size:0.85rem;">&#128207;</button>
 </div>
@@ -2282,9 +2225,10 @@
         // Vollbild-Overlay und lief auf iOS in denselben Fehler.
         if (typeof sperreSeite === 'function') sperreSeite();
         else document.body.style.overflow = 'hidden';
+        document.body.classList.add('overlay-offen');
         if (id === 'guide-glossary') { updateGlossaryCount(); }
     }
-    function hideGuide(id) { document.getElementById(id).classList.remove('show'); if (typeof gibSeiteFrei === 'function') gibSeiteFrei(); else document.body.style.overflow = ''; }
+    function hideGuide(id) { document.getElementById(id).classList.remove('show'); if (typeof gibSeiteFrei === 'function') gibSeiteFrei(); else document.body.style.overflow = ''; document.body.classList.remove('overlay-offen'); }
 
     // ==== GLOSSARY ====
     function openGlossary(term) {

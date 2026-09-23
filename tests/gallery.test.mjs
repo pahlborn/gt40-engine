@@ -11,6 +11,7 @@
 // Lokal:  npm test
 // In CI:  .github/workflows/tests.yml
 
+import fs from 'node:fs';
 import { chromium } from 'playwright';
 import {
   startServer, stubGitHub, waitForGallery, totalPhotos, fixtureCounts,
@@ -373,6 +374,49 @@ await test('Overlays sperren die Seite iOS-tauglich', async () => {
   await page.waitForTimeout(300);
   assertEqual(await page.evaluate(() => window.scrollY), vorher,
     'Scrollstand nach dem Glossar verloren');
+  await ctx.close();
+});
+
+await test('Nachschlagekarte ist auf jeder Seite erreichbar', async () => {
+  // Die alte Drehmomentkarte lag als Markup in specs.html und war nur dort
+  // und nur ueber das Werkzeugmenue zu haben. Jetzt: Daten plus Knopf rechts.
+  for (const datei of ['index.html', 'specs.html', 'build-log.html']) {
+    const text = fs.readFileSync(new URL('../' + datei, import.meta.url), 'utf8');
+    assert(text.includes('reference.js'), datei + ': reference.js nicht eingebunden');
+    assert(text.includes('showReference()'), datei + ': kein Knopf fuer die Karte');
+    assert(!text.includes('id="guide-torque"'), datei + ': altes Overlay noch da');
+  }
+
+  const ctx = await browser.newContext({ viewport: { width: 1024, height: 768 } });
+  const page = await ctx.newPage();
+  await stubGitHub(page);
+  await page.goto(base + '/build-log.html');
+  await page.waitForTimeout(600);
+
+  // Erst beim Oeffnen bauen, nicht auf Vorrat im DOM liegen.
+  assertEqual(await page.evaluate(() => !!document.getElementById('guide-reference')),
+    false, 'Karte liegt schon vor dem Oeffnen im DOM');
+
+  const offen = await page.evaluate(() => {
+    showReference();
+    return {
+      da: !!document.getElementById('guide-reference'),
+      zeilen: document.querySelectorAll('#guide-reference tr.ref-row').length,
+      fabWeg: getComputedStyle(document.querySelector('.fab-stack')).display === 'none'
+    };
+  });
+  assert(offen.da, 'Karte wurde nicht gebaut');
+  assert(offen.zeilen > 25, 'Karte hat nur ' + offen.zeilen + ' Zeilen');
+  assert(offen.fabWeg, 'Die runden Knoepfe liegen ueber der offenen Karte');
+
+  // Filter muss ueber alle Gruppen greifen.
+  const gefiltert = await page.evaluate(() => {
+    document.getElementById('referenceSearch').value = 'arp';
+    filterReference();
+    return [...document.querySelectorAll('#guide-reference tr.ref-row')]
+      .filter((tr) => tr.style.display !== 'none').length;
+  });
+  assert(gefiltert > 0 && gefiltert < 30, 'Filter greift nicht: ' + gefiltert + ' Zeilen');
   await ctx.close();
 });
 

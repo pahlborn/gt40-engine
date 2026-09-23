@@ -118,3 +118,19 @@
 .menu-version { display: block; width: 100%; text-align: left; padding: 0.4rem 0.75rem;
     border: none; background: none; cursor: pointer; font-size: 0.68rem; color: #718096; }
 .menu-version:hover { background: #f7fafc; color: #2b6cb0; }
+
+/* ---- Nachschlagekarte (reference.js) ---------------------------------- */
+/* Eigene Farbe, sonst sind zwei runde Knoepfe uebereinander nicht zu
+   unterscheiden. */
+.fab-btn.reference { background: #2c5282; }
+/* Die Knoepfe liegen mit z-index 900 ueber jedem Overlay (500) und standen
+   sonst mitten in der Tabelle. */
+body.overlay-offen .fab-stack { display: none; }
+.ref-group { margin-bottom: 1.4rem; }
+.ref-group-titel { font-size: 0.92rem; color: #2c5282; margin: 0 0 0.5rem; }
+.ref-leer { font-size: 0.85rem; color: #718096; padding: 1rem 0; text-align: center; }
+@media print {
+    .guide-overlay#guide-reference { position: static; overflow: visible; }
+    #guide-reference .glossary-search, #guide-reference .info-box { display: none; }
+    #guide-reference .ref-group { break-inside: avoid; }
+}
