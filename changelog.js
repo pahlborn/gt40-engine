@@ -13,18 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
-      version: 'v60',
+      version: 'v61',
       date: '2026-09-23',
-      time: '08:30',
+      time: '09:45',
       title: 'Galerie und Glossar auf iPad',
       changes: [
         { type: 'fix', text: 'Galerie und Glossar oeffneten auf dem iPad mit dem Kopf oberhalb des Bildschirms - Titel und Schliessen-Knopf waren nicht zu sehen, erst Runterscrollen brachte sie herein. Ursache ist nicht das Overlay, sondern die Sperre dahinter: body{overflow:hidden} haelt die Seite auf iOS/iPadOS nicht an, Safari scrollt per Touch weiter, und das position:fixed-Overlay bleibt dabei am Viewport, waehrend das Dokument darunter wegwandert. Jetzt wird der body selbst festgesetzt (position:fixed mit negativem top) und der Scrollstand beim Schliessen wiederhergestellt.' },
         { type: 'fix', text: 'Derselbe Fehler steckte im Jerico-Repo, weil beide dieselbe gallery.js benutzen. Dort ist er mit v11 behoben, hier zieht diese Fassung nach.' },
+        { type: 'fix', text: 'Versionsfolge richtiggestellt. Zwei Eintraege trugen v56: c11e54f hatte den Eintrag der Eingabepruefung von v57 auf v56 herabgesetzt und v57 fuer sich genommen, obwohl PR #26 unter v57 gemerged wurde. Damit war die Folge nicht mehr absteigend, und der Test dagegen war vier Releases lang rot. Jede Nummer ab der Eingabepruefung ist um eins angehoben: Eingabepruefung v57, Gist/Geraete v58, Stilles Speichern v59, Menue/Dashboard v60, diese Aenderung v61. Inhaltlich aendert sich kein Eintrag - nur die Zuordnung stimmt wieder. Wer heute boss302-v58 oder -v59 geladen hat, findet den zugehoerigen Eintrag jetzt eine Nummer hoeher; mit dem Sprung auf v61 zieht ohnehin jedes Geraet nach.' },
         { type: 'fix', text: 'Der Aenderungstyp "verbessert" aus v58 und v59 hatte weder eine Beschriftung noch eine Farbe - die sechs Eintraege wurden ohne Badge dargestellt, anders als alle uebrigen. Beides ergaenzt. Der Test dazu prueft jetzt, ob ein benutzter Typ dargestellt werden kann, statt ihn gegen eine Liste zu halten.' }
       ]
     },
     {
-      version: 'v59',
+      version: 'v60',
       date: '2026-09-23',
       time: '08:00',
       title: 'Menue aufgeraeumt, Dashboard-Bug, Simulator auto-aktualisiert',
@@ -37,7 +38,7 @@
       ]
     },
     {
-      version: 'v58',
+      version: 'v59',
       date: '2026-09-23',
       time: '07:00',
       title: 'Stilles Speichern, Fehlerprotokoll, Auto-Reconnect',
@@ -49,7 +50,7 @@
       ]
     },
     {
-      version: 'v57',
+      version: 'v58',
       date: '2026-09-22',
       time: '16:00',
       title: 'Gist automatisch, Geraete-Tracking',
@@ -61,7 +62,7 @@
       ]
     },
     {
-      version: 'v56',
+      version: 'v57',
       date: '2026-09-22',
       time: '15:46',
       title: 'Eingabepruefung: zwei Fehler behoben, Tests nachgezogen',
