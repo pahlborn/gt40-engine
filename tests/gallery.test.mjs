@@ -331,6 +331,51 @@ await test('index.html hat kein eigenes Foto-System mehr', async () => {
   await ctx.close();
 });
 
+await test('Overlays sperren die Seite iOS-tauglich', async () => {
+  // body{overflow:hidden} haelt die Seite auf iOS/iPadOS nicht an: Safari
+  // scrollt per Touch weiter, das position:fixed-Overlay bleibt am Viewport,
+  // und der Galerie-Kopf landet oberhalb des Bildschirms. Traegt nur, wenn
+  // der body selbst festgesetzt wird.
+  const ctx = await browser.newContext({ viewport: { width: 1024, height: 768 } });
+  const page = await ctx.newPage();
+  await stubGitHub(page);
+  await page.goto(base + '/specs.html');
+  await page.waitForTimeout(600);
+  await page.evaluate(() => window.scrollTo(0, 800));
+  const vorher = await page.evaluate(() => window.scrollY);
+  assert(vorher > 0, 'Seite liess sich nicht scrollen - Test taugt so nichts');
+
+  await page.evaluate(() => openGallery('shortblock'));
+  await page.waitForTimeout(500);
+  const auf = await page.evaluate(() => {
+    const k = document.getElementById('galleryTitle').getBoundingClientRect();
+    return {
+      kopfSichtbar: k.top >= 0 && k.top < window.innerHeight,
+      bodyPosition: getComputedStyle(document.body).position,
+      top: document.body.style.top
+    };
+  });
+  assert(auf.kopfSichtbar, 'Galerie-Kopf steht ausserhalb des Bildschirms');
+  assertEqual(auf.bodyPosition, 'fixed', 'body ist nicht festgesetzt');
+  assertEqual(auf.top, '-' + vorher + 'px', 'Scrollstand nicht im top vermerkt');
+
+  await page.evaluate(() => closeGallery());
+  await page.waitForTimeout(400);
+  assertEqual(await page.evaluate(() => window.scrollY), vorher,
+    'Scrollstand nach dem Schliessen verloren');
+
+  // Das Glossar ist dasselbe Muster und hatte denselben Fehler.
+  await page.evaluate(() => showGuide('guide-glossary'));
+  await page.waitForTimeout(300);
+  assertEqual(await page.evaluate(() => getComputedStyle(document.body).position),
+    'fixed', 'Glossar sperrt die Seite nicht');
+  await page.evaluate(() => hideGuide('guide-glossary'));
+  await page.waitForTimeout(300);
+  assertEqual(await page.evaluate(() => window.scrollY), vorher,
+    'Scrollstand nach dem Glossar verloren');
+  await ctx.close();
+});
+
 } finally {
   await browser.close();
   server.close();

@@ -178,19 +178,30 @@ await test('Jeder Eintrag hat Version, Datum, Titel und Aenderungen', async () =
   const p = await open('specs.html');
   const r = await p.page.evaluate(() => {
     openChangelog();
+    const TYPE_LABEL_PUBLIC = window.CHANGELOG_TYPE_LABEL || {};
     return RELEASES.map((rel) => ({
       v: /^v\d+$/.test(rel.version),
       d: /^\d{4}-\d{2}-\d{2}$/.test(rel.date),
       t: !!(rel.title && rel.title.length > 5),
       c: Array.isArray(rel.changes) && rel.changes.length > 0,
-      typen: rel.changes.every((x) => ['neu', 'fix', 'intern'].indexOf(x.type) !== -1)
+      // Ein Typ zaehlt als bekannt, wenn er eine Beschriftung hat - nicht,
+      // wenn er auf einer Liste steht. Sonst faellt nicht auf, dass er ohne
+      // Badge dargestellt wird, so geschehen bei 'verbessert' in v58/v59.
+      typen: rel.changes.every((x) => !!TYPE_LABEL_PUBLIC[x.type])
     }));
   });
   assert(r.every((x) => x.v), 'Versionsformat');
   assert(r.every((x) => x.d), 'Datumsformat');
   assert(r.every((x) => x.t), 'Titel fehlt');
   assert(r.every((x) => x.c), 'Keine Aenderungen');
-  assert(r.every((x) => x.typen), 'Unbekannter Aenderungstyp');
+  assert(r.every((x) => x.typen),
+    'Aenderungstyp ohne Beschriftung - wird ohne Badge dargestellt');
+  // Und die Farbe muss es auch geben, sonst faellt der Badge farblos aus.
+  const css = fs.readFileSync(path.join(REPO_ROOT, 'gallery.css'), 'utf8');
+  const ohneFarbe = Object.keys(r.length ? (await p.page.evaluate(
+    () => window.CHANGELOG_TYPE_LABEL || {})) : {})
+    .filter((t) => !css.includes('.cl-type.' + t + ' '));
+  assertEqual(ohneFarbe, [], 'Aenderungstyp ohne eigene Farbe in gallery.css');
   await p.close();
 });
 

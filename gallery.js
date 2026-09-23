@@ -838,6 +838,42 @@ function updateCompStrip(group) {
 }
 
 var _galleryScrollPos = 0;
+
+// Scroll-Sperre fuer Vollbild-Overlays.
+//
+// body{overflow:hidden} allein reicht auf iOS/iPadOS nicht: Safari scrollt die
+// Seite per Touch trotzdem weiter. Das Overlay ist position:fixed und bleibt am
+// Viewport, waehrend das Dokument darunter wegwandert - sichtbar wurde das
+// daran, dass Kopfzeile und Schliessen-Knopf der Galerie oberhalb des
+// Bildschirms standen und erst beim Runterscrollen hereinkamen.
+//
+// Zuverlaessig ist nur, den body selbst festzusetzen und den Scrollstand zu
+// merken. Ohne das negative top springt die Seite beim Oeffnen an den Anfang.
+function sperreSeite() {
+    _galleryScrollPos = window.scrollY || window.pageYOffset || 0;
+    var b = document.body;
+    b.style.position = 'fixed';
+    b.style.top = '-' + _galleryScrollPos + 'px';
+    b.style.left = '0';
+    b.style.right = '0';
+    b.style.width = '100%';
+    b.style.overflow = 'hidden';
+}
+
+function gibSeiteFrei() {
+    var b = document.body;
+    b.style.position = '';
+    b.style.top = '';
+    b.style.left = '';
+    b.style.right = '';
+    b.style.width = '';
+    b.style.overflow = '';
+    window.scrollTo(0, _galleryScrollPos);
+}
+
+function seiteIstGesperrt() {
+    return document.body.style.position === 'fixed';
+}
 // Ueberschrift der Galerie: data-gallery-title, sonst die naechste Ueberschrift
 // oberhalb, sonst der Gruppenname. Frueher wurde hart .comp-body erwartet -
 // das gibt es nur in specs.html.
@@ -861,7 +897,7 @@ function _galleryTitleFor(group, strip) {
 }
 
 function openGallery(group) {
-    _galleryScrollPos = window.scrollY || window.pageYOffset;
+    // Den Scrollstand merkt sperreSeite() selbst.
     var overlay = document.getElementById('galleryOverlay');
     ensureGalleryChrome();
     var title = document.getElementById('galleryTitle');
@@ -870,7 +906,7 @@ function openGallery(group) {
     title.textContent = _galleryTitleFor(group, strip);
     overlay.dataset.group = group;
     overlay.classList.add('show');
-    document.body.style.overflow = 'hidden';
+    sperreSeite();
     renderGallery(group);
 }
 
@@ -963,8 +999,7 @@ function renderGallery(group) {
 
 function closeGallery() {
     document.getElementById('galleryOverlay').classList.remove('show');
-    document.body.style.overflow = '';
-    window.scrollTo(0, _galleryScrollPos);
+    gibSeiteFrei();
 }
 
 // ==== DRAG & DROP REORDER (desktop + touch) ====
@@ -1684,7 +1719,7 @@ function anyOverlayOpen() {
     for (var i = 0; i < sel.length; i++) {
         if (document.querySelector(sel[i])) return true;
     }
-    return document.body.style.overflow === 'hidden';
+    return seiteIstGesperrt();
 }
 
 function ensureGalleryChrome() {
