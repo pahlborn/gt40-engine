@@ -13,6 +13,18 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v58',
+      date: '2026-09-23',
+      time: '07:00',
+      title: 'Stilles Speichern, Fehlerprotokoll, Auto-Reconnect',
+      changes: [
+        { type: 'verbessert', text: 'Speichern zeigt keinen Toast mehr bei Erfolg. Sync-Badge im Header (gruen/rot) reicht als Statusanzeige.' },
+        { type: 'verbessert', text: 'Fehler-Toasts bleiben stehen, bis der Benutzer sie aktiv schliesst (x-Knopf). Roter Hintergrund zur Unterscheidung.' },
+        { type: 'neu', text: 'Fehlerprotokoll: Sync-Fehler werden automatisch ins Gist geschrieben (eigene Datei *-errors.json mit Zeitstempel, Geraete-ID, Seite, Version). Max. 50 Eintraege, aeltere werden verdraengt.' },
+        { type: 'neu', text: 'Auto-Reconnect: Wenn das Geraet nach Offline-Betrieb wieder online geht, werden lokal gespeicherte Aenderungen automatisch in die Cloud synchronisiert.' }
+      ]
+    },
+    {
       version: 'v57',
       date: '2026-09-22',
       time: '16:00',

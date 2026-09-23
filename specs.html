@@ -354,7 +354,8 @@
         .glossary-no-results { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.88rem; }
 
         /* ---- Toast ---- */
-        .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: white; padding: 0.65rem 1.3rem; border-radius: 10px; font-size: 0.82rem; font-weight: 500; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10000; transition: transform 0.3s ease; }
+        .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: white; padding: 0.65rem 1.3rem; border-radius: 10px; font-size: 0.82rem; font-weight: 500; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10000; transition: transform 0.3s ease; display: flex; align-items: center; max-width: calc(100vw - 2rem); }
+        .toast-error { background: #c53030; }
         .toast.show { transform: translateX(-50%) translateY(0); }
 
         /* ---- Print ---- */
@@ -2396,30 +2397,25 @@
 
     async function saveSettings() {
         const token = document.getElementById('ghToken').value.trim();
-        if (!token) { showToast('Bitte Token eingeben!'); return; }
+        if (!token) { showToast('Bitte Token eingeben!', { sticky: true, isError: true }); return; }
         try {
             showToast('Verbinde...');
             const res = await fetch('https://api.github.com/user', { headers: { 'Authorization': 'Bearer ' + token } });
-            if (!res.ok) { showToast('Token ungueltig!'); return; }
+            if (!res.ok) { showToast('Token ungueltig!', { sticky: true, isError: true }); return; }
             const user = await res.json();
             localStorage.setItem('gh_token', token);
-            // Gist automatisch finden oder erstellen
             showToast('Suche Gist...');
             var gid = await findGistByFilename(token);
-            if (gid) {
-                showToast('Gist gefunden - verbinde...');
-            } else {
-                showToast('Kein Gist gefunden - lege neuen an...');
+            if (!gid) {
+                showToast('Lege neuen Gist an...');
                 gid = await createGist(token);
-                if (!gid) { showToast('Gist konnte nicht erstellt werden'); return; }
+                if (!gid) { showToast('Gist konnte nicht erstellt werden', { sticky: true, isError: true }); return; }
             }
             localStorage.setItem(GIST_ID_KEY, gid);
             FIXED_GIST_ID = gid;
-            showToast('Verbunden als ' + user.login);
             updateSyncBadge(); updateConnectionStatus(); closeSettings();
-            const ok = await loadFromGist();
-            if (ok) showToast('Cloud-Daten geladen!');
-        } catch (err) { showToast('Fehler: ' + err.message); }
+            await loadFromGist();
+        } catch (err) { showToast('Verbindungsfehler: ' + err.message, { sticky: true, isError: true }); }
     }
     function disconnectGist() {
         localStorage.removeItem('gh_token');
@@ -2541,17 +2537,14 @@
         return true;
     }
     async function syncFromCloud() {
-        showToast('Lade aus Cloud...');
         if (!isGistConfigured()) {
-            // Ohne Token gibt es keine Messwerte, aber die Galerie kommt aus dem
-            // oeffentlichen Repo und funktioniert trotzdem.
             var n = await refreshGallery(true);
-            showToast(n >= 0 ? 'Galerie aktualisiert (' + n + ' Fotos)' : 'Galerie-Update fehlgeschlagen');
+            if (n < 0) showToast('Galerie-Update fehlgeschlagen', { sticky: true, isError: true });
             openSettings();
             return;
         }
-        if (await loadFromGist()) { showToast('Cloud-Daten geladen!'); updateSaveStatus(); }
-        else { showToast('Cloud-Fehler: ' + (_gistError || 'unbekannt')); }
+        if (await loadFromGist()) { updateSaveStatus(); }
+        else { showToast('Sync-Fehler: ' + (_gistError || 'unbekannt'), { sticky: true, isError: true }); }
     }
 
     // ==== QUENCH TABLE ====
@@ -2686,11 +2679,9 @@
         var data = FieldSync.mergeIntoExisting(existing, current, { recordClears: dataLoaded });
         localStorage.setItem('engineBuildLog', JSON.stringify(data));
         updateSaveStatus();
-        if (isGistConfigured()) {
-            if (!navigator.onLine) { showToast('Offline gespeichert'); }
-            else if (await saveToGist()) { showToast('Gespeichert'); }
-            else { showToast('Gespeichert, Sync-Fehler: ' + (_gistError || 'unbekannt')); }
-        } else { showToast('Lokal gespeichert (kein Sync)'); }
+        if (isGistConfigured() && navigator.onLine) {
+            if (!await saveToGist()) { showToast('Sync-Fehler: ' + (_gistError || 'unbekannt'), { sticky: true, isError: true }); }
+        }
     }
     async function loadData() {
         isLoading = true;
@@ -3666,9 +3657,35 @@
             });
         } catch(e) {}
     }
-    function showToast(msg) {
-        const t = document.getElementById('toast'); t.textContent = msg;
-        t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500);
+    function showToast(msg, opts) {
+        opts = opts || {};
+        const t = document.getElementById('toast');
+        if (opts.sticky || opts.isError) {
+            t.innerHTML = '<span>' + msg + '</span><button onclick="this.parentElement.classList.remove(\'show\')" style="background:none;border:none;color:inherit;font-size:1.1rem;cursor:pointer;margin-left:0.5rem;padding:0 0.3rem;line-height:1;">&times;</button>';
+        } else { t.textContent = msg; }
+        if (opts.isError) t.classList.add('toast-error'); else t.classList.remove('toast-error');
+        t.classList.add('show');
+        clearTimeout(t._timer);
+        if (!opts.sticky && !opts.isError) { t._timer = setTimeout(() => t.classList.remove('show'), 2500); }
+        if (opts.isError) logErrorToGist(msg);
+    }
+    async function logErrorToGist(msg) {
+        try {
+            if (!FIXED_GIST_ID || !navigator.onLine) return;
+            var cfg = getGistConfig(); if (!cfg.token) return;
+            var logFile = GIST_FILENAME.replace('.json', '-errors.json');
+            var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID,
+                { headers: { 'Authorization': 'Bearer ' + cfg.token } });
+            if (!res.ok) return;
+            var gist = await res.json();
+            var existing = [];
+            if (gist.files && gist.files[logFile]) { try { existing = JSON.parse(gist.files[logFile].content); } catch(e) {} }
+            var devId = typeof FieldSync !== 'undefined' ? FieldSync.getDeviceId() : 'unknown';
+            existing.push({ time: new Date().toISOString(), device: devId, page: location.pathname.split('/').pop(), version: typeof APP_VERSION === 'string' ? APP_VERSION : '', error: msg });
+            if (existing.length > 50) existing = existing.slice(-50);
+            var files = {}; files[logFile] = { content: JSON.stringify(existing, null, 2) };
+            await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { method: 'PATCH', headers: { 'Authorization': 'Bearer ' + cfg.token, 'Content-Type': 'application/json' }, body: JSON.stringify({ files: files }) });
+        } catch(e) { console.error('[Fehlerprotokoll]', e.message); }
     }
 
     // ==== NAVIGATION ====
@@ -4345,6 +4362,10 @@
             });
         }).catch(function() {});
     }
+    // Automatisch syncen, wenn die Verbindung wiederkommt
+    window.addEventListener('online', function () {
+        if (isGistConfigured()) saveData();
+    });
 
 </script>
 <script src="glossar.js"></script>
