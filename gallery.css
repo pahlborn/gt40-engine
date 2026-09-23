@@ -110,6 +110,7 @@
 .changelog-overlay .cl-type.neu { background: #c6f6d5; color: #22543d; }
 .changelog-overlay .cl-type.fix { background: #fed7d7; color: #822727; }
 .changelog-overlay .cl-type.intern { background: #edf2f7; color: #4a5568; }
+.changelog-overlay .cl-type.verbessert { background: #bee3f8; color: #2a4365; }
 
 /* Versionsnummer als Einstieg */
 .header-title .ht-version { cursor: pointer; }

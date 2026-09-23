@@ -280,7 +280,8 @@
         .progress-fill { background: var(--success); height: 100%; border-radius: 10px; transition: width 0.3s; }
         .progress-text { font-size: 0.68rem; color: var(--text-light); margin-top: 0.15rem; }
 
-        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1a202c; color: white; padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 0.82rem; opacity: 0; transition: all 0.3s; z-index: 9999; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1a202c; color: white; padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 0.82rem; opacity: 0; transition: all 0.3s; z-index: 9999; display: flex; align-items: center; max-width: calc(100vw - 2rem); }
+        .toast-error { background: #c53030; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
         .lightbox { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 8000; align-items: center; justify-content: center; flex-direction: column; padding: 1rem; }
@@ -440,9 +441,7 @@
         <div style="position:relative;">
             <button class="header-gear" onclick="toggleToolMenu()" id="toolMenuBtn">&#9881;</button>
             <div id="toolMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:2px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:180px;z-index:200;overflow:hidden;">
-                <button onclick="syncFromCloud();closeToolMenu()" id="syncBtn" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud Sync</button>
-                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
-                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Einstellungen</button>
+                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud-Sync</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="saveData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128190; Save</button>
                 <button onclick="exportJSON();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
@@ -5031,7 +5030,7 @@
 <!-- ===== SETTINGS MODAL ===== -->
 <div class="modal-overlay" id="settingsModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:9000;align-items:center;justify-content:center;">
     <div style="background:white;border-radius:12px;padding:1.5rem;max-width:420px;width:calc(100vw - 32px);box-shadow:0 8px 30px rgba(0,0,0,0.3);">
-        <h3 style="margin:0 0 0.75rem;font-size:1rem;color:var(--primary);">Einstellungen</h3>
+        <h3 style="margin:0 0 0.75rem;font-size:1rem;color:var(--primary);">Cloud-Sync</h3>
         <div class="status-line" id="connectionStatus" style="font-size:0.78rem;margin-bottom:0.5rem;"></div>
         <label for="deviceName" style="font-size:0.78rem;font-weight:600;">Ger&auml;tename</label>
         <input type="text" id="deviceName" placeholder="z.B. iPad Werkstatt" style="width:100%;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.82rem;margin:0.3rem 0 0.5rem;" oninput="if(typeof FieldSync!=='undefined')FieldSync.setDeviceName(this.value)">
@@ -5152,26 +5151,24 @@
     async function saveSettings() {
         var tokEl = document.getElementById('ghToken');
         var token = tokEl ? tokEl.value.trim() : '';
-        if (!token) { showToast('Bitte Token eingeben!'); return; }
+        if (!token) { showToast('Bitte Token eingeben!', { sticky: true, isError: true }); return; }
         try {
             showToast('Verbinde...');
             const res = await fetch('https://api.github.com/user', { headers: { 'Authorization': 'Bearer ' + token } });
-            if (!res.ok) { showToast('Token ungueltig!'); return; }
+            if (!res.ok) { showToast('Token ungueltig!', { sticky: true, isError: true }); return; }
             const user = await res.json();
             localStorage.setItem('gh_token', token);
             showToast('Suche Gist...');
             var gid = await findGistByFilename(token);
-            if (gid) { showToast('Gist gefunden...'); }
-            else {
+            if (!gid) {
                 showToast('Lege neuen Gist an...');
                 gid = await createGist(token);
-                if (!gid) { showToast('Gist konnte nicht erstellt werden'); return; }
+                if (!gid) { showToast('Gist konnte nicht erstellt werden', { sticky: true, isError: true }); return; }
             }
             localStorage.setItem(GIST_ID_KEY, gid);
             FIXED_GIST_ID = gid;
-            showToast('Verbunden als ' + user.login);
             updateSyncBadge(); updateConnectionStatus(); closeSettings();
-        } catch (err) { showToast('Fehler: ' + err.message); }
+        } catch (err) { showToast('Verbindungsfehler: ' + err.message, { sticky: true, isError: true }); }
     }
     function disconnectGist() {
         localStorage.removeItem('gh_token');
@@ -5179,8 +5176,7 @@
         FIXED_GIST_ID = LEGACY_GIST_ID;
         var tokEl = document.getElementById('ghToken');
         if (tokEl) tokEl.value = '';
-        updateSyncBadge(); updateConnectionStatus();
-        showToast('Verbindung getrennt.'); closeSettings();
+        updateSyncBadge(); updateConnectionStatus(); closeSettings();
     }
     // ==== VERSION ====
     // Eine Quelle: version.js. Wird unter dem Titel und im Menue angezeigt.
@@ -5222,27 +5218,21 @@
     }
     async function syncFromCloud() {
         if (!isGistConfigured()) { openSettings(); return; }
-        showToast('Lade aus Cloud...');
         isLoading = true;
         try {
             var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { headers: { 'Authorization': 'Bearer ' + getGistConfig().token } });
-            if (!res.ok) { isLoading = false; showToast('Cloud-Fehler (Status ' + res.status + ')'); return; }
+            if (!res.ok) { isLoading = false; showToast('Sync-Fehler: Status ' + res.status, { sticky: true, isError: true }); return; }
             var gist = await res.json();
             var file = gist.files && gist.files[GIST_FILENAME];
-            if (!file) { isLoading = false; showToast('Keine Cloud-Daten gefunden'); return; }
+            if (!file) { isLoading = false; return; }
             var cloudData = JSON.parse(file.content);
             var localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-            // Feldweise zusammenfuehren: der juengere Zeitstempel gewinnt,
-            // ein geloeschtes Feld also auch (siehe field-sync.js).
             var merged = FieldSync.mergeRecords(cloudData, localData);
             applyData(merged);
             localStorage.setItem('engineBuildLog', JSON.stringify(merged));
-            // Befunde liegen in einer eigenen Gist-Datei und werden pro Eintrag
-            // gemerged - genau wie die Galerie-Metadaten.
             if (await Findings.pull(gist, getGistConfig().token)) renderAllFindings();
             isLoading = false; updateSaveStatus();
-            showToast('Cloud-Daten geladen!');
-        } catch (err) { isLoading = false; showToast('Cloud-Fehler: ' + err.message); }
+        } catch (err) { isLoading = false; showToast('Sync-Fehler: ' + err.message, { sticky: true, isError: true }); }
     }
 
     // ==== COLLAPSE STATE ====
@@ -5426,13 +5416,12 @@
                 });
                 if (res.ok) {
                     localStorage.setItem('engineBuildLog', JSON.stringify(merged));
-                    showToast('Gespeichert');
                 } else {
                     var errMsg = ''; try { errMsg = (await res.json()).message || ''; } catch(e2) {}
-                    showToast('Gespeichert, Sync-Fehler: ' + (errMsg || 'Status ' + res.status));
+                    showToast('Sync-Fehler: ' + (errMsg || 'Status ' + res.status), { sticky: true, isError: true });
                 }
-            } catch (e) { showToast('Gespeichert, Sync-Fehler: ' + e.message); }
-        } else { showToast('Lokal gespeichert (kein Sync)'); }
+            } catch (e) { showToast('Sync-Fehler: ' + e.message, { sticky: true, isError: true }); }
+        }
     }
 
     function loadData() {
@@ -5503,9 +5492,33 @@
             } catch(e) {}
         }
     }
-    function showToast(msg) {
-        var t = document.getElementById('toast'); t.textContent = msg;
-        t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); }, 2500);
+    function showToast(msg, opts) {
+        opts = opts || {};
+        var t = document.getElementById('toast');
+        if (opts.sticky || opts.isError) {
+            t.innerHTML = '<span>' + msg + '</span><button onclick="this.parentElement.classList.remove(\'show\')" style="background:none;border:none;color:inherit;font-size:1.1rem;cursor:pointer;margin-left:0.5rem;padding:0 0.3rem;line-height:1;">&times;</button>';
+        } else { t.textContent = msg; }
+        if (opts.isError) t.classList.add('toast-error'); else t.classList.remove('toast-error');
+        t.classList.add('show');
+        clearTimeout(t._timer);
+        if (!opts.sticky && !opts.isError) { t._timer = setTimeout(function() { t.classList.remove('show'); }, 2500); }
+        if (opts.isError) logErrorToGist(msg);
+    }
+    async function logErrorToGist(msg) {
+        try {
+            if (!FIXED_GIST_ID || !navigator.onLine) return;
+            var cfg = getGistConfig(); if (!cfg.token) return;
+            var logFile = GIST_FILENAME.replace('.json', '-errors.json');
+            var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { headers: { 'Authorization': 'Bearer ' + cfg.token } });
+            if (!res.ok) return;
+            var gist = await res.json(); var existing = [];
+            if (gist.files && gist.files[logFile]) { try { existing = JSON.parse(gist.files[logFile].content); } catch(e) {} }
+            var devId = typeof FieldSync !== 'undefined' ? FieldSync.getDeviceId() : 'unknown';
+            existing.push({ time: new Date().toISOString(), device: devId, page: 'build-log.html', version: typeof APP_VERSION === 'string' ? APP_VERSION : '', error: msg });
+            if (existing.length > 50) existing = existing.slice(-50);
+            var files = {}; files[logFile] = { content: JSON.stringify(existing, null, 2) };
+            await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { method: 'PATCH', headers: { 'Authorization': 'Bearer ' + cfg.token, 'Content-Type': 'application/json' }, body: JSON.stringify({ files: files }) });
+        } catch(e) { console.error('[Fehlerprotokoll]', e.message); }
     }
 
     function exportJSON() {
@@ -5711,7 +5724,7 @@
     // Altbestand ins Repo hochladen, danach lokal entfernen.
     async function migrateLegacyPhotos() {
         if (!getGistConfig().token) {
-            showToast('Dafuer wird der GitHub-Token gebraucht (Einstellungen)');
+            showToast('Dafuer wird der GitHub-Token gebraucht (Cloud-Sync)');
             return;
         }
         var legacy = _legacyBuildPhotos();
@@ -5865,7 +5878,7 @@
         'Gespeichert':'Saved', 'Exportiert':'Exported', 'Importiert':'Imported',
         'Treffer':'matches', 'keine':'none', 'Suchen...':'Search...',
         'Einheiten-Umrechner':'Unit Converter', 'Verbinden':'Connect', 'Trennen':'Disconnect', 'Abbrechen':'Cancel',
-        'Speichern':'Save', 'Drucken':'Print', 'Einstellungen':'Settings', 'Zur\u00fccksetzen':'Reset',
+        'Speichern':'Save', 'Drucken':'Print', 'Cloud-Sync':'Cloud Sync', 'Zur\u00fccksetzen':'Reset',
         'Zur\u00fcck':'Back',
 
         // == SECTION HEADERS (h2) ==
@@ -6570,6 +6583,9 @@
             });
         }).catch(function() {});
     }
+    window.addEventListener('online', function () {
+        if (isGistConfigured()) saveData();
+    });
 </script>
 
 <div class="fab-stack">

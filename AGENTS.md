@@ -67,6 +67,29 @@ Arbeiten mehrere gleichzeitig, geht jede Aenderung ueber einen Pull Request.
 Git fuehrt die Dateien sauber zusammen - was kollidiert, ist die gemeinsame
 Buchfuehrung aus Regel 1, und die sieht man nur im PR rechtzeitig.
 
+## 8. Abhaengige Berechnungen automatisch nachziehen
+
+Wenn eine Eingabe (z.B. Kolbenmulde, Brennraum) eine abhaengige Berechnung
+beeinflusst (z.B. Verdichtung, Simulator), muss die Berechnung automatisch
+aktualisiert werden. Ein manueller "Daten uebernehmen"-Button darf als
+Fallback existieren, ist aber kein Ersatz fuer den automatischen Aufruf.
+
+**Warum:** v58 - der Verdichtungsrechner hat sich nach Eingabe der Kolbenmulde
+aktualisiert, aber der Motor-Simulator hat den alten CR-Wert behalten, bis
+manuell "Daten vom Build uebernehmen" geklickt wurde. `calcCR()` ruft jetzt
+am Ende `simPullData()` auf.
+
+## 9. Build Dashboard muss mit dem Build Log uebereinstimmen
+
+Das Dashboard auf index.html zaehlt erledigte Schritte. Es muss alle
+Status-Werte erkennen, die die Build-Log-Seite setzen kann. Aktuell:
+`"done"`, `true`, `"true"`, `"on"`. Bei Erweiterung der Status-Werte
+(z.B. Dreiweg-Status offen/wip/done) muss das Dashboard mitgezogen werden.
+
+**Warum:** v58 - das Dashboard hat `"done"` nicht gezaehlt (nur `true`),
+weil die Build-Log-Schritte auf ein Dreifach-Status-System (offen/wip/done)
+umgestellt wurden, das Dashboard aber noch das alte Checkbox-Format erwartete.
+
 ## Tests
 
 `node tests/<name>.test.mjs`, oder alle zusammen so, wie der Workflow sie

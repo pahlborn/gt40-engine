@@ -179,7 +179,8 @@
         mark.search-hl { background: #fefcbf; color: #744210; padding: 0 1px; border-radius: 2px; }
         mark.search-hl.active { background: #ed8936; color: white; }
         /* ---- Toast ---- */
-        .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: white; padding: 0.65rem 1.3rem; border-radius: 10px; font-size: 0.82rem; font-weight: 500; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10000; transition: transform 0.3s ease; }
+        .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: white; padding: 0.65rem 1.3rem; border-radius: 10px; font-size: 0.82rem; font-weight: 500; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10000; transition: transform 0.3s ease; display: flex; align-items: center; max-width: calc(100vw - 2rem); }
+        .toast-error { background: #c53030; }
         .toast.show { transform: translateX(-50%) translateY(0); }
         /* ---- Mobile ---- */
         @media (max-width: 600px) {
@@ -308,9 +309,7 @@
         <div style="position:relative;">
             <button class="header-gear" onclick="toggleToolMenu()" id="toolMenuBtn">&#9881;</button>
             <div id="toolMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:2px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:180px;z-index:200;overflow:hidden;">
-                <button onclick="syncFromCloud();closeToolMenu()" id="syncBtn" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud Sync</button>
-                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
-                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Einstellungen</button>
+                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud-Sync</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="saveData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128190; Save</button>
                 <button onclick="exportJSON();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
@@ -434,7 +433,7 @@
             <div class="comp-box">
                 <div class="comp-toggle" onclick="toggleComp(this)">&#9889; Gesch&auml;tzte Motorleistung</div>
                 <div class="comp-body">
-                    <div class="info-box"><strong>Hinweis:</strong> Sch&auml;tzwerte basierend auf der Komponentenauswahl. Tats&auml;chliche Leistung h&auml;ngt stark von Ansaugung, Abgasanlage, Abstimmung und Verdichtung ab.</div>
+                    <div class="info-box"><strong>Hinweis:</strong> Sch&auml;tzwerte basierend auf der Komponentenauswahl. Tats&auml;chliche Leistung h&auml;ngt stark von Ansaugung, Abgasanlage, Abstimmung und Verdichtung ab. Leistungsberechnung und Drehmoment-/Leistungskurven werden im <strong>Motor-Simulator</strong> (Sektion &bdquo;Simulation &amp; Analyse&ldquo; am Ende der Spezifikationen) berechnet. Die Zielwerte hier sind die <em>angestrebten</em> Werte, der Simulator zeigt die <em>berechneten</em> Werte basierend auf den tats&auml;chlichen Komponenten.</div>
                     <div class="spec-item"><span class="spec-label">Gesch. Leistung</span><span class="spec-value"><strong>330 &ndash; 360 BHP</strong> (335&ndash;365 PS DIN / 246&ndash;268 kW) &ndash; abh. von Intake/Exhaust/Tuning</span></div>
                     <div class="spec-item"><span class="spec-label">Gesch. Drehmoment</span><span class="spec-value"><strong>330 &ndash; 350 ft-lbs</strong> (447&ndash;475 Nm) &ndash; an der Kurbelwelle</span></div>
                     <div class="spec-item"><span class="spec-label">Peak Power RPM</span><span class="spec-value">5.500 &ndash; 6.000 U/min</span></div>
@@ -457,8 +456,6 @@
                     <div class="spec-item"><span class="spec-label">Getriebe</span><span class="spec-value">Schaltgetriebe (Renault UN1-13, 5-Gang)</span></div>
                 </div>
             </div>
-
-            <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Leistungsberechnung und Drehmoment-/Leistungskurven werden im <strong>Motor-Simulator</strong> (Sektion &bdquo;Simulation &amp; Analyse&ldquo; am Ende der Spezifikationen) berechnet. Die Zielwerte oben sind die <em>angestrebten</em> Werte, der Simulator zeigt die <em>berechneten</em> Werte basierend auf den tats&auml;chlichen Komponenten.</div>
 
 
         </div>
@@ -573,7 +570,7 @@
             <div class="comp-box">
                 <div class="comp-toggle" onclick="toggleComp(this)">&#128200; Motor-Simulator &amp; Kraftstoffempfehlung</div>
                 <div class="comp-body">
-            <button onclick="simPullData()" style="width:100%;padding:0.6rem;background:#2b6cb0;color:#fff;border:none;border-radius:8px;font-size:0.85rem;font-weight:700;cursor:pointer;margin-bottom:0.5rem;">&#8681; Daten vom Build &uuml;bernehmen</button>
+            <button id="simPullBtn" onclick="simPullData()" style="width:100%;padding:0.6rem;background:#2b6cb0;color:#fff;border:none;border-radius:8px;font-size:0.85rem;font-weight:700;cursor:pointer;margin-bottom:0.5rem;">&#8635; Werte aktualisieren</button>
 
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 0.6rem;font-size:0.8rem;">
                 <label style="font-weight:600;">Bohrung (inch)</label>
@@ -1233,7 +1230,7 @@
 <!-- ===== SETTINGS MODAL ===== -->
 <div class="modal-overlay" id="settingsModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:9000;align-items:center;justify-content:center;">
     <div style="background:white;border-radius:12px;padding:1.5rem;max-width:420px;width:calc(100vw - 32px);box-shadow:0 8px 30px rgba(0,0,0,0.3);">
-        <h3 style="margin:0 0 0.75rem;font-size:1rem;color:var(--primary);">Einstellungen</h3>
+        <h3 style="margin:0 0 0.75rem;font-size:1rem;color:var(--primary);">Cloud-Sync</h3>
         <div class="status-line" id="connectionStatus" style="font-size:0.78rem;margin-bottom:0.5rem;"></div>
         <label for="deviceName" style="font-size:0.78rem;font-weight:600;">Ger&auml;tename</label>
         <input type="text" id="deviceName" placeholder="z.B. iPad Werkstatt" style="width:100%;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.82rem;margin:0.3rem 0 0.5rem;" oninput="if(typeof FieldSync!=='undefined')FieldSync.setDeviceName(this.value)">
@@ -1449,28 +1446,25 @@
     async function saveSettings() {
         var tokEl = document.getElementById('ghToken');
         var token = tokEl ? tokEl.value.trim() : '';
-        if (!token) { showToast('Bitte Token eingeben!'); return; }
+        if (!token) { showToast('Bitte Token eingeben!', { sticky: true, isError: true }); return; }
         try {
             showToast('Verbinde...');
             const res = await fetch('https://api.github.com/user', { headers: { 'Authorization': 'Bearer ' + token } });
-            if (!res.ok) { showToast('Token ungueltig!'); return; }
+            if (!res.ok) { showToast('Token ungueltig!', { sticky: true, isError: true }); return; }
             const user = await res.json();
             localStorage.setItem('gh_token', token);
             showToast('Suche Gist...');
             var gid = await findGistByFilename(token);
-            if (gid) { showToast('Gist gefunden...'); }
-            else {
+            if (!gid) {
                 showToast('Lege neuen Gist an...');
                 gid = await createGist(token);
-                if (!gid) { showToast('Gist konnte nicht erstellt werden'); return; }
+                if (!gid) { showToast('Gist konnte nicht erstellt werden', { sticky: true, isError: true }); return; }
             }
             localStorage.setItem(GIST_ID_KEY, gid);
             FIXED_GIST_ID = gid;
-            showToast('Verbunden als ' + user.login);
             updateSyncBadge(); updateConnectionStatus(); closeSettings();
-            const ok = await loadFromGist();
-            if (ok) showToast('Cloud-Daten geladen!');
-        } catch (err) { showToast('Fehler: ' + err.message); }
+            await loadFromGist();
+        } catch (err) { showToast('Verbindungsfehler: ' + err.message, { sticky: true, isError: true }); }
     }
     function disconnectGist() {
         localStorage.removeItem('gh_token');
@@ -1478,8 +1472,7 @@
         FIXED_GIST_ID = LEGACY_GIST_ID;
         var tokEl = document.getElementById('ghToken');
         if (tokEl) tokEl.value = '';
-        updateSyncBadge(); updateConnectionStatus();
-        showToast('Verbindung getrennt.'); closeSettings();
+        updateSyncBadge(); updateConnectionStatus(); closeSettings();
     }
     function updateConnectionStatus() {
         const el = document.getElementById('connectionStatus');
@@ -1544,8 +1537,8 @@
     }
     async function syncFromCloud() {
         if (!isGistConfigured()) { openSettings(); return; }
-        showToast('Lade aus Cloud...');
-        if (await loadFromGist()) { showToast('Cloud-Daten geladen!'); updateSaveStatus(); }
+        if (await loadFromGist()) { updateSaveStatus(); }
+        else { showToast('Sync-Fehler: ' + (_gistError || 'unbekannt'), { sticky: true, isError: true }); }
     }
 
     // ==== QUENCH TABLE ====
@@ -1676,11 +1669,9 @@
         var data = FieldSync.mergeIntoExisting(existing, current, { recordClears: dataLoaded });
         localStorage.setItem('engineBuildLog', JSON.stringify(data));
         updateSaveStatus();
-        if (isGistConfigured()) {
-            if (!navigator.onLine) { showToast('Offline gespeichert'); }
-            else if (await saveToGist()) { showToast('Gespeichert'); }
-            else { showToast('Gespeichert, Sync-Fehler: ' + (_gistError || 'unbekannt')); }
-        } else { showToast('Lokal gespeichert (kein Sync)'); }
+        if (isGistConfigured() && navigator.onLine) {
+            if (!await saveToGist()) { showToast('Sync-Fehler: ' + (_gistError || 'unbekannt'), { sticky: true, isError: true }); }
+        }
     }
     async function loadData() {
         isLoading = true;
@@ -1786,6 +1777,8 @@
         document.getElementById('crClearance').textContent = clearance.toFixed(1);
         document.getElementById('crGasketVol').textContent = gasketVol.toFixed(1);
         document.getElementById('crDeckVol').textContent = deckVol.toFixed(1);
+        // Simulator automatisch nachziehen, wenn der Verdichtungsrechner sich aendert
+        if (typeof simPullData === 'function') simPullData();
     }
 
     // Run CR calc on page load
@@ -2674,9 +2667,33 @@
             });
         } catch(e) {}
     }
-    function showToast(msg) {
-        const t = document.getElementById('toast'); t.textContent = msg;
-        t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500);
+    function showToast(msg, opts) {
+        opts = opts || {};
+        const t = document.getElementById('toast');
+        if (opts.sticky || opts.isError) {
+            t.innerHTML = '<span>' + msg + '</span><button onclick="this.parentElement.classList.remove(\'show\')" style="background:none;border:none;color:inherit;font-size:1.1rem;cursor:pointer;margin-left:0.5rem;padding:0 0.3rem;line-height:1;">&times;</button>';
+        } else { t.textContent = msg; }
+        if (opts.isError) t.classList.add('toast-error'); else t.classList.remove('toast-error');
+        t.classList.add('show');
+        clearTimeout(t._timer);
+        if (!opts.sticky && !opts.isError) { t._timer = setTimeout(() => t.classList.remove('show'), 2500); }
+        if (opts.isError) logErrorToGist(msg);
+    }
+    async function logErrorToGist(msg) {
+        try {
+            if (!FIXED_GIST_ID || !navigator.onLine) return;
+            var cfg = getGistConfig(); if (!cfg.token) return;
+            var logFile = GIST_FILENAME.replace('.json', '-errors.json');
+            var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { headers: { 'Authorization': 'Bearer ' + cfg.token } });
+            if (!res.ok) return;
+            var gist = await res.json(); var existing = [];
+            if (gist.files && gist.files[logFile]) { try { existing = JSON.parse(gist.files[logFile].content); } catch(e) {} }
+            var devId = typeof FieldSync !== 'undefined' ? FieldSync.getDeviceId() : 'unknown';
+            existing.push({ time: new Date().toISOString(), device: devId, page: 'index.html', version: typeof APP_VERSION === 'string' ? APP_VERSION : '', error: msg });
+            if (existing.length > 50) existing = existing.slice(-50);
+            var files = {}; files[logFile] = { content: JSON.stringify(existing, null, 2) };
+            await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { method: 'PATCH', headers: { 'Authorization': 'Bearer ' + cfg.token, 'Content-Type': 'application/json' }, body: JSON.stringify({ files: files }) });
+        } catch(e) { console.error('[Fehlerprotokoll]', e.message); }
     }
 
     // ==== NAVIGATION ====
@@ -2823,7 +2840,7 @@
         Object.keys(PHASE_KEYS).forEach(function(k) {
             var p = PHASE_KEYS[k], done = 0;
             p.keys.forEach(function(key) {
-                if (data[key] === true || data[key] === 'true' || data[key] === 'on') done++;
+                if (data[key] === 'done' || data[key] === true || data[key] === 'true' || data[key] === 'on') done++;
             });
             totalDone += done; totalSteps += p.keys.length;
             var pct = p.keys.length > 0 ? Math.round(done / p.keys.length * 100) : 0;
@@ -2850,7 +2867,7 @@
         'Gespeichert':'Saved', 'Exportiert':'Exported', 'Importiert':'Imported',
         'Treffer':'matches', 'keine':'none', 'Suchen...':'Search...',
         'Einheiten-Umrechner':'Unit Converter', 'Verbinden':'Connect', 'Trennen':'Disconnect', 'Abbrechen':'Cancel',
-        'Speichern':'Save', 'Drucken':'Print', 'Einstellungen':'Settings', 'Zur\u00fccksetzen':'Reset',
+        'Speichern':'Save', 'Drucken':'Print', 'Cloud-Sync':'Cloud Sync', 'Zur\u00fccksetzen':'Reset',
         'Zur\u00fcck':'Back',
 
         // == SECTION HEADERS (h2) ==
@@ -3111,7 +3128,7 @@
         // == SIMULATOR LABELS ==
         'Geschwindigkeits-Simulator':'Speed Simulator',
         'Motordaten vom Simulator \u00fcbernehmen':'Pull engine data from simulator',
-        'Daten vom Build \u00fcbernehmen':'Pull data from build',
+        'Werte aktualisieren':'Refresh values',
         'Reifendurchm. hinten (inch)':'Rear tire diameter (inch)',
         'Achsantrieb (Final Drive)':'Final Drive Ratio',
         'Fahrzeuggewicht (kg)':'Vehicle weight (kg)',
@@ -3411,6 +3428,9 @@
             });
         }).catch(function() {});
     }
+    window.addEventListener('online', function () {
+        if (isGistConfigured()) saveData();
+    });
 </script>
 
 <div class="fab-stack">

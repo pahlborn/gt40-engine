@@ -13,13 +13,39 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
-      version: 'v58',
+      version: 'v60',
       date: '2026-09-23',
-      time: '06:10',
+      time: '08:30',
       title: 'Galerie und Glossar auf iPad',
       changes: [
         { type: 'fix', text: 'Galerie und Glossar oeffneten auf dem iPad mit dem Kopf oberhalb des Bildschirms - Titel und Schliessen-Knopf waren nicht zu sehen, erst Runterscrollen brachte sie herein. Ursache ist nicht das Overlay, sondern die Sperre dahinter: body{overflow:hidden} haelt die Seite auf iOS/iPadOS nicht an, Safari scrollt per Touch weiter, und das position:fixed-Overlay bleibt dabei am Viewport, waehrend das Dokument darunter wegwandert. Jetzt wird der body selbst festgesetzt (position:fixed mit negativem top) und der Scrollstand beim Schliessen wiederhergestellt.' },
-        { type: 'fix', text: 'Derselbe Fehler steckte im Jerico-Repo, weil beide dieselbe gallery.js benutzen. Dort ist er mit v11 behoben, hier zieht diese Fassung nach.' }
+        { type: 'fix', text: 'Derselbe Fehler steckte im Jerico-Repo, weil beide dieselbe gallery.js benutzen. Dort ist er mit v11 behoben, hier zieht diese Fassung nach.' },
+        { type: 'fix', text: 'Der Aenderungstyp "verbessert" aus v58 und v59 hatte weder eine Beschriftung noch eine Farbe - die sechs Eintraege wurden ohne Badge dargestellt, anders als alle uebrigen. Beides ergaenzt. Der Test dazu prueft jetzt, ob ein benutzter Typ dargestellt werden kann, statt ihn gegen eine Liste zu halten.' }
+      ]
+    },
+    {
+      version: 'v59',
+      date: '2026-09-23',
+      time: '08:00',
+      title: 'Menue aufgeraeumt, Dashboard-Bug, Simulator auto-aktualisiert',
+      changes: [
+        { type: 'fix', text: 'Build-Dashboard auf der Uebersicht hat erledigte Schritte (Status "done") nicht gezaehlt. Fortschrittsbalken blieb bei 0%.' },
+        { type: 'verbessert', text: 'Verdichtungsrechner aktualisiert den Motor-Simulator jetzt automatisch. Kein manuelles "Daten uebernehmen" mehr noetig.' },
+        { type: 'verbessert', text: 'Button "Daten vom Build uebernehmen" heisst jetzt "Werte aktualisieren".' },
+        { type: 'verbessert', text: 'Manueller Cloud-Sync-Button aus dem Menue entfernt (Sync passiert automatisch). "Einstellungen" umbenannt in "Cloud-Sync".' },
+        { type: 'verbessert', text: 'Motorsimulator-Hinweis in den Block "Geschaetzte Motorleistung" verschoben, statt separat darunter zu stehen.' }
+      ]
+    },
+    {
+      version: 'v58',
+      date: '2026-09-23',
+      time: '07:00',
+      title: 'Stilles Speichern, Fehlerprotokoll, Auto-Reconnect',
+      changes: [
+        { type: 'verbessert', text: 'Speichern zeigt keinen Toast mehr bei Erfolg. Sync-Badge im Header (gruen/rot) reicht als Statusanzeige.' },
+        { type: 'verbessert', text: 'Fehler-Toasts bleiben stehen, bis der Benutzer sie aktiv schliesst (x-Knopf). Roter Hintergrund zur Unterscheidung.' },
+        { type: 'neu', text: 'Fehlerprotokoll: Sync-Fehler werden automatisch ins Gist geschrieben (eigene Datei *-errors.json mit Zeitstempel, Geraete-ID, Seite, Version). Max. 50 Eintraege, aeltere werden verdraengt.' },
+        { type: 'neu', text: 'Auto-Reconnect: Wenn das Geraet nach Offline-Betrieb wieder online geht, werden lokal gespeicherte Aenderungen automatisch in die Cloud synchronisiert.' }
       ]
     },
     {
@@ -461,7 +487,8 @@
     }
   ];
 
-  var TYPE_LABEL = { neu: 'Neu', fix: 'Behoben', intern: 'Intern' };
+  var TYPE_LABEL = { neu: 'Neu', fix: 'Behoben', intern: 'Intern', verbessert: 'Verbessert' };
+  global.CHANGELOG_TYPE_LABEL = TYPE_LABEL;   // fuer tests/ui.test.mjs
 
   // Datum - und wo vorhanden die Uhrzeit - in der Schreibweise der Seite.
   // Aeltere Eintraege haben keine Uhrzeit, die wird nicht erfunden.
