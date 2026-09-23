@@ -441,9 +441,7 @@
         <div style="position:relative;">
             <button class="header-gear" onclick="toggleToolMenu()" id="toolMenuBtn">&#9881;</button>
             <div id="toolMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:2px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:180px;z-index:200;overflow:hidden;">
-                <button onclick="syncFromCloud();closeToolMenu()" id="syncBtn" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud Sync</button>
-                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
-                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Einstellungen</button>
+                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud-Sync</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="saveData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128190; Save</button>
                 <button onclick="exportJSON();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
@@ -5032,7 +5030,7 @@
 <!-- ===== SETTINGS MODAL ===== -->
 <div class="modal-overlay" id="settingsModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:9000;align-items:center;justify-content:center;">
     <div style="background:white;border-radius:12px;padding:1.5rem;max-width:420px;width:calc(100vw - 32px);box-shadow:0 8px 30px rgba(0,0,0,0.3);">
-        <h3 style="margin:0 0 0.75rem;font-size:1rem;color:var(--primary);">Einstellungen</h3>
+        <h3 style="margin:0 0 0.75rem;font-size:1rem;color:var(--primary);">Cloud-Sync</h3>
         <div class="status-line" id="connectionStatus" style="font-size:0.78rem;margin-bottom:0.5rem;"></div>
         <label for="deviceName" style="font-size:0.78rem;font-weight:600;">Ger&auml;tename</label>
         <input type="text" id="deviceName" placeholder="z.B. iPad Werkstatt" style="width:100%;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.82rem;margin:0.3rem 0 0.5rem;" oninput="if(typeof FieldSync!=='undefined')FieldSync.setDeviceName(this.value)">
@@ -5726,7 +5724,7 @@
     // Altbestand ins Repo hochladen, danach lokal entfernen.
     async function migrateLegacyPhotos() {
         if (!getGistConfig().token) {
-            showToast('Dafuer wird der GitHub-Token gebraucht (Einstellungen)');
+            showToast('Dafuer wird der GitHub-Token gebraucht (Cloud-Sync)');
             return;
         }
         var legacy = _legacyBuildPhotos();
@@ -5880,7 +5878,7 @@
         'Gespeichert':'Saved', 'Exportiert':'Exported', 'Importiert':'Imported',
         'Treffer':'matches', 'keine':'none', 'Suchen...':'Search...',
         'Einheiten-Umrechner':'Unit Converter', 'Verbinden':'Connect', 'Trennen':'Disconnect', 'Abbrechen':'Cancel',
-        'Speichern':'Save', 'Drucken':'Print', 'Einstellungen':'Settings', 'Zur\u00fccksetzen':'Reset',
+        'Speichern':'Save', 'Drucken':'Print', 'Cloud-Sync':'Cloud Sync', 'Zur\u00fccksetzen':'Reset',
         'Zur\u00fcck':'Back',
 
         // == SECTION HEADERS (h2) ==

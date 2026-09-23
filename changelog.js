@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v59',
+      date: '2026-09-23',
+      time: '08:00',
+      title: 'Menue aufgeraeumt, Dashboard-Bug, Simulator auto-aktualisiert',
+      changes: [
+        { type: 'fix', text: 'Build-Dashboard auf der Uebersicht hat erledigte Schritte (Status "done") nicht gezaehlt. Fortschrittsbalken blieb bei 0%.' },
+        { type: 'verbessert', text: 'Verdichtungsrechner aktualisiert den Motor-Simulator jetzt automatisch. Kein manuelles "Daten uebernehmen" mehr noetig.' },
+        { type: 'verbessert', text: 'Button "Daten vom Build uebernehmen" heisst jetzt "Werte aktualisieren".' },
+        { type: 'verbessert', text: 'Manueller Cloud-Sync-Button aus dem Menue entfernt (Sync passiert automatisch). "Einstellungen" umbenannt in "Cloud-Sync".' },
+        { type: 'verbessert', text: 'Motorsimulator-Hinweis in den Block "Geschaetzte Motorleistung" verschoben, statt separat darunter zu stehen.' }
+      ]
+    },
+    {
       version: 'v58',
       date: '2026-09-23',
       time: '07:00',

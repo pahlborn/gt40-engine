@@ -511,9 +511,7 @@
         <div style="position:relative;">
             <button class="header-gear" onclick="toggleToolMenu()" id="toolMenuBtn">&#9881;</button>
             <div id="toolMenu" style="display:none;position:absolute;right:0;top:100%;margin-top:2px;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);min-width:180px;z-index:200;overflow:hidden;">
-                <button onclick="syncFromCloud();closeToolMenu()" id="syncBtn" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud Sync</button>
-                <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
-                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9881; Einstellungen</button>
+                <button onclick="openSettings();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#9729; Cloud-Sync</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button onclick="saveData();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128190; Save</button>
                 <button onclick="exportJSON();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
@@ -545,7 +543,7 @@
 <!-- ===== SETTINGS MODAL ===== -->
 <div class="modal-overlay" id="settingsModal">
     <div class="modal">
-        <h3>Einstellungen</h3>
+        <h3>Cloud-Sync</h3>
         <div class="status-line" id="connectionStatus"></div>
         <label for="deviceName" style="font-size:0.78rem;font-weight:600;">Ger&auml;tename</label>
         <input type="text" id="deviceName" placeholder="z.B. iPad Werkstatt" style="margin-bottom:0.5rem;" oninput="if(typeof FieldSync!=='undefined')FieldSync.setDeviceName(this.value)">
@@ -3846,7 +3844,7 @@
         'Gespeichert':'Saved', 'Offline gespeichert':'Saved offline', 'Offline gespeichert (Sync-Fehler)':'Saved offline (sync error)', 'Lokal gespeichert (kein Sync)':'Saved locally (no sync)', 'Exportiert':'Exported', 'Importiert':'Imported',
         'Treffer':'matches', 'keine':'none', 'Suchen...':'Search...',
         'Einheiten-Umrechner':'Unit Converter', 'Verbinden':'Connect', 'Trennen':'Disconnect', 'Abbrechen':'Cancel',
-        'Speichern':'Save', 'Drucken':'Print', 'Einstellungen':'Settings', 'Zur\u00fccksetzen':'Reset',
+        'Speichern':'Save', 'Drucken':'Print', 'Cloud-Sync':'Cloud Sync', 'Zur\u00fccksetzen':'Reset',
         'Zur\u00fcck':'Back',
 
         // == SECTION HEADERS (h2) ==
@@ -4107,7 +4105,7 @@
         // == SIMULATOR LABELS ==
         'Geschwindigkeits-Simulator':'Speed Simulator',
         'Motordaten vom Simulator \u00fcbernehmen':'Pull engine data from simulator',
-        'Daten vom Build \u00fcbernehmen':'Pull data from build',
+        'Werte aktualisieren':'Refresh values',
         'Reifendurchm. hinten (inch)':'Rear tire diameter (inch)',
         'Achsantrieb (Final Drive)':'Final Drive Ratio',
         'Fahrzeuggewicht (kg)':'Vehicle weight (kg)',
