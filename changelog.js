@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v58',
+      date: '2026-09-23',
+      time: '06:10',
+      title: 'Galerie und Glossar auf iPad',
+      changes: [
+        { type: 'fix', text: 'Galerie und Glossar oeffneten auf dem iPad mit dem Kopf oberhalb des Bildschirms - Titel und Schliessen-Knopf waren nicht zu sehen, erst Runterscrollen brachte sie herein. Ursache ist nicht das Overlay, sondern die Sperre dahinter: body{overflow:hidden} haelt die Seite auf iOS/iPadOS nicht an, Safari scrollt per Touch weiter, und das position:fixed-Overlay bleibt dabei am Viewport, waehrend das Dokument darunter wegwandert. Jetzt wird der body selbst festgesetzt (position:fixed mit negativem top) und der Scrollstand beim Schliessen wiederhergestellt.' },
+        { type: 'fix', text: 'Derselbe Fehler steckte im Jerico-Repo, weil beide dieselbe gallery.js benutzen. Dort ist er mit v11 behoben, hier zieht diese Fassung nach.' }
+      ]
+    },
+    {
       version: 'v57',
       date: '2026-09-22',
       time: '16:00',

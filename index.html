@@ -1325,10 +1325,13 @@
     // ==== GUIDE OVERLAYS ====
     function showGuide(id) {
         document.getElementById(id).classList.add('show');
-        document.body.style.overflow = 'hidden';
+        // Dieselbe Sperre wie die Galerie - das Glossar ist genauso ein
+        // Vollbild-Overlay und lief auf iOS in denselben Fehler.
+        if (typeof sperreSeite === 'function') sperreSeite();
+        else document.body.style.overflow = 'hidden';
         if (id === 'guide-glossary') { updateGlossaryCount(); }
     }
-    function hideGuide(id) { document.getElementById(id).classList.remove('show'); document.body.style.overflow = ''; }
+    function hideGuide(id) { document.getElementById(id).classList.remove('show'); if (typeof gibSeiteFrei === 'function') gibSeiteFrei(); else document.body.style.overflow = ''; }
 
     // ==== GLOSSARY ====
     function openGlossary(term) {
