@@ -427,6 +427,7 @@
 <script src="gallery.js"></script>
 <script src="field-sync.js"></script>
 <script src="validation.js"></script>
+<script src="reference.js"></script>
 </head>
 <body>
 
@@ -6410,10 +6411,11 @@
         // Vollbild-Overlay und lief auf iOS in denselben Fehler.
         if (typeof sperreSeite === 'function') sperreSeite();
         else document.body.style.overflow = 'hidden';
+        document.body.classList.add('overlay-offen');
         if (id === 'guide-glossary') { updateGlossaryCount(); }
     }
 
-        function hideGuide(id) { document.getElementById(id).classList.remove('show'); if (typeof gibSeiteFrei === 'function') gibSeiteFrei(); else document.body.style.overflow = ''; }
+        function hideGuide(id) { document.getElementById(id).classList.remove('show'); if (typeof gibSeiteFrei === 'function') gibSeiteFrei(); else document.body.style.overflow = ''; document.body.classList.remove('overlay-offen'); }
 
         function openGlossary(term) {
         showGuide('guide-glossary');
@@ -6590,6 +6592,7 @@
 
 <div class="fab-stack">
     <button class="fab-btn glossary" onclick="showGuide('guide-glossary')" title="Glossar">&#128214;</button>
+    <button class="fab-btn reference" onclick="showReference()" title="Betriebsmittel &amp; Anzugswerte">&#128295;</button>
     <button class="fab-btn" onclick="document.getElementById('convPanel').classList.toggle('open');document.getElementById('unitsPanel').classList.remove('open')" title="Unit Converter">&#8644;</button>
     <button class="fab-btn" onclick="document.getElementById('unitsPanel').classList.toggle('open');document.getElementById('convPanel').classList.remove('open')" title="Units Reference" style="background:#4a5568;font-size:0.85rem;">&#128207;</button>
 </div>

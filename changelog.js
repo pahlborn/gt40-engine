@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v62',
+      date: '2026-09-23',
+      time: '10:20',
+      title: 'Nachschlagekarte Betriebsmittel & Anzugswerte',
+      changes: [
+        { type: 'neu', text: 'Die Drehmoment-Schnellkarte liegt jetzt hinter dem blauen Schraubenschluessel rechts und ist auf allen drei Seiten erreichbar - bisher gab es sie nur in specs.html und nur ueber das Werkzeugmenue. Dazu ein Suchfeld wie im Glossar und zwei neue Abschnitte: "Betriebsmittel - wo was hingehoert" als Gegenrichtung zur Drehmomenttabelle, und "Oel, Erststart & Service".' },
+        { type: 'verbessert', text: 'Die Werte stehen in reference.js als Daten, die Karte wird daraus gebaut. Das alte Overlay lag als 10 KB fertiges Markup in specs.html - dieselben Zahlen stehen auch an den Arbeitsschritten, und zwei Fassungen derselben Zahl laufen irgendwann auseinander. Jede Zeile steht jetzt einmal.' },
+        { type: 'neu', text: 'Nach Regel 5 sind Oelwechsel-, Ventilspiel- und Zuendkerzenintervall als offen gekennzeichnet statt geraten. Vorhandene Vorgaben - Vooelen mit Melling PT11, Einfahroel mit ZDDP, Oelwanne ab 7 qt, Pickup-Abstand - stehen mit drin.' },
+        { type: 'fix', text: 'Die runden Knoepfe rechts lagen mit z-index 900 ueber jedem Overlay (z-index 500) und standen mitten im Inhalt. Sie verschwinden jetzt, solange eine Karte oder das Glossar offen ist. Betraf auch das Glossar, dort zwischen Fliesstext nur weniger auffaellig.' },
+        { type: 'neu', text: 'Das Overlay entsteht erst beim ersten Oeffnen, statt auf jeder Seite ungenutzt im DOM zu liegen.' }
+      ]
+    },
+    {
       version: 'v61',
       date: '2026-09-23',
       time: '09:45',
