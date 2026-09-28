@@ -693,9 +693,77 @@
                 <div class="comp-body">
                 <button id="dsPullBtn" onclick="driveSimPull()" style="width:100%;padding:0.5rem;background:#2b6cb0;color:#fff;border:none;border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;margin-bottom:0.4rem;">&#8681; Motordaten vom Simulator &uuml;bernehmen</button>
 
+                <!-- Reifen-Konfiguration -->
+                <div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:8px;padding:0.5rem;margin-bottom:0.4rem;">
+                    <div style="font-size:0.82rem;font-weight:700;color:#2b6cb0;margin-bottom:0.3rem;">&#128722; Reifen (Hinterachse)</div>
+                    <div style="display:grid;grid-template-columns:auto 1fr;gap:0.2rem 0.4rem;font-size:0.76rem;align-items:center;">
+                        <label style="font-weight:600;">Eingabeformat</label>
+                        <select id="tireSizeFormat" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="toggleTireFormat()">
+                            <option value="metric" selected>Metrisch (z.B. 295/50R15)</option>
+                            <option value="imperial">Imperial (z.B. 8.5/23.5-15)</option>
+                            <option value="manual">Durchmesser direkt (inch)</option>
+                        </select>
+
+                        <!-- Metrisch: Breite/Flanke R Felge -->
+                        <label class="tire-metric" style="font-weight:600;">Breite (mm)</label>
+                        <input class="tire-metric" type="number" id="tireWidth" data-field="tire_width" value="295" step="5" min="125" max="355" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcTireDiam();autoSave()">
+                        <label class="tire-metric" style="font-weight:600;">Querschnitt (%)</label>
+                        <input class="tire-metric" type="number" id="tireAspect" data-field="tire_aspect" value="50" step="5" min="20" max="90" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcTireDiam();autoSave()">
+                        <label class="tire-metric" style="font-weight:600;">Felge (inch)</label>
+                        <input class="tire-metric" type="number" id="tireRim" data-field="tire_rim" value="15" step="1" min="10" max="22" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcTireDiam();autoSave()">
+
+                        <!-- Imperial: Breite/Durchmesser-Felge (z.B. 8.5/23.5-15) -->
+                        <label class="tire-imperial" style="font-weight:600;display:none;">Reifenbreite (inch)</label>
+                        <input class="tire-imperial" type="number" id="tireImpW" data-field="tire_imp_w" value="8.5" step="0.5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;display:none;" oninput="calcTireDiamImp();autoSave()">
+                        <label class="tire-imperial" style="font-weight:600;display:none;">Aussendurchm. (inch)</label>
+                        <input class="tire-imperial" type="number" id="tireImpD" data-field="tire_imp_d" value="23.5" step="0.5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;display:none;" oninput="calcTireDiamImp();autoSave()">
+                        <label class="tire-imperial" style="font-weight:600;display:none;">Felge (inch)</label>
+                        <input class="tire-imperial" type="number" id="tireImpRim" data-field="tire_imp_rim" value="15" step="1" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;display:none;" oninput="calcTireDiamImp();autoSave()">
+
+                        <!-- Manuell: nur Durchmesser -->
+                        <label class="tire-manual" style="font-weight:600;display:none;">Durchmesser (inch)</label>
+                        <input class="tire-manual" type="number" id="tireManualD" value="25.0" step="0.1" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;display:none;" oninput="calcTireDiamManual()">
+
+                        <label style="font-weight:600;">Hersteller</label>
+                        <input type="text" id="tireMfg" data-field="tire_mfg" value="Avon" placeholder="z.B. Avon, Dunlop, Hoosier" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
+                        <label style="font-weight:600;">Modell / Mischung</label>
+                        <input type="text" id="tireModel" data-field="tire_model" value="CR6ZZ A29" placeholder="z.B. CR6ZZ A29, R25B, A7" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
+                        <label style="font-weight:600;">Bauart</label>
+                        <select id="tireConstr" data-field="tire_constr" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="updateTireCrr()">
+                            <option value="crossply">Diagonal (Crossply / Bias Ply)</option>
+                            <option value="radial">Radial</option>
+                            <option value="radial_perf">Radial (High Performance)</option>
+                        </select>
+                        <label style="font-weight:600;">Typ</label>
+                        <select id="tireType" data-field="tire_type" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="updateTireCrr()">
+                            <option value="road_legal">Strassenzulassung (DOT)</option>
+                            <option value="semislick">Semi-Slick</option>
+                            <option value="slick">Slick (kein DOT)</option>
+                            <option value="wet">Regenreifen</option>
+                        </select>
+                    </div>
+                    <!-- Berechnetes Ergebnis -->
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.2rem;margin-top:0.3rem;font-size:0.72rem;">
+                        <div style="background:#ebf4ff;padding:0.3rem;border-radius:6px;text-align:center;">
+                            <div style="color:#4a5568;">Durchmesser</div>
+                            <div id="tireCalcDiam" style="font-weight:700;color:#2b6cb0;">26.9"</div>
+                        </div>
+                        <div style="background:#ebf4ff;padding:0.3rem;border-radius:6px;text-align:center;">
+                            <div style="color:#4a5568;">Umfang</div>
+                            <div id="tireCalcCirc" style="font-weight:700;color:#2b6cb0;">2147 mm</div>
+                        </div>
+                        <div style="background:#ebf4ff;padding:0.3rem;border-radius:6px;text-align:center;">
+                            <div style="color:#4a5568;">Rollwiderstand (Crr)</div>
+                            <div id="tireCalcCrr" style="font-weight:700;color:#2b6cb0;">0.015</div>
+                        </div>
+                    </div>
+                    <div id="tireSizeLabel" style="font-size:0.68rem;color:#718096;margin-top:0.2rem;text-align:center;">295/50R15 = 26.9" &Oslash; | Breite: 11.6" | Flanke: 5.81"</div>
+                    <!-- Hidden: actual value fed into simulator -->
+                    <input type="hidden" id="dsTire" value="26.9">
+                    <input type="hidden" id="dsTireCrr" value="0.015">
+                </div>
+
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.25rem 0.5rem;font-size:0.78rem;">
-                    <label style="font-weight:600;">Reifendurchm. hinten (inch)</label>
-                    <input type="number" id="dsTire" value="25.0" step="0.1" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
                     <label style="font-weight:600;">Achsantrieb (Final Drive)</label>
                     <input type="number" id="dsFinal" value="3.44" step="0.01" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
                     <label style="font-weight:600;">1. Gang</label>
@@ -2300,6 +2368,99 @@
     // ==== DRIVETRAIN SIMULATOR ====
     var lastSimData = null; // store engine sim data for drivetrain
 
+    // ==== REIFEN-KONFIGURATION ====
+    function toggleTireFormat() {
+        var fmt = document.getElementById('tireSizeFormat').value;
+        ['metric', 'imperial', 'manual'].forEach(function(c) {
+            var els = document.querySelectorAll('.tire-' + c);
+            for (var i = 0; i < els.length; i++) els[i].style.display = (c === fmt) ? '' : 'none';
+        });
+        if (fmt === 'metric') calcTireDiam();
+        else if (fmt === 'imperial') calcTireDiamImp();
+        else calcTireDiamManual();
+    }
+
+    function calcTireDiam() {
+        var w = parseFloat(document.getElementById('tireWidth').value) || 295;
+        var a = parseFloat(document.getElementById('tireAspect').value) || 50;
+        var r = parseFloat(document.getElementById('tireRim').value) || 15;
+        var sidewall = w * (a / 100); // mm
+        var diamMM = (sidewall * 2) + (r * 25.4);
+        var diamIn = diamMM / 25.4;
+        var circMM = Math.round(diamMM * Math.PI);
+        var wIn = (w / 25.4).toFixed(1);
+
+        document.getElementById('dsTire').value = diamIn.toFixed(1);
+        document.getElementById('tireCalcDiam').textContent = diamIn.toFixed(1) + '"';
+        document.getElementById('tireCalcCirc').textContent = circMM + ' mm';
+        document.getElementById('tireSizeLabel').textContent =
+            Math.round(w) + '/' + Math.round(a) + 'R' + Math.round(r) +
+            ' = ' + diamIn.toFixed(1) + '" \u00D8 | Breite: ' + wIn + '" | Flanke: ' + (sidewall / 25.4).toFixed(2) + '"';
+        updateTireCrr();
+        runDriveSim();
+    }
+
+    function calcTireDiamImp() {
+        // Imperial format: Width/Diameter-Rim (e.g. 8.5/23.5-15)
+        // Diameter IS the overall tire diameter in inches
+        var d = parseFloat(document.getElementById('tireImpD').value) || 23.5;
+        var w = parseFloat(document.getElementById('tireImpW').value) || 8.5;
+        var r = parseFloat(document.getElementById('tireImpRim').value) || 15;
+        var circMM = Math.round(d * 25.4 * Math.PI);
+        var sidewall = (d - r) / 2;
+
+        document.getElementById('dsTire').value = d.toFixed(1);
+        document.getElementById('tireCalcDiam').textContent = d.toFixed(1) + '"';
+        document.getElementById('tireCalcCirc').textContent = circMM + ' mm';
+        document.getElementById('tireSizeLabel').textContent =
+            w.toFixed(1) + '/' + d.toFixed(1) + '-' + Math.round(r) +
+            ' = ' + d.toFixed(1) + '" \u00D8 | Breite: ' + w.toFixed(1) + '" | Flanke: ' + sidewall.toFixed(2) + '"';
+        updateTireCrr();
+        runDriveSim();
+    }
+
+    function calcTireDiamManual() {
+        var d = parseFloat(document.getElementById('tireManualD').value) || 25;
+        document.getElementById('dsTire').value = d.toFixed(1);
+        document.getElementById('tireCalcDiam').textContent = d.toFixed(1) + '"';
+        document.getElementById('tireCalcCirc').textContent = Math.round(d * 25.4 * Math.PI) + ' mm';
+        document.getElementById('tireSizeLabel').textContent = d.toFixed(1) + '" \u00D8 (manuell)';
+        updateTireCrr();
+        runDriveSim();
+    }
+
+    // Rollwiderstandskoeffizienten nach Bauart und Typ
+    // Quellen: EPA NHTSA Tire Studies, SAE Papers, Hoosier R25B FEA (~0.045 Slick)
+    // Bias-ply: ~0.013-0.018 (road), Radial: ~0.008-0.012 (road)
+    // Slick/Race: hoeher wg. weicher Mischung und Grip-Optimierung
+    var TIRE_CRR = {
+        crossply:      { road_legal: 0.015, semislick: 0.016, slick: 0.018, wet: 0.017 },
+        radial:        { road_legal: 0.010, semislick: 0.012, slick: 0.014, wet: 0.013 },
+        radial_perf:   { road_legal: 0.009, semislick: 0.011, slick: 0.013, wet: 0.012 }
+    };
+
+    function updateTireCrr() {
+        var constr = document.getElementById('tireConstr').value;
+        var type = document.getElementById('tireType').value;
+        var crr = (TIRE_CRR[constr] && TIRE_CRR[constr][type]) || 0.015;
+        document.getElementById('dsTireCrr').value = crr;
+        document.getElementById('tireCalcCrr').textContent = crr.toFixed(3);
+        // Streckenanalyse-Header: Reifentyp aktualisieren
+        var labels = { crossply: 'Diagonal (Crossply)', radial: 'Radial', radial_perf: 'Radial HP' };
+        var types = { road_legal: 'DOT', semislick: 'Semi-Slick', slick: 'Slick', wet: 'Regen' };
+        var mfg = document.getElementById('tireMfg').value || '';
+        var model = document.getElementById('tireModel').value || '';
+        var tireLabel = (mfg ? mfg + ' ' : '') + (model ? model + ' | ' : '') + (labels[constr] || '') + ' | ' + (types[type] || '');
+        var trackInfo = document.getElementById('trackVehicleInfo');
+        if (trackInfo) {
+            // Update tire info in track header (replace text between "Reifen" markers)
+            trackInfo.innerHTML = trackInfo.innerHTML.replace(
+                /Crossply-Reifen \(Avon A24\)|[^|]+Reifen[^|]*/,
+                tireLabel
+            );
+        }
+    }
+
     function driveSimPull() {
         // Pull peak power RPM and redline from engine sim
         var el = document.getElementById('simPeakHPrpm');
@@ -2376,9 +2537,10 @@
             return 0.5 * rho * cw * area * v * v;
         }
 
-        // Rolling resistance
+        // Rolling resistance (dynamisch aus Reifen-Konfiguration)
+        var tireCrr = parseFloat(document.getElementById('dsTireCrr').value) || 0.015;
         function rollResist() {
-            return weight * 9.81 * 0.015; // crossply ~0.015
+            return weight * 9.81 * tireCrr;
         }
 
         // Calculate results
@@ -2517,7 +2679,7 @@
     function updateTrackVmax(gears, finalDrive, tireCirc, tireDiam, redline, torqueCurve, cw, area, weight) {
         var rho = 1.225;
         var tireR = tireDiam * 0.0254 / 2;
-        var crr = 0.015; // crossply rolling resistance
+        var crr = parseFloat(document.getElementById('dsTireCrr').value) || 0.015;
 
         function getTQ(rpm) {
             var r = Math.round(rpm / 50) * 50;
@@ -2674,7 +2836,7 @@
         ctx.strokeStyle = 'rgba(160,174,192,0.6)';
         ctx.lineWidth = 1.5;
         ctx.setLineDash([5, 3]);
-        var rollR = weight * 9.81 * 0.015;
+        var rollR = weight * 9.81 * (parseFloat(document.getElementById('dsTireCrr').value) || 0.015);
         for (var s = 0; s <= maxSpeed; s += 5) {
             var v = s / 3.6;
             var drag = 0.5 * rho * cw * area * v * v + rollR;
@@ -3505,6 +3667,7 @@
     restoreCollapseState();
     // loadData is async (may fetch from Gist) - restore scroll AFTER it completes
     loadData().then(function() {
+        if (typeof calcTireDiam === 'function') calcTireDiam(); // Reifendurchmesser aus gespeicherten Werten berechnen
         if (typeof calcCR === 'function') calcCR(); // CR-Rechner mit gespeicherten Werten ausfuehren -> fuettert Simulator
         if (typeof initUnifiedSearch === 'function') initUnifiedSearch();
         setTimeout(function() { try { runCrossChecks(); } catch(e) { console.warn('[Init] Cross-Checks:', e.message); } }, 500);

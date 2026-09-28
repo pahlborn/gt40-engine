@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v70',
+      date: '2026-09-24',
+      time: '02:00',
+      title: 'Reifen-Konfiguration: Groesse, Bauart, Typ mit Umrechnung',
+      changes: [
+        { type: 'neu', text: 'Vollstaendige Reifen-Konfiguration im Geschwindigkeits-Simulator: 3 Eingabeformate (Metrisch 295/50R15, Imperial 8.5/23.5-15, Durchmesser direkt).' },
+        { type: 'neu', text: 'Automatische Umrechnung: Durchmesser, Umfang, Flankenhoehe zwischen allen Formaten.' },
+        { type: 'neu', text: 'Hersteller, Modell/Mischung, Bauart (Crossply/Radial/Radial HP) und Typ (DOT/Semi-Slick/Slick/Regen) als Eingabefelder.' },
+        { type: 'neu', text: 'Dynamischer Rollwiderstandskoeffizient (Crr) nach Bauart und Typ. Crossply DOT=0.015, Radial DOT=0.010, Slick=0.013-0.018.' },
+        { type: 'verbessert', text: 'Rollwiderstand in Geschwindigkeits-Simulator, Strecken-V-max und Diagramm nicht mehr hardcoded, sondern aus Reifen-Konfiguration.' }
+      ]
+    },
+    {
       version: 'v69',
       date: '2026-09-24',
       time: '01:00',
