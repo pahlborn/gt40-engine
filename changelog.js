@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v67',
+      date: '2026-09-23',
+      time: '23:00',
+      title: 'Exkurs komplett ueberarbeitet, Duplikate bereinigt, Datenfluss-Kette',
+      changes: [
+        { type: 'verbessert', text: 'Exkurs (roter Button) komplett neu geschrieben: 9 Kapitel, Suchfunktion mit Trefferanzeige, Inhaltsverzeichnis, sauberer Header (wie Glossar und Reference). Einzige vollstaendige Quelle fuer Verdichtung/Zuendung/Oktan.' },
+        { type: 'verbessert', text: 'Doppelte Inhalte bereinigt: Die grosse "Wechselwirkung"-Sektion auf der Uebersicht (CR-Timing-Tabelle, Vacuum-Advance-Erklaerung, CNC-Bonus) wurde durch einen kompakten Verweis auf den Exkurs ersetzt. In specs.html ebenso.' },
+        { type: 'neu', text: 'Datenfluss-Kette: "Motorleistung" aufgeteilt in Build-Ziele (statisch, was angestrebt wird) und Berechnete Werte (live aus dem Simulator). Cross-Check-Warnung wenn berechnet != Ziel.' },
+        { type: 'neu', text: 'Streckenanalyse-Header zeigt jetzt BHP, BHP/t und Gewicht live aus dem Simulator statt Hardcoded-Werte.' },
+        { type: 'neu', text: 'Exkurs: Ethanol-Warnung (E10 und DellOrto), Stroboskop-Hinweis, MSD 8479 Advance-Kurve komplett mit Springs/Bushings-Tabellen.' }
+      ]
+    },
+    {
       version: 'v66',
       date: '2026-09-23',
       time: '21:30',

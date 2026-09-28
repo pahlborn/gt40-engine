@@ -433,13 +433,16 @@
 
             <!-- Leistungsschaetzung -->
             <div class="comp-box">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#9889; Gesch&auml;tzte Motorleistung</div>
+                <div class="comp-toggle" onclick="toggleComp(this)">&#9889; Motorleistung: Ziele &amp; berechnete Werte</div>
                 <div class="comp-body">
-                    <div class="info-box"><strong>Hinweis:</strong> Sch&auml;tzwerte basierend auf der Komponentenauswahl. Tats&auml;chliche Leistung h&auml;ngt stark von Ansaugung, Abgasanlage, Abstimmung und Verdichtung ab. Leistungsberechnung und Drehmoment-/Leistungskurven werden im <strong>Motor-Simulator</strong> (Sektion &bdquo;Simulation &amp; Analyse&ldquo; am Ende der Spezifikationen) berechnet. Die Zielwerte hier sind die <em>angestrebten</em> Werte, der Simulator zeigt die <em>berechneten</em> Werte basierend auf den tats&auml;chlichen Komponenten.</div>
-                    <div class="spec-item"><span class="spec-label">Gesch. Leistung</span><span class="spec-value"><strong>330 &ndash; 360 BHP</strong> (335&ndash;365 PS DIN / 246&ndash;268 kW) &ndash; abh. von Intake/Exhaust/Tuning</span></div>
-                    <div class="spec-item"><span class="spec-label">Gesch. Drehmoment</span><span class="spec-value"><strong>330 &ndash; 350 ft-lbs</strong> (447&ndash;475 Nm) &ndash; an der Kurbelwelle</span></div>
-                    <div class="spec-item"><span class="spec-label">Peak Power RPM</span><span class="spec-value">5.500 &ndash; 6.000 U/min</span></div>
-                    <div class="spec-item"><span class="spec-label">Peak Torque RPM</span><span class="spec-value">3.500 &ndash; 4.500 U/min</span></div>
+                    <div class="comp-sub">Build-Ziele (angestrebt)</div>
+                    <div class="spec-item"><span class="spec-label">Ziel Leistung</span><span class="spec-value"><strong>330 &ndash; 360 BHP</strong> (335&ndash;365 PS DIN / 246&ndash;268 kW)</span></div>
+                    <div class="spec-item"><span class="spec-label">Ziel Drehmoment</span><span class="spec-value"><strong>330 &ndash; 350 ft-lbs</strong> (447&ndash;475 Nm)</span></div>
+                    <div class="spec-item"><span class="spec-label">Ziel Peak Power RPM</span><span class="spec-value">5.500 &ndash; 6.000 U/min</span></div>
+                    <div class="spec-item"><span class="spec-label">Ziel Peak Torque RPM</span><span class="spec-value">3.500 &ndash; 4.500 U/min</span></div>
+
+                    <div class="comp-sub" style="margin-top:0.5rem;">Berechnete Werte (Motor-Simulator)</div>
+                    <div id="simLiveValues" style="font-size:0.8rem;color:#718096;">Simulator-Ergebnisse werden nach dem Laden angezeigt...</div>
                     <div class="spec-item"><span class="spec-label">Effektives Leistungsband</span><span class="spec-value">2.200 &ndash; 6.200 U/min (Cam-Range der XE274HR &ndash; dar&uuml;ber sinkt die Leistung, keine Gefahr)</span></div>
                     <div class="spec-item"><span class="spec-label">Rev Limiter (empf.)</span><span class="spec-value">6.500 U/min (300 RPM &uuml;ber Cam-Range, weil dar&uuml;ber kein Leistungsgewinn)</span></div>
                     <div class="spec-item"><span class="spec-label">Mechanisches Limit</span><span class="spec-value">7.000+ U/min (alle Komponenten: Block, Internals, Federn, Lifter, Retainer)</span></div>
@@ -672,38 +675,11 @@
                 </div>
             </div>
 
-            <div class="comp-box" style="margin-top:0.3rem;">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#128218; Wechselwirkung: Z&uuml;ndung &harr; Oktan &harr; Verdichtung</div>
-                <div class="comp-body">
-                    <div class="comp-sub">Das Dreieck: CR &ndash; Timing &ndash; Oktanzahl</div>
-                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Die drei Gr&ouml;&szlig;en h&auml;ngen untrennbar zusammen:</p>
-                    <div style="background:#f0f5ff;padding:0.5rem;border-radius:8px;font-size:0.8rem;margin:0.3rem 0;">
-                        <strong>Verdichtung (CR)</strong> = fest, durch den Build definiert<br>
-                        <strong>Z&uuml;ndzeitpunkt</strong> = einstellbar (Initial + Centrifugal + Vacuum Advance)<br>
-                        <strong>Oktanzahl</strong> = bestimmt sich aus CR + Timing
-                    </div>
-
-                    <div class="comp-sub" style="margin-top:0.4rem;">Warum beeinflusst Timing die Oktanzahl?</div>
-                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Je <strong>fr&uuml;her</strong> die Z&uuml;ndung erfolgt (mehr Advance), desto h&ouml;her steigt der <strong>Spitzendruck</strong> im Brennraum. Hoher Spitzendruck bei hoher Verdichtung f&uuml;hrt zu <strong>Klopfen</strong> (Detonation) &ndash; einer unkontrollierten Selbstz&uuml;ndung des Restgemischs. H&ouml;here Oktanzahl = h&ouml;here Klopffestigkeit = mehr Timing m&ouml;glich.</p>
-
-                    <div class="comp-sub" style="margin-top:0.4rem;">Praxis-Vorgehensweise f&uuml;r den GT40</div>
-                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;"><strong>1.</strong> Verdichtung messen/berechnen (CR-Rechner in specs.html) &rarr; <strong>verbindlich ist nur der berechnete Wert</strong><br>
-                    <strong>2.</strong> Verf&uuml;gbaren Kraftstoff bestimmen (in DE: Super Plus 98 ROZ ideal)<br>
-                    <strong>3.</strong> Timing so einstellen, dass bei Volllast <strong>kein Klopfen</strong> auftritt<br>
-                    <strong>4.</strong> Total Timing ergibt sich aus dem Zusammenspiel von CR + Kraftstoff</p>
-
-                    <table style="width:100%;font-size:0.76rem;border-collapse:collapse;margin:0.3rem 0;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.3rem;">CR</th><th style="text-align:center;padding:0.3rem;">Max. Timing mit 95 ROZ</th><th style="text-align:center;padding:0.3rem;">Max. Timing mit 98 ROZ</th><th style="text-align:center;padding:0.3rem;">Max. Timing mit 100+ ROZ</th></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">9.0:1</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">36&ndash;38&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">38&ndash;40&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">40&ndash;42&deg;</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>9.5&ndash;9.8:1</strong></td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>32&ndash;34&deg;</strong></td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;"><strong>34&ndash;36&deg;</strong></td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">36&ndash;38&deg;</td></tr>
-                        <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">10.0:1</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">30&ndash;32&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">32&ndash;34&deg;</td><td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">34&ndash;36&deg;</td></tr>
-                        <tr><td style="padding:0.25rem;">10.5:1+</td><td style="text-align:center;padding:0.25rem;color:#c53030;">Kritisch!</td><td style="text-align:center;padding:0.25rem;">28&ndash;32&deg;</td><td style="text-align:center;padding:0.25rem;">32&ndash;34&deg;</td></tr>
-                    </table>
-
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>CNC-Brennraum-Bonus:</strong> Die AFR-1399-K&ouml;pfe haben CNC-bearbeitete Brennr&auml;ume mit optimaler Quench-Geometrie. Das reduziert die Klopfneigung um ca. 2&ndash;3 ROZ gegen&uuml;ber offenen Gu&szlig;-Kammern. Mit der berechneten CR (siehe CR-Rechner) und 34&deg; Total Timing ist <strong>Super Plus (98 ROZ)</strong> ausreichend. Mehr Details: &#128293; Exkurs-Button rechts.</div>
-
-                    <div class="comp-sub" style="margin-top:0.4rem;">Vacuum Advance &amp; Oktanzahl</div>
-                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Der <strong>Vacuum Advance</strong> (MSD 8479) addiert bei Teillast zus&auml;tzliches Timing &ndash; <strong>wie viel genau, wird am Fahrzeug gemessen</strong> und im Build Log eingetragen. Dies ist <strong>kein Klopfrisiko</strong>, da Teillast = weniger Brennraumdruck. Vacuum Advance verbessert den Verbrauch und die Gasannahme im Stadtverkehr erheblich, ohne die Klopfgrenze zu beeinflussen. Bei Volllast (WOT) ist kein Unterdruck vorhanden &rarr; Vacuum Advance = 0&deg;.</p>
+            <div style="background:#fff5f5;border:1px solid #fed7d7;border-radius:8px;padding:0.5rem;margin-top:0.3rem;">
+                <div style="font-size:0.82rem;line-height:1.5;">
+                    <strong>&#9888; Verdichtung, Z&uuml;ndung &amp; Oktanzahl h&auml;ngen untrennbar zusammen.</strong>
+                    Die CR bestimmt, wie viel Timing m&ouml;glich ist. Das Timing bestimmt, welche Oktanzahl n&ouml;tig ist. Ohne Klopfsensor verzeiht der Motor keine Fehler.
+                    <strong>Details:</strong> <a href="#" onclick="showExkursEngine();return false;" style="color:#c53030;font-weight:700;">&#128293; Exkurs &ouml;ffnen</a>
                 </div>
             </div>
 
@@ -946,7 +922,7 @@
             <h2>Streckenanalyse &amp; Fahrzeugeinsch&auml;tzung</h2>
         </div>
         <div class="section-body">
-            <div class="info-box" style="margin-bottom:0.5rem;"><strong>Fahrzeug:</strong> TSC GT40 Kit Car | ~1.050 kg | ~340&ndash;360 BHP (345&ndash;365 PS DIN) | ~324&ndash;343 BHP/t | Crossply-Reifen (Avon A24) | Kein ABS/TC/ESP | Schaltgetriebe UN1-13</div>
+            <div class="info-box" style="margin-bottom:0.5rem;" id="trackVehicleInfo"><strong>Fahrzeug:</strong> TSC GT40 Kit Car | <span id="trackWeight">~1.050 kg</span> | <span id="trackBHP">~340&ndash;360 BHP</span> | <span id="trackBHPt">~324&ndash;343 BHP/t</span> | Crossply-Reifen (Avon A24) | Kein ABS/TC/ESP | Schaltgetriebe UN1-13</div>
 
             <!-- Pannoniaring -->
             <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
@@ -2000,6 +1976,9 @@
         // Store data for drivetrain sim
         lastSimData = data;
 
+        // ==== LIVE-WERTE IN UEBERSICHTS-BLOCK ====
+        updateSimLiveValues(peakHP, peakHPrpm, peakTQ, peakTQrpm);
+
         // ==== RPM CROSS-CHECKS (Motor-Simulator) ====
         checkSimRpmLimits(peakHPrpm, peakTQrpm, peakTQ);
 
@@ -2016,6 +1995,46 @@
     // Central RPM limit: weakest link = camshaft (COMP XE274HR)
     var SYSTEM_RPM_LIMIT = 6200;
     var SYSTEM_RPM_LABEL = 'Nockenwelle COMP XE274HR';
+
+    function updateSimLiveValues(peakHP, peakHPrpm, peakTQ, peakTQrpm) {
+        var el = document.getElementById('simLiveValues');
+        if (!el) return;
+        var hpPS = Math.round(peakHP * 1.0139);
+        var hpKW = Math.round(peakHP * 0.7457);
+        var tqNm = Math.round(peakTQ * 1.3558);
+        var weight = parseFloat(document.getElementById('dsWeight').value) || 1050;
+        var bhpPerT = (peakHP / (weight / 1000)).toFixed(0);
+
+        var h = '';
+        h += '<div class="spec-item"><span class="spec-label">Berechnet: Leistung</span><span class="spec-value"><strong>' + Math.round(peakHP) + ' BHP</strong> (' + hpPS + ' PS / ' + hpKW + ' kW) @ ' + peakHPrpm + ' RPM</span></div>';
+        h += '<div class="spec-item"><span class="spec-label">Berechnet: Drehmoment</span><span class="spec-value"><strong>' + Math.round(peakTQ) + ' ft-lbs</strong> (' + tqNm + ' Nm) @ ' + peakTQrpm + ' RPM</span></div>';
+        h += '<div class="spec-item"><span class="spec-label">Berechnet: Leistungsgewicht</span><span class="spec-value"><strong>' + bhpPerT + ' BHP/t</strong> (bei ' + weight + ' kg Fahrzeuggewicht)</span></div>';
+
+        // Cross-Check: Warnung wenn ausserhalb Zielbereich
+        var warns = [];
+        if (peakHP < 330) warns.push('Leistung (' + Math.round(peakHP) + ' BHP) unter Ziel (330 BHP)');
+        if (peakHP > 360) warns.push('Leistung (' + Math.round(peakHP) + ' BHP) \u00fcber Ziel (360 BHP)');
+        if (peakTQ < 330) warns.push('Drehmoment (' + Math.round(peakTQ) + ' ft-lbs) unter Ziel (330 ft-lbs)');
+        if (peakTQ > 350) warns.push('Drehmoment (' + Math.round(peakTQ) + ' ft-lbs) \u00fcber Ziel (350 ft-lbs)');
+        if (warns.length) {
+            h += '<div style="background:#fffff0;border:1px solid #fefcbf;border-radius:6px;padding:0.4rem;margin-top:0.3rem;font-size:0.78rem;color:#975a16;">';
+            h += '<strong>\u26a0 Abweichung Ziel vs. Berechnet:</strong> ' + warns.join(' | ');
+            h += '</div>';
+        } else {
+            h += '<div style="background:#f0fff4;border:1px solid #c6f6d5;border-radius:6px;padding:0.4rem;margin-top:0.3rem;font-size:0.78rem;color:#276749;">';
+            h += '<strong>\u2713 Berechnete Werte liegen im Zielbereich.</strong>';
+            h += '</div>';
+        }
+        el.innerHTML = h;
+
+        // Streckenanalyse-Header aktualisieren
+        var tBHP = document.getElementById('trackBHP');
+        var tBHPt = document.getElementById('trackBHPt');
+        var tW = document.getElementById('trackWeight');
+        if (tBHP) tBHP.textContent = '~' + Math.round(peakHP) + ' BHP (' + hpPS + ' PS)';
+        if (tBHPt) tBHPt.textContent = '~' + bhpPerT + ' BHP/t';
+        if (tW) tW.textContent = weight + ' kg';
+    }
 
     function checkSimRpmLimits(peakHPrpm, peakTQrpm, peakTQ) {
         var warnDiv = document.getElementById('simRpmWarnings');

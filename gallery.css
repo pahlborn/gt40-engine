@@ -151,6 +151,9 @@ body.overlay-offen .fab-stack { display: none; }
 .exk-box.info { background: #ebf8ff; border: 1px solid #bee3f8; color: #2c5282; }
 .exk-box.warn { background: #fffff0; border: 1px solid #fefcbf; color: #975a16; }
 .exk-box.danger { background: #fff5f5; border: 1px solid #fed7d7; color: #c53030; }
+.exk-toc { background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.6rem 0.8rem; margin-bottom: 1.2rem; }
+.exk-toc-link { display: block; color: #2b6cb0; font-size: 0.8rem; line-height: 1.8; text-decoration: none; padding-left: 0.3rem; border-left: 2px solid transparent; }
+.exk-toc-link:hover { border-left-color: #2b6cb0; background: #ebf8ff; }
 @media print {
     .guide-overlay#guide-reference { position: static; overflow: visible; }
     #guide-reference .glossary-search, #guide-reference .info-box { display: none; }
