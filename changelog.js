@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v69',
+      date: '2026-09-24',
+      time: '01:00',
+      title: 'Streckenanalyse in Simulation & Analyse, Struktur-Fix',
+      changes: [
+        { type: 'fix', text: 'Streckenanalyse korrekt in "Simulation & Analyse" eingebettet (direkt nach Geschwindigkeits-Simulator).' },
+        { type: 'verbessert', text: 'Streckenanalyse standardmaessig aufgeklappt (war nach Umbau in comp-box unsichtbar).' }
+      ]
+    },
+    {
       version: 'v68',
       date: '2026-09-24',
       time: '00:00',
