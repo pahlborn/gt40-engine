@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v68',
+      date: '2026-09-24',
+      time: '00:00',
+      title: 'Datenfluss Phase 4: Strecken-V-max aus Geschwindigkeits-Simulator',
+      changes: [
+        { type: 'neu', text: 'Strecken-V-max wird jetzt physikbasiert berechnet: Beschleunigungssimulation ueber die Geradenlaenge jeder Strecke (Radkraft vs. Luftwiderstand + Rollwiderstand + Steigung). Ergebnis mit [Sim]-Tag gekennzeichnet.' },
+        { type: 'neu', text: '5 Strecken dynamisiert: Pannoniaring (700m), Slovakiaring (900m), Brno (636m, 4% bergauf), Salzburgring (750m), Spa Kemmel (1050m, -2% bergab). Jeweils mit realistischer Kurvenausgangsgeschwindigkeit.' },
+        { type: 'verbessert', text: 'Streckenanalyse jetzt als klappbare comp-box innerhalb der "Simulation & Analyse"-Sektion, standardmaessig offen.' }
+      ]
+    },
+    {
       version: 'v67',
       date: '2026-09-23',
       time: '23:00',
