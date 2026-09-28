@@ -129,6 +129,12 @@ body.overlay-offen .fab-stack { display: none; }
 .ref-group { margin-bottom: 1.4rem; }
 .ref-group-titel { font-size: 0.92rem; color: #2c5282; margin: 0 0 0.5rem; }
 .ref-leer { font-size: 0.85rem; color: #718096; padding: 1rem 0; text-align: center; }
+/* Tabellen-Stil fuer Nachschlagekarte - konsistent wie Glossar */
+.data-table { width: 100%; font-size: 0.82rem; border-collapse: collapse; }
+.data-table th { text-align: left; padding: 0.4rem 0.5rem; background: #ebf4ff; color: #2c5282; font-weight: 700; border-bottom: 2px solid #bee3f8; font-size: 0.75rem; }
+.data-table td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #e2e8f0; vertical-align: top; line-height: 1.5; }
+.data-table tr:hover { background: #f7fafc; }
+.data-table em { color: #4a5568; font-style: normal; font-weight: 600; }
 @media print {
     .guide-overlay#guide-reference { position: static; overflow: visible; }
     #guide-reference .glossary-search, #guide-reference .info-box { display: none; }

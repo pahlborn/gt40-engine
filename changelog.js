@@ -13,6 +13,20 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v64',
+      date: '2026-09-23',
+      time: '18:00',
+      title: 'Formatierung, Drehzahlfestigkeit, Aufraeum-Arbeiten',
+      changes: [
+        { type: 'verbessert', text: 'Nachschlagekarte Betriebsmittel: Tabellen-Styling vereinheitlicht (data-table CSS), Spaltenbreiten konsistent, Hover-Effekt, Header-Styling wie Glossar.' },
+        { type: 'verbessert', text: 'MSRP-Hinweis beim Short Block erklaert (Listenpreis lt. Ford Performance).' },
+        { type: 'fix', text: 'Zylinderkoepfe-Teileliste auf der Uebersicht war gruen eingefaerbt (Sonderbehandlung), jetzt Standard-Blau wie alle anderen Bereiche.' },
+        { type: 'verbessert', text: 'Kostenaufstellung: "Pushrods (noch zu bestellen)" aus der Fussnote entfernt (keine Einzelteil-Nachverfolgung dort).' },
+        { type: 'neu', text: 'Milodon 16230 Wasserpumpe: Link zum Hersteller/Haendler ergaenzt.' },
+        { type: 'verbessert', text: 'Drehzahlfestigkeit: Nockenwelle als einziger Limiter (6.200 RPM) ausfuehrlicher dokumentiert. Upgrade-Option (XE286HR, Solid Roller fuer 7.000+ RPM) als Info-Box ergaenzt, da alle anderen Komponenten bereits dafuer ausgelegt sind.' }
+      ]
+    },
+    {
       version: 'v63',
       date: '2026-09-23',
       time: '16:00',

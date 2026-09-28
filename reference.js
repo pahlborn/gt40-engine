@@ -62,7 +62,7 @@
                + 'sondern "wo kommt dieses Mittel hin". Praktisch beim Einkauf und beim '
                + 'Bereitlegen vor der Montage.',
         spalten: ['Betriebsmittel', 'Verwendung'],
-        breiten: ['34%', 'auto'],
+        breiten: ['38%', 'auto'],
         zeilen: [
           ['<strong>ARP Ultra-Torque</strong>', 'Nockenwellenschraube, Kopfstehbolzen (beide Reihen)'],
           ['<strong>Thread Sealant</strong>', 'Hauptlagerdeckel untere Reihe und Kopfstehbolzen untere Reihe &ndash; beide reichen in den Wassermantel'],
@@ -80,7 +80,7 @@
                + 'steht, ist nicht vergessen, sondern noch nicht belegt &ndash; und wird '
                + 'nicht geraten.',
         spalten: ['Punkt', 'Stand'],
-        breiten: ['42%', 'auto'],
+        breiten: ['38%', 'auto'],
         zeilen: [
           ['Vor&ouml;len vor Erststart', '<strong>Pflicht</strong> &ndash; Melling PT11, &Ouml;l muss an allen 16 Kipphebeln erscheinen, Kurbelwelle 4&times; 90&deg; mitdrehen'],
           ['Einfahr&ouml;l', '<strong>mit ZDDP</strong> &ndash; Flachst&ouml;ssel-Nockentrieb braucht den Zusatz'],
