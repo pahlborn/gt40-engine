@@ -497,6 +497,7 @@
 <script src="field-sync.js"></script>
 <script src="validation.js"></script>
 <script src="reference.js"></script>
+<script src="exkurs-engine.js"></script>
 </head>
 <body>
 
@@ -1638,7 +1639,7 @@
                         <tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Blau</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">25&deg;</td><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;text-align:center;">37&deg;</td></tr>
                         <tr><td style="padding:0.25rem;">Schwarz (kein)</td><td style="padding:0.25rem;text-align:center;">28&deg;</td><td style="padding:0.25rem;text-align:center;">40&deg;</td></tr>
                     </table>
-                    <div class="info-box" style="font-size:0.74rem;"><strong>Empfehlung f&uuml;r diesen Build (~9.7:1 CR, 98 ROZ):</strong> Start mit Werks-Kurve (2&times; Heavy Silver, Silber-Bushing = 21&deg;). Initial: 10&ndash;14&deg;. Ergibt 31&ndash;35&deg; total. Erst nach Testlauf auf Klopfneigung optimieren. <strong>MSD-Hinweis:</strong> &bdquo;Use as much initial advance as possible without encountering excessive starter load. Start the centrifugal advance just above idle RPM.&ldquo;</div>
+                    <div class="info-box" style="font-size:0.74rem;"><strong>Empfehlung f&uuml;r diesen Build (CR lt. Rechner, 98 ROZ):</strong> Start mit Werks-Kurve (2&times; Heavy Silver, Silber-Bushing = 21&deg;). Initial: 10&ndash;14&deg;. Ergibt 31&ndash;35&deg; total. Erst nach Testlauf auf Klopfneigung optimieren. <strong>MSD-Hinweis:</strong> &bdquo;Use as much initial advance as possible without encountering excessive starter load. Start the centrifugal advance just above idle RPM.&ldquo;</div>
                 </div>
             </div>
 
@@ -1681,7 +1682,7 @@
                 <div class="comp-body">
                     <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
                         <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;width:50%;">Ford Performance Vorgabe</th><th style="text-align:left;padding:0.25rem;width:25%;">Unser Build</th><th style="text-align:center;padding:0.25rem;width:25%;">Status</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Total Timing 5.0L (302): <strong>36&ndash;38&deg;</strong></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Empf. 32&ndash;36&deg; (9.8:1 CR, konservativer)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Total Timing 5.0L (302): <strong>36&ndash;38&deg;</strong></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Empf. 32&ndash;36&deg; (CR lt. Rechner, konservativer)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Vacuum Advance an <strong>Ported Vacuum</strong> (nicht Manifold!)</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">8479 mit Unterdruckdose vorhanden &ndash; <strong>Abgriff an der DRLA-Anlage noch offen</strong></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#975a16;font-weight:700;">teilweise</td></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Z&uuml;ndkabel-Routing: Inductive Crossfire vermeiden</td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>Dokumentiert</strong> (s.u.)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
                         <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">Verteilerzahnrad: Material passend zur Nockenwelle<br><span style="font-size:0.7rem;color:#718096;">COMP 35-518-8 = <strong>Austempered Ductile Iron (ADI)</strong><br>&#10004; Melonized/Hardened Steel (MSD ab Werk)<br>&#10004; Composite (COMP 12200, universell)<br>&#10060; Bronze = nur f&uuml;r Billet Steel!<br>&#10060; Cast Iron unbehandelt = nur Flat-Tappet!</span></td><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;">MSD 8479: <strong>Hardened Steel Gear</strong> ab Werk &ndash; korrekt f&uuml;r ADI Hyd. Roller &#10004;<br><span style="font-size:0.7rem;color:#718096;">Bei Verteiler-Wechsel: Zahnrad-Material IMMER pr&uuml;fen! <a href="https://www.streetmusclemag.com/features/twist-taking-confusion-distributor-gear-compatibility/" target="_blank">Guide</a></span></td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">&#10004;</td></tr>
@@ -1719,7 +1720,7 @@
                     <div class="spec-item"><span class="spec-label">Herkunft</span><span class="spec-value">&Uuml;bernommen vom vorherigen 302-Motor</span></div>
                     <div class="spec-item"><span class="spec-label">Kompatibilit&auml;t</span><span class="spec-value">164-Tooth Flywheel, SBF Small Block Ford</span></div>
                     <div class="spec-item"><span class="spec-label">Shims</span><span class="spec-value">Starter Shim Kit ggf. erforderlich f&uuml;r Zahnspiel</span></div>
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>Pr&uuml;fpunkte vor Einbau:</strong> Ritzelzustand pr&uuml;fen (Zahnkanten nicht abgerundet?), Kabelquerschnitt + Zustand (mind. 4 AWG / 25 mm&sup2;), Masseband Motorblock &rarr; Chassis pr&uuml;fen. Bei erh&ouml;hter Verdichtung (9.7:1) muss der Starter das Anlassdrehmoment sicher aufbringen k&ouml;nnen.</div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Pr&uuml;fpunkte vor Einbau:</strong> Ritzelzustand pr&uuml;fen (Zahnkanten nicht abgerundet?), Kabelquerschnitt + Zustand (mind. 4 AWG / 25 mm&sup2;), Masseband Motorblock &rarr; Chassis pr&uuml;fen. Bei erh&ouml;hter Verdichtung (CR lt. Rechner) muss der Starter das Anlassdrehmoment sicher aufbringen k&ouml;nnen.</div>
                 </div>
             </div>
             <div class="form-group">
@@ -2121,6 +2122,7 @@
 <div class="fab-stack">
     <button class="fab-btn glossary" onclick="showGuide('guide-glossary')" title="Glossary">&#128214;</button>
     <button class="fab-btn reference" onclick="showReference()" title="Betriebsmittel &amp; Anzugswerte">&#128295;</button>
+    <button class="fab-btn exkurs" onclick="showExkursEngine()" title="Exkurs: Verdichtung, Z&uuml;ndung, Oktan">&#128293;</button>
     <button class="fab-btn" onclick="showGuide('guide-clearance')" title="Clearance Quick-Reference" style="background:#276749;font-size:0.85rem;">&#128207;</button>
     <button class="fab-btn" onclick="document.getElementById('convPanel').classList.toggle('open')" title="Unit Converter">&#8644;</button>
     <button class="fab-btn" onclick="document.getElementById('unitsPanel').classList.toggle('open')" title="Units Reference" style="background:#4a5568;font-size:0.85rem;">&#128207;</button>
@@ -4338,7 +4340,7 @@
     })();
 
     // ==== INIT ====
-    renderAppVersion(); generateQuenchTable(); updateSyncBadge(); loadData(); initCompPhotos();
+    renderAppVersion(); generateQuenchTable(); updateSyncBadge(); loadData().then(function() { if (typeof calcCR === 'function') calcCR(); }).catch(function(){}); initCompPhotos();
     if (typeof Validation !== 'undefined') Validation.init();
     // search.js wird erst am Dateiende geladen - initUnifiedSearch() gab es hier
     // also noch gar nicht und die Exception hat updateBuildDashboard() sowie die

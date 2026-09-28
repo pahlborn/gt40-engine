@@ -135,6 +135,22 @@ body.overlay-offen .fab-stack { display: none; }
 .data-table td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #e2e8f0; vertical-align: top; line-height: 1.5; }
 .data-table tr:hover { background: #f7fafc; }
 .data-table em { color: #4a5568; font-style: normal; font-weight: 600; }
+/* ---- Exkurs-Overlay (exkurs-engine.js) -------------------------------- */
+.fab-btn.exkurs { background: #c53030; }
+.exk-section { margin-bottom: 1.8rem; }
+.exk-section h3 { font-size: 0.95rem; color: #1a365d; margin: 0 0 0.6rem; font-weight: 700; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.3rem; }
+.exk-section h4 { font-size: 0.85rem; color: #2c5282; margin: 0.8rem 0 0.3rem; font-weight: 700; }
+.exk-section p { font-size: 0.82rem; line-height: 1.6; margin: 0.3rem 0; }
+.exk-section ol, .exk-section ul { font-size: 0.82rem; line-height: 1.6; padding-left: 1.3rem; margin: 0.3rem 0; }
+.exk-section code { background: #edf2f7; padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.78rem; }
+.exk-table { width: 100%; font-size: 0.78rem; border-collapse: collapse; margin: 0.4rem 0; }
+.exk-table th { text-align: left; padding: 0.35rem 0.5rem; background: #ebf4ff; color: #2c5282; font-weight: 700; border-bottom: 2px solid #bee3f8; }
+.exk-table td { padding: 0.35rem 0.5rem; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+.exk-table tr:hover { background: #f7fafc; }
+.exk-box { padding: 0.5rem 0.6rem; border-radius: 6px; font-size: 0.8rem; line-height: 1.5; margin: 0.5rem 0; }
+.exk-box.info { background: #ebf8ff; border: 1px solid #bee3f8; color: #2c5282; }
+.exk-box.warn { background: #fffff0; border: 1px solid #fefcbf; color: #975a16; }
+.exk-box.danger { background: #fff5f5; border: 1px solid #fed7d7; color: #c53030; }
 @media print {
     .guide-overlay#guide-reference { position: static; overflow: visible; }
     #guide-reference .glossary-search, #guide-reference .info-box { display: none; }

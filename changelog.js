@@ -13,6 +13,18 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v65',
+      date: '2026-09-23',
+      time: '20:00',
+      title: 'Exkurs Verdichtung/Zuendung/Oktan, Picklist, CR-Konsistenz',
+      changes: [
+        { type: 'neu', text: 'Exkurs-Overlay (roter Flammen-Button rechts): Umfassender Leitfaden zu Verdichtung, Zuendung, Leistung und Oktanzahl. 8 Kapitel inkl. historischem Kontext (High-Compression-Aera, Blei), AKI-vs-ROZ-Umrechnung, Klopfsensor-Problematik, Otto-Wirkungsgrad, MSD-Timing-Praxis und Vorgehensweise fuer den GT40.' },
+        { type: 'neu', text: 'Picklist (docs/pickliste.html): Interaktive Einkaufsliste mit 3 Sektionen (Summit Hardware, DE Oele/Chemie, Gesperrt), Fortschrittsanzeige und Haken zum Abhaken. Verlinkt von der Uebersicht (Teilekatalog).' },
+        { type: 'verbessert', text: 'CR-Konsistenz: Alle Hardcoded-CR-Werte (9.7:1, 9.8:1) durch Verweis auf den CR-Rechner ersetzt. Einzige Wahrheit ist der berechnete Wert. Betrifft index.html, specs.html, build-log.html, msd-advance-tuning.html.' },
+        { type: 'verbessert', text: 'CR-Rechner wird jetzt beim Seitenaufbau automatisch mit den gespeicherten Werten ausgefuehrt und fuettert den Simulator direkt (keine manuelle Aktualisierung mehr noetig).' }
+      ]
+    },
+    {
       version: 'v64',
       date: '2026-09-23',
       time: '18:00',

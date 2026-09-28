@@ -1,0 +1,401 @@
+<title>BOSS 302 Pickliste</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f5f2ea;
+    --paper-raised:#fffdf8;
+    --ink:#20242b;
+    --ink-soft:#5b6270;
+    --steel:#3c5a73;
+    --steel-deep:#243747;
+    --amber:#a2661f;
+    --amber-soft:#f2e2c8;
+    --line:#d9d3c3;
+    --line-strong:#b8b0a0;
+    --ok:#3f7a53;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#181a1d;
+      --paper-raised:#212327;
+      --ink:#e9e6de;
+      --ink-soft:#9b9c9b;
+      --steel:#7fa0bb;
+      --steel-deep:#a9c2d6;
+      --amber:#e0a251;
+      --amber-soft:#3a2f1c;
+      --line:#34363a;
+      --line-strong:#464850;
+      --ok:#6cae7f;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#181a1d;
+    --paper-raised:#212327;
+    --ink:#e9e6de;
+    --ink-soft:#9b9c9b;
+    --steel:#7fa0bb;
+    --steel-deep:#a9c2d6;
+    --amber:#e0a251;
+    --amber-soft:#3a2f1c;
+    --line:#34363a;
+    --line-strong:#464850;
+    --ok:#6cae7f;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',system-ui,sans-serif;
+    margin:0;
+    padding:0 0 4rem;
+  }
+
+  .wrap{max-width:1040px;margin:0 auto;padding:1.5rem 1.25rem 0;}
+
+  header.top{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:.5rem 1.5rem;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:1rem;
+    margin-bottom:.25rem;
+  }
+  .title-block h1{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:800;
+    font-size:clamp(2rem,6vw,3rem);
+    letter-spacing:.01em;
+    margin:0;
+    line-height:.95;
+    text-wrap:balance;
+  }
+  .title-block .sub{
+    font-size:.85rem;
+    color:var(--ink-soft);
+    margin-top:.35rem;
+    letter-spacing:.02em;
+  }
+  .stamp{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--steel-deep);
+    border:1.5px solid var(--steel-deep);
+    padding:.3rem .55rem;
+    border-radius:2px;
+    white-space:nowrap;
+  }
+
+  .progress-rail{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+    gap:.75rem;
+    margin:1.1rem 0 1.6rem;
+  }
+  .progress-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:.75rem .9rem;
+  }
+  .progress-card .label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.68rem;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--ink-soft);
+  }
+  .progress-card .count{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:800;
+    font-size:1.7rem;
+    color:var(--steel-deep);
+    font-variant-numeric:tabular-nums;
+    margin:.1rem 0 .35rem;
+  }
+  .bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;}
+  .bar > i{display:block;height:100%;background:var(--steel);border-radius:3px;transition:width .25s ease;}
+
+  section.list{margin-bottom:2.75rem;}
+  .list-head{
+    display:flex;
+    align-items:baseline;
+    gap:.65rem;
+    border-bottom:1.5px solid var(--ink);
+    padding-bottom:.4rem;
+    margin-bottom:.15rem;
+  }
+  .list-head .idx{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.85rem;
+    color:var(--ink-soft);
+  }
+  .list-head h2{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:800;
+    font-size:1.5rem;
+    margin:0;
+    letter-spacing:.01em;
+  }
+  .list-note{font-size:.82rem;color:var(--ink-soft);margin:.3rem 0 1rem;max-width:60ch;}
+
+  .group{margin-top:1.3rem;}
+  .group-title{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.09em;
+    color:var(--steel-deep);
+    margin-bottom:.4rem;
+    padding-left:.1rem;
+  }
+
+  ul.rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);}
+  .row{
+    display:grid;
+    grid-template-columns:1.6rem 1fr auto;
+    gap:.15rem .9rem;
+    align-items:start;
+    padding:.6rem .1rem;
+    border-bottom:1px solid var(--line);
+  }
+  .row.blocked{background:linear-gradient(90deg,var(--amber-soft),transparent 40%);}
+  .row input[type="checkbox"]{
+    width:1.15rem;height:1.15rem;
+    margin-top:.15rem;
+    accent-color:var(--steel);
+    cursor:pointer;
+  }
+  .row .name{
+    font-weight:600;
+    line-height:1.3;
+  }
+  .row.done .name{color:var(--ink-soft);text-decoration:line-through;text-decoration-color:var(--line-strong);}
+  .row .pn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.82rem;
+    color:var(--ink-soft);
+    margin-top:.15rem;
+  }
+  .row .note{
+    grid-column:2 / span 1;
+    font-size:.78rem;
+    color:var(--amber);
+    margin-top:.3rem;
+    max-width:56ch;
+  }
+  .row .price{
+    font-family:'IBM Plex Mono',monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:.88rem;
+    text-align:right;
+    white-space:nowrap;
+    padding-top:.1rem;
+  }
+  .tag{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.62rem;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    padding:.1rem .4rem;
+    border-radius:2px;
+    margin-left:.4rem;
+    vertical-align:1px;
+  }
+  .tag.req{background:var(--amber-soft);color:var(--amber);}
+  .tag.lock{background:var(--amber-soft);color:var(--amber);border:1px solid var(--amber);}
+
+  footer.note{
+    max-width:60ch;
+    margin:2.5rem auto 0;
+    padding:0 1.25rem;
+    font-size:.78rem;
+    color:var(--ink-soft);
+    line-height:1.5;
+  }
+  noscript .list-note{color:var(--amber);}
+
+  @media (max-width:520px){
+    .row{grid-template-columns:1.5rem 1fr;}
+    .row .price{grid-column:2/span 1;text-align:left;font-size:.8rem;color:var(--ink-soft);margin-top:.1rem;}
+  }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="title-block">
+      <h1>Pickliste M-6009-302</h1>
+      <div class="sub">GT40 · BOSS 302 Nockenwellen-Einbau &amp; Folgeteile</div>
+    </div>
+    <div class="stamp">Stand 2026-09-08</div>
+  </header>
+
+  <div class="progress-rail" id="progressRail"></div>
+
+  <section class="list" id="list-summit" data-list="summit">
+    <div class="list-head"><span class="idx">01</span><h2>Summit / USA — Hardware</h2></div>
+    <p class="list-note">In einer Sammelbestellung, Versand konsolidiert. Öle/Fette gehören nicht hierher — siehe Liste 2.</p>
+
+    <div class="group">
+      <div class="group-title">Ventiltrieb / Werkzeug</div>
+      <ul class="rows">
+        <li class="row" data-id="s-degree"><input type="checkbox" id="s-degree"><div><label for="s-degree" class="name">Cam Degree Kit</label><div class="pn">Trick Flow TFS-90000-16</div><div class="note">⚠ Preis bei Summit prüfen — andere Händler führen $123,99, nicht $85</div></div><div class="price">Preis prüfen</div></li>
+        <li class="row done" data-id="s-guide"><input type="checkbox" id="s-guide" checked disabled><div><label for="s-guide" class="name">Guideplates 5/16" — entfällt, im Kopf-Kit enthalten</label><div class="pn">im AFR-1399-Kit enthalten (COMP 4816-8 als Nachbestelloption nicht mehr nötig)</div><div class="note">✅ Passung mit bestelltem 7/16"-Stud (Upgrade 6411) vom Owner per Dry-Fit bestätigt, 2026-09-08</div></div><div class="price">$0</div></li>
+        <li class="row" data-id="s-lash"><input type="checkbox" id="s-lash"><div><label for="s-lash" class="name">Valve Lash Wrench</label><div class="pn">Proform PRO-66781</div></div><div class="price">$31.99</div></li>
+        <li class="row" data-id="s-deck"><input type="checkbox" id="s-deck"><div><label for="s-deck" class="name">Deck Bridge (magnetisch)</label><div class="pn">Proform 66797</div></div><div class="price">$52.99</div></li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <div class="group-title">Ölsystem</div>
+      <ul class="rows">
+        <li class="row" data-id="s-pan"><input type="checkbox" id="s-pan"><div><label for="s-pan" class="name">Ölwanne</label><div class="pn">Canton 15-630S</div></div><div class="price">~$320.00</div></li>
+        <li class="row" data-id="s-pangasket"><input type="checkbox" id="s-pangasket"><div><label for="s-pangasket" class="name">Ölwannendichtung</label><div class="pn">Canton 88-600</div></div><div class="price">—</div></li>
+        <li class="row" data-id="s-pump"><input type="checkbox" id="s-pump"><div><label for="s-pump" class="name">Ölpumpe</label><div class="pn">Melling M68HV</div></div><div class="price">$62.99</div></li>
+        <li class="row" data-id="s-pickup"><input type="checkbox" id="s-pickup"><div><label for="s-pickup" class="name">Pickup Tube</label><div class="pn">Canton 15-611</div></div><div class="price">$68.00</div></li>
+        <li class="row" data-id="s-primer"><input type="checkbox" id="s-primer"><div><label for="s-primer" class="name">Oil Pump Primer</label><div class="pn">Melling PT11</div></div><div class="price">$25.99</div></li>
+        <li class="row" data-id="s-drive"><input type="checkbox" id="s-drive"><div><label for="s-drive" class="name">Oil Pump Driveshaft<span class="tag req">Pflicht</span></label><div class="pn">ARP 154-7904</div></div><div class="price">$19.27</div></li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <div class="group-title">Timing / Balancer</div>
+      <ul class="rows">
+        <li class="row" data-id="s-balancer"><input type="checkbox" id="s-balancer"><div><label for="s-balancer" class="name">Harmonic Balancer</label><div class="pn">M-6316-D302</div></div><div class="price">$400.99</div></li>
+        <li class="row" data-id="s-spacer"><input type="checkbox" id="s-spacer"><div><label for="s-spacer" class="name">Balancer Spacer</label><div class="pn">M-8510-B351</div></div><div class="price">~$25.00</div></li>
+        <li class="row" data-id="s-bbolt"><input type="checkbox" id="s-bbolt"><div><label for="s-bbolt" class="name">Balancer Bolt</label><div class="pn">ARP 154-2503</div></div><div class="price">~$21.00</div></li>
+        <li class="row" data-id="s-cover"><input type="checkbox" id="s-cover"><div><label for="s-cover" class="name">Timing Cover</label><div class="pn">Ford M-6059-D351</div></div><div class="price">~$120.00</div></li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <div class="group-title">Köpfe / Intake</div>
+      <ul class="rows">
+        <li class="row" data-id="s-headgasket"><input type="checkbox" id="s-headgasket"><div><label for="s-headgasket" class="name">Head Gasket (final)</label><div class="pn">Ford M-6051-CP331</div></div><div class="price">$194.99</div></li>
+        <li class="row" data-id="s-intakegasket"><input type="checkbox" id="s-intakegasket"><div><label for="s-intakegasket" class="name">Intake Manifold Gasket</label><div class="pn">Fel-Pro 1250S</div></div><div class="price">$35.99</div></li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <div class="group-title">Fasteners</div>
+      <ul class="rows">
+        <li class="row" data-id="s-mainstuds"><input type="checkbox" id="s-mainstuds"><div><label for="s-mainstuds" class="name">Main Studs (korrigiert, statt 154-5403)</label><div class="pn">ARP 154-5611</div></div><div class="price">bei Bestellung prüfen</div></li>
+        <li class="row" data-id="s-dowel"><input type="checkbox" id="s-dowel"><div><label for="s-dowel" class="name">Pressure Plate Dowel Pins</label><div class="pn">D1FZ-6397-B / M-6397-A302</div></div><div class="price">~$20.00</div></li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <div class="group-title">Werkzeuge (ohne feste P/N)</div>
+      <ul class="rows">
+        <li class="row" data-id="s-plastigage"><input type="checkbox" id="s-plastigage"><div><label for="s-plastigage" class="name">Plastigage grün + rot</label></div><div class="price"></div></li>
+        <li class="row" data-id="s-ringcomp"><input type="checkbox" id="s-ringcomp"><div><label for="s-ringcomp" class="name">Piston Ring Compressor</label></div><div class="price"></div></li>
+        <li class="row" data-id="s-ringfile"><input type="checkbox" id="s-ringfile"><div><label for="s-ringfile" class="name">Ring Gap File</label></div><div class="price"></div></li>
+        <li class="row" data-id="s-springtest"><input type="checkbox" id="s-springtest"><div><label for="s-springtest" class="name">Valve Spring Tester</label></div><div class="price"></div></li>
+        <li class="row" data-id="s-torqueangle"><input type="checkbox" id="s-torqueangle"><div><label for="s-torqueangle" class="name">Torque Angle Gauge</label></div><div class="price"></div></li>
+        <li class="row" data-id="s-pilotinstall"><input type="checkbox" id="s-pilotinstall"><div><label for="s-pilotinstall" class="name">Pilot Bearing Installer</label></div><div class="price"></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="list" id="list-de" data-list="de">
+    <div class="list-head"><span class="idx">02</span><h2>Deutschland — Öle, Fette, Chemie</h2></div>
+    <p class="list-note">Owner-Vorgabe: Flüssigkeiten/Chemie ausschliesslich DE-Bezug, nicht über Summit/CNC.</p>
+
+    <div class="group">
+      <div class="group-title">Öle / Fette / Chemie</div>
+      <ul class="rows">
+        <li class="row blocked" data-id="d-camlube"><input type="checkbox" id="d-camlube"><div><label for="d-camlube" class="name">Cam &amp; Lifter Assembly Lube<span class="tag lock">gesperrt</span></label><div class="pn">COMP Cams #103</div><div class="note">⚠ Red Line als Ersatz unbestätigt — 02.12 Punkt 10</div></div><div class="price"></div></li>
+        <li class="row" data-id="d-journallube"><input type="checkbox" id="d-journallube"><div><label for="d-journallube" class="name">Cam Bearing Journal Lube</label><div class="pn">SAE 30 / 40 Motoröl</div></div><div class="price"></div></li>
+        <li class="row" data-id="d-breakin"><input type="checkbox" id="d-breakin"><div><label for="d-breakin" class="name">Break-in Oil (ZDDP)</label><div class="pn">Driven BR-Serie — SKU prüfen</div></div><div class="price"></div></li>
+        <li class="row" data-id="d-oil"><input type="checkbox" id="d-oil"><div><label for="d-oil" class="name">Motoröl Betrieb</label><div class="pn">10W-50 vollsynth., ZDDP</div></div><div class="price"></div></li>
+        <li class="row" data-id="d-arplube"><input type="checkbox" id="d-arplube"><div><label for="d-arplube" class="name">ARP Ultra-Torque Assembly Lube<span class="tag req">Pflicht</span></label><div class="pn">ARP 100-9908</div></div><div class="price"></div></li>
+        <li class="row" data-id="d-antiseize"><input type="checkbox" id="d-antiseize"><div><label for="d-antiseize" class="name">Anti-Seize</label><div class="pn">für Zündkerzen Alu-Köpfe</div></div><div class="price"></div></li>
+        <li class="row" data-id="d-rtv"><input type="checkbox" id="d-rtv"><div><label for="d-rtv" class="name">Permatex Ultra Black RTV</label></div><div class="price"></div></li>
+        <li class="row" data-id="d-gearoil"><input type="checkbox" id="d-gearoil"><div><label for="d-gearoil" class="name">Getriebeöl</label><div class="pn">Fuchs Titan SYN5 75W90</div></div><div class="price"></div></li>
+        <li class="row" data-id="d-coolant"><input type="checkbox" id="d-coolant"><div><label for="d-coolant" class="name">Kühlflüssigkeit</label><div class="pn">Spec noch offen</div></div><div class="price"></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="list" id="list-locked" data-list="locked">
+    <div class="list-head"><span class="idx">03</span><h2>Gesperrt — vor Bestellung klären</h2></div>
+    <p class="list-note">Nicht bestellen, solange der jeweilige Konflikt offen ist — sonst Fehlkauf / doppelter Versand.</p>
+
+    <div class="group">
+      <div class="group-title">Konflikt ungeklärt</div>
+      <ul class="rows">
+        <li class="row blocked" data-id="l-timing"><input type="checkbox" id="l-timing"><div><label for="l-timing" class="name">Timing Set<span class="tag lock">gesperrt</span></label><div class="pn">Cloyes 9-3144 vs. Ford M-6268-A302</div><div class="note">⚠ 02.12 Punkt 3 — verbindlich festlegen vor Bestellung</div></div><div class="price"></div></li>
+        <li class="row blocked" data-id="l-cambolt"><input type="checkbox" id="l-cambolt"><div><label for="l-cambolt" class="name">Cam Bolt<span class="tag lock">gesperrt</span></label><div class="pn">ARP 154-1001 vs. 254-1001</div><div class="note">⚠ 02.12 Punkt 4 — Teilenummer klären</div></div><div class="price"></div></li>
+        <li class="row blocked" data-id="l-lambda"><input type="checkbox" id="l-lambda"><div><label for="l-lambda" class="name">Lambda-Sonden<span class="tag lock">gesperrt</span></label><div class="pn">Innovate DLG-1 vs. 2× LC-2 + Patch Cable</div><div class="note">⚠ 07 vs. SSOT widersprüchlich — welches Kit bestellen</div></div><div class="price"></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="note">
+    Haken werden lokal in diesem Browser gespeichert (dieses Gerät, dieser Dateipfad). Referenz bleibt Notion — Seite 07 „Missing &amp; Open Parts Overview" und 02.12.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var STORE_KEY = "boss302-pickliste-v1";
+  var state = {};
+  try{
+    state = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+  }catch(e){ state = {}; }
+
+  function save(){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  function applyRow(row, checked){
+    row.classList.toggle("done", checked);
+  }
+
+  function updateProgress(){
+    var rail = document.getElementById("progressRail");
+    if(!rail) return;
+    rail.innerHTML = "";
+    document.querySelectorAll("section.list").forEach(function(section){
+      var label = section.querySelector("h2").textContent;
+      var rows = section.querySelectorAll(".row");
+      var total = rows.length, done = 0;
+      rows.forEach(function(r){ if(r.classList.contains("done")) done++; });
+      var pct = total ? Math.round((done/total)*100) : 0;
+      var card = document.createElement("div");
+      card.className = "progress-card";
+      card.innerHTML =
+        '<div class="label">' + label + '</div>' +
+        '<div class="count">' + done + ' / ' + total + '</div>' +
+        '<div class="bar"><i style="width:' + pct + '%"></i></div>';
+      rail.appendChild(card);
+    });
+  }
+
+  document.querySelectorAll(".row").forEach(function(row){
+    var id = row.dataset.id;
+    var cb = row.querySelector('input[type="checkbox"]');
+    if(!cb) return;
+    if(state[id]){
+      cb.checked = true;
+      applyRow(row, true);
+    }
+    cb.addEventListener("change", function(){
+      state[id] = cb.checked;
+      save();
+      applyRow(row, cb.checked);
+      updateProgress();
+    });
+  });
+
+  updateProgress();
+})();
+</script>

@@ -428,6 +428,7 @@
 <script src="field-sync.js"></script>
 <script src="validation.js"></script>
 <script src="reference.js"></script>
+<script src="exkurs-engine.js"></script>
 </head>
 <body>
 
@@ -4409,7 +4410,7 @@
 
             <!-- Recommendation for this build -->
             <div class="guide-block guide-full"><h4 class="release">Recommendation &ndash; This Build (Empfehlung f&uuml;r diesen Motor)</h4><ul>
-                <li><span class="de"><strong>Build-Daten:</strong> ~9,7:1 Verdichtung, CNC-Koepfe (AFR 1399), MSD CDI, 98 ROZ Kraftstoff</span><span class="en"><strong>Build specs:</strong> ~9.7:1 CR, CNC heads (AFR 1399), MSD CDI, 98 ROZ fuel</span></li>
+                <li><span class="de"><strong>Build-Daten:</strong> Verdichtung lt. CR-Rechner (specs.html), CNC-Koepfe (AFR 1399), MSD CDI, 98 ROZ Kraftstoff</span><span class="en"><strong>Build specs:</strong> CR per calculator (specs.html), CNC heads (AFR 1399), MSD CDI, 98 ROZ fuel</span></li>
                 <li><span class="de"><strong>Initial Timing (Grundz&uuml;ndung):</strong> 10&ndash;14&deg; BTDC</span><span class="en"><strong>Initial Timing:</strong> 10&ndash;14&deg; BTDC</span></li>
                 <li><span class="de"><strong>Gesamtvorverstellung:</strong> 32&ndash;36&deg;</span><span class="en"><strong>Total Timing (Gesamtvorverstellen):</strong> 32&ndash;36&deg;</span></li>
                 <li><span class="de"><strong>Unterdruckverstellung:</strong> vorhanden (MSD 8479) &ndash; tats&auml;chliche Zusatzverstellung messen und unten eintragen</span><span class="en"><strong>Vacuum advance:</strong> fitted (MSD 8479) &ndash; measure the actual additional advance and record it below</span></li>
@@ -6595,6 +6596,7 @@
 <div class="fab-stack">
     <button class="fab-btn glossary" onclick="showGuide('guide-glossary')" title="Glossar">&#128214;</button>
     <button class="fab-btn reference" onclick="showReference()" title="Betriebsmittel &amp; Anzugswerte">&#128295;</button>
+    <button class="fab-btn exkurs" onclick="showExkursEngine()" title="Exkurs: Verdichtung, Z&uuml;ndung, Oktan">&#128293;</button>
     <button class="fab-btn" onclick="document.getElementById('convPanel').classList.toggle('open');document.getElementById('unitsPanel').classList.remove('open')" title="Unit Converter">&#8644;</button>
     <button class="fab-btn" onclick="document.getElementById('unitsPanel').classList.toggle('open');document.getElementById('convPanel').classList.remove('open')" title="Units Reference" style="background:#4a5568;font-size:0.85rem;">&#128207;</button>
 </div>

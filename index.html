@@ -295,6 +295,7 @@
 <script src="field-sync.js"></script>
 <script src="validation.js"></script>
 <script src="reference.js"></script>
+<script src="exkurs-engine.js"></script>
 </head>
 <body>
 
@@ -685,7 +686,7 @@
                     <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Je <strong>fr&uuml;her</strong> die Z&uuml;ndung erfolgt (mehr Advance), desto h&ouml;her steigt der <strong>Spitzendruck</strong> im Brennraum. Hoher Spitzendruck bei hoher Verdichtung f&uuml;hrt zu <strong>Klopfen</strong> (Detonation) &ndash; einer unkontrollierten Selbstz&uuml;ndung des Restgemischs. H&ouml;here Oktanzahl = h&ouml;here Klopffestigkeit = mehr Timing m&ouml;glich.</p>
 
                     <div class="comp-sub" style="margin-top:0.4rem;">Praxis-Vorgehensweise f&uuml;r den GT40</div>
-                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;"><strong>1.</strong> Verdichtung messen/berechnen (CR-Rechner oben) &rarr; ca. 9.7&ndash;9.8:1<br>
+                    <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;"><strong>1.</strong> Verdichtung messen/berechnen (CR-Rechner in specs.html) &rarr; <strong>verbindlich ist nur der berechnete Wert</strong><br>
                     <strong>2.</strong> Verf&uuml;gbaren Kraftstoff bestimmen (in DE: Super Plus 98 ROZ ideal)<br>
                     <strong>3.</strong> Timing so einstellen, dass bei Volllast <strong>kein Klopfen</strong> auftritt<br>
                     <strong>4.</strong> Total Timing ergibt sich aus dem Zusammenspiel von CR + Kraftstoff</p>
@@ -698,7 +699,7 @@
                         <tr><td style="padding:0.25rem;">10.5:1+</td><td style="text-align:center;padding:0.25rem;color:#c53030;">Kritisch!</td><td style="text-align:center;padding:0.25rem;">28&ndash;32&deg;</td><td style="text-align:center;padding:0.25rem;">32&ndash;34&deg;</td></tr>
                     </table>
 
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>CNC-Brennraum-Bonus:</strong> Die AFR-1399-K&ouml;pfe haben CNC-bearbeitete Brennr&auml;ume mit optimaler Quench-Geometrie. Das reduziert die Klopfneigung um ca. 2&ndash;3 ROZ gegen&uuml;ber offenen Gu&szlig;-Kammern. Deshalb kann Ihr Build mit 9.8:1 CR und 34&deg; Total Timing problemlos <strong>Super Plus (98 ROZ)</strong> verwenden.</div>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>CNC-Brennraum-Bonus:</strong> Die AFR-1399-K&ouml;pfe haben CNC-bearbeitete Brennr&auml;ume mit optimaler Quench-Geometrie. Das reduziert die Klopfneigung um ca. 2&ndash;3 ROZ gegen&uuml;ber offenen Gu&szlig;-Kammern. Mit der berechneten CR (siehe CR-Rechner) und 34&deg; Total Timing ist <strong>Super Plus (98 ROZ)</strong> ausreichend. Mehr Details: &#128293; Exkurs-Button rechts.</div>
 
                     <div class="comp-sub" style="margin-top:0.4rem;">Vacuum Advance &amp; Oktanzahl</div>
                     <p style="font-size:0.8rem;line-height:1.5;margin:0.3rem 0;">Der <strong>Vacuum Advance</strong> (MSD 8479) addiert bei Teillast zus&auml;tzliches Timing &ndash; <strong>wie viel genau, wird am Fahrzeug gemessen</strong> und im Build Log eingetragen. Dies ist <strong>kein Klopfrisiko</strong>, da Teillast = weniger Brennraumdruck. Vacuum Advance verbessert den Verbrauch und die Gasannahme im Stadtverkehr erheblich, ohne die Klopfgrenze zu beeinflussen. Bei Volllast (WOT) ist kein Unterdruck vorhanden &rarr; Vacuum Advance = 0&deg;.</p>
@@ -1130,6 +1131,8 @@
             <h2>17. Teilekatalog &amp; Kosten&uuml;bersicht</h2>
         </div>
         <div class="section-body">
+
+            <div class="info-box" style="margin-bottom:0.5rem;"><strong>&#128203; <a href="docs/pickliste.html" style="color:#2b6cb0;">Pickliste &ouml;ffnen</a></strong> &ndash; Interaktive Einkaufsliste mit Fortschrittsanzeige, gesperrten Positionen und Haken zum Abhaken. Stand: 2026-09-08.</div>
 
             <div class="comp-box" style="background:#f0f5ff;border-color:#bee3f8;">
                 <div class="comp-toggle" onclick="toggleComp(this)" style="color:#2b6cb0;">Basis-Motor (Short Block)</div>
@@ -3355,6 +3358,7 @@
     restoreCollapseState();
     // loadData is async (may fetch from Gist) - restore scroll AFTER it completes
     loadData().then(function() {
+        if (typeof calcCR === 'function') calcCR(); // CR-Rechner mit gespeicherten Werten ausfuehren -> fuettert Simulator
         if (typeof initUnifiedSearch === 'function') initUnifiedSearch();
         setTimeout(function() { try { runCrossChecks(); } catch(e) { console.warn('[Init] Cross-Checks:', e.message); } }, 500);
         if (currentLang === 'en') {
@@ -3459,6 +3463,7 @@
 <div class="fab-stack">
     <button class="fab-btn glossary" onclick="showGuide('guide-glossary')" title="Glossar">&#128214;</button>
     <button class="fab-btn reference" onclick="showReference()" title="Betriebsmittel &amp; Anzugswerte">&#128295;</button>
+    <button class="fab-btn exkurs" onclick="showExkursEngine()" title="Exkurs: Verdichtung, Z&uuml;ndung, Oktan">&#128293;</button>
     <button class="fab-btn" onclick="document.getElementById('convPanel').classList.toggle('open');document.getElementById('unitsPanel').classList.remove('open')" title="Unit Converter">&#8644;</button>
     <button class="fab-btn" onclick="document.getElementById('unitsPanel').classList.toggle('open');document.getElementById('convPanel').classList.remove('open')" title="Units Reference" style="background:#4a5568;font-size:0.85rem;">&#128207;</button>
 </div>
