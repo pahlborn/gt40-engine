@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v71',
+      date: '2026-09-24',
+      time: '03:00',
+      title: 'Nummerierung, Picklist-Abgleich, Korrekturen',
+      changes: [
+        { type: 'fix', text: 'Sektionsnummerierung durchgaengig: 1. Projektdaten, 2. Build-Ziele, 3. Build Log, 4. Verdichtungsrechner, 5. Simulation & Analyse, 6. Betriebsstoffe, 7. Kritische Warnungen, 8. Teilekatalog.' },
+        { type: 'verbessert', text: 'Pickliste gegen Summit-Bestellung abgeglichen: 10 Positionen als bestellt markiert (Cam Degree Kit, Kopfdichtung, Oelpumpe, Balancer, Intake Gasket, Dowel Kit, Valve Lash Wrench, Antriebswelle, Timing Set, Cam Bolt).' },
+        { type: 'fix', text: 'Gesperrte Positionen geklaert: Timing Set (Ford M-6268-A302 statt Cloyes), Cam Bolt (ARP 254-1001 statt 154-1001).' }
+      ]
+    },
+    {
       version: 'v70',
       date: '2026-09-24',
       time: '02:00',
