@@ -912,16 +912,11 @@
                     <li><a href="docs/un1-13.html" style="color:#2b6cb0;font-weight:600;">Hinweise zu UN1-13 &ndash; Recherche &amp; Upgrades</a></li>
                 </ul>
             </div>
-        </div>
-    </div>
 
-    <!-- 16. Streckenanalyse (gehoert zu Simulation & Analyse) -->
-    <div class="section">
-        <div class="section-header" onclick="toggleSection(this)">
-            <span class="section-icon">&#127937;</span>
-            <h2>Streckenanalyse &amp; Fahrzeugeinsch&auml;tzung</h2>
-        </div>
-        <div class="section-body">
+            <!-- Streckenanalyse (innerhalb Simulation & Analyse) -->
+            <div class="comp-box" style="margin-top:0.8rem;background:#f7fafc;border-color:#e2e8f0;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="font-size:0.9rem;font-weight:700;">&#127937; Streckenanalyse &amp; Fahrzeugeinsch&auml;tzung</div>
+                <div class="comp-body">
             <div class="info-box" style="margin-bottom:0.5rem;" id="trackVehicleInfo"><strong>Fahrzeug:</strong> TSC GT40 Kit Car | <span id="trackWeight">~1.050 kg</span> | <span id="trackBHP">~340&ndash;360 BHP</span> | <span id="trackBHPt">~324&ndash;343 BHP/t</span> | Crossply-Reifen (Avon A24) | Kein ABS/TC/ESP | Schaltgetriebe UN1-13</div>
 
             <!-- Pannoniaring -->
@@ -1093,6 +1088,8 @@
             <div class="section-comment">
                 <label>Strecken-Notizen</label>
                 <textarea data-field="comment_tracks" placeholder="Rundenzeiten, Setup-Notizen, Beobachtungen pro Strecke..." oninput="autoSave()"></textarea>
+            </div>
+                </div>
             </div>
         </div>
     </div>
