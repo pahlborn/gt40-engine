@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v72',
+      date: '2026-09-24',
+      time: '04:00',
+      title: 'Picklist Zurueck-Link, Header iPhone-Fix',
+      changes: [
+        { type: 'fix', text: 'Pickliste: Zurueck-Link zur Uebersicht hinzugefuegt.' },
+        { type: 'fix', text: 'Header: "Engine Build Log" ragt auf iPhone nicht mehr in Overview-Button. Unter 420px wird "302 BOSS" ausgeblendet und Schrift verkleinert.' }
+      ]
+    },
+    {
       version: 'v71',
       date: '2026-09-24',
       time: '03:00',
