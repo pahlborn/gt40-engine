@@ -630,6 +630,12 @@
                     <div id="simPeakTQconv" style="font-size:0.62rem;color:#718096;">-- Nm</div>
                 </div>
             </div>
+            <div style="background:#f7fafc;padding:0.4rem;border-radius:8px;margin-top:0.3rem;text-align:center;border:1px solid #e2e8f0;">
+                <div style="font-size:0.7rem;color:#4a5568;">Mittlere Kolbengeschwindigkeit (Mean Piston Speed)</div>
+                <div id="simMPS" style="font-size:0.85rem;font-weight:700;color:#276749;">-- ft/min</div>
+                <div id="simMPSmax" style="font-size:0.7rem;color:#718096;">-- ft/min @ Rev Limit</div>
+                <div style="font-size:0.6rem;color:#a0aec0;margin-top:0.15rem;">Grenzwerte: &lt;3500 = sicher (gr&uuml;n) | 3500&ndash;4000 = Vorsicht (gelb) | &gt;4000 = kritisch (rot)</div>
+            </div>
 
             <!-- RPM Cross-Check Warnbereich -->
             <div id="simRpmWarnings" style="display:none;margin:0.3rem 0;"></div>
@@ -1924,6 +1930,21 @@
         document.getElementById('simPeakTQ').textContent = Math.round(peakTQ) + ' ft-lbs';
         document.getElementById('simPeakTQrpm').textContent = '@ ' + peakTQrpm + ' RPM';
         document.getElementById('simPeakTQconv').textContent = Math.round(peakTQ * 1.3558) + ' Nm';
+
+        // Mean Piston Speed at peak HP RPM
+        // MPS (ft/min) = stroke (in) * RPM / 6
+        var mpsAtPeak = (stroke * peakHPrpm / 6);
+        var mpsMax = (stroke * 6500 / 6); // at rev limit
+        var mpsEl = document.getElementById('simMPS');
+        if (mpsEl) {
+            mpsEl.textContent = Math.round(mpsAtPeak) + ' ft/min @ ' + peakHPrpm + ' RPM';
+            mpsEl.style.color = mpsAtPeak > 4000 ? '#c53030' : mpsAtPeak > 3500 ? '#975a16' : '#276749';
+        }
+        var mpsMaxEl = document.getElementById('simMPSmax');
+        if (mpsMaxEl) {
+            mpsMaxEl.textContent = Math.round(mpsMax) + ' ft/min @ 6500 RPM (Rev Limit)';
+            mpsMaxEl.style.color = mpsMax > 4000 ? '#c53030' : mpsMax > 3500 ? '#975a16' : '#276749';
+        }
 
         // Store data for drivetrain sim
         lastSimData = data;

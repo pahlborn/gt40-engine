@@ -13,6 +13,20 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v63',
+      date: '2026-09-23',
+      time: '16:00',
+      title: 'Clearance Cheat Sheet, Kolbengeschwindigkeit, Literatur, Warnungen',
+      changes: [
+        { type: 'neu', text: 'Clearance Quick-Reference (Soll-Spiele Schnellkarte) als Overlay in specs.html. Alle kritischen Spiele fuer M-6010-BOSS302 Block auf einen Blick, inkl. 347-Stroker-Pruefungen und Verteilerzahnrad-Kompatibilitaet.' },
+        { type: 'neu', text: 'Mittlere Kolbengeschwindigkeit (Mean Piston Speed) im Motor-Simulator. Farbcodiert: gruen <3500, gelb 3500-4000, rot >4000 ft/min.' },
+        { type: 'neu', text: 'Literatur- und Quellenregister in specs.html Sektion 16 mit 20+ Buch- und Online-Quellen. Ford SBF, Rennmotoren-Technik, Carroll Smith, GT40 Replica.' },
+        { type: 'verbessert', text: 'Verteilerzahnrad-Warnung ausgebaut: Material-Kompatibilitaet (ADI vs. Bronze vs. Iron vs. Composite) ausfuehrlich dokumentiert in specs.html und build-log.html.' },
+        { type: 'verbessert', text: 'Intake-Manifold Warnung (18 ft-lbs + 5/8 Zoll Gewindeeingriff) nach Ford Performance IS-1850-0289 ergaenzt.' },
+        { type: 'verbessert', text: 'Pickup-Sieb-Warnung (Drahtgeflecht vs. Lochblech) bei Oil Pump dry fit ergaenzt.' }
+      ]
+    },
+    {
       version: 'v62',
       date: '2026-09-23',
       time: '10:20',

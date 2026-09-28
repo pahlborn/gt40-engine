@@ -1,0 +1,982 @@
+<strong>Sealing Surfaces (Dichtfl&auml;chen):</strong> Deck, intake rails, timing cover face &ndash; no nicks or burrs
+Block sauber und frei von Dichtungsresten auf der Deckfl&auml;che.
+Tiefenmikrometer auf Null kalibrieren (auf Pr&uuml;fplatte oder Referenzfl&auml;che).
+Tiefenmikrometer auf Deckfl&auml;che aufsetzen, Messstab in die Zylinderbohrung absenken bis zur Hauptlagergasse (Centerline).
+Alternativ: Hersteller-Angabe (Ford 302: 8.206&quot;) mit gemessenem Piston-to-Deck und Bauteil-Ma&szlig;en gegenpr&uuml;fen.
+Mindestens 4 Stellen pro Bank messen (vorne, hinten, links, rechts) &ndash; Abweichungen zeigen Verzug.
+Deck Height + Piston-to-Deck = Quench Distance (bestimmt Verdichtung &amp; Klopfneigung)
+Abweichung &gt; 0.005&quot;: Block muss plangefr&auml;st werden (&quot;Deck the Block&quot;)
+Nach dem Planfr&auml;sen Deck Height erneut messen und dokumentieren
+Dial indicator (Messuhr) with magnetic base
+Straightedge (Haarlineal) across bore
+Crank turning tool or box wrench
+Kurbelwelle, Pleuel und Kolben (ohne Ringe!) einbauen.
+Kolben auf OT drehen: Kurbel langsam im Uhrzeigersinn drehen und den h&ouml;chsten Punkt des Kolbens finden.
+Pr&auml;zisions-Haarlineal (Straightedge) quer &uuml;ber die Zylinderbohrung legen &ndash; es muss plan auf der Deckfl&auml;che aufliegen.
+Messuhr (Dial Indicator) mit Magnetstativ auf dem Haarlineal fixieren, Taster nach unten auf die Kolbenoberseite absenken.
+Messuhr auf Null stellen. Kurbel minimal vor und zur&uuml;ck drehen, um den exakten OT (h&ouml;chster Ausschlag) zu best&auml;tigen.
+Wert ablesen: Positiv = Kolben steht unter dem Deck (&quot;in the hole&quot;).
+Jeden Zylinder an Druck- und Gegenseite (Thrust &amp; Anti-Thrust) messen und Durchschnitt bilden.
+Alle 8 Zylinder durchmessen &ndash; Zyl. 1 + 5 zuerst (zeigt Block-Pr&auml;zision).
+<strong>Wichtigste Messung des gesamten Builds!</strong> Piston-to-Deck bestimmt Verdichtung, Quench und Kopfdichtungswahl.
+Spreizung Zyl. 1 vs. 5 zeigt die Pr&auml;zision der Block-Bearbeitung
+Kurbel auf exakten OT drehen (h&ouml;chster Punkt), nicht leicht daneben
+Jede Bohrung an Thrust- UND Anti-Thrust-Seite messen
+Quench Distance = Piston-to-Deck + komprimierte Kopfdichtungs-Dicke (Ziel: 0.035&quot;&ndash;0.045&quot;)
+Dial indicator on straightedge over bore (method documentation)
+Reading at Cyl 1 and Cyl 5
+Crankshaft turns smoothly through full 720&deg;
+No sudden resistance or binding
+No noises (scraping, clicking)
+Turn at flywheel end by hand (more leverage)
+Binding = bearing issue or debris in oil gallery
+Alle &Ouml;lkanalstopfen lokalisieren: 2 an der R&uuml;ckseite des Blocks (hinter Verteilerbohrung), 2 an der Vorderseite, weitere seitlich.
+Jeden Stopfen mit Steckschl&uuml;ssel oder Inbus auf festen Sitz pr&uuml;fen.
+Lose Stopfen herausdrehen, Gewinde reinigen, Teflonband oder Rohr-Dichtmittel auftragen.
+Stopfen mit 8&ndash;10 ft-lbs (11&ndash;14 Nm) anziehen.
+Bei Rebuild: Alle Stopfen generell erneuern (sie k&ouml;nnen mit der Zeit undicht werden).
+Hinter der Verteilerbohrung leicht zu &uuml;bersehen!
+Lose Stopfen = kein &Ouml;ldruck beim Erststart = Motorschaden
+<strong>R351:</strong> Oil holes on camshaft side (standard for BOSS block)
+<strong>J351:</strong> Offset oil holes (rare, older blocks)
+BOSS 302 block has factory-installed R351 bearings
+Compare cam journal measurement (next step) against bearing I.D. for actual clearance
+Oil holes MUST align with block galleries after installation!
+Lower bearing shells into main caps (tab in notch, <strong>NO oil</strong> on bearing surface)
+Upper shells into block saddles
+Crankshaft onto upper shells
+Plastigage strip on main journal &ndash; across full width, <strong>NOT on oil channel</strong>
+Main cap on, torque to spec. <strong>DO NOT ROTATE CRANK!</strong>
+Remove cap, compare crushed width to scale &rarr; bearing clearance
+Record value, remove all Plastigage residue
+Repeat for all 5 main bearings
+Dial indicator (Messuhr) with magnetic base
+Large screwdriver or lever for pushing crank
+Mount dial indicator axially against crank snout or flywheel flange
+Push crank fully forward, zero the gauge
+Push crank fully rearward, read value
+That reading = crankshaft endplay
+Too much play = thrust bearing worn or wrong
+Too little play = crank binds when hot (thermal expansion)
+Lobe surfaces (Nockenfl&auml;chen): no scoring, no pitting, no heat discoloration
+Journals (Lagerzapfen): polished surface, no rust
+Distributor drive gear: teeth undamaged
+Cam card included? (Intake Centerline for degreeing)
+Light rust on journals = shipping damage, remove with fine Scotch-Brite + oil
+<strong>NEVER</strong> use abrasives on lobe surfaces!
+Outside micrometer (Au&szlig;enmikrometer) 1.5&quot;&ndash;2.5&quot; (38&ndash;64 mm)
+Measure at 2 positions per journal (0&deg; and 90&deg;)
+Nockenwelle auf V-Block oder Prismen legen (oder im Block belassen).
+Au&szlig;enmikrometer (1.5&quot;&ndash;2.5&quot;) auf den Zapfen ansetzen.
+Jeden Zapfen an 2 Positionen messen: 0&deg; und 90&deg; gedreht (Ovalit&auml;t pr&uuml;fen).
+Alle 5 Zapfen durchmessen und Werte dokumentieren.
+Ovalit&auml;t &gt; 0.001&quot;: Nockenwelle verschlissen &ndash; ersetzen.
+Lagerspiel berechnen: Bearing I.D. &minus; Journal &oslash; = Clearance (Soll: 0.001&quot;&ndash;0.003&quot;).
+Count: 16 pcs
+Rollers spin freely (check each one individually)
+Link-bar mechanism functions correctly
+<strong>Soak in oil now!</strong> Morel HLT lifters need min. 24h in clean engine oil before Phase 2
+Establish numbering system (1E, 1A, 2E, 2A... = cylinder + intake/exhaust)
+<strong>Bei 302-Blocks m&uuml;ssen die Zylinderk&ouml;pfe abgenommen werden, um die Lifter einzubauen!</strong> (On 302 blocks, cylinder heads must be removed to install lifters!)
+16 pcs, trunnion (pivot pin) with no axial play
+Roller tip spins freely
+Ratio 1.6:1 confirmed on packaging
+7/16&quot; (11.11 mm) stud mount confirmed (fits AFR #6411 studs)
+Ultra Pro Magnum = steel body &ndash; significantly stronger than aluminum rockers
+Fulcrum design &ndash; no separate fulcrum bolt required
+<strong>Quantity:</strong> 16 pcs (16 St&uuml;ck) &ndash; count and verify
+<strong>Thread:</strong> 7/16&quot;-20 fine thread (11.11 mm Feingewinde) &ndash; must match AFR #6411 rocker studs
+<strong>Set screw:</strong> Allen set screw present and functional on each polylock
+<strong>Thread condition:</strong> Clean threads, no damage or cross-threading
+Polylocks replace standard adjusting nuts &ndash; they lock the rocker adjustment permanently
+Set screw tightens against stud threads to prevent rotation &ndash; critical for maintaining valve preload
+Keep 1&ndash;2 spares in toolbox for Phase 3 assembly
+Precision straightedge (Haarlineal) min. 14&quot; (356 mm)
+Feeler gauge (F&uuml;hlerlehre) 0.001&quot;&ndash;0.004&quot; (0.025&ndash;0.10 mm)
+Burette (B&uuml;rette) 100 ml, 0.1 ml graduation
+CC plate (Plexiglas with hole)
+Grease/vaseline for sealing
+Measuring fluid (isopropanol + food coloring)
+Valves must be closed for measurement (springs hold them shut)
+Seal spark plug hole with old plug
+Air escapes through the hole in the CC plate
+Spread &gt; 1 cc between chambers = head needs resurfacing
+<strong>Part Number:</strong> AFR #6411 screw-in rocker studs (Schraubstehbolzen)
+<strong>Thread (block side):</strong> 3/8&quot;-24 (9.53 mm) fine thread
+<strong>Thread (rocker side):</strong> 7/16&quot;-20 (11.11 mm) fine thread
+<strong>Quantity:</strong> 16 pcs installed in heads &ndash; verify all present and tight
+<strong>Height:</strong> All studs same height above head surface &ndash; visual check across row
+AFR 1399 heads come with #6411 studs pre-installed &ndash; verify they were not removed during shipping
+Studs must be compatible with COMP 1632-16 rockers (7/16&quot; stud mount confirmed)
+Screw-in studs are mandatory for high-lift cams &ndash; press-in studs pull out under spring pressure
+<strong>Springs PAC #8605:</strong> 16 pcs, dual spring (Doppelfeder), beehive or conventional design
+<strong>Retainers AFR #8600:</strong> 16 pcs, titanium (Titan) &ndash; significantly lighter than steel
+<strong>Visual check:</strong> No cracked or broken springs, retainers undamaged
+<strong>Spring color coding:</strong> All springs should be identical (same color / markings)
+AFR 1399 heads ship with springs and retainers pre-installed &ndash; confirm correct parts
+Titanium retainers are ~40% lighter than steel = less valvetrain mass = higher RPM capability
+Verify spring and retainer combination matches cam specifications (installed height + seat/open pressure)
+7&deg; keepers required for titanium retainers &ndash; check next step (#22)
+Installed-height micrometer or caliper (Messschieber)
+Spring height gauge (steel plate with hole)
+Measure without spring: install retainer + keepers, measure gap from spring seat to retainer underside
+Spread &gt; 0.030&quot; (0.76 mm) between valves = rework valve seats or use shims
+<strong>Max. Valve Lift (exhaust):</strong> 0.565&quot; (14.35 mm) &ndash; this IS the valve lift (at-the-valve, not lobe lift)
+<strong>Formula:</strong> Installed Height &minus; Max Lift &minus; Coil Bind Height = Clearance
+Clearance must be &ge; 0.060&quot; (1.52 mm), otherwise spring or retainer failure
+Coil bind height is on the spring data sheet (PAC/AFR #8605)
+Installierte Federl&auml;nge (Installed Height) aus Step 19 &uuml;bernehmen oder messen.
+Coil-Bind-H&ouml;he vom Feder-Datenblatt ablesen (PAC/AFR #8605).
+Maximalen Ventilhub bestimmen (Auslass: 0.565&quot; bei 1.7:1 Rocker Ratio).
+Rechnung: Installed Height &minus; Max. Valve Lift = L&auml;nge bei maximalem Hub.
+Clearance = L&auml;nge bei max. Hub &minus; Coil-Bind-H&ouml;he.
+Ergebnis muss &ge; 0.060&quot; (1.52 mm) sein. Weniger = Feder- oder Retainer-Bruch!
+Bei zu wenig Clearance: Andere Feder oder Shims unter dem Retainer entfernen.
+Excessive open pressure overloads Morel 5327 link-bars
+Morel recommendation: max. ~400 lbs open for hydraulic roller
+<strong>Angle:</strong> 7&deg; keepers (Ventilkeile) &ndash; must match titanium retainers #8600
+<strong>Quantity:</strong> 32 pcs (2 per valve &times; 16 valves)
+<strong>Groove count:</strong> Verify single- or multi-groove matches valve stem groove
+<strong>Condition:</strong> No nicks, cracks, or wear on locking surfaces
+7&deg; keepers are standard for titanium retainers &ndash; 10&deg; keepers will NOT lock properly
+Mix-up between 7&deg; and 10&deg; = valve drops into cylinder = catastrophic engine failure
+Keep 2&ndash;4 spare keepers in toolbox &ndash; tiny parts that easily get lost during assembly
+AFR ships correct keepers pre-installed &ndash; verify they match retainer spec sheet
+Torque wrench for rod bolts: 35&ndash;45 ft-lbs (47&ndash;61 Nm)
+Rod bores clean, dry &amp; grease-free
+Crank rod journals clean
+Insert bearing shell in rod (tab in notch, <strong>NO oil</strong> on bearing surface)
+Insert bearing shell in cap
+Place Plastigage strip on rod journal &ndash; across full width
+Install cap, torque to 35&ndash;45 ft-lbs (47&ndash;61 Nm). <strong>DO NOT ROTATE CRANK!</strong>
+Remove cap, compare crushed width to scale &rarr; bearing clearance
+Record value, remove all Plastigage residue. Repeat for all 8 rods
+Feeler gauge 0.010&quot;&ndash;0.035&quot; (0.25&ndash;0.89 mm)
+Piston ring file (if adjustment needed)
+Ring compressor 4.000&quot; (101.6 mm) bore
+Place ring into cylinder without piston
+Push square with inverted piston ~1&quot; (25 mm) below deck
+Measure gap with feeler gauge
+Repeat for each cylinder with its assigned ring
+<strong>Always measure in the actual cylinder</strong> &ndash; bore diameters vary between cylinders
+Too small gap = ring breaks at temperature (thermal expansion). Too large gap = increased blowby
+<strong>Ring End Gap Adjustment:</strong> File from both ends equally, deburr with 400 grit
+<strong>Ring Clocking:</strong> Top ring gap ~1 o&rsquo;clock, 2nd ring gap ~11 o&rsquo;clock, oil ring rails &amp; expander offset from each other
+Alle 20 Stehbolzen (10 pro Kopf) mit Messschieber messen und nach lang/kurz sortieren.
+Lange Bolzen (4 St&uuml;ck pro Kopf): Soll 6.800&quot; &plusmn; 0.010&quot;. Kommen in die Sacklochbohrungen (Blind Holes).
+Kurze Bolzen (6 St&uuml;ck pro Kopf): Soll 5.750&quot; &plusmn; 0.010&quot;. Kommen in die Wasserbohrungen (Water Holes &ndash; Dichtmittel auf Gewinde!).
+Gewindetiefe im Block pr&uuml;fen: Bolzen darf NICHT am Grund aufsetzen (hydraulische Blockade &rarr; Blockriss!).
+Bolzen handfest eindrehen, Gewindeg&auml;ngigkeit pr&uuml;fen. 2&ndash;3 Gewinde m&uuml;ssen &uuml;ber die Mutter hinausragen.
+Caliper (Messschieber) 0&ndash;8&quot; (0&ndash;200 mm)
+ARP spec sheet (included in kit)
+<strong>BOSS 302 Block:</strong> Hat 351W-Hauptlagergewinde, aber 302-Kopfgeometrie. Stehbolzenl&auml;nge pr&uuml;fen! (Has 351W main bearing threads but 302 head geometry. Check stud length!)
+Thread condition: no damage, clean threads
+Hardened washer present (flat, not spring washer)
+ARP lube sachet included
+Compare thread length vs. cam snout depth &ndash; bolt must not bottom out
+<strong>Crank sprocket:</strong> Keyway undamaged, teeth sharp (no wear)
+<strong>Cam sprocket:</strong> Timing marks (dots) clearly visible, 3 keyway positions (Adv/Std/Ret)
+<strong>Chain (Kette):</strong> No stiff links, chain stretch &lt; 1/8&quot; (3.2 mm) over 12 links
+<strong>Thrust plate:</strong> Surfaces smooth, thickness uniform
+<strong>Bolts:</strong> 2x cam-to-sprocket bolts (replaced by ARP 254-1001 for cam bolt)
+Ford M-6268-A302 is a double-roller set &ndash; superior to single-roller OEM
+Verify keyway position before Phase 3: &quot;0&quot; / STD for initial build
+Timing marks must point toward each other (dot-to-dot) at TDC #1
+Phase 1: cam bearing type (R351/J351) identified
+Phase 1: cam journal diameters measured
+Calculate actual clearance: Bearing I.D. &minus; Journal &oslash;
+Cam bearing installation tool (Einpresswerkzeug)
+Brass or plastic hammer
+Lagertyp bestimmen: R351 (Standard) oder J351 (Boss). Cam-Journal-Durchmesser aus Phase 1, Step 11 verwenden.
+Lagerspiel berechnen: Bearing I.D. &minus; Journal &oslash;. Soll: 0.001&quot;&ndash;0.003&quot;.
+Visuelle Pr&uuml;fung: Riefen, Pitting, Verschlei&szlig;? Wenn ja &rarr; ersetzen.
+Falls Austausch n&ouml;tig: Alte Lager mit Einpresswerkzeug heraustreiben (von au&szlig;en nach innen).
+Neue Lager ein&ouml;len und mit Spezialwerkzeug einpressen (Hammer + Treibdorn, nicht schief ansetzen!).
+<strong>Kritisch:</strong> &Ouml;lbohrungen im Lager MUESSEN exakt mit den Block-&Ouml;lkan&auml;len fluchten. Lager mit Markierung zur &Ouml;lbohrung ausrichten.
+Nach dem Einpressen nochmals Lagerspiel pr&uuml;fen.
+Nur austauschen bei Typkonflikt oder sichtbarem Verschlei&szlig;
+&Ouml;lbohrungen MUESSEN mit Block-Kan&auml;len fluchten &ndash; sonst kein &Ouml;l an der Nocke!
+Immer ge&ouml;lt einpressen &ndash; nie trocken
+Long bolt 5/16"-18 &times; 4" (7.94 mm &times; 102 mm) as guide handle (in cam nose thread)
+<strong>Assembly lube</strong> (COMP 159 or equivalent) on ALL lobes
+<strong>Engine oil</strong> on all 5 journals
+Insert cam straight and slowly &ndash; lobes must NEVER touch bearing shells
+The long bolt as handle gives control &ndash; without it the cam slides in uncontrolled
+Tilt block slightly rearward (rear end lower) &ndash; gravity helps
+Install thrust plate (retaining plate) with bolts finger-tight
+Install crank sprocket on crankshaft keyway
+Install cam sprocket &ndash; use &ldquo;0&rdquo;/STD keyway position
+Route chain over both sprockets &ndash; timing marks dot-to-dot
+Dial indicator (Messuhr) with magnetic base
+Screwdriver for prying (carefully!)
+Nockenwelle mit Anlaufscheibe (Thrust Plate) eingebaut, Nockenwellenrad montiert.
+Messuhr (Dial Indicator) axial auf das vordere Nockenwellenende oder die Nockenwellenrad-Stirnfl&auml;che ansetzen.
+Nockenwelle mit Schraubendreher vorsichtig ganz nach vorne dr&uuml;cken. Messuhr auf Null.
+Nockenwelle ganz nach hinten dr&uuml;cken. Messuhr ablesen = Endplay.
+Soll: 0.001&quot;&ndash;0.007&quot;. &Uuml;ber 0.009&quot;: Anlaufscheibe verschlissen &ndash; ersetzen.
+Zu viel Spiel = Anlaufscheibe verschlissen oder falsche Dicke
+Zu wenig Spiel = Nocke kann bei Betriebstemperatur klemmen (W&auml;rmeausdehnung)
+Camshaft installed and timing set in place
+One COMP hydraulic roller lifter (from set of 16) ready
+Rotate crank so #1 intake lobe is on base circle (Grundkreis)
+Identify #1 intake lifter bore (passenger side, front)
+Assembly lube (COMP #106 or equivalent)
+Clean lint-free cloth
+Flashlight for bore inspection
+Long screwdriver or pushrod to check lifter rotation
+<strong>Clean bore:</strong> Wipe #1 intake lifter bore with clean cloth &ndash; remove any debris or preservative oil (Bohrung reinigen)
+<strong>Lubricate:</strong> Apply assembly lube to lifter body and inside of lifter bore (Montagepaste auf Lifter und Bohrung)
+<strong>Align roller:</strong> Orient lifter so roller wheel is aligned parallel with camshaft lobe &ndash; roller must track straight on lobe (Rolle muss parallel zur Nocke ausgerichtet sein)
+<strong>Insert lifter:</strong> Slide lifter into bore &ndash; it should drop in freely under its own weight (Lifter muss frei gleiten)
+<strong>Check rotation:</strong> Lifter must NOT rotate in bore &ndash; link bar slot prevents rotation on hydraulic roller lifters (Lifter darf sich nicht in der Bohrung drehen)
+<strong>Verify free movement:</strong> Push lifter down and release &ndash; it should spring back up freely, no binding (frei auf und ab gleiten)
+This is a test lifter only &ndash; used for degreeing cam and checking pushrod length
+If lifter binds in bore: check for burrs, debris, or wrong lifter diameter
+Hydraulic roller lifters use link bars to prevent rotation &ndash; link bar not needed for single test lifter, but verify roller alignment manually
+Lifter-to-bore clearance: 0.0010"&ndash;0.0025" (0.025&ndash;0.064 mm) typical
+Degree wheel &ge; 9" (229 mm) diameter
+Pointer (Zeiger), mounted to block
+Dial indicator with lifter adapter
+Piston stop (steel or rubber)
+Checking spring (light spring, replaces valve spring)
+<strong>1.</strong> Mount degree wheel on crank snout, pointer on block
+<strong>2.</strong> Find true TDC: install piston stop, rotate crank against stop (both directions), split the difference = TDC
+<strong>3.</strong> Place dial indicator on #1 intake lifter
+<strong>4.</strong> Slowly rotate crank, find max lift point
+<strong>5.</strong> Read degree wheel at .050" (1.27 mm) lifter rise on each side of max lift
+<strong>6.</strong> Midpoint = Intake Centerline (ICL)
+Degree wheel with pointer at TDC
+Dial indicator reading at .050" opening and closing
+Align link-bars parallel to cam, flat side facing valley
+Note positions or label &ndash; reinstall in same position if removed!
+Lifters must slide freely in their bores
+Finger-tight with a few nuts only &ndash; no torque needed
+Head must sit on dowel pins &ndash; must not shift
+COMP Cams flat-style guide plates (for AFR 1399 heads)
+Cylinder head(s) mock-installed with gasket and finger-tight nuts
+Lifters installed in bores
+Checking pushrod or final pushrods available
+3/8" socket or wrench for guide plate bolts
+Rocker arm studs installed in head
+Straightedge or pushrod for alignment check
+Flashlight for visual inspection
+<strong>Identify orientation:</strong> Flat side of guide plate faces UP for AFR heads &ndash; check COMP instructions for specific head (flache Seite nach oben f&uuml;r AFR-K&ouml;pfe)
+<strong>Position on studs:</strong> Slide guide plate over rocker studs between each pair of intake/exhaust pushrods (F&uuml;hrungsplatte &uuml;ber Kipphebel-Stehbolzen schieben)
+<strong>Insert pushrod:</strong> Drop checking pushrod through guide plate slot into lifter cup (Pushrod durch Schlitz in Lifter einsetzen)
+<strong>Check alignment:</strong> Pushrod must be centered in guide plate slot &ndash; no contact with slot edges at rest (Pushrod muss mittig im Schlitz laufen)
+<strong>Rotate cam through full cycle:</strong> Verify pushrod does not bind or deflect against guide plate edges at any point in the lift cycle (kein Verklemmen &uuml;ber den gesamten Hub)
+<strong>Verify all positions:</strong> Repeat for all 8 guide plates (16 pushrod positions) (f&uuml;r alle 8 Platten wiederholen)
+Guide plates prevent pushrod side-loading on valve tips &ndash; critical for valve guide longevity (verhindert seitliche Belastung der Ventilf&uuml;hrungen)
+AFR 1399 heads use pedestal-mount rockers &ndash; verify guide plate is compatible with stud spacing
+If pushrod contacts slot edge: wrong guide plate type, incorrect pushrod length, or misaligned rocker stud
+Do NOT fully torque guide plates during mock-up &ndash; finger-tight only, final torque in Phase 3
+Some builders lightly scuff pushrod with marker to check for guide plate contact marks
+CNC-TC6878 Checking Pushrod (adjustable)
+Caliper (Messschieber) to read length
+<strong>1.</strong> Rotate cam to base circle (Grundkreis) &ndash; lifter in valley
+<strong>2.</strong> Insert checking pushrod at estimated length
+<strong>3.</strong> Install rocker, tighten adjusting nut to zero lash (Nullspiel)
+<strong>4.</strong> Color valve stem tip with felt-tip marker
+<strong>5.</strong> Cycle valve through full lift (rotate cam by hand)
+<strong>Narrow band centered</strong> = correct
+<strong>Band offset outward (exhaust)</strong> = pushrod too long
+<strong>Band offset inward (center)</strong> = pushrod too short
+<strong>Wide band</strong> = wrong length &ndash; valve guide suffers!
+<strong>7.</strong> Adjust checking pushrod and repeat steps 4&ndash;6
+<strong>8.</strong> Read final checking pushrod length
+<strong>9.</strong> Measure intake and exhaust SEPARATELY &ndash; lengths may differ!
+Intake and exhaust lengths documented
+Sweep check (next step) confirms the length
+Ventilschaft-Ende komplett mit Filzstift (Edding/Sharpie) einf&auml;rben.
+Kipphebel montieren und Preload einstellen.
+Nockenwelle eine volle Umdrehung von Hand drehen (Ventil durchl&auml;uft vollen Hub).
+Kontaktmuster auf dem Ventilschaft ablesen:
+<strong>Schmales Band, mittig</strong> = St&ouml;&szlig;elstangenl&auml;nge korrekt
+<strong>Band nach au&szlig;en versetzt</strong> = St&ouml;&szlig;elstange zu lang
+<strong>Band nach innen versetzt</strong> = St&ouml;&szlig;elstange zu kurz
+<strong>Breites Band</strong> = falsche L&auml;nge &ndash; Ventilf&uuml;hrung leidet!
+Sweep pattern on valve stem (document both good and bad patterns)
+Modeling clay (Knetmasse), ~0.120" / 3 mm thick
+Checking springs (light springs) &ndash; NOT the #8605 valve springs!
+Razor blade / scalpel for cutting
+Caliper (Messschieber)
+Modelliermasse (Knetmasse / Clay) ca. 3 mm dick auf die Ventiltaschen im Kolben dr&uuml;cken.
+Pr&uuml;ffedern (Checking Springs) einbauen &ndash; NICHT die echten #8605 Ventilfedern!
+Kopf mit Probekopfdichtung (Mock-up Gasket) auflegen, handfest anziehen.
+Kurbelwelle mindestens 2 volle Umdrehungen drehen.
+Kopf abnehmen, Knetmasse vorsichtig vom Kolben l&ouml;sen.
+Knetmasse an der d&uuml;nnsten Stelle aufschneiden und mit Messschieber messen.
+Einlass- und Auslass-Ventilfreigang getrennt dokumentieren.
+If clearance too small: deepen valve pockets, use thicker gasket, or adjust cam timing
+Always measure on the tightest cylinder (highest piston deck, smallest valve pocket)
+Clay before measurement (mark thinnest point)
+Caliper on clay cross-section
+Solder wire ~0.060"&ndash;0.090" (1.52&ndash;2.29 mm) diameter (lead-free)
+Grease (to hold solder in place)
+Micrometer or caliper (Messschieber)
+<strong>1.</strong> Cut 2&ndash;3 short pieces of solder wire (~1" / 25 mm long)
+<strong>2.</strong> Use grease to stick solder on quench area of piston crown (flat area, NOT in valve pocket)
+<strong>3.</strong> Install head with mock-up gasket, finger-tight
+<strong>4.</strong> Rotate crankshaft slowly over TDC &ndash; wire gets crushed between piston and head
+<strong>5.</strong> Remove head. Measure crushed wire thickness with micrometer
+<strong>6.</strong> Repeat for all 8 cylinders
+<strong>Alternative method:</strong> Measure piston-to-deck with dial indicator (without head) and add compressed gasket thickness. Less accurate but non-destructive.
+Quench too large = less detonation resistance, less efficient combustion
+Quench too small = piston may contact head (thermal expansion at operating temp)
+Ventil bei installierter Feder auf maximalen Hub bringen (Kurbel drehen oder Feder mit Werkzeug komprimieren).
+Abstand zwischen Unterseite des Federtellers (Retainer) und Oberkante der Ventilschaftdichtung (Valve Seal) messen.
+Methode 1: F&uuml;hlerlehre zwischen Retainer und Seal einf&uuml;hren.
+Methode 2: Plastigage-Streifen zwischen Retainer und Seal legen, Ventil auf max. Hub, Plastigage ablesen.
+Mindestens 0.060&quot; (1.52 mm) Clearance erforderlich.
+Bei zu wenig Abstand: Andere Dichtung (k&uuml;rzere Bauform) oder andere Retainer verwenden.
+Bei maximalem Hub messen &ndash; Retainer darf Dichtung nicht ber&uuml;hren
+Kontakt = Dichtung zerst&ouml;rt = &Ouml;lverbrauch und Rauchentwicklung
+Port alignment: intake port must align with head port (witness marks)
+Max. mismatch: &lt; 1/16" (1.59 mm) &ndash; otherwise flow loss
+Check 4 corner fitment (block-to-pan rail area)
+Melling M-68 oil pump ready (or Ford M-6600-D2)
+Oil pump intermediate drive shaft (ARP or OEM)
+Block rear main area accessible
+3/4&quot; combination wrench (19 mm)
+Long screwdriver for alignment
+Inspection mirror
+<strong>1. Shaft alignment:</strong> Insert intermediate shaft into block &ndash; hex end must engage camshaft gear (Sechskant muss in Nockenwellen-Antriebszahnrad greifen)
+<strong>2. Drive shaft length:</strong> Shaft must extend below block far enough to engage pump rotor &ndash; verify ~0.5&quot; (12.7 mm) protrusion below pump mounting pad
+<strong>3. Pump mounting:</strong> Set pump on rear main cap mounting pad &ndash; bolt finger-tight only
+<strong>4. Rotation check:</strong> Turn shaft by hand (screwdriver in hex) &ndash; must rotate freely without binding
+<strong>5. Pickup alignment:</strong> Verify pickup tube direction points toward pan sump area
+If shaft won&rsquo;t engage cam gear: rotate crank slightly to align gears
+Shaft must NOT bottom out against cam gear &ndash; verify 0.010&quot;&ndash;0.030&quot; (0.25&ndash;0.76 mm) clearance
+Mark orientation of pump body for Phase 3 reinstall
+Timing chain and sprockets installed from degreeing step
+Ford timing cover + gasket ready
+Front crank seal ready (do NOT install yet &ndash; dry fit only)
+3/8&quot; socket set (Nusskasten)
+Straightedge for gasket alignment check
+Feeler gauge 0.010&quot; (0.25 mm)
+<strong>1. Gasket alignment:</strong> Place gasket dry on block &ndash; all bolt holes and water passages must align perfectly (alle Bohrungen und Wasserdurchl&auml;sse m&uuml;ssen fluchten)
+<strong>2. Cover fitment:</strong> Slide cover over crank snout &ndash; must clear timing chain sprocket
+<strong>3. Seal bore check:</strong> Verify front seal bore is concentric with crank snout &ndash; no offset that would damage seal
+<strong>4. Pan rail alignment:</strong> Cover bottom edge must be flush with block oil pan rail &ndash; check with straightedge (Unterkante muss b&uuml;ndig mit Block-Wannenschiene sein)
+<strong>5. Balancer clearance:</strong> With cover loosely in place, verify harmonic balancer can slide through seal bore without interference
+Cover goes on BEFORE oil pan &ndash; pan seals against cover bottom edge
+Aftermarket covers may need trimming at pan rail &ndash; check now, not during final assembly
+Note bolt lengths &ndash; Ford covers often use 2&ndash;3 different lengths
+Canton Road Race pan #15-644 (or selected pan) ready
+Oil pump + pickup installed from previous step
+Pan gaskets (side rails + end seals) ready for dry check
+Ruler or caliper for pickup clearance measurement
+Flashlight for internal inspection
+3/8&quot; socket set
+<strong>1. Gasket alignment:</strong> Lay side gaskets + end seals dry on block &ndash; verify all bolt holes align with pan
+<strong>2. Pan clearance:</strong> Set pan in place &ndash; check that pickup tube and pump body clear pan interior (Saugr&uuml;ssel und Pumpe d&uuml;rfen Wanne innen nicht ber&uuml;hren)
+<strong>3. Pickup-to-pan bottom:</strong> Measure from bottom of pickup screen to inside bottom of pan &ndash; target 1/4&quot;&ndash;3/8&quot; (6.4&ndash;9.5 mm)
+<strong>4. Dipstick tube:</strong> Verify dipstick tube boss aligns with block or pan provision
+<strong>5. Windage tray:</strong> If Canton pan includes windage tray, check clearance to crank counterweights &ndash; min. 1/4&quot; (6.4 mm)
+<strong>6. Drain plug:</strong> Verify drain plug is accessible and in correct position for chassis
+Canton Road Race pans are deeper in rear &ndash; verify chassis ground clearance for mid-engine applications
+Mark pickup-to-pan measurement for Phase 3 verification
+Check for interference with steering rack, crossmember, or frame rails if applicable
+Ruler, caliper, or bent wire gauge
+Modeling clay (Knetmasse) &ndash; alternative measurement method
+<strong>Method A (Direct):</strong> With pan loosely in place, measure from pickup screen bottom to pan floor with ruler through drain hole or bolt hole
+<strong>Method B (Clay):</strong> Place modeling clay on pan floor, set pan on block, remove and measure compressed clay thickness
+<strong>Method C (Wire):</strong> Bend wire to known length, insert through drain hole to touch pickup &ndash; calculate distance
+If clearance is wrong, bend pickup tube carefully (small adjustments only!) or use a different pickup
+This is the MOST critical oil system dimension &ndash; recheck in Phase 3 before final pan installation
+Mid-engine/track cars: err toward closer (1/4&quot;) to prevent uncovering under G-loads
+Rockers + polylocks installed on at least test cylinder
+Valve covers + gaskets ready
+Modeling clay (Knetmasse) ~3/16&quot; (5 mm) thick
+Caliper for measuring compressed clay
+<strong>1. Rocker clearance:</strong> Place modeling clay on highest points of rocker arms (adjusting nut / polylock area)
+<strong>2.</strong> Set valve cover on head with gasket, press down evenly
+<strong>3.</strong> Remove cover, measure clay thickness &ndash; minimum clearance: 1/8&quot; (3.2 mm) to any rocker component
+<strong>4. Gasket seal:</strong> Check gasket rail seating &ndash; gasket must sit flat with no gaps
+<strong>5. PCV/breather:</strong> Verify PCV valve and breather grommet positions match planned routing
+<strong>6. Bolt holes:</strong> Verify all mounting holes align &ndash; aftermarket covers may differ from OEM pattern
+COMP 1632-16 rockers with polylocks are taller than stock &ndash; standard covers often don&rsquo;t clear!
+If interference: use tall/fabricated covers, or spacers (Abstandshalter) under cover gasket rail
+Note clearance issues now &ndash; order correct covers before Phase 3
+MSD distributor ready (Pro-Billet or Ready-to-Run)
+Intake manifold dry-fitted or in place from step 15
+Crank at TDC #1 compression stroke
+1/2&quot; open-end wrench for hold-down clamp
+Flashlight for gear mesh inspection
+<strong>1. Gear mesh:</strong> Drop distributor into block &ndash; drive gear must mesh with cam gear. Slight rotation during insertion is normal (helical gear / Schr&auml;gverzahnung)
+<strong>2. Rotor alignment:</strong> At TDC #1 compression, rotor tip should point toward #1 spark plug wire tower on cap
+<strong>3. Intake clearance:</strong> With intake manifold in place, check clearance between distributor body/cap and intake manifold runners &ndash; minimum 1/4&quot; (6.4 mm)
+<strong>4. Hold-down clamp:</strong> Verify clamp fits in block groove and can secure distributor
+<strong>5. Vacuum advance:</strong> Check vacuum canister clearance to firewall/bulkhead and accessories
+MSD distributors are slightly larger than stock Ford &ndash; verify clearance to intake plenum, A/C compressor, etc.
+Note the number of teeth offset during insertion (gear helix causes ~1 tooth rotation)
+If distributor won&rsquo;t seat fully: oil pump shaft may not be aligned &ndash; wiggle or rotate slightly
+Mark distributor body position relative to block for Phase 3 reference
+Pushrod length determined in step 10 (checking pushrod)
+Sweep check confirmed in step 11
+Both intake and exhaust lengths documented
+<strong>COMP Cams, Smith Brothers, or Trend</strong> for custom lengths &ndash; specify to nearest 0.025&quot; increment
+Order 1&ndash;2 extras per length in case of damage during assembly
+Heat-treated chromoly is stronger than standard; recommended for hydraulic roller with high spring pressures
+Typical lead time: 1&ndash;3 weeks for custom lengths (Lieferzeit: 1&ndash;3 Wochen)
+Verify 5/16&quot; diameter clears COMP guideplate slots &ndash; if using 3/8&quot;, need matching guideplates
+Zip-lock bags (verschiedene Gr&ouml;&szlig;en)
+Permanent marker + masking tape for labeling
+Parts organizer trays
+Clean lint-free cloths (fusselfreie T&uuml;cher)
+Assembly lube (for coating bare surfaces)
+<strong>1.</strong> Remove distributor (Verteiler abnehmen)
+<strong>2.</strong> Remove valve covers (Ventildeckel)
+<strong>3.</strong> Remove rockers, polylocks, pushrods &ndash; bag per cylinder! (pro Zylinder einpacken!)
+<strong>4.</strong> Remove intake manifold (Ansaugbr&uuml;cke)
+<strong>5.</strong> Remove heads (K&ouml;pfe) &ndash; bag ARP nuts + washers separately per side
+<strong>6.</strong> Remove lifters &ndash; maintain numbering! (Lifter &ndash; Nummerierung beibehalten!)
+<strong>7.</strong> Remove oil pan + pickup (Wanne + Saugrohr)
+<strong>8.</strong> Remove oil pump (Pumpe)
+<strong>9.</strong> Remove timing cover, chain, sprockets (Steuerkettendeckel, Kette, Zahnr&auml;der)
+<strong>10.</strong> Remove camshaft (Nockenwelle)
+<strong>Label everything!</strong> Lifters, pushrods, and rockers must return to their exact positions (Alles beschriften! Lifter, Pushrods und Kipphebel m&uuml;ssen exakt an ihren Platz zur&uuml;ck)
+Coat all bare metal surfaces (crank journals, cam lobes) with oil or assembly lube to prevent surface rust
+Bag hardware per location: &quot;LH Head Nuts&quot;, &quot;Timing Cover Bolts&quot;, etc.
+Remove and discard mock-up gasket (Fel-Pro 1011) &ndash; NOT reusable (Probedichtung NICHT wiederverwendbar)
+Store parts clean and dry in a dust-free area until Phase 3
+Brake cleaner (acetone-based / acetonbasiert)
+Clean, lint-free cloths (fusselfreie T&uuml;cher)
+Plastic scraper (Kunststoffschaber) &ndash; <strong>NO wire brush on aluminum!</strong> (KEIN Drahtb&uuml;rste auf Aluminium!)
+All surfaces oil- and grease-free (&ouml;l-/fettfrei)
+No abrasion residue visible (keine R&uuml;ckst&auml;nde)
+Blind holes dry (Sacklochbohrungen trocken) &ndash; compressed air!
+Block on engine stand, deck surface accessible
+All head bolt holes visible (10 per side, 20 total)
+Safety glasses &ndash; debris will fly out of holes (Schutzbrille!)
+Compressed air with blow gun (Druckluft mit Ausblaspistole)
+Brake cleaner spray (Bremsenreiniger)
+Clean lint-free cloths (fusselfreie T&uuml;cher)
+Flashlight for hole inspection
+Safety glasses (Schutzbrille)
+<strong>Spray brake cleaner:</strong> Shoot brake cleaner into each head bolt hole to dissolve oil, coolant residue, and debris (Bremsenreiniger in jede Kopfbohrung spr&uuml;hen)
+<strong>Blow out with air:</strong> Insert air nozzle into each hole and blow dry &ndash; direct debris AWAY from engine (mit Druckluft ausblasen &ndash; Schmutz WEG vom Motor lenken)
+<strong>Inspect each hole:</strong> Use flashlight to look into each hole &ndash; must be clean and dry, no liquid pooling at bottom (mit Taschenlampe pr&uuml;fen &ndash; trocken, keine Fl&uuml;ssigkeit am Boden)
+<strong>Repeat if needed:</strong> If any hole shows residue, spray and blow again (bei R&uuml;ckst&auml;nden wiederholen)
+<strong>Wipe deck surface:</strong> Clean deck surface around holes with brake cleaner and cloth (Dichtfl&auml;che um Bohrungen reinigen)
+Water-jacket holes (lower positions 6&ndash;10) may have coolant residue &ndash; extra attention needed
+Blind holes (upper positions 1&ndash;5) trap oil at the bottom &ndash; blow thoroughly
+Run a thread chaser (NOT a tap!) through each hole if threads look dirty or damaged
+This step takes only 10&ndash;15 minutes but prevents catastrophic assembly errors
+&#9744; ARP Ultra-Torque lubricant (included in stud kit / im Stehbolzen-Kit enthalten)
+&#9744; Assembly lube (COMP 159 or equivalent / Montagepaste)
+&#9744; RTV silicone (Permatex Ultra Black or Grey)
+&#9744; Clean engine oil (for lubrication / sauberes Motor&ouml;l)
+&#9744; Anti-seize (for spark plugs / f&uuml;r Z&uuml;ndkerzen)
+&#9744; Thread sealant / Teflon tape (for water-jacket bolts / Gewindedichtmittel)
+&#9744; Brake cleaner + clean lint-free cloths (Bremsenreiniger + T&uuml;cher)
+COMP Cams XE274HR camshaft out of packaging, inspected for damage
+COMP Cams assembly lube #106 (included with cam or purchased separately)
+Clean work surface &ndash; cam must stay clean (saubere Arbeitsfl&auml;che)
+COMP Cams cam lube #106 &ndash; generous amount (gro&szlig;z&uuml;gig auftragen)
+Clean engine oil for journals as backup lubricant
+Latex gloves to keep contaminants off cam surfaces
+<strong>All 16 lobes:</strong> Apply thick coat of COMP #106 lube to every cam lobe &ndash; intake AND exhaust, both flanks and nose (dicke Schicht auf alle 16 Nocken &ndash; Einlass UND Auslass)
+<strong>All 5 journals:</strong> Apply lube to all cam bearing journals (alle 5 Lagerzapfen einschmieren)
+<strong>Distributor gear:</strong> Apply lube to the distributor drive gear at rear of cam (Verteiler-Antriebszahnrad am Nockenende)
+<strong>Fuel pump eccentric:</strong> Lube the fuel pump eccentric lobe if applicable (Benzinpumpen-Exzenter)
+<strong>Verify coverage:</strong> Visually confirm every surface that contacts another part is covered with lube &ndash; no bare metal visible (alle Kontaktfl&auml;chen bedeckt)
+Hydraulic roller cams are less critical than flat tappet for break-in, but the distributor gear and journals still need protection during initial startup
+Do NOT use motor oil alone &ndash; it drains off during assembly time. #106 stays in place (Motor&ouml;l allein l&auml;uft ab &ndash; #106 bleibt haften)
+More lube is better than less &ndash; excess will dissolve into engine oil harmlessly (&uuml;bersch&uuml;ssige Paste l&ouml;st sich im Motor&ouml;l auf)
+Work quickly after lubing &ndash; install cam promptly to minimize exposure to air/dust
+Cam bearings verified in correct position (oil holes aligned)
+All cam lobes and journals lubed with COMP #106 (previous step)
+Block tilted slightly rearward if possible (gravity assists)
+5/16"-18 &times; 6" long bolt as installation handle
+Long bolt 5/16"-18 &times; 6" (threaded into cam nose) as guide handle (langer Bolzen als F&uuml;hrungsgriff)
+Additional COMP #106 lube for touch-up
+Clean gloves (saubere Handschuhe)
+Flashlight to watch bearing alignment during insertion
+<strong>Thread guide bolt:</strong> Thread the 5/16"-18 &times; 6" bolt into the cam nose &ndash; this is your handle for controlled insertion (Bolzen als Griff in Nockenwellennase schrauben)
+<strong>Support cam weight:</strong> Hold cam level by the guide bolt with one hand and support the rear of the cam with the other (Nocke waagerecht halten, Gewicht st&uuml;tzen)
+<strong>Insert slowly:</strong> Carefully slide cam into block, rotating very slowly as needed to clear each bearing journal (langsam einschieben, leicht drehen)
+<strong>Watch the lobes:</strong> NEVER let lobe edges scrape against cam bearing surfaces &ndash; this destroys both the lobe and bearing (Nocken d&uuml;rfen NIEMALS an Lagerschalen kratzen)
+<strong>Feel for resistance:</strong> If resistance is felt, STOP &ndash; pull back slightly, re-align, and try again. Do not force! (bei Widerstand STOPP &ndash; zur&uuml;ckziehen und neu ausrichten)
+<strong>Seat fully:</strong> Cam is fully seated when thrust plate surface is reached (Nocke sitzt, wenn Druckplatte erreicht ist)
+<strong>Remove guide bolt:</strong> Unthread the guide bolt from cam nose (F&uuml;hrungsbolzen herausdrehen)
+The long bolt as handle is essential &ndash; without it, the cam slides in uncontrolled and can damage bearings (ohne Griff gleitet die Nocke unkontrolliert)
+Tilting the block rearward (rear lower) lets gravity help guide the cam in
+Ford 302 has 5 cam bearings &ndash; each one is a potential snag point for lobe edges
+If you feel a lobe catch on a bearing edge, the cam is not centered &ndash; never force it through
+Estimated time: ~15 min. with care
+Timing marks must point toward each other (dot-to-dot) at TDC #1 (Steuermarken Punkt-zu-Punkt bei OT #1)
+Cam sprocket on cam, crank sprocket on crank &ndash; route chain over both (Kette &uuml;ber beide Zahnr&auml;der f&uuml;hren)
+Use ARP hardened washer (included) under cam bolt (geh&auml;rtete Scheibe verwenden)
+All 16 COMP hydraulic roller lifters inspected (no damage, rollers spin freely)
+Camshaft installed and timing set in place
+Lifter bores clean and free of debris
+Link bar pairs identified (lifters must be installed in matched pairs)
+COMP Cams assembly lube #106 &ndash; for lifter bodies and bores
+Clean engine oil as secondary lubricant
+Clean lint-free cloths
+<strong>Clean all bores:</strong> Wipe each of the 16 lifter bores with clean cloth &ndash; remove any preservative or debris (alle 16 Bohrungen reinigen)
+<strong>Lube bores:</strong> Apply assembly lube inside each lifter bore (Montagepaste in jede Bohrung)
+<strong>Lube lifter bodies:</strong> Coat each lifter body with assembly lube, especially the bottom (roller) and sides (Lifter-K&ouml;rper einschmieren)
+<strong>Align rollers:</strong> Orient each lifter so the roller wheel is aligned parallel with the cam lobe it will ride on (Rolle parallel zur Nocke ausrichten)
+<strong>Install in pairs:</strong> Link bar lifters must be installed as matched pairs &ndash; the link bar keeps both lifters (intake + exhaust for one cylinder) aligned and prevents rotation (Paarweise mit Verbindungsb&uuml;gel einsetzen)
+<strong>Check free movement:</strong> Each lifter must slide freely up and down in its bore with no binding (jeder Lifter muss frei gleiten)
+<strong>Verify roller alignment:</strong> Visually confirm all 16 rollers are sitting on their respective cam lobes and tracking straight (Rollenausrichtung visuell pr&uuml;fen)
+Label or note lifter positions &ndash; if removed later, reinstall in same bore (Positionen markieren)
+Link bars prevent rotation &ndash; a rotated roller lifter will be destroyed by the cam lobe within seconds of engine start
+Lifter-to-bore clearance: 0.0010"&ndash;0.0025" (0.025&ndash;0.064 mm) &ndash; too tight = binding, too loose = oil leak and noise
+If any lifter does not slide freely: check for burr in bore, wrong lifter diameter, or debris
+Install all lifters BEFORE the oil pump &ndash; easier access to valley area
+<strong>Fill pump COMPLETELY with assembly lube BEFORE installation!</strong> (Pumpe VOR Montage KOMPLETT mit Montagepaste f&uuml;llen!)
+<strong>1.</strong> Pre-fill pump completely with assembly lube (Pumpe komplett mit Montagepaste bef&uuml;llen)
+<strong>2.</strong> Set pump on mounting pad (Pumpe auf Montageflansch setzen)
+<strong>3.</strong> Insert intermediate shaft &ndash; must engage cam gear (Zwischenwelle einsetzen &ndash; muss in Cam-Antriebszahnrad greifen)
+<strong>4.</strong> Torque mounting bolt (Befestigungsschraube anziehen)
+<strong>5.</strong> Check rotation by hand &ndash; shaft must turn freely (Drehung pr&uuml;fen &ndash; Welle muss frei drehen)
+<strong>&Ouml;lpumpe vor Montage mit Assembly Lube f&uuml;llen</strong> &ndash; die Pumpe braucht F&uuml;llung zum Ansaugen (dry pump cannot build pressure / trockene Pumpe baut keinen Druck auf!)
+Verify alignment &ndash; pump tends to rotate during installation (Ausrichtung pr&uuml;fen &ndash; Pumpe dreht sich beim Einbau)
+Camshaft installed with timing set (Nockenwelle mit Steuertrieb montiert)
+Oil pump mounted on rear main cap
+Ford M-6605-B302 or ARP drive shaft ready
+Assembly lube on shaft hex ends (Montagepaste auf Sechskantenden)
+Engine oil on shaft body (Motor&ouml;l auf Schaftk&ouml;rper)
+<strong>1.</strong> Measure shaft length &ndash; must span from cam drive gear to oil pump rotor without bottoming out (L&auml;nge pr&uuml;fen &ndash; darf nicht auf Block stoppen)
+<strong>2.</strong> Lube hex ends with assembly lube, shaft body with engine oil
+<strong>3.</strong> Insert shaft through distributor bore into block
+<strong>4.</strong> Lower end (hex) must engage oil pump rotor &ndash; may need to rotate shaft slightly for engagement
+<strong>5.</strong> Upper end (hex) will later engage distributor gear &ndash; verify shaft protrudes correctly above block surface
+<strong>6.</strong> Spin shaft by hand (screwdriver in hex) &ndash; must rotate freely and smoothly
+ARP shaft is one-piece hardened steel &ndash; stronger than stock stamped shaft
+If shaft won&rsquo;t drop in: cam gear and pump may be misaligned &ndash; rotate crank slightly
+Shaft should have ~0.010&quot;&ndash;0.030&quot; (0.25&ndash;0.76 mm) axial play when seated &ndash; must NOT be tight
+This shaft also drives the distributor &ndash; alignment is critical for oil pressure AND ignition
+Too far from pan bottom = air ingestion under acceleration (zu weit = Luft ansaugen bei Beschleunigung)
+Too close to pan bottom = cavitation (zu nah = Kavitation)
+<strong>Pickup verschrauben, nicht nur stecken!</strong> Unter Vibration kann er sich l&ouml;sen. (Bolt the pickup &ndash; do not just press-fit! Vibration can loosen it.)
+Lay gasket <strong>dry</strong> (no sealant! / ohne Dichtmittel!)
+Correct side up: &quot;TOP&quot; or &quot;FRONT&quot; must face upward/forward (richtige Seite oben: &quot;TOP&quot; oder &quot;FRONT&quot;)
+Oil/water channels must align with block and head (Wasser-/&Ouml;lkan&auml;le m&uuml;ssen fluchten)
+<strong>Head Gasket hat &quot;FRONT&quot; aufgedruckt</strong> &ndash; r&uuml;ckw&auml;rts montiert = K&uuml;hlung unterbrochen
+<strong>Keine Stahldichtung auf Alu-K&ouml;pfen final!</strong> Die CP331 ist f&uuml;r Alu ausgelegt. (No steel gasket on aluminum heads! The CP331 is designed for aluminum.)
+Photograph &quot;FRONT&quot; marking visible (proof of correct installation / Nachweis korrekte Einbaulage)
+<strong>BOSS-Block + AFR #1399</strong> use 1/2" (12.7 mm) head bolts (verwenden 1/2"-Kopfschrauben)
+<strong>Lower bolts (position 6&ndash;10)</strong> go into water jacket (gehen in den Wassermantel) &rarr; use <strong>ARP Thread Sealant</strong> or <strong>Loctite 567</strong> on threads!
+<strong>Upper bolts (position 1&ndash;5)</strong> go into blind holes (gehen in Sacklochbohrungen) + washers with <strong>ARP Moly Lube</strong> on threads + under nut face
+ARP 154-4003 head studs installed hand-tight in block
+ARP Ultra-Torque lubricant packet (included in stud kit)
+ARP hardened washers (included in kit)
+12-point ARP nuts (included in kit)
+ARP Ultra-Torque lubricant &ndash; from ARP stud kit (do NOT substitute!)
+Clean cloth for wiping excess
+Small brush or finger for application
+<strong>Apply to threads:</strong> Coat ALL stud threads (the portion above the block where nut threads on) with ARP Ultra-Torque (Gewinde oberhalb des Blocks einschmieren)
+<strong>Apply to nut face:</strong> Put a dab of Ultra-Torque on the underside (contact face) of each ARP nut AND on the washer faces (Mutterauflagefl&auml;che UND Scheiben einschmieren)
+<strong>Apply to washers:</strong> Both sides of each ARP hardened washer get a thin film of Ultra-Torque (beide Seiten der Scheiben)
+<strong>Verify coverage:</strong> Every metal-to-metal contact surface in the clamping stack must be lubricated (alle Kontaktfl&auml;chen m&uuml;ssen geschmiert sein)
+<strong>Do NOT wipe off excess:</strong> Leave the lubricant in place &ndash; it is designed to remain during torquing (&Uuml;berschuss NICHT abwischen)
+One packet of Ultra-Torque from the ARP kit is usually enough for one engine &ndash; use it all
+If you run out: ARP sells Ultra-Torque separately (ARP 100-9908)
+Apply lube just before torquing &ndash; do not let it sit overnight exposed to dust
+Re-apply if studs are loosened and re-torqued (during re-torque after first heat cycle)
+Head gaskets (Fel-Pro 1011-2 or M-6051-CP331) ready &ndash; verify correct part number
+Block deck surface clean and dry (previous cleaning step completed)
+Dowel pins in block verified (2 per side, pressed into block)
+ARP head studs installed and lubed (previous step completed)
+AFR 1399 cylinder heads clean, ports free of debris
+Helper recommended &ndash; AFR aluminum heads weigh ~25 lbs (11 kg) each
+ARP 12-point nuts + hardened washers (from stud kit)
+Flashlight to verify gasket alignment
+<strong>Place head gaskets:</strong> Set gaskets on dowel pins &ndash; check orientation: &quot;UP&quot; or &quot;FRONT&quot; marking must face correct direction (Dichtung auf Passh&uuml;lsen setzen &ndash; Beschriftung pr&uuml;fen)
+<strong>Verify gasket alignment:</strong> All water passages, oil drain-backs, and bolt holes must align with block (alle Durchl&auml;sse m&uuml;ssen fluchten)
+<strong>Lift head carefully:</strong> With a helper, carefully lower the cylinder head straight down onto the gasket and dowel pins (Kopf gerade nach unten auf Passh&uuml;lsen absenken)
+<strong>Do NOT slide:</strong> Never slide the head sideways on the gasket &ndash; this can damage or shift the gasket seal (Kopf NICHT seitlich verschieben &ndash; besch&auml;digt die Dichtung)
+<strong>Align with dowels:</strong> The 2 dowel pins per side ensure correct positioning &ndash; head should drop into place with minimal guidance (Passh&uuml;lsen sorgen f&uuml;r korrekte Position)
+<strong>Hand-start all nuts:</strong> Place ARP washers and hand-start all ARP nuts on studs &ndash; do NOT torque yet (alle Muttern handfest aufdrehen &ndash; noch NICHT anziehen)
+<strong>Repeat for second head:</strong> Install second head gasket and head the same way (f&uuml;r zweiten Kopf wiederholen)
+Copper gaskets (CP331) are installed DRY &ndash; no sealant! (Kupferdichtung TROCKEN &ndash; kein Dichtmittel!)
+AFR aluminum heads are lighter than cast iron &ndash; easier to handle but still use a helper
+Verify the gasket did not shift after setting the head &ndash; peek through bolt holes with flashlight
+If a dowel pin is missing or damaged, do NOT proceed &ndash; head will shift under torque
+Some builders use guide studs (long bolts without heads) in 2 corner holes to guide the head down &ndash; recommended for heavy iron heads
+Alle 10 Muttern handfest auf die Stehbolzen drehen (Kopfdichtung sitzt, Kopf ausgerichtet).
+<strong>Stufe 1:</strong> Alle 10 Muttern im Kreuzschema (Mitte &rarr; au&szlig;en) auf 35 ft-lbs (47 Nm) anziehen.
+5 Minuten warten (Dichtung setzt sich).
+<strong>Stufe 2:</strong> Im selben Schema auf 55 ft-lbs (75 Nm) anziehen.
+5 Minuten warten.
+<strong>Stufe 3:</strong> Obere Reihe (Blind Holes / Sackloch) auf 80 ft-lbs (108 Nm). Untere Reihe (Water Holes / Wasserkanal) auf 70 ft-lbs (95 Nm) + Dichtmittel auf Gewinde!
+Schema beachten: 1-2-3-4-5-6-7-8-9-10 im Kreuz von der Mitte nach au&szlig;en (siehe Diagramm unten).
+Kreuzschema von der Mitte nach au&szlig;en!
+5 Minuten zwischen den Stufen warten (Dichtung setzt sich)
+Lange Bolzen (Sackloch) und kurze Bolzen (Wasserkanal) haben <strong>unterschiedliche Endwerte</strong>
+ARP Ultra-Torque auf Gewinde UND Mutterauflage &ndash; ohne Schmierung sind die Werte falsch!
+Cylinder heads torqued to final spec (previous step completed)
+COMP Cams flat-style guide plates &ndash; correct type for AFR 1399 heads
+Final-length pushrods (intake and exhaust lengths determined in Phase 2)
+COMP #106 assembly lube for pushrod tips
+3/8" socket or wrench for guide plate bolts
+Assembly lube (COMP #106) for pushrod tips
+Clean cloth
+Flashlight for alignment inspection
+<strong>Orient guide plates:</strong> Install COMP guide plates with flat side UP (for AFR heads) &ndash; check COMP documentation for your specific plate/head combination (flache Seite nach OBEN f&uuml;r AFR-K&ouml;pfe)
+<strong>Slide onto studs:</strong> Place guide plate over rocker arm studs for each pair of intake/exhaust positions (auf Kipphebel-Stehbolzen schieben)
+<strong>Lube pushrod tips:</strong> Apply COMP #106 assembly lube to both ends of each pushrod &ndash; ball end and cup end (beide Enden der Pushrods mit Montagepaste versehen)
+<strong>Insert pushrods:</strong> Drop final-length pushrods through guide plate slots into lifter cups &ndash; intake and exhaust lengths may differ! (Pushrods einsetzen &ndash; Einlass/Auslass L&auml;ngen k&ouml;nnen unterschiedlich sein!)
+<strong>Verify centering:</strong> Each pushrod must be centered in its guide plate slot &ndash; no contact with slot edges (Pushrod muss mittig im Schlitz laufen)
+<strong>Check for interference:</strong> Rotate crank slowly and verify pushrods move freely through entire lift cycle without binding on guide plates (Kurbel drehen, auf Bindung pr&uuml;fen)
+Guide plates prevent pushrod side-loading on valve stem tips &ndash; critical for valve guide life
+Double-check intake vs. exhaust pushrod lengths &ndash; mixing them up causes incorrect geometry
+If pushrod contacts guide plate edge at any point in the cam cycle: wrong pushrod length or wrong guide plate orientation
+Do not fully tighten guide plates until rockers are installed and preload is set
+Cam lube on pushrod tips is critical &ndash; dry pushrod tips will gall rocker cups and lifter seats on first startup
+<strong>1.</strong> Rotate crank so this valve&rsquo;s lifter sits on base circle (Grundkreis) &ndash; lobe pointing away from lifter (Nocken zeigt weg vom Lifter)
+<strong>2.</strong> Thread polylock onto rocker stud by hand (Polylock handfest auf Kipphebel-Stehbolzen drehen)
+<strong>3.</strong> Spin pushrod with one hand while tightening polylock with the other (Pushrod drehen w&auml;hrend Polylock angezogen wird)
+<strong>4.</strong> Zero lash = pushrod just stops spinning (Nullspiel = Pushrod stoppt gerade)
+<strong>5.</strong> From zero lash: <strong>1/4 to 1/2 turn further = preload</strong> (Ab Nullspiel: 1/4 bis 1/2 Umdrehung weiter = Vorspannung)
+<strong>6.</strong> Tighten lock nut &ndash; polylock holds position (Kontermutter anziehen &ndash; Polylock h&auml;lt Position)
+<strong>7.</strong> Repeat for all 16 valves (F&uuml;r alle 16 Ventile wiederholen)
+<strong>When exhaust valve opens (EO)</strong>, set intake preload on same cylinder (Wenn Auslassventil &ouml;ffnet, Einlass-Vorspannung einstellen)
+<strong>When intake valve closes (IC)</strong>, set exhaust preload on same cylinder (Wenn Einlassventil schlie&szlig;t, Auslass-Vorspannung einstellen)
+Timing cover gasket (Steuerkettendeckel-Dichtung)
+RTV silicone (Permatex Ultra Black)
+Front crank seal (vorderer Kurbelwellen-Simmerring)
+Seal installation tool (Simmerring-Einpresswerkzeug)
+Timing chain mounted (Steuerkette montiert)
+Oil pan <strong>NOT</strong> yet mounted &ndash; cover overlaps pan rail (&Ouml;lwanne NOCH NICHT montiert &ndash; Deckel &uuml;berlappt Wannenschiene)
+<strong>1.</strong> Press front seal into timing cover &ndash; flush, lip faces inward toward motor (Simmerring einpressen &ndash; b&uuml;ndig, Dichtlippe nach innen/zum Motor)
+<strong>2.</strong> Gasket dry or with thin sealant layer (Dichtung trocken oder mit d&uuml;nner Dichtmasse)
+<strong>3.</strong> RTV at transitions to oil pan area (RTV an &Uuml;berg&auml;ngen zum &Ouml;lwannenbereich)
+<strong>4.</strong> Slide cover over crank nose, press evenly (Deckel &uuml;ber Kurbelwellenstumpf schieben, gleichm&auml;&szlig;ig andr&uuml;cken)
+<strong>5.</strong> Torque bolts (Schrauben anziehen)
+Oil the seal lip before installation &ndash; do not fold it! (Dichtlippe &ouml;len &ndash; nicht umknicken!)
+<strong>1.</strong> Oil crank nose + balancer bore (Kurbelwellenstumpf + Balancer-Bohrung &ouml;len)
+<strong>2.</strong> Align Woodruff key (Passfeder ausrichten)
+<strong>3.</strong> Use press-on tool to pull evenly &ndash; threaded rod through crank (Aufpresswerkzeug verwenden &ndash; Gewindestange durch Kurbelwelle)
+<strong>4.</strong> Check timing mark at TDC (Steuermarke bei OT pr&uuml;fen)
+<strong>1.</strong> Install side gaskets (Seitendichtungen einlegen)
+<strong>2.</strong> RTV at 4 corners &ndash; front/rear seal joints (RTV an 4 Ecken &ndash; vordere/hintere Dichtungsstöße)
+<strong>3.</strong> Set pan on block, hand-start all bolts (Wanne aufsetzen, alle Schrauben handfest)
+<strong>4.</strong> Cross-pattern torque (Kreuzweise anziehen)
+RTV only at 4 corners (Block-to-Timing-Cover and Block-to-Rear-Seal joints / nur an den 4 Ecksto&szlig;stellen)
+Thin bead &ndash; too much RTV squeezes into oil passages! (D&uuml;nne Raupe &ndash; zu viel RTV dr&uuml;ckt in &Ouml;lkan&auml;le!)
+Pan seals against timing cover bottom edge &ndash; that&rsquo;s why cover goes on FIRST (Wanne dichtet gegen Steuerkettendeckel-Unterkante &ndash; deshalb Deckel ZUERST)
+<strong>Wire-Mesh-Sieb bevorzugen</strong> &ndash; perforiertes Blech kann bis zu 75% Durchfluss kosten (Prefer wire mesh screen &ndash; perforated sheet can cost up to 75% flow)
+Water pump gaskets &ndash; 2 pcs (Wasserpumpen-Dichtungen &ndash; 2 St&uuml;ck)
+Sealant: Permatex Aviation (Dichtmittel)
+Coolant 50/50 (K&uuml;hlmittel 50/50)
+Hoses + clamps (Schl&auml;uche + Schellen)
+Timing cover mounted (Steuerkettendeckel montiert)
+Check rotation direction: standard = clockwise from front for V-belt (Drehrichtung pr&uuml;fen: Standard = im Uhrzeigersinn von vorne f&uuml;r Keilriemen)
+<strong>1.</strong> Thin sealant on both sides of gasket (D&uuml;nn Dichtmasse auf beide Dichtungsseiten)
+<strong>2.</strong> Place pump on block, align bolt holes (Pumpe aufsetzen, Schraubenl&ouml;cher ausrichten)
+<strong>3.</strong> Cross-pattern torque (Kreuzweise anziehen)
+<strong>4.</strong> Connect hoses (Schl&auml;uche anschlie&szlig;en)
+Bolt lengths may vary &ndash; mark positions before removal! (Schraubenl&auml;ngen k&ouml;nnen variieren &ndash; Positionen vor Demontage markieren!)
+Milodon 16230 is a high-flow pump &ndash; verify rotation matches belt routing (Hochleistungspumpe &ndash; Drehrichtung muss zum Riementrieb passen)
+RTV silicone (Permatex Ultra Black)
+Port gaskets Fel-Pro 1250 (Portdichtungen)
+Brake cleaner (Bremsenreiniger)
+Heads mounted and torqued (K&ouml;pfe montiert und angezogen)
+Valvetrain set (Ventiltrieb eingestellt)
+<strong>1.</strong> Port gaskets dry on heads (Portdichtungen trocken auf K&ouml;pfe)
+<strong>2.</strong> RTV at front/rear &ndash; <strong>NO cork end seals &ndash; RTV only!</strong> (RTV vorne/hinten &ndash; KEINE Kork-Enddichtungen &ndash; nur RTV!)
+<strong>3.</strong> Extra RTV at transitions where port gaskets meet end seals (Extra RTV an &Uuml;berg&auml;ngen)
+<strong>4.</strong> Place manifold straight, hand-tight all bolts (Ansaugbr&uuml;cke gerade aufsetzen, alle Schrauben handfest)
+<strong>5.</strong> Torque in 3 stages, cross pattern center&rarr;outward (3 Stufen anziehen, Kreuzschema von Mitte nach au&szlig;en)
+<strong>18 ft-lbs NICHT &uuml;berschreiten!</strong> (DO NOT exceed 18 ft-lbs!)
+<strong>RTV nur an den 4 Ecken</strong> (RTV only at the 4 corners)
+<strong>Intake Gasket nicht port-matchen</strong> &ndash; Fel-Pro 1250 passt ab Werk (Do not port-match the intake gasket &ndash; Fel-Pro 1250 fits as delivered)
+RTV needs 15&ndash;20 min flash time before placing manifold (RTV braucht 15&ndash;20 Min. Abl&uuml;ftzeit vor Auflegen der Br&uuml;cke)
+24h cure before adding coolant (24 Std. aush&auml;rten lassen vor K&uuml;hlmittel)
+MSD Pro-Billet or Ready-to-Run distributor ready
+Oil pump drive shaft installed (engages distributor gear)
+Intake manifold installed (distributor drops through intake on SBF)
+Engine at TDC #1 compression stroke &ndash; BOTH valves on #1 must be closed
+Breaker bar or socket on crank bolt (to rotate engine to TDC)
+1/2" wrench for distributor hold-down clamp
+Distributor cap + rotor (for marking #1 position)
+Marker or paint pen
+<strong>Find TDC #1 compression:</strong> Rotate crank until TDC mark on damper aligns with pointer AND both valves on #1 cylinder are fully closed &ndash; this is compression stroke TDC (OT #1 Kompressionstakt &ndash; beide Ventile geschlossen)
+<strong>Verify compression stroke:</strong> If either valve is partially open, you are at TDC overlap (exhaust stroke) &ndash; rotate crank 360&deg; more to reach compression TDC (falls ein Ventil offen: 360&deg; weiterdrehen)
+<strong>Mark #1 on housing:</strong> With distributor cap off, identify #1 spark plug wire terminal on cap. Mark corresponding position on distributor housing (Position #1 am Geh&auml;use markieren)
+<strong>Set rotor direction:</strong> Orient rotor to point toward #1 terminal position as you lower distributor into block (Verteilerfinger auf #1 ausrichten)
+<strong>Insert distributor:</strong> Lower distributor into bore &ndash; the gear will mesh with cam gear and rotor may rotate slightly as gears engage. Compensate by offsetting rotor one tooth in advance (Zahnrad greift in Nockenrad &ndash; Finger dreht sich leicht beim Einsetzen)
+<strong>Verify gear mesh:</strong> Distributor should drop fully into bore &ndash; if it stops short, the oil pump drive shaft hex is not aligned. Bump starter briefly or rotate oil pump shaft with screwdriver (falls Verteiler nicht ganz einrastet: &Ouml;lpumpenwelle drehen)
+<strong>Verify rotor position:</strong> With distributor fully seated, rotor must point at #1 terminal position (Verteilerfinger muss auf #1 zeigen)
+<strong>Snug hold-down:</strong> Tighten hold-down clamp just enough to hold position &ndash; final timing adjustment comes later (Klemmschraube leicht anziehen &ndash; Feineinstellung sp&auml;ter)
+Ford 302 firing order: 1-5-4-2-6-3-7-8, distributor rotates counter-clockwise (gegen Uhrzeigersinn)
+MSD distributors have no vacuum advance (no canister) &ndash; all advance is electronic via MSD 6AL box
+The distributor gear meshes with the cam gear at a helical angle &ndash; rotor rotates ~15&deg; as it drops in. Pre-offset accordingly
+Mark the intake manifold at the distributor base so you can verify it hasn&rsquo;t rotated during transport/handling
+Spark plug socket 5/8" / 16 mm (Z&uuml;ndkerzennuss)
+Feeler gauge 0.040" (F&uuml;hlerlehre 1.02 mm)
+Anti-seize compound (Montagepaste)
+<strong>1.</strong> Anti-seize on first 2&ndash;3 threads only &ndash; NOT on electrode! (Anti-Seize auf die ersten 2&ndash;3 Gewindeg&auml;nge &ndash; NICHT auf Elektrode!)
+<strong>2.</strong> Hand-start min. 3&ndash;4 turns before using wrench (Handfest min. 3&ndash;4 Umdrehungen vor Schl&uuml;sseleinsatz)
+<strong>3.</strong> Torque to spec (auf Drehmoment anziehen)
+All 16 rocker arms set with correct preload (previous step)
+Valve covers + gaskets (cork or rubber) ready
+PCV valve and breather grommets in correct positions
+Gasket surfaces on heads clean and dry
+Torque wrench (low-range, accurate at 4&ndash;6 ft-lbs)
+1/4" drive socket for valve cover bolts
+Valve cover gaskets (cork or rubber, matched to covers)
+RTV silicone (thin bead at corners if cork gaskets)
+<strong>Check rocker clearance:</strong> Verify valve cover clears all rocker arm components &ndash; polylock nuts, adjusting screws (Kipphebel-Freigang pr&uuml;fen)
+<strong>Place gaskets:</strong> Set gaskets on head gasket rails &ndash; use thin bead of RTV at corners if using cork gaskets. Rubber gaskets typically need no RTV (Dichtungen auflegen &ndash; bei Kork d&uuml;nne RTV-Raupe an Ecken)
+<strong>Set covers:</strong> Place valve covers on heads, aligning all bolt holes (Ventildeckel aufsetzen)
+<strong>Hand-start all bolts:</strong> Insert and hand-start ALL bolts before tightening any (alle Schrauben handfest eindrehen)
+<strong>Torque in pattern:</strong> Tighten in alternating pattern to 4&ndash;6 ft-lbs (5&ndash;8 Nm) &ndash; start center, work outward (Kreuzschema von Mitte nach au&szlig;en)
+<strong>Verify PCV and breather:</strong> Check PCV valve and breather are in correct positions for your ventilation routing (PCV und Entl&uuml;ftung pr&uuml;fen)
+Cork gaskets compress over time &ndash; re-torque to 4&ndash;6 ft-lbs after first heat cycle
+Rubber gaskets are reusable and provide a better seal long-term than cork
+If using stamped steel covers with roller rockers: verify clearance with modeling clay first (Phase 2 step)
+Tall valve covers (fabricated aluminum) may be needed with stud-mount roller rockers &ndash; verify in Phase 2 mock-up
+PCV valve typically goes on one cover, open breather on the other &ndash; check your ventilation system routing
+<strong>1.</strong> Fuel pump pushrod into block bore (Benzinpumpen-Sto&szlig;stange in Blockbohrung)
+<strong>2.</strong> New gasket (neue Dichtung)
+<strong>3.</strong> Mount pump &ndash; hold pushrod up while inserting (Pumpe montieren &ndash; Sto&szlig;stange w&auml;hrend Montage oben halten)
+<strong>4.</strong> Torque mounting bolts (Befestigungsschrauben anziehen)
+Rotate crank so fuel pump eccentric on cam is on base circle &ndash; easier to mount (Kurbelwelle drehen, damit Exzenter auf Grundkreis steht &ndash; erleichtert Montage)
+Priming tool (Melling PT11 or long hex bit in drill)
+Drill (slow speed, clockwise rotation!)
+<strong>1.</strong> Remove distributor (access to oil pump drive)
+<strong>2.</strong> Insert priming tool, spin with drill
+<strong>3.</strong> Watch oil pressure gauge &ndash; must show pressure
+<strong>4.</strong> Rotate crankshaft 4&times; 90&deg; during priming (supply all bearings)
+<strong>5.</strong> Remove valve covers &ndash; oil must appear at all 16 rockers
+<strong>IMMER vor&ouml;len vor dem Erststart!</strong> Melling PT11 + Bohrmaschine, bis &Ouml;l an allen Rockern austritt. (ALWAYS pre-oil before first start! Melling PT11 + drill until oil appears at all rockers.)
+Pre-oiling in progress (priming tool spinning in drill)
+Wrench or socket on harmonic balancer bolt for crank rotation
+Oil pressure gauge connected and showing pressure
+Large wrench or breaker bar on damper bolt (15/16" or 24 mm)
+Priming tool (Melling PT11) still engaged in drill
+Helper recommended: one person runs drill, other rotates crank
+<strong>Start priming:</strong> With priming tool spinning in drill, allow oil pressure to build and stabilize (Vor&ouml;len starten, Druck aufbauen lassen)
+<strong>First 90&deg; rotation:</strong> While drill is running, slowly rotate crankshaft 90&deg; clockwise with wrench on damper bolt (Kurbel 90&deg; im Uhrzeigersinn drehen)
+<strong>Pause 15&ndash;20 seconds:</strong> Hold position and let oil flow reach the newly-positioned bearings (15&ndash;20 Sekunden warten)
+<strong>Second 90&deg; rotation:</strong> Rotate another 90&deg; (total 180&deg;) &ndash; pause again (weitere 90&deg; drehen)
+<strong>Third 90&deg; rotation:</strong> Rotate another 90&deg; (total 270&deg;) &ndash; pause (weitere 90&deg;)
+<strong>Fourth 90&deg; rotation:</strong> Rotate final 90&deg; (full 360&deg; revolution) &ndash; all bearings have now been in every position relative to oil feed holes (letzte 90&deg; &ndash; alle Lager waren in jeder Position)
+<strong>Watch for oil at rockers:</strong> Continue priming and rotating until oil appears at all 16 rocker arms (bis &Ouml;l an allen 16 Kipphebeln austritt)
+Rotating the crank ensures ALL main bearings, rod bearings, and cam bearings receive oil &ndash; oil feed holes in bearings only align at certain crank positions
+Rotate SLOWLY &ndash; the priming tool cannot supply oil as fast as a running engine
+If oil pressure drops during rotation: this is normal &ndash; new bearings are being loaded with oil
+Ideal to do 2&ndash;3 full revolutions total for thorough pre-oiling
+Check under engine for any oil leaks while priming (auf Leckagen pr&uuml;fen)
+Mechanical oil pressure gauge connected (do NOT rely on electric sender for pre-oil)
+Priming tool engaged and drill running
+Oil level verified on dipstick before priming
+<strong>Start drill:</strong> Run priming tool at moderate speed (not full RPM) and watch gauge immediately (Bohrmaschine starten, Manometer beobachten)
+<strong>Pressure within 30 seconds:</strong> Gauge should show 15+ psi within 30 seconds of priming. If YES: continue priming with crank rotation (Druck innerhalb 30 Sek.)
+<strong>No pressure after 30 seconds: STOP!</strong> Investigate immediately: primer shaft not engaging pump, oil pump not primed (empty), pickup tube seal leaking, or wrong shaft length (STOPP falls kein Druck!)
+<strong>Continue until oil at rockers:</strong> Prime until oil is visible flowing at all 16 rocker arm pivot points &ndash; remove valve covers to verify (bis &Ouml;l an allen Kipphebeln sichtbar)
+<strong>Record pressure:</strong> Note the stabilized pressure reading on gauge for reference (&Ouml;ldruck notieren)
+Melling M-68 high-volume pump should show strong pressure during priming if properly filled with assembly lube before installation
+Drill speed matters: too fast can aerate oil, too slow won&rsquo;t build pressure. Moderate speed is best
+If oil never reaches one bank of rockers: suspect plugged oil gallery on that side
+Total priming time: typically 3&ndash;5 minutes with crank rotation to fully oil all bearings and push oil to rockers
+After priming, reinstall valve covers and distributor before starting
+Brad Penn 10W-30 (high ZDDP content)
+Driven BR30 Break-In Oil
+Lucas Hot Rod &amp; Classic
+ZDDP (zinc dialkyldithiophosphate) protects cam lobes &amp; lifters during break-in
+Modern oil (API SN+) has reduced ZDDP &ndash; <strong>not suitable</strong> for break-in
+Funnel with long neck (Trichter)
+Drain pan (Auffangwanne)
+Bleed valve wrench (if equipped)
+<strong>1.</strong> Verify all drain petcocks closed (alle Ablass-Hahne geschlossen)
+<strong>2.</strong> Remove heater hose at highest point for air bleed (Heizungsschlauch am h&ouml;chsten Punkt &ouml;ffnen)
+<strong>3.</strong> Fill slowly through radiator cap or filler neck (langsam einf&uuml;llen)
+<strong>4.</strong> Watch for coolant at heater hose bleed point &ndash; close when flowing (schlie&szlig;en wenn K&uuml;hlmittel kommt)
+<strong>5.</strong> Fill expansion/overflow tank to COLD mark (Ausgleichsbeh&auml;lter bis KALT-Markierung)
+<strong>6.</strong> After first warm-up: recheck level with engine cold (nach Warmlauf: Pegel kalt nachpr&uuml;fen)
+Mid-engine cars: fill system with engine tilted if possible &ndash; air pockets at highest point in hoses
+Run engine to operating temp with radiator cap off (carefully!) to self-bleed
+Squeeze upper radiator hose to push trapped air through system
+Recheck level daily for first week &ndash; air pockets work out slowly
+Alle Kraftstoffleitungen, Schlauchklemmen und Anschl&uuml;sse auf festen Sitz pr&uuml;fen.
+Kraftstofffilter auf Sauberkeit kontrollieren (bei Rebuild immer erneuern).
+Mechanische Kraftstoffpumpe von Hand bet&auml;tigen (Hebel an der Pumpe) &ndash; Kraftstoff muss flie&szlig;en.
+Kraftstoffdruck-Manometer am Vergaser-Eingang anschlie&szlig;en.
+Motor anlassen (oder Anlasser drehen lassen) &ndash; Druck ablesen: Soll 5.5&ndash;7.0 psi (0.38&ndash;0.48 bar).
+Zu hoch: Druckregler einbauen oder Pumpe pr&uuml;fen. Zu niedrig: Pumpe, Filter oder Leitung verstopft.
+Auf Leckagen an allen Verbindungen pr&uuml;fen &ndash; Feuerrisiko!
+Zu hoher Druck = Vergaser l&auml;uft &uuml;ber (Flooding) &ndash; Druckregler erforderlich
+Alle Verbindungen auf Dichtheit pr&uuml;fen &ndash; vor dem Erststart!
+Feuerl&ouml;scher bereithalten
+Crank turning socket or breaker bar on balancer bolt
+1/2&quot; wrench for distributor hold-down clamp
+Test light or multimeter (for points/trigger verification)
+<strong>1.</strong> Rotate crank to TDC #1 compression stroke &ndash; both valves closed, TDC mark aligned (Kurbelwelle auf OT #1 Kompressionstakt drehen)
+<strong>2.</strong> Verify rotor points toward #1 terminal on cap (Verteilerfinger zeigt auf Zyl. 1 Anschluss)
+<strong>3.</strong> Rotate crank BACKWARDS to 10&ndash;12&deg; BTDC mark on balancer
+<strong>4.</strong> Loosen distributor hold-down, rotate body until trigger/pickup just activates
+<strong>5.</strong> Tighten hold-down clamp &ndash; snug, not final (engine will need timing light adjustment at warm idle)
+10&ndash;12&deg; is a safe starting point &ndash; adjust with timing light after engine is running
+Verify firing order: 1-5-4-2-6-3-7-8 (Ford 302) &ndash; wires must be in correct cap terminals
+MSD magnetic pickup: no test light needed &ndash; just align rotor to #1 at static timing position
+<strong>1.</strong> Locate MSD 6AL box &ndash; find RPM module plug (2-pin connector)
+<strong>2.</strong> Select appropriate RPM pill/chip: 6,200 RPM (conservative) or 6,500 RPM (matches cam)
+<strong>3.</strong> Plug module firmly into connector &ndash; ensure positive click
+<strong>4.</strong> If no module installed: MSD defaults to ~9,000 RPM (no protection!)
+For break-in: use 6,200 RPM chip &ndash; swap to 6,500 after break-in complete
+Carry spare module chips of different RPM values in toolbox
+MSD 6AL also has 2-step launch control &ndash; optional for track use
+<strong>1.</strong> Rotate crank so valve&rsquo;s lifter is on base circle (Nocken-Grundkreis)
+<strong>2.</strong> Loosen polylock set screw, back off adjusting nut slightly
+<strong>3.</strong> Spin pushrod while re-tightening adjusting nut
+<strong>4.</strong> Zero lash = pushrod just stops spinning freely
+<strong>5.</strong> From zero lash: 1/2 turn further = preload
+<strong>6.</strong> Lock polylock set screw &ndash; recheck that nut did not move
+<strong>7.</strong> Repeat for ALL 16 valves using EO/IC method
+Parts may have shifted since Phase 3 assembly &ndash; always recheck before first start
+Use EO/IC method: when exhaust opens &rarr; set intake; when intake closes &rarr; set exhaust
+If any pushrod feels loose or doesn&rsquo;t want to spin &ndash; investigate before starting!
+&#9744; MSD 6AL box: heavy red wire to battery + (12V fused)
+&#9744; MSD 6AL box: heavy black wire to solid engine/chassis ground
+&#9744; MSD white wire to ignition switch (12V key-on)
+&#9744; MSD coil wires: orange + dark green to MSD Blaster coil
+&#9744; MSD magnetic pickup: violet &amp; green wires from distributor
+&#9744; Tach signal: gray wire from MSD to tachometer
+&#9744; Spark plug wires: correct firing order on distributor cap
+&#9744; Starter solenoid: battery cable, ignition trigger wire
+&#9744; Alternator: charge wire + field wire
+&#9744; Oil pressure sender: wire to gauge
+&#9744; Water temperature sender: wire to gauge
+Trace each spark plug wire from cap to plug &ndash; verify firing order physically, not from memory
+MSD 6AL requires dedicated 12V hot (not shared with other accessories) &ndash; use 10 AWG wire
+Ground strap from engine block to chassis is mandatory &ndash; poor ground = no start or weak spark
+&#9744; <strong>Fire extinguisher</strong> (ABC rated, min. 5 lbs) within arm&rsquo;s reach (Feuerl&ouml;scher griffbereit)
+&#9744; <strong>Helper present</strong> &ndash; one person at the controls, one watching for leaks/fire (Helfer anwesend)
+&#9744; <strong>Exhaust ventilation</strong> &ndash; garage door open or exhaust extraction in place (Abgasabsaugung oder offenes Tor)
+&#9744; <strong>No fuel leaks</strong> &ndash; check all fittings, fuel line connections, carburetor base (keine Kraftstoffleckagen)
+&#9744; <strong>Oil level correct</strong> on dipstick (&Ouml;lstand korrekt auf Peilstab)
+&#9744; <strong>Coolant level correct</strong> (K&uuml;hlmittelstand korrekt)
+&#9744; <strong>All bolts torqued</strong> &ndash; visual inspection of all external fasteners (alle Schrauben angezogen)
+&#9744; <strong>Battery fully charged</strong> &ndash; 12.6V minimum (Batterie vollgeladen)
+&#9744; <strong>No loose wires</strong> near exhaust or moving parts (keine losen Kabel)
+&#9744; <strong>Throttle returns to idle</strong> when released (Gas geht in Leerlauf zur&uuml;ck)
+&#9744; <strong>Kill switch accessible</strong> &ndash; know how to shut off ignition immediately (Notausschalter erreichbar)
+ALL pre-start checklist items completed (Steps 1&ndash;11)
+Helper present with fire extinguisher
+Exhaust ventilation in place (garage door open)
+Throttle linkage verified &ndash; can hold 2,000&ndash;2,500 RPM
+Timing set to ~12&deg; BTDC (static)
+Tachometer connected and visible
+Oil pressure gauge and temperature gauge visible from driver position
+Tachometer (via MSD 6AL gray tach wire)
+Oil pressure gauge (mechanical preferred)
+Coolant temperature gauge
+Timing light (for adjustment after startup)
+Wrench for distributor hold-down (timing adjustment)
+<strong>Prime carburetor:</strong> Pump throttle 2&ndash;3 times to squirt accelerator pump fuel into intake (Vergaser pumpen)
+<strong>Crank engine:</strong> Turn key / hit starter &ndash; engine should fire within 5&ndash;10 seconds if timing and fuel are correct (Motor starten)
+<strong>IMMEDIATELY go to 2,000&ndash;2,500 RPM:</strong> As soon as engine fires, bring RPM up to 2,000&ndash;2,500 and HOLD IT THERE. Do NOT let it idle! (SOFORT auf 2.000&ndash;2.500 U/min &ndash; NICHT im Leerlauf lassen!)
+<strong>Check oil pressure FIRST:</strong> Within the first 5 seconds, confirm oil pressure on gauge. If NO pressure: shut down immediately! (Sofort &Ouml;ldruck pr&uuml;fen &ndash; kein Druck = SOFORT abstellen!)
+<strong>Hold 2,000&ndash;2,500 RPM for 20&ndash;30 minutes:</strong> This is the cam/distributor gear break-in period. Vary RPM between 2,000&ndash;3,000 every few minutes (20&ndash;30 Min. halten, Drehzahl variieren)
+<strong>Monitor continuously:</strong> Watch oil pressure, coolant temp, and listen for unusual sounds throughout the break-in period (durchgehend &uuml;berwachen)
+<strong>Check for leaks:</strong> Have helper visually inspect for oil, coolant, and fuel leaks during the run (Helfer pr&uuml;ft auf Leckagen)
+<strong>Adjust timing if needed:</strong> With timing light on #1, verify and adjust initial timing while engine is running (Z&uuml;ndung mit Stroboskop pr&uuml;fen)
+If engine won&rsquo;t start within 15 seconds of cranking: STOP. Check ignition timing, fuel delivery, firing order. Do not run starter continuously (nicht endlos orgeln)
+Vary RPM between 2,000&ndash;3,000 RPM every 2&ndash;3 minutes &ndash; constant RPM loads the same spots repeatedly
+Coolant temp should reach thermostat opening (~180&deg;F / 82&deg;C) within 10&ndash;15 minutes &ndash; this is normal
+Minor exhaust smoke at first start is normal &ndash; assembly lube and oil residue burning off
+Have a plan for what to do if something goes wrong: kill switch location, fire extinguisher location
+After 20&ndash;30 minutes: allow engine to idle briefly, then shut down. Break-in is complete
+<strong>Normal:</strong> Pressure drops as oil warms up &ndash; thinner oil = lower pressure (normal)
+<strong>Low pressure (&lt;30 psi at 2,000 RPM warm):</strong> Check bearing clearances, oil pump, pickup tube seal, oil level
+<strong>Very low (&lt;15 psi at any RPM):</strong> SHUT DOWN immediately &ndash; investigate before running again (SOFORT abstellen!)
+<strong>High pressure (&gt;60 psi warm):</strong> Oil still cold, wrong viscosity, or relief valve stuck closed
+<strong>Read at steady 2,000 RPM:</strong> With engine at operating temperature (180&deg;F+ coolant), hold steady 2,000 RPM and read oil pressure gauge (bei Betriebstemperatur ablesen)
+<strong>Compare to spec:</strong> Melling M-68 high-volume pump should provide 40&ndash;55 psi at 2,000 RPM with standard bearing clearances (mit Soll vergleichen)
+<strong>Check at 3,000 RPM:</strong> Increase to 3,000 RPM briefly &ndash; pressure should rise proportionally to ~50&ndash;65 psi (bei 3.000 U/min pr&uuml;fen)
+<strong>Check at idle:</strong> Drop to idle &ndash; should hold 25&ndash;35 psi when warm. Below 15 psi at idle is concerning (im Leerlauf pr&uuml;fen)
+<strong>Record readings:</strong> Document oil pressure at 2,000 RPM warm as baseline for future comparison (Werte dokumentieren)
+Melling M-68 is a high-volume pump &ndash; expect slightly higher pressure than stock pump
+Oil pressure is a function of clearances + pump volume + relief valve setting &ndash; not just the pump
+10W-30 break-in oil will show lower warm pressure than 15W-40 &ndash; both are normal for their viscosity
+Pressure fluctuation of &plusmn;5 psi at steady RPM is normal &ndash; large swings indicate air in system or pickup uncovering
+After break-in oil change: re-check pressure with new oil to establish true baseline
+<strong>Oil (&Ouml;l):</strong> Valve covers, oil pan gasket, timing cover, oil filter, oil pressure sender, rear main seal, front crank seal
+<strong>Coolant (K&uuml;hlmittel):</strong> Water pump gasket, intake manifold end seals, heater hose connections, radiator hoses, thermostat housing
+<strong>Fuel (Kraftstoff):</strong> Carburetor base, fuel line fittings, fuel pump connections, fuel filter
+<strong>Exhaust (Abgas):</strong> Header/manifold flange gaskets &ndash; listen for ticking sound = exhaust leak
+Use a flashlight and mirror to check underside and rear of engine
+A clean engine shows leaks immediately &ndash; wipe down before starting
+Small oil weeping at valve cover is common &ndash; re-torque to 4&ndash;6 ft-lbs after first heat cycle
+Any fuel leak = SHUT DOWN immediately! (Kraftstoffleck = SOFORT abstellen!)
+Photo of clean engine before first start (reference)
+Photo of any leak location found
+Thermostat opening is felt as sudden upper radiator hose getting hot (Thermostat &ouml;ffnet = oberer K&uuml;hlerschlauch wird pl&ouml;tzlich hei&szlig;)
+If temp keeps climbing past 210&deg;F: verify fan operation, check for air pockets in cooling system
+Oil temp lags coolant by several minutes &ndash; normal
+Watch for temp spike = head gasket issue, air in cooling system, or electric fan not activating
+Timing light (NO digital/dial-back with MSD! &ndash; KEIN digitales R&uuml;ckstell-Stroboskop mit MSD!)
+Wrench for distributor clamp (Verteiler-Klemmschraube)
+<strong>1.</strong> Engine at operating temperature (Betriebstemperatur)
+<strong>2.</strong> Disconnect vacuum advance hose, plug port (Unterdruckschlauch ab, Anschluss verschlie&szlig;en)
+<strong>3.</strong> Timing light on #1 spark plug wire (Stroboskop an Z&uuml;ndkabel Zyl. 1)
+<strong>4.</strong> Point at timing marks on harmonic balancer / timing cover (Markierungen am D&auml;mpfer / Steuerdeckel)
+<strong>5.</strong> Loosen distributor clamp, rotate slowly to desired degree (e.g. 12&deg; BTDC)
+<strong>6.</strong> Tighten clamp, recheck (timing can shift during clamping &ndash; Z&uuml;ndung kann sich beim Festziehen verschieben)
+Oil pressure drops as oil heats up &ndash; this is normal (thinner oil = lower pressure)
+Below 15 psi at hot idle = investigate: bearing clearances, oil pump, pickup, oil level
+Melling M-68 high-volume pump should provide 50+ psi at 2,500 RPM with correct bearing clearances
+Excessively high pressure (&gt;70 psi cold) may indicate blocked oil gallery or wrong relief spring
+<strong>Initial Timing (Grundz&uuml;ndung):</strong> Set with timing light at idle, vacuum disconnected &ndash; e.g. 10&ndash;14&deg; BTDC
+<strong>Centrifugal Advance (Fliehkraftverstellung):</strong> Mechanical advance via weights &amp; springs inside distributor &ndash; adds degrees as RPM rises
+<strong>Total Timing (Gesamtz&uuml;ndung):</strong> Initial + Centrifugal &ndash; all-in by ~3,000&ndash;3,500 RPM. Target: 32&ndash;36&deg; total
+<strong>Vacuum Advance (Unterdruckverstellung):</strong> Additional advance at part-load cruise for economy &amp; lower cylinder temps &ndash; +8&ndash;10&deg;
+Run engine at 3,000&ndash;3,500 RPM
+Read timing light &ndash; advance should stop increasing
+This is your total mechanical advance
+If still climbing above 3,500 RPM &ndash; springs too light or bushing too large
+MSD Advance Kit 8464 (springs + bushings)
+Small pliers (Spitzzange)
+Allen key (Inbusschl&uuml;ssel)
+Timing light
+<strong>Build specs:</strong> ~9.7:1 CR, CNC heads (AFR 1399), MSD CDI, 98 ROZ fuel
+<strong>Initial Timing (Grundz&uuml;ndung):</strong> 10&ndash;14&deg; BTDC
+<strong>Total Timing (Gesamtvorverstellen):</strong> 32&ndash;36&deg;
+<strong>Vacuum Advance (Unterdruck):</strong> +8&ndash;10&deg; at part load (Teillast)
+Engine FULLY cooled (overnight best) &ndash; Motor KOMPLETT abgek&uuml;hlt (am besten &uuml;ber Nacht)
+First heat cycle completed
+<strong>1.</strong> Remove valve covers (Ventildeckel abnehmen)
+<strong>2.</strong> Re-torque head studs: cross pattern, center outward, to original spec (Kreuzschema von Mitte nach au&szlig;en)
+<strong>3.</strong> Re-torque intake manifold bolts: cross pattern to 18 ft-lbs (24 Nm)
+<strong>4.</strong> Recheck all 16 rocker preloads (1/2 turn past zero lash) &ndash; head re-torque may shift preload
+<strong>5.</strong> Reinstall valve covers
+Copper gaskets (CP331) and aluminum heads settle during first heat cycle &ndash; re-torque is essential
+Some studs may turn slightly further &ndash; this is normal (gasket compression)
+If a stud turns more than 1/4 turn &ndash; something may have shifted &ndash; investigate
+After re-torque, no further re-torques needed unless head is removed
+<strong>1.</strong> After 30&ndash;50 km (20&ndash;30 mi) or 1 hour runtime, drain oil warm (&Ouml;l warm ablassen)
+<strong>2.</strong> Cut filter open with flange cutter or band saw (Filter mit Flanschschneider oder Bands&auml;ge aufschneiden)
+<strong>3.</strong> Unfold filter paper and hold against light (Filterpapier auseinanderfalten, gegen Licht halten)
+<strong>4.</strong> Clean paper = inspection passed (Sauberes Papier = Pr&uuml;fung bestanden)
+<strong>5.</strong> Metal particles = find the cause, do not ignore! (Metallpartikel = Ursache finden!)
+Filter paper (clean = reference for future comparisons)
+If particles: close-up + determine material (aluminum, steel, copper)
+Spark plug socket 5/8&quot; / 16 mm
+Magnifying glass (Lupe) for insulator inspection
+Good lighting
+<strong>Light tan / gray (Hellbraun / Grau):</strong> IDEAL &ndash; correct mixture, good combustion (Idealer Zustand)
+<strong>White / blistered (Wei&szlig; / Blasen):</strong> TOO LEAN &ndash; dangerous! Richen mixture or check for vacuum leaks (Zu mager &ndash; gef&auml;hrlich!)
+<strong>Black / sooty (Schwarz / ru&szlig;ig):</strong> TOO RICH &ndash; reduce jet size or check choke (Zu fett)
+<strong>Black / oily / wet (Schwarz / &ouml;lig):</strong> OIL FOULING &ndash; check valve seals, rings, PCV (Verschmutzt mit &Ouml;l)
+<strong>Aluminum deposits (Alu-Ablagerungen):</strong> DETONATION &ndash; piston damage! Retard timing, richen mixture (Klopfsch&auml;den!)
+<strong>1.</strong> Engine at operating temperature, run for at least 10 minutes under varying load
+<strong>2.</strong> Shut off engine at 2,500 RPM (do NOT idle first &ndash; idle enriches the reading)
+<strong>3.</strong> Pull ALL 8 plugs &ndash; lay out in cylinder order (alle 8 Kerzen ziehen &ndash; in Zylinderreihenfolge auslegen)
+<strong>4.</strong> Compare all 8 &ndash; should be uniform color (alle 8 vergleichen &ndash; gleichm&auml;&szlig;ige Farbe)
+<strong>5.</strong> One cylinder different from others = that cylinder has a specific issue
+Install fresh plugs before the reading run for clearest results
+DellOrto DRLA 45: each barrel feeds 4 cylinders &ndash; if one bank is different, adjust that carburetor
+Photograph each plug for comparison at later tuning sessions
+All 8 plugs laid out in order &ndash; reference for future readings
+<strong>1.</strong> Carburetor base gasket dry &ndash; no sealant (Vergaser-Fu&szlig;dichtung trocken &ndash; kein Dichtmittel)
+<strong>2.</strong> Mount evenly in cross-pattern (Gleichm&auml;&szlig;ig &uuml;ber Kreuz anziehen)
+<strong>3.</strong> Connect fuel line + throttle linkage + choke cable (Kraftstoffleitung + Gasgestänge + Choke anschlie&szlig;en)
+<strong>4.</strong> Install fuel filter between pump and carburetor (Kraftstofffilter zwischen Pumpe und Vergaser)
+<strong>Nicht &uuml;berziehen! Handfest + max 1/4 Umdrehung.</strong> Vergaser-Flansch ist empfindlich. (Do not overtighten! Hand-tight + max 1/4 turn. Carburetor flange is delicate.)
