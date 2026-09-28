@@ -13,6 +13,18 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v66',
+      date: '2026-09-23',
+      time: '21:30',
+      title: 'Streckenanalyse verschoben, Geschwindigkeits-Sim klappbar, Hash-Buttons, Datenfluss-Konzept',
+      changes: [
+        { type: 'verbessert', text: 'Streckenanalyse aus "Referenz" in den Block "Simulation & Analyse" verschoben. Logische Reihenfolge: Motor-Simulator -> Geschwindigkeits-Simulator -> Streckenanalyse.' },
+        { type: 'verbessert', text: 'Geschwindigkeits-Simulator ist jetzt ein-/ausklappbar (comp-box mit Toggle).' },
+        { type: 'neu', text: 'Hash-basierte Button-Deaktivierung: Uebernahme-Buttons ("Werte aktualisieren", "Motordaten uebernehmen") werden automatisch deaktiviert, wenn die Quell- und Zieldaten identisch sind. DJB2-Hash statt Einzelvergleich.' },
+        { type: 'neu', text: 'Konzeptpapier Datenfluss-Bereinigung (docs/konzept-datenfluss.md): Analyse der Inkonsistenzen zwischen Komponentenauswahl, Simulation und Streckenanalyse. 4-Phasen-Umsetzungsplan.' }
+      ]
+    },
+    {
       version: 'v65',
       date: '2026-09-23',
       time: '20:00',

@@ -712,9 +712,10 @@
             </div>
 
             <!-- Geschwindigkeits-Simulator -->
-            <div style="background:#f0f5ff;border:1px solid #bee3f8;border-radius:10px;padding:0.6rem;margin-top:0.5rem;">
-                <div style="font-weight:700;font-size:0.9rem;color:#2b6cb0;margin-bottom:0.4rem;">&#128200; Geschwindigkeits-Simulator</div>
-                <button onclick="driveSimPull()" style="width:100%;padding:0.5rem;background:#2b6cb0;color:#fff;border:none;border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;margin-bottom:0.4rem;">&#8681; Motordaten vom Simulator &uuml;bernehmen</button>
+            <div class="comp-box" style="background:#f0f5ff;border-color:#bee3f8;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#2b6cb0;">&#128200; Geschwindigkeits-Simulator</div>
+                <div class="comp-body">
+                <button id="dsPullBtn" onclick="driveSimPull()" style="width:100%;padding:0.5rem;background:#2b6cb0;color:#fff;border:none;border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;margin-bottom:0.4rem;">&#8681; Motordaten vom Simulator &uuml;bernehmen</button>
 
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.25rem 0.5rem;font-size:0.78rem;">
                     <label style="font-weight:600;">Reifendurchm. hinten (inch)</label>
@@ -773,7 +774,8 @@
 
                 <!-- Gang-Tabelle -->
                 <div id="dsTable" style="margin-top:0.4rem;font-size:0.75rem;"></div>
-            </div>
+                </div><!-- /comp-body Geschwindigkeits-Simulator -->
+            </div><!-- /comp-box Geschwindigkeits-Simulator -->
         </div>
     </div>
 
@@ -937,17 +939,11 @@
         </div>
     </div>
 
-    <!-- ===== GROUP: REFERENZ ===== -->
-    <div class="group-divider" id="grp-ref">
-        <span>&#128218; Referenz</span>
-        <button class="group-toggle" onclick="toggleGroup(this, 'grp-ref')">Alles einklappen</button>
-    </div>
-
-    <!-- 16. Streckenanalyse -->
+    <!-- 16. Streckenanalyse (gehoert zu Simulation & Analyse) -->
     <div class="section">
         <div class="section-header" onclick="toggleSection(this)">
             <span class="section-icon">&#127937;</span>
-            <h2>16. Streckenanalyse &amp; Fahrzeugeinsch&auml;tzung</h2>
+            <h2>Streckenanalyse &amp; Fahrzeugeinsch&auml;tzung</h2>
         </div>
         <div class="section-body">
             <div class="info-box" style="margin-bottom:0.5rem;"><strong>Fahrzeug:</strong> TSC GT40 Kit Car | ~1.050 kg | ~340&ndash;360 BHP (345&ndash;365 PS DIN) | ~324&ndash;343 BHP/t | Crossply-Reifen (Avon A24) | Kein ABS/TC/ESP | Schaltgetriebe UN1-13</div>
@@ -1123,6 +1119,12 @@
                 <textarea data-field="comment_tracks" placeholder="Rundenzeiten, Setup-Notizen, Beobachtungen pro Strecke..." oninput="autoSave()"></textarea>
             </div>
         </div>
+    </div>
+
+    <!-- ===== GROUP: REFERENZ ===== -->
+    <div class="group-divider" id="grp-ref">
+        <span>&#128218; Referenz</span>
+        <button class="group-toggle" onclick="toggleGroup(this, 'grp-ref')">Alles einklappen</button>
     </div>
 
     <!-- 17. Teilekatalog -->
@@ -1796,6 +1798,50 @@
     // Run CR calc on page load
     setTimeout(calcCR, 500);
 
+    // ==== HASH-BASIERTE BUTTON-DEAKTIVIERUNG ====
+    // DJB2 hash - schnell, kompakt, reicht fuer Vergleichszwecke
+    function hashStr(s) { var h = 5381; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) & 0xFFFFFFFF; return h; }
+
+    // Berechnet Hash der Quellwerte fuer einen Uebernahme-Button
+    function simSourceHash() {
+        var parts = [];
+        var b = document.getElementById('crBore'); if (b) parts.push(b.value);
+        var s = document.getElementById('crStroke'); if (s) parts.push(s.value);
+        var crR = document.getElementById('crResult'); if (crR) parts.push(crR.textContent);
+        return hashStr(parts.join('|'));
+    }
+    function simTargetHash() {
+        var parts = [];
+        parts.push(document.getElementById('simBore').value);
+        parts.push(document.getElementById('simStroke').value);
+        parts.push(document.getElementById('simCR').value);
+        return hashStr(parts.join('|'));
+    }
+    function driveSimSourceHash() {
+        var el = document.getElementById('simPeakHPrpm');
+        return hashStr(el ? el.textContent : '');
+    }
+    var _lastDriveSimPulledHash = 0;
+
+    function updatePullButtons() {
+        // Motor-Simulator: deaktivieren wenn CR-Rechner == Sim-Eingaben
+        var btn1 = document.getElementById('simPullBtn');
+        if (btn1) {
+            var same = simSourceHash() === simTargetHash();
+            btn1.disabled = same;
+            btn1.style.opacity = same ? '0.4' : '1';
+            btn1.style.cursor = same ? 'default' : 'pointer';
+        }
+        // Geschwindigkeits-Sim: deaktivieren wenn Motor-Sim-Daten unveraendert
+        var btn2 = document.getElementById('dsPullBtn');
+        if (btn2) {
+            var same2 = driveSimSourceHash() === _lastDriveSimPulledHash;
+            btn2.disabled = same2;
+            btn2.style.opacity = same2 ? '0.4' : '1';
+            btn2.style.cursor = same2 ? 'default' : 'pointer';
+        }
+    }
+
     // ==== MOTOR-SIMULATOR ====
     function simPullData() {
         // Pull data from CR calculator and component specs
@@ -1807,6 +1853,7 @@
         var crR = document.getElementById('crResult');
         if (crR && crR.textContent !== '--') document.getElementById('simCR').value = parseFloat(crR.textContent).toFixed(1);
         runSim();
+        updatePullButtons();
     }
 
     function runSim() {
@@ -2225,10 +2272,11 @@
         html += '</table>';
 
         document.getElementById('simFuelResult').innerHTML = html;
+        if (typeof updatePullButtons === 'function') updatePullButtons();
     }
 
     // Run simulator on page load
-    setTimeout(runSim, 600);
+    setTimeout(function() { runSim(); updatePullButtons(); }, 600);
 
     // ==== DRIVETRAIN SIMULATOR ====
     var lastSimData = null; // store engine sim data for drivetrain
@@ -2244,7 +2292,9 @@
                 document.getElementById('dsRedline').value = Math.min(peakRPM + 500, 6500);
             }
         }
+        _lastDriveSimPulledHash = driveSimSourceHash();
         runDriveSim();
+        updatePullButtons();
     }
 
     function runDriveSim() {
