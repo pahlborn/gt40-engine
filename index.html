@@ -830,9 +830,16 @@
 
             <!-- Streckenanalyse (innerhalb Simulation & Analyse) -->
             <div class="comp-box" style="margin-top:0.8rem;background:#f7fafc;border-color:#e2e8f0;">
-                <div class="comp-toggle open" onclick="toggleComp(this)" style="font-size:0.9rem;font-weight:700;">&#127937; Streckenanalyse &amp; Fahrzeugeinsch&auml;tzung</div>
+                <div class="comp-toggle open" onclick="toggleComp(this)">&#127937; Streckenanalyse &amp; Fahrzeugeinsch&auml;tzung</div>
                 <div class="comp-body open">
             <div class="info-box" style="margin-bottom:0.5rem;" id="trackVehicleInfo"><strong>Fahrzeug:</strong> TSC GT40 Kit Car | <span id="trackWeight">~1.050 kg</span> | <span id="trackBHP">~340&ndash;360 BHP</span> | <span id="trackBHPt">~324&ndash;343 BHP/t</span> | Crossply-Reifen (Avon A24) | Kein ABS/TC/ESP | Schaltgetriebe UN1-13</div>
+
+            <div class="info-box" style="margin-bottom:0.5rem;background:#ebf8ff;border-color:#bee3f8;font-size:0.72rem;line-height:1.5;">
+                <strong>Berechnungsmodell V-max pro Strecke</strong> &ndash; folgende Parameter fliessen ein:<br>
+                <strong>Kurvenausgang (Exit Speed):</strong> Maximale Geschwindigkeit am Ausgang der letzten Kurve vor der Geraden. Berechnet aus dem Basis-Wert (kalibriert auf Crossply/DOT) und dem <strong>lateralen Haftungskoeffizienten (&mu;)</strong> des gew&auml;hlten Reifens: <code>v = v_basis &times; &radic;(&mu;/0.80)</code>. Slick-Reifen = h&ouml;here Exit-Speed, Regenreifen = niedrigere.<br>
+                <strong>Beschleunigung auf der Geraden:</strong> In 0,05s-Zeitschritten wird die <strong>Radkraft</strong> (Drehmoment &times; &Uuml;bersetzung &times; Achse &times; 0,92 / Reifenradius) gegen <strong>Luftwiderstand</strong> (cW &times; A &times; v&sup2;), <strong>Rollwiderstand</strong> (Crr &times; m &times; g, abh&auml;ngig von Reifenbauart und -typ) und <strong>Steigungswiderstand</strong> berechnet. Jeder Gang wird bis zur Drehzahlgrenze ausgedreht, dann wird der n&auml;chste Gang gew&auml;hlt.<br>
+                <strong>Ende:</strong> Entweder Geradenl&auml;nge erreicht (= n&auml;chster Bremspunkt) oder Nettokraft &le; 0 (= Endgeschwindigkeit).
+            </div>
 
             <!-- Pannoniaring -->
             <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
@@ -2448,6 +2455,17 @@
         radial_perf:   { road_legal: 0.009, historic_aw: 0.010,  semislick: 0.011, slick: 0.013, wet: 0.012 }
     };
 
+    // Laterale Haftungskoeffizienten (mu_lat) nach Bauart und Typ
+    // Quellen: Avon Motorsport, Hoosier Tire Engineering, SAE 2006-01-3604
+    // Crossply: generell niedrigere laterale Steifigkeit als Radial
+    // Referenz: crossply + road_legal = 0.80 (kalibriert auf die hardcoded Exit-Speeds)
+    var TIRE_GRIP = {
+        crossply:      { road_legal: 0.80, historic_aw: 0.85, semislick: 0.92, slick: 1.00, wet: 0.60 },
+        radial:        { road_legal: 0.95, historic_aw: 1.00, semislick: 1.08, slick: 1.18, wet: 0.70 },
+        radial_perf:   { road_legal: 1.00, historic_aw: 1.05, semislick: 1.15, slick: 1.25, wet: 0.75 }
+    };
+    var GRIP_REF = 0.80; // crossply + road_legal = Referenz fuer Exit-Speed-Kalibrierung
+
     function updateTireCrr() {
         var constr = document.getElementById('tireConstr').value;
         var type = document.getElementById('tireType').value;
@@ -2678,17 +2696,28 @@
     // Simuliert Beschleunigung ueber eine gegebene Geradenlaenge.
     // Eingangsgeschwindigkeit = typische Kurvenausgangs-Geschwindigkeit.
     var TRACK_STRAIGHTS = [
-        { id: 'trackVmax_panno', length: 700,  exitSpeed: 100, label: '4. Gang, kurz 5.', steigung: 0 },
-        { id: 'trackVmax_svk',   length: 900,  exitSpeed: 90,  label: '5. Gang auf 900m-Gerade', steigung: 0 },
-        { id: 'trackVmax_brno',  length: 636,  exitSpeed: 110, label: '4. Gang, Gerade bergauf', steigung: 0.04 },
-        { id: 'trackVmax_sbr',   length: 750,  exitSpeed: 100, label: '4.\u20135. Gang auf 750m-Gerade', steigung: 0 },
-        { id: 'trackVmax_spa',   length: 1050, exitSpeed: 140, label: '5. Gang (Kemmel Straight)', steigung: -0.02 }
+        // exitSpeed = Basis-Kurvenausgangsgeschwindigkeit (kalibriert auf crossply + road_legal, mu=0.80)
+        // Die tatsaechliche Exit-Speed wird dynamisch skaliert: v = exitSpeed * sqrt(mu_aktuell / 0.80)
+        // cornerName = letzte Kurve vor der Geraden (fuer Anzeige)
+        { id: 'trackVmax_panno', length: 700,  exitSpeed: 100, label: '4. Gang, kurz 5.', steigung: 0,    cornerName: 'Letzte Kehre' },
+        { id: 'trackVmax_svk',   length: 900,  exitSpeed: 90,  label: '5. Gang auf 900m-Gerade', steigung: 0,    cornerName: 'Turn 10' },
+        { id: 'trackVmax_brno',  length: 636,  exitSpeed: 110, label: '4. Gang, Gerade bergauf', steigung: 0.04, cornerName: 'Turn 14' },
+        { id: 'trackVmax_sbr',   length: 750,  exitSpeed: 100, label: '4.\u20135. Gang auf 750m-Gerade', steigung: 0,    cornerName: 'Chicane S/Z' },
+        { id: 'trackVmax_spa',   length: 1050, exitSpeed: 140, label: '5. Gang (Kemmel Straight)', steigung: -0.02, cornerName: 'Raidillon-Ausgang' }
     ];
 
     function updateTrackVmax(gears, finalDrive, tireCirc, tireDiam, redline, torqueCurve, cw, area, weight) {
         var rho = 1.225;
         var tireR = tireDiam * 0.0254 / 2;
         var crr = parseFloat(document.getElementById('dsTireCrr').value) || 0.015;
+
+        // Lateralen Grip aus Reifen-Konfiguration holen
+        var constr = document.getElementById('tireConstr').value || 'crossply';
+        var tType = document.getElementById('tireType').value || 'road_legal';
+        var muLat = (TIRE_GRIP[constr] && TIRE_GRIP[constr][tType]) || GRIP_REF;
+        var gripScale = Math.sqrt(muLat / GRIP_REF);
+        // gripScale > 1 = mehr Grip als Referenz -> hoehere Exit-Speed
+        // gripScale < 1 = weniger Grip (z.B. Regen) -> niedrigere Exit-Speed
 
         function getTQ(rpm) {
             var r = Math.round(rpm / 50) * 50;
@@ -2714,12 +2743,24 @@
             return 0.5 * rho * cw * area * v * v;
         }
 
+        // Grip-Label fuer Anzeige
+        var gripLabels = { crossply: 'Diagonal', radial: 'Radial', radial_perf: 'Radial HP' };
+        var typeLabels = { road_legal: 'DOT', historic_aw: 'Hist. AW', semislick: 'Semi-Slick', slick: 'Slick', wet: 'Regen' };
+        var gripInfo = (gripLabels[constr] || constr) + ' ' + (typeLabels[tType] || tType)
+                     + ' (\u03BC=' + muLat.toFixed(2) + ')';
+
         TRACK_STRAIGHTS.forEach(function (track) {
             var el = document.getElementById(track.id);
             if (!el) return;
 
+            // Exit-Speed dynamisch aus Basis-Wert und Grip-Faktor
+            var exitV = track.exitSpeed * gripScale;
+            var exitVround = Math.round(exitV);
+
             // Simulate acceleration over straight length
-            var v = track.exitSpeed; // km/h at corner exit
+            // Jeder Gang wird voll ausgedreht bis Redline, dann naechster Gang.
+            // In jedem Zeitschritt wird der Gang mit der hoechsten Radkraft gewaehlt.
+            var v = exitV;
             var dist = 0;
             var dt = 0.05; // time step (s)
             var vPeak = v;
@@ -2743,8 +2784,9 @@
 
             var vmaxRound = Math.round(vPeak);
             var gearName = (peakGear + 1) + '.';
-            el.innerHTML = '<strong>~' + vmaxRound + ' km/h</strong> (' + gearName + ' Gang, ' + track.label + ')'
-                         + ' <span style="font-size:0.65rem;color:#718096;" title="Berechnet aus Geschwindigkeits-Simulator">[Sim]</span>';
+            el.innerHTML = '<strong>~' + vmaxRound + ' km/h</strong> (' + gearName + ' Gang, '
+                         + track.label + ', Exit ' + exitVround + ' km/h ab ' + track.cornerName + ')'
+                         + ' <span style="font-size:0.65rem;color:#718096;" title="' + gripInfo + ', Crr=' + crr + '">[Sim]</span>';
         });
     }
 

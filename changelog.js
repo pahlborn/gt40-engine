@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v74',
+      date: '2026-09-24',
+      time: '06:00',
+      title: 'Dynamische Exit-Speed, Grip-Modell, Info-Box',
+      changes: [
+        { type: 'neu', text: 'Strecken-V-max: Kurvenausgangsgeschwindigkeit (Exit Speed) wird jetzt dynamisch aus dem lateralen Haftungskoeffizienten des gewaehlten Reifens berechnet. Formel: v = v_basis x sqrt(mu/0.80). Slick-Reifen = hoehere Exit-Speed, Regenreifen = niedrigere.' },
+        { type: 'neu', text: 'Laterale Grip-Tabelle (TIRE_GRIP) mit mu-Werten pro Bauart/Typ. Crossply DOT = 0.80, Crossply Slick = 1.00, Radial HP Slick = 1.25, Regen = 0.60-0.75.' },
+        { type: 'neu', text: 'Info-Box in der Streckenanalyse erklaert alle Parameter die in die V-max-Berechnung einfliessen.' },
+        { type: 'fix', text: 'Streckenanalyse-Header: Formatierung an die anderen Kapitel angeglichen (kein Inline-Style mehr).' },
+        { type: 'verbessert', text: 'V-max-Anzeige pro Strecke zeigt jetzt auch die berechnete Exit-Speed und den Kurven-Namen.' }
+      ]
+    },
+    {
       version: 'v73',
       date: '2026-09-24',
       time: '05:00',
