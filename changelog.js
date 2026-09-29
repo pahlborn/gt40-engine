@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v78',
+      date: '2026-09-24',
+      time: '11:30',
+      title: 'Fahrzeug-Setup-Verwaltung',
+      changes: [
+        { type: 'neu', text: 'Fahrzeug-Setups: Eigene Box oberhalb des Simulators. Erstellen, bearbeiten, duplizieren und loeschen von Setups. Jedes Setup kombiniert Reifen (HA), Nockenwelle, Bremsbelag und Notizen.' },
+        { type: 'neu', text: '6 Default-Setups mitgeliefert: Trocken Crossply A24, Trocken CR6ZZ 295, Trocken CR6ZZ 225, Slick Racing, Regen Radial (schmal), Regen Crossply (schmal). Alle editierbar.' },
+        { type: 'neu', text: 'Anwenden-Button uebertraegt alle Setup-Werte in den Simulator und startet die Berechnung. Reifen, Cam, RPM-Limit und Bremsbelag werden automatisch gesetzt.' },
+        { type: 'neu', text: 'Setups werden im Browser (localStorage) gespeichert. Frei editierbar - nicht auf feste Presets beschraenkt.' },
+        { type: 'verbessert', text: 'Hinweis in der Setup-Box: Dies ist ein Setup-Planungswerkzeug, kein Rundenzeitrechner.' }
+      ]
+    },
+    {
       version: 'v77',
       date: '2026-09-24',
       time: '10:00',
