@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v76',
+      date: '2026-09-24',
+      time: '09:00',
+      title: 'Glossar: Fahrwerk & Setup, Bremsbelag-Bonus',
+      changes: [
+        { type: 'neu', text: 'Glossar Kategorie 19: Fahrwerk, Bremsen & Reifen (Setup). 7 Eintraege: Bremsbelag, Reifenmischung, Reifendruck, Rollwiderstand, Lateraler Grip, Federrate, Strecken-Setup. DE + EN.' },
+        { type: 'neu', text: 'Bremsbelag-Auswahl im Geschwindigkeits-Simulator: OEM, Porterfield R4, Ferodo DS2500, Porterfield R4-S, Race (Pagid RSL1).' },
+        { type: 'neu', text: 'Brems-Bonus in Strecken-V-max: Besserer Belag = kuerzerer Bremsweg = spaeterer Bremspunkt = laengere nutzbare Gerade. Formel: Bonus = v^2/(2*mu_ref*g) - v^2/(2*mu_pad*g). Wird in der V-max-Anzeige als "+Xm" gezeigt.' }
+      ]
+    },
+    {
       version: 'v75',
       date: '2026-09-24',
       time: '07:30',

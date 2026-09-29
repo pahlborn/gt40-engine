@@ -800,6 +800,14 @@
                     <input type="number" id="dsArea" value="1.65" step="0.01" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
                     <label style="font-weight:600;">Max. Drehzahl (RPM)</label>
                     <input type="number" id="dsRedline" value="6200" step="100" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
+                    <label style="font-weight:600;">Bremsbelag</label>
+                    <select id="dsBrakePad" data-field="brake_pad" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="runDriveSim()">
+                        <option value="oem">OEM / Strasse (&mu;&asymp;0.35)</option>
+                        <option value="r4" selected>Porterfield R4 (&mu;&asymp;0.40)</option>
+                        <option value="ds2500">Ferodo DS2500 (&mu;&asymp;0.46)</option>
+                        <option value="r4s">Porterfield R4-S (&mu;&asymp;0.50)</option>
+                        <option value="race">Race (Pagid RSL1, &mu;&asymp;0.55)</option>
+                    </select>
                 </div>
 
                 <!-- Ergebnis -->
@@ -2391,6 +2399,31 @@
     // ==== DRIVETRAIN SIMULATOR ====
     var lastSimData = null; // store engine sim data for drivetrain
 
+    // ==== BREMSBELAG-DATEN ====
+    // Reibwert mu_brake pro Pad-Typ (Mittelwert im Arbeitsbereich)
+    // Referenz: OEM = 0.35 (Basis fuer Bremsweg-Berechnung)
+    var BRAKE_PADS = {
+        oem:    { mu: 0.35, label: 'OEM' },
+        r4:     { mu: 0.40, label: 'Porterfield R4' },
+        ds2500: { mu: 0.46, label: 'Ferodo DS2500' },
+        r4s:    { mu: 0.50, label: 'Porterfield R4-S' },
+        race:   { mu: 0.55, label: 'Race (Pagid RSL1)' }
+    };
+    var BRAKE_REF_MU = 0.35; // OEM als Referenz
+
+    // Bremsbonus: besserer Belag = kuerzerer Bremsweg = spaeterer Bremspunkt
+    // Bremsweg s = v^2 / (2 * mu_brake * g)
+    // Bonus = s_ref - s_neu (in Metern, bei Eingangsgeschwindigkeit 200 km/h)
+    function calcBrakeBonus(brakeVkmh) {
+        var padSel = document.getElementById('dsBrakePad');
+        var padId = padSel ? padSel.value : 'r4';
+        var pad = BRAKE_PADS[padId] || BRAKE_PADS.r4;
+        var vMs = brakeVkmh / 3.6;
+        var sRef = (vMs * vMs) / (2 * BRAKE_REF_MU * 9.81);
+        var sNew = (vMs * vMs) / (2 * pad.mu * 9.81);
+        return { bonus: Math.max(0, sRef - sNew), pad: pad };
+    }
+
     // ==== REIFEN-PRESETS ====
     var TIRE_PRESETS = [
         { id: 'crossply_a24',   name: 'Trocken: Avon Crossply A24 (11.0/25.0\u00d715)', fmt: 'imperial', impW: 11.0, impD: 25.0, impRim: 15, mfg: 'Avon', model: 'Historic A24', constr: 'crossply', type: 'historic_aw', widthMM: 279 },
@@ -2872,7 +2905,11 @@
             var exitV = track.exitSpeed * gripScale;
             var exitVround = Math.round(exitV);
 
-            // Simulate acceleration over straight length
+            // Bremsbonus: besserer Belag = spaeterer Bremspunkt = laengere nutzbare Gerade
+            var brakeResult = calcBrakeBonus(exitV + 80); // Bremsgeschw. ~ V-max geschaetzt
+            var effectiveLength = track.length + brakeResult.bonus;
+
+            // Simulate acceleration over effective straight length
             // Jeder Gang wird voll ausgedreht bis Redline, dann naechster Gang.
             // In jedem Zeitschritt wird der Gang mit der hoechsten Radkraft gewaehlt.
             var v = exitV;
@@ -2881,7 +2918,7 @@
             var vPeak = v;
             var peakGear = 0;
 
-            for (var t = 0; t < 30 && dist < track.length; t += dt) {
+            for (var t = 0; t < 30 && dist < effectiveLength; t += dt) {
                 var vMs = v / 3.6;
                 var wf = bestWheelForce(v);
                 if (wf.force <= 0) break;
@@ -2899,8 +2936,12 @@
 
             var vmaxRound = Math.round(vPeak);
             var gearName = (peakGear + 1) + '.';
+            var brakeInfo = brakeResult.bonus > 0.5
+                ? ', Brems\u2011Bonus +' + Math.round(brakeResult.bonus) + 'm (' + brakeResult.pad.label + ')'
+                : '';
             el.innerHTML = '<strong>~' + vmaxRound + ' km/h</strong> (' + gearName + ' Gang, '
-                         + track.label + ', Exit ' + exitVround + ' km/h ab ' + track.cornerName + ')'
+                         + track.label + ', Exit ' + exitVround + ' km/h ab ' + track.cornerName
+                         + brakeInfo + ')'
                          + ' <span style="font-size:0.65rem;color:#718096;" title="' + gripInfo + ', Crr=' + crr + '">[Sim]</span>';
         });
     }
@@ -4042,6 +4083,7 @@
             <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-montage')" data-cat="cat-montage">Montage</button>
             <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-zusammen')" data-cat="cat-zusammen">Zusammenh&auml;nge</button>
             <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-abk')" data-cat="cat-abk">Abk&uuml;rzungen</button>
+            <button class="glossary-cat-btn" onclick="filterCategory(this,'cat-setup')" data-cat="cat-setup">Fahrwerk &amp; Setup</button>
         </div>
     </div>
     <div class="glossary-body" id="glossaryBody">
