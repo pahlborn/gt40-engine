@@ -802,11 +802,11 @@
                     <input type="number" id="dsRedline" value="6200" step="100" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runDriveSim()">
                     <label style="font-weight:600;">Bremsbelag</label>
                     <select id="dsBrakePad" data-field="brake_pad" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="runDriveSim()">
-                        <option value="oem">OEM / Strasse (&mu;&asymp;0.35)</option>
-                        <option value="r4" selected>Porterfield R4 (&mu;&asymp;0.40)</option>
-                        <option value="ds2500">Ferodo DS2500 (&mu;&asymp;0.46)</option>
-                        <option value="r4s">Porterfield R4-S (&mu;&asymp;0.50)</option>
-                        <option value="race">Race (Pagid RSL1, &mu;&asymp;0.55)</option>
+                        <option value="oem">OEM / Strasse (&mu;&asymp;0.32)</option>
+                        <option value="r4s">Porterfield R4-S Strasse+ (&mu;&asymp;0.38)</option>
+                        <option value="ds2500">Ferodo DS2500 Track/Strasse (&mu;&asymp;0.44)</option>
+                        <option value="r4" selected>Porterfield R4 Track (&mu;&asymp;0.50)</option>
+                        <option value="race">Race / Pagid RSL29 (&mu;&asymp;0.55)</option>
                     </select>
                 </div>
 
@@ -2401,15 +2401,17 @@
 
     // ==== BREMSBELAG-DATEN ====
     // Reibwert mu_brake pro Pad-Typ (Mittelwert im Arbeitsbereich)
-    // Referenz: OEM = 0.35 (Basis fuer Bremsweg-Berechnung)
+    // Quellen: Porterfield Datenblatt R4 avg. 0.50, R4-S Streetpad ~0.35-0.40
+    // R4-S ist der STRASSEN-Belag, R4 ist der TRACK-Belag!
+    // Referenz: OEM = 0.32 (Basis fuer Bremsweg-Berechnung)
     var BRAKE_PADS = {
-        oem:    { mu: 0.35, label: 'OEM' },
-        r4:     { mu: 0.40, label: 'Porterfield R4' },
-        ds2500: { mu: 0.46, label: 'Ferodo DS2500' },
-        r4s:    { mu: 0.50, label: 'Porterfield R4-S' },
-        race:   { mu: 0.55, label: 'Race (Pagid RSL1)' }
+        oem:    { mu: 0.32, label: 'OEM / Strasse' },
+        r4s:    { mu: 0.38, label: 'Porterfield R4-S (Strasse+)' },
+        ds2500: { mu: 0.44, label: 'Ferodo DS2500 (Track/Strasse)' },
+        r4:     { mu: 0.50, label: 'Porterfield R4 (Track)' },
+        race:   { mu: 0.55, label: 'Race (Pagid RSL29)' }
     };
-    var BRAKE_REF_MU = 0.35; // OEM als Referenz
+    var BRAKE_REF_MU = 0.32; // OEM als Referenz
 
     // Bremsbonus: besserer Belag = kuerzerer Bremsweg = spaeterer Bremspunkt
     // Bremsweg s = v^2 / (2 * mu_brake * g)
@@ -2426,12 +2428,16 @@
 
     // ==== REIFEN-PRESETS ====
     var TIRE_PRESETS = [
+        // Trocken-Setups
         { id: 'crossply_a24',   name: 'Trocken: Avon Crossply A24 (11.0/25.0\u00d715)', fmt: 'imperial', impW: 11.0, impD: 25.0, impRim: 15, mfg: 'Avon', model: 'Historic A24', constr: 'crossply', type: 'historic_aw', widthMM: 279 },
         { id: 'cr6zz_295',     name: 'Trocken: Avon CR6ZZ A29 (295/50R15)', fmt: 'metric', w: 295, aspect: 50, rim: 15, mfg: 'Avon', model: 'CR6ZZ A29', constr: 'radial', type: 'road_legal', widthMM: 295 },
         { id: 'cr6zz_225',     name: 'Trocken: Avon CR6ZZ A29 (225/60R15)', fmt: 'metric', w: 225, aspect: 60, rim: 15, mfg: 'Avon', model: 'CR6ZZ A29', constr: 'radial', type: 'road_legal', widthMM: 225 },
         { id: 'crossply_slick',name: 'Slick: Avon Historic (11.0/25.0\u00d715)', fmt: 'imperial', impW: 11.0, impD: 25.0, impRim: 15, mfg: 'Avon', model: 'Historic Slick', constr: 'crossply', type: 'slick', widthMM: 279 },
-        { id: 'rain_cr28',     name: 'Regen: Avon CR28 (295/50R15)', fmt: 'metric', w: 295, aspect: 50, rim: 15, mfg: 'Avon', model: 'CR28 Rain', constr: 'radial', type: 'wet', widthMM: 295 },
-        { id: 'rain_crossply', name: 'Regen: Avon Crossply Wet (11.0/25.0\u00d715)', fmt: 'imperial', impW: 11.0, impD: 25.0, impRim: 15, mfg: 'Avon', model: 'Historic Wet', constr: 'crossply', type: 'wet', widthMM: 279 }
+        // Regen-Setups: SCHMALER als Trocken (weniger Aufstandsflaeche = hoeherer
+        // Flaechendruck = bessere Wasserdurchdringung, weniger Aquaplaning).
+        // Quelle: gt40s.com, Pirelli Aquaplaning-Studie, Rennlist Track-Forum
+        { id: 'rain_radial',   name: 'Regen: Avon CR6ZZ A29 (225/60R15)', fmt: 'metric', w: 225, aspect: 60, rim: 15, mfg: 'Avon', model: 'CR6ZZ A29', constr: 'radial', type: 'wet', widthMM: 225 },
+        { id: 'rain_crossply', name: 'Regen: Avon Crossply Wet (9.0/23.5\u00d715)', fmt: 'imperial', impW: 9.0, impD: 23.5, impRim: 15, mfg: 'Avon', model: 'Historic Wet', constr: 'crossply', type: 'wet', widthMM: 229 }
     ];
 
     function initTirePresets() {

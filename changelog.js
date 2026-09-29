@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v77',
+      date: '2026-09-24',
+      time: '10:00',
+      title: 'Korrekturen: Bremsbelag-Werte, Regenreifen schmaler',
+      changes: [
+        { type: 'fix', text: 'Bremsbelag-Reibwerte korrigiert: R4-S ist der STRASSEN-Belag (mu 0.38), R4 ist der TRACK-Belag (mu 0.50, lt. Porterfield Datenblatt). Waren vertauscht.' },
+        { type: 'fix', text: 'Regenreifen-Presets korrigiert: Schmaler als Trockenreifen (225/60R15 statt 295/50R15, 9.0/23.5x15 statt 11.0/25.0x15). Schmalere Reifen bei Naesse = hoeherer Flaechendruck = bessere Wasserdurchdringung, weniger Aquaplaning.' },
+        { type: 'fix', text: 'Glossar Bremsbelag: Reibwerte und Temperaturangaben nach Porterfield-Datenblatt korrigiert.' }
+      ]
+    },
+    {
       version: 'v76',
       date: '2026-09-24',
       time: '09:00',
