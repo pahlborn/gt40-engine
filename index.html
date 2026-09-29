@@ -2563,11 +2563,11 @@
 
     // Nockenwellen-Referenzdaten (fuer Setup-Editor Cam-Dropdown)
     var CAM_PRESETS = [
-        { id: 'xe274hr', name: 'COMP XE274HR (verbaut)', durInt: 224, durExh: 232, liftInt: 0.555, liftExh: 0.565, lsa: 112, rpmLimit: 6200, notes: 'Street/Strip, Hydraulic Roller. Breiter Powerband 2200-6200.' },
-        { id: 'xe268hr', name: 'COMP XE268HR (milder)', durInt: 218, durExh: 224, liftInt: 0.536, liftExh: 0.540, lsa: 112, rpmLimit: 5800, notes: 'Mehr Drehmoment unten, weniger Spitzenleistung. Bessere Fahrbarkeit.' },
-        { id: 'xe286hr', name: 'COMP XE286HR (schaerfer)', durInt: 232, durExh: 240, liftInt: 0.584, liftExh: 0.590, lsa: 110, rpmLimit: 6500, notes: 'Mehr Spitzenleistung, rauerer Leerlauf. Braucht groessere Koepfe.' },
-        { id: 'xe294hr', name: 'COMP XE294HR (Race)', durInt: 240, durExh: 248, liftInt: 0.608, liftExh: 0.614, lsa: 110, rpmLimit: 6800, notes: 'Race-Profil. Kaum Leerlauf, braucht Stall-Converter oder Race-Kupplung.' },
-        { id: 'solid_custom', name: 'Solid Roller (Beispiel)', durInt: 248, durExh: 252, liftInt: 0.620, liftExh: 0.625, lsa: 108, rpmLimit: 7200, notes: 'Solid Roller: mehr Drehzahl, braucht Ventilspiel-Einstellung.' }
+        { id: 'xe274hr', name: 'COMP XE274HR (verbaut)', durInt: 224, durExh: 232, liftInt: 0.555, liftExh: 0.565, lsa: 112, rpmLimit: 6200, notes: 'Street/Strip, Hydraulic Roller. Breiter Powerband 2200-6200. Lift .565 knapp unter .575 Stock-Kopf-Limit - Feder-Upgrade auf 987-16 empfohlen.' },
+        { id: 'xe268hr', name: 'COMP XE268HR (milder)', durInt: 218, durExh: 224, liftInt: 0.536, liftExh: 0.540, lsa: 112, rpmLimit: 5800, notes: 'Mehr Drehmoment unten, weniger Spitzenleistung. Bessere Fahrbarkeit. Passt auf Stock-Koepfe und Stock-Federn.' },
+        { id: 'xe286hr', name: 'COMP XE286HR (schaerfer)', durInt: 232, durExh: 240, liftInt: 0.584, liftExh: 0.590, lsa: 110, rpmLimit: 6500, notes: 'Mehr Spitzenleistung, rauerer Leerlauf. Lift .590 ueberschreitet .575 Stock-Limit - braucht Koepfe mit Feder-Upgrade (Beehive oder Dual-Spring) und mehr Port-Flow.' },
+        { id: 'xe294hr', name: 'COMP XE294HR (Race)', durInt: 240, durExh: 248, liftInt: 0.608, liftExh: 0.614, lsa: 110, rpmLimit: 6800, notes: 'Race-Profil. Braucht Koepfe mit >.600 Lift-Kapazitaet (z.B. AFR 205, TFS TW), Dual-Spring-Upgrade, staerkere Retainer. Kaum Leerlauf, braucht Stall-Converter oder Race-Kupplung.' },
+        { id: 'solid_custom', name: 'Solid Roller (Beispiel)', durInt: 248, durExh: 252, liftInt: 0.620, liftExh: 0.625, lsa: 108, rpmLimit: 7200, notes: 'Solid Roller: Braucht Koepfe mit >.620 Lift-Kapazitaet, Solid-Roller-Federn (PAC oder Rev), Ti-Retainer, andere Lifter + Pushrods. Ventilspiel muss eingestellt werden.' }
     ];
 
     // Default-Setups (werden beim ersten Start angelegt)
