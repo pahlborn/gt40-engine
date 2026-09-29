@@ -593,16 +593,21 @@
                 <input type="number" id="simCyl" value="8" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
                 <label style="font-weight:600;">Verdichtung (CR)</label>
                 <input type="number" id="simCR" value="9.7" step="0.1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <label style="font-weight:600;color:#2b6cb0;">&#9881; Nockenwelle</label>
+                <select id="camPreset" style="padding:0.25rem;border:1px solid #2b6cb0;border-radius:4px;font-size:0.76rem;font-weight:600;background:#ebf4ff;" onchange="applyCamPreset()">
+                    <option value="custom">Benutzerdefiniert</option>
+                </select>
+                <div id="camPresetNote" style="grid-column:1/-1;font-size:0.7rem;color:#718096;font-style:italic;min-height:0.9rem;"></div>
                 <label style="font-weight:600;">Cam Duration Intake @.050"</label>
-                <input type="number" id="simDurInt" value="224" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <input type="number" id="simDurInt" value="224" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
                 <label style="font-weight:600;">Cam Duration Exhaust @.050"</label>
-                <input type="number" id="simDurExh" value="232" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <input type="number" id="simDurExh" value="232" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
                 <label style="font-weight:600;">Ventilhub Einlass (inch)</label>
-                <input type="number" id="simLiftInt" value="0.555" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <input type="number" id="simLiftInt" value="0.555" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
                 <label style="font-weight:600;">Ventilhub Auslass (inch)</label>
-                <input type="number" id="simLiftExh" value="0.565" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <input type="number" id="simLiftExh" value="0.565" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
                 <label style="font-weight:600;">Lobe Sep. Angle (LSA)</label>
-                <input type="number" id="simLSA" value="112" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <input type="number" id="simLSA" value="112" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
                 <label style="font-weight:600;">Kopf-Flow Einlass (CFM)</label>
                 <input type="number" id="simCFMint" value="255" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
                 <label style="font-weight:600;">Kopf-Flow Auslass (CFM)</label>
@@ -703,6 +708,10 @@
                 <div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:8px;padding:0.5rem;margin-bottom:0.4rem;">
                     <div style="font-size:0.82rem;font-weight:700;color:#2b6cb0;margin-bottom:0.3rem;">&#128722; Reifen (Hinterachse)</div>
                     <div style="display:grid;grid-template-columns:auto 1fr;gap:0.2rem 0.4rem;font-size:0.76rem;align-items:center;">
+                        <label style="font-weight:600;">Setup</label>
+                        <select id="tirePreset" style="padding:0.2rem;border:1px solid #2b6cb0;border-radius:4px;font-size:0.76rem;font-weight:600;background:#ebf4ff;" onchange="applyTirePreset()">
+                            <option value="custom">Benutzerdefiniert</option>
+                        </select>
                         <label style="font-weight:600;">Eingabeformat</label>
                         <select id="tireSizeFormat" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="toggleTireFormat()">
                             <option value="metric" selected>Metrisch (z.B. 295/50R15)</option>
@@ -712,9 +721,9 @@
 
                         <!-- Metrisch: Breite/Flanke R Felge -->
                         <label class="tire-metric" style="font-weight:600;">Breite (mm)</label>
-                        <input class="tire-metric" type="number" id="tireWidth" data-field="tire_width" value="295" step="5" min="125" max="355" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcTireDiam();autoSave()">
+                        <input class="tire-metric" type="number" id="tireWidth" data-field="tire_width" value="295" step="5" min="125" max="355" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('tirePreset').value='custom';calcTireDiam();autoSave()">
                         <label class="tire-metric" style="font-weight:600;">Querschnitt (%)</label>
-                        <input class="tire-metric" type="number" id="tireAspect" data-field="tire_aspect" value="50" step="5" min="20" max="90" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcTireDiam();autoSave()">
+                        <input class="tire-metric" type="number" id="tireAspect" data-field="tire_aspect" value="50" step="5" min="20" max="90" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('tirePreset').value='custom';calcTireDiam();autoSave()">
                         <label class="tire-metric" style="font-weight:600;">Felge (inch)</label>
                         <input class="tire-metric" type="number" id="tireRim" data-field="tire_rim" value="15" step="1" min="10" max="22" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcTireDiam();autoSave()">
 
@@ -735,13 +744,13 @@
                         <label style="font-weight:600;">Modell / Mischung</label>
                         <input type="text" id="tireModel" data-field="tire_model" value="CR6ZZ A29" placeholder="z.B. CR6ZZ A29, R25B, A7" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
                         <label style="font-weight:600;">Bauart</label>
-                        <select id="tireConstr" data-field="tire_constr" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="updateTireCrr()">
+                        <select id="tireConstr" data-field="tire_constr" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="document.getElementById('tirePreset').value='custom';updateTireCrr()">
                             <option value="crossply">Diagonal (Crossply / Bias Ply)</option>
                             <option value="radial">Radial</option>
                             <option value="radial_perf">Radial (High Performance)</option>
                         </select>
                         <label style="font-weight:600;">Typ</label>
-                        <select id="tireType" data-field="tire_type" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="updateTireCrr()">
+                        <select id="tireType" data-field="tire_type" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="document.getElementById('tirePreset').value='custom';updateTireCrr()">
                             <option value="road_legal">Strassenzulassung (DOT)</option>
                             <option value="historic_aw">Historic All Weather</option>
                             <option value="semislick">Semi-Slick</option>
@@ -2382,6 +2391,101 @@
     // ==== DRIVETRAIN SIMULATOR ====
     var lastSimData = null; // store engine sim data for drivetrain
 
+    // ==== REIFEN-PRESETS ====
+    var TIRE_PRESETS = [
+        { id: 'crossply_a24',   name: 'Trocken: Avon Crossply A24 (11.0/25.0\u00d715)', fmt: 'imperial', impW: 11.0, impD: 25.0, impRim: 15, mfg: 'Avon', model: 'Historic A24', constr: 'crossply', type: 'historic_aw', widthMM: 279 },
+        { id: 'cr6zz_295',     name: 'Trocken: Avon CR6ZZ A29 (295/50R15)', fmt: 'metric', w: 295, aspect: 50, rim: 15, mfg: 'Avon', model: 'CR6ZZ A29', constr: 'radial', type: 'road_legal', widthMM: 295 },
+        { id: 'cr6zz_225',     name: 'Trocken: Avon CR6ZZ A29 (225/60R15)', fmt: 'metric', w: 225, aspect: 60, rim: 15, mfg: 'Avon', model: 'CR6ZZ A29', constr: 'radial', type: 'road_legal', widthMM: 225 },
+        { id: 'crossply_slick',name: 'Slick: Avon Historic (11.0/25.0\u00d715)', fmt: 'imperial', impW: 11.0, impD: 25.0, impRim: 15, mfg: 'Avon', model: 'Historic Slick', constr: 'crossply', type: 'slick', widthMM: 279 },
+        { id: 'rain_cr28',     name: 'Regen: Avon CR28 (295/50R15)', fmt: 'metric', w: 295, aspect: 50, rim: 15, mfg: 'Avon', model: 'CR28 Rain', constr: 'radial', type: 'wet', widthMM: 295 },
+        { id: 'rain_crossply', name: 'Regen: Avon Crossply Wet (11.0/25.0\u00d715)', fmt: 'imperial', impW: 11.0, impD: 25.0, impRim: 15, mfg: 'Avon', model: 'Historic Wet', constr: 'crossply', type: 'wet', widthMM: 279 }
+    ];
+
+    function initTirePresets() {
+        var sel = document.getElementById('tirePreset');
+        if (!sel) return;
+        TIRE_PRESETS.forEach(function(p) {
+            var opt = document.createElement('option');
+            opt.value = p.id;
+            opt.textContent = p.name;
+            sel.appendChild(opt);
+        });
+    }
+
+    function applyTirePreset() {
+        var sel = document.getElementById('tirePreset');
+        if (!sel || sel.value === 'custom') return;
+        var p = TIRE_PRESETS.find(function(x) { return x.id === sel.value; });
+        if (!p) return;
+
+        // Format setzen
+        document.getElementById('tireSizeFormat').value = p.fmt;
+        toggleTireFormat();
+
+        if (p.fmt === 'metric') {
+            document.getElementById('tireWidth').value = p.w;
+            document.getElementById('tireAspect').value = p.aspect;
+            document.getElementById('tireRim').value = p.rim;
+            calcTireDiam();
+        } else if (p.fmt === 'imperial') {
+            document.getElementById('tireImpW').value = p.impW;
+            document.getElementById('tireImpD').value = p.impD;
+            document.getElementById('tireImpRim').value = p.impRim;
+            calcTireDiamImp();
+        }
+
+        document.getElementById('tireMfg').value = p.mfg;
+        document.getElementById('tireModel').value = p.model;
+        document.getElementById('tireConstr').value = p.constr;
+        document.getElementById('tireType').value = p.type;
+        updateTireCrr();
+        autoSave();
+        runDriveSim();
+    }
+
+    // ==== NOCKENWELLEN-PRESETS ====
+    var CAM_PRESETS = [
+        { id: 'xe274hr', name: 'COMP XE274HR (verbaut)', durInt: 224, durExh: 232, liftInt: 0.555, liftExh: 0.565, lsa: 112, rpmLimit: 6200, notes: 'Street/Strip, Hydraulic Roller. Breiter Powerband 2200-6200.' },
+        { id: 'xe268hr', name: 'COMP XE268HR (milder)', durInt: 218, durExh: 224, liftInt: 0.536, liftExh: 0.540, lsa: 112, rpmLimit: 5800, notes: 'Mehr Drehmoment unten, weniger Spitzenleistung. Bessere Fahrbarkeit.' },
+        { id: 'xe286hr', name: 'COMP XE286HR (schaerfer)', durInt: 232, durExh: 240, liftInt: 0.584, liftExh: 0.590, lsa: 110, rpmLimit: 6500, notes: 'Mehr Spitzenleistung, rauerer Leerlauf. Braucht groessere Koepfe.' },
+        { id: 'xe294hr', name: 'COMP XE294HR (Race)', durInt: 240, durExh: 248, liftInt: 0.608, liftExh: 0.614, lsa: 110, rpmLimit: 6800, notes: 'Race-Profil. Kaum Leerlauf, braucht Stall-Converter oder Race-Kupplung.' },
+        { id: 'solid_custom', name: 'Solid Roller (Beispiel)', durInt: 248, durExh: 252, liftInt: 0.620, liftExh: 0.625, lsa: 108, rpmLimit: 7200, notes: 'Solid Roller: mehr Drehzahl, braucht Ventilspiel-Einstellung. Andere Lifter + Pushrods noetig.' }
+    ];
+
+    function initCamPresets() {
+        var sel = document.getElementById('camPreset');
+        if (!sel) return;
+        CAM_PRESETS.forEach(function(p) {
+            var opt = document.createElement('option');
+            opt.value = p.id;
+            opt.textContent = p.name;
+            sel.appendChild(opt);
+        });
+    }
+
+    function applyCamPreset() {
+        var sel = document.getElementById('camPreset');
+        if (!sel || sel.value === 'custom') return;
+        var p = CAM_PRESETS.find(function(x) { return x.id === sel.value; });
+        if (!p) return;
+
+        document.getElementById('simDurInt').value = p.durInt;
+        document.getElementById('simDurExh').value = p.durExh;
+        document.getElementById('simLiftInt').value = p.liftInt;
+        document.getElementById('simLiftExh').value = p.liftExh;
+        document.getElementById('simLSA').value = p.lsa;
+        // RPM-Limit aktualisieren
+        SYSTEM_RPM_LIMIT = p.rpmLimit;
+        SYSTEM_RPM_LABEL = p.name.split(' (')[0];
+        // Redline im Drive-Sim anpassen
+        var redlineEl = document.getElementById('dsRedline');
+        if (redlineEl) redlineEl.value = Math.min(p.rpmLimit + 300, 7500);
+        // Hinweis anzeigen
+        var noteEl = document.getElementById('camPresetNote');
+        if (noteEl) noteEl.textContent = p.notes;
+        runSim();
+    }
+
     // ==== REIFEN-KONFIGURATION ====
     function toggleTireFormat() {
         var fmt = document.getElementById('tireSizeFormat').value;
@@ -2715,7 +2819,17 @@
         var constr = document.getElementById('tireConstr').value || 'crossply';
         var tType = document.getElementById('tireType').value || 'road_legal';
         var muLat = (TIRE_GRIP[constr] && TIRE_GRIP[constr][tType]) || GRIP_REF;
-        var gripScale = Math.sqrt(muLat / GRIP_REF);
+
+        // Breitenkorrektur: breiterer Reifen = mehr Aufstandsflaeche = mehr Grip
+        // Exponent 0.3: abnehmender Grenznutzen (SAE Kontaktflaechen-Skalierung)
+        // Referenz: 295mm (Neutralwert)
+        var tireWidthMM = parseFloat(document.getElementById('tireWidth').value) || 295;
+        // Bei Imperial: Breite aus impW (inch -> mm)
+        var fmt = document.getElementById('tireSizeFormat').value;
+        if (fmt === 'imperial') tireWidthMM = (parseFloat(document.getElementById('tireImpW').value) || 11) * 25.4;
+        var widthCorr = Math.pow(tireWidthMM / 295, 0.3);
+        var muEff = muLat * widthCorr;
+        var gripScale = Math.sqrt(muEff / GRIP_REF);
         // gripScale > 1 = mehr Grip als Referenz -> hoehere Exit-Speed
         // gripScale < 1 = weniger Grip (z.B. Regen) -> niedrigere Exit-Speed
 
@@ -2747,7 +2861,8 @@
         var gripLabels = { crossply: 'Diagonal', radial: 'Radial', radial_perf: 'Radial HP' };
         var typeLabels = { road_legal: 'DOT', historic_aw: 'Hist. AW', semislick: 'Semi-Slick', slick: 'Slick', wet: 'Regen' };
         var gripInfo = (gripLabels[constr] || constr) + ' ' + (typeLabels[tType] || tType)
-                     + ' (\u03BC=' + muLat.toFixed(2) + ')';
+                     + ', ' + Math.round(tireWidthMM) + 'mm'
+                     + ' (\u03BC=' + muLat.toFixed(2) + ' \u00d7 ' + widthCorr.toFixed(2) + ' = ' + muEff.toFixed(2) + ')';
 
         TRACK_STRAIGHTS.forEach(function (track) {
             var el = document.getElementById(track.id);
@@ -3718,6 +3833,8 @@
     restoreCollapseState();
     // loadData is async (may fetch from Gist) - restore scroll AFTER it completes
     loadData().then(function() {
+        if (typeof initTirePresets === 'function') initTirePresets();
+        if (typeof initCamPresets === 'function') initCamPresets();
         if (typeof calcTireDiam === 'function') calcTireDiam(); // Reifendurchmesser aus gespeicherten Werten berechnen
         if (typeof calcCR === 'function') calcCR(); // CR-Rechner mit gespeicherten Werten ausfuehren -> fuettert Simulator
         if (typeof initUnifiedSearch === 'function') initUnifiedSearch();

@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v75',
+      date: '2026-09-24',
+      time: '07:30',
+      title: 'Reifen- und Nockenwellen-Presets, Breitenkorrektur',
+      changes: [
+        { type: 'neu', text: 'Reifen-Setup-Bibliothek: 6 vordefinierte Setups (Crossply A24, CR6ZZ A29 295er/225er, Slick, Regen Radial/Crossply). Dropdown-Auswahl fuellt alle Felder automatisch und startet Simulation neu.' },
+        { type: 'neu', text: 'Nockenwellen-Presets: 5 Profile (XE268HR mild, XE274HR verbaut, XE286HR scharf, XE294HR Race, Solid Roller). Wechsel aktualisiert Duration, Lift, LSA, RPM-Limit und Redline automatisch.' },
+        { type: 'neu', text: 'Breitenkorrektur fuer Grip: Reifenbreite fliesst jetzt in Exit-Speed ein. Formel: mu_eff = mu_basis x (Breite/295mm)^0.3. Breiterer Reifen = mehr Grip (abnehmender Grenznutzen).' },
+        { type: 'verbessert', text: 'Grip-Anzeige in Strecken-V-max zeigt jetzt auch Breite und Korrektur-Faktor.' },
+        { type: 'verbessert', text: 'Manuelle Aenderung an Cam/Reifen-Feldern setzt Preset automatisch auf Benutzerdefiniert.' }
+      ]
+    },
+    {
       version: 'v74',
       date: '2026-09-24',
       time: '06:00',
