@@ -743,6 +743,7 @@
                         <label style="font-weight:600;">Typ</label>
                         <select id="tireType" data-field="tire_type" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="updateTireCrr()">
                             <option value="road_legal">Strassenzulassung (DOT)</option>
+                            <option value="historic_aw">Historic All Weather</option>
                             <option value="semislick">Semi-Slick</option>
                             <option value="slick">Slick (kein DOT)</option>
                             <option value="wet">Regenreifen</option>
@@ -2439,10 +2440,12 @@
     // Quellen: EPA NHTSA Tire Studies, SAE Papers, Hoosier R25B FEA (~0.045 Slick)
     // Bias-ply: ~0.013-0.018 (road), Radial: ~0.008-0.012 (road)
     // Slick/Race: hoeher wg. weicher Mischung und Grip-Optimierung
+    // Historic All Weather: profiliert, nachgeschnittenes Originalprofil der 60er,
+    // Crr zwischen DOT und Semi-Slick (Profil erhoht, weichere Mischung senkt)
     var TIRE_CRR = {
-        crossply:      { road_legal: 0.015, semislick: 0.016, slick: 0.018, wet: 0.017 },
-        radial:        { road_legal: 0.010, semislick: 0.012, slick: 0.014, wet: 0.013 },
-        radial_perf:   { road_legal: 0.009, semislick: 0.011, slick: 0.013, wet: 0.012 }
+        crossply:      { road_legal: 0.015, historic_aw: 0.0155, semislick: 0.016, slick: 0.018, wet: 0.017 },
+        radial:        { road_legal: 0.010, historic_aw: 0.011,  semislick: 0.012, slick: 0.014, wet: 0.013 },
+        radial_perf:   { road_legal: 0.009, historic_aw: 0.010,  semislick: 0.011, slick: 0.013, wet: 0.012 }
     };
 
     function updateTireCrr() {
@@ -2453,7 +2456,7 @@
         document.getElementById('tireCalcCrr').textContent = crr.toFixed(3);
         // Streckenanalyse-Header: Reifentyp aktualisieren
         var labels = { crossply: 'Diagonal (Crossply)', radial: 'Radial', radial_perf: 'Radial HP' };
-        var types = { road_legal: 'DOT', semislick: 'Semi-Slick', slick: 'Slick', wet: 'Regen' };
+        var types = { road_legal: 'DOT', historic_aw: 'Historic AW', semislick: 'Semi-Slick', slick: 'Slick', wet: 'Regen' };
         var mfg = document.getElementById('tireMfg').value || '';
         var model = document.getElementById('tireModel').value || '';
         var tireLabel = (mfg ? mfg + ' ' : '') + (model ? model + ' | ' : '') + (labels[constr] || '') + ' | ' + (types[type] || '');

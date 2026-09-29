@@ -13,6 +13,15 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v73',
+      date: '2026-09-24',
+      time: '05:00',
+      title: 'Reifentyp Historic All Weather',
+      changes: [
+        { type: 'neu', text: 'Neuer Reifentyp "Historic All Weather" - nachgeschnittenes Originalprofil der 60er-Jahre GT40. Crr zwischen DOT und Semi-Slick (Crossply: 0.0155). Geringere Haftung als Slick, aber schonender fuer die TSC-GT40-Fahrwerkskomponenten.' }
+      ]
+    },
+    {
       version: 'v72',
       date: '2026-09-24',
       time: '04:00',
