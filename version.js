@@ -14,7 +14,7 @@
  */
 (function (global) {
   'use strict';
-  global.APP_VERSION = 'v81';
+  global.APP_VERSION = 'v82';
   global.APP_BUILT = '2026-09-24T04:00:00+02:00';
 
   // Liefert "TT.MM.JJJJ, hh:mm" - ohne Sekunden, die helfen hier niemandem. Bewusst

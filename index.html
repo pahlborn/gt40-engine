@@ -578,7 +578,118 @@
         <div class="section-body">
             <div class="info-box" style="margin-bottom:0.5rem;"><strong>Hinweis:</strong> Alle Eingangsdaten aus Block, Kolben, Zylinderk&ouml;pfe, Nockenwelle, Getriebe und Reifen sind jetzt verf&uuml;gbar. Die Simulatoren nutzen diese Daten f&uuml;r die Leistungs- und Geschwindigkeitsberechnung.</div>
 
-            <!-- Motor-Simulator -->
+            <!-- Setup-Verwaltung (Schritt 1: Setup waehlen/erstellen) -->
+            <div class="comp-box" style="background:#fffff0;border-color:#ecc94b;">
+                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#975a16;">&#9881; Fahrzeug-Setups</div>
+                <div class="comp-body">
+                <div style="font-size:0.72rem;color:#718096;margin-bottom:0.4rem;line-height:1.3;">
+                    Erstellen Sie verschiedene Setups (Reifen, Nockenwelle, Bremsbelag) und w&auml;hlen Sie sie im Simulator aus.
+                    Alle Setups werden lokal im Browser gespeichert.
+                    <strong>Hinweis:</strong> Dies ist ein Setup-Planungswerkzeug &ndash; kein Rundenzeitrechner.
+                    Die Simulation berechnet Beschleunigung und V-max auf Geraden, nicht Kurvenfahrten oder Rundenzeiten.
+                </div>
+                <div style="display:grid;grid-template-columns:auto 1fr auto;gap:0.3rem;align-items:center;margin-bottom:0.4rem;">
+                    <label style="font-weight:700;font-size:0.82rem;color:#975a16;">Aktives Setup</label>
+                    <select id="setupSelect" style="padding:0.3rem;border:2px solid #ecc94b;border-radius:6px;font-size:0.78rem;font-weight:600;background:#fffff0;" onchange="loadSetup()">
+                        <option value="_default">Standard (manuell)</option>
+                    </select>
+                    <button onclick="applySetupToSim()" style="padding:0.3rem 0.6rem;background:#975a16;color:#fff;border:none;border-radius:6px;font-size:0.72rem;font-weight:700;cursor:pointer;" title="Setup-Werte in den Simulator uebernehmen">&#9654; Anwenden</button>
+                </div>
+                <div style="display:flex;gap:0.3rem;margin-bottom:0.4rem;flex-wrap:wrap;">
+                    <button onclick="newSetup()" style="padding:0.25rem 0.5rem;background:#38a169;color:#fff;border:none;border-radius:4px;font-size:0.7rem;cursor:pointer;">+ Neues Setup</button>
+                    <button onclick="editCurrentSetup()" style="padding:0.25rem 0.5rem;background:#dd6b20;color:#fff;border:none;border-radius:4px;font-size:0.7rem;cursor:pointer;">&#9998; Bearbeiten</button>
+                    <button onclick="duplicateSetup()" style="padding:0.25rem 0.5rem;background:#3182ce;color:#fff;border:none;border-radius:4px;font-size:0.7rem;cursor:pointer;">&#128203; Duplizieren</button>
+                    <button onclick="deleteSetup()" style="padding:0.25rem 0.5rem;background:#e53e3e;color:#fff;border:none;border-radius:4px;font-size:0.7rem;cursor:pointer;">&#128465; L&ouml;schen</button>
+                </div>
+                <div id="setupEditor" style="display:none;background:#fff;border:1px solid #ecc94b;border-radius:8px;padding:0.5rem;">
+                    <div style="display:grid;grid-template-columns:auto 1fr;gap:0.2rem 0.4rem;font-size:0.76rem;align-items:center;">
+                        <label style="font-weight:700;color:#975a16;">Setup-Name</label>
+                        <input type="text" id="setupName" value="" placeholder="z.B. Pannoniaring Trocken" style="padding:0.25rem;border:1px solid #ecc94b;border-radius:4px;font-weight:600;">
+                        <div style="grid-column:1/-1;font-weight:700;color:#2b6cb0;margin-top:0.3rem;border-top:1px solid #e2e8f0;padding-top:0.3rem;">&#128722; Reifen Hinterachse</div>
+                        <label style="font-weight:600;">Format</label>
+                        <select id="setupTireFmt" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="toggleSetupTireFields()">
+                            <option value="metric">Metrisch</option>
+                            <option value="imperial">Imperial</option>
+                        </select>
+                        <label class="setup-tire-metric" style="font-weight:600;">Breite (mm)</label>
+                        <input class="setup-tire-metric" type="number" id="setupTireW" value="295" step="5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
+                        <label class="setup-tire-metric" style="font-weight:600;">Querschnitt (%)</label>
+                        <input class="setup-tire-metric" type="number" id="setupTireAspect" value="50" step="5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
+                        <label class="setup-tire-metric" style="font-weight:600;">Felge (inch)</label>
+                        <input class="setup-tire-metric" type="number" id="setupTireRim" value="15" step="1" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
+                        <label class="setup-tire-imperial" style="font-weight:600;display:none;">Breite (inch)</label>
+                        <input class="setup-tire-imperial" type="number" id="setupTireImpW" value="11.0" step="0.5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;display:none;">
+                        <label class="setup-tire-imperial" style="font-weight:600;display:none;">Durchmesser (inch)</label>
+                        <input class="setup-tire-imperial" type="number" id="setupTireImpD" value="25.0" step="0.5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;display:none;">
+                        <label class="setup-tire-imperial" style="font-weight:600;display:none;">Felge (inch)</label>
+                        <input class="setup-tire-imperial" type="number" id="setupTireImpRim" value="15" step="1" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;display:none;">
+                        <label style="font-weight:600;">Hersteller</label>
+                        <input type="text" id="setupTireMfg" value="Avon" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
+                        <label style="font-weight:600;">Modell / Mischung</label>
+                        <input type="text" id="setupTireModel" value="CR6ZZ A29" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
+                        <label style="font-weight:600;">Bauart</label>
+                        <select id="setupTireConstr" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;">
+                            <option value="crossply">Diagonal (Crossply)</option>
+                            <option value="radial" selected>Radial</option>
+                            <option value="radial_perf">Radial HP</option>
+                        </select>
+                        <label style="font-weight:600;">Typ</label>
+                        <select id="setupTireType" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;">
+                            <option value="road_legal">DOT</option>
+                            <option value="historic_aw">Historic All Weather</option>
+                            <option value="semislick">Semi-Slick</option>
+                            <option value="slick">Slick</option>
+                            <option value="wet">Regenreifen</option>
+                        </select>
+                        <div style="grid-column:1/-1;font-weight:700;color:#975a16;margin-top:0.3rem;border-top:1px solid #e2e8f0;padding-top:0.3rem;">&#9881; Nockenwelle</div>
+                        <label style="font-weight:600;">Profil</label>
+                        <select id="setupCam" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="updateSetupCamFields()">
+                            <option value="xe274hr">COMP XE274HR (verbaut)</option>
+                            <option value="xe268hr">COMP XE268HR (milder)</option>
+                            <option value="xe286hr">COMP XE286HR (schaerfer)</option>
+                            <option value="xe294hr">COMP XE294HR (Race)</option>
+                            <option value="solid_custom">Solid Roller</option>
+                            <option value="custom">Benutzerdefiniert</option>
+                        </select>
+                        <label style="font-weight:600;">Duration Int / Exh</label>
+                        <div style="display:flex;gap:0.3rem;">
+                            <input type="number" id="setupCamDurInt" value="224" step="1" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
+                            <input type="number" id="setupCamDurExh" value="232" step="1" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
+                        </div>
+                        <label style="font-weight:600;">Lift Int / Exh</label>
+                        <div style="display:flex;gap:0.3rem;">
+                            <input type="number" id="setupCamLiftInt" value="0.555" step="0.001" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
+                            <input type="number" id="setupCamLiftExh" value="0.565" step="0.001" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
+                        </div>
+                        <label style="font-weight:600;">LSA / RPM-Limit</label>
+                        <div style="display:flex;gap:0.3rem;">
+                            <input type="number" id="setupCamLSA" value="112" step="1" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
+                            <input type="number" id="setupCamRPM" value="6200" step="100" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
+                        </div>
+                        <div style="grid-column:1/-1;font-weight:700;color:#e53e3e;margin-top:0.3rem;border-top:1px solid #e2e8f0;padding-top:0.3rem;">&#128736; Bremsen</div>
+                        <label style="font-weight:600;">Bremsbelag</label>
+                        <select id="setupBrake" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;">
+                            <option value="oem">OEM / Strasse</option>
+                            <option value="r4s">Porterfield R4-S (Strasse+)</option>
+                            <option value="ds2500">Ferodo DS2500 (Track/Strasse)</option>
+                            <option value="r4" selected>Porterfield R4 (Track)</option>
+                            <option value="race">Race / Pagid RSL29</option>
+                        </select>
+                        <div style="grid-column:1/-1;font-weight:700;color:#718096;margin-top:0.3rem;border-top:1px solid #e2e8f0;padding-top:0.3rem;">Notizen</div>
+                        <div style="grid-column:1/-1;">
+                            <textarea id="setupNotes" rows="2" placeholder="z.B. Reifendruck kalt HA 1.8 bar, VA 1.6 bar..." style="width:100%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.72rem;resize:vertical;box-sizing:border-box;"></textarea>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:0.3rem;margin-top:0.4rem;">
+                        <button onclick="saveSetup()" style="flex:1;padding:0.3rem;background:#38a169;color:#fff;border:none;border-radius:6px;font-size:0.76rem;font-weight:700;cursor:pointer;">Speichern</button>
+                        <button onclick="cancelSetupEdit()" style="flex:1;padding:0.3rem;background:#a0aec0;color:#fff;border:none;border-radius:6px;font-size:0.76rem;font-weight:700;cursor:pointer;">Abbrechen</button>
+                    </div>
+                </div>
+                <div id="setupDetails" style="font-size:0.72rem;color:#4a5568;background:#fffbe6;border:1px solid #ecc94b;border-radius:6px;padding:0.4rem;display:none;"></div>
+                </div><!-- /comp-body Setup-Verwaltung -->
+            </div><!-- /comp-box Setup-Verwaltung -->
+
+            <!-- Motor-Simulator (Schritt 2: Leistung berechnen) -->
             <div class="comp-box" id="simBox">
                 <div class="comp-toggle" onclick="toggleComp(this)">&#128200; Motor-Simulator &amp; Kraftstoffempfehlung</div>
                 <div class="comp-body">
@@ -592,30 +703,19 @@
             <button id="simPullBtn" onclick="simPullData()" style="width:100%;padding:0.6rem;background:#2b6cb0;color:#fff;border:none;border-radius:8px;font-size:0.85rem;font-weight:700;cursor:pointer;margin-bottom:0.5rem;">&#8635; Werte aktualisieren</button>
 
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 0.6rem;font-size:0.8rem;">
+
+                <!-- 1. Block (fix, gegeben durch M-6009-302) -->
+                <div style="grid-column:1/-1;font-weight:700;font-size:0.72rem;color:#718096;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.1rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">Block</div>
                 <label style="font-weight:600;">Bohrung (inch)</label>
                 <input type="number" id="simBore" value="4.000" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
                 <label style="font-weight:600;">Hub (inch)</label>
                 <input type="number" id="simStroke" value="3.000" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
                 <label style="font-weight:600;">Zylinder</label>
                 <input type="number" id="simCyl" value="8" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;">Verdichtung (CR)</label>
-                <input type="number" id="simCR" value="9.7" step="0.1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
-                <label style="font-weight:600;color:#2b6cb0;">&#9881; Nockenwelle</label>
-                <select id="camPreset" style="padding:0.25rem;border:1px solid #2b6cb0;border-radius:4px;font-size:0.76rem;font-weight:600;background:#ebf4ff;" onchange="applyCamPreset()">
-                    <option value="custom">Benutzerdefiniert</option>
-                </select>
-                <div id="camPresetNote" style="grid-column:1/-1;font-size:0.7rem;color:#718096;font-style:italic;min-height:0.9rem;"></div>
-                <label style="font-weight:600;">Cam Duration Intake @.050"</label>
-                <input type="number" id="simDurInt" value="224" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
-                <label style="font-weight:600;">Cam Duration Exhaust @.050"</label>
-                <input type="number" id="simDurExh" value="232" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
-                <label style="font-weight:600;">Ventilhub Einlass (inch)</label>
-                <input type="number" id="simLiftInt" value="0.555" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
-                <label style="font-weight:600;">Ventilhub Auslass (inch)</label>
-                <input type="number" id="simLiftExh" value="0.565" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
-                <label style="font-weight:600;">Lobe Sep. Angle (LSA)</label>
-                <input type="number" id="simLSA" value="112" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
-                <label style="font-weight:600;color:#2b6cb0;">&#9881; Zylinderkopf</label>
+
+                <!-- 2. Zylinderkopf (bestimmt Brennraum, Flow, max. Lift) -->
+                <div style="grid-column:1/-1;font-weight:700;font-size:0.72rem;color:#2b6cb0;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.3rem;border-bottom:1px solid #bee3f8;padding-bottom:0.15rem;">Zylinderkopf</div>
+                <label style="font-weight:600;color:#2b6cb0;">&#9881; Kopf-Auswahl</label>
                 <select id="headPreset" style="padding:0.25rem;border:1px solid #2b6cb0;border-radius:4px;font-size:0.76rem;font-weight:600;background:#ebf4ff;" onchange="applyHeadPreset()">
                     <option value="custom">Benutzerdefiniert</option>
                 </select>
@@ -624,6 +724,32 @@
                 <input type="number" id="simCFMint" value="255" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('headPreset').value='custom';runSim()">
                 <label style="font-weight:600;">Kopf-Flow Auslass (CFM)</label>
                 <input type="number" id="simCFMexh" value="213" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('headPreset').value='custom';runSim()">
+
+                <!-- 3. Verdichtung (Ergebnis aus Block + Kopf) -->
+                <div style="grid-column:1/-1;font-weight:700;font-size:0.72rem;color:#975a16;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.3rem;border-bottom:1px solid #fefcbf;padding-bottom:0.15rem;">Verdichtung</div>
+                <label style="font-weight:600;">Verdichtung (CR)</label>
+                <input type="number" id="simCR" value="9.7" step="0.1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+
+                <!-- 4. Nockenwelle (Auswahl NACH Kopf, da max. Lift + Flow-Eignung) -->
+                <div style="grid-column:1/-1;font-weight:700;font-size:0.72rem;color:#2b6cb0;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.3rem;border-bottom:1px solid #bee3f8;padding-bottom:0.15rem;">Nockenwelle</div>
+                <label style="font-weight:600;color:#2b6cb0;">&#9881; Cam-Auswahl</label>
+                <select id="camPreset" style="padding:0.25rem;border:1px solid #2b6cb0;border-radius:4px;font-size:0.76rem;font-weight:600;background:#ebf4ff;" onchange="applyCamPreset()">
+                    <option value="custom">Benutzerdefiniert</option>
+                </select>
+                <div id="camPresetNote" style="grid-column:1/-1;font-size:0.7rem;color:#718096;font-style:italic;min-height:0.9rem;"></div>
+                <label style="font-weight:600;">Duration Intake @.050"</label>
+                <input type="number" id="simDurInt" value="224" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
+                <label style="font-weight:600;">Duration Exhaust @.050"</label>
+                <input type="number" id="simDurExh" value="232" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
+                <label style="font-weight:600;">Ventilhub Einlass (inch)</label>
+                <input type="number" id="simLiftInt" value="0.555" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
+                <label style="font-weight:600;">Ventilhub Auslass (inch)</label>
+                <input type="number" id="simLiftExh" value="0.565" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
+                <label style="font-weight:600;">Lobe Sep. Angle (LSA)</label>
+                <input type="number" id="simLSA" value="112" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
+
+                <!-- 5. Peripherie (Ansaugung, Auspuff) -->
+                <div style="grid-column:1/-1;font-weight:700;font-size:0.72rem;color:#718096;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">Peripherie</div>
                 <label style="font-weight:600;">Ansaugung</label>
                 <select id="simIntake" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" onchange="runSim()">
                     <option value="itb" selected>Einzeldrosselklappen (ITB/DellOrto)</option>
@@ -637,6 +763,9 @@
                     <option value="headers175">Headers 1-3/4"</option>
                     <option value="cast">Gusskr&uuml;mmer</option>
                 </select>
+
+                <!-- 6. Abstimmung (abhaengig von CR) -->
+                <div style="grid-column:1/-1;font-weight:700;font-size:0.72rem;color:#718096;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.15rem;">Abstimmung</div>
                 <label style="font-weight:600;">Mech. Wirkungsgrad (%)</label>
                 <input type="number" id="simMechEff" value="85" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
                 <label style="font-weight:600;">Total Timing (&deg;)</label>
@@ -676,21 +805,7 @@
                 <span style="color:#a0aec0;">&#9644; VE (%)</span>
             </div>
 
-            <!-- DYNO CORRECTION FACTORS -->
-            <div class="comp-box" style="margin-top:0.5rem;">
-                <div class="comp-toggle" onclick="toggleComp(this)">&#128200; Pr&uuml;fstands-Korrekturfaktoren (SAE J1349 vs. J607)</div>
-                <div class="comp-body">
-                    <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.3rem;">Ford Performance gibt Leistungswerte ihrer Pushrod Crate Engines nach <strong>SAE J607 (&bdquo;Racer Corrected&ldquo;)</strong> an &ndash; korrigiert auf 60&deg;F (15,6&deg;C) und 29.92" Hg. Diese Werte sind ca. <strong>4% h&ouml;her</strong> als SAE J1349 (&bdquo;SAE&ldquo;), welche auf 77&deg;F (25&deg;C) und 29.31" Hg korrigiert und 85% mechanischen Wirkungsgrad ber&uuml;cksichtigt.</p>
-                    <table style="width:100%;font-size:0.74rem;border-collapse:collapse;">
-                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Korrekturfaktor</th><th style="text-align:center;padding:0.25rem;">Temperatur</th><th style="text-align:center;padding:0.25rem;">Druck</th><th style="text-align:center;padding:0.25rem;">Ergebnis</th></tr>
-                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>SAE J607</strong> (Racer Corrected)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">60&deg;F (15,6&deg;C)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">29.92" Hg</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">H&ouml;here Werte (~4% mehr)</td></tr>
-                        <tr><td style="padding:0.2rem;"><strong>SAE J1349</strong> (SAE Standard)</td><td style="text-align:center;padding:0.2rem;">77&deg;F (25&deg;C)</td><td style="text-align:center;padding:0.2rem;">29.31" Hg</td><td style="text-align:center;padding:0.2rem;">Realistischere Werte</td></tr>
-                    </table>
-                    <div class="info-box" style="margin-top:0.3rem;"><strong>Praxis:</strong> Wenn Sie auf einem Pr&uuml;fstand landen, fragen Sie nach dem Korrekturfaktor. SAE J1349 ist der realistischere Standard. Ford Performance Katalog-Angaben f&uuml;r den M-6009-302 sind wahrscheinlich J607-korrigiert &ndash; reale Leistung auf dem Pr&uuml;fstand wird ~4% niedriger sein.</div>
-                </div>
-            </div>
-
-            <!-- Kraftstoff-Empfehlung -->
+            <!-- Kraftstoff-Empfehlung (Ergebnis des Motor-Simulators) -->
             <div class="comp-box" style="margin-top:0.5rem;background:#fffbeb;border-color:#f6e05e;">
                 <div class="comp-toggle" onclick="toggleComp(this)" style="color:#975a16;">&#9981; Kraftstoff-Empfehlung &amp; Oktanzahl</div>
                 <div class="comp-body" id="simFuelResult">
@@ -709,135 +824,6 @@
             <div class="info-box" style="margin-top:0.4rem;"><strong>Hinweis:</strong> Dies ist ein <em>empirisches Sch&auml;tzmodell</em> basierend auf VE-Kurve (Volumetric Efficiency), BMEP (Brake Mean Effective Pressure) und Cam-Timing. F&uuml;r exakte Werte ist ein Motorenpr&uuml;fstand erforderlich. Typische Genauigkeit: &plusmn;5&ndash;10%.</div>
                 </div>
             </div>
-
-            <!-- Setup-Verwaltung -->
-            <div class="comp-box" style="background:#fffff0;border-color:#ecc94b;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#975a16;">&#9881; Fahrzeug-Setups</div>
-                <div class="comp-body">
-                <div style="font-size:0.72rem;color:#718096;margin-bottom:0.4rem;line-height:1.3;">
-                    Erstellen Sie verschiedene Setups (Reifen, Nockenwelle, Bremsbelag) und w&auml;hlen Sie sie im Simulator aus.
-                    Alle Setups werden lokal im Browser gespeichert.
-                    <strong>Hinweis:</strong> Dies ist ein Setup-Planungswerkzeug &ndash; kein Rundenzeitrechner.
-                    Die Simulation berechnet Beschleunigung und V-max auf Geraden, nicht Kurvenfahrten oder Rundenzeiten.
-                </div>
-
-                <!-- Aktives Setup waehlen -->
-                <div style="display:grid;grid-template-columns:auto 1fr auto;gap:0.3rem;align-items:center;margin-bottom:0.4rem;">
-                    <label style="font-weight:700;font-size:0.82rem;color:#975a16;">Aktives Setup</label>
-                    <select id="setupSelect" style="padding:0.3rem;border:2px solid #ecc94b;border-radius:6px;font-size:0.78rem;font-weight:600;background:#fffff0;" onchange="loadSetup()">
-                        <option value="_default">Standard (manuell)</option>
-                    </select>
-                    <button onclick="applySetupToSim()" style="padding:0.3rem 0.6rem;background:#975a16;color:#fff;border:none;border-radius:6px;font-size:0.72rem;font-weight:700;cursor:pointer;" title="Setup-Werte in den Simulator uebernehmen">&#9654; Anwenden</button>
-                </div>
-
-                <!-- Setup-Verwaltung Buttons -->
-                <div style="display:flex;gap:0.3rem;margin-bottom:0.4rem;flex-wrap:wrap;">
-                    <button onclick="newSetup()" style="padding:0.25rem 0.5rem;background:#38a169;color:#fff;border:none;border-radius:4px;font-size:0.7rem;cursor:pointer;">+ Neues Setup</button>
-                    <button onclick="editCurrentSetup()" style="padding:0.25rem 0.5rem;background:#dd6b20;color:#fff;border:none;border-radius:4px;font-size:0.7rem;cursor:pointer;">&#9998; Bearbeiten</button>
-                    <button onclick="duplicateSetup()" style="padding:0.25rem 0.5rem;background:#3182ce;color:#fff;border:none;border-radius:4px;font-size:0.7rem;cursor:pointer;">&#128203; Duplizieren</button>
-                    <button onclick="deleteSetup()" style="padding:0.25rem 0.5rem;background:#e53e3e;color:#fff;border:none;border-radius:4px;font-size:0.7rem;cursor:pointer;">&#128465; L&ouml;schen</button>
-                </div>
-
-                <!-- Setup-Editor (einblendbar) -->
-                <div id="setupEditor" style="display:none;background:#fff;border:1px solid #ecc94b;border-radius:8px;padding:0.5rem;">
-                    <div style="display:grid;grid-template-columns:auto 1fr;gap:0.2rem 0.4rem;font-size:0.76rem;align-items:center;">
-                        <label style="font-weight:700;color:#975a16;">Setup-Name</label>
-                        <input type="text" id="setupName" value="" placeholder="z.B. Pannoniaring Trocken" style="padding:0.25rem;border:1px solid #ecc94b;border-radius:4px;font-weight:600;">
-
-                        <!-- Reifen HA -->
-                        <div style="grid-column:1/-1;font-weight:700;color:#2b6cb0;margin-top:0.3rem;border-top:1px solid #e2e8f0;padding-top:0.3rem;">&#128722; Reifen Hinterachse</div>
-                        <label style="font-weight:600;">Format</label>
-                        <select id="setupTireFmt" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="toggleSetupTireFields()">
-                            <option value="metric">Metrisch</option>
-                            <option value="imperial">Imperial</option>
-                        </select>
-                        <label class="setup-tire-metric" style="font-weight:600;">Breite (mm)</label>
-                        <input class="setup-tire-metric" type="number" id="setupTireW" value="295" step="5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        <label class="setup-tire-metric" style="font-weight:600;">Querschnitt (%)</label>
-                        <input class="setup-tire-metric" type="number" id="setupTireAspect" value="50" step="5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        <label class="setup-tire-metric" style="font-weight:600;">Felge (inch)</label>
-                        <input class="setup-tire-metric" type="number" id="setupTireRim" value="15" step="1" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        <label class="setup-tire-imperial" style="font-weight:600;display:none;">Breite (inch)</label>
-                        <input class="setup-tire-imperial" type="number" id="setupTireImpW" value="11.0" step="0.5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;display:none;">
-                        <label class="setup-tire-imperial" style="font-weight:600;display:none;">Durchmesser (inch)</label>
-                        <input class="setup-tire-imperial" type="number" id="setupTireImpD" value="25.0" step="0.5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;display:none;">
-                        <label class="setup-tire-imperial" style="font-weight:600;display:none;">Felge (inch)</label>
-                        <input class="setup-tire-imperial" type="number" id="setupTireImpRim" value="15" step="1" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;display:none;">
-                        <label style="font-weight:600;">Hersteller</label>
-                        <input type="text" id="setupTireMfg" value="Avon" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        <label style="font-weight:600;">Modell / Mischung</label>
-                        <input type="text" id="setupTireModel" value="CR6ZZ A29" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        <label style="font-weight:600;">Bauart</label>
-                        <select id="setupTireConstr" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;">
-                            <option value="crossply">Diagonal (Crossply)</option>
-                            <option value="radial" selected>Radial</option>
-                            <option value="radial_perf">Radial HP</option>
-                        </select>
-                        <label style="font-weight:600;">Typ</label>
-                        <select id="setupTireType" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;">
-                            <option value="road_legal">DOT</option>
-                            <option value="historic_aw">Historic All Weather</option>
-                            <option value="semislick">Semi-Slick</option>
-                            <option value="slick">Slick</option>
-                            <option value="wet">Regenreifen</option>
-                        </select>
-
-                        <!-- Nockenwelle -->
-                        <div style="grid-column:1/-1;font-weight:700;color:#975a16;margin-top:0.3rem;border-top:1px solid #e2e8f0;padding-top:0.3rem;">&#9881; Nockenwelle</div>
-                        <label style="font-weight:600;">Profil</label>
-                        <select id="setupCam" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="updateSetupCamFields()">
-                            <option value="xe274hr">COMP XE274HR (verbaut)</option>
-                            <option value="xe268hr">COMP XE268HR (milder)</option>
-                            <option value="xe286hr">COMP XE286HR (schaerfer)</option>
-                            <option value="xe294hr">COMP XE294HR (Race)</option>
-                            <option value="solid_custom">Solid Roller</option>
-                            <option value="custom">Benutzerdefiniert</option>
-                        </select>
-                        <label style="font-weight:600;">Duration Int / Exh</label>
-                        <div style="display:flex;gap:0.3rem;">
-                            <input type="number" id="setupCamDurInt" value="224" step="1" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                            <input type="number" id="setupCamDurExh" value="232" step="1" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        </div>
-                        <label style="font-weight:600;">Lift Int / Exh</label>
-                        <div style="display:flex;gap:0.3rem;">
-                            <input type="number" id="setupCamLiftInt" value="0.555" step="0.001" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                            <input type="number" id="setupCamLiftExh" value="0.565" step="0.001" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        </div>
-                        <label style="font-weight:600;">LSA / RPM-Limit</label>
-                        <div style="display:flex;gap:0.3rem;">
-                            <input type="number" id="setupCamLSA" value="112" step="1" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                            <input type="number" id="setupCamRPM" value="6200" step="100" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        </div>
-
-                        <!-- Bremsbelag -->
-                        <div style="grid-column:1/-1;font-weight:700;color:#e53e3e;margin-top:0.3rem;border-top:1px solid #e2e8f0;padding-top:0.3rem;">&#128736; Bremsen</div>
-                        <label style="font-weight:600;">Bremsbelag</label>
-                        <select id="setupBrake" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;">
-                            <option value="oem">OEM / Strasse</option>
-                            <option value="r4s">Porterfield R4-S (Strasse+)</option>
-                            <option value="ds2500">Ferodo DS2500 (Track/Strasse)</option>
-                            <option value="r4" selected>Porterfield R4 (Track)</option>
-                            <option value="race">Race / Pagid RSL29</option>
-                        </select>
-
-                        <!-- Notizen -->
-                        <div style="grid-column:1/-1;font-weight:700;color:#718096;margin-top:0.3rem;border-top:1px solid #e2e8f0;padding-top:0.3rem;">Notizen</div>
-                        <div style="grid-column:1/-1;">
-                            <textarea id="setupNotes" rows="2" placeholder="z.B. Reifendruck kalt HA 1.8 bar, VA 1.6 bar..." style="width:100%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.72rem;resize:vertical;box-sizing:border-box;"></textarea>
-                        </div>
-                    </div>
-                    <div style="display:flex;gap:0.3rem;margin-top:0.4rem;">
-                        <button onclick="saveSetup()" style="flex:1;padding:0.3rem;background:#38a169;color:#fff;border:none;border-radius:6px;font-size:0.76rem;font-weight:700;cursor:pointer;">Speichern</button>
-                        <button onclick="cancelSetupEdit()" style="flex:1;padding:0.3rem;background:#a0aec0;color:#fff;border:none;border-radius:6px;font-size:0.76rem;font-weight:700;cursor:pointer;">Abbrechen</button>
-                    </div>
-                </div>
-
-                <!-- Setup-Details Anzeige (nur lesen) -->
-                <div id="setupDetails" style="font-size:0.72rem;color:#4a5568;background:#fffbe6;border:1px solid #ecc94b;border-radius:6px;padding:0.4rem;display:none;">
-                </div>
-
-                </div><!-- /comp-body Setup-Verwaltung -->
-            </div><!-- /comp-box Setup-Verwaltung -->
 
             <!-- Geschwindigkeits-Simulator -->
             <div class="comp-box" style="background:#f0f5ff;border-color:#bee3f8;">
@@ -1169,6 +1155,20 @@
                 <label>Strecken-Notizen</label>
                 <textarea data-field="comment_tracks" placeholder="Rundenzeiten, Setup-Notizen, Beobachtungen pro Strecke..." oninput="autoSave()"></textarea>
             </div>
+                </div>
+            </div>
+
+            <!-- Pruefstands-Korrekturfaktoren (Exkurs, am Ende) -->
+            <div class="comp-box" style="margin-top:0.8rem;background:#f7fafc;border-color:#e2e8f0;">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#128200; Exkurs: Pr&uuml;fstands-Korrekturfaktoren (SAE J1349 vs. J607)</div>
+                <div class="comp-body">
+                    <p style="font-size:0.78rem;line-height:1.5;margin:0 0 0.3rem;">Ford Performance gibt Leistungswerte ihrer Pushrod Crate Engines nach <strong>SAE J607 (&bdquo;Racer Corrected&ldquo;)</strong> an &ndash; korrigiert auf 60&deg;F (15,6&deg;C) und 29.92" Hg. Diese Werte sind ca. <strong>4% h&ouml;her</strong> als SAE J1349 (&bdquo;SAE&ldquo;), welche auf 77&deg;F (25&deg;C) und 29.31" Hg korrigiert und 85% mechanischen Wirkungsgrad ber&uuml;cksichtigt.</p>
+                    <table style="width:100%;font-size:0.74rem;border-collapse:collapse;">
+                        <tr style="background:#ebf4ff;"><th style="text-align:left;padding:0.25rem;">Korrekturfaktor</th><th style="text-align:center;padding:0.25rem;">Temperatur</th><th style="text-align:center;padding:0.25rem;">Druck</th><th style="text-align:center;padding:0.25rem;">Ergebnis</th></tr>
+                        <tr><td style="padding:0.2rem;border-bottom:1px solid #e2e8f0;"><strong>SAE J607</strong> (Racer Corrected)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">60&deg;F (15,6&deg;C)</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">29.92" Hg</td><td style="text-align:center;padding:0.2rem;border-bottom:1px solid #e2e8f0;">H&ouml;here Werte (~4% mehr)</td></tr>
+                        <tr><td style="padding:0.2rem;"><strong>SAE J1349</strong> (SAE Standard)</td><td style="text-align:center;padding:0.2rem;">77&deg;F (25&deg;C)</td><td style="text-align:center;padding:0.2rem;">29.31" Hg</td><td style="text-align:center;padding:0.2rem;">Realistischere Werte</td></tr>
+                    </table>
+                    <div class="info-box" style="margin-top:0.3rem;"><strong>Praxis:</strong> Wenn Sie auf einem Pr&uuml;fstand landen, fragen Sie nach dem Korrekturfaktor. SAE J1349 ist der realistischere Standard. Ford Performance Katalog-Angaben f&uuml;r den M-6009-302 sind wahrscheinlich J607-korrigiert &ndash; reale Leistung auf dem Pr&uuml;fstand wird ~4% niedriger sein.</div>
                 </div>
             </div>
 

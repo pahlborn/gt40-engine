@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v82',
+      date: '2026-09-24',
+      time: '16:00',
+      title: 'Logische Reihenfolge Kap. 5, Motor-Simulator Feldstruktur',
+      changes: [
+        { type: 'verbessert', text: 'Kapitel 5 Reihenfolge: Logischer Ablauf Setups → Motor-Simulator → Kraftstoff → Geschwindigkeit → Strecken → Pruefstands-Exkurs. Setup-Verwaltung steht jetzt am Anfang (erst planen, dann berechnen).' },
+        { type: 'verbessert', text: 'Motor-Simulator Feldstruktur: Eingabefelder in 6 logische Gruppen gegliedert (Block → Zylinderkopf → Verdichtung → Nockenwelle → Peripherie → Abstimmung). Kopfauswahl vor Cam, da der Kopf die Cam-Eignung bestimmt.' },
+        { type: 'verbessert', text: 'Pruefstands-Korrekturfaktoren als "Exkurs" ans Ende von Kap. 5 verschoben - unterbricht nicht mehr den Berechnungsflow.' }
+      ]
+    },
+    {
       version: 'v81',
       date: '2026-09-24',
       time: '15:30',
