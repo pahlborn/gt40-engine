@@ -13,6 +13,18 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v83',
+      date: '2026-09-24',
+      time: '16:30',
+      title: 'UI-Bereinigung: Farben, Raender, Ueberschriften',
+      changes: [
+        { type: 'verbessert', text: 'Glossar: Ueberschrift "Glossar - Fachbegriffe & Erklaerungen" eingefuegt (alle 3 Seiten). Seitenraender via guide-content CSS.' },
+        { type: 'verbessert', text: 'Zuendungs-Exkurs: Seitenraender (max-width 800px, Padding) und Titel-Ueberschrift. guide-content CSS fehlte in index.html.' },
+        { type: 'verbessert', text: 'Farb-Vereinfachung: 5 Strecken-Boxen von bunt (gruen/gelb/rot/blau/lila) auf einheitlich neutral. Kraftstoff-Empfehlung von gelb auf Standard. Weniger visuelle Unruhe.' },
+        { type: 'verbessert', text: 'gallery.css: guide-content und guide-title Klassen zentral definiert (wirkt auf alle Seiten).' }
+      ]
+    },
+    {
       version: 'v82',
       date: '2026-09-24',
       time: '16:00',

@@ -469,6 +469,9 @@
 
     t.push('<div class="guide-content" id="exkursBody">');
 
+    // Titel
+    t.push('<h2 class="guide-title">' + EXKURS.titel + '</h2>');
+
     // Inhaltsverzeichnis
     t.push('<div class="exk-toc" id="exkursToc">');
     t.push('  <div style="font-weight:700;font-size:0.82rem;color:#2c5282;margin-bottom:0.3rem;">Inhalt</div>');

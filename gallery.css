@@ -135,6 +135,12 @@ body.overlay-offen .fab-stack { display: none; }
 .data-table td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #e2e8f0; vertical-align: top; line-height: 1.5; }
 .data-table tr:hover { background: #f7fafc; }
 .data-table em { color: #4a5568; font-style: normal; font-weight: 600; }
+/* ---- Guide-Overlays (Exkurs, Glossar, Reference) ---------------------- */
+.guide-content { max-width: 800px; margin: 0 auto; padding: 1rem 1.2rem; }
+.guide-content h3 { font-size: 0.95rem; color: #2c5282; margin: 1rem 0 0.5rem; font-weight: 700; }
+.guide-content p, .guide-content li { font-size: 0.85rem; line-height: 1.6; }
+.guide-content ul { padding-left: 1.2rem; margin-bottom: 0.75rem; }
+.guide-title { font-size: 1.1rem; font-weight: 800; color: #2c5282; text-align: center; margin: 0.8rem 0 0.4rem; padding-bottom: 0.5rem; border-bottom: 2px solid #2c5282; }
 /* ---- Exkurs-Overlay (exkurs-engine.js) -------------------------------- */
 .fab-btn.exkurs { background: #c53030; }
 .exk-section { margin-bottom: 1.8rem; }

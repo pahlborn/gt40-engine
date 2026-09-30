@@ -284,6 +284,11 @@
         .guide-overlay.show { display: block; }
         .guide-back { position: sticky; top: 0; z-index: 501; background: var(--primary); color: white; border: none; padding: 0.4rem 0.8rem; cursor: pointer; font-size: 1.1rem; width: 100%; text-align: left; }
         .guide-back:hover { background: var(--primary-light); }
+        .guide-content { max-width: 800px; margin: 0 auto; padding: 1rem 1.2rem; }
+        .guide-content h3 { font-size: 0.95rem; color: var(--primary); margin: 1rem 0 0.5rem; font-weight: 700; }
+        .guide-content p, .guide-content li { font-size: 0.85rem; line-height: 1.6; }
+        .guide-content ul { padding-left: 1.2rem; margin-bottom: 0.75rem; }
+        .guide-title { font-size: 1.1rem; font-weight: 800; color: var(--primary); text-align: center; margin: 0.8rem 0 0.4rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary); }
         .fab-btn { border: none; border-radius: 50%; width: 48px; height: 48px; font-size: 1.3rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; color: white; }
         .fab-btn.glossary { background: #ed8936; }
         /* Pull-to-Refresh */
@@ -806,8 +811,8 @@
             </div>
 
             <!-- Kraftstoff-Empfehlung (Ergebnis des Motor-Simulators) -->
-            <div class="comp-box" style="margin-top:0.5rem;background:#fffbeb;border-color:#f6e05e;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#975a16;">&#9981; Kraftstoff-Empfehlung &amp; Oktanzahl</div>
+            <div class="comp-box" style="margin-top:0.5rem;">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#9981; Kraftstoff-Empfehlung &amp; Oktanzahl</div>
                 <div class="comp-body" id="simFuelResult">
                     <p style="font-size:0.8rem;color:#666;">Simulator starten um Empfehlung zu erhalten...</p>
                 </div>
@@ -986,8 +991,8 @@
             </div>
 
             <!-- Pannoniaring -->
-            <div class="comp-box" style="background:#f0fff4;border-color:#c6f6d5;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#276749;">&#127469;&#127482; Pannoniaring (Ostffyasszonyfa, Ungarn)</div>
+            <div class="comp-box" style="background:#f7fafc;border-color:#e2e8f0;">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#127469;&#127482; Pannoniaring (Ostffyasszonyfa, Ungarn)</div>
                 <div class="comp-body">
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.78rem;">
                         <div class="spec-item"><span class="spec-label">L&auml;nge</span><span class="spec-value">4.740 m</span></div>
@@ -1012,8 +1017,8 @@
             </div>
 
             <!-- Slovakiaring -->
-            <div class="comp-box" style="background:#fefcbf;border-color:#f6e05e;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#975a16;">&#127480;&#127472; Slovakiaring (Orechov&aacute; Pot&ocirc;&#328;, Slowakei)</div>
+            <div class="comp-box" style="background:#f7fafc;border-color:#e2e8f0;">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#127480;&#127472; Slovakiaring (Orechov&aacute; Pot&ocirc;&#328;, Slowakei)</div>
                 <div class="comp-body">
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.78rem;">
                         <div class="spec-item"><span class="spec-label">L&auml;nge</span><span class="spec-value">5.922 m (Grand Prix Circuit)</span></div>
@@ -1038,8 +1043,8 @@
             </div>
 
             <!-- Brno -->
-            <div class="comp-box" style="background:#fed7d7;border-color:#fc8181;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#c53030;">&#127464;&#127487; Brno / Masaryk Circuit (Tschechien)</div>
+            <div class="comp-box" style="background:#f7fafc;border-color:#e2e8f0;">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#127464;&#127487; Brno / Masaryk Circuit (Tschechien)</div>
                 <div class="comp-body">
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.78rem;">
                         <div class="spec-item"><span class="spec-label">L&auml;nge</span><span class="spec-value">5.403 m</span></div>
@@ -1066,8 +1071,8 @@
             </div>
 
             <!-- Salzburgring -->
-            <div class="comp-box" style="background:#ebf8ff;border-color:#90cdf4;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#2b6cb0;">&#127462;&#127481; Salzburgring (Plainfeld, &Ouml;sterreich)</div>
+            <div class="comp-box" style="background:#f7fafc;border-color:#e2e8f0;">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#127462;&#127481; Salzburgring (Plainfeld, &Ouml;sterreich)</div>
                 <div class="comp-body">
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.78rem;">
                         <div class="spec-item"><span class="spec-label">L&auml;nge</span><span class="spec-value">4.255 m</span></div>
@@ -1094,8 +1099,8 @@
             </div>
 
             <!-- Spa -->
-            <div class="comp-box" style="background:#e9d8fd;border-color:#b794f4;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#553c9a;">&#127463;&#127466; Spa-Francorchamps (Stavelot, Belgien)</div>
+            <div class="comp-box" style="background:#f7fafc;border-color:#e2e8f0;">
+                <div class="comp-toggle" onclick="toggleComp(this)">&#127463;&#127466; Spa-Francorchamps (Stavelot, Belgien)</div>
                 <div class="comp-body">
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.78rem;">
                         <div class="spec-item"><span class="spec-label">L&auml;nge</span><span class="spec-value">7.004 m</span></div>
@@ -4737,6 +4742,7 @@
         </div>
     </div>
     <div class="glossary-body" id="glossaryBody">
+        <h2 class="guide-title">Glossar &ndash; Fachbegriffe &amp; Erkl&auml;rungen</h2>
         <!-- Inhalt kommt aus glossar.js - eine Quelle fuer alle drei Seiten -->
     </div><!-- /glossary-body -->
 </div><!-- /guide-glossary -->
