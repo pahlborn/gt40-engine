@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v86',
+      date: '2026-09-30',
+      time: '17:30',
+      title: 'Glossar: Breitband-Lambdasonde, SSOT bereinigt, Begriffe praezisiert',
+      changes: [
+        { type: 'neu', text: 'Glossar: Neuer Eintrag "Breitband-Lambdasonde (Wideband O2)" in Kategorie 14 (Messen und Pruefen). Erklaert den Unterschied zu Schmalband, warum nur Breitband fuer Vergaserabstimmung geeignet ist, und die Projektinfrastruktur (Innovate, M18x1.5 Bungs, Bank-Mittelwerte).' },
+        { type: 'verbessert', text: 'Pickliste: Lambda-Sonden entsperrt, SSOT-Hinweis entfernt, Schmalband-Abgrenzung und Bung-Info eingefuegt.' },
+        { type: 'verbessert', text: 'Konsistente Benennung: "Sonden" durch "Breitbandsonden" praezisiert in Exkurs Kap. 10 und Build Log Phase 5. Ueberall wo Lambda zukunftsgerichtet eine Rolle spielt, wird explizit von Breitbandsonden gesprochen.' }
+      ]
+    },
+    {
       version: 'v85',
       date: '2026-09-30',
       time: '17:00',

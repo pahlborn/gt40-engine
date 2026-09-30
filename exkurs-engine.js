@@ -477,7 +477,7 @@
         + '<li>Volllast (Strecke): Hauptd\u00fcse nach Lambda, nicht nach Tabelle</li>'
         + '</ol></div>'
 
-        + '<h4>Was zwei Sonden k\u00f6nnen und was nicht</h4>'
+        + '<h4>Was zwei Breitbandsonden k\u00f6nnen und was nicht</h4>'
         + '<p>Der GT40 hat zwei Lambda-Bungs in den Bundle-of-Snakes-Collectoren '
         + '(Standard-Gewinde M18\u00d71,5 f\u00fcr Bosch-kompatible Sonden). '
         + 'Zwei Sonden liefern zwei <strong>Bank-Mittelwerte</strong>, keine '
@@ -514,7 +514,7 @@
 
         + '<div class="exk-box info"><strong>Vorhandene Infrastruktur:</strong> '
         + 'In jedem der beiden Bundle-of-Snakes-Collector sitzt ein '
-        + '<strong>M18\u00d71,5-Bung</strong> (Bosch-Standard). Die Sonden k\u00f6nnen '
+        + '<strong>M18\u00d71,5-Bung</strong> (Bosch-Standard). Die Breitbandsonden k\u00f6nnen '
         + 'direkt eingeschraubt werden \u2013 kein Schweissen oder Bohren n\u00f6tig. '
         + 'Ohne Sonde: Bung mit M18-Blindstopfen verschliessen.</div>'
 
