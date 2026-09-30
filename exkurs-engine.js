@@ -18,6 +18,7 @@
  *  7. MSD 8479 Advance-Praxis
  *  8. Leistung & Drehmoment
  *  9. Praxis-Vorgehensweise
+ * 10. Lambda: Zuendung, Vergaser und das Messinstrument
  */
 (function (global) {
   'use strict';
@@ -421,10 +422,12 @@
         + '<li><strong>Testlauf unter Last</strong> \u2013 Bergauffahrt im 3. Gang, '
         + '2.500\u20134.000 RPM. Auf Klopfen h\u00f6ren. Wenn klopft: 2\u00b0 '
         + 'zur\u00fcck.</li>'
-        + '<li><strong>Z\u00fcndkerzen lesen</strong> (nach 50\u2013100 km Fahrt): '
-        + 'Isolatorfu\u00df hellbraun/rehbraun = ideal. Wei\u00df = zu mager '
-        + '(Hauptd\u00fcse vergr\u00f6\u00dfern). Schwarz/ru\u00dfig = zu fett '
-        + '(Hauptd\u00fcse verkleinern).</li>'
+        + '<li><strong>Lambda-Logging starten</strong> \u2013 Dual-Wideband '
+        + '(Innovate) an beiden Collectors. Gemischbeurteilung erfolgt am '
+        + 'Lambda, <strong>nicht</strong> am Kerzenbild allein \u2013 Kerzenfarbe '
+        + 'h\u00e4ngt auch von W\u00e4rmewert, Additiven und Lastkollektiv ab. '
+        + 'Das Kerzenbild liefert erg\u00e4nzend die Einzelzylinder-Information, '
+        + 'die ein Bank-Mittelwert nicht hergibt.</li>'
         + '<li><strong>Feintuning</strong> \u2013 Total Timing in 1\u00b0-Schritten '
         + 'erh\u00f6hen bis Klopfgrenze oder Leistungsmaximum. Immer mit Stroboskop.</li>'
         + '</ol>'
@@ -445,6 +448,92 @@
         + '</table>'
         + '<br><strong>Alles h\u00e4ngt zusammen</strong> \u2013 \u00e4ndern Sie die CR, '
         + 'm\u00fcssen Timing, Oktanzahl und Jetting folgen!</div>'
+      },
+
+      /* ---- 10. LAMBDA ---- */
+      {
+        id: 'exk-lambda',
+        titel: '10. Lambda: Z\u00fcndung, Vergaser und das Messinstrument',
+        stichworte: 'Lambda Wideband Breitband Innovate AFR Sonde Collector Bank Gemisch Zuendung mager fett',
+        inhalt:
+          '<p>Lambda ist das zentrale Messinstrument bei der Abstimmung eines '
+        + 'vergaserbestückten Motors ohne Motorsteuerger\u00e4t. Ohne Lambda-Logging '
+        + 'ist jede \u00c4nderung an Z\u00fcndung oder Bed\u00fcsung ein Blindflug.</p>'
+
+        + '<h4>Warum Z\u00fcndung vor Bed\u00fcsung?</h4>'
+        + '<p>Zu wenig Fr\u00fchz\u00fcndung sieht am Lambda <strong>aus wie ein zu '
+        + 'mageres Gemisch</strong> \u2013 die Verbrennung ist unvollst\u00e4ndig, '
+        + 'unverbrannter Kraftstoff kommt am Sensor an, der Wert verschiebt sich '
+        + 'Richtung mager. Wer daraufhin die Hauptd\u00fcse vergr\u00f6\u00dfert, '
+        + '\u00fcberfettet den Motor. <strong>Deshalb gilt: Z\u00fcndung zuerst '
+        + 'festnageln, dann erst am Gemisch drehen.</strong></p>'
+
+        + '<div class="exk-box warn"><strong>Reihenfolge der Abstimmung:</strong>'
+        + '<ol style="margin:0.3rem 0 0;padding-left:1.2rem;">'
+        + '<li>Z\u00fcndung einstellen (Initial + Centrifugal, siehe Kapitel 6\u20137)</li>'
+        + '<li>Lambda-Logging starten \u2013 Dual-Wideband an beiden Collectors</li>'
+        + '<li>Leerlauf: Gemischschrauben nach Lambda, nicht nach Geh\u00f6r</li>'
+        + '<li>Teillast (Stra\u00dfe): Progression/\u00dcbergang beurteilen</li>'
+        + '<li>Volllast (Strecke): Hauptd\u00fcse nach Lambda, nicht nach Tabelle</li>'
+        + '</ol></div>'
+
+        + '<h4>Was zwei Sonden k\u00f6nnen und was nicht</h4>'
+        + '<p>Der GT40 hat zwei Lambda-Bungs in den Bundle-of-Snakes-Collectoren '
+        + '(Standard-Gewinde M18\u00d71,5 f\u00fcr Bosch-kompatible Sonden). '
+        + 'Zwei Sonden liefern zwei <strong>Bank-Mittelwerte</strong>, keine '
+        + 'Einzelzylinder-Werte. Ein zu fetter und ein zu magerer Zylinder '
+        + 'derselben Bank heben sich im Mittelwert auf. Ein auff\u00e4lliger '
+        + 'Bankwert sagt <em>dass</em> etwas nicht stimmt, nicht <em>wo</em>.</p>'
+
+        + '<div class="exk-box info"><strong>Einzelzylinder-Information:</strong> '
+        + 'Liefert das Kerzenbild (Isolatorfu\u00df, Elektrodenfarbe). Es erg\u00e4nzt '
+        + 'das Lambda-Logging, ersetzt es aber nicht. Die Kerzenfarbe h\u00e4ngt auch '
+        + 'von W\u00e4rmewert, Additiven, Betriebsdauer und Lastkollektiv ab \u2013 '
+        + 'sie ist kein alleiniger Indikator f\u00fcr die Gemischqualit\u00e4t.</div>'
+
+        + '<h4>Lambda-Zielwerte (Richtwerte)</h4>'
+        + '<table class="exk-table">'
+        + '<tr><th>Betriebsbereich</th><th>\u03bb</th><th>AFR</th><th>Anmerkung</th></tr>'
+        + '<tr><td>Leerlauf</td><td>0,98\u20131,02</td><td>14,4\u201315,0</td>'
+        + '<td>Leicht fett f\u00fcr stabilen Lauf</td></tr>'
+        + '<tr><td>Teillast / Cruise</td><td>1,00\u20131,05</td><td>14,7\u201315,4</td>'
+        + '<td>St\u00f6chiometrisch bis leicht mager</td></tr>'
+        + '<tr><td>Volllast (WOT)</td><td>0,86\u20130,90</td><td>12,6\u201313,2</td>'
+        + '<td>Fett f\u00fcr Leistung + K\u00fchlung</td></tr>'
+        + '</table>'
+        + '<p style="font-size:0.78rem;color:#718096;margin-top:0.2rem;">'
+        + 'Richtwerte \u2013 der optimale Punkt h\u00e4ngt von CR, Timing und '
+        + 'Brennraumform ab. Am Lambda entscheiden, nicht an einer Tabelle.</p>'
+
+        + '<h4>Hardware: Innovate Dual-Wideband</h4>'
+        + '<p>Geplant: <strong>Innovate</strong>-System (DLG-1 oder 2\u00d7 LC-2) \u2013 '
+        + 'zwei Kan\u00e4le f\u00fcr gleichzeitige Aufzeichnung beider Collectors. '
+        + 'Schmalband-Sonden (Serien-O2) sind f\u00fcr exakte Abstimmung '
+        + '<strong>nicht geeignet</strong> \u2013 sie melden nur fett/mager um '
+        + '\u03bb\u00a0=\u00a01,0, aber keine Absolutwerte.</p>'
+
+        + '<div class="exk-box info"><strong>Vorhandene Infrastruktur:</strong> '
+        + 'In jedem der beiden Bundle-of-Snakes-Collector sitzt ein '
+        + '<strong>M18\u00d71,5-Bung</strong> (Bosch-Standard). Die Sonden k\u00f6nnen '
+        + 'direkt eingeschraubt werden \u2013 kein Schweissen oder Bohren n\u00f6tig. '
+        + 'Ohne Sonde: Bung mit M18-Blindstopfen verschliessen.</div>'
+
+        + '<h4>Lambda im Zusammenspiel</h4>'
+        + '<table class="exk-table">'
+        + '<tr><th>Aktion</th><th>Lambda-Effekt</th><th>Massnahme</th></tr>'
+        + '<tr><td>Timing erh\u00f6ht</td><td>Lambda geht leicht Richtung mager '
+        + '(bessere Verbrennung)</td><td>Normal \u2013 kein Jetting-Eingriff</td></tr>'
+        + '<tr><td>Timing zu niedrig</td><td>Lambda zeigt mager '
+        + '(unvollst\u00e4ndige Verbrennung!)</td>'
+        + '<td><strong>Nicht umbed\u00fcsen!</strong> Erst Timing korrigieren</td></tr>'
+        + '<tr><td>Hauptd\u00fcse vergr\u00f6ssert</td><td>Lambda geht fett</td>'
+        + '<td>Nur \u00e4ndern wenn Lambda bei korrektem Timing mager zeigt</td></tr>'
+        + '<tr><td>Falschluft (Undichtigkeit)</td><td>Lambda zeigt mager '
+        + '(Fremdluft verd\u00fcnnt Abgas)</td>'
+        + '<td><strong>Nicht umbed\u00fcsen!</strong> Leck finden und beheben</td></tr>'
+        + '<tr><td>Bank-Differenz A/B</td><td>Ein Collector fetter als der andere</td>'
+        + '<td>Synchronisation und Mischkammer-Zuordnung pr\u00fcfen</td></tr>'
+        + '</table>'
       }
     ]
   };

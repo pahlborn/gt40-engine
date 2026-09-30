@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v85',
+      date: '2026-09-30',
+      time: '17:00',
+      title: 'Exkurs Kapitel 10: Lambda, Zuendung & Vergaser',
+      changes: [
+        { type: 'neu', text: 'Exkurs Kapitel 10: "Lambda: Zuendung, Vergaser und das Messinstrument". Erklaert warum Zuendung vor Beduesung kommt (falsche Lambda-Interpretation), Bank-Mittelwerte, Lambda-Zielwerte (Leerlauf/Teillast/WOT), Innovate Dual-Wideband, M18x1.5 Bungs in den Bundle-of-Snakes-Collectoren, und das Zusammenspiel Lambda/Timing/Jetting/Falschluft.' },
+        { type: 'fix', text: 'Exkurs Kapitel 9: Korrektur Kerzenfarbe. "Rehbraun = ideal" war als alleiniger Indikator unzureichend. Gemischbeurteilung erfolgt jetzt am Lambda, Kerzenbild liefert ergaenzend die Einzelzylinder-Information.' },
+        { type: 'verbessert', text: 'Bundle of Snakes (index.html): M18x1.5 Lambda-Bungs in den Collectoren als technisches Merkmal dokumentiert (Bosch-Standard, direkt verwendbar fuer Innovate-Sonden).' }
+      ]
+    },
+    {
       version: 'v84',
       date: '2026-09-30',
       time: '16:43',
