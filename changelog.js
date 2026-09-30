@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v81',
+      date: '2026-09-24',
+      time: '15:30',
+      title: 'Planspiel-Modus, Kapitel 6 Neustrukturierung',
+      changes: [
+        { type: 'neu', text: 'Planspiel-Modus: Gelber Banner signalisiert wenn Simulator mit geaenderten Parametern rechnet (anderer Kopf/Nockenwelle). Button "Zurueck zum Ist-Zustand" setzt alles auf verbaute Konfiguration zurueck.' },
+        { type: 'verbessert', text: 'Kopf-Preset ueberschreibt Brennraum (Kap. 4) nicht mehr. Stattdessen interne CR-Berechnung im Simulator-Bereich. Kap. 4 = Ist-Zustand, Simulator = Planspiel.' },
+        { type: 'verbessert', text: 'Kap. 6 komplett neu strukturiert: 3 saubere Bloecke (6a. Oele/Kuehlmittel/Bremsfluessigkeit, 6b. Kraftstoff, 6c. Dichtmittel). Einheitliches Spaltenformat pro Block. Fuellmengen-Tabelle als Infobox.' }
+      ]
+    },
+    {
       version: 'v80',
       date: '2026-09-24',
       time: '14:00',
