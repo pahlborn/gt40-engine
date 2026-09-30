@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v88',
+      date: '2026-09-30',
+      time: '20:00',
+      title: 'Setup-Block aufgeloest: Reifen-Presets, Cam/Kopf und Bremsen an den richtigen Stellen',
+      changes: [
+        { type: 'verbessert', text: 'Fahrzeug-Setup-Block entfernt \u2013 war ein monolithischer Editor der Reifen, Nockenwelle und Bremsen vermengt hat.' },
+        { type: 'neu', text: 'Reifen-Presets: 6 vordefinierte Reifenkonfigurationen (Avon Crossply A24, CR6ZZ Radial 295/225, Slick, Wet Radial/Crossply) direkt in der Reifen-Sektion des Geschwindigkeits-Simulators.' },
+        { type: 'verbessert', text: 'Nockenwelle/Kopf bleiben im Motor-Simulator (dort gehoeren sie hin). Bremsen bleiben im Geschwindigkeits-Simulator. Keine Duplikation mehr.' }
+      ]
+    },
+    {
       version: 'v87',
       date: '2026-09-30',
       time: '19:00',

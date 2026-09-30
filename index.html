@@ -583,118 +583,7 @@
         <div class="section-body">
             <div class="info-box" style="margin-bottom:0.5rem;"><strong>Hinweis:</strong> Alle Eingangsdaten aus Block, Kolben, Zylinderk&ouml;pfe, Nockenwelle, Getriebe und Reifen sind jetzt verf&uuml;gbar. Die Simulatoren nutzen diese Daten f&uuml;r die Leistungs- und Geschwindigkeitsberechnung.</div>
 
-            <!-- Setup-Verwaltung (Schritt 1: Setup waehlen/erstellen) -->
-            <div class="comp-box" style="background:#fffff0;border-color:#ecc94b;">
-                <div class="comp-toggle" onclick="toggleComp(this)" style="color:#975a16;">&#9881; Fahrzeug-Setups</div>
-                <div class="comp-body">
-                <div style="font-size:0.72rem;color:#718096;margin-bottom:0.4rem;line-height:1.3;">
-                    Erstellen Sie verschiedene Setups (Reifen, Nockenwelle, Bremsbelag) und w&auml;hlen Sie sie im Simulator aus.
-                    Alle Setups werden lokal im Browser gespeichert.
-                    <strong>Hinweis:</strong> Dies ist ein Setup-Planungswerkzeug &ndash; kein Rundenzeitrechner.
-                    Die Simulation berechnet Beschleunigung und V-max auf Geraden, nicht Kurvenfahrten oder Rundenzeiten.
-                </div>
-                <div style="display:grid;grid-template-columns:auto 1fr auto;gap:0.3rem;align-items:center;margin-bottom:0.4rem;">
-                    <label style="font-weight:700;font-size:0.82rem;color:#975a16;">Aktives Setup</label>
-                    <select id="setupSelect" style="padding:0.3rem;border:2px solid #ecc94b;border-radius:6px;font-size:0.78rem;font-weight:600;background:#fffff0;" onchange="loadSetup()">
-                        <option value="_default">Standard (manuell)</option>
-                    </select>
-                    <button onclick="applySetupToSim()" style="padding:0.3rem 0.6rem;background:#975a16;color:#fff;border:none;border-radius:6px;font-size:0.72rem;font-weight:700;cursor:pointer;" title="Setup-Werte in den Simulator uebernehmen">&#9654; Anwenden</button>
-                </div>
-                <div style="display:flex;gap:0.3rem;margin-bottom:0.4rem;flex-wrap:wrap;">
-                    <button onclick="newSetup()" style="padding:0.25rem 0.5rem;background:#38a169;color:#fff;border:none;border-radius:4px;font-size:0.7rem;cursor:pointer;">+ Neues Setup</button>
-                    <button onclick="editCurrentSetup()" style="padding:0.25rem 0.5rem;background:#dd6b20;color:#fff;border:none;border-radius:4px;font-size:0.7rem;cursor:pointer;">&#9998; Bearbeiten</button>
-                    <button onclick="duplicateSetup()" style="padding:0.25rem 0.5rem;background:#3182ce;color:#fff;border:none;border-radius:4px;font-size:0.7rem;cursor:pointer;">&#128203; Duplizieren</button>
-                    <button onclick="deleteSetup()" style="padding:0.25rem 0.5rem;background:#e53e3e;color:#fff;border:none;border-radius:4px;font-size:0.7rem;cursor:pointer;">&#128465; L&ouml;schen</button>
-                </div>
-                <div id="setupEditor" style="display:none;background:#fff;border:1px solid #ecc94b;border-radius:8px;padding:0.5rem;">
-                    <div style="display:grid;grid-template-columns:auto 1fr;gap:0.2rem 0.4rem;font-size:0.76rem;align-items:center;">
-                        <label style="font-weight:700;color:#975a16;">Setup-Name</label>
-                        <input type="text" id="setupName" value="" placeholder="z.B. Pannoniaring Trocken" style="padding:0.25rem;border:1px solid #ecc94b;border-radius:4px;font-weight:600;">
-                        <div style="grid-column:1/-1;font-weight:700;color:#2b6cb0;margin-top:0.3rem;border-top:1px solid #e2e8f0;padding-top:0.3rem;">&#128722; Reifen Hinterachse</div>
-                        <label style="font-weight:600;">Format</label>
-                        <select id="setupTireFmt" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="toggleSetupTireFields()">
-                            <option value="metric">Metrisch</option>
-                            <option value="imperial">Imperial</option>
-                        </select>
-                        <label class="setup-tire-metric" style="font-weight:600;">Breite (mm)</label>
-                        <input class="setup-tire-metric" type="number" id="setupTireW" value="295" step="5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        <label class="setup-tire-metric" style="font-weight:600;">Querschnitt (%)</label>
-                        <input class="setup-tire-metric" type="number" id="setupTireAspect" value="50" step="5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        <label class="setup-tire-metric" style="font-weight:600;">Felge (inch)</label>
-                        <input class="setup-tire-metric" type="number" id="setupTireRim" value="15" step="1" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        <label class="setup-tire-imperial" style="font-weight:600;display:none;">Breite (inch)</label>
-                        <input class="setup-tire-imperial" type="number" id="setupTireImpW" value="11.0" step="0.5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;display:none;">
-                        <label class="setup-tire-imperial" style="font-weight:600;display:none;">Durchmesser (inch)</label>
-                        <input class="setup-tire-imperial" type="number" id="setupTireImpD" value="25.0" step="0.5" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;display:none;">
-                        <label class="setup-tire-imperial" style="font-weight:600;display:none;">Felge (inch)</label>
-                        <input class="setup-tire-imperial" type="number" id="setupTireImpRim" value="15" step="1" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;display:none;">
-                        <label style="font-weight:600;">Hersteller</label>
-                        <input type="text" id="setupTireMfg" value="Avon" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        <label style="font-weight:600;">Modell / Mischung</label>
-                        <input type="text" id="setupTireModel" value="CR6ZZ A29" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        <label style="font-weight:600;">Bauart</label>
-                        <select id="setupTireConstr" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;">
-                            <option value="crossply">Diagonal (Crossply)</option>
-                            <option value="radial" selected>Radial</option>
-                            <option value="radial_perf">Radial HP</option>
-                        </select>
-                        <label style="font-weight:600;">Typ</label>
-                        <select id="setupTireType" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;">
-                            <option value="road_legal">DOT</option>
-                            <option value="historic_aw">Historic All Weather</option>
-                            <option value="semislick">Semi-Slick</option>
-                            <option value="slick">Slick</option>
-                            <option value="wet">Regenreifen</option>
-                        </select>
-                        <div style="grid-column:1/-1;font-weight:700;color:#975a16;margin-top:0.3rem;border-top:1px solid #e2e8f0;padding-top:0.3rem;">&#9881; Nockenwelle</div>
-                        <label style="font-weight:600;">Profil</label>
-                        <select id="setupCam" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;" onchange="updateSetupCamFields()">
-                            <option value="xe274hr">COMP XE274HR (verbaut)</option>
-                            <option value="xe268hr">COMP XE268HR (milder)</option>
-                            <option value="xe286hr">COMP XE286HR (schaerfer)</option>
-                            <option value="xe294hr">COMP XE294HR (Race)</option>
-                            <option value="solid_custom">Solid Roller</option>
-                            <option value="custom">Benutzerdefiniert</option>
-                        </select>
-                        <label style="font-weight:600;">Duration Int / Exh</label>
-                        <div style="display:flex;gap:0.3rem;">
-                            <input type="number" id="setupCamDurInt" value="224" step="1" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                            <input type="number" id="setupCamDurExh" value="232" step="1" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        </div>
-                        <label style="font-weight:600;">Lift Int / Exh</label>
-                        <div style="display:flex;gap:0.3rem;">
-                            <input type="number" id="setupCamLiftInt" value="0.555" step="0.001" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                            <input type="number" id="setupCamLiftExh" value="0.565" step="0.001" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        </div>
-                        <label style="font-weight:600;">LSA / RPM-Limit</label>
-                        <div style="display:flex;gap:0.3rem;">
-                            <input type="number" id="setupCamLSA" value="112" step="1" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                            <input type="number" id="setupCamRPM" value="6200" step="100" style="width:50%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;">
-                        </div>
-                        <div style="grid-column:1/-1;font-weight:700;color:#e53e3e;margin-top:0.3rem;border-top:1px solid #e2e8f0;padding-top:0.3rem;">&#128736; Bremsen</div>
-                        <label style="font-weight:600;">Bremsbelag</label>
-                        <select id="setupBrake" style="padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.76rem;">
-                            <option value="oem">OEM / Strasse</option>
-                            <option value="r4s">Porterfield R4-S (Strasse+)</option>
-                            <option value="ds2500">Ferodo DS2500 (Track/Strasse)</option>
-                            <option value="r4" selected>Porterfield R4 (Track)</option>
-                            <option value="race">Race / Pagid RSL29</option>
-                        </select>
-                        <div style="grid-column:1/-1;font-weight:700;color:#718096;margin-top:0.3rem;border-top:1px solid #e2e8f0;padding-top:0.3rem;">Notizen</div>
-                        <div style="grid-column:1/-1;">
-                            <textarea id="setupNotes" rows="2" placeholder="z.B. Reifendruck kalt HA 1.8 bar, VA 1.6 bar..." style="width:100%;padding:0.2rem;border:1px solid #cbd5e0;border-radius:4px;font-size:0.72rem;resize:vertical;box-sizing:border-box;"></textarea>
-                        </div>
-                    </div>
-                    <div style="display:flex;gap:0.3rem;margin-top:0.4rem;">
-                        <button onclick="saveSetup()" style="flex:1;padding:0.3rem;background:#38a169;color:#fff;border:none;border-radius:6px;font-size:0.76rem;font-weight:700;cursor:pointer;">Speichern</button>
-                        <button onclick="cancelSetupEdit()" style="flex:1;padding:0.3rem;background:#a0aec0;color:#fff;border:none;border-radius:6px;font-size:0.76rem;font-weight:700;cursor:pointer;">Abbrechen</button>
-                    </div>
-                </div>
-                <div id="setupDetails" style="font-size:0.72rem;color:#4a5568;background:#fffbe6;border:1px solid #ecc94b;border-radius:6px;padding:0.4rem;display:none;"></div>
-                </div><!-- /comp-body Setup-Verwaltung -->
-            </div><!-- /comp-box Setup-Verwaltung -->
-
-            <!-- Motor-Simulator (Schritt 2: Leistung berechnen) -->
+            <!-- Motor-Simulator -->
             <div class="comp-box" id="simBox">
                 <div class="comp-toggle" onclick="toggleComp(this)">&#128200; Motor-Simulator &amp; Kraftstoffempfehlung</div>
                 <div class="comp-body">
@@ -2779,13 +2668,11 @@
         simPullData(); // alle Werte aus Kap. 4 zurueckholen
     }
 
-    // ==== FAHRZEUG-SETUP-VERWALTUNG ====
-    // Setups speichern Reifen + Nockenwelle + Bremsbelag als Einheit.
-    // Gespeichert in localStorage als JSON-Array.
-    var SETUP_STORAGE_KEY = 'gt40_setups';
-    var SETUP_EDITING_ID = null; // null = neues Setup, String = bearbeiten
+    // ==== REIFEN-PRESETS ====
+    // Reifen-Konfigurationen fuer das Dropdown in der Reifen-Sektion.
+    // Nockenwelle und Bremsen werden separat in ihren eigenen Sektionen gewaehlt.
 
-    // Nockenwellen-Referenzdaten (fuer Setup-Editor Cam-Dropdown)
+    // Nockenwellen-Referenzdaten (fuer Cam-Preset-Dropdown im Motor-Simulator)
     var CAM_PRESETS = [
         { id: 'xe274hr', name: 'COMP XE274HR (verbaut)', durInt: 224, durExh: 232, liftInt: 0.555, liftExh: 0.565, lsa: 112, rpmLimit: 6200, notes: 'Street/Strip, Hydraulic Roller. Breiter Powerband 2200-6200. Mit AFR 1399 + Spring #8605 (.650" Limit): OK.' },
         { id: 'xe268hr', name: 'COMP XE268HR (milder)', durInt: 218, durExh: 224, liftInt: 0.536, liftExh: 0.540, lsa: 112, rpmLimit: 5800, notes: 'Mehr Drehmoment unten, weniger Spitzenleistung. Bessere Fahrbarkeit. Passt auf alle gaengigen Koepfe.' },
@@ -2794,356 +2681,79 @@
         { id: 'solid_custom', name: 'Solid Roller (Beispiel)', durInt: 248, durExh: 252, liftInt: 0.620, liftExh: 0.625, lsa: 108, rpmLimit: 7200, notes: 'Solid Roller: .625 < .650 Limit der 8605 Springs, mechanisch knapp OK. Aber: 165cc Port voellig unterdimensioniert. Braucht groessere Koepfe (185cc+), Solid-Roller-Lifter + Pushrods. Ventilspiel einstellen!' }
     ];
 
-    // Default-Setups (werden beim ersten Start angelegt)
-    var DEFAULT_SETUPS = [
-        {
-            id: 'default_trocken_crossply',
-            name: 'Trocken: Crossply A24',
-            tire: { fmt: 'imperial', impW: 11.0, impD: 25.0, impRim: 15, w: 279, aspect: 0, rim: 15, mfg: 'Avon', model: 'Historic A24', constr: 'crossply', type: 'historic_aw' },
-            cam: { id: 'xe274hr', durInt: 224, durExh: 232, liftInt: 0.555, liftExh: 0.565, lsa: 112, rpmLimit: 6200 },
-            brake: 'r4',
-            notes: 'Standard-Setup mit originalen Crossply-Reifen und XE274HR.'
-        },
-        {
-            id: 'default_trocken_radial',
-            name: 'Trocken: CR6ZZ Radial 295',
-            tire: { fmt: 'metric', w: 295, aspect: 50, rim: 15, mfg: 'Avon', model: 'CR6ZZ A29', constr: 'radial', type: 'road_legal' },
-            cam: { id: 'xe274hr', durInt: 224, durExh: 232, liftInt: 0.555, liftExh: 0.565, lsa: 112, rpmLimit: 6200 },
-            brake: 'r4',
-            notes: 'Radial-Upgrade mit besserer Seitenfuehrung.'
-        },
-        {
-            id: 'default_trocken_225',
-            name: 'Trocken: CR6ZZ Radial 225',
-            tire: { fmt: 'metric', w: 225, aspect: 60, rim: 15, mfg: 'Avon', model: 'CR6ZZ A29', constr: 'radial', type: 'road_legal' },
-            cam: { id: 'xe274hr', durInt: 224, durExh: 232, liftInt: 0.555, liftExh: 0.565, lsa: 112, rpmLimit: 6200 },
-            brake: 'ds2500',
-            notes: 'Schmaler-Radial-Setup, passt unter engere Radhaeuser.'
-        },
-        {
-            id: 'default_slick',
-            name: 'Slick: Crossply Racing',
-            tire: { fmt: 'imperial', impW: 11.0, impD: 25.0, impRim: 15, w: 279, aspect: 0, rim: 15, mfg: 'Avon', model: 'Historic Slick', constr: 'crossply', type: 'slick' },
-            cam: { id: 'xe286hr', durInt: 232, durExh: 240, liftInt: 0.584, liftExh: 0.590, lsa: 110, rpmLimit: 6500 },
-            brake: 'r4',
-            notes: 'Race-Setup: Slicks + schaerfere Nockenwelle.'
-        },
-        {
-            id: 'default_regen_radial',
-            name: 'Regen: CR6ZZ 225 (schmal)',
-            tire: { fmt: 'metric', w: 225, aspect: 60, rim: 15, mfg: 'Avon', model: 'CR6ZZ A29', constr: 'radial', type: 'wet' },
-            cam: { id: 'xe274hr', durInt: 224, durExh: 232, liftInt: 0.555, liftExh: 0.565, lsa: 112, rpmLimit: 6200 },
-            brake: 'ds2500',
-            notes: 'Regen-Setup: Schmaler als Trocken (weniger Aquaplaning). Reifendruck +0.2 bar.'
-        },
-        {
-            id: 'default_regen_crossply',
-            name: 'Regen: Crossply Wet (schmal)',
-            tire: { fmt: 'imperial', impW: 9.0, impD: 23.5, impRim: 15, w: 229, aspect: 0, rim: 15, mfg: 'Avon', model: 'Historic Wet', constr: 'crossply', type: 'wet' },
-            cam: { id: 'xe274hr', durInt: 224, durExh: 232, liftInt: 0.555, liftExh: 0.565, lsa: 112, rpmLimit: 6200 },
-            brake: 'r4s',
-            notes: 'Regen-Setup Crossply: Schmaler, R4-S weil Bremsen nicht heiss genug fuer R4.'
-        }
+    var TIRE_PRESETS = [
+        { id: 'crossply_a24', name: 'Avon Historic A24 (Crossply, 11.0/25.0-15)',
+          fmt: 'imperial', impW: 11.0, impD: 25.0, impRim: 15, w: 279, aspect: 0, rim: 15,
+          mfg: 'Avon', model: 'Historic A24', constr: 'crossply', type: 'historic_aw' },
+        { id: 'radial_295', name: 'Avon CR6ZZ A29 Radial 295/50R15',
+          fmt: 'metric', w: 295, aspect: 50, rim: 15,
+          mfg: 'Avon', model: 'CR6ZZ A29', constr: 'radial', type: 'road_legal' },
+        { id: 'radial_225', name: 'Avon CR6ZZ A29 Radial 225/60R15 (schmal)',
+          fmt: 'metric', w: 225, aspect: 60, rim: 15,
+          mfg: 'Avon', model: 'CR6ZZ A29', constr: 'radial', type: 'road_legal' },
+        { id: 'slick_crossply', name: 'Avon Historic Slick (Crossply, 11.0/25.0-15)',
+          fmt: 'imperial', impW: 11.0, impD: 25.0, impRim: 15, w: 279, aspect: 0, rim: 15,
+          mfg: 'Avon', model: 'Historic Slick', constr: 'crossply', type: 'slick' },
+        { id: 'wet_radial', name: 'Avon CR6ZZ 225/60R15 Regen (schmal)',
+          fmt: 'metric', w: 225, aspect: 60, rim: 15,
+          mfg: 'Avon', model: 'CR6ZZ A29', constr: 'radial', type: 'wet' },
+        { id: 'wet_crossply', name: 'Avon Historic Wet (Crossply, 9.0/23.5-15)',
+          fmt: 'imperial', impW: 9.0, impD: 23.5, impRim: 15, w: 229, aspect: 0, rim: 15,
+          mfg: 'Avon', model: 'Historic Wet', constr: 'crossply', type: 'wet' }
     ];
 
-    function getSetups() {
-        try {
-            var stored = localStorage.getItem(SETUP_STORAGE_KEY);
-            if (stored) return JSON.parse(stored);
-        } catch (e) { /* ignore */ }
-        // Erstaufruf: Default-Setups anlegen
-        saveSetups(DEFAULT_SETUPS);
-        return DEFAULT_SETUPS;
-    }
-
-    function saveSetups(setups) {
-        try { localStorage.setItem(SETUP_STORAGE_KEY, JSON.stringify(setups)); } catch (e) { /* ignore */ }
-    }
-
-    function populateSetupDropdown() {
-        var sel = document.getElementById('setupSelect');
-        if (!sel) return;
-        var current = sel.value;
-        // Alle ausser Default entfernen
-        while (sel.options.length > 1) sel.remove(1);
-        var setups = getSetups();
-        setups.forEach(function(s) {
-            var opt = document.createElement('option');
-            opt.value = s.id;
-            opt.textContent = s.name;
-            sel.appendChild(opt);
-        });
-        // Vorherige Auswahl wiederherstellen
-        if (current) sel.value = current;
-    }
-
-    function loadSetup() {
-        var sel = document.getElementById('setupSelect');
-        var detailsEl = document.getElementById('setupDetails');
-        if (!sel || sel.value === '_default') {
-            if (detailsEl) detailsEl.style.display = 'none';
-            return;
-        }
-        var setups = getSetups();
-        var s = setups.find(function(x) { return x.id === sel.value; });
-        if (!s) return;
-        // Details anzeigen
-        if (detailsEl) {
-            var tireLabel = s.tire.fmt === 'metric'
-                ? s.tire.w + '/' + s.tire.aspect + 'R' + s.tire.rim + ' ' + s.tire.mfg + ' ' + s.tire.model
-                : s.tire.impW + '/' + s.tire.impD + '\u00d7' + s.tire.impRim + ' ' + s.tire.mfg + ' ' + s.tire.model;
-            var constrLabel = { crossply: 'Diagonal', radial: 'Radial', radial_perf: 'Radial HP' }[s.tire.constr] || s.tire.constr;
-            var typeLabel = { road_legal: 'DOT', historic_aw: 'Historic AW', semislick: 'Semi-Slick', slick: 'Slick', wet: 'Regen' }[s.tire.type] || s.tire.type;
-            var camLabel = s.cam.id !== 'custom' ? (CAM_PRESETS.find(function(c) { return c.id === s.cam.id; }) || {}).name || s.cam.id : 'Benutzerdefiniert (Dur ' + s.cam.durInt + '/' + s.cam.durExh + ')';
-            var brakeLabel = (BRAKE_PADS[s.brake] || {}).label || s.brake;
-            detailsEl.innerHTML = '<strong>' + s.name + '</strong><br>'
-                + '<span style="color:#2b6cb0;">Reifen:</span> ' + tireLabel + ' (' + constrLabel + ', ' + typeLabel + ')<br>'
-                + '<span style="color:#975a16;">Cam:</span> ' + camLabel + ' (RPM ' + s.cam.rpmLimit + ')<br>'
-                + '<span style="color:#e53e3e;">Bremse:</span> ' + brakeLabel
-                + (s.notes ? '<br><span style="color:#718096;">' + s.notes + '</span>' : '');
-            detailsEl.style.display = '';
-        }
-    }
-
-    function applySetupToSim() {
-        var sel = document.getElementById('setupSelect');
-        if (!sel || sel.value === '_default') return;
-        var setups = getSetups();
-        var s = setups.find(function(x) { return x.id === sel.value; });
-        if (!s) return;
-
-        // Reifen anwenden
-        var t = s.tire;
-        document.getElementById('tireSizeFormat').value = t.fmt;
-        toggleTireFormat();
-        if (t.fmt === 'metric') {
-            document.getElementById('tireWidth').value = t.w;
-            document.getElementById('tireAspect').value = t.aspect;
-            document.getElementById('tireRim').value = t.rim;
-            calcTireDiam();
-        } else {
-            document.getElementById('tireImpW').value = t.impW;
-            document.getElementById('tireImpD').value = t.impD;
-            document.getElementById('tireImpRim').value = t.impRim;
-            calcTireDiamImp();
-        }
-        document.getElementById('tireMfg').value = t.mfg;
-        document.getElementById('tireModel').value = t.model;
-        document.getElementById('tireConstr').value = t.constr;
-        document.getElementById('tireType').value = t.type;
-        updateTireCrr();
-
-        // Nockenwelle anwenden
-        document.getElementById('simDurInt').value = s.cam.durInt;
-        document.getElementById('simDurExh').value = s.cam.durExh;
-        document.getElementById('simLiftInt').value = s.cam.liftInt;
-        document.getElementById('simLiftExh').value = s.cam.liftExh;
-        document.getElementById('simLSA').value = s.cam.lsa;
-        SYSTEM_RPM_LIMIT = s.cam.rpmLimit;
-        var camP = CAM_PRESETS.find(function(c) { return c.id === s.cam.id; });
-        SYSTEM_RPM_LABEL = camP ? camP.name.split(' (')[0] : 'Benutzerdefiniert';
-        var redlineEl = document.getElementById('dsRedline');
-        if (redlineEl) redlineEl.value = Math.min(s.cam.rpmLimit + 300, 7500);
-        // Cam-Preset-Dropdown synchronisieren
-        var camSel = document.getElementById('camPreset');
-        if (camSel) camSel.value = s.cam.id || 'custom';
-        var noteEl = document.getElementById('camPresetNote');
-        if (noteEl && camP) noteEl.textContent = camP.notes;
-
-        // Bremsbelag anwenden
-        var brakeSel = document.getElementById('dsBrakePad');
-        if (brakeSel) brakeSel.value = s.brake;
-
-        // Tire-Preset-Dropdown auf custom setzen (Setup uebersteuert)
-        var tireSel = document.getElementById('tirePreset');
-        if (tireSel) tireSel.value = 'custom';
-
-        // Alles neu berechnen
-        runSim();
-        autoSave();
-    }
-
-    function newSetup() {
-        SETUP_EDITING_ID = null;
-        // Editor leeren mit Defaults
-        document.getElementById('setupName').value = '';
-        document.getElementById('setupTireFmt').value = 'metric';
-        toggleSetupTireFields();
-        document.getElementById('setupTireW').value = 295;
-        document.getElementById('setupTireAspect').value = 50;
-        document.getElementById('setupTireRim').value = 15;
-        document.getElementById('setupTireMfg').value = 'Avon';
-        document.getElementById('setupTireModel').value = 'CR6ZZ A29';
-        document.getElementById('setupTireConstr').value = 'radial';
-        document.getElementById('setupTireType').value = 'road_legal';
-        document.getElementById('setupCam').value = 'xe274hr';
-        updateSetupCamFields();
-        document.getElementById('setupBrake').value = 'r4';
-        document.getElementById('setupNotes').value = '';
-        document.getElementById('setupEditor').style.display = '';
-    }
-
-    function duplicateSetup() {
-        var sel = document.getElementById('setupSelect');
-        if (!sel || sel.value === '_default') { newSetup(); return; }
-        var setups = getSetups();
-        var s = setups.find(function(x) { return x.id === sel.value; });
-        if (!s) { newSetup(); return; }
-        SETUP_EDITING_ID = null;
-        fillSetupEditor(s);
-        document.getElementById('setupName').value = s.name + ' (Kopie)';
-        document.getElementById('setupEditor').style.display = '';
-    }
-
-    function deleteSetup() {
-        var sel = document.getElementById('setupSelect');
-        if (!sel || sel.value === '_default') return;
-        var setups = getSetups();
-        var idx = setups.findIndex(function(x) { return x.id === sel.value; });
-        if (idx === -1) return;
-        if (!confirm('Setup "' + setups[idx].name + '" wirklich l\u00f6schen?')) return;
-        setups.splice(idx, 1);
-        saveSetups(setups);
-        sel.value = '_default';
-        populateSetupDropdown();
-        loadSetup();
-    }
-
-    function fillSetupEditor(s) {
-        document.getElementById('setupName').value = s.name;
-        document.getElementById('setupTireFmt').value = s.tire.fmt;
-        toggleSetupTireFields();
-        if (s.tire.fmt === 'metric') {
-            document.getElementById('setupTireW').value = s.tire.w;
-            document.getElementById('setupTireAspect').value = s.tire.aspect;
-            document.getElementById('setupTireRim').value = s.tire.rim;
-        } else {
-            document.getElementById('setupTireImpW').value = s.tire.impW || 11.0;
-            document.getElementById('setupTireImpD').value = s.tire.impD || 25.0;
-            document.getElementById('setupTireImpRim').value = s.tire.impRim || 15;
-        }
-        document.getElementById('setupTireMfg').value = s.tire.mfg;
-        document.getElementById('setupTireModel').value = s.tire.model;
-        document.getElementById('setupTireConstr').value = s.tire.constr;
-        document.getElementById('setupTireType').value = s.tire.type;
-        document.getElementById('setupCam').value = s.cam.id || 'custom';
-        document.getElementById('setupCamDurInt').value = s.cam.durInt;
-        document.getElementById('setupCamDurExh').value = s.cam.durExh;
-        document.getElementById('setupCamLiftInt').value = s.cam.liftInt;
-        document.getElementById('setupCamLiftExh').value = s.cam.liftExh;
-        document.getElementById('setupCamLSA').value = s.cam.lsa;
-        document.getElementById('setupCamRPM').value = s.cam.rpmLimit;
-        document.getElementById('setupBrake').value = s.brake;
-        document.getElementById('setupNotes').value = s.notes || '';
-    }
-
-    function readSetupFromEditor() {
-        var fmt = document.getElementById('setupTireFmt').value;
-        var tire = {
-            fmt: fmt,
-            mfg: document.getElementById('setupTireMfg').value,
-            model: document.getElementById('setupTireModel').value,
-            constr: document.getElementById('setupTireConstr').value,
-            type: document.getElementById('setupTireType').value
-        };
-        if (fmt === 'metric') {
-            tire.w = parseFloat(document.getElementById('setupTireW').value) || 295;
-            tire.aspect = parseFloat(document.getElementById('setupTireAspect').value) || 50;
-            tire.rim = parseFloat(document.getElementById('setupTireRim').value) || 15;
-        } else {
-            tire.impW = parseFloat(document.getElementById('setupTireImpW').value) || 11.0;
-            tire.impD = parseFloat(document.getElementById('setupTireImpD').value) || 25.0;
-            tire.impRim = parseFloat(document.getElementById('setupTireImpRim').value) || 15;
-            // Breite in mm fuer Grip-Berechnung
-            tire.w = Math.round(tire.impW * 25.4);
-        }
-        var camId = document.getElementById('setupCam').value;
-        return {
-            name: document.getElementById('setupName').value.trim() || 'Unbenanntes Setup',
-            tire: tire,
-            cam: {
-                id: camId,
-                durInt: parseFloat(document.getElementById('setupCamDurInt').value) || 224,
-                durExh: parseFloat(document.getElementById('setupCamDurExh').value) || 232,
-                liftInt: parseFloat(document.getElementById('setupCamLiftInt').value) || 0.555,
-                liftExh: parseFloat(document.getElementById('setupCamLiftExh').value) || 0.565,
-                lsa: parseFloat(document.getElementById('setupCamLSA').value) || 112,
-                rpmLimit: parseFloat(document.getElementById('setupCamRPM').value) || 6200
-            },
-            brake: document.getElementById('setupBrake').value,
-            notes: document.getElementById('setupNotes').value.trim()
-        };
-    }
-
-    function saveSetup() {
-        var data = readSetupFromEditor();
-        var setups = getSetups();
-        if (SETUP_EDITING_ID) {
-            // Bestehendes aktualisieren
-            var idx = setups.findIndex(function(x) { return x.id === SETUP_EDITING_ID; });
-            if (idx !== -1) {
-                data.id = SETUP_EDITING_ID;
-                setups[idx] = data;
-            }
-        } else {
-            // Neues Setup anlegen
-            data.id = 'setup_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-            setups.push(data);
-        }
-        saveSetups(setups);
-        populateSetupDropdown();
-        document.getElementById('setupSelect').value = data.id;
-        loadSetup();
-        cancelSetupEdit();
-    }
-
-    function cancelSetupEdit() {
-        document.getElementById('setupEditor').style.display = 'none';
-        SETUP_EDITING_ID = null;
-    }
-
-    function editCurrentSetup() {
-        var sel = document.getElementById('setupSelect');
-        if (!sel || sel.value === '_default') return;
-        var setups = getSetups();
-        var s = setups.find(function(x) { return x.id === sel.value; });
-        if (!s) return;
-        SETUP_EDITING_ID = s.id;
-        fillSetupEditor(s);
-        document.getElementById('setupEditor').style.display = '';
-    }
-
-    function toggleSetupTireFields() {
-        var fmt = document.getElementById('setupTireFmt').value;
-        var metricEls = document.querySelectorAll('.setup-tire-metric');
-        var impEls = document.querySelectorAll('.setup-tire-imperial');
-        for (var i = 0; i < metricEls.length; i++) metricEls[i].style.display = (fmt === 'metric') ? '' : 'none';
-        for (var j = 0; j < impEls.length; j++) impEls[j].style.display = (fmt === 'imperial') ? '' : 'none';
-    }
-
-    function updateSetupCamFields() {
-        var camId = document.getElementById('setupCam').value;
-        if (camId === 'custom') return;
-        var p = CAM_PRESETS.find(function(c) { return c.id === camId; });
-        if (!p) return;
-        document.getElementById('setupCamDurInt').value = p.durInt;
-        document.getElementById('setupCamDurExh').value = p.durExh;
-        document.getElementById('setupCamLiftInt').value = p.liftInt;
-        document.getElementById('setupCamLiftExh').value = p.liftExh;
-        document.getElementById('setupCamLSA').value = p.lsa;
-        document.getElementById('setupCamRPM').value = p.rpmLimit;
-    }
-
-    // Alte Preset-Funktionen bleiben fuer Abwaertskompatibilitaet
     function initTirePresets() {
         var sel = document.getElementById('tirePreset');
         if (!sel) return;
-        // Keine hardcoded Optionen mehr - die alten bleiben als Fallback
+        TIRE_PRESETS.forEach(function(p) {
+            var opt = document.createElement('option');
+            opt.value = p.id;
+            opt.textContent = p.name;
+            sel.appendChild(opt);
+        });
     }
 
     function applyTirePreset() {
-        // Wird nicht mehr benoetigt - Setup-System uebernimmt
+        var sel = document.getElementById('tirePreset');
+        if (!sel || sel.value === 'custom') return;
+        var p = TIRE_PRESETS.find(function(t) { return t.id === sel.value; });
+        if (!p) return;
+
+        // Format setzen
+        document.getElementById('tireSizeFormat').value = p.fmt;
+        toggleTireFormat();
+        if (p.fmt === 'metric') {
+            document.getElementById('tireWidth').value = p.w;
+            document.getElementById('tireAspect').value = p.aspect;
+            document.getElementById('tireRim').value = p.rim;
+            calcTireDiam();
+        } else {
+            document.getElementById('tireImpW').value = p.impW;
+            document.getElementById('tireImpD').value = p.impD;
+            document.getElementById('tireImpRim').value = p.impRim;
+            calcTireDiamImp();
+        }
+        document.getElementById('tireMfg').value = p.mfg;
+        document.getElementById('tireModel').value = p.model;
+        document.getElementById('tireConstr').value = p.constr;
+        document.getElementById('tireType').value = p.type;
+        updateTireCrr();
+        runDriveSim();
+        autoSave();
     }
+
+    // Stub-Funktionen fuer entferntes Setup-System (verhindert JS-Fehler falls noch referenziert)
+    function populateSetupDropdown() {}
+    function loadSetup() {}
+    function applySetupToSim() {}
+    function newSetup() {}
+    function duplicateSetup() {}
+    function deleteSetup() {}
+    function saveSetup() {}
+    function cancelSetupEdit() {}
+    function editCurrentSetup() {}
+    function toggleSetupTireFields() {}
+    function updateSetupCamFields() {}
 
     function initCamPresets() {
         var sel = document.getElementById('camPreset');
