@@ -14,8 +14,8 @@
   var RELEASES = [
     {
       version: 'v83',
-      date: '2026-09-24',
-      time: '16:30',
+      date: '2026-09-30',
+      time: '07:08',
       title: 'UI-Bereinigung: Farben, Raender, Ueberschriften',
       changes: [
         { type: 'verbessert', text: 'Glossar: Ueberschrift "Glossar - Fachbegriffe & Erklaerungen" eingefuegt (alle 3 Seiten). Seitenraender via guide-content CSS.' },
@@ -26,8 +26,8 @@
     },
     {
       version: 'v82',
-      date: '2026-09-24',
-      time: '16:00',
+      date: '2026-09-30',
+      time: '06:58',
       title: 'Logische Reihenfolge Kap. 5, Motor-Simulator Feldstruktur',
       changes: [
         { type: 'verbessert', text: 'Kapitel 5 Reihenfolge: Logischer Ablauf Setups → Motor-Simulator → Kraftstoff → Geschwindigkeit → Strecken → Pruefstands-Exkurs. Setup-Verwaltung steht jetzt am Anfang (erst planen, dann berechnen).' },
@@ -37,8 +37,8 @@
     },
     {
       version: 'v81',
-      date: '2026-09-24',
-      time: '15:30',
+      date: '2026-09-30',
+      time: '06:38',
       title: 'Planspiel-Modus, Kapitel 6 Neustrukturierung',
       changes: [
         { type: 'neu', text: 'Planspiel-Modus: Gelber Banner signalisiert wenn Simulator mit geaenderten Parametern rechnet (anderer Kopf/Nockenwelle). Button "Zurueck zum Ist-Zustand" setzt alles auf verbaute Konfiguration zurueck.' },
@@ -48,8 +48,8 @@
     },
     {
       version: 'v80',
-      date: '2026-09-24',
-      time: '14:00',
+      date: '2026-09-30',
+      time: '06:09',
       title: 'Zylinderkopf-Presets, Kraftstoff-Korrektur, Fuellmengen',
       changes: [
         { type: 'neu', text: 'Zylinderkopf-Presets: Dropdown im Motor-Simulator mit 6 Koepfen (AFR 1399 165cc, AFR 185cc, TFS TW 170, TFS TW 170 CNC, Edelbrock RPM, Ford X2). Setzt CFM-Flow und Brennraumvolumen automatisch. Warnung wenn Cam-Lift das Kopf-Limit ueberschreitet.' },
@@ -61,8 +61,8 @@
     },
     {
       version: 'v79',
-      date: '2026-09-24',
-      time: '12:30',
+      date: '2026-09-29',
+      time: '07:08',
       title: 'Cam-Notes: Kopf/Feder-Anforderungen',
       changes: [
         { type: 'verbessert', text: 'Alle 5 Cam-Presets mit praezisen Kopf/Feder-Anforderungen: XE268HR Stock OK, XE274HR Feder-Upgrade empfohlen, XE286HR braucht Beehive/Dual-Spring + mehr Flow, XE294HR braucht Koepfe >.600, Solid Roller braucht >.620 Koepfe + Solid-Federn.' }
@@ -70,8 +70,8 @@
     },
     {
       version: 'v78',
-      date: '2026-09-24',
-      time: '11:30',
+      date: '2026-09-29',
+      time: '07:02',
       title: 'Fahrzeug-Setup-Verwaltung',
       changes: [
         { type: 'neu', text: 'Fahrzeug-Setups: Eigene Box oberhalb des Simulators. Erstellen, bearbeiten, duplizieren und loeschen von Setups. Jedes Setup kombiniert Reifen (HA), Nockenwelle, Bremsbelag und Notizen.' },
@@ -83,8 +83,8 @@
     },
     {
       version: 'v77',
-      date: '2026-09-24',
-      time: '10:00',
+      date: '2026-09-29',
+      time: '06:51',
       title: 'Korrekturen: Bremsbelag-Werte, Regenreifen schmaler',
       changes: [
         { type: 'fix', text: 'Bremsbelag-Reibwerte korrigiert: R4-S ist der STRASSEN-Belag (mu 0.38), R4 ist der TRACK-Belag (mu 0.50, lt. Porterfield Datenblatt). Waren vertauscht.' },
@@ -94,8 +94,8 @@
     },
     {
       version: 'v76',
-      date: '2026-09-24',
-      time: '09:00',
+      date: '2026-09-29',
+      time: '06:47',
       title: 'Glossar: Fahrwerk & Setup, Bremsbelag-Bonus',
       changes: [
         { type: 'neu', text: 'Glossar Kategorie 19: Fahrwerk, Bremsen & Reifen (Setup). 7 Eintraege: Bremsbelag, Reifenmischung, Reifendruck, Rollwiderstand, Lateraler Grip, Federrate, Strecken-Setup. DE + EN.' },
@@ -105,8 +105,8 @@
     },
     {
       version: 'v75',
-      date: '2026-09-24',
-      time: '07:30',
+      date: '2026-09-29',
+      time: '06:36',
       title: 'Reifen- und Nockenwellen-Presets, Breitenkorrektur',
       changes: [
         { type: 'neu', text: 'Reifen-Setup-Bibliothek: 6 vordefinierte Setups (Crossply A24, CR6ZZ A29 295er/225er, Slick, Regen Radial/Crossply). Dropdown-Auswahl fuellt alle Felder automatisch und startet Simulation neu.' },
@@ -118,8 +118,8 @@
     },
     {
       version: 'v74',
-      date: '2026-09-24',
-      time: '06:00',
+      date: '2026-09-29',
+      time: '05:54',
       title: 'Dynamische Exit-Speed, Grip-Modell, Info-Box',
       changes: [
         { type: 'neu', text: 'Strecken-V-max: Kurvenausgangsgeschwindigkeit (Exit Speed) wird jetzt dynamisch aus dem lateralen Haftungskoeffizienten des gewaehlten Reifens berechnet. Formel: v = v_basis x sqrt(mu/0.80). Slick-Reifen = hoehere Exit-Speed, Regenreifen = niedrigere.' },
@@ -131,8 +131,8 @@
     },
     {
       version: 'v73',
-      date: '2026-09-24',
-      time: '05:00',
+      date: '2026-09-29',
+      time: '05:41',
       title: 'Reifentyp Historic All Weather',
       changes: [
         { type: 'neu', text: 'Neuer Reifentyp "Historic All Weather" - nachgeschnittenes Originalprofil der 60er-Jahre GT40. Crr zwischen DOT und Semi-Slick (Crossply: 0.0155). Geringere Haftung als Slick, aber schonender fuer die TSC-GT40-Fahrwerkskomponenten.' }
@@ -140,8 +140,8 @@
     },
     {
       version: 'v72',
-      date: '2026-09-24',
-      time: '04:00',
+      date: '2026-09-28',
+      time: '17:41',
       title: 'Picklist Zurueck-Link, Header iPhone-Fix',
       changes: [
         { type: 'fix', text: 'Pickliste: Zurueck-Link zur Uebersicht hinzugefuegt.' },
@@ -150,8 +150,8 @@
     },
     {
       version: 'v71',
-      date: '2026-09-24',
-      time: '03:00',
+      date: '2026-09-28',
+      time: '17:39',
       title: 'Nummerierung, Picklist-Abgleich, Korrekturen',
       changes: [
         { type: 'fix', text: 'Sektionsnummerierung durchgaengig: 1. Projektdaten, 2. Build-Ziele, 3. Build Log, 4. Verdichtungsrechner, 5. Simulation & Analyse, 6. Betriebsstoffe, 7. Kritische Warnungen, 8. Teilekatalog.' },
@@ -161,8 +161,8 @@
     },
     {
       version: 'v70',
-      date: '2026-09-24',
-      time: '02:00',
+      date: '2026-09-28',
+      time: '17:32',
       title: 'Reifen-Konfiguration: Groesse, Bauart, Typ mit Umrechnung',
       changes: [
         { type: 'neu', text: 'Vollstaendige Reifen-Konfiguration im Geschwindigkeits-Simulator: 3 Eingabeformate (Metrisch 295/50R15, Imperial 8.5/23.5-15, Durchmesser direkt).' },
@@ -174,8 +174,8 @@
     },
     {
       version: 'v69',
-      date: '2026-09-24',
-      time: '01:00',
+      date: '2026-09-28',
+      time: '17:11',
       title: 'Streckenanalyse in Simulation & Analyse, Struktur-Fix',
       changes: [
         { type: 'fix', text: 'Streckenanalyse korrekt in "Simulation & Analyse" eingebettet (direkt nach Geschwindigkeits-Simulator).' },
@@ -184,8 +184,8 @@
     },
     {
       version: 'v68',
-      date: '2026-09-24',
-      time: '00:00',
+      date: '2026-09-28',
+      time: '15:35',
       title: 'Datenfluss Phase 4: Strecken-V-max aus Geschwindigkeits-Simulator',
       changes: [
         { type: 'neu', text: 'Strecken-V-max wird jetzt physikbasiert berechnet: Beschleunigungssimulation ueber die Geradenlaenge jeder Strecke (Radkraft vs. Luftwiderstand + Rollwiderstand + Steigung). Ergebnis mit [Sim]-Tag gekennzeichnet.' },
@@ -195,8 +195,8 @@
     },
     {
       version: 'v67',
-      date: '2026-09-23',
-      time: '23:00',
+      date: '2026-09-28',
+      time: '11:45',
       title: 'Exkurs komplett ueberarbeitet, Duplikate bereinigt, Datenfluss-Kette',
       changes: [
         { type: 'verbessert', text: 'Exkurs (roter Button) komplett neu geschrieben: 9 Kapitel, Suchfunktion mit Trefferanzeige, Inhaltsverzeichnis, sauberer Header (wie Glossar und Reference). Einzige vollstaendige Quelle fuer Verdichtung/Zuendung/Oktan.' },
@@ -208,8 +208,8 @@
     },
     {
       version: 'v66',
-      date: '2026-09-23',
-      time: '21:30',
+      date: '2026-09-28',
+      time: '11:26',
       title: 'Streckenanalyse verschoben, Geschwindigkeits-Sim klappbar, Hash-Buttons, Datenfluss-Konzept',
       changes: [
         { type: 'verbessert', text: 'Streckenanalyse aus "Referenz" in den Block "Simulation & Analyse" verschoben. Logische Reihenfolge: Motor-Simulator -> Geschwindigkeits-Simulator -> Streckenanalyse.' },
@@ -220,8 +220,8 @@
     },
     {
       version: 'v65',
-      date: '2026-09-23',
-      time: '20:00',
+      date: '2026-09-28',
+      time: '10:58',
       title: 'Exkurs Verdichtung/Zuendung/Oktan, Picklist, CR-Konsistenz',
       changes: [
         { type: 'neu', text: 'Exkurs-Overlay (roter Flammen-Button rechts): Umfassender Leitfaden zu Verdichtung, Zuendung, Leistung und Oktanzahl. 8 Kapitel inkl. historischem Kontext (High-Compression-Aera, Blei), AKI-vs-ROZ-Umrechnung, Klopfsensor-Problematik, Otto-Wirkungsgrad, MSD-Timing-Praxis und Vorgehensweise fuer den GT40.' },
@@ -232,8 +232,8 @@
     },
     {
       version: 'v64',
-      date: '2026-09-23',
-      time: '18:00',
+      date: '2026-09-28',
+      time: '10:36',
       title: 'Formatierung, Drehzahlfestigkeit, Aufraeum-Arbeiten',
       changes: [
         { type: 'verbessert', text: 'Nachschlagekarte Betriebsmittel: Tabellen-Styling vereinheitlicht (data-table CSS), Spaltenbreiten konsistent, Hover-Effekt, Header-Styling wie Glossar.' },
@@ -246,8 +246,8 @@
     },
     {
       version: 'v63',
-      date: '2026-09-23',
-      time: '16:00',
+      date: '2026-09-28',
+      time: '06:44',
       title: 'Clearance Cheat Sheet, Kolbengeschwindigkeit, Literatur, Warnungen',
       changes: [
         { type: 'neu', text: 'Clearance Quick-Reference (Soll-Spiele Schnellkarte) als Overlay in specs.html. Alle kritischen Spiele fuer M-6010-BOSS302 Block auf einen Blick, inkl. 347-Stroker-Pruefungen und Verteilerzahnrad-Kompatibilitaet.' },
@@ -261,7 +261,7 @@
     {
       version: 'v62',
       date: '2026-09-23',
-      time: '10:20',
+      time: '10:08',
       title: 'Nachschlagekarte Betriebsmittel & Anzugswerte',
       changes: [
         { type: 'neu', text: 'Die Drehmoment-Schnellkarte liegt jetzt hinter dem blauen Schraubenschluessel rechts und ist auf allen drei Seiten erreichbar - bisher gab es sie nur in specs.html und nur ueber das Werkzeugmenue. Dazu ein Suchfeld wie im Glossar und zwei neue Abschnitte: "Betriebsmittel - wo was hingehoert" als Gegenrichtung zur Drehmomenttabelle, und "Oel, Erststart & Service".' },
@@ -274,7 +274,7 @@
     {
       version: 'v61',
       date: '2026-09-23',
-      time: '09:45',
+      time: '09:56',
       title: 'Galerie und Glossar auf iPad',
       changes: [
         { type: 'fix', text: 'Galerie und Glossar oeffneten auf dem iPad mit dem Kopf oberhalb des Bildschirms - Titel und Schliessen-Knopf waren nicht zu sehen, erst Runterscrollen brachte sie herein. Ursache ist nicht das Overlay, sondern die Sperre dahinter: body{overflow:hidden} haelt die Seite auf iOS/iPadOS nicht an, Safari scrollt per Touch weiter, und das position:fixed-Overlay bleibt dabei am Viewport, waehrend das Dokument darunter wegwandert. Jetzt wird der body selbst festgesetzt (position:fixed mit negativem top) und der Scrollstand beim Schliessen wiederhergestellt.' },
@@ -286,7 +286,7 @@
     {
       version: 'v60',
       date: '2026-09-23',
-      time: '08:00',
+      time: '08:38',
       title: 'Menue aufgeraeumt, Dashboard-Bug, Simulator auto-aktualisiert',
       changes: [
         { type: 'fix', text: 'Build-Dashboard auf der Uebersicht hat erledigte Schritte (Status "done") nicht gezaehlt. Fortschrittsbalken blieb bei 0%.' },
@@ -299,7 +299,7 @@
     {
       version: 'v59',
       date: '2026-09-23',
-      time: '07:00',
+      time: '07:15',
       title: 'Stilles Speichern, Fehlerprotokoll, Auto-Reconnect',
       changes: [
         { type: 'verbessert', text: 'Speichern zeigt keinen Toast mehr bei Erfolg. Sync-Badge im Header (gruen/rot) reicht als Statusanzeige.' },
@@ -310,8 +310,8 @@
     },
     {
       version: 'v58',
-      date: '2026-09-22',
-      time: '16:00',
+      date: '2026-09-23',
+      time: '06:15',
       title: 'Gist automatisch, Geraete-Tracking',
       changes: [
         { type: 'neu', text: 'Beim Verbinden sucht die App den Gist automatisch anhand des Dateinamens. Wird keiner gefunden, wird einer angelegt. Auf einem zweiten Geraet genuegt derselbe Token.' },

@@ -28,6 +28,25 @@ function istAusgeliefert(pfad) {
   return /\.(html|js|css)$/.test(pfad);
 }
 
+// Beispielstempel fuer die Fehlermeldung - damit dort nicht nur steht, was
+// falsch ist, sondern auch, wie die Zeile auszusehen hat.
+function jetztIso() {
+  // Bewusst Europe/Berlin und nicht die Zeit des Rechners: der CI-Runner laeuft
+  // in UTC, und wer das Beispiel abschreibt, traegt sonst die falsche Zone ein.
+  const z = (n) => String(n).padStart(2, '0');
+  const teile = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', hour12: false
+  }).format(new Date()).replace(' ', 'T');
+  // Versatz gegen UTC aus der Differenz der beiden Darstellungen bestimmen.
+  const jetzt = new Date();
+  const berlin = new Date(jetzt.toLocaleString('en-US', { timeZone: 'Europe/Berlin' }));
+  const utc = new Date(jetzt.toLocaleString('en-US', { timeZone: 'UTC' }));
+  const min = Math.round((berlin - utc) / 60000);
+  const vz = min >= 0 ? '+' : '-';
+  return teile + ':00' + vz + z(Math.floor(Math.abs(min) / 60)) + ':' + z(Math.abs(min) % 60);
+}
+
 function versionIn(ref) {
   try {
     const s = git('show', ref + ':version.js');
@@ -94,10 +113,16 @@ if (alt && neu && alt === neu) {
   // es einen gibt: APP_BUILT kam erst mit v54 dazu, davor ist beides null und
   // ein schlichter Vergleich wuerde faelschlich anschlagen.
   const sk = stempelIn(kopf);
-  if (sk && sk === stempelIn(basis)) {
+  const sb = stempelIn(basis);
+  if (sk && sk === sb) {
     fehler.push(
-      'APP_VERSION ging von ' + alt + ' auf ' + neu + ', APP_BUILT blieb stehen.\n' +
-      '  Der Freigabezeitpunkt wuerde einen aelteren Stand behaupten.');
+      'APP_VERSION ging von ' + alt + ' auf ' + neu + ', APP_BUILT blieb stehen\n' +
+      '  auf ' + (sb || '(nicht gesetzt)') + '. Der Freigabezeitpunkt wuerde einen\n' +
+      '  aelteren Stand behaupten, als ausgeliefert wird.\n' +
+      '  Zu tun: APP_BUILT in version.js auf jetzt setzen (ISO 8601 mit\n' +
+      '  Zonenangabe, z.B. ' + jetztIso() + ') und dieselbe Uhrzeit als time\n' +
+      '  im obersten Eintrag von changelog.js eintragen. Das Datum dort gehoert\n' +
+      '  ebenfalls auf heute - nicht vom vorigen Eintrag uebernehmen.');
   }
 }
 
