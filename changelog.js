@@ -13,6 +13,28 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v80',
+      date: '2026-09-24',
+      time: '14:00',
+      title: 'Zylinderkopf-Presets, Kraftstoff-Korrektur, Fuellmengen',
+      changes: [
+        { type: 'neu', text: 'Zylinderkopf-Presets: Dropdown im Motor-Simulator mit 6 Koepfen (AFR 1399 165cc, AFR 185cc, TFS TW 170, TFS TW 170 CNC, Edelbrock RPM, Ford X2). Setzt CFM-Flow und Brennraumvolumen automatisch. Warnung wenn Cam-Lift das Kopf-Limit ueberschreitet.' },
+        { type: 'verbessert', text: 'Cam-Notes korrigiert: Beziehen sich jetzt auf die verbauten AFR 1399 mit Spring #8605 (.650" Lift-Limit) statt Stock-Koepfe. Mechanische vs. Flow-Grenzen klar getrennt.' },
+        { type: 'fix', text: 'E10-Widerspruch behoben: Simulator empfahl bei niedrigem Oktanbedarf "E5/E10" - jetzt immer "E5" mit DellOrto-Warnung. E10 in Kraftstofftabelle dauerhaft als VERBOTEN markiert.' },
+        { type: 'neu', text: 'Kap. 6: Kraftstoff-Unterkapitel mit detaillierter Sortentabelle (ROZ, E-Anteil, Status). DellOrto-Ethanol-Warnung als eigener Block.' },
+        { type: 'neu', text: 'Kap. 6: Fuellmengen-Hinweis - Motoroel und Kuehlmittel aufgeschluesselt nach "nur Motor", "+ Filter" und "+ Kuehler & Leitungen". Fussnoten zu Oelkuehler und Chassis-Layout.' }
+      ]
+    },
+    {
+      version: 'v79',
+      date: '2026-09-24',
+      time: '12:30',
+      title: 'Cam-Notes: Kopf/Feder-Anforderungen',
+      changes: [
+        { type: 'verbessert', text: 'Alle 5 Cam-Presets mit praezisen Kopf/Feder-Anforderungen: XE268HR Stock OK, XE274HR Feder-Upgrade empfohlen, XE286HR braucht Beehive/Dual-Spring + mehr Flow, XE294HR braucht Koepfe >.600, Solid Roller braucht >.620 Koepfe + Solid-Federn.' }
+      ]
+    },
+    {
       version: 'v78',
       date: '2026-09-24',
       time: '11:30',

@@ -608,10 +608,15 @@
                 <input type="number" id="simLiftExh" value="0.565" step="0.001" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
                 <label style="font-weight:600;">Lobe Sep. Angle (LSA)</label>
                 <input type="number" id="simLSA" value="112" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('camPreset').value='custom';runSim()">
+                <label style="font-weight:600;color:#2b6cb0;">&#9881; Zylinderkopf</label>
+                <select id="headPreset" style="padding:0.25rem;border:1px solid #2b6cb0;border-radius:4px;font-size:0.76rem;font-weight:600;background:#ebf4ff;" onchange="applyHeadPreset()">
+                    <option value="custom">Benutzerdefiniert</option>
+                </select>
+                <div id="headPresetNote" style="grid-column:1/-1;font-size:0.7rem;color:#718096;font-style:italic;min-height:0.9rem;"></div>
                 <label style="font-weight:600;">Kopf-Flow Einlass (CFM)</label>
-                <input type="number" id="simCFMint" value="255" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <input type="number" id="simCFMint" value="255" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('headPreset').value='custom';runSim()">
                 <label style="font-weight:600;">Kopf-Flow Auslass (CFM)</label>
-                <input type="number" id="simCFMexh" value="213" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="runSim()">
+                <input type="number" id="simCFMexh" value="213" step="1" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="document.getElementById('headPreset').value='custom';runSim()">
                 <label style="font-weight:600;">Ansaugung</label>
                 <select id="simIntake" style="padding:0.25rem;border:1px solid #cbd5e0;border-radius:4px;" onchange="runSim()">
                     <option value="itb" selected>Einzeldrosselklappen (ITB/DellOrto)</option>
@@ -1214,6 +1219,80 @@
                     <td style="padding:0.3rem;border-bottom:1px solid var(--border);">DOT 5.1 f&uuml;r Rennstrecke (h&ouml;herer Siedepunkt)</td>
                 </tr>
             </table>
+
+            <!-- Kraftstoff-Unterkapitel -->
+            <div style="margin-top:0.6rem;font-size:0.78rem;font-weight:700;color:#975a16;">&#9981; Kraftstoffempfehlung (Detail)</div>
+            <div style="font-size:0.76rem;margin-top:0.3rem;line-height:1.5;color:#4a5568;">
+                <p style="margin:0 0 0.3rem;"><strong>Mindest-Oktanzahl:</strong> Abh&auml;ngig von Verdichtung und Z&uuml;ndzeitpunkt &ndash; wird im <em>Motor-Simulator &amp; Kraftstoffempfehlung</em> (Kapitel 5) dynamisch berechnet. Bei der verbauten Konfiguration (CR ~9.5:1, 34&deg; Timing) betr&auml;gt die Mindestanforderung ca. 95&ndash;96 ROZ.</p>
+                <table style="width:100%;border-collapse:collapse;font-size:0.76rem;margin:0.3rem 0;">
+                    <tr style="background:#fffbeb;">
+                        <th style="text-align:left;padding:0.25rem;border-bottom:1px solid #ecc94b;">Sorte</th>
+                        <th style="text-align:center;padding:0.25rem;border-bottom:1px solid #ecc94b;">ROZ</th>
+                        <th style="text-align:center;padding:0.25rem;border-bottom:1px solid #ecc94b;">E-Anteil</th>
+                        <th style="text-align:left;padding:0.25rem;border-bottom:1px solid #ecc94b;">Status f&uuml;r diesen Motor</th>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Super E10</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">95</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">bis 10%</td>
+                        <td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;color:#c53030;font-weight:700;">VERBOTEN &ndash; DellOrto DRLA!</td>
+                    </tr>
+                    <tr style="background:#f7fafc;">
+                        <td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Super E5</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">95</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">bis 5%</td>
+                        <td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;color:#2b6cb0;">Minimum &ndash; ausreichend bei mildem Timing</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;font-weight:600;">Super Plus E5</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;font-weight:600;">98</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">bis 5%</td>
+                        <td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;color:#276749;font-weight:700;">EMPFOHLEN &ndash; Standardkraftstoff</td>
+                    </tr>
+                    <tr style="background:#f7fafc;">
+                        <td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">Shell V-Power / Aral Ultimate</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">100&ndash;102</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">bis 5%</td>
+                        <td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;color:#276749;">Ideal &ndash; besonders bei Track Days und hohen Temperaturen</td>
+                    </tr>
+                </table>
+                <div style="background:#fff5f5;border:1px solid #fed7d7;border-radius:6px;padding:0.4rem;margin-top:0.3rem;">
+                    <strong style="color:#c53030;">&#9888; KEIN E10!</strong> Ethanol (auch in geringem Anteil &gt;5%) verursacht Wei&szlig;rost und Korrosion am DellOrto DRLA 45 Aluminiumk&ouml;rper.
+                    Sch&auml;den treten bereits nach wenigen Wochen Standzeit auf. Dies gilt unabh&auml;ngig von der Oktanzahl &ndash;
+                    selbst 102 ROZ w&auml;re als E10-Variante verboten.<br>
+                    <strong>Faustregel:</strong> An der Tankstelle immer pr&uuml;fen, ob &bdquo;E5&ldquo; auf der Zapfs&auml;ule steht. Im Zweifel Super Plus (98) nehmen &ndash; dieses ist in Deutschland fast immer E5.
+                </div>
+            </div>
+
+            <!-- Fuellmengen-Hinweis -->
+            <div style="margin-top:0.6rem;font-size:0.78rem;font-weight:700;color:var(--primary);">&#128167; Hinweis zu F&uuml;llmengen</div>
+            <div style="font-size:0.76rem;margin-top:0.3rem;line-height:1.5;color:#4a5568;">
+                <table style="width:100%;border-collapse:collapse;font-size:0.76rem;">
+                    <tr style="background:#ebf8ff;">
+                        <th style="text-align:left;padding:0.25rem;border-bottom:1px solid #bee3f8;">Betriebsstoff</th>
+                        <th style="text-align:center;padding:0.25rem;border-bottom:1px solid #bee3f8;">Nur Motor</th>
+                        <th style="text-align:center;padding:0.25rem;border-bottom:1px solid #bee3f8;">+ Filter</th>
+                        <th style="text-align:center;padding:0.25rem;border-bottom:1px solid #bee3f8;">+ K&uuml;hler &amp; Leitungen</th>
+                    </tr>
+                    <tr>
+                        <td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;font-weight:600;">Motor&ouml;l</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">5 qt (4.7 L)</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">5.5 qt (5.2 L)</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">6&ndash;7 qt (5.7&ndash;6.6 L) *</td>
+                    </tr>
+                    <tr style="background:#f7fafc;">
+                        <td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;font-weight:600;">K&uuml;hlmittel</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">~8 qt</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">&ndash;</td>
+                        <td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">12&ndash;14 qt (11&ndash;13 L) **</td>
+                    </tr>
+                </table>
+                <div style="font-size:0.7rem;color:#718096;margin-top:0.2rem;">
+                    * Abh&auml;ngig davon, ob ein externer &Ouml;lk&uuml;hler und/oder Remote-&Ouml;lfilter verbaut ist. &Ouml;lk&uuml;hler + Leitungen k&ouml;nnen 1&ndash;2 qt zus&auml;tzlich aufnehmen.<br>
+                    ** Abh&auml;ngig von K&uuml;hlerlayout, Heizungskern und Schlauchf&uuml;hrung im Chassis. Immer mit Entl&uuml;ftung bef&uuml;llen &ndash; Luftblasen verursachen Hot-Spots.
+                </div>
+            </div>
+
             <div style="margin-top:0.6rem;font-size:0.78rem;font-weight:700;color:var(--primary);">Dichtmittel &amp; Montagehilfsmittel</div>
             <table style="width:100%;border-collapse:collapse;font-size:0.76rem;margin-top:0.2rem;">
                 <tr style="background:#f0f5ff;">
@@ -2475,13 +2554,13 @@
         // European fuel grades
         var fuelGrade, fuelColor, fuelNote;
         if (reqOctane <= 91) {
-            fuelGrade = 'Super E5/E10 (95 ROZ)';
+            fuelGrade = 'Super E5 (95 ROZ)';
             fuelColor = '#276749';
-            fuelNote = 'Standardbenzin ausreichend. Grosser Sicherheitspuffer.';
+            fuelNote = 'Standardbenzin ausreichend. Grosser Sicherheitspuffer. KEIN E10 \u2013 Ethanol zerstoert DellOrto-Aluminiumkoerper (Weissrost, Korrosion)!';
         } else if (reqOctane <= 95) {
             fuelGrade = 'Super E5 (95 ROZ)';
             fuelColor = '#2b6cb0';
-            fuelNote = 'Super ausreichend. E10 vermeiden bei Aluminium-Koepfen (Ethanol-Korrosion pruefen).';
+            fuelNote = 'Super E5 ausreichend. KEIN E10 \u2013 Ethanol zerstoert DellOrto-Aluminiumkoerper!';
         } else if (reqOctane <= 98) {
             fuelGrade = 'Super Plus (98 ROZ)';
             fuelColor = '#d69e2e';
@@ -2509,14 +2588,18 @@
         html += '<div class="comp-sub" style="margin-top:0.5rem;">Europ&auml;ische Kraftstoffsorten</div>';
         html += '<table style="width:100%;font-size:0.78rem;border-collapse:collapse;">';
         html += '<tr style="background:#f0f5ff;"><th style="text-align:left;padding:0.3rem;">Sorte</th><th style="text-align:center;padding:0.3rem;">ROZ</th><th style="text-align:center;padding:0.3rem;">Status</th></tr>';
-        var fuels = [['Super E10',95],['Super E5',95],['Super Plus',98],['Shell V-Power',100],['Aral Ultimate 102',102]];
+        // E10 ist IMMER gesperrt wegen DellOrto DRLA Aluminium-Korrosion!
+        var fuels = [['Super E10',95,true],['Super E5',95,false],['Super Plus',98,false],['Shell V-Power',100,false],['Aral Ultimate 102',102,false]];
         for (var f = 0; f < fuels.length; f++) {
-            var ok = fuels[f][1] >= reqOctane;
+            var blocked = fuels[f][2]; // E10 blockiert wegen DellOrto
+            var ok = !blocked && fuels[f][1] >= reqOctane;
+            var label = blocked ? 'NEIN (DellOrto!)' : (ok ? 'OK' : 'NEIN');
             html += '<tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">' + fuels[f][0] + '</td>';
             html += '<td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">' + fuels[f][1] + '</td>';
-            html += '<td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;color:' + (ok ? '#276749' : '#c53030') + ';font-weight:700;">' + (ok ? 'OK' : 'NEIN') + '</td></tr>';
+            html += '<td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;color:' + (ok ? '#276749' : '#c53030') + ';font-weight:700;">' + label + '</td></tr>';
         }
         html += '</table>';
+        html += '<div style="font-size:0.7rem;color:#c53030;margin-top:0.3rem;font-weight:600;">\u26a0 E10 ist bei DellOrto DRLA-Vergasern generell verboten \u2013 Ethanol verursacht Weissrost und Korrosion am Aluminiumkoerper. Nur E5-Kraftstoffe verwenden!</div>';
 
         document.getElementById('simFuelResult').innerHTML = html;
         if (typeof updatePullButtons === 'function') updatePullButtons();
@@ -2555,6 +2638,68 @@
         return { bonus: Math.max(0, sRef - sNew), pad: pad };
     }
 
+    // ==== ZYLINDERKOPF-PRESETS ====
+    // Alle Koepfe hier passen physisch auf den M-6009-302 Short Block:
+    // - 20-Grad SBF Windsor Schraubenmuster (1/2" Bolts)
+    // - Kompatibel mit BOSS302 Block
+    // Flow-Daten bei .600" Lift, Quelle: AFR Datenblaetter, TFS Spec Sheets
+    var HEAD_PRESETS = [
+        { id: 'afr165_1399', name: 'AFR 1399 165cc CNC (verbaut)', cfmInt: 260, cfmExh: 215, chamber: 58, valve: '1.90/1.60', maxLift: 0.600, springNote: 'Spring #8605 (PAC 8019, .650" Lift, 7000-7200 RPM) + Ti-Retainer verbaut', notes: 'Verbaut. CNC-portiert, optimale Groesse fuer 302ci bis 6200 RPM. Flow stagniert ab .500 Lift.' },
+        { id: 'afr185', name: 'AFR 185cc CNC', cfmInt: 280, cfmExh: 215, chamber: 58, valve: '2.02/1.60', maxLift: 0.600, springNote: 'Ab Werk .550 Lift, Upgrade auf 8019 (.650) empfohlen', notes: 'Groesserer Port + 2.02" Ventil. Mehr Top-End-Flow ab .500 Lift. PTV-Clearance am M-6009 pruefen!' },
+        { id: 'tfs_tw170', name: 'Trick Flow TW 170 (Fast As Cast)', cfmInt: 251, cfmExh: 193, chamber: 61, valve: '2.02/1.60', maxLift: 0.540, springNote: 'Ab Werk .540 Lift. TFS-Federn fuer mehr Lift separat', notes: 'Gedrehte Ventillage (bessere PTV-Clearance). Gutes Preis-Leistungs-Verhaeltnis. Port kleiner als AFR 165 CNC.' },
+        { id: 'tfs_tw170_cnc', name: 'Trick Flow TW 170 CNC', cfmInt: 277, cfmExh: 216, chamber: 53, valve: '2.02/1.60', maxLift: 0.600, springNote: 'CNC-portiert, bessere Federn moeglich', notes: '11R-Version. CNC Street Ported. Sehr guter Flow, 53cc Brennraum = hoehere CR beachten!' },
+        { id: 'edelbrock_rpm', name: 'Edelbrock Performer RPM (190cc)', cfmInt: 255, cfmExh: 174, chamber: 60, valve: '2.02/1.60', maxLift: 0.575, springNote: 'Ab Werk .575 Lift. Feder-Upgrade fuer hoehere Cams', notes: 'Guter Allrounder. Schwaecher im Auslass als AFR. Stock-Federn limitieren auf .575 Lift.' },
+        { id: 'ford_x2', name: 'Ford Performance X2 (64cc)', cfmInt: 225, cfmExh: 180, chamber: 64, valve: '1.90/1.60', maxLift: 0.550, springNote: 'Fuer mild Cams bis .550 ausgelegt', notes: 'Ford Performance Alukopf. Direkter Bolt-On fuer BOSS Block. Grösserer Brennraum = niedrigere CR.' }
+    ];
+
+    function initHeadPresets() {
+        var sel = document.getElementById('headPreset');
+        if (!sel) return;
+        HEAD_PRESETS.forEach(function(p) {
+            var opt = document.createElement('option');
+            opt.value = p.id;
+            opt.textContent = p.name;
+            sel.appendChild(opt);
+        });
+        // Verbaut: AFR 1399
+        sel.value = 'afr165_1399';
+    }
+
+    function applyHeadPreset() {
+        var sel = document.getElementById('headPreset');
+        if (!sel || sel.value === 'custom') {
+            var noteEl = document.getElementById('headPresetNote');
+            if (noteEl) noteEl.textContent = '';
+            return;
+        }
+        var p = HEAD_PRESETS.find(function(x) { return x.id === sel.value; });
+        if (!p) return;
+
+        document.getElementById('simCFMint').value = p.cfmInt;
+        document.getElementById('simCFMexh').value = p.cfmExh;
+
+        // Brennraumvolumen synchronisieren (beeinflusst CR-Berechnung)
+        var chamberEl = document.getElementById('crChamber');
+        if (chamberEl) {
+            chamberEl.value = p.chamber;
+            calcCR();
+        }
+
+        // Hinweis anzeigen
+        var noteEl = document.getElementById('headPresetNote');
+        if (noteEl) {
+            var camNote = '';
+            // Warnung wenn aktueller Cam-Lift ueber maxLift des Kopfes liegt
+            var liftExh = parseFloat(document.getElementById('simLiftExh').value) || 0;
+            if (liftExh > p.maxLift) {
+                camNote = ' \u26a0 ACHTUNG: Aktueller Cam-Lift (' + liftExh.toFixed(3) + '") ueberschreitet max. Lift (' + p.maxLift + '") dieses Kopfes!';
+            }
+            noteEl.innerHTML = p.notes + '<br><span style="font-size:0.65rem;color:#4a5568;">' + p.valve + ' Ventile | Max Lift: ' + p.maxLift + '" | ' + p.springNote + '</span>' + (camNote ? '<br><span style="color:#c53030;font-weight:700;">' + camNote + '</span>' : '');
+        }
+
+        runSim();
+    }
+
     // ==== FAHRZEUG-SETUP-VERWALTUNG ====
     // Setups speichern Reifen + Nockenwelle + Bremsbelag als Einheit.
     // Gespeichert in localStorage als JSON-Array.
@@ -2563,11 +2708,11 @@
 
     // Nockenwellen-Referenzdaten (fuer Setup-Editor Cam-Dropdown)
     var CAM_PRESETS = [
-        { id: 'xe274hr', name: 'COMP XE274HR (verbaut)', durInt: 224, durExh: 232, liftInt: 0.555, liftExh: 0.565, lsa: 112, rpmLimit: 6200, notes: 'Street/Strip, Hydraulic Roller. Breiter Powerband 2200-6200. Lift .565 knapp unter .575 Stock-Kopf-Limit - Feder-Upgrade auf 987-16 empfohlen.' },
-        { id: 'xe268hr', name: 'COMP XE268HR (milder)', durInt: 218, durExh: 224, liftInt: 0.536, liftExh: 0.540, lsa: 112, rpmLimit: 5800, notes: 'Mehr Drehmoment unten, weniger Spitzenleistung. Bessere Fahrbarkeit. Passt auf Stock-Koepfe und Stock-Federn.' },
-        { id: 'xe286hr', name: 'COMP XE286HR (schaerfer)', durInt: 232, durExh: 240, liftInt: 0.584, liftExh: 0.590, lsa: 110, rpmLimit: 6500, notes: 'Mehr Spitzenleistung, rauerer Leerlauf. Lift .590 ueberschreitet .575 Stock-Limit - braucht Koepfe mit Feder-Upgrade (Beehive oder Dual-Spring) und mehr Port-Flow.' },
-        { id: 'xe294hr', name: 'COMP XE294HR (Race)', durInt: 240, durExh: 248, liftInt: 0.608, liftExh: 0.614, lsa: 110, rpmLimit: 6800, notes: 'Race-Profil. Braucht Koepfe mit >.600 Lift-Kapazitaet (z.B. AFR 205, TFS TW), Dual-Spring-Upgrade, staerkere Retainer. Kaum Leerlauf, braucht Stall-Converter oder Race-Kupplung.' },
-        { id: 'solid_custom', name: 'Solid Roller (Beispiel)', durInt: 248, durExh: 252, liftInt: 0.620, liftExh: 0.625, lsa: 108, rpmLimit: 7200, notes: 'Solid Roller: Braucht Koepfe mit >.620 Lift-Kapazitaet, Solid-Roller-Federn (PAC oder Rev), Ti-Retainer, andere Lifter + Pushrods. Ventilspiel muss eingestellt werden.' }
+        { id: 'xe274hr', name: 'COMP XE274HR (verbaut)', durInt: 224, durExh: 232, liftInt: 0.555, liftExh: 0.565, lsa: 112, rpmLimit: 6200, notes: 'Street/Strip, Hydraulic Roller. Breiter Powerband 2200-6200. Mit AFR 1399 + Spring #8605 (.650" Limit): OK.' },
+        { id: 'xe268hr', name: 'COMP XE268HR (milder)', durInt: 218, durExh: 224, liftInt: 0.536, liftExh: 0.540, lsa: 112, rpmLimit: 5800, notes: 'Mehr Drehmoment unten, weniger Spitzenleistung. Bessere Fahrbarkeit. Passt auf alle gaengigen Koepfe.' },
+        { id: 'xe286hr', name: 'COMP XE286HR (schaerfer)', durInt: 232, durExh: 240, liftInt: 0.584, liftExh: 0.590, lsa: 110, rpmLimit: 6500, notes: 'Mehr Spitzenleistung, rauerer Leerlauf. Mit AFR 1399 + Spring #8605: OK (.590 < .650 Limit). Aber: 165cc Port-Flow stagniert bei diesem Lift \u2013 AFR 185 empfohlen fuer vollen Nutzen.' },
+        { id: 'xe294hr', name: 'COMP XE294HR (Race)', durInt: 240, durExh: 248, liftInt: 0.608, liftExh: 0.614, lsa: 110, rpmLimit: 6800, notes: 'Race-Profil. Mit AFR 1399 + Spring #8605: mechanisch OK (.614 < .650). Aber: 165cc Port zu klein \u2013 AFR 185cc oder TFS TW 170 CNC empfohlen. Kaum Leerlauf, braucht Race-Kupplung.' },
+        { id: 'solid_custom', name: 'Solid Roller (Beispiel)', durInt: 248, durExh: 252, liftInt: 0.620, liftExh: 0.625, lsa: 108, rpmLimit: 7200, notes: 'Solid Roller: .625 < .650 Limit der 8605 Springs, mechanisch knapp OK. Aber: 165cc Port voellig unterdimensioniert. Braucht groessere Koepfe (185cc+), Solid-Roller-Lifter + Pushrods. Ventilspiel einstellen!' }
     ];
 
     // Default-Setups (werden beim ersten Start angelegt)
@@ -4308,6 +4453,7 @@
     loadData().then(function() {
         if (typeof initTirePresets === 'function') initTirePresets();
         if (typeof initCamPresets === 'function') initCamPresets();
+        if (typeof initHeadPresets === 'function') initHeadPresets();
         if (typeof populateSetupDropdown === 'function') populateSetupDropdown();
         if (typeof calcTireDiam === 'function') calcTireDiam(); // Reifendurchmesser aus gespeicherten Werten berechnen
         if (typeof calcCR === 'function') calcCR(); // CR-Rechner mit gespeicherten Werten ausfuehren -> fuettert Simulator
