@@ -25,7 +25,10 @@ import {
 const SEITEN = ['build-log.html', 'index.html', 'specs.html'];
 // Fest verdrahtet, damit ein versehentlich geloeschter Eintrag auffaellt.
 // Bei einer bewussten Erweiterung hier mitziehen.
-const ERWARTETE_EINTRAEGE = 144;
+// 144 -> 151 mit v76: Kategorie 19 "Fahrwerk, Bremsen & Reifen (Setup)".
+const ERWARTETE_EINTRAEGE = 151;
+// Ebenso fest verdrahtet - stand vorher zweimal als nackte 18 im Code.
+const ERWARTETE_KATEGORIEN = 19;
 function lies(f) { return fs.readFileSync(path.join(REPO_ROOT, f), 'utf8'); }
 
 const { server, base } = await startServer();
@@ -85,7 +88,8 @@ await test('glossar.js traegt alle Eintraege', async () => {
   assert(eintraege === ERWARTETE_EINTRAEGE,
     'Erwartet ' + ERWARTETE_EINTRAEGE + ' Eintraege, gefunden: ' + eintraege);
   const kategorien = (js.match(/class="glossary-category"/g) || []).length;
-  assert(kategorien === 18, 'Erwartet 18 Kategorien, gefunden: ' + kategorien);
+  assert(kategorien === ERWARTETE_KATEGORIEN,
+    'Erwartet ' + ERWARTETE_KATEGORIEN + ' Kategorien, gefunden: ' + kategorien);
 });
 
 await test('Alle drei Seiten binden glossar.js ein', async () => {
@@ -133,7 +137,8 @@ for (const datei of SEITEN) {
     assert(fehler.length === 0, 'Page-Errors: ' + fehler.join(' | '));
     assert(daten.anzahl === ERWARTETE_EINTRAEGE,
       'Im DOM: ' + daten.anzahl + ' statt ' + ERWARTETE_EINTRAEGE);
-    assert(daten.kategorien === 18, 'Kategorien im DOM: ' + daten.kategorien);
+    assert(daten.kategorien === ERWARTETE_KATEGORIEN,
+      'Kategorien im DOM: ' + daten.kategorien + ' statt ' + ERWARTETE_KATEGORIEN);
   });
 }
 
