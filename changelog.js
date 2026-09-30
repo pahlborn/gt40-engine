@@ -13,6 +13,18 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v87',
+      date: '2026-09-30',
+      time: '19:00',
+      title: 'i18n: Vollstaendige Uebersetzung aller Overlays + Dict-Luecken geschlossen',
+      changes: [
+        { type: 'neu', text: 'Exkurs (exkurs-engine.js): Alle 10 Kapitel vollstaendig ins Englische uebersetzt (titelEN + inhaltEN). Overlay-Builder wechselt automatisch nach Spracheinstellung.' },
+        { type: 'neu', text: 'Referenz-Karte (reference.js): Alle 3 Gruppen (Anzugsmomente, Betriebsmittel, Oelservice) vollstaendig uebersetzt (titelEN, spaltenEN, zeilenEN, hinweisEN).' },
+        { type: 'verbessert', text: 'index.html: ~25 fehlende i18n-Dict-Eintraege ergaenzt (Planspiel-Modus, Kapitel 6 Tabellen, Strecken-Notizen, Warnungen).' },
+        { type: 'verbessert', text: 'specs.html: ~55 fehlende i18n-Dict-Eintraege ergaenzt (Block-Details, Vergaser-Geschichte, MSD-Einstellungen, Getriebe, Nockenwelle).' }
+      ]
+    },
+    {
       version: 'v86',
       date: '2026-09-30',
       time: '17:30',

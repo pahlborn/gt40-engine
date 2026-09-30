@@ -25,11 +25,13 @@
 
   var EXKURS = {
     titel: 'Exkurs: Verdichtung, Z\u00fcndung, Leistung & Oktanzahl',
+    titelEN: 'Excursion: Compression, Ignition, Power & Octane',
     abschnitte: [
       /* ---- 1. HISTORISCHER KONTEXT ---- */
       {
         id: 'exk-history',
         titel: '1. Historischer Kontext: Die High-Compression-\u00c4ra',
+        titelEN: '1. Historical Context: The High-Compression Era',
         stichworte: 'Blei Tetraethylblei Ventilsitz Abgasgesetz history compression',
         inhalt:
           '<p>In den 1950er bis 1970er Jahren bauten US-Hersteller (Ford, Chevrolet, Dodge) '
@@ -61,13 +63,45 @@
         + '<strong>geh\u00e4rtete Ventilsitze</strong> und CNC-bearbeitete Brennr\u00e4ume. '
         + 'Kein Bleiersatz-Additiv erforderlich. Die Thermodynamik eines Ottomotors ist '
         + 'zeitlos \u2013 die Physik gilt f\u00fcr einen 1969er Mustang genauso wie f\u00fcr '
-        + 'unseren 2026er Build. Nur die Materialien und Fertigungstoleranzen sind besser.</div>'
+        + 'unseren 2026er Build. Nur die Materialien und Fertigungstoleranzen sind besser.</div>',
+        inhaltEN:
+          '<p>In the 1950s through 1970s, US manufacturers (Ford, Chevrolet, Dodge) built '
+        + 'V8 engines with very high compression ratios \u2013 often <strong>10:1 to over 11:1</strong>. '
+        + 'This was possible because <strong>heavily leaded fuel</strong> '
+        + '(tetraethyl lead) with very high knock resistance was available.</p>'
+
+        + '<div class="exk-box warn"><strong>Lead served two functions:</strong>'
+        + '<ol style="margin:0.3rem 0 0;padding-left:1.2rem;">'
+        + '<li><strong>Raising the octane rating</strong> (knock resistance) \u2013 '
+        + 'leaded fuel effectively reached 100+ octane</li>'
+        + '<li><strong>Valve seat lubrication</strong> \u2013 cushioned valve impact '
+        + 'on the seat inserts, preventing valve seat recession</li>'
+        + '</ol></div>'
+
+        + '<p>With emission regulations in the early 1970s (Clean Air Act, USA; TA-Luft, Germany) '
+        + 'lead was phased out. The consequences:</p>'
+        + '<ul>'
+        + '<li>Compression ratios dropped to 8.0\u20138.5:1 (unleaded fuel has less '
+        + 'knock resistance)</li>'
+        + '<li>Hardened valve seats introduced \u2013 replaced the lubricating function '
+        + 'of lead with hard materials</li>'
+        + '<li>Lead substitute additives (e.g. VSR, Lead Substitute) required for older heads '
+        + 'without hardened seats</li>'
+        + '</ul>'
+
+        + '<div class="exk-box info"><strong>Our BOSS 302 Block (M-6010-BOSS302):</strong> '
+        + 'Modern casting (2020s production). The AFR-1399 heads come with '
+        + '<strong>hardened valve seats</strong> and CNC-machined combustion chambers. '
+        + 'No lead substitute additive required. The thermodynamics of a four-stroke engine are '
+        + 'timeless \u2013 the physics apply to a 1969 Mustang just as they do to '
+        + 'our 2026 build. Only materials and manufacturing tolerances have improved.</div>'
       },
 
       /* ---- 2. DAS DREIECK ---- */
       {
         id: 'exk-triangle',
         titel: '2. Das Dreieck: Verdichtung \u2013 Z\u00fcndung \u2013 Oktanzahl',
+        titelEN: '2. The Triangle: Compression \u2013 Ignition \u2013 Octane',
         stichworte: 'Dreieck Zusammenspiel Klopfen Detonation Spitzendruck',
         inhalt:
           '<p>Diese drei Gr\u00f6\u00dfen h\u00e4ngen <strong>untrennbar</strong> zusammen. '
@@ -106,13 +140,51 @@
         + 'Dichtungen durchschlagen. <strong>Hochgeschwindigkeitsklopfen ist nicht '
         + 'h\u00f6rbar!</strong> Es tritt unter Volllast bei hoher Drehzahl auf, wo '
         + 'Motorger\u00e4usche und Abgaslautst\u00e4rke es \u00fcberdecken. Man bemerkt es '
-        + 'erst am Motorschaden.</div>'
+        + 'erst am Motorschaden.</div>',
+        inhaltEN:
+          '<p>These three parameters are <strong>inseparably</strong> linked. '
+        + 'Change one and the others must follow:</p>'
+        + '<table class="exk-table">'
+        + '<tr><th>Parameter</th><th>Property</th><th>In our build</th></tr>'
+        + '<tr><td><strong>Compression Ratio (CR)</strong></td>'
+        + '<td>Fixed \u2013 defined by pistons, heads, gasket, deck height</td>'
+        + '<td>Result from the CR calculator (single source of truth)</td></tr>'
+        + '<tr><td><strong>Ignition Timing</strong></td>'
+        + '<td>Adjustable (Initial + Centrifugal + Vacuum Advance)</td>'
+        + '<td>MSD 8479 distributor + MSD 6AL CDI</td></tr>'
+        + '<tr><td><strong>Octane Rating (RON)</strong></td>'
+        + '<td>Maximum knock resistance of the fuel</td>'
+        + '<td>Min. 98 RON (Super Plus), ideal 100+ RON</td></tr>'
+        + '</table>'
+
+        + '<h4>How does the interaction work?</h4>'
+        + '<table class="exk-table">'
+        + '<tr><th>Change</th><th>Effect</th><th>Risk</th></tr>'
+        + '<tr><td><strong>Increase compression</strong></td>'
+        + '<td>Higher peak pressure = more power + efficiency</td>'
+        + '<td>Higher knock tendency \u2192 higher octane required</td></tr>'
+        + '<tr><td><strong>More advance</strong></td>'
+        + '<td>Mixture ignites earlier before TDC = optimal pressure buildup = more power</td>'
+        + '<td>Knock risk increases \u2192 higher octane or less CR needed</td></tr>'
+        + '<tr><td><strong>Higher octane</strong></td>'
+        + '<td>Fuel resists higher pressure without auto-ignition</td>'
+        + '<td>No risk \u2013 allows more CR and/or more advance</td></tr>'
+        + '</table>'
+
+        + '<div class="exk-box danger">'
+        + '<strong>\u26a0 Knock (Detonation):</strong> Uncontrolled auto-ignition of the '
+        + 'remaining mixture. Creates pressure spikes up to <strong>10\u00d7 higher</strong> than normal '
+        + 'combustion. Can burn holes through pistons, destroy bearings, and blow gaskets '
+        + 'within seconds. <strong>High-speed knock is inaudible!</strong> It occurs under '
+        + 'wide-open throttle at high RPM, where engine noise and exhaust volume mask it. '
+        + 'You only notice it when the engine is damaged.</div>'
       },
 
       /* ---- 3. AKI vs ROZ ---- */
       {
         id: 'exk-octane',
         titel: '3. AKI vs. ROZ \u2013 Die Oktan-Falle (USA vs. Europa)',
+        titelEN: '3. AKI vs. RON \u2013 The Octane Trap (USA vs. Europe)',
         stichworte: 'AKI ROZ MOZ Umrechnung Faustregel Regular Premium Super',
         inhalt:
           '<p>In US-Handb\u00fcchern steht oft \u201e91 Octane\u201c oder \u201e93 Octane\u201c. '
@@ -139,13 +211,40 @@
         + 'greift Kork-Dichtungen, alte Gummi-Leitungen und Vergaser-Schwimmernadelventile '
         + 'an. F\u00fcr den DellOrto-Vergaser und klassische Kraftstoff-Schl\u00e4uche '
         + '<strong>ethanol-freien Kraftstoff bevorzugen</strong> (Shell V-Power 100, MOL EVO 100 '
-        + '= ETBE statt Ethanol).</div>'
+        + '= ETBE statt Ethanol).</div>',
+        inhaltEN:
+          '<p>US manuals often state \u201c91 Octane\u201d or \u201c93 Octane\u201d. '
+        + '<strong>Caution:</strong> The US measures in <strong>AKI</strong> (Anti-Knock Index '
+        + '= average of RON and MON), Europe measures in <strong>RON</strong> '
+        + '(Research Octane Number).</p>'
+
+        + '<table class="exk-table">'
+        + '<tr><th>USA (AKI)</th><th>Europe (RON)</th><th>Grade</th><th>Availability in Germany</th></tr>'
+        + '<tr><td>87</td><td>~91\u201392</td><td>Regular</td><td>\u2013 (not available)</td></tr>'
+        + '<tr><td>89</td><td>~93\u201394</td><td>Mid-Grade / Plus</td><td>\u2013</td></tr>'
+        + '<tr><td>91</td><td>~95\u201396</td><td>Premium</td><td>Super E10 / Super E5</td></tr>'
+        + '<tr><td>93</td><td>~98</td><td>Super Premium</td><td><strong>Super Plus</strong></td></tr>'
+        + '<tr><td>94+</td><td>~100+</td><td>Racing Fuel</td><td>Shell V-Power 100, MOL EVO 100</td></tr>'
+        + '</table>'
+
+        + '<div class="exk-box info">'
+        + '<strong>Rule of thumb:</strong> AKI \u2248 RON \u2212 4 to 5. '
+        + 'When a US manual requires \u201c93 Octane\u201d, you need at least '
+        + '<strong>98 RON (Super Plus)</strong> in Europe.</div>'
+
+        + '<div class="exk-box warn">'
+        + '<strong>Ethanol warning:</strong> Super E10 contains up to 10% ethanol. Ethanol '
+        + 'attacks cork gaskets, old rubber fuel lines, and carburetor float needle valves. '
+        + 'For DellOrto carburetors and classic fuel hoses, '
+        + '<strong>prefer ethanol-free fuel</strong> (Shell V-Power 100, MOL EVO 100 '
+        + '= ETBE instead of ethanol).</div>'
       },
 
       /* ---- 4. KEIN KLOPFSENSOR ---- */
       {
         id: 'exk-nosensor',
         titel: '4. Kein Klopfsensor = kein Sicherheitsnetz',
+        titelEN: '4. No Knock Sensor = No Safety Net',
         stichworte: 'Klopfsensor Knock Sensor Motorschaden Notfall Ausland',
         inhalt:
           '<p>Moderne Motoren haben <strong>Klopfsensoren</strong>, die bei beginnender '
@@ -178,13 +277,46 @@
         + 'Fliehgewichten \u2013 kein elektronisches Kennfeld. Das ist extrem robust '
         + '(keine Software, keine Sensoren, die ausfallen), aber Fehleinstellungen werden '
         + 'nicht kompensiert. Der Vorteil: Man versteht jedes Bauteil, und die Einstellung '
-        + 'ist mit einem Stroboskop jederzeit pr\u00fcfbar.</div>'
+        + 'ist mit einem Stroboskop jederzeit pr\u00fcfbar.</div>',
+        inhaltEN:
+          '<p>Modern engines have <strong>knock sensors</strong> that automatically retard '
+        + 'ignition timing (up to 10\u00b0) when detonation begins. '
+        + 'Our V8 does not \u2013 it has a purely mechanical ignition with no '
+        + 'electronic feedback.</p>'
+
+        + '<div class="exk-box danger"><strong>This means:</strong>'
+        + '<ul style="margin:0.3rem 0 0;padding-left:1.2rem;">'
+        + '<li>The engine <strong>tolerates no mistakes</strong> with octane or timing</li>'
+        + '<li>Low octane + aggressive advance = knock under load</li>'
+        + '<li>High-speed knock is <strong>inaudible</strong> \u2013 you only notice it '
+        + 'when the engine is damaged (pistons, bearings, gaskets)</li>'
+        + '<li>Manual adjustment at the distributor is \u201clife-critical\u201d</li>'
+        + '</ul></div>'
+
+        + '<h4>Emergency scenario: Bad fuel abroad</h4>'
+        + '<p>If only 95 RON is available (e.g. rural gas station in '
+        + 'southern Europe):</p>'
+        + '<ol>'
+        + '<li><strong>Retard timing 2\u20134\u00b0</strong> '
+        + '(loosen distributor clamp bolt, rotate distributor against rotation)</li>'
+        + '<li><strong>Avoid wide-open throttle</strong> \u2013 especially in 4th/5th gear under load</li>'
+        + '<li>Fill up with 98+ RON at the next opportunity and reset timing</li>'
+        + '<li>Verify original timing with a timing light upon return</li>'
+        + '</ol>'
+
+        + '<div class="exk-box info">'
+        + '<strong>Why mechanical?</strong> The MSD 8479 uses a vacuum canister and '
+        + 'centrifugal weights \u2013 no electronic map. This is extremely robust '
+        + '(no software, no sensors to fail), but misadjustments are not compensated. '
+        + 'The advantage: you understand every component, and the setting can be '
+        + 'verified with a timing light at any time.</div>'
       },
 
       /* ---- 5. CR-RECHNER ALS WAHRHEIT ---- */
       {
         id: 'exk-cr-truth',
         titel: '5. Verdichtung: Nur der CR-Rechner z\u00e4hlt',
+        titelEN: '5. Compression: Only the CR Calculator Counts',
         stichworte: 'CR Rechner Verdichtungsverhaeltnis Brennraum Kolbenmulde Deck',
         inhalt:
           '<div class="exk-box warn">'
@@ -232,13 +364,61 @@
         + '<strong>Automatik:</strong> Der CR-Rechner f\u00fcttert den Motor-Simulator, '
         + 'der Motor-Simulator f\u00fcttert den Geschwindigkeits-Simulator. \u00c4ndern '
         + 'Sie einen Messwert im CR-Rechner, aktualisieren sich alle nachfolgenden '
-        + 'Berechnungen automatisch.</div>'
+        + 'Berechnungen automatisch.</div>',
+        inhaltEN:
+          '<div class="exk-box warn">'
+        + '<strong>\u26a0 Single source of truth:</strong> Only the value from the '
+        + '<strong>CR calculator</strong> (Specifications page) is authoritative. All '
+        + 'other CR figures on the pages are estimates or nominal values '
+        + 'that change as soon as you measure and enter piston dish, deck height, or '
+        + 'gasket thickness.</div>'
+
+        + '<h4>What affects the actual compression ratio?</h4>'
+        + '<table class="exk-table">'
+        + '<tr><th>Parameter</th><th>Effect on CR</th><th>Value comes from</th></tr>'
+        + '<tr><td>Bore & Stroke</td><td>Determines swept volume</td>'
+        + '<td>M-6009-302: 4.000" \u00d7 3.000" (fixed)</td></tr>'
+        + '<tr><td>Chamber volume</td><td>Smaller chamber = higher CR</td>'
+        + '<td>AFR-1399: 58cc nominal (measure!)</td></tr>'
+        + '<tr><td>Head gasket</td><td>Thinner gasket = higher CR</td>'
+        + '<td>Ford M-6051-CP331 (bore & thickness)</td></tr>'
+        + '<tr><td>Deck height (PTD)</td><td>Piston further down = lower CR</td>'
+        + '<td>Measure on block (Phase 1)</td></tr>'
+        + '<tr><td>Piston dish</td><td>Larger dish = lower CR</td>'
+        + '<td>Mahle pistons (measure or data sheet)</td></tr>'
+        + '</table>'
+
+        + '<h4>The formula</h4>'
+        + '<p><strong>CR = (Swept volume + Clearance volume) / Clearance volume</strong></p>'
+        + '<p>Clearance volume = Chamber + head gasket volume + deck volume + piston dish</p>'
+
+        + '<h4>The chain</h4>'
+        + '<table class="exk-table">'
+        + '<tr><th>Step</th><th>Source</th><th>Target</th></tr>'
+        + '<tr><td>1. Calculate CR</td><td>Measured values (bore, stroke, chamber, gasket, deck, dish)</td>'
+        + '<td>CR calculator \u2192 calculated CR</td></tr>'
+        + '<tr><td>2. Simulate power</td><td>CR + Cam + Heads + Intake</td>'
+        + '<td>Engine simulator \u2192 HP, TQ, RPM</td></tr>'
+        + '<tr><td>3. Determine fuel</td><td>Calculated CR</td>'
+        + '<td>Octane recommendation (automatic)</td></tr>'
+        + '<tr><td>4. Derive timing</td><td>CR + octane rating</td>'
+        + '<td>Max. total timing (see ch. 7)</td></tr>'
+        + '<tr><td>5. Speed</td><td>HP/TQ + transmission + tires</td>'
+        + '<td>Speed simulator \u2192 V-max</td></tr>'
+        + '</table>'
+
+        + '<div class="exk-box info">'
+        + '<strong>Automatic:</strong> The CR calculator feeds the engine simulator, '
+        + 'the engine simulator feeds the speed simulator. Change '
+        + 'a measured value in the CR calculator and all downstream '
+        + 'calculations update automatically.</div>'
       },
 
       /* ---- 6. ZUENDUNG: DIE DREI KOMPONENTEN ---- */
       {
         id: 'exk-ignition',
         titel: '6. Z\u00fcndung: Initial, Centrifugal, Vacuum',
+        titelEN: '6. Ignition: Initial, Centrifugal, Vacuum',
         stichworte: 'Initial Centrifugal Vacuum Advance Total Timing Verteiler OT BTDC',
         inhalt:
           '<p>Der Z\u00fcndzeitpunkt bestimmt, <strong>wann</strong> der Funke den '
@@ -276,13 +456,50 @@
         + '<p><strong>Hella 8PD 004 835-001</strong> (oder gleichwertig). Keine '
         + 'Digital-Stroboskope \u2013 die k\u00f6nnen bei CDI-Z\u00fcndungen (MSD 6AL) '
         + 'Fehlz\u00fcndungen als Trigger interpretieren und falsche Werte anzeigen. '
-        + 'Klassisches Xenon-Stroboskop mit induktiver Klemme.</p>'
+        + 'Klassisches Xenon-Stroboskop mit induktiver Klemme.</p>',
+        inhaltEN:
+          '<p>Ignition timing determines <strong>when</strong> the spark ignites the '
+        + 'fuel. Measured in degrees before top dead center (\u00b0 BTDC).</p>'
+
+        + '<table class="exk-table">'
+        + '<tr><th>Component</th><th>Function</th><th>When active</th><th>Adjustment</th></tr>'
+        + '<tr><td><strong>Initial Advance</strong></td>'
+        + '<td>Base setting at the distributor</td>'
+        + '<td>Always (constant)</td>'
+        + '<td>Rotate distributor, verify with timing light</td></tr>'
+        + '<tr><td><strong>Centrifugal Advance</strong></td>'
+        + '<td>Centrifugal weights add timing with increasing RPM</td>'
+        + '<td>~1,200 RPM to ~3,500 RPM</td>'
+        + '<td>Springs + bushings inside distributor</td></tr>'
+        + '<tr><td><strong>Vacuum Advance</strong></td>'
+        + '<td>Vacuum canister adds timing at part throttle</td>'
+        + '<td>Part throttle only (at WOT = 0\u00b0)</td>'
+        + '<td>Canister adjustable (hex screw)</td></tr>'
+        + '</table>'
+
+        + '<div class="exk-box info">'
+        + '<strong>Total Timing = Initial + Centrifugal</strong> (at WOT, vacuum = 0).<br>'
+        + 'This is the <strong>critical value</strong> for the knock limit. '
+        + 'Vacuum advance only adds at part throttle and is <strong>not a knock risk</strong>, '
+        + 'because cylinder pressure is low at part throttle.</div>'
+
+        + '<h4>Why vacuum advance matters</h4>'
+        + '<p>Vacuum advance significantly improves fuel economy and throttle response at '
+        + 'part throttle (city driving, highway cruising). At wide-open throttle (WOT) '
+        + 'there is no vacuum \u2192 vacuum advance = 0\u00b0. '
+        + 'This means: at WOT, only total timing (initial + centrifugal) counts.</p>'
+
+        + '<h4>Timing light required</h4>'
+        + '<p><strong>Hella 8PD 004 835-001</strong> (or equivalent). No digital timing lights '
+        + '\u2013 they can interpret misfires from CDI ignitions (MSD 6AL) as trigger events '
+        + 'and display incorrect readings. Use a classic xenon timing light with inductive pickup.</p>'
       },
 
       /* ---- 7. MSD 8479 ADVANCE-PRAXIS ---- */
       {
         id: 'exk-msd-advance',
         titel: '7. MSD 8479 \u2013 Advance-Kurve einstellen',
+        titelEN: '7. MSD 8479 \u2013 Setting the Advance Curve',
         stichworte: 'MSD 8479 Springs Bushings Silber Blau Heavy Light Advance Kurve',
         inhalt:
           '<h4>Advance Springs (Geschwindigkeit der Verstellung)</h4>'
@@ -336,13 +553,67 @@
         + '<strong>Detaillierte Anleitung:</strong> Siehe '
         + '<a href="docs/msd-advance-tuning.html" style="color:#2b6cb0;">'
         + 'MSD 8479 Advance-Kurve einstellen</a> \u2013 Schritt-f\u00fcr-Schritt mit '
-        + 'Federn-Kombinationen, Vacuum-Advance, Troubleshooting.</div>'
+        + 'Federn-Kombinationen, Vacuum-Advance, Troubleshooting.</div>',
+        inhaltEN:
+          '<h4>Advance Springs (Rate of Advance)</h4>'
+        + '<table class="exk-table">'
+        + '<tr><th>Combo</th><th>Springs</th><th>Curve</th><th>Recommendation</th></tr>'
+        + '<tr><td><strong>A (Stock)</strong></td><td>2\u00d7 Heavy Silver</td>'
+        + '<td>Slowest</td><td style="color:#276749;"><strong>\u2190 Start here</strong></td></tr>'
+        + '<tr><td>B</td><td>1\u00d7 Heavy Silver + 1\u00d7 Light Blue</td>'
+        + '<td>Medium-slow</td><td>\u2013</td></tr>'
+        + '<tr><td>C</td><td>1\u00d7 Heavy Silver + 1\u00d7 Light Silver</td>'
+        + '<td>Medium</td><td>\u2013</td></tr>'
+        + '<tr><td>D</td><td>2\u00d7 Light Blue</td>'
+        + '<td>Medium-fast</td><td>\u2013</td></tr>'
+        + '<tr><td>E</td><td>1\u00d7 Light Silver + 1\u00d7 Light Blue</td>'
+        + '<td>Fast</td><td>\u2013</td></tr>'
+        + '<tr><td>F</td><td>2\u00d7 Light Silver</td>'
+        + '<td>Fastest</td><td>Racing only</td></tr>'
+        + '</table>'
+
+        + '<h4>Advance Stop Bushings (Maximum Advance)</h4>'
+        + '<table class="exk-table">'
+        + '<tr><th>Bushing Color</th><th>Mech. Advance</th><th>At 12\u00b0 Initial = Total</th></tr>'
+        + '<tr><td>Silver (stock)</td><td>21\u00b0</td><td><strong>33\u00b0</strong></td></tr>'
+        + '<tr><td>Blue</td><td>25\u00b0</td><td>37\u00b0</td></tr>'
+        + '<tr><td>Black (none)</td><td>28\u00b0</td><td>40\u00b0</td></tr>'
+        + '</table>'
+
+        + '<h4>Timing recommendation by compression ratio</h4>'
+        + '<table class="exk-table">'
+        + '<tr><th>CR</th><th>Max. total w/ 95 RON</th><th>Max. total w/ 98 RON</th>'
+        + '<th>Max. total w/ 100+ RON</th></tr>'
+        + '<tr><td>9.0:1</td><td>36\u201338\u00b0</td><td>38\u201340\u00b0</td>'
+        + '<td>40\u201342\u00b0</td></tr>'
+        + '<tr><td>9.5\u20139.8:1</td><td>32\u201334\u00b0</td><td>34\u201336\u00b0</td>'
+        + '<td>36\u201338\u00b0</td></tr>'
+        + '<tr><td>10.0:1</td><td>30\u201332\u00b0</td><td>32\u201334\u00b0</td>'
+        + '<td>34\u201336\u00b0</td></tr>'
+        + '<tr><td>10.5:1+</td><td style="color:#c53030;">Critical!</td><td>28\u201332\u00b0</td>'
+        + '<td>32\u201334\u00b0</td></tr>'
+        + '</table>'
+
+        + '<div class="exk-box warn">'
+        + '<strong>MSD note:</strong> \u201cUse as much initial advance as possible without '
+        + 'encountering excessive starter load. Start the centrifugal advance just above '
+        + 'idle RPM.\u201d<br><br>'
+        + '<strong>Recommendation for this build:</strong> Start with stock curve '
+        + '(2\u00d7 Heavy Silver, silver bushing = 21\u00b0). Initial: 10\u201314\u00b0. '
+        + 'Yields 31\u201335\u00b0 total. Optimize for knock tendency only after test run.</div>'
+
+        + '<div class="exk-box info">'
+        + '<strong>Detailed guide:</strong> See '
+        + '<a href="docs/msd-advance-tuning.html" style="color:#2b6cb0;">'
+        + 'MSD 8479 Advance Curve Setup</a> \u2013 step-by-step with '
+        + 'spring combinations, vacuum advance, troubleshooting.</div>'
       },
 
       /* ---- 8. LEISTUNG & DREHMOMENT ---- */
       {
         id: 'exk-power',
         titel: '8. Leistung & Drehmoment \u2013 was beeinflusst was',
+        titelEN: '8. Power & Torque \u2013 What Affects What',
         stichworte: 'Leistung PS HP Drehmoment Torque Wirkungsgrad Otto CNC Brennraum',
         inhalt:
           '<h4>Grundformel</h4>'
@@ -397,6 +668,59 @@
         + '<li><strong>Konsistentes Volumen</strong> \u2013 alle 8 Zylinder haben '
         + 'dieselbe CR (bei Guss-K\u00f6pfen k\u00f6nnen die Brennr\u00e4ume 2\u20133cc '
         + 'voneinander abweichen)</li>'
+        + '</ul>',
+        inhaltEN:
+          '<h4>Basic formula</h4>'
+        + '<p><strong>Power = Torque \u00d7 RPM / 5252</strong> (in HP/ft-lbs/RPM).<br>'
+        + 'More power comes from more torque, higher RPM, or both.</p>'
+
+        + '<table class="exk-table">'
+        + '<tr><th>Factor</th><th>Effect on power</th><th>Effect on torque</th></tr>'
+        + '<tr><td>Increase compression</td><td>+3\u20134% per 1 CR point</td>'
+        + '<td>+3\u20134% (thermal efficiency)</td></tr>'
+        + '<tr><td>More aggressive camshaft</td><td>More power on top</td>'
+        + '<td>Less low-end, power band shifts up</td></tr>'
+        + '<tr><td>Larger valves / ports</td>'
+        + '<td>More flow = more peak power</td>'
+        + '<td>Little effect at low RPM</td></tr>'
+        + '<tr><td>Optimize ignition timing</td><td>+5\u201315 HP possible</td>'
+        + '<td>Peak torque shifts</td></tr>'
+        + '<tr><td>Carburetor jetting</td><td>Optimal A/F ratio = max efficiency</td>'
+        + '<td>Rich mixture = safety at the expense of power</td></tr>'
+        + '</table>'
+
+        + '<h4>Why torque matters more for the GT40</h4>'
+        + '<p>The GT40 weighs approx. 1,050\u20131,100 kg and has a relatively short-geared '
+        + 'transmission (UN1-13). <strong>Mid-range torque</strong> '
+        + '(3,000\u20135,000 RPM) determines acceleration and drivability. '
+        + 'Peak power at 6,000+ RPM is less relevant. This is why the XE274HR '
+        + 'with its broad torque plateau is the right choice.</p>'
+
+        + '<h4>Thermal efficiency (Otto cycle)</h4>'
+        + '<p>Compression ratio determines theoretical efficiency:<br>'
+        + '<code>\u03b7 = 1 \u2212 (1/CR)^(\u03b3\u22121)</code> '
+        + 'with \u03b3 \u2248 1.3 (gasoline-air mixture)</p>'
+        + '<table class="exk-table">'
+        + '<tr><th>CR</th><th>Theor. efficiency</th><th>Practice</th></tr>'
+        + '<tr><td>8.0:1</td><td>~46%</td><td>Classic car standard (unleaded era)</td></tr>'
+        + '<tr><td>9.0:1</td><td>~49%</td><td>M-6009-302 nominal (64cc heads)</td></tr>'
+        + '<tr><td>9.5:1</td><td>~50%</td><td>Sweet spot for 98 RON</td></tr>'
+        + '<tr><td>10.0:1</td><td>~52%</td><td>98+ RON, conservative timing</td></tr>'
+        + '<tr><td>10.5:1</td><td>~53%</td><td>Borderline \u2013 100+ RON recommended</td></tr>'
+        + '<tr><td>11.0:1+</td><td>~54%+</td><td>Racing fuel required</td></tr>'
+        + '</table>'
+
+        + '<h4>CNC chamber bonus</h4>'
+        + '<p>The AFR-1399 heads have <strong>CNC-machined combustion chambers</strong> '
+        + 'with optimal quench geometry. This reduces knock tendency by approx. '
+        + '<strong>2\u20133 RON</strong> compared to open as-cast chambers. Why?</p>'
+        + '<ul>'
+        + '<li><strong>Uniform chamber shape</strong> \u2013 homogeneous '
+        + 'flame front, fewer hot spots</li>'
+        + '<li><strong>Optimal quench area</strong> \u2013 turbulence in the chamber '
+        + 'accelerates combustion, reduces end-gas temperature</li>'
+        + '<li><strong>Consistent volume</strong> \u2013 all 8 cylinders have '
+        + 'the same CR (with as-cast heads, chambers can vary by 2\u20133cc)</li>'
         + '</ul>'
       },
 
@@ -404,6 +728,7 @@
       {
         id: 'exk-practice',
         titel: '9. Praxis-Vorgehensweise f\u00fcr den GT40',
+        titelEN: '9. Practical Procedure for the GT40',
         stichworte: 'Vorgehensweise Praxis Anleitung Schritt Zuendkerze',
         inhalt:
           '<ol>'
@@ -447,13 +772,56 @@
         + '<td>Start: Kombi A (2\u00d7 Heavy Silver, Silber-Bushing)</td></tr>'
         + '</table>'
         + '<br><strong>Alles h\u00e4ngt zusammen</strong> \u2013 \u00e4ndern Sie die CR, '
-        + 'm\u00fcssen Timing, Oktanzahl und Jetting folgen!</div>'
+        + 'm\u00fcssen Timing, Oktanzahl und Jetting folgen!</div>',
+        inhaltEN:
+          '<ol>'
+        + '<li><strong>Measure/calculate compression</strong> \u2013 CR calculator on the '
+        + 'Specifications page: enter chamber volume, piston dish, deck height, and '
+        + 'gasket. <strong>Only this value is authoritative.</strong></li>'
+        + '<li><strong>Determine fuel</strong> \u2013 Min. 98 RON (Super Plus). '
+        + 'Ideal: MOL EVO 100 (ETBE, 0% ethanol) or Shell V-Power 100</li>'
+        + '<li><strong>Set initial advance</strong> \u2013 Start with 10\u201314\u00b0 '
+        + '(as much as possible without excessive starter load)</li>'
+        + '<li><strong>Check centrifugal curve</strong> \u2013 Stock springs '
+        + '(2\u00d7 Heavy Silver) + silver bushing = max. 21\u00b0 centrifugal '
+        + '\u2192 31\u201335\u00b0 total</li>'
+        + '<li><strong>First start & break-in</strong> \u2013 20 minutes at 2,000\u20132,500 RPM '
+        + '(camshaft break-in). No idling!</li>'
+        + '<li><strong>Test run under load</strong> \u2013 Uphill in 3rd gear, '
+        + '2,500\u20134,000 RPM. Listen for knock. If knocking: retard 2\u00b0.</li>'
+        + '<li><strong>Start lambda logging</strong> \u2013 Dual wideband '
+        + '(Innovate) on both collectors. Mixture assessment via '
+        + 'lambda, <strong>not</strong> by spark plug reading alone \u2013 plug color '
+        + 'also depends on heat range, additives, and load profile. '
+        + 'Spark plug reading provides supplementary per-cylinder information '
+        + 'that a bank average cannot deliver.</li>'
+        + '<li><strong>Fine tuning</strong> \u2013 Increase total timing in 1\u00b0 steps '
+        + 'until knock limit or power maximum. Always with timing light.</li>'
+        + '</ol>'
+
+        + '<div class="exk-box info">'
+        + '<strong>Summary for our build:</strong>'
+        + '<table class="exk-table" style="margin-top:0.3rem;">'
+        + '<tr><td style="width:35%;"><strong>Compression</strong></td>'
+        + '<td>\u2192 see CR calculator (Specifications)</td></tr>'
+        + '<tr><td><strong>Fuel</strong></td>'
+        + '<td>98+ RON (Super Plus / V-Power 100)</td></tr>'
+        + '<tr><td><strong>Total timing</strong></td>'
+        + '<td>32\u201336\u00b0 (depending on measured CR)</td></tr>'
+        + '<tr><td><strong>Rev limiter</strong></td>'
+        + '<td>6,500 RPM (cam performance limit: 6,200 RPM + 300 margin)</td></tr>'
+        + '<tr><td><strong>Advance curve</strong></td>'
+        + '<td>Start: combo A (2\u00d7 Heavy Silver, silver bushing)</td></tr>'
+        + '</table>'
+        + '<br><strong>Everything is connected</strong> \u2013 change the CR '
+        + 'and timing, octane, and jetting must follow!</div>'
       },
 
       /* ---- 10. LAMBDA ---- */
       {
         id: 'exk-lambda',
         titel: '10. Lambda: Z\u00fcndung, Vergaser und das Messinstrument',
+        titelEN: '10. Lambda: Ignition, Carburetor and the Measuring Instrument',
         stichworte: 'Lambda Wideband Breitband Innovate AFR Sonde Collector Bank Gemisch Zuendung mager fett',
         inhalt:
           '<p>Lambda ist das zentrale Messinstrument bei der Abstimmung eines '
@@ -533,6 +901,85 @@
         + '<td><strong>Nicht umbed\u00fcsen!</strong> Leck finden und beheben</td></tr>'
         + '<tr><td>Bank-Differenz A/B</td><td>Ein Collector fetter als der andere</td>'
         + '<td>Synchronisation und Mischkammer-Zuordnung pr\u00fcfen</td></tr>'
+        + '</table>',
+        inhaltEN:
+          '<p>Lambda is the central measurement instrument for tuning a '
+        + 'carbureted engine without an ECU. Without lambda logging, '
+        + 'any change to ignition or jetting is guesswork.</p>'
+
+        + '<h4>Why ignition before jetting?</h4>'
+        + '<p>Insufficient advance shows on the lambda sensor <strong>as a lean '
+        + 'mixture</strong> \u2013 combustion is incomplete, '
+        + 'unburned fuel reaches the sensor, the reading shifts lean. '
+        + 'If you then increase the main jet, '
+        + 'you over-richen the engine. <strong>Therefore: set ignition timing first, '
+        + 'then adjust the mixture.</strong></p>'
+
+        + '<div class="exk-box warn"><strong>Tuning sequence:</strong>'
+        + '<ol style="margin:0.3rem 0 0;padding-left:1.2rem;">'
+        + '<li>Set ignition timing (initial + centrifugal, see chapters 6\u20137)</li>'
+        + '<li>Start lambda logging \u2013 dual wideband on both collectors</li>'
+        + '<li>Idle: adjust mixture screws by lambda, not by ear</li>'
+        + '<li>Part throttle (road): evaluate progression/transition</li>'
+        + '<li>Wide-open throttle (track): set main jet by lambda, not by chart</li>'
+        + '</ol></div>'
+
+        + '<h4>What two wideband sensors can and cannot do</h4>'
+        + '<p>The GT40 has two lambda bungs in the bundle-of-snakes collectors '
+        + '(standard thread M18\u00d71.5 for Bosch-compatible sensors). '
+        + 'Two sensors deliver two <strong>bank averages</strong>, not '
+        + 'per-cylinder values. One rich and one lean cylinder '
+        + 'on the same bank cancel each other out. An abnormal '
+        + 'bank reading says <em>that</em> something is wrong, not <em>where</em>.</p>'
+
+        + '<div class="exk-box info"><strong>Per-cylinder information:</strong> '
+        + 'Comes from spark plug reading (insulator nose, electrode color). It supplements '
+        + 'lambda logging but does not replace it. Plug color also depends '
+        + 'on heat range, additives, operating duration, and load profile \u2013 '
+        + 'it is not a standalone indicator of mixture quality.</div>'
+
+        + '<h4>Lambda target values (guidelines)</h4>'
+        + '<table class="exk-table">'
+        + '<tr><th>Operating range</th><th>\u03bb</th><th>AFR</th><th>Note</th></tr>'
+        + '<tr><td>Idle</td><td>0.98\u20131.02</td><td>14.4\u201315.0</td>'
+        + '<td>Slightly rich for stable running</td></tr>'
+        + '<tr><td>Part throttle / cruise</td><td>1.00\u20131.05</td><td>14.7\u201315.4</td>'
+        + '<td>Stoichiometric to slightly lean</td></tr>'
+        + '<tr><td>Wide-open throttle (WOT)</td><td>0.86\u20130.90</td><td>12.6\u201313.2</td>'
+        + '<td>Rich for power + cooling</td></tr>'
+        + '</table>'
+        + '<p style="font-size:0.78rem;color:#718096;margin-top:0.2rem;">'
+        + 'Guidelines \u2013 the optimal point depends on CR, timing, and '
+        + 'chamber shape. Decide at the lambda sensor, not from a chart.</p>'
+
+        + '<h4>Hardware: Innovate dual wideband</h4>'
+        + '<p>Planned: <strong>Innovate</strong> system (DLG-1 or 2\u00d7 LC-2) \u2013 '
+        + 'two channels for simultaneous recording of both collectors. '
+        + 'Narrowband sensors (stock O2) are '
+        + '<strong>not suitable</strong> for precision tuning \u2013 they only report rich/lean around '
+        + '\u03bb\u00a0=\u00a01.0, with no absolute values.</p>'
+
+        + '<div class="exk-box info"><strong>Existing infrastructure:</strong> '
+        + 'Each of the two bundle-of-snakes collectors has a '
+        + '<strong>M18\u00d71.5 bung</strong> (Bosch standard). The wideband sensors can be '
+        + 'threaded in directly \u2013 no welding or drilling required. '
+        + 'Without sensor: seal bung with M18 blanking plug.</div>'
+
+        + '<h4>Lambda in context</h4>'
+        + '<table class="exk-table">'
+        + '<tr><th>Action</th><th>Lambda effect</th><th>Correct response</th></tr>'
+        + '<tr><td>Timing increased</td><td>Lambda shifts slightly lean '
+        + '(better combustion)</td><td>Normal \u2013 no jetting change needed</td></tr>'
+        + '<tr><td>Timing too low</td><td>Lambda reads lean '
+        + '(incomplete combustion!)</td>'
+        + '<td><strong>Do not re-jet!</strong> Correct timing first</td></tr>'
+        + '<tr><td>Main jet increased</td><td>Lambda shifts rich</td>'
+        + '<td>Only change if lambda reads lean with correct timing</td></tr>'
+        + '<tr><td>Vacuum leak</td><td>Lambda reads lean '
+        + '(ambient air dilutes exhaust)</td>'
+        + '<td><strong>Do not re-jet!</strong> Find and fix leak</td></tr>'
+        + '<tr><td>Bank difference A/B</td><td>One collector richer than the other</td>'
+        + '<td>Check synchronization and mixture chamber assignment</td></tr>'
         + '</table>'
       }
     ]
@@ -542,7 +989,12 @@
 
   /* ---- Overlay bauen. Erst beim ersten Oeffnen, nicht beim Laden. ---- */
   function baueExkursOverlay() {
-    if (document.getElementById('guide-exkurs-engine')) return;
+    // Bei Sprachwechsel neu bauen
+    var existing = document.getElementById('guide-exkurs-engine');
+    if (existing) existing.parentNode.removeChild(existing);
+
+    var lang = (typeof localStorage !== 'undefined' && localStorage.getItem('engineBuildLang')) || 'de';
+    var en = lang === 'en';
 
     var t = [];
     t.push('<div class="guide-overlay" id="guide-exkurs-engine">');
@@ -551,7 +1003,7 @@
     t.push('<div class="glossary-search">');
     t.push('  <div class="glossary-search-row">');
     t.push('    <button class="guide-back" onclick="hideGuide(\'guide-exkurs-engine\')">&larr;</button>');
-    t.push('    <input type="search" id="exkursSearch" placeholder="Suchen im Exkurs\u2026" oninput="filterExkurs()">');
+    t.push('    <input type="search" id="exkursSearch" placeholder="' + (en ? 'Search excursion\u2026' : 'Suchen im Exkurs\u2026') + '" oninput="filterExkurs()">');
     t.push('    <span class="glossary-count" id="exkursCount"></span>');
     t.push('  </div>');
     t.push('</div>');
@@ -559,26 +1011,29 @@
     t.push('<div class="guide-content" id="exkursBody">');
 
     // Titel
-    t.push('<h2 class="guide-title">' + EXKURS.titel + '</h2>');
+    t.push('<h2 class="guide-title">' + (en && EXKURS.titelEN ? EXKURS.titelEN : EXKURS.titel) + '</h2>');
 
     // Inhaltsverzeichnis
     t.push('<div class="exk-toc" id="exkursToc">');
-    t.push('  <div style="font-weight:700;font-size:0.82rem;color:#2c5282;margin-bottom:0.3rem;">Inhalt</div>');
+    t.push('  <div style="font-weight:700;font-size:0.82rem;color:#2c5282;margin-bottom:0.3rem;">' + (en ? 'Contents' : 'Inhalt') + '</div>');
     EXKURS.abschnitte.forEach(function (a) {
+      var tit = en && a.titelEN ? a.titelEN : a.titel;
       t.push('  <a href="#' + a.id + '" class="exk-toc-link" onclick="scrollToExkurs(\'' + a.id + '\');return false;">'
-           + a.titel + '</a>');
+           + tit + '</a>');
     });
     t.push('</div>');
 
     // Abschnitte
     EXKURS.abschnitte.forEach(function (a) {
+      var tit = en && a.titelEN ? a.titelEN : a.titel;
+      var body = en && a.inhaltEN ? a.inhaltEN : a.inhalt;
       t.push('<div class="exk-section" id="' + a.id + '" data-stichworte="' + (a.stichworte || '') + '">');
-      t.push('  <h3>' + a.titel + '</h3>');
-      t.push('  ' + a.inhalt);
+      t.push('  <h3>' + tit + '</h3>');
+      t.push('  ' + body);
       t.push('</div>');
     });
 
-    t.push('  <div class="ref-leer" id="exkursLeer" style="display:none;">Kein Treffer.</div>');
+    t.push('  <div class="ref-leer" id="exkursLeer" style="display:none;">' + (en ? 'No results.' : 'Kein Treffer.') + '</div>');
     t.push('</div>');
     t.push('</div>');
 
@@ -607,7 +1062,8 @@
     if (toc) toc.style.display = q ? 'none' : '';
 
     var zaehler = document.getElementById('exkursCount');
-    if (zaehler) zaehler.textContent = q ? (treffer + ' Treffer') : '';
+    var lang = (typeof localStorage !== 'undefined' && localStorage.getItem('engineBuildLang')) || 'de';
+    if (zaehler) zaehler.textContent = q ? (treffer + (lang === 'en' ? ' matches' : ' Treffer')) : '';
     var leer = document.getElementById('exkursLeer');
     if (leer) leer.style.display = (q && !treffer) ? '' : 'none';
   }
