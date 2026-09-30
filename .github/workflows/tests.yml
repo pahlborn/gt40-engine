@@ -84,6 +84,12 @@ jobs:
       - name: Eingabepruefung der Messwertfelder
         run: node tests/validation.test.mjs
 
+      - name: Nachschlagewerke (Anzugswerte, Exkurs)
+        run: node tests/nachschlagewerke.test.mjs
+
+      - name: Motor-Simulator
+        run: node tests/simulator.test.mjs
+
   # Wer eine ausgelieferte Datei aendert, zaehlt die Version hoch. Sonst gehen
   # zwei verschiedene Staende unter derselben Nummer raus - genau so ist v54
   # zweimal passiert. Braucht die Historie, deshalb fetch-depth: 0.

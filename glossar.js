@@ -1109,4 +1109,4 @@
   } else {
     einsetzen();
   }
-})(typeof window !== 'undefined' ? window : this);
+})(typeof window !== 'undefined' ? window : globalThis);
