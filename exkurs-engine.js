@@ -537,4 +537,4 @@
   global.filterExkurs = filterExkurs;
   global.scrollToExkurs = scrollToExkurs;
 
-})(typeof window !== 'undefined' ? window : this);
+})(typeof window !== 'undefined' ? window : globalThis);

@@ -2172,7 +2172,9 @@
 
         // Estimate peak torque RPM from cam timing (@.050" duration)
         // Empirical: for hydraulic roller street/perf cams
-        // peakTQ_RPM ~ durInt * 18.5 + 300 (validated against COMP Cams data)
+        // peakTQ_RPM ~ durInt * 18.5 + 300
+        // An einem Punkt kalibriert (XE274HR, s.u.), nicht validiert: eine Gerade
+        // mit zwei freien Parametern laesst sich durch einen Punkt nicht bestaetigen.
         // XE274HR (230@.050): 230*18.5+300 = 4555 (within COMP's 2200-6200 range, peak ~4200-4500)
         var peakTqRPM = Math.round((durInt * 18.5 + 300) / 50) * 50;
         peakTqRPM = Math.max(2500, Math.min(peakTqRPM, 6000));
@@ -2221,7 +2223,9 @@
             // not a sharp peak. Power 3 creates the right shape: flat top, gradual skirts.
             var rpmRatio = rpm / peakTqRPM;
             // sigma controls width: bigger = broader power band
-            // Street cams (200@.050): ~0.18, perf cams (230@.050): ~0.20, race (250+): ~0.25
+            // Aus der Formel: 200@.050 -> 0.12, 230 -> 0.195, 250 -> 0.245.
+            // Der Kommentar nannte fuer 200 frueher 0.18 - das passte nicht zur
+            // Basiskonstante und haette beim naechsten Abstimmen in die Irre gefuehrt.
             var sigma = 0.12 + (avgDur - 200) * 0.0025;
             var camVE = Math.exp(-Math.pow(Math.abs(rpmRatio - 1), 3) / (2 * sigma));
 

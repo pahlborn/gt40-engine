@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v84',
+      date: '2026-09-30',
+      time: '16:43',
+      title: 'Nachschlagewerke und Simulator unter Test',
+      changes: [
+        { type: 'intern', text: 'reference.js, exkurs-engine.js und der Motor-Simulator hatten keine Testabdeckung. 26 neue Tests in zwei Suiten decken sie jetzt ab.' },
+        { type: 'fix', text: 'exkurs-engine.js und glossar.js endeten auf "window : this" statt "globalThis". Im Browser harmlos, ausserhalb wirft die Zuweisung - die Daten waren dadurch nur ueber einen Browser pruefbar. Ein Test haelt fest, dass kein Wurzel-Modul auf die alte Form zurueckfaellt.' },
+        { type: 'intern', text: 'Die Anzugswerte-Tabelle wird jetzt auf Spaltentreue geprueft. Eine Zeile mit einer Zelle zu wenig wuerde den Drehmomentwert in die Spalte "Betriebsmittel" schieben, ohne dass es beim Lesen auffaellt. Ebenso geprueft: jeder Drehmomentwert nennt eine Einheit, und jeder Eintrag im Exkurs-Inhaltsverzeichnis hat seinen Abschnitt.' },
+        { type: 'intern', text: 'Der Simulator wird auf Richtungen geprueft, nicht auf Zahlen: mehr Hubraum, mehr Verdichtung und mehr Kopfdurchsatz muessen mehr Leistung ergeben, eine laengere Nockenwelle die Drehmomentspitze nach oben schieben. Dazu: keine Ausgabe von NaN bei leeren oder Null-Eingaben, und die Ergebniskaesten bleiben als Schaetzung gekennzeichnet.' },
+        { type: 'fix', text: 'Zwei irrefuehrende Kommentare im Simulator richtiggestellt. Die Kurvenbreite: der Kommentar nannte fuer eine 200er Nockenwelle 0.18, die Formel liefert 0.12. Und die Herleitung der Drehmomentdrehzahl war als "validated" bezeichnet, obwohl ein einziger Datenpunkt zitiert wird - eine Gerade mit zwei freien Parametern laesst sich damit festlegen, nicht bestaetigen.' }
+      ]
+    },
+    {
       version: 'v83',
       date: '2026-09-30',
       time: '07:08',
