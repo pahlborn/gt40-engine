@@ -258,9 +258,9 @@ await test('Die Versionsfolge hat keine Luecke', async () => {
 // geprueft, nicht auf Abwesenheit: eine implizit angelegte Eigenschaft gibt es
 // beim Laden noch gar nicht, eine per var deklarierte schon.
 const SYNC_GLOBALS = {
-  'index.html': ['_gistError'],
-  'specs.html': ['_gistOk', '_gistError'],
-  'build-log.html': ['_gistOk', '_gistError']
+  'index.html': ['_gistError', '_gistErrorDetail'],
+  'specs.html': ['_gistOk', '_gistError', '_gistErrorDetail'],
+  'build-log.html': ['_gistOk', '_gistError', '_gistErrorDetail']
 };
 
 for (const file of PAGES) {

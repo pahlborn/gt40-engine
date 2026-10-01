@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v89',
+      date: '2026-10-01',
+      time: '13:38',
+      title: 'Fehlerprotokoll, das auch bei kaputtem Sync schreibt',
+      changes: [
+        { type: 'fix', text: 'Das bisherige Protokoll schrieb den Fehler in denselben Gist, der gerade nicht beschreibbar war. Beim Sync-Fehler - dem haeufigsten Fall - zeichnete es also nichts auf. Jetzt liegt das Protokoll auf dem Geraet (localStorage, letzte 100 Eintraege); der Gist ist nur noch der Spiegel.' },
+        { type: 'fix', text: 'Statuscode und Antworttext der GitHub-API wurden verworfen, uebrig blieb nur der Satz aus der Meldung. Genau diese beiden Angaben braucht man zur Analyse - sie stehen jetzt im Eintrag, samt Rohtext der Antwort.' },
+        { type: 'neu', text: 'Unbehandelte Fehler und abgewiesene Promises werden mitgeschrieben. Die liefen bisher stumm in die Browser-Konsole, die auf einem Telefon niemand sieht.' },
+        { type: 'neu', text: 'Neuer Menuepunkt "Fehlerprotokoll" auf allen drei Seiten: Eintraege mit Zeit, Seite, Version, Geraet, Statuscode und Antwort. Zum Kopieren oder als Textdatei zum Verschicken.' },
+        { type: 'intern', text: 'Die Protokollfunktion stand dreimal gleichlautend in den Seiten. Jetzt einmal in errorlog.js. 17 Tests decken sie ab - der wichtigste laesst den Gist mit 422 antworten und prueft, dass der Eintrag trotzdem ankommt.' }
+      ]
+    },
+    {
       version: 'v88',
       date: '2026-09-30',
       time: '20:00',

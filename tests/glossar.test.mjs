@@ -26,7 +26,8 @@ const SEITEN = ['build-log.html', 'index.html', 'specs.html'];
 // Fest verdrahtet, damit ein versehentlich geloeschter Eintrag auffaellt.
 // Bei einer bewussten Erweiterung hier mitziehen.
 // 144 -> 151 mit v76: Kategorie 19 "Fahrwerk, Bremsen & Reifen (Setup)".
-const ERWARTETE_EINTRAEGE = 151;
+// 151 -> 152 mit v86: Lambda-Eintrag.
+const ERWARTETE_EINTRAEGE = 152;
 // Ebenso fest verdrahtet - stand vorher zweimal als nackte 18 im Code.
 const ERWARTETE_KATEGORIEN = 19;
 function lies(f) { return fs.readFileSync(path.join(REPO_ROOT, f), 'utf8'); }

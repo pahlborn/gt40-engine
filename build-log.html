@@ -432,6 +432,7 @@
 <script src="findings.js"></script>
 <script src="gallery.js"></script>
 <script src="field-sync.js"></script>
+<script src="errorlog.js"></script>
 <script src="validation.js"></script>
 <script src="reference.js"></script>
 <script src="exkurs-engine.js"></script>
@@ -455,6 +456,7 @@
                 <button onclick="exportJSON();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
                 <button onclick="document.getElementById('importFile').click();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
                 <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
+                <button onclick="showErrorLog();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128203; Fehlerprotokoll</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button type="button" class="menu-version" onclick="openChangelog();closeToolMenu()" title="Release-Dokumentation">Version <span class="app-version"></span><span class="app-built"></span> &rsaquo;</button>
             </div>
@@ -5427,10 +5429,14 @@
                 if (res.ok) {
                     localStorage.setItem('engineBuildLog', JSON.stringify(merged));
                 } else {
-                    var errMsg = ''; try { errMsg = (await res.json()).message || ''; } catch(e2) {}
-                    showToast('Sync-Fehler: ' + (errMsg || 'Status ' + res.status), { sticky: true, isError: true });
+                    // Rohtext zuerst: .json() verschluckt alles, was kein JSON ist,
+                    // und genau dann steht die Ursache im Klartext da.
+                    var rohAntwort = ''; try { rohAntwort = await res.text(); } catch(e2) {}
+                    var errMsg = ''; try { errMsg = JSON.parse(rohAntwort).message || ''; } catch(e2) {}
+                    showToast('Sync-Fehler: ' + (errMsg || 'Status ' + res.status), { sticky: true, isError: true,
+                        detail: { quelle: 'saveData', status: res.status, statusText: res.statusText, antwort: rohAntwort, url: res.url } });
                 }
-            } catch (e) { showToast('Sync-Fehler: ' + e.message, { sticky: true, isError: true }); }
+            } catch (e) { showToast('Sync-Fehler: ' + e.message, { sticky: true, isError: true, detail: { quelle: 'saveData', stack: e.stack } }); }
         }
     }
 
@@ -5512,24 +5518,23 @@
         t.classList.add('show');
         clearTimeout(t._timer);
         if (!opts.sticky && !opts.isError) { t._timer = setTimeout(function() { t.classList.remove('show'); }, 2500); }
-        if (opts.isError) logErrorToGist(msg);
+        if (opts.isError && typeof ErrorLog !== 'undefined') ErrorLog.add(msg, opts.detail);
     }
-    async function logErrorToGist(msg) {
-        try {
-            if (!FIXED_GIST_ID || !navigator.onLine) return;
-            var cfg = getGistConfig(); if (!cfg.token) return;
-            var logFile = GIST_FILENAME.replace('.json', '-errors.json');
-            var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { headers: { 'Authorization': 'Bearer ' + cfg.token } });
-            if (!res.ok) return;
-            var gist = await res.json(); var existing = [];
-            if (gist.files && gist.files[logFile]) { try { existing = JSON.parse(gist.files[logFile].content); } catch(e) {} }
-            var devId = typeof FieldSync !== 'undefined' ? FieldSync.getDeviceId() : 'unknown';
-            existing.push({ time: new Date().toISOString(), device: devId, page: 'build-log.html', version: typeof APP_VERSION === 'string' ? APP_VERSION : '', error: msg });
-            if (existing.length > 50) existing = existing.slice(-50);
-            var files = {}; files[logFile] = { content: JSON.stringify(existing, null, 2) };
-            await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { method: 'PATCH', headers: { 'Authorization': 'Bearer ' + cfg.token, 'Content-Type': 'application/json' }, body: JSON.stringify({ files: files }) });
-        } catch(e) { console.error('[Fehlerprotokoll]', e.message); }
+    // Das Protokoll liegt in errorlog.js und schreibt zuerst lokal. Der Gist
+    // ist nur der Spiegel - frueher stand der Eintrag ausschliesslich dort,
+    // und ausgerechnet beim Sync-Fehler kam er nie an.
+    function spiegleProtokollInGist(eintraege) {
+        if (!FIXED_GIST_ID || !navigator.onLine) return;
+        var cfg = getGistConfig(); if (!cfg.token) return;
+        var logFile = GIST_FILENAME.replace('.json', '-errors.json');
+        var files = {}; files[logFile] = { content: JSON.stringify(eintraege, null, 2) };
+        return fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
+            method: 'PATCH',
+            headers: { 'Authorization': 'Bearer ' + cfg.token, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ files: files })
+        }).catch(function () { /* lokal ist der Eintrag bereits sicher */ });
     }
+    if (typeof ErrorLog !== 'undefined') ErrorLog.spiegelSetzen(spiegleProtokollInGist);
 
     function exportJSON() {
         var data = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
