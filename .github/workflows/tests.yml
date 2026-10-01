@@ -90,6 +90,9 @@ jobs:
       - name: Motor-Simulator
         run: node tests/simulator.test.mjs
 
+      - name: Fehlerprotokoll
+        run: node tests/errorlog.test.mjs
+
   # Wer eine ausgelieferte Datei aendert, zaehlt die Version hoch. Sonst gehen
   # zwei verschiedene Staende unter derselben Nummer raus - genau so ist v54
   # zweimal passiert. Braucht die Historie, deshalb fetch-depth: 0.

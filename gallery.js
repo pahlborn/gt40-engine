@@ -59,6 +59,7 @@ var _treeEtag = '';
 var _treeFetchedAt = 0;
 var _gistOk = false;
 var _gistError = '';
+var _gistErrorDetail = null;   // Statuscode und Rohantwort zum letzten Sync-Fehler
 var _treeInFlight = null;   // parallele Aufrufe teilen sich einen Request
 var _treeHeadersBlocked = false;  // Preflight unterwegs geblockt? dann gar nicht erst senden
 // Eventual consistency: das Repo-Listing hinkt einem frischen Commit kurz hinterher.
