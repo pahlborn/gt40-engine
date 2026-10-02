@@ -205,6 +205,150 @@ await test('Der Kalibrierungs-Kommentar behauptet keine Validierung', async () =
   assert(/An einem Punkt kalibriert/.test(html), 'Die ehrliche Einordnung fehlt');
 });
 
+
+// ==== VERDICHTUNG UND KOPF-AUSWAHL ====
+//
+// Hintergrund: die Kopf-Auswahl hatte eine zweite, eigene CR-Formel, in der
+// die Kolbenmulde abgezogen statt addiert wurde. Jeder angezeigte Wert lag
+// dadurch 1.4 bis 2.0 Punkte zu hoch, und ueber simCR lief der Fehler weiter
+// in Leistungsschaetzung und Oktanempfehlung.
+//
+// Die Mulde vergroessert den Brennraum - mehr Restvolumen, weniger
+// Verdichtung. Das steht so auch im Hinweistext von Kapitel 4.
+
+const CC = 16.387064;
+
+// Unabhaengig vom Seitencode nachgerechnet. Waere das hier aus index.html
+// importiert, pruefte der Test die Formel gegen sich selbst.
+function crErwartet({ bore, stroke, chamber, gasketT, gasketB, deck, dish }) {
+  const swept = (Math.PI / 4) * bore * bore * stroke * CC;
+  const rest = chamber
+    + (Math.PI / 4) * gasketB * gasketB * gasketT * CC
+    + (Math.PI / 4) * bore * bore * deck * CC
+    + dish;
+  return (swept + rest) / rest;
+}
+
+// Setzt Kapitel 4 auf bekannte Werte und waehlt einen Kopf.
+async function kopfWaehlen(page, headId, felder = {}) {
+  return page.evaluate(({ headId, felder }) => {
+    const basis = { crBore: 4.000, crStroke: 3.000, crChamber: 58, crGasket: 0.040,
+                    crGasketBore: 4.160, crDeck: 0.010, crPiston: 6.5 };
+    Object.assign(basis, felder);
+    Object.keys(basis).forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.value = String(basis[id]);
+    });
+    calcCR();
+    const sel = document.getElementById('headPreset');
+    sel.value = headId;
+    applyHeadPreset();
+    const kopf = HEAD_PRESETS.find((x) => x.id === headId);
+    const m = /CR mit diesem Kopf \([\d.]+cc\): ([\d.]+):1/
+      .exec(document.getElementById('headPresetNote').textContent);
+    return {
+      chamber: kopf.chamber,
+      angezeigt: m ? parseFloat(m[1]) : null,
+      simCR: parseFloat(document.getElementById('simCR').value),
+      kapitel4: parseFloat(document.getElementById('crResult').textContent)
+    };
+  }, { headId, felder });
+}
+
+const CR_BASIS = { bore: 4.000, stroke: 3.000, gasketT: 0.040, gasketB: 4.160, deck: 0.010, dish: 6.5 };
+
+await test('Jeder Kopf zeigt die CR, die sich aus seinem Brennraum ergibt', async () => {
+  const p = await oeffne();
+  const koepfe = await p.page.evaluate(() => HEAD_PRESETS.map((h) => h.id));
+  assert(koepfe.length >= 5, 'zu wenige Kopf-Presets fuer einen sinnvollen Test');
+  for (const id of koepfe) {
+    const r = await kopfWaehlen(p.page, id);
+    assert(r.angezeigt !== null, id + ': keine CR im Hinweistext');
+    const soll = crErwartet({ ...CR_BASIS, chamber: r.chamber });
+    assert(Math.abs(r.angezeigt - soll) < 0.02,
+      id + ' (' + r.chamber + 'cc): angezeigt ' + r.angezeigt.toFixed(2)
+      + ', richtig waere ' + soll.toFixed(2));
+  }
+  assertEqual(p.errors, [], 'Seitenfehler');
+  await p.close();
+});
+
+await test('Die Kolbenmulde senkt die Verdichtung, sie hebt sie nicht', async () => {
+  // Der eigentliche Vorzeichenfehler. Ohne Bezug auf eine Formel geprueft:
+  // mehr Mulde = mehr Restvolumen = weniger Verdichtung.
+  const p = await oeffne();
+  const ohne = await kopfWaehlen(p.page, 'tfs_tw170_cnc', { crPiston: 0 });
+  const mit  = await kopfWaehlen(p.page, 'tfs_tw170_cnc', { crPiston: 12 });
+  assert(mit.angezeigt < ohne.angezeigt - 0.5,
+    'Mulde 12cc ergibt ' + mit.angezeigt + ', Mulde 0cc ergibt ' + ohne.angezeigt
+    + ' - die Mulde wird nicht als zusaetzliches Volumen gerechnet');
+  await p.close();
+});
+
+await test('Ein groesserer Brennraum ergibt eine kleinere Verdichtung', async () => {
+  const p = await oeffne();
+  const klein = await kopfWaehlen(p.page, 'tfs_tw170_cnc');   // 53cc
+  const gross = await kopfWaehlen(p.page, 'ford_x2');         // 64cc
+  assert(gross.chamber > klein.chamber, 'Testannahme zu den Brennraeumen stimmt nicht');
+  assert(gross.angezeigt < klein.angezeigt,
+    gross.chamber + 'cc ergibt ' + gross.angezeigt + ', '
+    + klein.chamber + 'cc ergibt ' + klein.angezeigt);
+  await p.close();
+});
+
+await test('Der Simulator rechnet mit der CR, die danebensteht', async () => {
+  const p = await oeffne();
+  for (const id of ['ford_x2', 'tfs_tw170_cnc', 'edelbrock_rpm']) {
+    const r = await kopfWaehlen(p.page, id);
+    assert(Math.abs(r.simCR - r.angezeigt) <= 0.05,
+      id + ': Hinweis sagt ' + r.angezeigt + ', Simulator rechnet mit ' + r.simCR);
+  }
+  await p.close();
+});
+
+await test('Zurueck zum verbauten Kopf holt auch die CR zurueck', async () => {
+  // Frueher blieb die CR des zuletzt gewaehlten Fremdkopfes im Simulator
+  // stehen, weil sie nur bei abweichendem Brennraum ueberhaupt gesetzt wurde.
+  const p = await oeffne();
+  const fremd = await kopfWaehlen(p.page, 'ford_x2');
+  const zurueck = await kopfWaehlen(p.page, 'afr165_1399');
+  assert(Math.abs(zurueck.simCR - fremd.simCR) > 0.3,
+    'Die CR des Fremdkopfes (' + fremd.simCR + ') steht noch im Simulator');
+  assert(Math.abs(zurueck.simCR - zurueck.kapitel4) <= 0.05,
+    'Verbauter Kopf: Simulator ' + zurueck.simCR + ', Kapitel 4 ' + zurueck.kapitel4);
+  await p.close();
+});
+
+await test('Eine Aenderung in Kapitel 4 wirft das Planspiel nicht um', async () => {
+  // calcCR ruft simPullData, und das hat frueher die CR des gewaehlten Kopfes
+  // stillschweigend durch die des verbauten ersetzt - bei unveraendertem
+  // Dropdown. Regel 8 verlangt das Nachziehen, nicht das Zuruecksetzen.
+  const p = await oeffne();
+  const vorher = await kopfWaehlen(p.page, 'ford_x2');
+  const nachher = await p.page.evaluate(() => {
+    document.getElementById('crDeck').value = '0.020';
+    calcCR();
+    return {
+      simCR: parseFloat(document.getElementById('simCR').value),
+      auswahl: document.getElementById('headPreset').value
+    };
+  });
+  assertEqual(nachher.auswahl, 'ford_x2', 'Kopf-Auswahl veraendert');
+  const soll = crErwartet({ ...CR_BASIS, chamber: vorher.chamber, deck: 0.020 });
+  assert(Math.abs(nachher.simCR - soll) < 0.06,
+    'Nach der Deck-Aenderung rechnet der Simulator mit ' + nachher.simCR
+    + ', zum gewaehlten Kopf gehoeren ' + soll.toFixed(2));
+  await p.close();
+});
+
+await test('Es gibt nur noch eine Verdichtungsformel im Quelltext', async () => {
+  const html = fs.readFileSync(path.join(REPO_ROOT, 'index.html'), 'utf8');
+  const treffer = html.match(/=\s*[\w.]*chamber\s*\+\s*gasketVol\s*\+\s*deckVol\s*[+-]\s*[\w.]+/g) || [];
+  assert(treffer.length === 1,
+    'Restvolumen wird an ' + treffer.length + ' Stellen gebildet: ' + treffer.join(' | '));
+  assert(!/-\s*piston\b/.test(html), 'Die Kolbenmulde wird irgendwo wieder abgezogen');
+});
+
 } finally {
   await browser.close();
   server.close();

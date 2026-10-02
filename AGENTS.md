@@ -95,3 +95,16 @@ umgestellt wurden, das Dashboard aber noch das alte Checkbox-Format erwartete.
 `node tests/<name>.test.mjs`, oder alle zusammen so, wie der Workflow sie
 aufruft. Jede Datei `tests/*.test.mjs` muss in `.github/workflows/tests.yml`
 verdrahtet sein; `tests/workflow.test.mjs` prueft genau das.
+
+## 10. Eine Berechnung steht an genau einer Stelle
+
+Wird dieselbe Groesse an zwei Stellen gerechnet, laufen die Fassungen
+auseinander. Wer eine Formel ein zweites Mal braucht, zieht sie in eine
+Funktion und ruft sie auf, statt sie abzuschreiben.
+
+**Warum:** v90 - die Verdichtung wurde zweimal gerechnet, im
+Verdichtungsrechner und in der Kopf-Auswahl des Simulators. In der zweiten
+Fassung wurde die Kolbenmulde vom Restvolumen abgezogen statt addiert. Jede
+Kopf-Variante zeigte 1.4 bis 2.0 Punkte zu viel, und ueber das CR-Feld lief
+der Fehler weiter in Leistungsschaetzung und Oktanempfehlung. Ein Test haelt
+jetzt fest, dass das Restvolumen nur an einer Stelle gebildet wird.

@@ -1943,45 +1943,88 @@
         }
     }
     // ==== COMPRESSION RATIO CALCULATOR ====
-    function calcCR() {
-        const bore = parseFloat(document.getElementById('crBore').value) || 0;
-        const stroke = parseFloat(document.getElementById('crStroke').value) || 0;
-        const chamber = parseFloat(document.getElementById('crChamber').value) || 0;
-        const gasketT = parseFloat(document.getElementById('crGasket').value) || 0;
-        const gasketB = parseFloat(document.getElementById('crGasketBore').value) || bore;
-        const deckC = parseFloat(document.getElementById('crDeck').value) || 0;
-        const pistonVol = parseFloat(document.getElementById('crPiston').value) || 0;
+    // ==== VERDICHTUNG: EINE FORMEL FUER ALLE ====
+    // Die Rechnung stand frueher zweimal da - einmal hier, einmal in der
+    // Kopf-Auswahl des Simulators. Die zweite Fassung hat die Kolbenmulde
+    // ABGEZOGEN statt addiert und damit jede Kopf-Variante um 1.4 bis 2.0
+    // Punkte zu hoch angezeigt. Seitdem gibt es nur noch diese eine Formel.
+    var CC_PRO_CUI = 16.387064;
 
-        if (bore <= 0 || stroke <= 0 || chamber <= 0) {
+    // Liest die Eingaben aus Kapitel 4. "ueber" ersetzt einzelne Werte,
+    // ohne die gespeicherten Felder anzufassen (Planspiel mit anderem Kopf).
+    function crEingaben(ueber) {
+        function z(id) {
+            var el = document.getElementById(id);
+            var v = el ? parseFloat(el.value) : NaN;
+            return isNaN(v) ? 0 : v;
+        }
+        var p = {
+            bore: z('crBore'), stroke: z('crStroke'), chamber: z('crChamber'),
+            gasketT: z('crGasket'), gasketB: z('crGasketBore'),
+            deck: z('crDeck'), dish: z('crPiston')
+        };
+        if (ueber) { for (var k in ueber) { if (ueber.hasOwnProperty(k)) p[k] = ueber[k]; } }
+        return p;
+    }
+
+    // CR = (Hubvolumen + Restvolumen) / Restvolumen.
+    // Das Restvolumen ist die Summe aller Volumina ueber dem Kolben im OT:
+    // Brennraum + Kopfdichtung + Deckspalt + Kolbenmulde. Die Mulde wird
+    // ADDIERT - sie vergroessert den Brennraum und senkt die Verdichtung.
+    function berechneCR(p) {
+        var bore = p.bore, stroke = p.stroke;
+        var gasketB = p.gasketB || bore;
+        var swept = (Math.PI / 4) * bore * bore * stroke * CC_PRO_CUI;
+        var gasketVol = (Math.PI / 4) * gasketB * gasketB * p.gasketT * CC_PRO_CUI;
+        // Kolben unter Deck = positiv = zusaetzliches Volumen, ueber Deck = negativ
+        var deckVol = (Math.PI / 4) * bore * bore * p.deck * CC_PRO_CUI;
+        var clearance = p.chamber + gasketVol + deckVol + p.dish;
+        return {
+            cr: clearance > 0 ? (swept + clearance) / clearance : null,
+            swept: swept, clearance: clearance,
+            gasketVol: gasketVol, deckVol: deckVol
+        };
+    }
+
+    // Schreibt die CR des aktuell gewaehlten Kopfes in den Simulator.
+    // Rueckgabe: die CR, oder null wenn nichts gesetzt wurde.
+    function simCRaktualisieren() {
+        var simCR = document.getElementById('simCR');
+        var sel = document.getElementById('headPreset');
+        if (!simCR || !sel || sel.value === 'custom') return null;
+        var p = (typeof HEAD_PRESETS !== 'undefined')
+            ? HEAD_PRESETS.find(function(x) { return x.id === sel.value; }) : null;
+        if (!p) return null;
+        var ein = crEingaben({ chamber: p.chamber });
+        if (ein.bore <= 0 || ein.stroke <= 0 || ein.chamber <= 0) return null;
+        var r = berechneCR(ein);
+        if (r.cr === null) return null;
+        simCR.value = r.cr.toFixed(1);
+        return r.cr;
+    }
+
+    function calcCR() {
+        var p = crEingaben();
+
+        if (p.bore <= 0 || p.stroke <= 0 || p.chamber <= 0) {
             document.getElementById('crResult').textContent = '--';
             return;
         }
 
-        // Swept volume per cylinder in cc
-        const swept = (Math.PI / 4) * Math.pow(bore, 2) * stroke * 16.387064;
-        // Gasket volume in cc
-        const gasketVol = (Math.PI / 4) * Math.pow(gasketB, 2) * gasketT * 16.387064;
-        // Deck clearance volume in cc (piston below deck = positive)
-        const deckVol = (Math.PI / 4) * Math.pow(bore, 2) * Math.abs(deckC) * 16.387064 * (deckC >= 0 ? 1 : -1);
-        // Clearance volume = chamber + gasket + deck + dish (dish is always positive, adds to clearance)
-        const clearance = chamber + gasketVol + deckVol + pistonVol;
-
-        if (clearance <= 0) {
+        var r = berechneCR(p);
+        if (r.cr === null) {
             document.getElementById('crResult').textContent = 'ERR';
             return;
         }
 
-        const cr = (swept + clearance) / clearance;
-        // Total displacement (all cylinders)
-        const totalCc = swept * 8;
-        const totalCui = totalCc / 16.387064;
-        document.getElementById('crResult').textContent = cr.toFixed(2);
-        document.getElementById('crDispCui').textContent = totalCui.toFixed(2);
+        var totalCc = r.swept * 8;                       // alle acht Zylinder
+        document.getElementById('crResult').textContent = r.cr.toFixed(2);
+        document.getElementById('crDispCui').textContent = (totalCc / CC_PRO_CUI).toFixed(2);
         document.getElementById('crDispCc').textContent = totalCc.toFixed(1);
-        document.getElementById('crSwept').textContent = swept.toFixed(1);
-        document.getElementById('crClearance').textContent = clearance.toFixed(1);
-        document.getElementById('crGasketVol').textContent = gasketVol.toFixed(1);
-        document.getElementById('crDeckVol').textContent = deckVol.toFixed(1);
+        document.getElementById('crSwept').textContent = r.swept.toFixed(1);
+        document.getElementById('crClearance').textContent = r.clearance.toFixed(1);
+        document.getElementById('crGasketVol').textContent = r.gasketVol.toFixed(1);
+        document.getElementById('crDeckVol').textContent = r.deckVol.toFixed(1);
         // Simulator automatisch nachziehen, wenn der Verdichtungsrechner sich aendert
         if (typeof simPullData === 'function') simPullData();
     }
@@ -2042,7 +2085,12 @@
         if (s) document.getElementById('simStroke').value = s.value;
         // Pull CR result
         var crR = document.getElementById('crResult');
-        if (crR && crR.textContent !== '--') document.getElementById('simCR').value = parseFloat(crR.textContent).toFixed(1);
+        if (crR && crR.textContent !== '--' && crR.textContent !== 'ERR') {
+            document.getElementById('simCR').value = parseFloat(crR.textContent).toFixed(1);
+        }
+        // Ist ein Kopf gewaehlt, gilt dessen Brennraum - sonst faellt das Planspiel
+        // bei jeder Aenderung in Kapitel 4 stumm auf den verbauten Kopf zurueck.
+        simCRaktualisieren();
         runSim();
         updatePullButtons();
     }
@@ -2597,27 +2645,16 @@
         document.getElementById('simCFMint').value = p.cfmInt;
         document.getElementById('simCFMexh').value = p.cfmExh;
 
-        // Brennraum NICHT in Kap. 4 ueberschreiben!
-        // Stattdessen: CR fuer den gewaehlten Kopf intern berechnen und anzeigen.
+        // Brennraum NICHT in Kapitel 4 ueberschreiben - dort steht der verbaute
+        // Stand, und das Feld wird gespeichert und synchronisiert. Das Planspiel
+        // rechnet stattdessen dieselbe Formel mit dem Brennraum dieses Kopfes.
         var chamberInstalled = parseFloat(document.getElementById('crChamber').value) || 58;
+        var neueCR = simCRaktualisieren();
         var crText = '';
-        if (Math.abs(p.chamber - chamberInstalled) > 0.5) {
-            // CR neu berechnen mit dem Brennraum des gewaehlten Kopfes
-            var bore = parseFloat(document.getElementById('crBore').value) || 4.0;
-            var stroke = parseFloat(document.getElementById('crStroke').value) || 3.0;
-            var gasketT = parseFloat(document.getElementById('crGasket').value) || 0.040;
-            var gasketB = parseFloat(document.getElementById('crGasketBore').value) || bore;
-            var deck = parseFloat(document.getElementById('crDeck').value) || 0.010;
-            var piston = parseFloat(document.getElementById('crPiston').value) || 6.5;
-            var swept = (Math.PI / 4) * bore * bore * stroke;
-            var gasketVol = (Math.PI / 4) * gasketB * gasketB * gasketT * 16.387;
-            var deckVol = (Math.PI / 4) * bore * bore * deck * 16.387;
-            var clearance = p.chamber + gasketVol + deckVol - piston;
-            if (clearance > 0) {
-                var newCR = ((swept * 16.387) + clearance) / clearance;
-                crText = 'CR mit diesem Kopf (' + p.chamber + 'cc): ' + newCR.toFixed(2) + ':1 (verbaut: ' + chamberInstalled + 'cc)';
-                // Auch den Simulator-CR-Wert setzen fuer korrekte Berechnung
-                document.getElementById('simCR').value = newCR.toFixed(1);
+        if (neueCR !== null) {
+            crText = 'CR mit diesem Kopf (' + p.chamber + 'cc): ' + neueCR.toFixed(2) + ':1';
+            if (Math.abs(p.chamber - chamberInstalled) > 0.5) {
+                crText += ' \u2013 verbaut: ' + chamberInstalled + 'cc';
             }
         }
 
