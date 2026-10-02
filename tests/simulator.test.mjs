@@ -349,6 +349,43 @@ await test('Es gibt nur noch eine Verdichtungsformel im Quelltext', async () => 
   assert(!/-\s*piston\b/.test(html), 'Die Kolbenmulde wird irgendwo wieder abgezogen');
 });
 
+
+// ==== EHRLICHE KENNZEICHNUNG DER KOLBENMULDE ====
+//
+// Die 6.5 cc sind nicht gemessen und stammen aus keinem Mahle-Datenblatt.
+// Die Seite hat sie trotzdem wie eine Herstellerangabe dargestellt, waehrend
+// specs.html zwei Zeilen weiter "Datenblatt pruefen" sagte. Regel 5 verlangt,
+// dass ein Sollwert ohne Quelle als solcher dasteht.
+
+await test('Die Kolbenmulde steht nicht mehr als Herstellerangabe da', async () => {
+  const html = fs.readFileSync(path.join(REPO_ROOT, 'index.html'), 'utf8');
+  const hinweis = /Kolbenmulde \/ Valve Reliefs \(cc\)[^<]*<span[^>]*>([^<]*)<\/span>/.exec(html);
+  assert(hinweis, 'Hinweis neben dem Muldenfeld nicht gefunden');
+  assert(!/SBF600000FPF/.test(hinweis[1]),
+    'Der Hinweis nennt wieder die Teilenummer, als waere der Wert belegt: ' + hinweis[1]);
+  assert(/nicht gemessen/.test(hinweis[1]),
+    'Der Hinweis sagt nicht, dass der Wert nicht gemessen ist: ' + hinweis[1]);
+});
+
+await test('Die Seite nennt die Spanne, die aus der offenen Mulde folgt', async () => {
+  for (const datei of ['index.html', 'specs.html']) {
+    const html = fs.readFileSync(path.join(REPO_ROOT, datei), 'utf8');
+    assert(/9\.19/.test(html) && /9\.67/.test(html),
+      datei + ': die Spanne 9.19 bis 9.67 steht nicht da');
+  }
+});
+
+await test('specs.html kennzeichnet Mulde und Verdichtung als ungesichert', async () => {
+  const html = fs.readFileSync(path.join(REPO_ROOT, 'specs.html'), 'utf8');
+  for (const zeile of ['Kolbenmulde (Dish)', 'Verdichtung mit AFR 58cc']) {
+    const i = html.indexOf(zeile);
+    assert(i > 0, 'Zeile fehlt: ' + zeile);
+    const block = html.slice(i, html.indexOf('</div>', i));
+    assert(/src-link unverified/.test(block),
+      zeile + ': ohne Unverified-Marker - liest sich wie ein gesicherter Wert');
+  }
+});
+
 } finally {
   await browser.close();
   server.close();

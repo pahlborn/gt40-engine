@@ -553,12 +553,13 @@
                 <input type="number" id="crGasketBore" data-field="cr_gasket_bore" value="4.160" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
                 <label style="font-weight:600;">Piston-to-Deck (inch) <span style="font-size:0.65rem;color:#666;">M-6009-302: .010&quot; nominal</span></label>
                 <input type="number" id="crDeck" data-field="cr_deck" value="0.010" step="0.001" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
-                <label style="font-weight:600;">Kolbenmulde / Valve Reliefs (cc) <span style="font-size:0.65rem;color:#666;">Mahle SBF600000FPF: 6.5 cc</span></label>
+                <label style="font-weight:600;">Kolbenmulde / Valve Reliefs (cc) <span style="font-size:0.65rem;color:#c53030;font-weight:600;">6.5 cc angenommen &ndash; nicht gemessen</span></label>
                 <input type="number" id="crPiston" data-field="cr_piston" value="6.5" step="0.5" min="0" style="padding:0.3rem;border:1px solid #cbd5e0;border-radius:4px;" oninput="calcCR();autoSave()">
             </div>
             <div class="info-box" style="margin-top:0.5rem;font-size:0.72rem;background:#fffff0;border-color:#fefcbf;">
                 <strong>Kolbenmulde (Dish):</strong> Immer als <strong>positive</strong> Zahl eingeben. Die Mulde/Valve Reliefs vergr&ouml;&szlig;ern den Brennraum und <strong>senken</strong> die Verdichtung.<br>
                 <span style="color:#666;">Andere Rechner (z.B. Summit Racing &bdquo;Effective Dome Volume&ldquo;) verwenden teils umgekehrte Vorzeichen &ndash; dort ggf. positiv eingeben f&uuml;r Dish! Unser Rechner arbeitet mit dem Gasket-Bore (4.160&quot;) und ist daher pr&auml;ziser als vereinfachte Rechner.</span>
+                <span style="color:#c53030;display:block;margin-top:0.35rem;"><strong>Nicht gemessen:</strong> Zu SBF600000FPF ist kein Mahle-Datenblatt auffindbar. Die 6.5 cc stammen aus einer H&auml;ndlerangabe. Der zweite kursierende Wert 2.3 cc ist ebenfalls keine Messung, sondern das Ergebnis, wenn man Fords gerundete Nennverdichtung 9.0:1 r&uuml;ckw&auml;rts aufl&ouml;st &ndash; Ford selbst nennt dazu &plusmn;0.5. Je nach Wert liegt die Verdichtung zwischen <strong>9.19:1 und 9.67:1</strong>. Auslitern schafft Klarheit.</span>
             </div>
             <div style="margin-top:0.7rem;padding:0.6rem;background:#fff;border:2px solid #975a16;border-radius:8px;text-align:center;">
                 <span style="font-size:0.75rem;color:#975a16;font-weight:600;">BERECHNETE VERDICHTUNG</span><br>
@@ -4069,6 +4070,10 @@
         'H\u00f6henlage, Temperatur & Kraftstoff beeinflussen Bed\u00fcsung':'Altitude, temperature & fuel affect jetting',
         'Rocker Ratio \u2013 Kipphebelübers.':'Rocker Ratio',
 
+        // == v91: KOLBENMULDE UNBELEGT ==
+        '6.5 cc angenommen \u2013 nicht gemessen':'6.5 cc assumed \u2013 not measured',
+        'Nicht gemessen:':'Not measured:',
+        'Auslitern schafft Klarheit.':'Measuring the volume with a burette would settle it.',
         // == v86: MISSING TRANSLATIONS ==
         'Einflussfaktoren auf die Leistung':'Factors Influencing Power Output',
         'Alle Eingangsdaten verfuegbar:':'All input data available:',

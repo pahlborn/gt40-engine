@@ -13,6 +13,18 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v91',
+      date: '2026-10-02',
+      time: '07:16',
+      title: 'Kolbenmulde: ungesicherter Wert wird als solcher gekennzeichnet',
+      changes: [
+        { type: 'fix', text: 'Der Verdichtungsrechner zeigte "Mahle SBF600000FPF: 6.5 cc" - das liest sich wie eine Herstellerangabe. Zu dieser Teilenummer ist kein Mahle-Datenblatt auffindbar; die 6.5 cc stammen aus einer Haendlerangabe. Zwei Zeilen weiter stand in specs.html bereits "Datenblatt pruefen". Die Seite widersprach sich selbst.' },
+        { type: 'fix', text: 'Der kursierende Gegenwert 2.3 cc ist ebenfalls keine Messung, sondern das Ergebnis, wenn man Fords gerundete Nennverdichtung 9.0:1 rueckwaerts aufloest. Fords eigenes Datenblatt zum M-6009-C392 nennt zu solchen Nennwerten "range is +/- .5". Die Spanne "2.3-6.5cc" waren also nie zwei Messungen, sondern zwei Arten zu schaetzen.' },
+        { type: 'verbessert', text: 'Der Wert bleibt bei 6.5 cc - er ist die besser gestuetzte Annahme (Ford nennt fuer das Schwesterprodukt M-6009-363 "notch volume 6.0 cc"). Neu ist die Kennzeichnung: "6.5 cc angenommen - nicht gemessen", dazu die daraus folgende Spanne 9.19:1 bis 9.67:1 auf index.html und specs.html.' },
+        { type: 'intern', text: 'Drei Tests halten die Kennzeichnung fest: der Hinweis darf die Teilenummer nicht wieder als Beleg fuehren, beide Seiten muessen die Spanne nennen, und die beiden specs.html-Zeilen brauchen den Unverified-Marker. Zwei Gegenproben rot gesehen.' }
+      ]
+    },
+    {
       version: 'v90',
       date: '2026-10-02',
       time: '06:11',
