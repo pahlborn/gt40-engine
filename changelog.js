@@ -13,6 +13,20 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v90',
+      date: '2026-10-02',
+      time: '06:11',
+      title: 'Verdichtung: eine Formel statt zweier, davon einer falschen',
+      changes: [
+        { type: 'fix', text: 'Die Kopf-Auswahl im Simulator rechnete die Verdichtung mit einer eigenen, zweiten Formel. Darin wurde die Kolbenmulde vom Restvolumen abgezogen statt addiert - die Mulde vergroessert den Brennraum, sie verkleinert ihn nicht. Jede angezeigte CR lag dadurch 1.4 bis 2.0 Punkte zu hoch: AFR 1399 zeigte 10.89 statt 9.19.' },
+        { type: 'fix', text: 'Der falsche Wert lief ueber das Feld "Verdichtung (CR)" weiter in die Leistungsschaetzung und in die Oktanempfehlung. Bei der verbauten Konfiguration war das der Unterschied zwischen rund 89 und rund 97 ROZ - zwei Kraftstoffsorten.' },
+        { type: 'fix', text: 'Die CR des gewaehlten Kopfes wurde nur gesetzt, wenn sein Brennraum vom verbauten abwich. Zurueck auf AFR 1399 liess damit die CR des zuletzt gewaehlten Fremdkopfes im Simulator stehen.' },
+        { type: 'fix', text: 'Eine Aenderung in Kapitel 4 setzte das Planspiel stillschweigend auf den verbauten Kopf zurueck, obwohl die Auswahl stehen blieb. Jetzt wird die CR des gewaehlten Kopfes nachgezogen.' },
+        { type: 'intern', text: 'Es gibt jetzt genau eine Verdichtungsformel (berechneCR). Kapitel 4 und die Kopf-Auswahl benutzen dieselbe. Kapitel 4 bleibt dabei der verbaute Stand - das gespeicherte Brennraum-Feld wird vom Planspiel weiterhin nicht ueberschrieben.' },
+        { type: 'intern', text: 'Sieben neue Tests in tests/simulator.test.mjs. Einer prueft jede Kopf-Variante gegen eine unabhaengig nachgerechnete CR, einer haelt fest, dass das Restvolumen nur noch an einer Stelle gebildet wird. Drei Gegenproben rot gesehen.' }
+      ]
+    },
+    {
       version: 'v89',
       date: '2026-10-01',
       time: '13:38',
