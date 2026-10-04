@@ -75,6 +75,9 @@ jobs:
       - name: Gemeinsames Glossar
         run: node tests/glossar.test.mjs
 
+      - name: Kapitelstruktur und Gesamtgalerie
+        run: node tests/kapitel.test.mjs
+
       - name: Mischkammern und Begriffswahl
         run: node tests/mischkammern.test.mjs
 

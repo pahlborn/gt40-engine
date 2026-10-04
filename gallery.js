@@ -508,9 +508,21 @@ function _indexOfKey(group, key) {
 // Map group -> array of default manufacturer images
 var _defaultImages = {};
 function _collectDefaults() {
+    // Grundstock aus der Registry: auf build-log.html gibt es kein Markup der
+    // specs-Bauteile, deren Herstellerbilder sollen in der Gesamtgalerie aber
+    // trotzdem erscheinen.
+    if (typeof KAPITEL !== 'undefined') {
+        KAPITEL.GRUPPEN.forEach(function(e) {
+            if (e.standard && e.standard.length) _defaultImages[e.gruppe] = e.standard.slice();
+        });
+    }
     document.querySelectorAll('[data-comp-gallery]').forEach(function(strip) {
         var gid = strip.dataset.compGallery;
+        // Liegt das Markup auf dieser Seite, ist es massgeblich und ersetzt
+        // den Grundstock aus der Registry.
         _defaultImages[gid] = [];
+        // Anker fuer den Ruecksprung aus der Gesamtgalerie
+        if (!strip.id) strip.id = 'galerie-' + gid;
         // Primary default from comp-hero
         var img = strip.querySelector('.comp-hero[data-default-src]');
         if (img) _defaultImages[gid].push(img.dataset.defaultSrc);
@@ -787,7 +799,7 @@ function _renderThumbStrip(strip, group, maxThumbs) {
     for (var i = 0; i < shown.length; i++) {
         var p = shown[i];
         var isLast = (i === shown.length - 1) && rest > 0;
-        html += '<div class="thumb" onclick="openGallery(\'' + group + '\')" title="'
+        html += '<div class="thumb" onclick="oeffneGesamtgalerie(\'' + group + '\')" title="'
              + _esc(_displayName(p, lang) + (_displayDate(p) ? ' - ' + _displayDate(p) : '')) + '">'
              + '<img src="' + _esc(_imgSrc(p)) + '" loading="lazy" decoding="async" alt="">'
              + (isLast ? '<span class="thumb-more">+' + rest + '</span>' : '')
@@ -832,7 +844,7 @@ function updateCompStrip(group) {
         var img = document.createElement('img');
         img.className = 'comp-hero';
         img.src = heroSrc;
-        img.onclick = function() { openGallery(group); };
+        img.onclick = function() { oeffneGesamtgalerie(group); };
         var actions = strip.querySelector('.comp-photo-actions');
         if (actions) strip.insertBefore(img, actions);
     }
@@ -879,6 +891,13 @@ function seiteIstGesperrt() {
 // oberhalb, sonst der Gruppenname. Frueher wurde hart .comp-body erwartet -
 // das gibt es nur in specs.html.
 function _galleryTitleFor(group, strip) {
+    // Die Registry zuerst: sie kennt auch Gruppen, deren Markup auf einer
+    // anderen Seite liegt, und sie liefert den Kapiteltitel statt der
+    // Zwischenueberschrift, die zufaellig ueber dem Fotostreifen steht.
+    if (typeof KAPITEL !== 'undefined') {
+        var t = KAPITEL.titel(group);
+        if (t) return t;
+    }
     if (!strip) return group;
     if (strip.dataset.galleryTitle) return strip.dataset.galleryTitle;
     var body = strip.closest('.comp-body');
@@ -1721,6 +1740,127 @@ function anyOverlayOpen() {
         if (document.querySelector(sel[i])) return true;
     }
     return seiteIstGesperrt();
+}
+
+// ==== GESAMTGALERIE (kapiteluebergreifend) ====
+//
+// Eine Lesesicht ueber alle Fotogruppen, gegliedert nach Bauteil statt nach
+// Herkunftsseite. Bewusst getrennt vom bestehenden Overlay: dort haengen
+// Upload, Lightbox, Zeichnen, Hauptbild und Loeschen - daran aendert sich
+// nichts. Hier wird nur gezeigt und verzweigt.
+//
+// Die Datenschicht reicht dafuer unveraendert: rebuildPhotoData() sammelt
+// die Gruppen aus _repoFiles, nicht aus dem DOM. photoData enthaelt auf
+// jeder Seite alle Gruppen.
+
+function _gesamtChrome() {
+    if (document.getElementById('galerieGesamt')) return;
+    var ov = document.createElement('div');
+    ov.className = 'gallery-overlay';
+    ov.id = 'galerieGesamt';
+    ov.innerHTML =
+        '<div class="gallery-header">'
+      + '<h3 id="galerieGesamtTitel">Alle Fotos</h3>'
+      + '<label style="margin-left:auto;font-size:0.72rem;font-weight:600;display:flex;align-items:center;gap:0.3rem;cursor:pointer;">'
+      + '<input type="checkbox" id="galerieLeereZeigen" onchange="renderGesamtgalerie()"> leere Kapitel'
+      + '</label>'
+      + '<button class="gallery-close" onclick="schliesseGesamtgalerie()">&times;</button>'
+      + '</div>'
+      + '<div id="galerieGesamtInhalt" style="padding:0 0.6rem 2rem;"></div>';
+    document.body.appendChild(ov);
+}
+
+// Fotos einer Gruppe, auch wenn ihr Markup auf einer anderen Seite liegt.
+function _gesamtFotos(gruppe) {
+    return _getAllPhotos(gruppe);
+}
+
+function _gesamtAbschnitt(e, leereZeigen) {
+    var fotos = _gesamtFotos(e.gruppe);
+    var eigene = fotos.filter(function(p) { return !p.isDefault; }).length;
+    if (!fotos.length && !leereZeigen) return '';
+
+    var anker = 'gg-' + e.gruppe;
+    var zaehler = eigene
+        ? eigene + (eigene === 1 ? ' eigenes Foto' : ' eigene Fotos')
+        : 'noch nicht fotografiert';
+    var h = '<div class="gg-gruppe" id="' + anker + '" data-gg-gruppe="' + e.gruppe + '">'
+          + '<div class="gg-kopf">'
+          + '<span class="gg-titel">' + _esc(e.titel) + '</span>'
+          + '<span class="gg-herkunft">' + _esc(e.seite.replace('.html', '')) + '</span>'
+          + '<span class="gg-zahl">' + zaehler + '</span>'
+          + '<a class="gg-sprung" href="' + e.seite + '#galerie-' + e.gruppe + '">zum Kapitel &rsaquo;</a>'
+          + '</div>';
+
+    if (!fotos.length) {
+        h += '<div class="gg-leer">Keine Fotos</div></div>';
+        return h;
+    }
+    h += '<div class="gg-streifen">';
+    for (var i = 0; i < fotos.length; i++) {
+        var p = fotos[i];
+        h += '<figure class="gg-kachel' + (p.isDefault ? ' gg-standard' : '') + '"'
+           + ' onclick="gesamtOeffneGruppe(\'' + e.gruppe + '\',' + i + ')">'
+           + '<img src="' + _imgSrc(p) + '" loading="lazy" decoding="async" alt="">'
+           + (p.isDefault ? '<figcaption>Herstellerbild</figcaption>' : '')
+           + '</figure>';
+    }
+    h += '</div></div>';
+    return h;
+}
+
+function renderGesamtgalerie(fokus) {
+    var ziel = document.getElementById('galerieGesamtInhalt');
+    if (!ziel || typeof KAPITEL === 'undefined') return;
+    var leereZeigen = !!(document.getElementById('galerieLeereZeigen') || {}).checked;
+
+    var html = '', gesamt = 0;
+    KAPITEL.nachBereich().forEach(function(b) {
+        var innen = b.gruppen.map(function(e) { return _gesamtAbschnitt(e, leereZeigen); }).join('');
+        if (!innen) return;
+        b.gruppen.forEach(function(e) {
+            gesamt += _gesamtFotos(e.gruppe).filter(function(p) { return !p.isDefault; }).length;
+        });
+        html += '<h4 class="gg-bereich">' + _esc(b.titel) + '</h4>' + innen;
+    });
+    if (!html) html = '<div class="gg-leer" style="margin-top:1rem;">Noch keine Fotos aufgenommen.</div>';
+    ziel.innerHTML = html;
+
+    var t = document.getElementById('galerieGesamtTitel');
+    if (t) t.textContent = 'Alle Fotos (' + gesamt + ')';
+
+    if (fokus) {
+        var el = document.getElementById('gg-' + fokus);
+        if (el) {
+            el.scrollIntoView({ block: 'start' });
+            el.classList.add('gg-fokus');
+            setTimeout(function() { el.classList.remove('gg-fokus'); }, 2000);
+        }
+    }
+}
+
+function oeffneGesamtgalerie(fokus) {
+    _gesamtChrome();
+    var ov = document.getElementById('galerieGesamt');
+    ov.classList.add('show');
+    sperreSeite();
+    renderGesamtgalerie(fokus);
+}
+
+function schliesseGesamtgalerie() {
+    var ov = document.getElementById('galerieGesamt');
+    if (ov) ov.classList.remove('show');
+    gibSeiteFrei();
+}
+
+// Aus der Gesamtgalerie in die bestehende Gruppengalerie wechseln - dort
+// liegen Lightbox und Bearbeitung.
+function gesamtOeffneGruppe(gruppe, idx) {
+    schliesseGesamtgalerie();
+    openGallery(gruppe);
+    if (typeof idx === 'number' && typeof openLightbox === 'function') {
+        setTimeout(function() { try { openLightbox(gruppe, idx); } catch (e) {} }, 0);
+    }
 }
 
 function ensureGalleryChrome() {
