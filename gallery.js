@@ -1771,8 +1771,22 @@ function _gesamtChrome() {
 }
 
 // Fotos einer Gruppe, auch wenn ihr Markup auf einer anderen Seite liegt.
+//
+// Von den Herstellerbildern bleibt hoechstens eines stehen. Mehrere sind
+// Aufnahmen desselben Teils in anderer Groesse - img/ford-m6010-boss302.jpg
+// und boss302-block.jpg zeigen denselben Block. Nebeneinander in einem
+// Bereich sieht das aus wie ein Fehler. In der Uebersicht genuegt ein Bild
+// als Platzhalter fuer "noch nicht selbst fotografiert"; alle Herstellerbilder
+// stehen weiter in der Gruppengalerie.
 function _gesamtFotos(gruppe) {
-    return _getAllPhotos(gruppe);
+    var alle = _getAllPhotos(gruppe);
+    var gesehen = false;
+    return alle.filter(function(p) {
+        if (!p.isDefault) return true;
+        if (gesehen) return false;
+        gesehen = true;
+        return true;
+    });
 }
 
 function _gesamtAbschnitt(e, leereZeigen) {
@@ -1789,7 +1803,8 @@ function _gesamtAbschnitt(e, leereZeigen) {
           + '<span class="gg-titel">' + _esc(e.titel) + '</span>'
           + '<span class="gg-herkunft">' + _esc(e.seite.replace('.html', '')) + '</span>'
           + '<span class="gg-zahl">' + zaehler + '</span>'
-          + '<a class="gg-sprung" href="' + e.seite + '#galerie-' + e.gruppe + '">zum Kapitel &rsaquo;</a>'
+          + '<a class="gg-sprung" href="' + e.seite + '#galerie-' + e.gruppe + '"'
+          + ' onclick="return gesamtZumKapitel(event, \'' + e.gruppe + '\')">zum Kapitel &rsaquo;</a>'
           + '</div>';
 
     if (!fotos.length) {
@@ -1853,6 +1868,48 @@ function schliesseGesamtgalerie() {
     gibSeiteFrei();
 }
 
+// Ruecksprung ins Kapitel.
+//
+// Ein blosser Anker-Link reicht nicht: sperreSeite() setzt body auf
+// position:fixed, solange ein Overlay offen ist. Der Browser kann dann gar
+// nicht scrollen, und es sieht aus, als passiere nichts. Also erst
+// schliessen, dann springen - und nur auf der eigenen Seite; fuer die andere
+// uebernimmt der normale Link mit dem Hash.
+function gesamtZumKapitel(ev, gruppe) {
+    var hier = (location.pathname.split('/').pop() || 'index.html');
+    var eintrag = (typeof KAPITEL !== 'undefined') ? KAPITEL.gruppe(gruppe) : null;
+    if (!eintrag || eintrag.seite !== hier) return true;   // Link normal folgen lassen
+    if (ev) ev.preventDefault();
+    schliesseGesamtgalerie();
+    zeigeKapitelAnker(gruppe);
+    return false;
+}
+
+// Zum Fotostreifen einer Gruppe scrollen und ihn kurz hervorheben.
+function zeigeKapitelAnker(gruppe) {
+    var ziel = document.getElementById('galerie-' + gruppe);
+    if (!ziel) return false;
+    // Aufgeklappte Elternelemente: ein zugeklapptes Kapitel hat Hoehe 0.
+    var p = ziel.parentElement;
+    while (p && p !== document.body) {
+        if (p.style && p.style.display === 'none') p.style.display = '';
+        p = p.parentElement;
+    }
+    try { ziel.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+    catch (e) { ziel.scrollIntoView(); }
+    ziel.classList.add('gg-fokus');
+    setTimeout(function() { ziel.classList.remove('gg-fokus'); }, 2000);
+    return true;
+}
+
+// Kommt man mit #galerie-<gruppe> von der anderen Seite, existiert die Id
+// beim nativen Ankersprung noch nicht - sie wird erst in _collectDefaults()
+// gesetzt. Darum nach dem Aufbau selbst springen.
+function _gesamtHashSprung() {
+    var m = /^#galerie-(.+)$/.exec(location.hash || '');
+    if (m) setTimeout(function() { zeigeKapitelAnker(m[1]); }, 300);
+}
+
 // Aus der Gesamtgalerie in die bestehende Gruppengalerie wechseln - dort
 // liegen Lightbox und Bearbeitung.
 function gesamtOeffneGruppe(gruppe, idx) {
@@ -1904,6 +1961,7 @@ function ensureGalleryChrome() {
 function initCompPhotos() {
     ensureGalleryChrome();
     _collectDefaults();
+    _gesamtHashSprung();
     loadGalleryMeta();
     rebuildPhotoData();           // sofort aus dem Cache zeichnen (offline-tauglich)
     _renderAllGalleries();

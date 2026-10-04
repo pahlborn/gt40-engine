@@ -13,6 +13,18 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v93',
+      date: '2026-10-04',
+      time: '19:10',
+      title: 'Drei Befunde aus der Benutzung der Gesamtgalerie',
+      changes: [
+        { type: 'fix', text: 'Der Ruecksprung ins Kapitel aenderte nur die Adresszeile. sperreSeite() setzt body auf position:fixed, solange ein Overlay offen ist - ein Anker-Link kann dann gar nichts scrollen. Jetzt wird erst geschlossen, dann gesprungen, und das Ziel kurz hervorgehoben. Kommt der Hash von der anderen Seite, wird nach dem Aufbau selbst gesprungen: die Anker-Ids entstehen erst in _collectDefaults() und existieren beim nativen Ankersprung noch nicht.' },
+        { type: 'fix', text: 'Herstellerbilder erschienen teilweise doppelt. img/ford-m6010-boss302.jpg und boss302-block.jpg zeigen denselben Block in zwei Groessen, ebenso die beiden Short-Block-Bilder. Im Kapitel-Streifen fiel das nicht auf, weil dort nur das Hauptbild prominent ist; im zusammengefuehrten Bereich standen sie nebeneinander. In der Uebersicht bleibt jetzt hoechstens ein Herstellerbild je Gruppe - die Gruppengalerie zeigt weiterhin alle.' },
+        { type: 'verbessert', text: 'Die Kacheln der Gesamtgalerie sind von 92 auf 132 Pixel gewachsen, die Kennzeichnung "Herstellerbild" ist mitgewachsen. Unter 380 Pixel Bildschirmbreite 116 Pixel, damit zwei nebeneinander passen.' },
+        { type: 'intern', text: 'Fuenf Tests. Der Ruecksprung-Test prueft jetzt die Wirkung statt des href: Overlay zu, Seite entsperrt, Ziel im Bild. Der alte Test war gruen, obwohl die Funktion nicht ging - das href war ja korrekt. Drei Gegenproben rot gesehen.' }
+      ]
+    },
+    {
       version: 'v92',
       date: '2026-10-04',
       time: '10:39',

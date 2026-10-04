@@ -215,17 +215,22 @@ body.overlay-offen .fab-stack { display: none; }
 .gg-kachel {
   position: relative;
   flex: 0 0 auto;
-  width: 92px;
+  width: 132px;
   margin: 0;
   cursor: pointer;
 }
 .gg-kachel img {
-  width: 92px;
-  height: 70px;
+  width: 132px;
+  height: 99px;
   object-fit: cover;
   border-radius: 4px;
   display: block;
   background: #edf2f7;
+}
+/* Auf schmalen Geraeten passen sonst keine zwei Kacheln nebeneinander. */
+@media (max-width: 380px) {
+  .gg-kachel, .gg-kachel img { width: 116px; }
+  .gg-kachel img { height: 87px; }
 }
 /* Herstellerbilder bleiben als solche erkennbar - sie sind Katalogmaterial,
    keine Baudokumentation. */
@@ -233,7 +238,7 @@ body.overlay-offen .fab-stack { display: none; }
 .gg-kachel figcaption {
   position: absolute;
   left: 0; right: 0; bottom: 0;
-  font-size: 0.52rem;
+  font-size: 0.58rem;
   text-align: center;
   background: rgba(45, 55, 72, 0.82);
   color: #fff;
