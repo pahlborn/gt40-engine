@@ -24,6 +24,10 @@ import {
 const { server, base } = await startServer();
 const browser = await chromium.launch();
 
+async function oeffneMitHash(datei, hash) {
+  return oeffne(datei + (hash || ''));
+}
+
 async function oeffne(datei) {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -216,6 +220,97 @@ await test('Das Sprungziel existiert im Markup der Zielseite', async () => {
     assertEqual(r, [], datei + ': Streifen ohne Anker-Id');
     await p.close();
   }
+});
+
+suite('Befunde aus der Benutzung (v93)');
+
+await test('Der Ruecksprung scrollt wirklich - nicht nur die Adresszeile', async () => {
+  // Der alte Test pruefte das href. Der Link war korrekt und trotzdem wirkungslos:
+  // sperreSeite() setzt body auf position:fixed, solange ein Overlay offen ist,
+  // und ein Anker-Link kann dann nichts scrollen.
+  const p = await oeffne('specs.html');
+  const r = await p.page.evaluate(async () => {
+    oeffneGesamtgalerie();
+    document.getElementById('galerieLeereZeigen').checked = true;
+    renderGesamtgalerie();
+    const vorher = {
+      bodyPos: getComputedStyle(document.body).position,
+      offen: document.getElementById('galerieGesamt').classList.contains('show')
+    };
+    document.querySelector('#gg-distributor .gg-sprung').click();
+    await new Promise((r) => setTimeout(r, 400));
+    const ziel = document.getElementById('galerie-distributor');
+    const kasten = ziel.getBoundingClientRect();
+    return {
+      vorher,
+      offenDanach: document.getElementById('galerieGesamt').classList.contains('show'),
+      bodyPosDanach: getComputedStyle(document.body).position,
+      imBild: kasten.top > -50 && kasten.top < window.innerHeight,
+      hervorgehoben: ziel.classList.contains('gg-fokus')
+    };
+  });
+  assert(r.vorher.offen, 'Testaufbau: Overlay war nicht offen');
+  assertEqual(r.vorher.bodyPos, 'fixed', 'Testaufbau: Seite war nicht gesperrt');
+  assert(!r.offenDanach, 'Overlay blieb offen - der Sprung waere unsichtbar');
+  assert(r.bodyPosDanach !== 'fixed', 'Seite blieb gesperrt, Scrollen unmoeglich');
+  assert(r.imBild, 'Das Kapitel ist nach dem Sprung nicht im Bild');
+  assert(r.hervorgehoben, 'Das Ziel wurde nicht hervorgehoben');
+  await p.close();
+});
+
+await test('Ein Hash von der anderen Seite findet sein Ziel', async () => {
+  // Die Anker-Ids entstehen erst in _collectDefaults(). Beim nativen
+  // Ankersprung des Browsers gibt es sie noch nicht.
+  const p = await oeffneMitHash('specs.html', '#galerie-heads');
+  const r = await p.page.evaluate(async () => {
+    await new Promise((r) => setTimeout(r, 700));
+    const ziel = document.getElementById('galerie-heads');
+    const k = ziel.getBoundingClientRect();
+    return { imBild: k.top > -50 && k.top < window.innerHeight };
+  });
+  assert(r.imBild, 'Das Kapitel aus dem Hash ist nicht im Bild');
+  await p.close();
+});
+
+await test('Je Gruppe steht hoechstens ein Herstellerbild', async () => {
+  // img/ford-m6010-boss302.jpg und boss302-block.jpg zeigen denselben Block
+  // in zwei Groessen. Nebeneinander in einem Bereich sah das aus wie ein Fehler.
+  const p = await oeffne('specs.html');
+  const r = await p.page.evaluate(() => {
+    oeffneGesamtgalerie();
+    document.getElementById('galerieLeereZeigen').checked = true;
+    renderGesamtgalerie();
+    return [...document.querySelectorAll('#galerieGesamt .gg-gruppe')]
+      .map((sek) => ({
+        g: sek.dataset.ggGruppe,
+        n: sek.querySelectorAll('.gg-kachel.gg-standard').length
+      }))
+      .filter((x) => x.n > 1);
+  });
+  assertEqual(r.map((x) => x.g + ': ' + x.n), [], 'Gruppen mit mehr als einem Herstellerbild');
+  await p.close();
+});
+
+await test('Die Gruppengalerie zeigt weiterhin alle Herstellerbilder', async () => {
+  // Gekuerzt wird nur die Uebersicht. Wer in die Gruppe geht, sieht alles.
+  const p = await oeffne('specs.html');
+  const n = await p.page.evaluate(() => {
+    openGallery('block');
+    return document.querySelectorAll('#galleryGrid .gallery-card[data-is-default="1"]').length;
+  });
+  assert(n >= 2, 'block hat zwei Herstellerbilder, in der Gruppengalerie waren ' + n);
+  await p.close();
+});
+
+await test('Die Kacheln sind gross genug zum Erkennen', async () => {
+  const p = await oeffne('specs.html');
+  const b = await p.page.evaluate(() => {
+    oeffneGesamtgalerie();
+    const k = document.querySelector('#galerieGesamt .gg-kachel img');
+    return k ? k.getBoundingClientRect().width : 0;
+  });
+  assert(b >= 110, 'Kachelbreite ' + b + 'px - zu klein, um etwas zu erkennen');
+  await p.close();
 });
 
 suite('Die Seite bleibt heil');
