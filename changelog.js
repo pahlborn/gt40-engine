@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v92',
+      date: '2026-10-04',
+      time: '10:39',
+      title: 'Gemeinsame Fotogalerie ueber alle Kapitel',
+      changes: [
+        { type: 'neu', text: 'Neuer Menuepunkt "Alle Fotos" auf specs.html und build-log.html: eine Galerie ueber alle Fotogruppen beider Seiten, gegliedert nach Bauteil statt nach Herkunftsseite. Der Klick auf einen Fotostreifen im Kapitel fuehrt dorthin und springt zum passenden Abschnitt.' },
+        { type: 'neu', text: 'Je Abschnitt stehen Herkunftsseite, Anzahl eigener Fotos und ein Ruecksprung ins Kapitel. Herstellerbilder erscheinen mit, bleiben aber als Katalogmaterial gekennzeichnet. Leere Kapitel sind ausgeblendet und per Schalter einblendbar.' },
+        { type: 'fix', text: 'Die Titel der Fotogalerien wurden bisher ermittelt, indem im DOM rueckwaerts nach der naechsten Ueberschrift gesucht wurde. Bei 13 der 15 Build-Log-Gruppen kam dabei "Photo Documentation" heraus - genau das steht dort als Zwischenueberschrift ueber dem Streifen. Jetzt stehen die Schrittnamen da.' },
+        { type: 'intern', text: 'Neue Datei kapitel.js: die Kapitelstruktur als Daten - 34 Fotogruppen mit Seite, Bauteilbereich, Titel und Herstellerbildern. Vorher stand sie nur in der Reihenfolge des HTML. Die Gruppennamen bleiben unveraendert, weil sie die Primaerschluessel der Foto-Metadaten im Gist sind.' },
+        { type: 'intern', text: '13 Tests in tests/kapitel.test.mjs, darunter beide Driftrichtungen: jede Gruppe im Markup braucht einen Registry-Eintrag und umgekehrt. Vier Gegenproben rot gesehen. Der Klicktest in tests/buildlog-gallery.test.mjs ist auf das neue Ziel umgeschrieben, seine Zusicherung bleibt dieselbe.' }
+      ]
+    },
+    {
       version: 'v91',
       date: '2026-10-02',
       time: '07:16',

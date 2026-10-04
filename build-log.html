@@ -430,7 +430,8 @@
 <script src="version.js"></script>
 <script src="changelog.js"></script>
 <script src="findings.js"></script>
-<script src="gallery.js"></script>
+<script src="kapitel.js"></script>
+    <script src="gallery.js"></script>
 <script src="field-sync.js"></script>
 <script src="errorlog.js"></script>
 <script src="validation.js"></script>
@@ -456,6 +457,7 @@
                 <button onclick="exportJSON();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128229; Export</button>
                 <button onclick="document.getElementById('importFile').click();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128228; Import</button>
                 <button onclick="window.print();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128424; Print</button>
+                <button onclick="oeffneGesamtgalerie();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128444; Alle Fotos</button>
                 <button onclick="showErrorLog();closeToolMenu()" style="display:block;width:100%;text-align:left;padding:0.5rem 0.75rem;border:none;background:none;color:var(--text);font-size:0.78rem;cursor:pointer;">&#128203; Fehlerprotokoll</button>
                 <div style="height:1px;background:#e2e8f0;margin:0.2rem 0;"></div>
                 <button type="button" class="menu-version" onclick="openChangelog();closeToolMenu()" title="Release-Dokumentation">Version <span class="app-version"></span><span class="app-built"></span> &rsaquo;</button>
@@ -546,7 +548,7 @@
             <div class="comp-photo-strip build-thumbs" data-comp-gallery="p1_block_photos" data-thumbs="4">
                 <div class="thumb-row"></div>
                 <div class="comp-photo-actions">
-                    <button type="button" class="comp-photo-btn" onclick="openGallery('p1_block_photos')">&#128444; <span id="p1_block_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('p1_block_photos')">&#128444; <span id="p1_block_photos-count">0</span> Fotos</button>
                     <button type="button" class="comp-photo-btn" onclick="addPhoto('p1_block_photos')">&#128247; Foto hinzuf&uuml;gen</button>
                     <button type="button" class="comp-photo-btn" onclick="addYouTube('p1_block_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
                 </div>
@@ -681,7 +683,7 @@
             <div class="comp-photo-strip build-thumbs" data-comp-gallery="p1_pdeck_photos" data-thumbs="4">
                 <div class="thumb-row"></div>
                 <div class="comp-photo-actions">
-                    <button type="button" class="comp-photo-btn" onclick="openGallery('p1_pdeck_photos')">&#128444; <span id="p1_pdeck_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('p1_pdeck_photos')">&#128444; <span id="p1_pdeck_photos-count">0</span> Fotos</button>
                     <button type="button" class="comp-photo-btn" onclick="addPhoto('p1_pdeck_photos')">&#128247; Foto hinzuf&uuml;gen</button>
                     <button type="button" class="comp-photo-btn" onclick="addYouTube('p1_pdeck_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
                 </div>
@@ -833,7 +835,7 @@
             <div class="comp-photo-strip build-thumbs" data-comp-gallery="p1_mainbrg_photos" data-thumbs="4">
                 <div class="thumb-row"></div>
                 <div class="comp-photo-actions">
-                    <button type="button" class="comp-photo-btn" onclick="openGallery('p1_mainbrg_photos')">&#128444; <span id="p1_mainbrg_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('p1_mainbrg_photos')">&#128444; <span id="p1_mainbrg_photos-count">0</span> Fotos</button>
                     <button type="button" class="comp-photo-btn" onclick="addPhoto('p1_mainbrg_photos')">&#128247; Foto hinzuf&uuml;gen</button>
                     <button type="button" class="comp-photo-btn" onclick="addYouTube('p1_mainbrg_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
                 </div>
@@ -1478,7 +1480,7 @@
 <div class="comp-photo-strip build-thumbs" data-comp-gallery="phase1" data-thumbs="4">
     <div class="thumb-row"></div>
     <div class="comp-photo-actions">
-        <button type="button" class="comp-photo-btn" onclick="openGallery('phase1')">&#128444; <span id="phase1-count">0</span> Fotos</button>
+        <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('phase1')">&#128444; <span id="phase1-count">0</span> Fotos</button>
         <button type="button" class="comp-photo-btn" onclick="addPhoto('phase1')">&#128247; Foto hinzuf&uuml;gen</button>
         <button type="button" class="comp-photo-btn" onclick="addYouTube('phase1')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
     </div>
@@ -1744,7 +1746,7 @@
             <div class="comp-photo-strip build-thumbs" data-comp-gallery="p2_degree_photos" data-thumbs="4">
                 <div class="thumb-row"></div>
                 <div class="comp-photo-actions">
-                    <button type="button" class="comp-photo-btn" onclick="openGallery('p2_degree_photos')">&#128444; <span id="p2_degree_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('p2_degree_photos')">&#128444; <span id="p2_degree_photos-count">0</span> Fotos</button>
                     <button type="button" class="comp-photo-btn" onclick="addPhoto('p2_degree_photos')">&#128247; Foto hinzuf&uuml;gen</button>
                     <button type="button" class="comp-photo-btn" onclick="addYouTube('p2_degree_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
                 </div>
@@ -1926,7 +1928,7 @@
             <div class="comp-photo-strip build-thumbs" data-comp-gallery="p2_sweep_photos" data-thumbs="4">
                 <div class="thumb-row"></div>
                 <div class="comp-photo-actions">
-                    <button type="button" class="comp-photo-btn" onclick="openGallery('p2_sweep_photos')">&#128444; <span id="p2_sweep_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('p2_sweep_photos')">&#128444; <span id="p2_sweep_photos-count">0</span> Fotos</button>
                     <button type="button" class="comp-photo-btn" onclick="addPhoto('p2_sweep_photos')">&#128247; Foto hinzuf&uuml;gen</button>
                     <button type="button" class="comp-photo-btn" onclick="addYouTube('p2_sweep_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
                 </div>
@@ -1982,7 +1984,7 @@
             <div class="comp-photo-strip build-thumbs" data-comp-gallery="p2_ptv_photos" data-thumbs="4">
                 <div class="thumb-row"></div>
                 <div class="comp-photo-actions">
-                    <button type="button" class="comp-photo-btn" onclick="openGallery('p2_ptv_photos')">&#128444; <span id="p2_ptv_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('p2_ptv_photos')">&#128444; <span id="p2_ptv_photos-count">0</span> Fotos</button>
                     <button type="button" class="comp-photo-btn" onclick="addPhoto('p2_ptv_photos')">&#128247; Foto hinzuf&uuml;gen</button>
                     <button type="button" class="comp-photo-btn" onclick="addYouTube('p2_ptv_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
                 </div>
@@ -2395,7 +2397,7 @@
 <div class="comp-photo-strip build-thumbs" data-comp-gallery="phase2" data-thumbs="4">
     <div class="thumb-row"></div>
     <div class="comp-photo-actions">
-        <button type="button" class="comp-photo-btn" onclick="openGallery('phase2')">&#128444; <span id="phase2-count">0</span> Fotos</button>
+        <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('phase2')">&#128444; <span id="phase2-count">0</span> Fotos</button>
         <button type="button" class="comp-photo-btn" onclick="addPhoto('phase2')">&#128247; Foto hinzuf&uuml;gen</button>
         <button type="button" class="comp-photo-btn" onclick="addYouTube('phase2')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
     </div>
@@ -2794,7 +2796,7 @@
         <div class="comp-photo-strip build-thumbs" data-comp-gallery="p3_gasket_photos" data-thumbs="4">
             <div class="thumb-row"></div>
             <div class="comp-photo-actions">
-                <button type="button" class="comp-photo-btn" onclick="openGallery('p3_gasket_photos')">&#128444; <span id="p3_gasket_photos-count">0</span> Fotos</button>
+                <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('p3_gasket_photos')">&#128444; <span id="p3_gasket_photos-count">0</span> Fotos</button>
                 <button type="button" class="comp-photo-btn" onclick="addPhoto('p3_gasket_photos')">&#128247; Foto hinzuf&uuml;gen</button>
                 <button type="button" class="comp-photo-btn" onclick="addYouTube('p3_gasket_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
             </div>
@@ -3624,7 +3626,7 @@
     <div class="comp-photo-strip build-thumbs" data-comp-gallery="phase3" data-thumbs="4">
         <div class="thumb-row"></div>
         <div class="comp-photo-actions">
-            <button type="button" class="comp-photo-btn" onclick="openGallery('phase3')">&#128444; <span id="phase3-count">0</span> Fotos</button>
+            <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('phase3')">&#128444; <span id="phase3-count">0</span> Fotos</button>
             <button type="button" class="comp-photo-btn" onclick="addPhoto('phase3')">&#128247; Foto hinzuf&uuml;gen</button>
             <button type="button" class="comp-photo-btn" onclick="addYouTube('phase3')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
         </div>
@@ -4227,7 +4229,7 @@
         <div class="comp-photo-strip build-thumbs" data-comp-gallery="p4_leaks_photos" data-thumbs="4">
             <div class="thumb-row"></div>
             <div class="comp-photo-actions">
-                <button type="button" class="comp-photo-btn" onclick="openGallery('p4_leaks_photos')">&#128444; <span id="p4_leaks_photos-count">0</span> Fotos</button>
+                <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('p4_leaks_photos')">&#128444; <span id="p4_leaks_photos-count">0</span> Fotos</button>
                 <button type="button" class="comp-photo-btn" onclick="addPhoto('p4_leaks_photos')">&#128247; Foto hinzuf&uuml;gen</button>
                 <button type="button" class="comp-photo-btn" onclick="addYouTube('p4_leaks_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
             </div>
@@ -4541,7 +4543,7 @@
             <div class="comp-photo-strip build-thumbs" data-comp-gallery="p4_filter_photos" data-thumbs="4">
                 <div class="thumb-row"></div>
                 <div class="comp-photo-actions">
-                    <button type="button" class="comp-photo-btn" onclick="openGallery('p4_filter_photos')">&#128444; <span id="p4_filter_photos-count">0</span> Fotos</button>
+                    <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('p4_filter_photos')">&#128444; <span id="p4_filter_photos-count">0</span> Fotos</button>
                     <button type="button" class="comp-photo-btn" onclick="addPhoto('p4_filter_photos')">&#128247; Foto hinzuf&uuml;gen</button>
                     <button type="button" class="comp-photo-btn" onclick="addYouTube('p4_filter_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
                 </div>
@@ -4592,7 +4594,7 @@
         <div class="comp-photo-strip build-thumbs" data-comp-gallery="p4_sparkread_photos" data-thumbs="4">
             <div class="thumb-row"></div>
             <div class="comp-photo-actions">
-                <button type="button" class="comp-photo-btn" onclick="openGallery('p4_sparkread_photos')">&#128444; <span id="p4_sparkread_photos-count">0</span> Fotos</button>
+                <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('p4_sparkread_photos')">&#128444; <span id="p4_sparkread_photos-count">0</span> Fotos</button>
                 <button type="button" class="comp-photo-btn" onclick="addPhoto('p4_sparkread_photos')">&#128247; Foto hinzuf&uuml;gen</button>
                 <button type="button" class="comp-photo-btn" onclick="addYouTube('p4_sparkread_photos')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
             </div>
@@ -4606,7 +4608,7 @@
 <div class="comp-photo-strip build-thumbs" data-comp-gallery="phase4" data-thumbs="4">
     <div class="thumb-row"></div>
     <div class="comp-photo-actions">
-        <button type="button" class="comp-photo-btn" onclick="openGallery('phase4')">&#128444; <span id="phase4-count">0</span> Fotos</button>
+        <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('phase4')">&#128444; <span id="phase4-count">0</span> Fotos</button>
         <button type="button" class="comp-photo-btn" onclick="addPhoto('phase4')">&#128247; Foto hinzuf&uuml;gen</button>
         <button type="button" class="comp-photo-btn" onclick="addYouTube('phase4')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
     </div>
@@ -5015,7 +5017,7 @@
 <div class="comp-photo-strip build-thumbs" data-comp-gallery="phase5" data-thumbs="4">
     <div class="thumb-row"></div>
     <div class="comp-photo-actions">
-        <button type="button" class="comp-photo-btn" onclick="openGallery('phase5')">&#128444; <span id="phase5-count">0</span> Fotos</button>
+        <button type="button" class="comp-photo-btn" onclick="oeffneGesamtgalerie('phase5')">&#128444; <span id="phase5-count">0</span> Fotos</button>
         <button type="button" class="comp-photo-btn" onclick="addPhoto('phase5')">&#128247; Foto hinzuf&uuml;gen</button>
         <button type="button" class="comp-photo-btn" onclick="addYouTube('phase5')" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button>
     </div>

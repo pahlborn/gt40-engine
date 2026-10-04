@@ -147,23 +147,55 @@ await test('Der Streifen bleibt einzeilig', async () => {
   await p.close();
 });
 
-await test('Ein Klick auf ein Thumbnail oeffnet die volle Galerie', async () => {
+await test('Ein Klick auf ein Thumbnail oeffnet die Gesamtgalerie an dieser Stelle', async () => {
+  // Bis v91 fuehrte der Klick in die Einzelgruppen-Galerie. Seit v92 ist das
+  // Ziel die kapiteluebergreifende Gesamtgalerie, dort auf den Abschnitt
+  // dieser Gruppe fokussiert. Die Zusicherung bleibt dieselbe: man kommt an
+  // ALLE Fotos der Gruppe, nicht nur an die vier Vorschaubilder, und der
+  // Abschnitt traegt einen sprechenden Namen statt der technischen Id.
   const p = await openBuildLog();
   const r = await p.page.evaluate(async (g) => {
     document.querySelector('[data-comp-gallery="' + g + '"] .thumb').click();
+    await new Promise((r) => setTimeout(r, 300));
+    const ov = document.getElementById('galerieGesamt');
+    const sek = document.getElementById('gg-' + g);
+    return {
+      offen: !!ov && ov.classList.contains('show'),
+      abschnitt: !!sek,
+      fokus: sek ? sek.classList.contains('gg-fokus') : false,
+      kacheln: sek ? sek.querySelectorAll('.gg-kachel').length : 0,
+      titel: sek ? (sek.querySelector('.gg-titel') || {}).textContent : null
+    };
+  }, MANY);
+  assert(r.offen, 'Gesamtgalerie hat sich nicht geoeffnet');
+  assert(r.abschnitt, 'Abschnitt der Gruppe fehlt');
+  assert(r.fokus, 'Abschnitt wurde nicht hervorgehoben');
+  assertEqual(r.kacheln, COUNTS[MANY], 'Alle Fotos - nicht nur die vier Vorschaubilder');
+  assert(r.titel && r.titel !== MANY, 'Abschnitt zeigt nur den Gruppennamen: ' + r.titel);
+  await p.close();
+});
+
+await test('Von dort geht es weiter in die Gruppengalerie mit Lightbox', async () => {
+  // Die Bearbeitung (Hochladen, Loeschen, Hauptbild, Zeichnen) liegt
+  // weiterhin in der Einzelgruppen-Galerie. Der Weg dorthin darf nicht
+  // verlorengehen.
+  const p = await openBuildLog();
+  const r = await p.page.evaluate(async (g) => {
+    oeffneGesamtgalerie(g);
+    document.querySelector('#gg-' + g + ' .gg-kachel').click();
     await new Promise((r) => setTimeout(r, 300));
     const ov = document.getElementById('galleryOverlay');
     return {
       offen: ov.classList.contains('show'),
       gruppe: ov.dataset.group,
       karten: document.querySelectorAll('#galleryGrid .gallery-card').length,
-      titel: document.getElementById('galleryTitle').textContent
+      gesamtZu: !document.getElementById('galerieGesamt').classList.contains('show')
     };
   }, MANY);
-  assert(r.offen, 'Galerie hat sich nicht geoeffnet');
+  assert(r.offen, 'Gruppengalerie hat sich nicht geoeffnet');
   assertEqual(r.gruppe, MANY, 'Falsche Gruppe');
-  assertEqual(r.karten, COUNTS[MANY], 'Alle Fotos - nicht nur die vier Vorschaubilder');
-  assert(r.titel && r.titel !== MANY, 'Galerie zeigt nur den Gruppennamen: ' + r.titel);
+  assertEqual(r.karten, COUNTS[MANY], 'Nicht alle Fotos in der Gruppengalerie');
+  assert(r.gesamtZu, 'Gesamtgalerie blieb offen - zwei Overlays uebereinander');
   await p.close();
 });
 

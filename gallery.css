@@ -165,3 +165,78 @@ body.overlay-offen .fab-stack { display: none; }
     #guide-reference .glossary-search, #guide-reference .info-box { display: none; }
     #guide-reference .ref-group { break-inside: avoid; }
 }
+
+/* ==== GESAMTGALERIE (kapiteluebergreifend) ==== */
+/* Lesesicht ueber alle Fotogruppen, gegliedert nach Bauteil. Das Overlay
+   teilt sich .gallery-overlay mit der Gruppengalerie, der Inhalt ist eigen. */
+.gg-bereich {
+  margin: 1.1rem 0 0.4rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #2b6cb0;
+  border-bottom: 1px solid #bee3f8;
+  padding-bottom: 0.2rem;
+}
+.gg-gruppe {
+  margin: 0 0 0.7rem;
+  border-radius: 6px;
+  transition: background 0.4s;
+}
+.gg-fokus { background: #fefcbf; }
+.gg-kopf {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.25rem 0.2rem;
+}
+.gg-titel { font-weight: 600; font-size: 0.8rem; }
+.gg-herkunft {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #edf2f7;
+  color: #4a5568;
+  border-radius: 3px;
+  padding: 0.05rem 0.3rem;
+}
+.gg-zahl { font-size: 0.68rem; color: #718096; }
+.gg-sprung { margin-left: auto; font-size: 0.68rem; text-decoration: none; color: #2b6cb0; }
+.gg-sprung:hover { text-decoration: underline; }
+.gg-leer { font-size: 0.7rem; color: #a0aec0; font-style: italic; padding: 0.2rem; }
+.gg-streifen {
+  display: flex;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding: 0.1rem 0.2rem 0.3rem;
+  -webkit-overflow-scrolling: touch;
+}
+.gg-kachel {
+  position: relative;
+  flex: 0 0 auto;
+  width: 92px;
+  margin: 0;
+  cursor: pointer;
+}
+.gg-kachel img {
+  width: 92px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+  background: #edf2f7;
+}
+/* Herstellerbilder bleiben als solche erkennbar - sie sind Katalogmaterial,
+   keine Baudokumentation. */
+.gg-standard img { opacity: 0.72; border: 1px dashed #a0aec0; }
+.gg-kachel figcaption {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  font-size: 0.52rem;
+  text-align: center;
+  background: rgba(45, 55, 72, 0.82);
+  color: #fff;
+  border-radius: 0 0 4px 4px;
+  padding: 0.05rem 0;
+}
