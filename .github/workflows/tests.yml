@@ -75,6 +75,10 @@ jobs:
       - name: Gemeinsames Glossar
         run: node tests/glossar.test.mjs
 
+      - name: Hauptlagerdeckel und Befestiger
+
+        run: node tests/hauptlager.test.mjs
+
       - name: Kapitelstruktur und Gesamtgalerie
         run: node tests/kapitel.test.mjs
 

@@ -13,6 +13,20 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v94',
+      date: '2026-10-05',
+      time: '08:55',
+      title: 'Hauptlagerdeckel: Befestiger, Anzugswerte, Montagereihenfolge',
+      changes: [
+        { type: 'neu', text: 'Die Hauptlager-Befestiger stehen jetzt in den Spezifikationen: innen 1/2"-13 UNC mit 100 lb-ft (136 Nm), aussen 3/8"-16 UNC Grade 8 HCS mit 35 lb-ft (47 Nm), beide mit 30W-Oel. Beide Werte mit Beleg aus den Ford-Datenblaettern M-6010-BOSS302 und M-6010-B302BB.' },
+        { type: 'neu', text: 'Im Build-Log steht beim Hauptlagerspiel jetzt die Reihenfolge: innen vor aussen. Die aeusseren Schrauben der Deckel 2, 3 und 4 stehen schraeg (splayed) und ziehen den Deckel auch seitlich in den Blocksattel. Zuerst angezogen, sitzt der Deckel versetzt fest und die Lagergasse wird verspannt.' },
+        { type: 'neu', text: 'Der Fehlbestand ist als Blocker vermerkt: die aeusseren Schrauben fehlen am Block (6 Stueck). Ohne sie darf das Lagerspiel nicht freigegeben werden - mit nur den inneren Schrauben gemessen ist der Wert nicht der des fertigen Motors.' },
+        { type: 'fix', text: 'Pickliste: Oelwanne, Pickup-Tube und ARP-Hauptlagerstuds standen mit festen Canton- bzw. ARP-Teilenummern da, obwohl die Wanne noch nicht entschieden ist. Die drei haengen zusammen - die Sumpflage bestimmt Pickup UND ARP-Teilenummer (154-5610 Rear / 154-5611 Front). Jetzt als abhaengig gekennzeichnet.' },
+        { type: 'neu', text: 'Neue Position auf der Pickliste: die sechs fehlenden aeusseren Hauptlagerschrauben. Ford nennt Gewinde und Guete, aber keine Ersatzteilnummer und keine Laenge - beides als offen gefuehrt, mit dem Hinweis zu messen oder die Ford-Techline zu fragen.' },
+        { type: 'intern', text: '11 Tests in tests/hauptlager.test.mjs. Sie halten fest, dass kein Anzugswert ohne Schmiermittel und ohne Beleg dasteht, dass Ford- und ARP-Werte nicht vermischt werden und dass keine Laenge erfunden wird. Vier Gegenproben rot gesehen.' }
+      ]
+    },
+    {
       version: 'v93',
       date: '2026-10-04',
       time: '19:10',
