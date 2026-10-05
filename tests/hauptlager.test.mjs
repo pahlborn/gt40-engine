@@ -137,6 +137,64 @@ await test('Oelwanne und Pickup sind als noch nicht entschieden markiert', async
     'Die Kandidaten fuer die Wanne sind nicht genannt');
 });
 
+suite('Oelwannen-Vergleich (v95)');
+
+const vergleich = fs.readFileSync(path.join(REPO_ROOT, 'docs', 'oelwanne-vergleich.html'), 'utf8');
+
+await test('Alle drei Hersteller stehen mit Teilenummer, Massen und Preis da', async () => {
+  for (const [wer, teil, preis] of [
+    ['Armando', '#407', '\\$520'],
+    ['Aviaid',  '155-55360', '\\$994'],
+    ['Canton',  '15-630S', '\\$479']
+  ]) {
+    assert(vergleich.includes(teil), wer + ': Teilenummer fehlt');
+    assert(new RegExp(preis).test(vergleich), wer + ': Preis fehlt');
+  }
+  // Sumpftiefe ist das entscheidende Mass - ohne sie ist der Vergleich wertlos.
+  assert(/6\.5&quot;/.test(vergleich) && /8&quot;/.test(vergleich), 'Sumpftiefen fehlen');
+});
+
+await test('Jede Angabe ist zu ihrer Herstellerseite verlinkt', async () => {
+  for (const host of ['aroilpans.com', 'aviaid.com', 'cantonracingproducts.com']) {
+    assert(vergleich.includes(host), 'Quelle fehlt: ' + host);
+  }
+});
+
+await test('Die Grenze des Vergleichs steht vor der Tabelle, nicht darunter', async () => {
+  // Ob eine Wanne passt, entscheidet das Fahrzeug. Ein Datenblattvergleich,
+  // der das nicht vorweg sagt, liest sich wie eine Empfehlung.
+  const warnung = vergleich.indexOf('Was dieser Vergleich nicht leisten kann');
+  const tabelle = vergleich.indexOf('Die drei Wannen nebeneinander');
+  assert(warnung > 0, 'Der Vorbehalt fehlt');
+  assert(warnung < tabelle, 'Der Vorbehalt steht hinter der Tabelle');
+});
+
+await test('Der Schwungrad-Konflikt ist festgehalten', async () => {
+  assert(/104/.test(vergleich), 'Der 104-Zahn-Hinweis von Aviaid fehlt');
+  assert(/164-Zahn/.test(vergleich), 'Das verbaute 164-Zahn-Schwungrad wird nicht gegenuebergestellt');
+});
+
+await test('Die Gesamtkosten rechnen den fehlenden Canton-Pickup mit', async () => {
+  assert(/\$547/.test(vergleich),
+    'Canton ohne Pickup gerechnet - der Listenpreisvergleich waere irrefuehrend');
+});
+
+await test('Der Vergleich ist von Pickliste und Spezifikationen aus erreichbar', async () => {
+  assert(/oelwanne-vergleich\.html/.test(pickliste), 'Pickliste verlinkt den Vergleich nicht');
+  assert(/docs\/oelwanne-vergleich\.html/.test(specs), 'specs.html verlinkt den Vergleich nicht');
+});
+
+await test('Der widerspruechliche Pickup-Abstand ist als strittig gekennzeichnet', async () => {
+  // specs.html nennt .250-.375", Fords M-6009-363 Instruction Sheet 1/2" +/- 1/16".
+  // Beide berufen sich auf Ford. Unmarkiert stuenden zwei Sollwerte gegeneinander.
+  const i = specs.indexOf('Abstand zum Wannenboden');
+  assert(i > 0, 'Die Zeile fehlt');
+  const zeile = specs.slice(i, i + 900);
+  assert(/src-link unverified/.test(zeile), 'Der Widerspruch ist nicht gekennzeichnet');
+  assert(!/lt\. Ford Performance/.test(zeile),
+    'Die Zeile beruft sich weiter allein auf Ford, obwohl Ford zwei Werte nennt');
+});
+
 } finally {
   process.exit(summary());
 }

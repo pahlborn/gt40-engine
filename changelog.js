@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v95',
+      date: '2026-10-05',
+      time: '09:50',
+      title: 'Oelwanne: Vergleich der drei Hersteller als Entscheidungshilfe',
+      changes: [
+        { type: 'neu', text: 'Neue Seite docs/oelwanne-vergleich.html: Armando\u2019s #407, Aviaid 155-55360 und Canton 15-630S nebeneinander - Sumpfmasse, Inhalt, Material, Preis, ob der Pickup enthalten ist, mit Herstellerbildern und Links. Verlinkt aus der Pickliste und aus den Spezifikationen.' },
+        { type: 'neu', text: 'Zwei Funde, die der Listenpreis verdeckt: Bei Canton fehlt der Pickup (15-611, $68), damit ist Armando\u2019s mit $520 die guenstigste vollstaendige Loesung, nicht Canton mit $479. Und die Canton steht in der Pickliste mit ~$320 - der Preis ist ueberholt, aktuell sind $479 bis $554.' },
+        { type: 'neu', text: 'Aviaid schreibt zur GT-40-Wanne, die Originalfahrzeuge haetten ein kleines Schwungrad mit 104-Zahn-Kranz gehabt. In den Spezifikationen dieses Motors steht ein 164-Zahn-Schwungrad. Ob die Wanne damit frei geht, ist offen und vor einer Bestellung zu erfragen.' },
+        { type: 'fix', text: 'specs.html nannte .250"-.375" Abstand Pickup zu Wannenboden "lt. Ford Performance". Fords Instruction Sheet zum M-6009-363 nennt dafuer 1/2" +/- 1/16". Beide berufen sich auf Ford. Der Widerspruch ist jetzt gekennzeichnet statt als gesicherter Sollwert dargestellt.' },
+        { type: 'intern', text: 'Sieben weitere Tests in tests/hauptlager.test.mjs. Einer haelt fest, dass der Vorbehalt - ob eine Wanne passt, entscheidet das Fahrzeug, nicht das Datenblatt - VOR der Tabelle steht und nicht darunter. Drei Gegenproben rot gesehen.' }
+      ]
+    },
+    {
       version: 'v94',
       date: '2026-10-05',
       time: '08:55',

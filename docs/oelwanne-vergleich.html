@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>&Ouml;lwanne: Armando&rsquo;s, Aviaid und Canton im Vergleich</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 1rem; background: #f8f9fa; color: #1a202c; line-height: 1.6; }
+        .banner { background: #2b6cb0; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; margin-bottom: 1rem; }
+        .banner a { color: #bee3f8; }
+        h1 { color: #2d3748; border-bottom: 3px solid #2b6cb0; padding-bottom: 0.5rem; font-size: 1.6rem; }
+        h2 { color: #2b6cb0; border-bottom: 1px solid #cbd5e0; padding-bottom: 0.3rem; margin-top: 1.5rem; }
+        h3 { color: #4a5568; margin-top: 1rem; }
+        .section { background: white; padding: 1rem; border-radius: 8px; margin: 1rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .back-link { display: inline-block; margin-bottom: 1rem; color: #2b6cb0; text-decoration: none; font-weight: 600; }
+        table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; font-size: 0.85rem; }
+        th { background: #ebf4ff; text-align: left; padding: 0.4rem 0.6rem; border-bottom: 2px solid #2b6cb0; }
+        td { padding: 0.35rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        .highlight { background: #fffff0; border: 1px solid #fefcbf; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .warning { background: #fff5f5; border: 1px solid #fc8181; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .info { background: #ebf8ff; border: 1px solid #90cdf4; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .success { background: #e6ffed; border: 1px solid #c6f6d5; padding: 0.6rem; border-radius: 6px; font-size: 0.85rem; margin: 0.5rem 0; }
+        .source { font-size: 0.75rem; color: #718096; margin-top: 0.2rem; }
+        ul { padding-left: 1.3rem; }
+        li { margin-bottom: 0.3rem; }
+        .toc { background: #f7fafc; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin: 1rem 0; }
+        .toc a { color: #2b6cb0; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { padding: 0.15rem 0; }
+        .toc li::before { content: '\25B8 '; color: #2b6cb0; }
+        .badge { display: inline-block; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+        .badge-oem { background: #e2e8f0; color: #4a5568; }
+        .badge-lotus { background: #ebf4ff; color: #2b6cb0; }
+        .badge-mod { background: #fefcbf; color: #975a16; }
+        .badge-tested { background: #e6ffed; color: #276749; }
+        details { margin: 1rem 0; }
+        summary { cursor: pointer; font-weight: 700; color: #2b6cb0; font-size: 1.1rem; padding: 0.5rem 0; border-bottom: 1px solid #cbd5e0; }
+        summary:hover { color: #2c5282; }
+        details[open] summary { margin-bottom: 0.5rem; }
+        .video-embed { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin: 0.5rem 0; background: #1a202c; }
+        .video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .video-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #a0aec0; font-size: 1rem; text-align: center; padding: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="banner">Entscheidungshilfe &ndash; die &Ouml;lwanne ist noch nicht gew&auml;hlt. Sie bestimmt auch Pickup-Tube und die ARP-Teilenummer der Hauptlager-Studs. Siehe <a href="pickliste.html">Pickliste</a>.</div>
+    <a class="back-link" href="../">&larr; Zur&uuml;ck zum Build Log</a>
+
+    <h1>&Ouml;lwanne: Armando&rsquo;s, Aviaid und Canton im Vergleich</h1>
+
+    <div class="warning">
+        <strong>Was dieser Vergleich nicht leisten kann.</strong> Ob eine Wanne passt, entscheidet das Fahrzeug &ndash;
+        Bodenfreiheit, Lage des Chassis-Quertr&auml;gers im Motorraum und der Abstand zur Hinterachse. Diese Ma&szlig;e
+        liegen hier nicht vor. Die Tabelle vergleicht, was die Hersteller angeben; <strong>die Entscheidung f&auml;llt am
+        Fahrzeug, nicht am Datenblatt.</strong> Vor jeder Bestellung Sumpftiefe und -l&auml;nge gegen den eingebauten
+        Motor messen.
+    </div>
+
+    <div class="toc">
+        <strong>Inhalt</strong>
+        <ul>
+            <li><a href="#tabelle">Die drei Wannen nebeneinander</a></li>
+            <li><a href="#tiefe">Warum die Sumpftiefe hier wichtiger ist als der Preis</a></li>
+            <li><a href="#flywheel">Ein Fund zum Schwungrad</a></li>
+            <li><a href="#kosten">Was es wirklich kostet</a></li>
+            <li><a href="#folgen">Was an der Entscheidung h&auml;ngt</a></li>
+            <li><a href="#offen">Was zu kl&auml;ren ist</a></li>
+        </ul>
+    </div>
+
+    <div class="section" id="tabelle">
+        <h2>Die drei Wannen nebeneinander</h2>
+        <table>
+            <tr>
+                <th>&nbsp;</th>
+                <th>Armando&rsquo;s #407</th>
+                <th>Aviaid 155-55360</th>
+                <th>Canton 15-630S</th>
+            </tr>
+            <tr><td><strong>Bezeichnung</strong></td>
+                <td>Ford 289/302 GT&nbsp;40 Replica</td>
+                <td>Original 289 GT-40 Pan</td>
+                <td>289-302 Front Sump Road Race</td></tr>
+            <tr><td><strong>Sumpflage</strong></td>
+                <td>vorn <span class="badge badge-mod">abgeleitet</span></td>
+                <td>vorn (&bdquo;extended front sump&ldquo;)</td>
+                <td>vorn</td></tr>
+            <tr><td><strong>Sumpf L&nbsp;&times;&nbsp;B&nbsp;&times;&nbsp;T</strong></td>
+                <td>14&quot; &times; 11.5&quot; &times; <strong>6.5&quot;</strong></td>
+                <td>15&quot; &times; 12&quot; &times; <strong>6.5&quot;</strong></td>
+                <td>10.5&quot; &times; 12&quot; &times; <strong>8&quot;</strong></td></tr>
+            <tr><td><strong>Inhalt</strong></td>
+                <td>Herstellerangabe fehlt</td>
+                <td>6&nbsp;qt (5.7&nbsp;l)</td>
+                <td>8&nbsp;qt System (7.6&nbsp;l)</td></tr>
+            <tr><td><strong>Material</strong></td>
+                <td>Stahl; Aluminium gegen ca. $100 Aufpreis</td>
+                <td>Aluminium</td>
+                <td>Stahl, 16&nbsp;ga, verzinkt</td></tr>
+            <tr><td><strong>Pickup</strong></td>
+                <td>enthalten</td>
+                <td>enthalten</td>
+                <td><strong>nicht enthalten</strong> &ndash; 15-611 n&ouml;tig</td></tr>
+            <tr><td><strong>Preis Wanne</strong></td>
+                <td>$520</td>
+                <td>$994</td>
+                <td>$479 (Summit) &ndash; $554 (Canton direkt)</td></tr>
+            <tr><td><strong>Besonderheit</strong></td>
+                <td>Einzelanfertigung: Temperatur- und Peilstab-Stutzen,
+                    Freiraum f&uuml;r Hubzapfen oder Stud-Girdle auf Wunsch</td>
+                <td>Nachbau der Originalwanne des GT40</td>
+                <td>Klappenbaffle, Kurbelwellenabstreifer,
+                    abnehmbares Windage-Blech, 1/2&quot;-NPT-Temperaturstutzen</td></tr>
+            <tr><td><strong>Quelle</strong></td>
+                <td><a href="https://www.aroilpans.com/Roadrace.html" target="_blank">aroilpans.com</a></td>
+                <td><a href="https://aviaid.com/shopsite_sc/store/html/ws_oilpns_sbf-ss2.html" target="_blank">aviaid.com</a></td>
+                <td><a href="https://www.cantonracingproducts.com/products/15-630s-ford-289-302-front-sump-road-race-14-ga-12-wide-sump-pan.html" target="_blank">cantonracingproducts.com</a></td></tr>
+        </table>
+        <div class="source">Preise Stand Oktober 2026, ohne Fracht, Zoll und Einfuhrumsatzsteuer.
+            Alle drei Hersteller sitzen in den USA.</div>
+
+        <h3>Produktbilder</h3>
+        <p style="font-size:0.8rem;color:#718096;">Direkt von den Herstellerseiten eingebunden, nicht kopiert.
+            Zeigt der Browser nichts an, blockiert der Anbieter die Einbindung &ndash; dann hilft der Link in der Tabelle.</p>
+        <table>
+            <tr><th>Aviaid 155-55360</th><th>Canton 15-630S</th></tr>
+            <tr>
+                <td><a href="https://aviaid.com/shopsite_sc/store/html/media/pans/155-55360.jpg" target="_blank"><img src="https://aviaid.com/shopsite_sc/store/html/media/pans/155-55360.jpg" alt="Aviaid Original 289 GT-40 Pan" style="max-width:100%;border-radius:4px;"></a></td>
+                <td><a href="https://cdn11.bigcommerce.com/s-yzk3pasgo5/products/232/images/11514/15-630S%252520%2525231%252520302%252520Ford%252520Oil%252520Pan__50750.1569422902.386.513.jpg?c=2" target="_blank"><img src="https://cdn11.bigcommerce.com/s-yzk3pasgo5/products/232/images/11514/15-630S%252520%2525231%252520302%252520Ford%252520Oil%252520Pan__50750.1569422902.386.513.jpg?c=2" alt="Canton 15-630S" style="max-width:100%;border-radius:4px;"></a></td>
+            </tr>
+        </table>
+        <div class="info">Von Armando&rsquo;s #407 ist kein Produktbild auf der Herstellerseite hinterlegt &ndash;
+            die Wannen werden einzeln gefertigt. Bilder gebauter Exemplare stehen im
+            <a href="https://www.gt40s.com/threads/armandos-oil-pans.16794/" target="_blank">GT40s-Forum</a>.</div>
+    </div>
+
+    <div class="section" id="tiefe">
+        <h2>Warum die Sumpftiefe hier wichtiger ist als der Preis</h2>
+        <p>Die beiden GT40-Wannen sind <strong>6.5&quot;</strong> tief, die Canton <strong>8&quot;</strong>.
+            Diese 1.5&quot; (38&nbsp;mm) sind kein Detail: ein GT40 liegt tief, und der Sumpf ist der
+            unterste Punkt des Antriebsstrangs. Genau deshalb hat die Originalwanne des GT40 einen flachen,
+            daf&uuml;r langen Sumpf &ndash; das Volumen wandert in die L&auml;nge statt in die Tiefe.</p>
+        <p>Umgekehrt ist die Canton mit <strong>10.5&quot;</strong> Sumpfl&auml;nge die k&uuml;rzeste. Die
+            GT40-Wannen bauen mit 14&ndash;15&quot; deutlich l&auml;nger und k&ouml;nnen am Chassis-Quertr&auml;ger
+            anstehen. Beides muss am Fahrzeug gepr&uuml;ft werden &ndash; die eine Wanne kann unten anstehen,
+            die andere vorn.</p>
+        <div class="highlight">Die Canton 15-630S ist laut Hersteller <strong>f&uuml;r Cobra-Nachbauten</strong>
+            ausgelegt &ndash; ein Frontmotor-Fahrzeug mit ganz anderem Bauraum. Das macht sie nicht
+            untauglich, aber sie ist nicht f&uuml;r diesen Einbaufall entworfen worden.</div>
+    </div>
+
+    <div class="section" id="flywheel">
+        <h2>Ein Fund zum Schwungrad</h2>
+        <p>Aviaid schreibt zur GT-40-Wanne w&ouml;rtlich:</p>
+        <blockquote style="border-left:3px solid #2b6cb0;margin:0.5rem 0;padding-left:0.8rem;font-style:italic;">
+            &bdquo;Extended front sump, used in the original small block GT-40. These cars used a small
+            diameter flywheel and 104 tooth starter ring&hellip;&ldquo;
+        </blockquote>
+        <div class="warning">
+            In den Spezifikationen dieses Motors steht ein <strong>164-Zahn-Schwungrad</strong>. Der
+            Originalkranz des GT40 hat 104 Z&auml;hne und damit deutlich kleineren Durchmesser. Ob die
+            Aviaid-Wanne mit einem 164er-Kranz hinten &uuml;berhaupt frei geht, ist damit offen &ndash;
+            <strong>vor einer Bestellung bei Aviaid erfragen.</strong> Dasselbe gilt f&uuml;r
+            Armando&rsquo;s #407, der nach Angaben im GT40s-Forum demselben Vorbild folgt;
+            dort l&auml;sst sich der Freiraum allerdings bei der Fertigung ber&uuml;cksichtigen.
+        </div>
+    </div>
+
+    <div class="section" id="kosten">
+        <h2>Was es wirklich kostet</h2>
+        <p>Der Listenpreis t&auml;uscht, weil bei Canton der Pickup fehlt:</p>
+        <table>
+            <tr><th>&nbsp;</th><th>Wanne</th><th>Pickup</th><th>Summe</th></tr>
+            <tr><td>Armando&rsquo;s #407 (Stahl)</td><td>$520</td><td>enthalten</td><td><strong>$520</strong></td></tr>
+            <tr><td>Canton 15-630S (Summit)</td><td>$479</td><td>$68 (15-611)</td><td><strong>$547</strong></td></tr>
+            <tr><td>Canton 15-630S (Canton direkt)</td><td>$554</td><td>$68</td><td>$622</td></tr>
+            <tr><td>Aviaid 155-55360</td><td>$994</td><td>enthalten</td><td>$994</td></tr>
+        </table>
+        <div class="highlight">Damit ist <strong>Armando&rsquo;s die g&uuml;nstigste vollst&auml;ndige
+            L&ouml;sung</strong>, nicht Canton &ndash; obwohl Canton den niedrigsten Wannenpreis hat.
+            In der Pickliste stand die Canton bisher mit <strong>~$320</strong>; dieser Preis ist
+            &uuml;berholt.</div>
+    </div>
+
+    <div class="section" id="folgen">
+        <h2>Was an der Entscheidung h&auml;ngt</h2>
+        <p>Die Wanne ist nicht allein zu entscheiden &ndash; zwei weitere Positionen folgen ihr:</p>
+        <table>
+            <tr><th>H&auml;ngt davon ab</th><th>Warum</th></tr>
+            <tr><td><strong>Pickup-Tube</strong></td>
+                <td>Die H&ouml;he muss zum Wannenboden passen. Ford nennt als Soll
+                    &frac12;&quot;&nbsp;&plusmn;&nbsp;1/16&quot; Abstand. Bei Armando&rsquo;s und Aviaid
+                    kommt er passend mit, bei Canton ist es die 15-611.</td></tr>
+            <tr><td><strong>ARP-Hauptlager-Studs</strong></td>
+                <td>ARP f&uuml;hrt <strong>154-5610 f&uuml;r Rear Sump</strong> und
+                    <strong>154-5611 f&uuml;r Front Sump</strong>, weil die Sumpflage bestimmt, welcher
+                    Stud die Pumpenaufnahme tr&auml;gt. Alle drei hier verglichenen Wannen sind
+                    Front Sump &ndash; damit w&auml;re 154-5611 richtig, sobald eine davon gew&auml;hlt wird.</td></tr>
+        </table>
+        <div class="info">Ford weist im Datenblatt des Blocks darauf hin, dass bei Nasssumpf die
+            Hauptlagerschraube <strong>D7TZ-6345-A</strong> (mit Stehbolzen f&uuml;r die
+            Pumpenaufnahme) zu verwenden ist. Das ist derselbe Zusammenhang aus anderer Richtung.</div>
+    </div>
+
+    <div class="section" id="offen">
+        <h2>Was zu kl&auml;ren ist</h2>
+        <table>
+            <tr><th>Offen</th><th>Wie es zu kl&auml;ren ist</th></tr>
+            <tr><td>Bodenfreiheit und Lage des Quertr&auml;gers im Motorraum</td>
+                <td>Am Fahrzeug messen: verf&uuml;gbare Tiefe unter der Kurbelwellenmitte und freie
+                    L&auml;nge vor dem Block. Erst danach ist 6.5&quot; gegen 8&quot; entscheidbar.</td></tr>
+            <tr><td>Freigang zum 164-Zahn-Schwungrad</td>
+                <td>Bei Aviaid und Armando&rsquo;s erfragen (Kontakte unten).</td></tr>
+            <tr><td>Inhalt der Armando&rsquo;s #407</td>
+                <td>Nicht ver&ouml;ffentlicht &ndash; bei der Anfrage mit erfragen.</td></tr>
+            <tr><td>Peilstab</td>
+                <td>Armando&rsquo;s fertigt den Stutzen nach Vorgabe; bei Canton ist eine
+                    wannenseitige Peilstabaufnahme vorgesehen. Beim GT40 ist die Zug&auml;nglichkeit
+                    von oben die eigentliche Frage.</td></tr>
+        </table>
+        <h3>Kontakte</h3>
+        <table>
+            <tr><th>Hersteller</th><th>Kontakt</th></tr>
+            <tr><td>Armando&rsquo;s Racing Oil Pans<br><span class="source">Armando Rodriguez, El Paso, TX</span></td>
+                <td>Tel. (915) 849-7622 &middot; Mobil (323) 422-0145<br>
+                    <a href="mailto:aroilpans@aol.com">aroilpans@aol.com</a> &middot;
+                    <a href="https://www.aroilpans.com/Roadrace.html" target="_blank">aroilpans.com</a></td></tr>
+            <tr><td>Aviaid Oil Systems</td>
+                <td><a href="https://aviaid.com/small-block-ford.html" target="_blank">aviaid.com</a></td></tr>
+            <tr><td>Canton Racing Products</td>
+                <td><a href="https://www.cantonracingproducts.com/products/15-630s-ford-289-302-front-sump-road-race-14-ga-12-wide-sump-pan.html" target="_blank">cantonracingproducts.com</a></td></tr>
+        </table>
+    </div>
+
+</body>
+</html>
