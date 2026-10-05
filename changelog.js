@@ -13,6 +13,33 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v95',
+      date: '2026-10-05',
+      time: '09:50',
+      title: 'Oelwanne: Vergleich der drei Hersteller als Entscheidungshilfe',
+      changes: [
+        { type: 'neu', text: 'Neue Seite docs/oelwanne-vergleich.html: Armando\u2019s #407, Aviaid 155-55360 und Canton 15-630S nebeneinander - Sumpfmasse, Inhalt, Material, Preis, ob der Pickup enthalten ist, mit Herstellerbildern und Links. Verlinkt aus der Pickliste und aus den Spezifikationen.' },
+        { type: 'neu', text: 'Zwei Funde, die der Listenpreis verdeckt: Bei Canton fehlt der Pickup (15-611, $68), damit ist Armando\u2019s mit $520 die guenstigste vollstaendige Loesung, nicht Canton mit $479. Und die Canton steht in der Pickliste mit ~$320 - der Preis ist ueberholt, aktuell sind $479 bis $554.' },
+        { type: 'neu', text: 'Aviaid schreibt zur GT-40-Wanne, die Originalfahrzeuge haetten ein kleines Schwungrad mit 104-Zahn-Kranz gehabt. In den Spezifikationen dieses Motors steht ein 164-Zahn-Schwungrad. Ob die Wanne damit frei geht, ist offen und vor einer Bestellung zu erfragen.' },
+        { type: 'fix', text: 'specs.html nannte .250"-.375" Abstand Pickup zu Wannenboden "lt. Ford Performance". Fords Instruction Sheet zum M-6009-363 nennt dafuer 1/2" +/- 1/16". Beide berufen sich auf Ford. Der Widerspruch ist jetzt gekennzeichnet statt als gesicherter Sollwert dargestellt.' },
+        { type: 'intern', text: 'Sieben weitere Tests in tests/hauptlager.test.mjs. Einer haelt fest, dass der Vorbehalt - ob eine Wanne passt, entscheidet das Fahrzeug, nicht das Datenblatt - VOR der Tabelle steht und nicht darunter. Drei Gegenproben rot gesehen.' }
+      ]
+    },
+    {
+      version: 'v94',
+      date: '2026-10-05',
+      time: '08:55',
+      title: 'Hauptlagerdeckel: Befestiger, Anzugswerte, Montagereihenfolge',
+      changes: [
+        { type: 'neu', text: 'Die Hauptlager-Befestiger stehen jetzt in den Spezifikationen: innen 1/2"-13 UNC mit 100 lb-ft (136 Nm), aussen 3/8"-16 UNC Grade 8 HCS mit 35 lb-ft (47 Nm), beide mit 30W-Oel. Beide Werte mit Beleg aus den Ford-Datenblaettern M-6010-BOSS302 und M-6010-B302BB.' },
+        { type: 'neu', text: 'Im Build-Log steht beim Hauptlagerspiel jetzt die Reihenfolge: innen vor aussen. Die aeusseren Schrauben der Deckel 2, 3 und 4 stehen schraeg (splayed) und ziehen den Deckel auch seitlich in den Blocksattel. Zuerst angezogen, sitzt der Deckel versetzt fest und die Lagergasse wird verspannt.' },
+        { type: 'neu', text: 'Der Fehlbestand ist als Blocker vermerkt: die aeusseren Schrauben fehlen am Block (6 Stueck). Ohne sie darf das Lagerspiel nicht freigegeben werden - mit nur den inneren Schrauben gemessen ist der Wert nicht der des fertigen Motors.' },
+        { type: 'fix', text: 'Pickliste: Oelwanne, Pickup-Tube und ARP-Hauptlagerstuds standen mit festen Canton- bzw. ARP-Teilenummern da, obwohl die Wanne noch nicht entschieden ist. Die drei haengen zusammen - die Sumpflage bestimmt Pickup UND ARP-Teilenummer (154-5610 Rear / 154-5611 Front). Jetzt als abhaengig gekennzeichnet.' },
+        { type: 'neu', text: 'Neue Position auf der Pickliste: die sechs fehlenden aeusseren Hauptlagerschrauben. Ford nennt Gewinde und Guete, aber keine Ersatzteilnummer und keine Laenge - beides als offen gefuehrt, mit dem Hinweis zu messen oder die Ford-Techline zu fragen.' },
+        { type: 'intern', text: '11 Tests in tests/hauptlager.test.mjs. Sie halten fest, dass kein Anzugswert ohne Schmiermittel und ohne Beleg dasteht, dass Ford- und ARP-Werte nicht vermischt werden und dass keine Laenge erfunden wird. Vier Gegenproben rot gesehen.' }
+      ]
+    },
+    {
       version: 'v93',
       date: '2026-10-04',
       time: '19:10',
