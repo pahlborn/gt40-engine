@@ -256,6 +256,8 @@
         .src-link.ext { color: #b7791f; }
         .src-link.unverified { color: #c53030; font-weight: 700; }
         .src-link.unverified::after { content: '?'; }
+        .mw-gemessen { color: #276749; font-weight: 600; }
+        .mw-offen { color: #c53030; font-weight: 600; }
         .spec-value .src-link { vertical-align: baseline; font-size: 0.55rem; }
         /* Inline-Quellenlinks: einheitlich lokal vs extern */
         .ref-local, .ref-ext { font-size: 0.78rem; text-decoration: none; font-weight: 600; }
@@ -502,7 +504,8 @@
 <script src="kapitel.js"></script>
     <script src="gallery.js"></script>
 <script src="field-sync.js"></script>
-<script src="errorlog.js"></script>
+<script src="messwerte.js"></script>
+    <script src="errorlog.js"></script>
 <script src="validation.js"></script>
 <script src="reference.js"></script>
 <script src="exkurs-engine.js"></script>
@@ -745,8 +748,8 @@
                     <div class="spec-item"><span class="spec-label">Bohrung</span><span class="spec-value">4.000"</span></div>
                     <div class="spec-item"><span class="spec-label">Ventilwinkel-Kompatibilit&auml;t</span><span class="spec-value">20&deg; Valve Angle Heads (Std. SBF + Aftermarket)</span></div>
                     <div class="spec-item"><span class="spec-label">Valve Reliefs</span><span class="spec-value">Ja &ndash; f&uuml;r stock und spread valve guide centerlines</span></div>
-                    <div class="spec-item"><span class="spec-label">Kolbenmulde (Dish)</span><span class="spec-value">6.5 cc &ndash; angenommen, nicht gemessen <a class="src-link unverified" title="Kein Mahle-Datenblatt zu SBF600000FPF auffindbar; die 6.5 cc stammen aus einer Haendlerangabe. Der Gegenwert 2.3 cc ist keine Messung, sondern Fords Nennverdichtung 9.0:1 rueckwaerts aufgeloest - Ford nennt dazu selbst +/-0.5. Daraus Spanne 9.19:1 bis 9.67:1. Auslitern noetig."></a></span></div>
-                    <div class="spec-item"><span class="spec-label">Piston-to-Deck (nominal)</span><span class="spec-value">0.010&quot; (0.25 mm)</span></div>
+                    <div class="spec-item"><span class="spec-label">Kolbenmulde (Dish)</span><span class="spec-value"><span data-spiegel="cr_piston">6.5</span> cc &ndash; <span data-spiegel-status="cr_piston">Herstellerangabe / nicht gemessen</span> <a class="src-link unverified" title="Kein Mahle-Datenblatt zu SBF600000FPF auffindbar; die 6.5 cc stammen aus einer Haendlerangabe. Der Gegenwert 2.3 cc ist keine Messung, sondern Fords Nennverdichtung 9.0:1 rueckwaerts aufgeloest - Ford nennt dazu selbst +/-0.5. Daraus Spanne 9.19:1 bis 9.67:1. Auslitern noetig."></a></span></div>
+                    <div class="spec-item"><span class="spec-label">Piston-to-Deck</span><span class="spec-value"><span data-spiegel="cr_deck">0.010</span>&quot; &ndash; <span data-spiegel-status="cr_deck">Herstellerangabe / nicht gemessen</span></span></div>
                     <div class="spec-item"><span class="spec-label">Nominale Verdichtung</span><span class="spec-value">9.0:1 (mit 64cc Brennraumvolumen)</span></div>
                     <div class="spec-item"><span class="spec-label">Verdichtung mit AFR 58cc</span><span class="spec-value">9.19:1 bis 9.67:1 &ndash; je nach Kolbenmulde (9.19 mit 6.5cc: 58cc Brennraum + 8.9cc Dichtung + 2.1cc Deck + 6.5cc Mulde = 75.5cc Totvolumen; 9.67 mit 2.3cc) <a class="src-link unverified" title="Haengt allein an der ungemessenen Kolbenmulde. Siehe Zeile Kolbenmulde (Dish)."></a></span></div>
                     <div class="comp-sub">Pleuel (Connecting Rods)</div>
@@ -4424,6 +4427,7 @@
     // search.js wird erst am Dateiende geladen - initUnifiedSearch() gab es hier
     // also noch gar nicht und die Exception hat updateBuildDashboard() sowie die
     // Cross-Checks mit abgeraeumt. Jeder Schritt jetzt einzeln abgesichert.
+    if (typeof Messwerte !== 'undefined') Messwerte.spiegeln();
     if (typeof initUnifiedSearch === 'function') initUnifiedSearch();
     try { updateBuildDashboard(); } catch(e) { console.warn('[Init] Dashboard:', e.message); }
     setTimeout(function() { try { runCrossChecks(); } catch(e) { console.warn('[Init] Cross-Checks:', e.message); } }, 500);

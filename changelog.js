@@ -13,6 +13,20 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v96',
+      date: '2026-10-05',
+      time: '11:27',
+      title: 'Jeder Messwert sagt, ob er gemessen oder angenommen ist',
+      changes: [
+        { type: 'neu', text: 'Jede der sieben Eingaben des Verdichtungsrechners hat jetzt einen Schalter "gemessen". Solange er aus ist, steht daneben "Herstellerangabe / nicht gemessen". Der Status wird mitgespeichert und mitsynchronisiert wie der Wert selbst.' },
+        { type: 'neu', text: 'Unter der berechneten Verdichtung steht, worauf sie beruht: "Schaetzung - 7 von 7 Eingaben nicht gemessen: Bohrung, Hub, ..." und, sobald alles gemessen ist, "aus gemessenen Werten". Damit ist auf einen Blick erkennbar, wie belastbar die Zahl ist.' },
+        { type: 'fix', text: 'Die Kennzeichnung stand bisher fest im Markup ("6.5 cc angenommen - nicht gemessen"). Wer einen selbst ausgeliterten Wert eintrug, bekam weiterhin die alte Beschriftung - sie waere zur Falschaussage geworden. Jetzt wird sie aus dem gespeicherten Status erzeugt.' },
+        { type: 'fix', text: 'specs.html wiederholte Kolbenmulde und Piston-to-Deck als statischen Text. Diese Zahlen folgten dem Eingabefeld nicht. Jetzt werden Wert und Status aus demselben Speicher gespiegelt - dieselbe Duplizierung, die in v90 bei der Verdichtungsformel und in v93 bei den Herstellerbildern auffiel.' },
+        { type: 'intern', text: 'Neue Datei messwerte.js. Zwei Zustaende, nicht drei: "gemessen" heisst an DIESEM Motor ermittelt, alles andere - Katalogwert, Datenblatt, Haendlerangabe, Rueckrechnung - ist "nicht gemessen". Fehlt der Status, gilt ein Wert als nicht gemessen; das ist die sichere Richtung.' },
+        { type: 'intern', text: '9 Tests in tests/messwerte.test.mjs. Drei Gegenproben rot gesehen. Einer der Tests war zunaechst wertlos - er prueft den Speicher-Rueckfall, las aber die Checkbox im DOM und konnte darum nie rot werden. Jetzt laeuft er gegen specs.html, wo es keine Schalter gibt.' }
+      ]
+    },
+    {
       version: 'v95',
       date: '2026-10-05',
       time: '09:50',

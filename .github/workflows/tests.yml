@@ -79,6 +79,10 @@ jobs:
 
         run: node tests/hauptlager.test.mjs
 
+      - name: Herkunft der Messwerte
+
+        run: node tests/messwerte.test.mjs
+
       - name: Kapitelstruktur und Gesamtgalerie
         run: node tests/kapitel.test.mjs
 

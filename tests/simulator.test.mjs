@@ -358,13 +358,21 @@ await test('Es gibt nur noch eine Verdichtungsformel im Quelltext', async () => 
 // dass ein Sollwert ohne Quelle als solcher dasteht.
 
 await test('Die Kolbenmulde steht nicht mehr als Herstellerangabe da', async () => {
+  // Bis v95 stand der Hinweis "6.5 cc angenommen - nicht gemessen" fest im
+  // Label. Seit v96 kommt die Kennzeichnung aus dem gespeicherten Status,
+  // damit sie dem Wert folgt. Die Zusicherung bleibt dieselbe: am Feld muss
+  // sichtbar sein, woher der Wert stammt, und die Teilenummer darf nicht als
+  // Beleg auftreten.
   const html = fs.readFileSync(path.join(REPO_ROOT, 'index.html'), 'utf8');
-  const hinweis = /Kolbenmulde \/ Valve Reliefs \(cc\)[^<]*<span[^>]*>([^<]*)<\/span>/.exec(html);
-  assert(hinweis, 'Hinweis neben dem Muldenfeld nicht gefunden');
-  assert(!/SBF600000FPF/.test(hinweis[1]),
-    'Der Hinweis nennt wieder die Teilenummer, als waere der Wert belegt: ' + hinweis[1]);
-  assert(/nicht gemessen/.test(hinweis[1]),
-    'Der Hinweis sagt nicht, dass der Wert nicht gemessen ist: ' + hinweis[1]);
+  const i = html.indexOf('Kolbenmulde / Valve Reliefs (cc)');
+  assert(i > 0, 'Das Muldenfeld fehlt');
+  const block = html.slice(i, i + 1200);
+  assert(/data-field="cr_piston_gemessen"/.test(block),
+    'Am Muldenfeld fehlt der Herkunfts-Schalter');
+  assert(/data-spiegel-status="cr_piston"/.test(block),
+    'Am Muldenfeld fehlt die Herkunfts-Anzeige');
+  assert(!/SBF600000FPF/.test(block),
+    'Die Teilenummer steht wieder am Feld, als waere der Wert belegt');
 });
 
 await test('Die Seite nennt die Spanne, die aus der offenen Mulde folgt', async () => {
