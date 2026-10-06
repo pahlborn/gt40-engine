@@ -1176,7 +1176,7 @@
                     <td style="padding:0.3rem;border-bottom:1px solid #fed7d7;">Super E10</td>
                     <td style="text-align:center;padding:0.3rem;border-bottom:1px solid #fed7d7;">95</td>
                     <td style="text-align:center;padding:0.3rem;border-bottom:1px solid #fed7d7;">bis 10%</td>
-                    <td style="padding:0.3rem;border-bottom:1px solid #fed7d7;color:#c53030;font-weight:700;">VERBOTEN &ndash; DellOrto DRLA!</td>
+                    <td style="padding:0.3rem;border-bottom:1px solid #fed7d7;color:#975a16;font-weight:700;">nur im Fahrbetrieb &ndash; nicht stehen lassen</td>
                 </tr>
                 <tr>
                     <td style="padding:0.3rem;border-bottom:1px solid #e2e8f0;">Super E5</td>
@@ -1198,9 +1198,13 @@
                 </tr>
             </table>
             <div style="background:#fff5f5;border:1px solid #fed7d7;border-radius:6px;padding:0.4rem;margin-top:0.3rem;font-size:0.76rem;">
-                <strong style="color:#c53030;">&#9888; KEIN E10!</strong> Ethanol (&gt;5%) verursacht Wei&szlig;rost und Korrosion am DellOrto DRLA 45 Aluminiumk&ouml;rper.
-                Sch&auml;den bereits nach wenigen Wochen Standzeit. Gilt unabh&auml;ngig von der Oktanzahl.<br>
-                <strong>Faustregel:</strong> An der Zapfs&auml;ule auf &bdquo;E5&ldquo; achten. Im Zweifel: Super Plus (98) &ndash; in Deutschland fast immer E5.<br>
+                <strong style="color:#975a16;">&#9888; Ethanol: nicht stehen lassen</strong> &ndash; kritisch ist <strong>stehender</strong>
+                ethanolhaltiger Kraftstoff, nicht E10 im Fahrbetrieb. Stehendes Gemisch zieht Wasser, wird sauer und greift dann
+                Aluminium, Zink und Messing an; Weichteile &auml;lterer Ausf&uuml;hrung sind das erste Opfer.<br>
+                <strong>Regel:</strong> Vor Standzeiten &uuml;ber Wochen ethanolarm tanken <em>oder</em> die Schwimmerkammern leeren.
+                Zur &Uuml;berwinterung Kammern leerfahren, Tank voll und dicht oder leer und trocken &ndash; halbvoll ist die schlechteste Variante.<br>
+                <span style="font-size:0.72rem;">Welche Dichts&auml;tze verbaut sind und ob sie E10-fest sind, ist noch offen (Phase&nbsp;3, Kapitel&nbsp;27).
+                Bis dahin konservativ handhaben. <a href="docs/exkurs-ethanol.html" style="color:#2b6cb0;font-weight:600;">Exkurs: Ethanol, E10 und der DellOrto &rarr;</a></span><br>
                 <span style="font-size:0.7rem;color:#718096;">Mindest-Oktanzahl h&auml;ngt von Verdichtung und Z&uuml;ndzeitpunkt ab &ndash; wird im Motor-Simulator (Kap. 5) dynamisch berechnet.</span>
             </div>
 
@@ -1297,7 +1301,7 @@
             <div style="background:#fffbeb;border:1px solid #ecc94b;border-radius:8px;padding:0.6rem;margin-bottom:0.4rem;">
                 <div style="font-size:0.82rem;font-weight:700;color:#975a16;margin-bottom:0.3rem;">&#9888; KRAFTSTOFF &ndash; Risiken</div>
                 <ul style="font-size:0.76rem;margin:0 0 0 1rem;color:#744210;">
-                    <li><strong>E10 VERBOTEN:</strong> Ethanol zerst&ouml;rt DellOrto-Aluminiumk&ouml;rper (Wei&szlig;rost, Korrosion)</li>
+                    <li><strong>Ethanol:</strong> nicht stehen lassen &ndash; Regel und Begr&uuml;ndung im Abschnitt Kraftstoff oben, ausf&uuml;hrlich im <a href="docs/exkurs-ethanol.html" style="color:#2b6cb0;">Exkurs</a></li>
                     <li><strong>Kraftstoffdruck: Arbeitsbereich 2,5&ndash;3,5 psi</strong> f&uuml;r den DellOrto DRLA (Sekund&auml;rquellen, keine Werksangabe) &ndash; Druckregler Pflicht bei Facet-Pumpe (6&ndash;8 psi). Ist-Druck beider Kreise zuerst dokumentieren.</li>
                     <li><strong>Verdichtung vs. Oktan:</strong> &gt;10:1 CR erfordert min. 98 ROZ, &gt;11:1 Rennkraftstoff</li>
                 </ul>
@@ -2289,7 +2293,7 @@
         drawSimChart(data, peakHP, peakTQ);
 
         // Fuel recommendation
-        calcFuelReq(cr, timing);
+        calcFuelReq(cr, timing, intakeType);
 
         // Auto-update drivetrain sim if it exists
         if (document.getElementById('dsChart')) setTimeout(runDriveSim, 100);
@@ -2509,7 +2513,12 @@
         }
     }
 
-    function calcFuelReq(cr, timing) {
+    // Die Ethanol-Frage haengt am Vergaser und am Rest der Kraftstoffanlage,
+    // nicht an der Oktanzahl. Darum braucht die Empfehlung die Ansaugung:
+    // frueher stand der DellOrto-Hinweis auch dann da, wenn ein ganz anderer
+    // Vergaser gewaehlt war.
+    function calcFuelReq(cr, timing, intakeType) {
+        var istDellOrto = (intakeType || 'itb') === 'itb';
         // Octane requirement estimation
         // Base requirement from CR
         var baseOctane;
@@ -2552,11 +2561,11 @@
         if (reqOctane <= 91) {
             fuelGrade = 'Super E5 (95 ROZ)';
             fuelColor = '#276749';
-            fuelNote = 'Standardbenzin ausreichend. Grosser Sicherheitspuffer. KEIN E10 \u2013 Ethanol zerstoert DellOrto-Aluminiumkoerper (Weissrost, Korrosion)!';
+            fuelNote = 'Standardbenzin ausreichend, grosser Sicherheitspuffer.';
         } else if (reqOctane <= 95) {
             fuelGrade = 'Super E5 (95 ROZ)';
             fuelColor = '#2b6cb0';
-            fuelNote = 'Super E5 ausreichend. KEIN E10 \u2013 Ethanol zerstoert DellOrto-Aluminiumkoerper!';
+            fuelNote = 'Super E5 ausreichend.';
         } else if (reqOctane <= 98) {
             fuelGrade = 'Super Plus (98 ROZ)';
             fuelColor = '#d69e2e';
@@ -2584,18 +2593,26 @@
         html += '<div class="comp-sub" style="margin-top:0.5rem;">Europ&auml;ische Kraftstoffsorten</div>';
         html += '<table style="width:100%;font-size:0.78rem;border-collapse:collapse;">';
         html += '<tr style="background:#f0f5ff;"><th style="text-align:left;padding:0.3rem;">Sorte</th><th style="text-align:center;padding:0.3rem;">ROZ</th><th style="text-align:center;padding:0.3rem;">Status</th></tr>';
-        // E10 ist IMMER gesperrt wegen DellOrto DRLA Aluminium-Korrosion!
-        var fuels = [['Super E10',95,true],['Super E5',95,false],['Super Plus',98,false],['Shell V-Power',100,false],['Aral Ultimate 102',102,false]];
+        // E10 wird nur dort gesondert bewertet, wo die verbaute Anlage es
+        // verlangt. Bei einem anderen Vergaser entscheidet dessen
+        // Kraftstoffanlage - die kennt dieser Rechner nicht.
+        var fuels = [['Super E10',95,istDellOrto],['Super E5',95,false],['Super Plus',98,false],['Shell V-Power',100,false],['Aral Ultimate 102',102,false]];
         for (var f = 0; f < fuels.length; f++) {
-            var blocked = fuels[f][2]; // E10 blockiert wegen DellOrto
+            var blocked = fuels[f][2];
             var ok = !blocked && fuels[f][1] >= reqOctane;
-            var label = blocked ? 'NEIN (DellOrto!)' : (ok ? 'OK' : 'NEIN');
+            var label = blocked ? 'nur im Fahrbetrieb' : (ok ? 'OK' : 'NEIN');
             html += '<tr><td style="padding:0.25rem;border-bottom:1px solid #e2e8f0;">' + fuels[f][0] + '</td>';
             html += '<td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;">' + fuels[f][1] + '</td>';
-            html += '<td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;color:' + (ok ? '#276749' : '#c53030') + ';font-weight:700;">' + label + '</td></tr>';
+            html += '<td style="text-align:center;padding:0.25rem;border-bottom:1px solid #e2e8f0;color:' + (ok ? '#276749' : (blocked ? '#975a16' : '#c53030')) + ';font-weight:700;">' + label + '</td></tr>';
         }
         html += '</table>';
-        html += '<div style="font-size:0.7rem;color:#c53030;margin-top:0.3rem;font-weight:600;">\u26a0 E10 ist bei DellOrto DRLA-Vergasern generell verboten \u2013 Ethanol verursacht Weissrost und Korrosion am Aluminiumkoerper. Nur E5-Kraftstoffe verwenden!</div>';
+        // Ein Satz statt vier, und nur dort, wo er zutrifft. Der Wortlaut folgt
+        // docs/exkurs-ethanol.html: kritisch ist STEHENDER ethanolhaltiger
+        // Kraftstoff bei Weichteilen unbekannter Ausfuehrung, nicht E10 im
+        // Fahrbetrieb. Ein pauschales Verbot haelt am Ende niemand ein.
+        html += istDellOrto
+            ? '<div style="font-size:0.7rem;color:#975a16;margin-top:0.3rem;">Ethanol: kritisch ist <strong>stehender</strong> Kraftstoff, nicht der Fahrbetrieb. Vor l\u00e4ngerer Standzeit Schwimmerkammern leeren. <a href="docs/exkurs-ethanol.html" target="_blank" style="color:#2b6cb0;">Exkurs \u2192</a></div>'
+            : '<div style="font-size:0.7rem;color:#718096;margin-top:0.3rem;">Ethanol-Vertr\u00e4glichkeit h\u00e4ngt an der gew\u00e4hlten Anlage \u2013 dieser Rechner kennt nur die Oktanzahl. <a href="docs/exkurs-ethanol.html" target="_blank" style="color:#2b6cb0;">Exkurs \u2192</a></div>';
 
         document.getElementById('simFuelResult').innerHTML = html;
         if (typeof updatePullButtons === 'function') updatePullButtons();
@@ -3805,7 +3822,6 @@
         'Kraftstoff-Empfehlung & Oktanzahl':'Fuel Recommendation & Octane Rating',
         'Kraftstoff-Guide nach Tankketten & L\u00e4ndern':'Fuel Guide by Supply Chain & Country',
         'Wechselwirkung: Z\u00fcndung \u2194 Oktan \u2194 Verdichtung':'Interaction: Ignition \u2194 Octane \u2194 Compression',
-        'Warnung: E10 & DellOrto-Vergaser':'Warning: E10 & DellOrto Carburetors',
         'MSD 8479 \u2013 Advance Springs & Bushings (Quelle: MSD 8479.pdf)':'MSD 8479 \u2013 Advance Springs & Bushings (Source: MSD 8479.pdf)',
         'Allgemeine Warnungen \u2013 Herstellerhinweise':'General Warnings \u2013 Manufacturer Notes',
         'Z\u00fcndsystem \u2013 Herstellerhinweise':'Ignition System \u2013 Manufacturer Notes',
@@ -4105,6 +4121,10 @@
         'H\u00f6henlage, Temperatur & Kraftstoff beeinflussen Bed\u00fcsung':'Altitude, temperature & fuel affect jetting',
         'Rocker Ratio \u2013 Kipphebelübers.':'Rocker Ratio',
 
+        // == v97: ETHANOL-REGEL STATT VERBOT ==
+        'Ethanol: nicht stehen lassen':'Ethanol: do not let it stand',
+        'nur im Fahrbetrieb \u2013 nicht stehen lassen':'only in regular use \u2013 do not let it stand',
+        'Schwimmerkammern leeren':'drain the float bowls',
         // == v91: KOLBENMULDE UNBELEGT ==
         '6.5 cc angenommen \u2013 nicht gemessen':'6.5 cc assumed \u2013 not measured',
         'Nicht gemessen:':'Not measured:',
@@ -4125,7 +4145,6 @@
         'Kein Synthetik! ZDDP Pflicht!':'No synthetic! ZDDP required!',
         'KEIN GL-5! Greift Synchronringe an!':'NO GL-5! Attacks synchro rings!',
         'Nur Motor':'Engine only',
-        'KEIN E10!':'NO E10!',
         'NUR Ultra-Torque! Kein \u00d6l, kein Fett!':'ONLY Ultra-Torque! No oil, no grease!',
         'ALLE Nocken + ALLE Zapfen! Fehlstelle = Lobe-Wipe!':'ALL lobes + ALL journals! Any spot missed = lobe wipe!',
         'Sensor-Element Richtung Motor (zum Block hin)!':'Sensor element facing engine (towards block)!',
