@@ -175,6 +175,90 @@ await test('Facet-Druck steht ueberall mit 6-8 psi', async () => {
     'specs.html nennt den belegten Bereich 6-8 psi nicht');
 });
 
+suite('Ethanol-Hinweis: nur wo er zutrifft, und nur einmal');
+
+async function kraftstoffBlock(page, ansaugung) {
+  return page.evaluate((a) => {
+    document.getElementById('simIntake').value = a;
+    runSim();
+    return document.getElementById('simFuelResult').innerText;
+  }, ansaugung);
+}
+
+await test('Ein anderer Vergaser bekommt nicht den DellOrto-Hinweis', async () => {
+  // Der gemeldete Fehler: die Empfehlung haengte den DellOrto-Hinweis fest an,
+  // unabhaengig von der Ansaugung.
+  const p = await open('index.html');
+  await p.page.waitForFunction(() => typeof runSim === 'function', null, { timeout: 30000 });
+  for (const a of ['single4', 'dual4']) {
+    const t = await kraftstoffBlock(p.page, a);
+    assert(!/DellOrto/i.test(t), a + ': DellOrto steht trotz anderer Ansaugung im Block');
+    assert(!/Schwimmerkammer/i.test(t), a + ': DellOrto-spezifischer Rat steht trotzdem da');
+  }
+  await p.close();
+});
+
+await test('Beim DellOrto steht der Hinweis weiterhin', async () => {
+  // Die Gegenrichtung: wegfallen darf er nur dort, wo er nicht gilt.
+  const p = await open('index.html');
+  await p.page.waitForFunction(() => typeof runSim === 'function', null, { timeout: 30000 });
+  const t = await kraftstoffBlock(p.page, 'itb');
+  assert(/Ethanol/i.test(t), 'Beim DellOrto fehlt der Ethanol-Hinweis');
+  assert(/Schwimmerkammer/i.test(t), 'Die konkrete Massnahme fehlt');
+  await p.close();
+});
+
+await test('Der Hinweis steht einmal im Block, nicht viermal', async () => {
+  // Vorher: zweimal in fuelNote, einmal in der Tabellenzeile, einmal als
+  // Fusszeile. Was immer dasteht, wird irgendwann nicht mehr gelesen.
+  const p = await open('index.html');
+  await p.page.waitForFunction(() => typeof runSim === 'function', null, { timeout: 30000 });
+  const t = await kraftstoffBlock(p.page, 'itb');
+  const n = (t.match(/Ethanol/gi) || []).length;
+  assert(n === 1, 'Ethanol steht ' + n + ' mal im Kraftstoffblock');
+  await p.close();
+});
+
+await test('E10 wird nur beim DellOrto gesondert bewertet', async () => {
+  const p = await open('index.html');
+  await p.page.waitForFunction(() => typeof runSim === 'function', null, { timeout: 30000 });
+  const mit = await kraftstoffBlock(p.page, 'itb');
+  const ohne = await kraftstoffBlock(p.page, 'single4');
+  assert(/E10\s*95\s*nur im Fahrbetrieb/.test(mit.replace(/\s+/g, ' ')),
+    'Beim DellOrto fehlt die gesonderte E10-Bewertung');
+  assert(/E10\s*95\s*OK/.test(ohne.replace(/\s+/g, ' ')),
+    'Ohne DellOrto wird E10 weiter gesondert gesperrt');
+  await p.close();
+});
+
+suite('Die Seite widerspricht ihrem eigenen Exkurs nicht mehr');
+
+await test('Kein pauschales E10-Verbot mehr auf index.html', async () => {
+  // docs/exkurs-ethanol.html: "Diese Aussage traegt keine Quelle, und sie ist
+  // in dieser Schaerfe nicht haltbar." Solange im Rechner "VERBOTEN" stand,
+  // widersprach die Seite sich selbst.
+  const html = fs.readFileSync(path.join(REPO_ROOT, 'index.html'), 'utf8');
+  assert(!/VERBOTEN/.test(html), 'Ein pauschales Verbot steht wieder da');
+  assert(!/KEIN E10/.test(html), 'Die absolute Formulierung steht wieder da');
+});
+
+await test('Die Regel aus dem Exkurs steht auf der Seite', async () => {
+  const html = fs.readFileSync(path.join(REPO_ROOT, 'index.html'), 'utf8');
+  assert(/stehender/i.test(html), 'Der Kern - stehender Kraftstoff - fehlt');
+  assert(/Schwimmerkammern leeren/.test(html), 'Die Massnahme fehlt');
+  assert(/exkurs-ethanol\.html/.test(html), 'Der Exkurs ist nicht verlinkt');
+});
+
+await test('Die offene Frage zu den Dichtsaetzen bleibt benannt', async () => {
+  // Der Exkurs macht die Regel von den Weichteilen abhaengig, und die sind
+  // unbekannt. Faellt das weg, liest sich die gelockerte Regel wie eine
+  // Freigabe.
+  const html = fs.readFileSync(path.join(REPO_ROOT, 'index.html'), 'utf8');
+  assert(/Dichts&auml;tze|Dichtsaetze|Dichtsätze/.test(html),
+    'Die offene Frage nach den Dichtsaetzen fehlt');
+  assert(/E10-fest/.test(html), 'Die Bedingung fuer die Regel fehlt');
+});
+
 } finally {
   await browser.close();
   server.close();

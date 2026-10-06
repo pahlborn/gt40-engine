@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v97',
+      date: '2026-10-06',
+      time: '07:28',
+      title: 'Ethanol-Hinweis: nur wo er zutrifft, und nur einmal',
+      changes: [
+        { type: 'fix', text: 'Die Kraftstoffempfehlung im Motor-Simulator haengte den DellOrto-Hinweis fest an - auch wenn als Ansaugung Single 4-Barrel oder Dual 4-Barrel gewaehlt war. calcFuelReq() kennt jetzt die Ansaugung: E10 wird nur dort gesondert bewertet, wo die verbaute Anlage es verlangt. Bei anderer Ansaugung steht stattdessen, dass der Rechner deren Kraftstoffanlage nicht kennt.' },
+        { type: 'verbessert', text: 'Der Hinweis stand viermal in einem einzigen Ergebnisblock: zweimal in der Empfehlung, einmal als Tabellenzeile, einmal als Fusszeile. Jetzt einmal. Was immer dasteht, wird irgendwann nicht mehr gelesen - mitsamt dem Teil, der zaehlt.' },
+        { type: 'fix', text: 'Die Seite widersprach ihrem eigenen Exkurs. docs/exkurs-ethanol.html sagt seit jeher: "Diese Aussage traegt keine Quelle, und sie ist in dieser Schaerfe nicht haltbar." index.html forderte an sieben Stellen ein pauschales E10-Verbot. Der Wortlaut folgt jetzt dem Exkurs: kritisch ist STEHENDER ethanolhaltiger Kraftstoff, nicht E10 im Fahrbetrieb.' },
+        { type: 'verbessert', text: 'Aus sieben Rufen wurde eine Erklaerung: ein ausfuehrlicher Block im Kraftstoff-Abschnitt mit der Regel aus dem Exkurs, dazu je ein kurzer Verweis in der Tabelle, in der Risikoliste und im Simulator. Die offene Frage - welche Dichtsaetze verbaut und ob sie E10-fest sind - bleibt ausdruecklich benannt; ohne sie laese sich die gelockerte Regel wie eine Freigabe.' },
+        { type: 'intern', text: 'Sieben Tests in tests/fuel-system.test.mjs, vier Gegenproben rot gesehen. Zwei verwaiste Woerterbucheintraege entfernt, deren deutscher Quelltext nicht mehr existierte.' }
+      ]
+    },
+    {
       version: 'v96',
       date: '2026-10-05',
       time: '11:27',
