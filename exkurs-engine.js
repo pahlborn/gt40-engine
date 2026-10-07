@@ -207,11 +207,13 @@
         + 'mindestens <strong>98 ROZ (Super Plus)</strong>.</div>'
 
         + '<div class="exk-box warn">'
-        + '<strong>Ethanol-Warnung:</strong> Super E10 enth\u00e4lt bis 10% Ethanol. Ethanol '
-        + 'greift Kork-Dichtungen, alte Gummi-Leitungen und Vergaser-Schwimmernadelventile '
-        + 'an. F\u00fcr den DellOrto-Vergaser und klassische Kraftstoff-Schl\u00e4uche '
-        + '<strong>ethanol-freien Kraftstoff bevorzugen</strong> (Shell V-Power 100, MOL EVO 100 '
-        + '= ETBE statt Ethanol).</div>',
+        + '<strong>Ethanol:</strong> Super E10 enth\u00e4lt bis 10% Ethanol. Der Schaden '
+        + 'entsteht \u00fcber <strong>Standzeit</strong>, nicht \u00fcber Kilometer: stehendes '
+        + 'Gemisch zieht Wasser, wird sauer und greift dann Aluminium, Zink und Messing an; '
+        + 'Weichteile \u00e4lterer Ausf\u00fchrung quellen. Im Fahrbetrieb ist E10 f\u00fcr diese '
+        + 'Anlage kein belegtes Problem. <strong>Vor l\u00e4ngerem Stillstand ethanolarm tanken '
+        + 'oder die Schwimmerkammern leeren.</strong> Begr\u00fcndung und Quellenlage: '
+        + '<a href="docs/exkurs-ethanol.html" target="_blank">Exkurs Ethanol</a>.</div>',
         inhaltEN:
           '<p>US manuals often state \u201c91 Octane\u201d or \u201c93 Octane\u201d. '
         + '<strong>Caution:</strong> The US measures in <strong>AKI</strong> (Anti-Knock Index '
@@ -233,11 +235,13 @@
         + '<strong>98 RON (Super Plus)</strong> in Europe.</div>'
 
         + '<div class="exk-box warn">'
-        + '<strong>Ethanol warning:</strong> Super E10 contains up to 10% ethanol. Ethanol '
-        + 'attacks cork gaskets, old rubber fuel lines, and carburetor float needle valves. '
-        + 'For DellOrto carburetors and classic fuel hoses, '
-        + '<strong>prefer ethanol-free fuel</strong> (Shell V-Power 100, MOL EVO 100 '
-        + '= ETBE instead of ethanol).</div>'
+        + '<strong>Ethanol:</strong> Super E10 contains up to 10% ethanol. The damage comes '
+        + 'from <strong>standing time</strong>, not mileage: fuel left standing absorbs water, '
+        + 'turns acidic and then attacks aluminium, zinc and brass; older-specification '
+        + 'elastomers swell. In regular use E10 is not a documented problem for this system. '
+        + '<strong>Before a longer layup, fill with low-ethanol fuel or drain the float '
+        + 'chambers.</strong> Reasoning and sources: '
+        + '<a href="docs/exkurs-ethanol.html" target="_blank">ethanol discussion</a>.</div>'
       },
 
       /* ---- 4. KEIN KLOPFSENSOR ---- */
