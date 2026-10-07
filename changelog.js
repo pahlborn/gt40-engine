@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v100',
+      date: '2026-10-07',
+      time: '22:17',
+      title: 'Die Hubraum-Herleitung aus v99 wieder entfernt',
+      changes: [
+        { type: 'verbessert', text: 'v99 hat einen 26-zeiligen Kasten in den Einstellungsleitfaden gesetzt, der aus einem Pruefstandsblatt von 2008 den Hubraum des Vorgaengermotors herleitet - Mitteldruck, Kolbengeschwindigkeit, Vergleich 302 gegen 347. Das war eine Rechnung aus einem Gespraech, kein belegter Wert, stand aber im selben warning-Kasten wie die belegten Warnungen daneben. Eine Ableitung, die so aussieht wie ein Befund, wird nach ein paar Monaten als Befund gelesen. Entfernt.' },
+        { type: 'verbessert', text: 'Was bleibt, ist die Streichung selbst: die Seite fuehrte den Vorgaengermotor an zwei Stellen als "den alten 302", ohne Beleg. Dort steht jetzt "Vorgaengermotor, Hubraum nicht dokumentiert" - eine weggenommene Behauptung, keine neue. Im Build Log steht dazu, dass die Aussage ueber die Kraftstoffanlage davon nicht abhaengt: ein groesserer Vormotor haette mehr verlangt, nicht weniger.' },
+        { type: 'intern', text: 'Anlass war ein Einwand: die Hubraumfrage war eine Diskussion, kein Auftrag. Die stehende Merge-Erlaubnis gilt fuer beauftragte Arbeit - sie macht aus einem Gespraech keinen Repo-Inhalt. Der v99-Eintrag bleibt unveraendert stehen; das Changelog ist Geschichte, nicht Momentaufnahme.' }
+      ]
+    },
+    {
       version: 'v99',
       date: '2026-10-07',
       time: '10:13',
