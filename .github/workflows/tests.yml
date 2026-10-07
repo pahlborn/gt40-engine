@@ -104,6 +104,9 @@ jobs:
       - name: Betriebsstoffe und Kraftstoffpumpe
         run: node tests/betriebsstoffe.test.mjs
 
+      - name: Ethanol-Aussagen (alle Dateien)
+        run: node tests/ethanol.test.mjs
+
       - name: Motor-Simulator
         run: node tests/simulator.test.mjs
 

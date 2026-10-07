@@ -13,6 +13,21 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v99',
+      date: '2026-10-07',
+      time: '10:13',
+      title: 'Ethanol ueber alle Dateien geprueft, Michelin-Satz vollstaendig, Hubraum des Vormotors offen',
+      changes: [
+        { type: 'fix', text: 'exkurs-engine.js stand noch in der Fassung vor v97: "Ethanol greift Kork-Dichtungen, alte Gummi-Leitungen und Vergaser-Schwimmernadelventile an" - ohne jede Bedingung. docs/exkurs-ethanol.html sagt, der Mechanismus laeuft ueber die Standzeit. Deutsch und englisch nachgezogen, beide verlinken jetzt den Exkurs.' },
+        { type: 'fix', text: 'specs.html behauptete im Ethanol-Kasten: "Premium-Sorten sind fast immer ethanol-frei oder maximal E5." Super Plus 98 ist in Deutschland E5. Richtiggestellt; die Erklaerung selbst steht nicht mehr ein drittes Mal hier, sondern verweist auf Kapitel 6b und den Exkurs. Der Kastentitel machte E10 zum Problem, obwohl der Text die Standzeit nennt - umbenannt.' },
+        { type: 'intern', text: 'Neue Datei tests/ethanol.test.mjs prueft alle ausgelieferten Dateien, nicht eine: index, specs, build-log, exkurs-engine, glossar und alle docs-Seiten ausser dem Exkurs selbst. Geprueft wird nicht der Wortlaut, sondern die Struktur - wer Schaden behauptet, muss die Bedingung mitnennen - auf Satzebene statt im Zeichenfenster. Der erste Entwurf arbeitete mit einem 900-Zeichen-Fenster und meldete drei Fehlalarme: "Quellenlage" als Quellung und ein GL-5-Hinweis zum Getriebeoel, der zufaellig danebenstand.' },
+        { type: 'intern', text: 'Gegenprobe zweimal gefahren. Die erste blieb gruen, weil der eingesetzte Satz neben dem Standzeit-Hinweis stand - das war kein getreues Abbild des Fehlers. Erst mit der vollstaendig zurueckgesetzten alten Fassung wurde der Test rot. Dabei fiel auf, dass das Muster "greift ... an" zunaechst gar nicht enthielt und den gemeldeten Fehler nicht gefangen haette.' },
+        { type: 'neu', text: 'Michelin-Strassensatz vollstaendig: Pilot Sport, 335/35-17 hinten und 235/45-17 vorn. Dazu die Abrolldurchmesser gegen den Avon-Satz - hinten +31 mm (+4,9 %), vorn +59 mm (+10,1 %). Zwei Folgen stehen dabei: die Uebersetzung aendert sich um 4,9 % (und der Michelin-Satz steht im Simulator nicht zur Auswahl, wer dort V-max abliest, liegt daneben), und der Bug kommt rund 14 mm relativ hoeher - ein Fahrwerk, das auf einem Satz abgestimmt ist, ist es auf dem anderen nicht.' },
+        { type: 'verbessert', text: 'Der Hubraum des Vorgaengermotors ist als offen gekennzeichnet. Die Seite nannte ihn durchgehend "den alten 302". Ein Pruefstandsblatt vom 25.06.2008 passt nicht dazu: ~420 lb-ft bei 4400-4600 und ~390 hp bei ~5150 ergeben bei 302 ci einen Mitteldruck von 210 psi - gut gebaute Sauger liegen bei 180-195. Bei 347 ci sind es 182 psi. Die Rechnung steht einmal, im Einstellungsleitfaden, weil dort die Folge haengt: war der Vormotor groesser, war die Bedueusung fuer mehr Luftdurchsatz gemacht und liefe auf diesem Motor fett. Im Build Log steht derselbe Satz als Argument fuer die Kraftstoffanlage - dort faellt der Zweifel zugunsten der Anlage aus.' },
+        { type: 'intern', text: 'Ein verwaister Woerterbucheintrag in build-log.html entfernt, einer in specs.html auf den neuen Titel gezogen. tests/bereifung.test.mjs nachgeschaerft: die Pruefung auf den Michelin-Satz griff auf "Michelin 17" zu, was auch in der Kopfzeile der Gewichtstabelle steht - sie waere gruen geblieben, als die Zeile sich aenderte.' }
+      ]
+    },
+    {
       version: 'v98',
       date: '2026-10-07',
       time: '09:48',

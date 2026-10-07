@@ -115,9 +115,36 @@ await test('Die Satzuebersicht nennt mehr als einen Satz', async () => {
   assert(i > 0, 'Die Satzuebersicht fehlt');
   const b = specs.slice(i, specs.indexOf('section-comment', i));
   for (const satz of ['Avon Historic A24', 'Avon Historic Slick', 'Avon Historic Wet',
-                      'Avon CR6ZZ A29', 'Michelin 17']) {
+                      'Avon CR6ZZ A29', 'Michelin Pilot Sport']) {
     assert(b.includes(satz), 'Satz fehlt in der Uebersicht: ' + satz);
   }
+  // "Michelin 17" allein genuegt als Nachweis nicht - das steht auch in der
+  // Kopfzeile der Gewichtstabelle und blieb gruen, als die Zeile sich aenderte.
+  assert(/335\/35-17 \(hinten\)/.test(b), 'Hinterachsmass fehlt');
+  assert(/235\/45-17 \(vorn\)/.test(b), 'Vorderachsmass fehlt');
+  assert(!/zu best&auml;tigen<\/span><\/td>[\s\S]{0,40}<td[^>]*>Radial/.test(b),
+    'Die Masse stehen weiter als unbestaetigt da');
+});
+
+await test('Die Abrolldurchmesser stehen mit ihrer Folge da', async () => {
+  // Beide Saetze sind nicht austauschbar: hinten +4,9 %, vorn +10,1 %. Das
+  // aendert Uebersetzung UND Rake - und faellt sonst erst auf der Strecke auf.
+  const i = specs.indexOf('Abrolldurchmesser');
+  assert(i > 0, 'Die Durchmessertabelle fehlt');
+  const b = specs.slice(i, specs.indexOf('section-comment', i));
+  for (const wert of ['584 mm', '643 mm', '635 mm', '666 mm', '+59 mm', '+31 mm']) {
+    assert(b.includes(wert), 'Wert fehlt: ' + wert);
+  }
+  assert(/4,9&nbsp;%|4,9 %/.test(b), 'Die Uebersetzungsfolge fehlt');
+  assert(/Rake/.test(b), 'Die Rake-Folge fehlt');
+  assert(/nicht zur Auswahl/.test(b),
+    'Es fehlt, dass der Michelin-Satz im Simulator nicht waehlbar ist');
+  // Gegenrechnung der Nennmasse: Felgendurchmesser + 2 x Querschnitt.
+  const d = (w, a, r) => r * 25.4 + 2 * w * a / 100;
+  assert(Math.round(d(335, 35, 17)) === 666, 'Michelin hinten');
+  assert(Math.round(d(235, 45, 17)) === 643, 'Michelin vorn');
+  assert(Math.round(25.0 * 25.4) === 635, 'Avon hinten');
+  assert(Math.round(23.0 * 25.4) === 584, 'Avon vorn');
 });
 
 await test('Die Uebersicht gibt sich nicht als Bestandsverzeichnis aus', async () => {
