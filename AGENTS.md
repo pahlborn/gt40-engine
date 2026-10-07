@@ -108,3 +108,28 @@ Fassung wurde die Kolbenmulde vom Restvolumen abgezogen statt addiert. Jede
 Kopf-Variante zeigte 1.4 bis 2.0 Punkte zu viel, und ueber das CR-Feld lief
 der Fehler weiter in Leistungsschaetzung und Oktanempfehlung. Ein Test haelt
 jetzt fest, dass das Restvolumen nur an einer Stelle gebildet wird.
+
+## 11. Eine Frage ist kein Auftrag
+
+Fragen, Diskussionen und "interessant - was meinst du dazu?" erzeugen keinen
+Repo-Inhalt. Die Antwort gehoert ins Gespraech. Soll daraus etwas in die
+Dateien, wird vorher gesagt was und wohin - und abgewartet.
+
+Die stehende Erlaubnis zu mergen gilt fuer beauftragte Arbeit. Sie macht aus
+einem Gespraech keine Aufgabe.
+
+Zwei Ausnahmen, beide ausdruecklich erteilt: unbelegte Behauptungen auf der
+Seite streichen oder kennzeichnen, und offensichtliche Fehler korrigieren.
+Beides nimmt etwas weg, statt etwas zu behaupten.
+
+**Probe vor dem Schreiben:** Wuerde ich dafuer einen Test schreiben? Wenn
+nicht, ist es eine Gespraechsnotiz und keine Repo-Aenderung.
+
+**Warum:** v99 - aus der Frage, welcher Hubraum zum Pruefstandsblatt des
+Vorgaengermotors passt, wurde ein 26-zeiliger Kasten im Einstellungsleitfaden:
+Mitteldruck, mittlere Kolbengeschwindigkeit, Vergleich 302 gegen 347 gegen 351.
+Eine Ableitung aus einem Gespraech, gesetzt im selben warning-Kasten wie die
+belegten Warnungen daneben, der Vorbehalt klein am Ende nach zwoelf Zeilen
+Arithmetik. In ein paar Monaten haette das jemand als Befund gelesen. v100 hat
+ihn wieder entfernt. Fuer jedes andere Stueck derselben Sitzung gab es einen
+Test, fuer diesen Kasten keinen - das war das uebersehene Signal.
