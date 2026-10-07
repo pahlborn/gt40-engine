@@ -13,6 +13,23 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v98',
+      date: '2026-10-07',
+      time: '09:48',
+      title: 'Doppelte Eintraege zusammengefuehrt, Reifen-Bauart als Annahme gekennzeichnet',
+      changes: [
+        { type: 'fix', text: 'Kapitel 6a fuehrte Motoroel und Kuehlmittel in zwei Tabellen - und mit verschiedenen Zahlen: die erste nannte Kuehlmittel mit ~12 qt, die zweite "nur Motor ~8 qt". Jetzt eine Tabelle; die Aufschluesselung nach Anbauteilen (Filter, Oelkuehler, Kuehler, Heizungskern) steht in der Mengenspalte.' },
+        { type: 'fix', text: 'Die Kraftstoff-Sortentabelle stand zweimal da: statisch in Kapitel 6b und dynamisch im Ergebnisblock des Motor-Simulators, jede mit eigener Bewertungslogik. Sie steht jetzt nur in 6b. Der Simulator fuellt ihre Statusspalte aus dem Ergebnis; die berechnete Oktanzahl bleibt oben in der gruenen Box.' },
+        { type: 'fix', text: 'Reihenfolgefehler in der Sortenbewertung: geprueft wurde erst auf Ethanol, dann auf Oktan. Bei 98 ROZ Bedarf stand Super E10 damit als "nur im Fahrbetrieb" statt als "NEIN". Zu wenig Oktan schlaegt jetzt die Ethanol-Bewertung.' },
+        { type: 'fix', text: 'specs.html fuehrte E10 im Kraftstoff-Guide fuenfmal als "VERBOTEN" - nach v97 widersprach die Seite damit sich selbst und docs/exkurs-ethanol.html. Der Guide beantwortet jetzt nur noch, WO man unterwegs tankt; WELCHE Sorte zulaessig ist, steht einmal in 6b. Der Test auf das pauschale Verbot prueft seit jetzt alle drei Seiten statt nur index.html - genau diese Luecke hatte den Widerspruch ueberlebt.' },
+        { type: 'verbessert', text: 'Bereifung: "A24" und "Crossply" standen als dieselbe Tatsache da. A24 ist eine Mischung, keine Bauart - Avon fuehrt die Historic-Reihe sowohl diagonal als auch radial. Mischung, Bauart und Ausfuehrung sind jetzt getrennte Zeilen; Bauart und Slick-Ausfuehrung sind als ungeprueft gekennzeichnet, mit der Seitenwand als Weg zur Antwort. Zu den Groessen 8.5/23.0-15 und 11.0/25.0-15 war kein Herstellerdokument beschaffbar.' },
+        { type: 'verbessert', text: 'Die beiden Rechenstellen, die an der Bauart haengen, nennen ihre Annahme: der Rollwiderstandsbeiwert (Crr 0.015 diagonal, radial waere ~0.010) und die V-max-Warnung, die bisher behauptete, "Avon Crossply-Reifen" seien fuer solche Geschwindigkeiten nicht ausgelegt.' },
+        { type: 'neu', text: 'Kapitel 15 listete nur den verbauten Reifensatz, waehrend der Simulator sechs zur Auswahl stellt. Neue Uebersicht aller Saetze inklusive des Michelin-Strassensatzes 335/35-17 - ausdruecklich kein Bestandsverzeichnis. Dazu die gewogenen Radgewichte: 98 kg Michelin gegen 76 kg Avon, 22 kg Differenz, nahezu vollstaendig ungefederte und rotierende Masse. Das vordere Avon-Rad ist geschaetzt, nicht gewogen - und traegt die ganze Differenz.' },
+        { type: 'verbessert', text: 'Der Titel des Pumpen-Datenblatts lautete "Facet Red Top, 2 Stueck (Teilenummer zu bestaetigen)". Eine Arbeitsanweisung im Titel wird beim Lesen zur Eigenschaft des Teils. Sie steht jetzt als gekennzeichnete Zeile im Datenblatt, mit Erfassungsfeld im Arbeitsschritt Phase 4 Kapitel 6; der eingetragene Wert erscheint im Datenblatt.' },
+        { type: 'intern', text: 'Zwei neue Testdateien (tests/bereifung.test.mjs, tests/betriebsstoffe.test.mjs) und acht neue Tests in tests/fuel-system.test.mjs. Fuenf Gegenproben rot gesehen. Eine davon hat einen hohlen Test aufgedeckt: die Pruefung der Bauart-Kennzeichnung las ueber das Zeilenende hinaus und waere durch die Kennzeichnung der naechsten Zeile gruen geblieben.' }
+      ]
+    },
+    {
       version: 'v97',
       date: '2026-10-06',
       time: '07:28',

@@ -175,9 +175,22 @@ await test('Facet-Druck steht ueberall mit 6-8 psi', async () => {
     'specs.html nennt den belegten Bereich 6-8 psi nicht');
 });
 
-suite('Ethanol-Hinweis: nur wo er zutrifft, und nur einmal');
+suite('Ethanol-Hinweis und Sortentabelle: nur wo sie zutreffen, und nur einmal');
 
-async function kraftstoffBlock(page, ansaugung) {
+// Bis v97 stand die Sortentabelle zweimal da: statisch in Kapitel 6b und
+// dynamisch im Kraftstoffblock des Simulators, jede mit eigener Logik. Seit
+// v98 steht sie nur in 6b; der Simulator fuellt nur noch ihre Statusspalte.
+// Die Tests lesen darum 6b. Haetten sie weiter den Simulatorblock gelesen,
+// waeren sie gruen geworden, weil der den geprueften Text nicht mehr enthaelt.
+async function kapitel6b(page, ansaugung) {
+  return page.evaluate((a) => {
+    document.getElementById('simIntake').value = a;
+    runSim();
+    return document.getElementById('kap6b').innerText;
+  }, ansaugung);
+}
+
+async function simulatorBlock(page, ansaugung) {
   return page.evaluate((a) => {
     document.getElementById('simIntake').value = a;
     runSim();
@@ -191,9 +204,11 @@ await test('Ein anderer Vergaser bekommt nicht den DellOrto-Hinweis', async () =
   const p = await open('index.html');
   await p.page.waitForFunction(() => typeof runSim === 'function', null, { timeout: 30000 });
   for (const a of ['single4', 'dual4']) {
-    const t = await kraftstoffBlock(p.page, a);
-    assert(!/DellOrto/i.test(t), a + ': DellOrto steht trotz anderer Ansaugung im Block');
-    assert(!/Schwimmerkammer/i.test(t), a + ': DellOrto-spezifischer Rat steht trotzdem da');
+    const t = await kapitel6b(p.page, a);
+    assert(!/gilt die Regel oben unmittelbar/.test(t),
+      a + ': der DellOrto-Zweig steht trotz anderer Ansaugung da');
+    assert(/ist hier nicht erfasst/.test(t),
+      a + ': der Vorbehalt fuer eine fremde Kraftstoffanlage fehlt');
   }
   await p.close();
 });
@@ -202,44 +217,92 @@ await test('Beim DellOrto steht der Hinweis weiterhin', async () => {
   // Die Gegenrichtung: wegfallen darf er nur dort, wo er nicht gilt.
   const p = await open('index.html');
   await p.page.waitForFunction(() => typeof runSim === 'function', null, { timeout: 30000 });
-  const t = await kraftstoffBlock(p.page, 'itb');
-  assert(/Ethanol/i.test(t), 'Beim DellOrto fehlt der Ethanol-Hinweis');
-  assert(/Schwimmerkammer/i.test(t), 'Die konkrete Massnahme fehlt');
+  const t = await kapitel6b(p.page, 'itb');
+  assert(/DellOrto DRLA 45 mit Schwimmerkammern/.test(t),
+    'Der Bezug auf die verbaute Anlage fehlt');
+  assert(/Schwimmerkammern leeren/.test(t), 'Die konkrete Massnahme fehlt');
   await p.close();
 });
 
-await test('Der Hinweis steht einmal im Block, nicht viermal', async () => {
+await test('Die Massnahme steht einmal in Kapitel 6b, nicht viermal', async () => {
   // Vorher: zweimal in fuelNote, einmal in der Tabellenzeile, einmal als
   // Fusszeile. Was immer dasteht, wird irgendwann nicht mehr gelesen.
   const p = await open('index.html');
   await p.page.waitForFunction(() => typeof runSim === 'function', null, { timeout: 30000 });
-  const t = await kraftstoffBlock(p.page, 'itb');
-  const n = (t.match(/Ethanol/gi) || []).length;
-  assert(n === 1, 'Ethanol steht ' + n + ' mal im Kraftstoffblock');
+  const t = await kapitel6b(p.page, 'itb');
+  const n = (t.match(/Schwimmerkammern leeren/g) || []).length;
+  assertEqual(n, 1, 'Die Massnahme steht ' + n + ' mal in Kapitel 6b');
   await p.close();
 });
 
 await test('E10 wird nur beim DellOrto gesondert bewertet', async () => {
   const p = await open('index.html');
   await p.page.waitForFunction(() => typeof runSim === 'function', null, { timeout: 30000 });
-  const mit = await kraftstoffBlock(p.page, 'itb');
-  const ohne = await kraftstoffBlock(p.page, 'single4');
-  assert(/E10\s*95\s*nur im Fahrbetrieb/.test(mit.replace(/\s+/g, ' ')),
+  const mit = await kapitel6b(p.page, 'itb');
+  const ohne = await kapitel6b(p.page, 'single4');
+  assert(/Super E10 95 bis 10% nur im Fahrbetrieb/.test(mit.replace(/\s+/g, ' ')),
     'Beim DellOrto fehlt die gesonderte E10-Bewertung');
-  assert(/E10\s*95\s*OK/.test(ohne.replace(/\s+/g, ' ')),
+  assert(/Super E10 95 bis 10% OK/.test(ohne.replace(/\s+/g, ' ')),
     'Ohne DellOrto wird E10 weiter gesondert gesperrt');
   await p.close();
 });
 
+await test('Die Sortentabelle steht nicht mehr im Simulatorblock', async () => {
+  // Der eigentliche Fehler war nicht der Wortlaut, sondern dass es sie zweimal
+  // gab - mit eigener Bewertungslogik je Stelle.
+  const p = await open('index.html');
+  await p.page.waitForFunction(() => typeof runSim === 'function', null, { timeout: 30000 });
+  const t = await simulatorBlock(p.page, 'itb');
+  assert(!/E-Anteil/.test(t), 'Die Sortentabelle steht wieder im Simulatorblock');
+  assert(!/Aral Ultimate/.test(t), 'Die Sortenliste steht wieder im Simulatorblock');
+  assert(/Kapitel.?6b/.test(t), 'Der Verweis auf Kapitel 6b fehlt');
+  await p.close();
+});
+
+await test('Zu wenig Oktan schlaegt die Ethanol-Bewertung', async () => {
+  // Reihenfolgefehler der alten Fassung: erst Ethanol, dann Oktan. E10 stand
+  // damit auch bei 98 ROZ Bedarf als "nur im Fahrbetrieb" da statt als "NEIN".
+  const p = await open('index.html');
+  await p.page.waitForFunction(() => typeof fuelTabelleAktualisieren === 'function',
+    null, { timeout: 30000 });
+  const zeilen = await p.page.evaluate(() => {
+    fuelTabelleAktualisieren(98, true);
+    return Array.from(document.querySelectorAll('[data-fuel-roz]'))
+      .map((z) => z.getAttribute('data-fuel-roz') + ':' + z.textContent);
+  });
+  assertEqual(zeilen, ['95:NEIN', '95:NEIN', '98:OK', '100:OK', '102:OK'],
+    'Die Statusspalte folgt der berechneten Oktanzahl nicht');
+  await p.close();
+});
+
+await test('Der Kraftstoff-Guide bewertet die generischen Sorten nicht mehr selbst', async () => {
+  // Er beantwortet eine andere Frage als 6b: wo man unterwegs tankt, nicht
+  // welche Sorte zulaessig ist. Solange er Super E5 und E10 mitbewertet hat,
+  // stand dieselbe Frage an zwei Stellen - mit verschiedenen Antworten.
+  const specs = fs.readFileSync(path.join(REPO_ROOT, 'specs.html'), 'utf8');
+  const i = specs.indexOf('Kraftstoff-Guide nach Tankketten');
+  assert(i > 0, 'Der Guide fehlt');
+  const block = specs.slice(i, specs.indexOf('<div class="comp-box', i));
+  assert(!/Super E10/.test(block), 'Der Guide bewertet E10 wieder selbst');
+  assert(!/Super E5/.test(block), 'Der Guide bewertet Super E5 wieder selbst');
+  assert(/Kapitel&nbsp;6b/.test(block), 'Die Abgrenzung zu Kapitel 6b fehlt');
+});
+
 suite('Die Seite widerspricht ihrem eigenen Exkurs nicht mehr');
 
-await test('Kein pauschales E10-Verbot mehr auf index.html', async () => {
+await test('Kein pauschales E10-Verbot mehr - auf keiner der drei Seiten', async () => {
   // docs/exkurs-ethanol.html: "Diese Aussage traegt keine Quelle, und sie ist
-  // in dieser Schaerfe nicht haltbar." Solange im Rechner "VERBOTEN" stand,
-  // widersprach die Seite sich selbst.
-  const html = fs.readFileSync(path.join(REPO_ROOT, 'index.html'), 'utf8');
-  assert(!/VERBOTEN/.test(html), 'Ein pauschales Verbot steht wieder da');
-  assert(!/KEIN E10/.test(html), 'Die absolute Formulierung steht wieder da');
+  // in dieser Schaerfe nicht haltbar." Solange irgendwo "VERBOTEN" steht,
+  // widerspricht die Seite sich selbst.
+  //
+  // Dieser Test prueft seit v98 alle drei Seiten. v97 hat das Verbot auf
+  // index.html getilgt und der Test war gruen - waehrend specs.html es im
+  // Kraftstoff-Guide noch fuenfmal behauptet hat.
+  for (const datei of ['index.html', 'specs.html', 'build-log.html']) {
+    const html = fs.readFileSync(path.join(REPO_ROOT, datei), 'utf8');
+    assert(!/VERBOTEN/.test(html), datei + ': ein pauschales Verbot steht wieder da');
+    assert(!/KEIN E10/.test(html), datei + ': die absolute Formulierung steht wieder da');
+  }
 });
 
 await test('Die Regel aus dem Exkurs steht auf der Seite', async () => {
