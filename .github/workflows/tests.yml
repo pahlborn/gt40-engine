@@ -98,6 +98,12 @@ jobs:
       - name: Nachschlagewerke (Anzugswerte, Exkurs)
         run: node tests/nachschlagewerke.test.mjs
 
+      - name: Bereifung (Mischung, Bauart, Radgewichte)
+        run: node tests/bereifung.test.mjs
+
+      - name: Betriebsstoffe und Kraftstoffpumpe
+        run: node tests/betriebsstoffe.test.mjs
+
       - name: Motor-Simulator
         run: node tests/simulator.test.mjs
 

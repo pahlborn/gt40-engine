@@ -129,10 +129,24 @@ await test('Ethanol-Abschnitt verweist auf den Exkurs', async () => {
 });
 
 await test('Die Facet-Teilenummer gilt als unbestaetigt', async () => {
+  // Die Kennzeichnung stand bis v98 im Titel der comp-box: "Facet Red Top,
+  // 2 Stueck (Teilenummer zu bestaetigen)". Eine Arbeitsanweisung an einer
+  // Stelle, die das Teil benennen soll, wird beim Lesen zu seiner Eigenschaft.
+  // Sie steht jetzt als eigene Zeile im Datenblatt, erfasst wird sie im
+  // Arbeitsschritt (Phase 4, Kapitel 6). Die Forderung ist unveraendert: die
+  // Nummer darf nirgends als gesichert dastehen.
   const s = lies('specs.html');
-  assert(/Teilenummer zu best&auml;tigen/.test(s), 'Teilenummer weiterhin als gesichert gefuehrt');
-  // Die Titeluebersetzung muss mitgezogen sein, sonst faellt der Eintrag aus.
-  assert(/part number to be confirmed/.test(s), 'Englische Fassung nicht nachgezogen');
+  const i = s.indexOf('Kraftstoffpumpe &ndash; Facet Red Top');
+  assert(i > 0, 'Das Pumpen-Datenblatt fehlt');
+  const block = s.slice(i, s.indexOf('<div class="comp-box', i));
+  const j = block.indexOf('spec-label">Teilenummer');
+  assert(j > 0, 'Die Zeile zur Teilenummer fehlt');
+  const zeile = block.slice(j, block.indexOf('<div class="spec-item"', j));
+  assert(/480532/.test(zeile), 'Die angenommene Nummer fehlt');
+  assert(/Annahme/.test(zeile), 'Sie steht nicht als Annahme da');
+  assert(/src-link unverified/.test(zeile), 'Regel 5: die Zeile traegt keine Kennzeichnung');
+  assert(!/Teilenummer zu best&auml;tigen/.test(s), 'Die Arbeitsanweisung steht wieder im Titel');
+  assert(!/part number to be confirmed/.test(s), 'Die englische Fassung ebenso');
 });
 
 } finally { /* kein Browser noetig */ }
