@@ -89,8 +89,8 @@ List permitted files or components, prohibited changes, sequencing constraints, 
 
 ## Completion signal
 
-End only after the full document is accessible:
+End only after the full document is contained in the final response to the MA. SA does not publish it anywhere; the MA decides where it is recorded:
 
 `[GT40:<TASK-ID>:SA:SA_READY:V<n>]`
 
-State the exact specification URL, baseline commit, unresolved items, and next required role. `SA_READY` is not `USER_GO`.
+State the specification version, baseline commit, unresolved items, and next required role. `SA_READY` is not `USER_GO`.
