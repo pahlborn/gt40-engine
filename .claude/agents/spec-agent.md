@@ -18,7 +18,8 @@ tools:
   - mcp__github__list_issues
   - mcp__github__pull_request_read
   - mcp__github__list_pull_requests
-# Second layer: stays effective if the allowlist above is ever extended.
+# Second layer: denied tools and servers remain blocked if explicitly added to the allowlist.
+# Every future allowlist extension requires a new security and runtime review.
 # External research belongs to the RKA, so WebSearch and WebFetch stay denied.
 disallowedTools:
   - Write
