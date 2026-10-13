@@ -1,7 +1,7 @@
 # Agentarium Rulebook & Process Manual
 
-Version: 1.0 DRAFT  
-Stand: 12.10.2026  
+Version: 1.1 DRAFT  
+Stand: 13.10.2026  
 Prozessinhaber: Peter und Atlas gemeinsam; Peters menschliche Entscheidungs- und Freigabehoheit bleibt unberührt  
 Prozess-Steward und zentrale Koordination: Atlas  
 Status: Gemeinsamer Entwurf zur Prüfung; keine Projekt-, Implementierungs-, Merge- oder Veröffentlichungsfreigabe
@@ -25,6 +25,7 @@ Jede laufende Aufgabe nennt die verwendete Prozessversion. Eine neue Prozessvers
 | Argus | Review Agent | Spezifikation, Change Set, Risiken, Evidenz und Kompatibilität unabhängig prüfen | Korrektur selbst implementieren oder Peters Entscheidung ersetzen |
 | Forge | Coding Agent | Machbarkeit prüfen und nach ausdrücklichem Go exakt spezifiziert umsetzen | Anforderungen ändern, eigene Arbeit unabhängig abnehmen, mergen oder veröffentlichen |
 | Sentinel | QA Agent | Testbarkeit prüfen, unabhängig testen und reproduzierbar berichten | Fehler reparieren, Sollwerte erfinden, Kriterien abschwächen oder Release freigeben |
+| Cadence | Process Agent | Belegte Prozessdefizite, Reibung, Erfolge und Skill-Lücken auswerten; verhältnismäßige Verbesserungen und Lernmaßnahmen vorschlagen | Prozesse, Regeln, Skills oder Projekte ändern; Standard-Gate oder Leistungsbewerter werden |
 
 ### 2.1 Verbindliches Identitätsregister
 
@@ -40,6 +41,7 @@ Ein persönlicher Agentenname und seine technische Kennung sind zwei verschieden
 | Argus | Review Agent | ChatGPT | Skill `review-agent-argus` | Name und Rolle sind in der Skilldefinition verankert |
 | Forge | Coding Agent | Claude Code | derzeit Claude-Code-Hauptsitzung; eigene Agentendefinition noch ausstehend | persönlicher Name und technisch begrenzte Rolle sind noch nicht verankert |
 | Sentinel | QA Agent | ChatGPT | Skill `qa-agent-sentinel` | Name und Rolle sind in der Skilldefinition verankert |
+| Cadence | Process Agent | Claude Code | Subagent `process-agent` aus `.claude/agents/process-agent.md` | Persönlicher Name, Rolle und read-only Positivliste sind verankert; isolierter Laufzeittest steht noch aus |
 
 Dieses Register ist die maßgebliche Zuordnung. Gesprächsnamen, Sitzungsnamen oder frei formulierte Selbstaussagen ersetzen die technische Kennung nicht.
 
@@ -357,18 +359,27 @@ Relay-Signale bestätigen ausschließlich Transportzustände und öffnen kein Fa
 
 ## 13. Prozessverbesserungen durch das gesamte Team
 
-Ein `PROCESS_PROPOSAL` enthält:
+Jedes Teammitglied darf Prozessdefizite, Regelkonflikte, Reibung, Near Misses, Skill-Lücken, Schulungsbedarf, Verbesserungsvorschläge und erfolgreiche Muster direkt an Cadence melden. Eine Meldung enthält mindestens Beobachtung, Beleg oder Referenz, Auswirkung und Dringlichkeit; ein Lösungsvorschlag ist optional.
 
-- Antragsteller und Rolle;
-- betroffene Prozessversion;
-- beobachtetes Problem und Evidenz;
-- konkrete normative Änderung als `MUSS`, `SOLL` oder `KANN`;
-- betroffene Rollen und Gates;
-- Sicherheits-, Kompatibilitäts- und Migrationsfolgen;
-- Gegenargumente, Alternativen und Rückfallregel;
-- gewünschte Entscheidung.
+Cadence arbeitet read-only. Er trennt bestätigte Beobachtung, Interpretation und Unsicherheit, bündelt nicht dringende Punkte und empfiehlt die kleinste nützliche Änderung. Cadence prüft nicht automatisch jede Aufgabe und ist kein zusätzliches Standard-Gate. Ein glaubwürdiger Autorisierungs-, Rechts-, Sicherheits- oder technischer Blocker wird sofort an Atlas gemeldet; alles andere darf die laufende Produktarbeit nicht unterbrechen.
 
-Atlas erstellt eine Impact-Analyse. Peter und Atlas entscheiden mit `PROCESS_DECISION`, einschließlich neuer Version, Gültigkeitsbeginn und Übergangsregel. Laufende Aufgaben wechseln nur ausdrücklich auf die neue Version.
+Der einfache Ablauf lautet:
+
+`Meldung → Cadence prüft und bündelt → materiell betroffene Rollen nehmen Stellung → Peter und Atlas entscheiden → Wirkung wird später beobachtet`
+
+Ein vollständiges Teamreview ist nur für materielle Änderungen an Prozesshoheit, Rechten, Sicherheit oder Rollen erforderlich. Sonst wirken nur Rollen mit, deren Fachbeitrag die Entscheidung voraussichtlich verändert. Fehlende Beiträge sind keine Zustimmung; sie erzwingen bei einer verhältnismäßig entscheidbaren Änderung aber auch keine endlose Runde.
+
+Ein `CADENCE_REPORT` beziehungsweise `PROCESS_PROPOSAL` enthält proportional zum Fall:
+
+- Einordnung, bestätigte Beobachtungen und verbleibende Unsicherheiten;
+- betroffene Rollen;
+- Verbesserungsvorschlag oder begründete Empfehlung, nichts zu ändern;
+- erwarteten Nutzen, Aufwand, Kommunikationslast und Verzögerung;
+- Alternativen und bei Bedarf Rückfallregel;
+- Vorschlag zur späteren Wirkungskontrolle;
+- erforderliche Entscheidung von Peter und Atlas.
+
+Cadence darf Prozesse, Regeln, Skills, Agentendefinitionen oder Projekte weder ändern noch die eigene Empfehlung freigeben. Peter und Atlas entscheiden gemeinsam mit `PROCESS_DECISION`. Laufende Aufgaben wechseln nur ausdrücklich auf eine neue Prozessversion. Prozessperfektion ist kein Ziel: Übersteigt der erwartete Prozessaufwand den Nutzen oder Risikoschutz, wird vereinfacht, gebündelt oder auf die Änderung verzichtet.
 
 ## 14. Vorlagen
 
@@ -431,6 +442,7 @@ decision_requested:
 | Argus | ChatGPT | – | – | bereit | – | – | – |
 | Forge | Claude | Hardening ausstehend | Bestandsaufnahme 12.10.2026 | blockiert | Sicherheitsdesign/-test | G5 geschlossen | – |
 | Sentinel | ChatGPT | – | – | bereit | – | – | – |
+| Cadence | Claude | Definition und kompakte Prozesseinordnung erstellt | `process-agent` | wartet auf Laufzeittest | read-only Funktionsprüfung | Aktivierung bis Test offen | keine Automation |
 
 ## 15. Beiträge und offene Abnahme
 
@@ -441,7 +453,8 @@ In diesen Entwurf eingeflossen sind:
 - Nova `PROCESS_PROPOSAL V1` zu Vision, Drift und Recovery;
 - Scout `PROCESS_PROPOSAL V1` zu Wissen, Konflikten und Recovery;
 - Argus `PROCESS_PROPOSAL V1` zu Gates, Evidenz und Fail-safe-Verhalten;
-- Sentinel `PROCESS_PROPOSAL V1` zu QA, Issue-Klassen, Retest und Recovery.
+- Sentinel `PROCESS_PROPOSAL V1` zu QA, Issue-Klassen, Retest und Recovery;
+- Cadence-Konzept V0.3 nach Beiträgen von Nova, Scout, Argus und Sentinel sowie die Process-Owner-Scope-Korrektur vom 13.10.2026.
 - Argus `RA_REVIEW V2` und Sentinel `QA_REPORT V1` auf Commit `1677e1364144837a253a175d8a28a91f08037338`, jeweils ohne Verwendung des blockierten Inhalts.
 
 Archibalds vollständige Rückgabe war aufgrund eines externen Sicherheitsfilters nicht als zulässiges Artefakt verfügbar und wird weder erneut ausgegeben noch rekonstruiert oder paraphrasiert. Der Vorgang ist als `BLOCKED_POLICY` registriert und zählt nicht als angenommener Prozessbeitrag. Die zugängliche Prozessfassung wurde stattdessen unabhängig durch Argus und Sentinel geprüft. Forges eigener `PROCESS_PROPOSAL` bleibt vor der endgültigen V1.0-Abnahme einzuholen.
