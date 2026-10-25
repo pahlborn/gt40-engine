@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v106',
+      date: '2026-10-25',
+      time: '19:55',
+      title: 'Ein alter Tab schreibt nicht mehr ueber Neueres',
+      changes: [
+        { type: 'fix', text: 'Ein vergessener Tab mit altem Code konnte seinen veralteten Stand ueber neuere Eintraege schreiben - so geschehen am 25.10. um 04:57. Jetzt traegt jeder Schreibvorgang die Version ein. Hat eine neuere Version geschrieben, schreibt ein aelterer Tab nicht mehr und laedt sich neu, sobald niemand tippt. Was dort eingetragen war, bleibt erhalten und geht danach hoch.' },
+        { type: 'intern', text: 'field-sync.js: _neuesteVersion in der Cloud-Datei, veraltetBehandeln. Dazu wortgleich mit jerico v37: abgleichen und Wiederholung nur, wenn etwas liegen geblieben ist. Zwei Tests; Gegenprobe: ohne Pruefung bzw. ohne Eintrag je einer rot. Schuetzt ab dieser Version - aeltere offene Tabs einmal neu laden.' }
+      ]
+    },
+    {
       version: 'v105',
       date: '2026-10-25',
       time: '18:30',

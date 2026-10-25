@@ -697,6 +697,51 @@ for (const file of PAGES) {
   });
 }
 
+// ---------------------------------------------------------------------------
+suite('Alte offene Tabs: eine neuere Version hat geschrieben (v106)');
+
+await test('Hat eine neuere Version geschrieben, schreibt dieser Tab nicht und laedt neu', async () => {
+  // 2026-10-25, 04:57: ein vergessener Tab mit v100 schrieb seinen alten
+  // Stand ueber die Werte vom Vorabend.
+  const gist = { [DATEN]: JSON.stringify({ fremdes_feld: 'vom neueren Geraet', _neuesteVersion: 'v999',
+    _fieldTimes: { fremdes_feld: Date.now() - 60000 } }) };
+  const d = await openMitGist('build-log.html', gist);
+  const r = await d.page.evaluate(async (sel) => {
+    localStorage.setItem('gh_token', 'test-token');
+    window.__neuGeladen = false;
+    FieldSync.neuLaden = () => { window.__neuGeladen = true; };
+    const el = document.querySelector(sel);
+    el.value = '9.999';
+    await saveData();
+    await new Promise((res) => setTimeout(res, 2500));
+    const lokal = JSON.parse(localStorage.getItem('engineBuildLog'));
+    return { feld: el.dataset.field, neu: window.__neuGeladen, lokal: lokal[el.dataset.field],
+             merk: FieldSync.ungesendet('engineBuildLog') };
+  }, TIPPFELD);
+  const schreibvorgaenge = d.stub.gistWrites.filter((f) => DATEN in f).length;
+  await d.close();
+  assertEqual(schreibvorgaenge, 0, 'Schreibvorgaenge des veralteten Tabs');
+  assertEqual(r.neu, true, 'Neu laden angestossen');
+  assertEqual(r.lokal, '9.999', 'Eingabe lokal erhalten');
+  assertEqual(r.merk, true, 'Merkzeichen bleibt fuer das Hochladen nach dem Neuladen');
+});
+
+await test('Jeder Schreibvorgang traegt die eigene Version ein, eine aeltere blockiert nicht', async () => {
+  const gist = { [DATEN]: JSON.stringify({ fremdes_feld: 'alt', _neuesteVersion: 'v1',
+    _fieldTimes: { fremdes_feld: Date.now() - 60000 } }) };
+  const d = await openMitGist('build-log.html', gist);
+  const eigene = await d.page.evaluate(async (sel) => {
+    localStorage.setItem('gh_token', 'test-token');
+    document.querySelector(sel).value = '1.010';
+    await saveData();
+    return APP_VERSION;
+  }, TIPPFELD);
+  const cloud = JSON.parse(gist[DATEN]);
+  await d.close();
+  assertEqual(cloud._neuesteVersion, eigene, 'Version in der Cloud-Datei');
+  assertEqual(cloud.fremdes_feld, 'alt', 'Fremdes Feld erhalten');
+});
+
 } finally {
   await browser.close();
   server.close();
