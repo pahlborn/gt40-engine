@@ -82,6 +82,7 @@ const TINY_JPEG = Buffer.from(
  *   opts.gistWriteStatus - (n) => HTTP-Status fuer den n-ten PATCH (ab 1), Default 200
  *   opts.gistWriteDelayMs - Antwortzeit eines PATCH, um Ueberlappung sichtbar zu machen
  *   state.maxGleichzeitig - hoechste Zahl gleichzeitig offener PATCH
+ *   opts.gistGetDelayMs - Antwortzeit eines GET, um Eingaben waehrend eines Abgleichs nachzustellen
  */
 export async function stubGitHub(page, opts = {}) {
   const state = { treeRequests: 0, gistWrites: [], patchVersuche: 0, offen: 0, maxGleichzeitig: 0 };
@@ -137,10 +138,12 @@ export async function stubGitHub(page, opts = {}) {
     for (const [name, content] of Object.entries(opts.gistFiles || {})) {
       files[name] = { filename: name, content, truncated: false };
     }
-    return route.fulfill({
+    const antwort = () => route.fulfill({
       status: 200, contentType: 'application/json',
       body: JSON.stringify({ id: 'stub', files })
     });
+    if (opts.gistGetDelayMs) return new Promise((r) => setTimeout(r, opts.gistGetDelayMs)).then(antwort);
+    return antwort();
   });
 
   return state;
