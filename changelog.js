@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v109',
+      date: '2026-10-25',
+      time: '22:45',
+      title: 'Leeren geht wieder, Eingaben waehrend des Abgleichs bleiben',
+      changes: [
+        { type: 'fix', text: 'Ein Feld bewusst zu leeren geht wieder: Es bleibt leer und wandert auf die anderen Geraete. Seit v103 holte der Abgleich den alten Wert zurueck, weil nicht zu unterscheiden war, ob jemand geleert hatte oder das Feld nur leer angezeigt wurde. Jetzt zaehlt ein Leeren nur bei einem Feld, das man selbst beruehrt hat - durch Tippen, Auswaehlen oder Antippen.' },
+        { type: 'fix', text: 'Eine Eingabe, waehrend die App gerade mit der Cloud abglich, ging verloren: sie wurde nicht gespeichert, und das Feld sprang danach auf den alten Wert zurueck. Jetzt wird sie zurueckgestellt und gespeichert, und der Abgleich ueberschreibt nichts, was gerade eingegeben wird.' },
+        { type: 'intern', text: 'field-sync.js: beruehrte Felder (beruehrteAbholen, istBeruehrt, hatBeruehrte), _geleert als Vermerk fuer bewusstes Leeren - alter Code kann ihn nicht erzeugen -, LEER_LOESCHT wieder an, der Stichtag entfaellt als Bedingung. Drei Seiten: Speichern gibt die beruehrten Felder mit, applyData laesst sie aus, autoSave stellt zurueck. Vier Tests neu oder umgestellt; Gegenprobe je Mechanismus rot.' }
+      ]
+    },
+    {
       version: 'v108',
       date: '2026-10-25',
       time: '21:40',

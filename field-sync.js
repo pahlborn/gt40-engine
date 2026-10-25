@@ -80,6 +80,34 @@
 
   function isBlank(v) { return v === undefined || v === '' || v === null; }
 
+  // ---- Beruehrte Felder (gt40-engine v109, jerico v41) ----
+  //
+  // Welche Felder hat der Nutzer seit dem letzten lokalen Speichern selbst
+  // veraendert - durch Tippen, Auswaehlen oder Antippen? Drei Dinge haengen
+  // daran:
+  //  - Leeren zaehlt nur bei einem beruehrten Feld als Aussage (_geleert).
+  //    Ein Feld, das nur leer ANGEZEIGT wird (spaet erzeugt, Altwert, nicht
+  //    darstellbar), loescht nichts.
+  //  - Ein Abgleich ueberschreibt ein beruehrtes, noch nicht gespeichertes
+  //    Feld nicht (istBeruehrt in applyData).
+  //  - Tippen waehrend eines Abgleichs wird zurueckgestellt statt verworfen
+  //    (hatBeruehrte in autoSave).
+  var GELEERT_KEY = '_geleert';
+  var _beruehrt = {};
+  function beruehrtMerken(e) {
+    var el = e.target && e.target.closest ? e.target.closest('[data-field]') : null;
+    if (!el) return;
+    if (e.type === 'click' && el.tagName !== 'BUTTON') return;
+    _beruehrt[el.dataset.field] = true;
+  }
+  if (global.document && global.document.addEventListener) {
+    ['input', 'change', 'click'].forEach(function (t) { global.document.addEventListener(t, beruehrtMerken, true); });
+  }
+  /** Beruehrte Felder abholen und vergessen - beim lokalen Speichern. */
+  function beruehrteAbholen() { var b = _beruehrt; _beruehrt = {}; return b; }
+  function istBeruehrt(feld) { return !!_beruehrt[feld]; }
+  function hatBeruehrte() { for (var k in _beruehrt) { if (_beruehrt[k]) return true; } return false; }
+
   /**
    * Aktuelle Feldwerte in den bestehenden Datensatz uebernehmen.
    *
@@ -97,6 +125,8 @@
 
     var data = Object.assign({}, existing);
     var times = Object.assign({}, existing[TIMES_KEY] || {});
+    var geleert = Object.assign({}, existing[GELEERT_KEY] || {});
+    var beruehrt = opts.beruehrt || null;
 
     for (var key in current) {
       if (!Object.prototype.hasOwnProperty.call(current, key)) continue;
@@ -121,11 +151,21 @@
       // Dieselbe Korrektur hat jerico in v30 gebraucht.
       if (clearing && unbekannt) continue;
 
-      if (next !== prev) times[key] = now;
+      // Seit v109 / jerico v41: Kommt die Seite mit der Liste der beruehrten
+      // Felder, zaehlt ein Leeren nur dort. Sonst bleibt der gespeicherte Wert.
+      var bewusst = !!(beruehrt && beruehrt[key]);
+      if (clearing && beruehrt && !bewusst && !isBlank(prev) && prev !== false) continue;
+
+      if (next !== prev) {
+        times[key] = now;
+        if (clearing && bewusst) geleert[key] = now;
+        else if (!clearing) delete geleert[key];
+      }
       data[key] = next;
     }
 
     data[TIMES_KEY] = times;
+    data[GELEERT_KEY] = geleert;
     data._savedAt = new Date(now).toISOString();
     stampDevice(data);
     return data;
@@ -160,7 +200,12 @@
    * heute: ein bewusst geleertes Feld bekommt beim naechsten Abgleich seinen
    * Wert zurueck, wenn die Cloud noch einen hat. Dieselbe Massnahme in jerico v35.
    */
-  var LEER_LOESCHT = false;
+  //
+  // Seit gt40-engine v109 / jerico v41 wieder an: Ein Leer zaehlt nur, wenn
+  // es in _geleert steht. Dort traegt mergeIntoExisting nur ein Feld ein, das
+  // der Nutzer selbst geleert hat - alter Code kennt _geleert nicht und kann
+  // es nicht erzeugen. Der Stichtag spielt damit keine Rolle mehr.
+  var LEER_LOESCHT = true;
 
   /**
    * Cloud- und lokalen Datensatz zusammenfuehren. Pro Feld gewinnt der
@@ -176,6 +221,8 @@
 
     var cloudTimes = cloudData[TIMES_KEY] || {};
     var localTimes = localData[TIMES_KEY] || {};
+    var cloudGeleert = cloudData[GELEERT_KEY] || {};
+    var localGeleert = localData[GELEERT_KEY] || {};
     var cloudFallback = new Date(cloudData._savedAt || 0).getTime();
     var localFallback = new Date(localData._savedAt || 0).getTime();
 
@@ -217,10 +264,9 @@
       var cLeer = isBlank(cVal), lLeer = isBlank(lVal);
       if (cLeer !== lLeer) {
         // Nur ein ausdruecklicher Stempel zaehlt, kein Rueckfall auf _savedAt.
-        var leerStempel = cLeer ? cloudTimes[k] : localTimes[k];
+        var leerStempel = cLeer ? cloudGeleert[k] : localGeleert[k];
         var wertZeit = cLeer ? lt : ct;
-        var leerZaehlt = LEER_LOESCHT && leerStempel !== undefined && leerStempel >= LEER_STICHTAG
-          && leerStempel > wertZeit;
+        var leerZaehlt = LEER_LOESCHT && leerStempel !== undefined && leerStempel > wertZeit;
         var nimmCloud = cLeer ? leerZaehlt : !leerZaehlt;
         if (nimmCloud) { merged[k] = cVal; if (ct >= 0) mergedTimes[k] = ct; }
         else { merged[k] = lVal; if (lt >= 0) mergedTimes[k] = lt; }
@@ -234,6 +280,14 @@
     }
 
     merged[TIMES_KEY] = mergedTimes;
+    // Ein bewusstes Leeren bleibt vermerkt, solange das Feld leer ist.
+    var mergedGeleert = {};
+    for (var gk in merged) {
+      if (gk.charAt(0) === '_' || !isBlank(merged[gk])) continue;
+      var gz = Math.max(cloudGeleert[gk] || 0, localGeleert[gk] || 0);
+      if (gz) mergedGeleert[gk] = gz;
+    }
+    merged[GELEERT_KEY] = mergedGeleert;
     merged._savedAt = new Date(Math.max(cloudFallback, localFallback) || Date.now()).toISOString();
     // Geraeteregister aus beiden Quellen zusammenfuehren
     var cDevices = cloudData[DEVICES_KEY] || {};
@@ -577,6 +631,10 @@
     DEVICE_KEY: DEVICE_KEY,
     LEER_STICHTAG: LEER_STICHTAG,
     LEER_LOESCHT: LEER_LOESCHT,
+    GELEERT_KEY: GELEERT_KEY,
+    beruehrteAbholen: beruehrteAbholen,
+    istBeruehrt: istBeruehrt,
+    hatBeruehrte: hatBeruehrte,
     isBlank: isBlank,
     kern: kern,
     cloudAbgleichen: cloudAbgleichen,

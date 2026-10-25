@@ -5435,6 +5435,9 @@
     function applyData(data) {
         migrateData(data);
         document.querySelectorAll('[data-field]').forEach(function(el) {
+            // Was der Nutzer gerade eingibt und noch nicht gespeichert ist,
+            // ueberschreibt ein Abgleich nicht (v109).
+            if (FieldSync.istBeruehrt(el.dataset.field)) return;
             var v = data[el.dataset.field];
             if (v !== undefined) { if (el.type === 'checkbox') el.checked = v; else el.value = v; }
         });
@@ -5446,7 +5449,7 @@
         var myData = collectData();
         // Pro Feld einen Zeitstempel fuehren - nur so ist das Leeren eines
         // Feldes vom "noch nie ausgefuellt" unterscheidbar (siehe field-sync.js).
-        var merged = FieldSync.mergeIntoExisting(existing, myData, { recordClears: dataLoaded });
+        var merged = FieldSync.mergeIntoExisting(existing, myData, { recordClears: dataLoaded, beruehrt: FieldSync.beruehrteAbholen() });
         localStorage.setItem('engineBuildLog', JSON.stringify(merged));
         updateSaveStatus();
     }
@@ -5493,7 +5496,12 @@
     });
 
     function autoSave() {
-        if (isLoading) return;
+        // Waehrend eines Abgleichs zurueckstellen statt verwerfen, wenn der
+        // Nutzer etwas eingegeben hat (v109) - bis v108 ging die Eingabe verloren.
+        if (isLoading) {
+            if (FieldSync.hatBeruehrte()) { clearTimeout(autoSaveTimer); autoSaveTimer = setTimeout(autoSave, 300); }
+            return;
+        }
         updateProgress();
         clearTimeout(autoSaveTimer);
         // Lokal sofort, hochladen gebuendelt nach einigen Sekunden Ruhe (v105).
@@ -6333,7 +6341,7 @@
         var current = collectData();
         // Pro Feld einen Zeitstempel fuehren - nur so ist das Leeren eines
         // Feldes vom "noch nie ausgefuellt" unterscheidbar (siehe field-sync.js).
-        var merged = FieldSync.mergeIntoExisting(existing, current, { recordClears: dataLoaded });
+        var merged = FieldSync.mergeIntoExisting(existing, current, { recordClears: dataLoaded, beruehrt: FieldSync.beruehrteAbholen() });
         localStorage.setItem('engineBuildLog', JSON.stringify(merged));
     }
     window.addEventListener('beforeunload', function() {

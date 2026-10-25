@@ -46,7 +46,9 @@ for (const file of PAGES) {
       el.value = '0.006';
       await saveData();
       const afterWrite = JSON.parse(localStorage.getItem('engineBuildLog'))[f];
-      el.value = '';                                  // Feld leeren, wie der Nutzer
+      // Feld leeren, wie der Nutzer - mit dem Eingabe-Ereignis, das der
+      // Browser dabei ausloest. Seit v109 zaehlt nur ein beruehrtes Feld.
+      el.value = ''; el.dispatchEvent(new Event('input', { bubbles: true }));
       await saveData();
       const afterClear = JSON.parse(localStorage.getItem('engineBuildLog'))[f];
       return { afterWrite, afterClear, field: f };
@@ -65,7 +67,7 @@ await test('Leeren wird mit einem Zeitstempel versehen', async () => {
     el.value = '0.006'; await saveData();
     const t1 = JSON.parse(localStorage.getItem('engineBuildLog'))._fieldTimes.crank_endplay;
     await new Promise((r) => setTimeout(r, 10));
-    el.value = ''; await saveData();
+    el.value = ''; el.dispatchEvent(new Event('input', { bubbles: true })); await saveData();
     const t2 = JSON.parse(localStorage.getItem('engineBuildLog'))._fieldTimes.crank_endplay;
     return { t1, t2 };
   });
@@ -77,16 +79,19 @@ await test('Leeren wird mit einem Zeitstempel versehen', async () => {
 // ---------------------------------------------------------------------------
 suite('Merge: ein geloeschtes Feld kommt nicht aus der Cloud zurueck');
 
-await test('Solange Leeren ausgesetzt ist, schlaegt auch ein junges Leer keinen Wert (v103)', async () => {
-  // Bis v102 gewann hier das Leer, wenn es nach dem Stichtag gestempelt war.
-  // Seit v103 ist das ausgesetzt (FieldSync.LEER_LOESCHT, Begruendung in
-  // field-sync.js): die Stempel sind noch nicht verlaesslich.
+await test('Ein junges Leer schlaegt einen Wert nur, wenn es als bewusstes Leeren vermerkt ist (v109)', async () => {
+  // v103 hatte das Leeren ganz ausgesetzt (Stempel nicht verlaesslich). Seit
+  // v109 zaehlt ein Leer nur mit Eintrag in _geleert - den schreibt nur ein
+  // Feld, das der Nutzer selbst geleert hat.
   const p = await openPage('specs.html');
-  const r = await p.page.evaluate(() => [FieldSync.LEER_LOESCHT, FieldSync.mergeRecords(
-    { crank_endplay: '0.006', _fieldTimes: { crank_endplay: FieldSync.LEER_STICHTAG + 1000 }, _savedAt: '2026-11-01T00:00:00Z' },
-    { crank_endplay: '',      _fieldTimes: { crank_endplay: FieldSync.LEER_STICHTAG + 2000 }, _savedAt: '2026-11-02T00:00:00Z' }
-  ).crank_endplay]);
-  assertEqual(r, [false, '0.006'], 'Schalter / Wert nach dem Mischen');
+  const r = await p.page.evaluate(() => {
+    const wert = { crank_endplay: '0.006', _fieldTimes: { crank_endplay: 1000 } };
+    const ohne = { crank_endplay: '', _fieldTimes: { crank_endplay: 2000 } };
+    const mit = { crank_endplay: '', _fieldTimes: { crank_endplay: 2000 }, _geleert: { crank_endplay: 2000 } };
+    return [FieldSync.LEER_LOESCHT, FieldSync.mergeRecords(wert, ohne).crank_endplay,
+      FieldSync.mergeRecords(wert, mit).crank_endplay, FieldSync.mergeRecords(mit, wert).crank_endplay];
+  });
+  assertEqual(r, [true, '0.006', '', ''], 'Schalter / ohne Vermerk / mit Vermerk lokal / mit Vermerk in der Cloud');
   await p.close();
 });
 
@@ -293,7 +298,7 @@ await test('Ein geleertes Feld wird nicht aus dem Build Log nachgefuellt', async
     log._fieldTimes = Object.assign({}, log._fieldTimes, { p1_crank_endplay: 1000 });
     localStorage.setItem('engineBuildLog', JSON.stringify(log));
     el.value = '0.006'; await saveData();
-    el.value = ''; await saveData();                 // Nutzer leert das Feld
+    el.value = ''; el.dispatchEvent(new Event('input', { bubbles: true })); await saveData();   // Nutzer leert das Feld
     const nachSave = JSON.parse(localStorage.getItem('engineBuildLog')).crank_endplay;
     applyData(JSON.parse(localStorage.getItem('engineBuildLog')));   // wie beim Sync
     return { nachSave, imFeld: el.value };
@@ -803,6 +808,91 @@ await test('Gewinnt Altbestand ohne Stempel, bekommt er keinen erfundenen Stempe
   });
   await p.close();
   assertEqual(r, ['Altbestand', undefined], 'Wert / Stempel');
+});
+
+// ---------------------------------------------------------------------------
+suite('Leeren und Eingaben waehrend eines Abgleichs (v109)');
+
+/** Geraet mit Wert in Cloud und lokal; liefert den Feldnamen. */
+const MIT_WERT = async (d, sel) => d.page.evaluate((sel) => {
+  localStorage.setItem('gh_token', 'test-token');
+  const el = document.querySelector(sel);
+  const log = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+  log[el.dataset.field] = 'alt';
+  log._fieldTimes = Object.assign({}, log._fieldTimes, { [el.dataset.field]: Date.now() - 60000 });
+  localStorage.setItem('engineBuildLog', JSON.stringify(log));
+  applyData(log);
+  return el.dataset.field;
+}, sel);
+const CLOUD_MIT = (feld) => ({ [DATEN]: JSON.stringify({ [feld]: 'alt', _fieldTimes: { [feld]: Date.now() - 60000 } }) });
+
+await test('Ein vom Nutzer geleertes Feld bleibt leer und wandert auf andere Geraete', async () => {
+  // Seit v103 holte der Abgleich den alten Wert zurueck: Leeren war
+  // ausgesetzt, weil nicht zu unterscheiden war, wer geleert hatte.
+  const feld = await (async () => { const p = await openPage('build-log.html');
+    const f = await p.page.evaluate((sel) => document.querySelector(sel).dataset.field, TIPPFELD); await p.close(); return f; })();
+  const gist = CLOUD_MIT(feld);
+  const d = await openMitGist('build-log.html', gist);
+  await MIT_WERT(d, TIPPFELD);
+  const imFeld = await d.page.evaluate(async (sel) => {
+    const el = document.querySelector(sel);
+    el.value = ''; el.dispatchEvent(new Event('input', { bubbles: true }));
+    await saveData();
+    return el.value;
+  }, TIPPFELD);
+  const cloud = JSON.parse(gist[DATEN]);
+  const anderes = await d.page.evaluate(([c, f]) => FieldSync.mergeRecords(c,
+    { [f]: 'alt', _fieldTimes: { [f]: Date.now() - 60000 } })[f], [cloud, feld]);
+  await d.close();
+  assertEqual(imFeld, '', 'Im Feld');
+  assertEqual(cloud[feld], '', 'In der Cloud');
+  assert(cloud._geleert && cloud._geleert[feld] > 0, 'Leeren nicht vermerkt');
+  assertEqual(anderes, '', 'Auf einem anderen Geraet nach dem Abgleich');
+});
+
+await test('Ein nur leer angezeigtes Feld loescht nichts', async () => {
+  // Felder, die spaet erzeugt werden oder einen Wert nicht darstellen
+  // koennen, stehen leer da, ohne dass jemand sie geleert hat.
+  const feld = await (async () => { const p = await openPage('build-log.html');
+    const f = await p.page.evaluate((sel) => document.querySelector(sel).dataset.field, TIPPFELD); await p.close(); return f; })();
+  const gist = CLOUD_MIT(feld);
+  const d = await openMitGist('build-log.html', gist);
+  await MIT_WERT(d, TIPPFELD);
+  const lokal = await d.page.evaluate(async (sel) => {
+    const el = document.querySelector(sel);
+    el.value = '';                                    // ohne Eingabe
+    // Ohne Verbindung: hier wirkt allein die Regel beim lokalen Speichern,
+    // kein Abgleich holt den Wert zurueck.
+    localStorage.removeItem('gh_token');
+    await saveData();
+    return JSON.parse(localStorage.getItem('engineBuildLog'))[el.dataset.field];
+  }, TIPPFELD);
+  const cloud = JSON.parse(gist[DATEN]);
+  await d.close();
+  assertEqual(lokal, 'alt', 'Lokal');
+  assertEqual(cloud[feld], 'alt', 'In der Cloud');
+});
+
+await test('Eine Eingabe waehrend eines Abgleichs wird gespeichert und nicht ueberschrieben', async () => {
+  // Bis v108 verwarf autoSave jede Eingabe, solange ein Abgleich lief, und
+  // applyData setzte das Feld danach auf den alten Wert zurueck.
+  const feld = await (async () => { const p = await openPage('build-log.html');
+    const f = await p.page.evaluate((sel) => document.querySelector(sel).dataset.field, TIPPFELD); await p.close(); return f; })();
+  const gist = CLOUD_MIT(feld);
+  const d = await openMitGist('build-log.html', gist, { gistGetDelayMs: 600 });
+  await MIT_WERT(d, TIPPFELD);
+  const r = await d.page.evaluate(async (sel) => {
+    const el = document.querySelector(sel);
+    const lauf = syncFromCloud({ still: true });
+    await new Promise((res) => setTimeout(res, 80));
+    el.value = '8.888'; el.dispatchEvent(new Event('input', { bubbles: true }));
+    await lauf;
+    await new Promise((res) => setTimeout(res, 1500));
+    return { imFeld: el.value, lokal: JSON.parse(localStorage.getItem('engineBuildLog'))[el.dataset.field] };
+  }, TIPPFELD);
+  await d.close();
+  assertEqual(r.imFeld, '8.888', 'Im Feld nach dem Abgleich');
+  assertEqual(r.lokal, '8.888', 'Lokal gespeichert');
 });
 
 } finally {
