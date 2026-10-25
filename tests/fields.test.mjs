@@ -742,6 +742,35 @@ await test('Jeder Schreibvorgang traegt die eigene Version ein, eine aeltere blo
   assertEqual(cloud.fremdes_feld, 'alt', 'Fremdes Feld erhalten');
 });
 
+// ---------------------------------------------------------------------------
+suite('Zwei Geraete gleichzeitig (v107)');
+
+await test('Speichern zwei Geraete fast gleichzeitig, kommen beide Aenderungen in der Cloud an', async () => {
+  // Ein Gist kennt kein bedingtes Schreiben: liest B, bevor A geschrieben
+  // hat, schreibt B einen Stand ohne A. Bis v106 fehlte A danach in der
+  // Cloud, bis A wieder etwas speicherte.
+  const gist = fremdeCloud();
+  const a = await openMitGist('build-log.html', gist, { gistWriteDelayMs: 600 });
+  const b = await openMitGist('build-log.html', gist, { gistWriteDelayMs: 600 });
+  const vorbereiten = (p, nr) => p.page.evaluate(([sel, nr]) => {
+    localStorage.setItem('gh_token', 'test-token');
+    FieldSync.NACHPRUEFEN_MS = 1500;
+    const el = document.querySelectorAll(sel)[nr];
+    el.value = nr === 0 ? '0.0131' : '0.0142';
+    return el.dataset.field;
+  }, [TIPPFELD, nr]);
+  const feldA = await vorbereiten(a, 0);
+  const feldB = await vorbereiten(b, 1);
+  await Promise.all([a.page.evaluate(() => saveData()), b.page.evaluate(() => saveData())]);
+  await a.page.waitForTimeout(4500);
+  const cloud = JSON.parse(gist[DATEN]);
+  await a.close(); await b.close();
+  assert(feldA !== feldB, 'Testaufbau: zwei verschiedene Felder');
+  assertEqual(cloud[feldA], '0.0131', 'Aenderung von Geraet A in der Cloud');
+  assertEqual(cloud[feldB], '0.0142', 'Aenderung von Geraet B in der Cloud');
+  assertEqual(cloud.fremdes_feld, 'vom anderen Geraet', 'Fremdes Feld erhalten');
+});
+
 } finally {
   await browser.close();
   server.close();

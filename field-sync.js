@@ -337,6 +337,7 @@
     var lokalGeaendert = kern(gemischt) !== kern(lokal);
     localStorage.setItem(o.speicherKey, JSON.stringify(gemischt));
 
+    var geschrieben = false;
     if (!cloud || kern(gemischt) !== kern(cloud)) {
       var files = {};
       files[o.datei] = { content: JSON.stringify(gemischt, null, 2) };
@@ -352,11 +353,12 @@
           return fehler('Status ' + wr.status + (msg ? ': ' + msg : '') + ' beim Schreiben',
             { quelle: 'cloudAbgleichen', status: wr.status, antwort: roh });
         }
+        geschrieben = true;
       } catch (e) {
         return fehler(e.message, { quelle: 'cloudAbgleichen', stack: e.stack });
       }
     }
-    return { ok: true, gemischt: gemischt, lokalGeaendert: lokalGeaendert };
+    return { ok: true, gemischt: gemischt, lokalGeaendert: lokalGeaendert, geschrieben: geschrieben };
   }
 
   // ---- Hochladen: buendeln, nacheinander, nachholen (gt40-engine v105, jerico v37) ----
@@ -380,8 +382,16 @@
   var BUENDELN_MS = 3000;
   var WIEDERHOLEN_MS = [5000, 15000, 60000, 120000, 300000];
   var GEBREMST_MS = 60000;
+  // Nach einem Schreibvorgang einmal nachpruefen (v107 / jerico v39): Ein Gist
+  // kennt kein "schreibe nur, wenn seit dem Lesen nichts geaendert wurde".
+  // Schreiben zwei Geraete fast gleichzeitig, fehlt die Aenderung des einen
+  // danach in der Cloud. Die Nachpruefung liest erneut, mischt und schreibt,
+  // falls etwas fehlt - hoechstens NACHPRUEFEN_MAX-mal in Folge.
+  var NACHPRUEFEN_MS = 2000;
+  var NACHPRUEFEN_MAX = 3;
 
-  var _hl = { timer: null, wiederTimer: null, lauf: null, nochmal: false, auftrag: null, versuch: 0 };
+  var _hl = { timer: null, wiederTimer: null, pruefTimer: null, nachpruefungen: 0,
+    lauf: null, nochmal: false, auftrag: null, versuch: 0 };
 
   function merkKey(speicherKey) { return speicherKey + '_ungesendet'; }
 
@@ -416,6 +426,14 @@
         if (localStorage.getItem(merk) === vorher) localStorage.removeItem(merk);
       } catch (e) {}
       if (o.nachher) { try { o.nachher(r); } catch (e) { console.warn('[Hochladen] nachher:', e.message); } }
+      if (r.geschrieben && _hl.nachpruefungen < einstellung('NACHPRUEFEN_MAX', NACHPRUEFEN_MAX)) {
+        _hl.nachpruefungen++;
+        clearTimeout(_hl.pruefTimer);
+        _hl.pruefTimer = setTimeout(function () { _hl.pruefTimer = null; starten(); },
+          einstellung('NACHPRUEFEN_MS', NACHPRUEFEN_MS));
+      } else if (!r.geschrieben) {
+        _hl.nachpruefungen = 0;
+      }
     } else if (r.veraltet) {
       // Kein Wiederholen: dieser Code schreibt nicht mehr. Neu laden.
       veraltetBehandeln(r);
@@ -465,6 +483,18 @@
   function veraltetBehandeln(r) {
     if (_neuLadenGeplant) return;
     _neuLadenGeplant = true;
+    // Hoechstens einmal je Version und Sitzung. Ist die ausgelieferte Seite
+    // selbst noch aelter als die Cloud (Version zurueckgenommen, Cache), kaeme
+    // sonst nach jedem Neuladen das naechste.
+    var schonNeu = false;
+    try { schonNeu = global.sessionStorage.getItem('fieldsync_neugeladen') === String(r.neueste); } catch (e) {}
+    if (schonNeu) {
+      if (typeof global.showToast === 'function') {
+        global.showToast('Version ' + r.neueste + ' ist hier noch nicht angekommen - Eingetragenes bleibt auf diesem Geraet und wird nicht hochgeladen. Spaeter neu laden.', { sticky: true });
+      }
+      return;
+    }
+    try { global.sessionStorage.setItem('fieldsync_neugeladen', String(r.neueste)); } catch (e) {}
     try { global.dispatchEvent(new CustomEvent('fieldsync-veraltet', { detail: { neueste: r.neueste } })); } catch (e) {}
     if (typeof global.showToast === 'function') {
       global.showToast('Neue Version ' + r.neueste + ' im Einsatz - die Seite wird neu geladen. Eingetragenes bleibt erhalten.', { sticky: true });
@@ -550,6 +580,8 @@
     BUENDELN_MS: BUENDELN_MS,
     WIEDERHOLEN_MS: WIEDERHOLEN_MS,
     GEBREMST_MS: GEBREMST_MS,
+    NACHPRUEFEN_MS: NACHPRUEFEN_MS,
+    NACHPRUEFEN_MAX: NACHPRUEFEN_MAX,
     vormerken: vormerken,
     jetztHochladen: jetztHochladen,
     nachholen: nachholen,

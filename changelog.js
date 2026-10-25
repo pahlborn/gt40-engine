@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v107',
+      date: '2026-10-25',
+      time: '20:50',
+      title: 'Zwei Geraete gleichzeitig verlieren nichts mehr',
+      changes: [
+        { type: 'fix', text: 'Speicherten zwei Geraete fast gleichzeitig, konnte die Aenderung des einen in der Cloud fehlen - sie kam erst an, wenn dieses Geraet wieder etwas speicherte. Jetzt prueft jedes Geraet zwei Sekunden nach dem Hochladen nach und schreibt erneut, falls dabei etwas verloren ging.' },
+        { type: 'intern', text: 'field-sync.js: Nachpruefung nach jedem Schreibvorgang (hoechstens dreimal in Folge), cloudAbgleichen meldet geschrieben. Dazu aus jerico v38 der Schutz gegen endloses Neuladen (einmal je Version und Sitzung); der Hochlade-Block ist wieder wortgleich. Ein Test mit zwei Geraeten; Gegenprobe ohne Nachpruefung: die Aenderung von Geraet A fehlt in der Cloud.' }
+      ]
+    },
+    {
       version: 'v106',
       date: '2026-10-25',
       time: '19:55',
