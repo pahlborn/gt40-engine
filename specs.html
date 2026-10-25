@@ -2714,27 +2714,21 @@
     // ueberschrieben - ein Geraet mit leerer Galerie hat damit die Cloud geleert.
     async function saveToGist() {
         const t = getGistConfig().token; if (!t) return false;
-        try {
-            var files = { [GIST_FILENAME]: { content: localStorage.getItem('engineBuildLog') || '{}' } };
-            var bodyStr = JSON.stringify({ files: files });
-            console.log('[Sync] saveToGist: ' + (bodyStr.length / 1024).toFixed(1) + ' KB');
-            const res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
-                method: 'PATCH', headers: { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' },
-                body: bodyStr
-            });
-            if (!res.ok) {
-                var rohAntwort = ''; try { rohAntwort = await res.text(); } catch(e) {}
-                var errText = '';
-                try { errText = JSON.parse(rohAntwort).message || ''; } catch(e) {}
-                _gistErrorDetail = { quelle: 'saveToGist', status: res.status, statusText: res.statusText, antwort: rohAntwort, url: res.url };
-                console.error('[Sync] saveToGist fehlgeschlagen: ' + res.status + ' ' + errText);
-                _gistError = 'Status ' + res.status + (errText ? ': ' + errText : '');
-                _gistOk = false; updateSyncBadge();
-                return false;
-            }
-            _gistOk = true; _gistError = ''; _gistErrorDetail = null; updateSyncBadge();
-            return true;
-        } catch (err) { console.error('[Sync] saveToGist error:', err); _gistError = err.message; _gistOk = false; updateSyncBadge(); return false; }
+        // Lesen - mischen - schreiben, fuer alle drei Seiten an einer Stelle
+        // (field-sync.js, Regel 10). Bis v100 ging hier der lokale Speicher
+        // ungelesen in den Gist: was dieses Geraet nicht kannte, war danach
+        // aus der Cloud weg.
+        const r = await FieldSync.cloudAbgleichen({ token: t, gistId: FIXED_GIST_ID,
+            datei: GIST_FILENAME, speicherKey: 'engineBuildLog' });
+        if (!r.ok) {
+            console.error('[Sync] saveToGist fehlgeschlagen: ' + r.fehler);
+            _gistError = r.fehler; _gistErrorDetail = r.detail;
+            _gistOk = false; updateSyncBadge();
+            return false;
+        }
+        if (r.lokalGeaendert) { isLoading = true; applyData(r.gemischt); isLoading = false; }
+        _gistOk = true; _gistError = ''; _gistErrorDetail = null; updateSyncBadge();
+        return true;
     }
     async function loadFromGist() {
         const t = getGistConfig().token; if (!t) return false;

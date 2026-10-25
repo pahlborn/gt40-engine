@@ -103,10 +103,21 @@
       var next = current[key];
       var prev = existing[key];
       var clearing = isBlank(next) || next === false;
+      var unbekannt = !Object.prototype.hasOwnProperty.call(existing, key);
 
       // Solange die Seite noch laedt, stehen alle Felder auf leer. Ein Save in
       // diesem Moment darf nichts loeschen.
       if (clearing && !recordClears && !isBlank(prev) && prev !== false) continue;
+
+      // Ein leeres Feld, das hier noch nie etwas enthielt, ist kein Ereignis.
+      //
+      // Bis v100 bekam es trotzdem einen Zeitstempel von jetzt - allein weil
+      // die Seite es anzeigt. Im Gist lagen dadurch 204 leere Felder mit
+      // Zeitstempel, in Bloecken von 77 und 109 Feldern derselben Minute: je
+      // ein Seitenaufruf. Beim Abgleich gewann je Feld der spaetere Stempel,
+      // also schlug dieses Leer die echten Werte eines anderen Geraets.
+      // Dieselbe Korrektur hat jerico in v30 gebraucht.
+      if (clearing && unbekannt) continue;
 
       if (next !== prev) times[key] = now;
       data[key] = next;
@@ -119,8 +130,28 @@
   }
 
   /**
+   * Ab wann ein leeres Feld mit Zeitstempel eine Aussage ist.
+   *
+   * Leere Felder, die VOR diesem Zeitpunkt gestempelt wurden, stammen
+   * ueberwiegend aus dem Fehler, der jedes angezeigte Feld stempelte (siehe
+   * mergeIntoExisting). Sie sind von einem bewussten Leeren nicht zu
+   * unterscheiden - also zaehlen sie nicht, und der vorhandene Wert gewinnt.
+   * Was nach dem Stichtag bewusst geleert wird, bleibt leer und wandert auf
+   * die anderen Geraete (Entscheidung des Halters, 2026-10-25).
+   *
+   * Ein Tag nach der Auslieferung, damit ein noch offener Reiter mit altem
+   * Code keine gueltigen Leerstellen mehr erzeugen kann. Dieselbe Regel und
+   * derselbe Tag gelten in jerico.
+   */
+  var LEER_STICHTAG = Date.parse('2026-10-26T00:00:00Z');
+
+  /**
    * Cloud- und lokalen Datensatz zusammenfuehren. Pro Feld gewinnt der
-   * juengere Zeitstempel - ein geloeschter Wert also auch.
+   * juengere Zeitstempel - mit einer Ausnahme:
+   *
+   * Steht nur auf einer Seite ein Wert, gewinnt das Leer der anderen Seite
+   * nur, wenn es nach dem Stichtag ausdruecklich gestempelt wurde und juenger
+   * ist als der Wert. Sonst gewinnt der Wert.
    */
   function mergeRecords(cloudData, localData) {
     cloudData = cloudData || {};
@@ -159,6 +190,21 @@
 
       var ct = fieldTime(cloudData, cloudTimes, k, cloudFallback);
       var lt = fieldTime(localData, localTimes, k, localFallback);
+
+      var cLeer = isBlank(cVal), lLeer = isBlank(lVal);
+      if (cLeer !== lLeer) {
+        // Nur ein ausdruecklicher Stempel zaehlt, kein Rueckfall auf _savedAt.
+        var leerStempel = cLeer ? cloudTimes[k] : localTimes[k];
+        var wertZeit = cLeer ? lt : ct;
+        var leerZaehlt = leerStempel !== undefined && leerStempel >= LEER_STICHTAG
+          && leerStempel > wertZeit;
+        var nimmCloud = cLeer ? leerZaehlt : !leerZaehlt;
+        if (nimmCloud) { merged[k] = cVal; mergedTimes[k] = ct; }
+        else { merged[k] = lVal; mergedTimes[k] = lt; }
+        if (merged[k] === undefined) delete merged[k];
+        continue;
+      }
+
       if (ct >= lt) { merged[k] = cVal; mergedTimes[k] = ct; }
       else { merged[k] = lVal; mergedTimes[k] = lt; }
       if (merged[k] === undefined) delete merged[k];
@@ -181,6 +227,101 @@
     return merged;
   }
 
+  /** Vergleichbarer Kern eines Datensatzes: ohne Verwaltungsangaben. */
+  function kern(d) {
+    var out = {};
+    Object.keys(d || {}).sort().forEach(function (k) {
+      if (k.charAt(0) !== '_') out[k] = d[k];
+    });
+    return JSON.stringify(out);
+  }
+
+  /**
+   * Den Datensatz der Messwerte mit dem Gist abgleichen: lesen - mischen -
+   * lokal speichern - nur wenn noetig schreiben.
+   *
+   * Steht an einer Stelle fuer alle drei Seiten (Regel 10). Bis v100 gab es
+   * drei Fassungen: index und specs schrieben den lokalen Speicher in den
+   * Gist, ohne ihn vorher zu lesen - Felder, die dieses Geraet nicht kannte,
+   * waren danach aus der Cloud weg. build-log las zwar, mischte aber mit
+   * Object.assign: die Seite gewann ganz, leere Felder ueberschrieben fremde
+   * Werte, und bei einem Lesefehler wurde trotzdem geschrieben.
+   *
+   * Hier gilt: scheitert das Lesen, wird nicht geschrieben.
+   *
+   * @param {{token, gistId, datei, speicherKey}} o
+   * @returns {Promise<{ok, gemischt, lokalGeaendert, fehler, detail}>}
+   */
+  async function cloudAbgleichen(o) {
+    var api = 'https://api.github.com/gists/' + o.gistId;
+    var auth = { 'Authorization': 'Bearer ' + o.token };
+    function fehler(text, detail) { return { ok: false, fehler: text, detail: detail || null }; }
+    async function rohtext(r) { try { return await r.text(); } catch (e) { return ''; } }
+
+    var res, gist;
+    try {
+      res = await fetch(api, { headers: auth, cache: 'no-store' });
+      if (!res.ok) {
+        return fehler('Status ' + res.status + ' beim Lesen - nichts geschrieben',
+          { quelle: 'cloudAbgleichen', status: res.status, antwort: await rohtext(res) });
+      }
+      gist = await res.json();
+    } catch (e) {
+      return fehler(e.message + ' - nichts geschrieben', { quelle: 'cloudAbgleichen', stack: e.stack });
+    }
+
+    var f = gist.files && gist.files[o.datei];
+    var cloud = null;
+    if (f) {
+      var inhalt = f.content;
+      if (f.truncated) {
+        // Ab 1 MB liefert die API nur einen Anfang. Den zu mischen hiesse,
+        // den Rest fuer geloescht zu halten.
+        try {
+          var rr = await fetch(f.raw_url, { headers: auth, cache: 'no-store' });
+          if (!rr.ok) return fehler('Gekuerzte Cloud-Datei nicht nachladbar - nichts geschrieben',
+            { quelle: 'cloudAbgleichen', status: rr.status });
+          inhalt = await rr.text();
+        } catch (e) {
+          return fehler('Gekuerzte Cloud-Datei nicht nachladbar - nichts geschrieben', { quelle: 'cloudAbgleichen', stack: e.stack });
+        }
+      }
+      try { cloud = JSON.parse(inhalt); }
+      catch (e) {
+        return fehler('Cloud-Datei unlesbar - nichts geschrieben',
+          { quelle: 'cloudAbgleichen', antwort: String(inhalt).slice(0, 300) });
+      }
+    }
+
+    // Zwischen Lesen des lokalen Stands und Zurueckschreiben liegt kein
+    // await - eine Eingabe in dieser Zeit kann nicht verloren gehen.
+    var lokal = JSON.parse(localStorage.getItem(o.speicherKey) || '{}');
+    var gemischt = cloud ? mergeRecords(cloud, lokal) : lokal;
+    var lokalGeaendert = kern(gemischt) !== kern(lokal);
+    localStorage.setItem(o.speicherKey, JSON.stringify(gemischt));
+
+    if (!cloud || kern(gemischt) !== kern(cloud)) {
+      var files = {};
+      files[o.datei] = { content: JSON.stringify(gemischt, null, 2) };
+      try {
+        var wr = await fetch(api, {
+          method: 'PATCH',
+          headers: { 'Authorization': 'Bearer ' + o.token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ files: files })
+        });
+        if (!wr.ok) {
+          var roh = await rohtext(wr);
+          var msg = ''; try { msg = JSON.parse(roh).message || ''; } catch (e) {}
+          return fehler('Status ' + wr.status + (msg ? ': ' + msg : '') + ' beim Schreiben',
+            { quelle: 'cloudAbgleichen', status: wr.status, antwort: roh });
+        }
+      } catch (e) {
+        return fehler(e.message, { quelle: 'cloudAbgleichen', stack: e.stack });
+      }
+    }
+    return { ok: true, gemischt: gemischt, lokalGeaendert: lokalGeaendert };
+  }
+
   /** Feldwerte der aktuellen Seite einsammeln. */
   function collectFields(root) {
     var out = {};
@@ -194,7 +335,10 @@
     TIMES_KEY: TIMES_KEY,
     DEVICES_KEY: DEVICES_KEY,
     DEVICE_KEY: DEVICE_KEY,
+    LEER_STICHTAG: LEER_STICHTAG,
     isBlank: isBlank,
+    kern: kern,
+    cloudAbgleichen: cloudAbgleichen,
     collectFields: collectFields,
     mergeIntoExisting: mergeIntoExisting,
     mergeRecords: mergeRecords,
