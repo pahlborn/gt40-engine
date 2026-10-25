@@ -13,6 +13,18 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v105',
+      date: '2026-10-25',
+      time: '18:30',
+      title: 'Was nicht hochgeladen wurde, wird nachgeholt',
+      changes: [
+        { type: 'fix', text: 'Scheiterte das Hochladen (GitHub: "Gist cannot be updated" oder "zu viele Anfragen"), blieben die Werte nur auf dem Geraet - es wurde nie wieder versucht, und die Anzeige sagte trotzdem "Cloud Sync". Jetzt merkt sich das Geraet "nicht hochgeladen", wiederholt selbst (nach 5 s, 15 s, 1 min, 2 min, dann alle 5 min) und holt es auch beim Oeffnen, beim Zurueckkehren und wenn das Netz wiederkommt nach.' },
+        { type: 'fix', text: 'Jede Eingabe war ein eigener Schreibvorgang, und mehrere liefen gleichzeitig - GitHub lehnte einen davon ab oder bremste das Konto. Jetzt wird beim Tippen sofort lokal gespeichert und erst nach 3 Sekunden Ruhe gebuendelt hochgeladen, immer nur ein Vorgang auf einmal.' },
+        { type: 'neu', text: 'Solange etwas nicht in der Cloud ist, steht oben orange "Nicht hochgeladen". Eine Fehlermeldung erscheint einmal pro Fehlerserie; jeder Fehlversuch steht im Protokoll.' },
+        { type: 'intern', text: 'Buendeln, Warteschlange und Wiederholung stehen einmal in field-sync.js (vormerken, jetztHochladen, nachholen, ungesendet); die drei Seiten rufen sie auf. Zwoelf Tests, je drei pro Mechanismus und Seite; Gegenprobe je Mechanismus: drei Tests rot.' }
+      ]
+    },
+    {
       version: 'v104',
       date: '2026-10-25',
       time: '16:45',

@@ -5216,7 +5216,10 @@
         var b = document.getElementById('syncBadge');
         if (!b) return;
         var sb = document.getElementById('syncBtn');
-        if (isGistConfigured()) {
+        if (isGistConfigured() && FieldSync.ungesendet('engineBuildLog')) {
+            b.innerHTML = '<span class="sync-badge offline" style="background:#dd6b20;color:#fff" title="Noch nicht in der Cloud - wird automatisch nachgeholt"><span class="sync-dot offline"></span>Nicht hochgeladen</span>';
+            if (sb) sb.disabled = false;
+        } else if (isGistConfigured()) {
             b.innerHTML = '<span class="sync-badge online"><span class="sync-dot online"></span>Cloud Sync</span>';
             if (sb) sb.disabled = false;
         } else {
@@ -5274,6 +5277,8 @@
             if (typeof pullGalleryMeta === 'function' && await pullGalleryMeta(gist, t)
                 && typeof refreshGallery === 'function') refreshGallery(false);
             updateSaveStatus();
+            // Was hier noch nicht hochgeladen war, geht jetzt mit (v105).
+            FieldSync.nachholen(hochladeAuftrag());
             return true;
         } catch (err) {
             var detail = Object.assign({}, err.detail || { stack: err.stack }, { quelle: 'syncFromCloud' });
@@ -5436,7 +5441,7 @@
         updateProgress();
     }
 
-    async function saveData() {
+    function lokalSpeichern() {
         var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
         var myData = collectData();
         // Pro Feld einen Zeitstempel fuehren - nur so ist das Leeren eines
@@ -5444,6 +5449,19 @@
         var merged = FieldSync.mergeIntoExisting(existing, myData, { recordClears: dataLoaded });
         localStorage.setItem('engineBuildLog', JSON.stringify(merged));
         updateSaveStatus();
+    }
+    /** Auftrag fuer field-sync.js: was hochgeladen wird und was danach passiert. */
+    function hochladeAuftrag() {
+        return { token: getGistConfig().token, gistId: FIXED_GIST_ID, datei: GIST_FILENAME,
+            speicherKey: 'engineBuildLog', nachher: function (r) {
+                if (r.lokalGeaendert) { isLoading = true; applyData(r.gemischt); renderAllStepStatus(); isLoading = false; }
+            } };
+    }
+    window.addEventListener('fieldsync-stand', function () { updateSyncBadge(); });
+    // Sofort speichern und hochladen (Speichern-Knopf, Netz wieder da). Die
+    // Fehlermeldung kommt aus field-sync.js - einmal pro Fehlerserie.
+    async function saveData() {
+        lokalSpeichern();
         if (isGistConfigured()) {
             // Lesen - mischen - schreiben, fuer alle drei Seiten an einer Stelle
             // (field-sync.js, Regel 10). Bis v100 stand hier Object.assign(remote,
@@ -5451,14 +5469,8 @@
             // fremde Werte, die Zeitstempel gingen verloren, und das Ergebnis
             // ersetzte den lokalen Speicher - samt ungesicherter Werte der
             // anderen Seiten. Bei einem Lesefehler wurde trotzdem geschrieben.
-            var r = await FieldSync.cloudAbgleichen({ token: getGistConfig().token,
-                gistId: FIXED_GIST_ID, datei: GIST_FILENAME, speicherKey: 'engineBuildLog' });
-            if (!r.ok) {
-                showToast('Sync-Fehler: ' + r.fehler, { sticky: true, isError: true,
-                    detail: Object.assign({}, r.detail || {}, { quelle: 'saveData' }) });
-            } else if (r.lokalGeaendert) {
-                isLoading = true; applyData(r.gemischt); isLoading = false;
-            }
+            // Seit v105 nacheinander, mit Wiederholung und Merkzeichen.
+            await FieldSync.jetztHochladen(hochladeAuftrag());
         }
     }
 
@@ -5484,7 +5496,11 @@
         if (isLoading) return;
         updateProgress();
         clearTimeout(autoSaveTimer);
-        autoSaveTimer = setTimeout(function() { saveData(); }, 500);
+        // Lokal sofort, hochladen gebuendelt nach einigen Sekunden Ruhe (v105).
+        autoSaveTimer = setTimeout(function() {
+            lokalSpeichern();
+            if (isGistConfigured()) FieldSync.vormerken(hochladeAuftrag());
+        }, 500);
     }
     function updateSaveStatus() {
         var raw = localStorage.getItem('engineBuildLog');

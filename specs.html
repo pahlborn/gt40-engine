@@ -2698,6 +2698,8 @@
         if (!b) return;
         if (!isGistConfigured()) {
             b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Messwerte lokal</span>';
+        } else if (FieldSync.ungesendet('engineBuildLog')) {
+            b.innerHTML = '<span class="sync-badge offline" style="background:#dd6b20;color:#fff" title="Noch nicht in der Cloud - wird automatisch nachgeholt"><span class="sync-dot offline"></span>Nicht hochgeladen</span>';
         } else if (_gistError) {
             // Frueher zeigte das Badge auch bei abgelaufenem Token "Verbunden".
             b.innerHTML = '<span class="sync-badge offline"><span class="sync-dot offline"></span>Token-Problem: ' + _gistError + '</span>';
@@ -2718,18 +2720,20 @@
         // (field-sync.js, Regel 10). Bis v100 ging hier der lokale Speicher
         // ungelesen in den Gist: was dieses Geraet nicht kannte, war danach
         // aus der Cloud weg.
-        const r = await FieldSync.cloudAbgleichen({ token: t, gistId: FIXED_GIST_ID,
-            datei: GIST_FILENAME, speicherKey: 'engineBuildLog' });
-        if (!r.ok) {
-            console.error('[Sync] saveToGist fehlgeschlagen: ' + r.fehler);
-            _gistError = r.fehler; _gistErrorDetail = r.detail;
-            _gistOk = false; updateSyncBadge();
-            return false;
-        }
-        if (r.lokalGeaendert) { isLoading = true; applyData(r.gemischt); isLoading = false; }
-        _gistOk = true; _gistError = ''; _gistErrorDetail = null; updateSyncBadge();
-        return true;
+        // Seit v105 nacheinander, mit Wiederholung (field-sync.js).
+        const r = await FieldSync.jetztHochladen(hochladeAuftrag());
+        return !!(r && r.ok);
     }
+    /** Auftrag fuer field-sync.js: was hochgeladen wird und was danach passiert. */
+    function hochladeAuftrag() {
+        return { token: getGistConfig().token, gistId: FIXED_GIST_ID, datei: GIST_FILENAME,
+            speicherKey: 'engineBuildLog', nachher: function (r) {
+                _gistOk = true; _gistError = ''; _gistErrorDetail = null;
+                if (r.lokalGeaendert) { isLoading = true; applyData(r.gemischt); isLoading = false; }
+                updateSyncBadge();
+            } };
+    }
+    window.addEventListener('fieldsync-stand', function () { updateSyncBadge(); });
     async function loadFromGist() {
         const t = getGistConfig().token; if (!t) return false;
         isLoading = true;
@@ -2919,7 +2923,7 @@
         // Recalculate after sync
         for (var i = 1; i <= 8; i++) calcQuench(i);
     }
-    async function saveData() {
+    function lokalSpeichern() {
         // Felder anderer Seiten bleiben erhalten; das Leeren eines eigenen Feldes
         // ist eine normale Aenderung und wird gespeichert.
         const existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
@@ -2929,8 +2933,13 @@
         var data = FieldSync.mergeIntoExisting(existing, current, { recordClears: dataLoaded });
         localStorage.setItem('engineBuildLog', JSON.stringify(data));
         updateSaveStatus();
-        if (isGistConfigured() && navigator.onLine) {
-            if (!await saveToGist()) { showToast('Sync-Fehler: ' + (_gistError || 'unbekannt'), { sticky: true, isError: true, detail: _gistErrorDetail }); }
+    }
+    // Sofort speichern und hochladen (Speichern-Knopf, Netz wieder da). Die
+    // Fehlermeldung kommt aus field-sync.js - einmal pro Fehlerserie.
+    async function saveData() {
+        lokalSpeichern();
+        if (isGistConfigured()) {
+            if (navigator.onLine) await saveToGist(); else FieldSync.vormerken(hochladeAuftrag());
         }
     }
     async function loadData() {
@@ -2952,6 +2961,8 @@
         if (typeof Messwerte !== 'undefined') { try { Messwerte.spiegeln(); } catch (e) { console.warn('[Abgleich] Messwerte:', e.message); } }
         try { updateBuildDashboard(); } catch (e) { console.warn('[Abgleich] Dashboard:', e.message); }
         if (typeof runCrossChecks === 'function') { try { runCrossChecks(); } catch (e) { console.warn('[Abgleich] Cross-Checks:', e.message); } }
+        // Was hier noch nicht hochgeladen war, geht jetzt mit (v105).
+        if (isGistConfigured()) FieldSync.nachholen(hochladeAuftrag());
     }
     /** Fehler beim Holen im Hintergrund ins Protokoll - offline ist kein Fehler. */
     function abgleichFehlerProtokollieren() {
@@ -3762,7 +3773,12 @@
     function autoSave() {
         if (isLoading) return;
         clearTimeout(autoSaveTimer);
-        autoSaveTimer = setTimeout(() => { saveData(); runCrossChecks(); }, 500);
+        // Lokal sofort, hochladen gebuendelt nach einigen Sekunden Ruhe (v105).
+        autoSaveTimer = setTimeout(() => {
+            lokalSpeichern();
+            if (isGistConfigured()) FieldSync.vormerken(hochladeAuftrag());
+            runCrossChecks();
+        }, 500);
     }
     // Zeigt den juengsten Speicherzeitpunkt - Messwerte UND Galerie. Frueher
     // stand hier nur engineBuildLog._savedAt, weshalb das Datum beim Speichern

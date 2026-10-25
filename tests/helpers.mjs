@@ -79,9 +79,12 @@ const TINY_JPEG = Buffer.from(
  *   opts.gistFiles - { "<dateiname>": "<inhalt>" } fuer GET /gists/<id>
  *   opts.onGistWrite - Callback fuer PATCH /gists/<id>, bekommt das files-Objekt
  *   opts.gistGetStatus - HTTP-Status fuer GET /gists/<id> (Lesefehler nachstellen)
+ *   opts.gistWriteStatus - (n) => HTTP-Status fuer den n-ten PATCH (ab 1), Default 200
+ *   opts.gistWriteDelayMs - Antwortzeit eines PATCH, um Ueberlappung sichtbar zu machen
+ *   state.maxGleichzeitig - hoechste Zahl gleichzeitig offener PATCH
  */
 export async function stubGitHub(page, opts = {}) {
-  const state = { treeRequests: 0, gistWrites: [] };
+  const state = { treeRequests: 0, gistWrites: [], patchVersuche: 0, offen: 0, maxGleichzeitig: 0 };
 
   // Alles andere Externe blocken, damit kein Test versehentlich ins Netz geht.
   await page.route('**://**', (route) => {
@@ -109,9 +112,22 @@ export async function stubGitHub(page, opts = {}) {
     const req = route.request();
     if (req.method() === 'PATCH') {
       const files = JSON.parse(req.postData() || '{}').files || {};
-      state.gistWrites.push(files);
-      if (opts.onGistWrite) opts.onGistWrite(files);
-      return route.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
+      const n = ++state.patchVersuche;
+      const status = opts.gistWriteStatus ? opts.gistWriteStatus(n) : 200;
+      state.offen++;
+      state.maxGleichzeitig = Math.max(state.maxGleichzeitig, state.offen);
+      const antworten = () => {
+        state.offen--;
+        if (status >= 200 && status < 300) {
+          state.gistWrites.push(files);
+          if (opts.onGistWrite) opts.onGistWrite(files);
+          return route.fulfill({ status, contentType: 'application/json', body: '{}' });
+        }
+        return route.fulfill({ status, contentType: 'application/json',
+                               body: JSON.stringify({ message: 'Gist cannot be updated.' }) });
+      };
+      if (opts.gistWriteDelayMs) return new Promise((r) => setTimeout(r, opts.gistWriteDelayMs)).then(antworten);
+      return antworten();
     }
     if (opts.gistGetStatus) {
       return route.fulfill({ status: opts.gistGetStatus, contentType: 'application/json',

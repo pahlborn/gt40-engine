@@ -593,6 +593,110 @@ await test('Offen kommt in der Cloud an und schlaegt dort ein aelteres erledigt'
   assertEqual(['done', 'wip', true, 'true', 'on'].includes(cloud.p1_timing_set), false, 'Status in der Cloud noch erledigt/in Arbeit: ' + JSON.stringify(cloud.p1_timing_set));
 });
 
+// ---------------------------------------------------------------------------
+suite('Hochladen: buendeln, nacheinander, nachholen (v105)');
+
+/** Erstes Eingabefeld der Seite, das beim Tippen speichert. */
+const TIPPFELD = 'input[data-field][oninput*="autoSave"]:not([readonly]):not([type=checkbox])';
+
+for (const file of PAGES) {
+  await test(file + ': fuenf Eingaben in Folge ergeben einen Schreibvorgang', async () => {
+    // 2026-10-24: von 20:47 bis 21:01 rund 70 Gist-Staende, dann bremste
+    // GitHub das Konto (403). Jede Eingabe war ein eigener Schreibvorgang.
+    const gist = fremdeCloud();
+    const d = await openMitGist(file, gist);
+    const feld = await d.page.evaluate(async (sel) => {
+      localStorage.setItem('gh_token', 'test-token');
+      FieldSync.BUENDELN_MS = 1200;
+      const el = document.querySelector(sel);
+      for (let i = 1; i <= 5; i++) {
+        el.value = '0.00' + i;
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        await new Promise((r) => setTimeout(r, 700));
+      }
+      await new Promise((r) => setTimeout(r, 2500));
+      return el.dataset.field;
+    }, TIPPFELD);
+    const schreibvorgaenge = d.stub.gistWrites.filter((f) => DATEN in f).length;
+    const cloud = JSON.parse(gist[DATEN]);
+    await d.close();
+    assertEqual(schreibvorgaenge, 1, 'Schreibvorgaenge fuer fuenf Eingaben');
+    assertEqual(cloud[feld], '0.005', 'Letzter Wert in der Cloud');
+  });
+
+  await test(file + ': gleichzeitiges Speichern schreibt nie gleichzeitig', async () => {
+    // 2026-10-25, 16:29: vier Staende in drei Sekunden vom selben iPad, einer
+    // kollidierte (409).
+    const gist = fremdeCloud();
+    const d = await openMitGist(file, gist, { gistWriteDelayMs: 400 });
+    const feld = await d.page.evaluate(async (sel) => {
+      localStorage.setItem('gh_token', 'test-token');
+      const el = document.querySelector(sel);
+      el.value = '1.111'; const a = saveData();
+      el.value = '2.222'; const b = saveData();
+      el.value = '3.333'; const c = saveData();
+      await Promise.all([a, b, c]);
+      return el.dataset.field;
+    }, TIPPFELD);
+    const cloud = JSON.parse(gist[DATEN]);
+    const max = d.stub.maxGleichzeitig;
+    await d.close();
+    assertEqual(max, 1, 'Gleichzeitig offene Schreibvorgaenge');
+    assertEqual(cloud[feld], '3.333', 'Letzter Wert in der Cloud');
+  });
+
+  await test(file + ': nach einer Ablehnung wird nachgeholt, die Anzeige sagt es', async () => {
+    // 2026-10-24: das iPad bekam 409 und 403 - und versuchte es nie wieder.
+    const gist = fremdeCloud();
+    const d = await openMitGist(file, gist, { gistWriteStatus: (n) => (n === 1 ? 409 : 200) });
+    const r = await d.page.evaluate(async (sel) => {
+      localStorage.setItem('gh_token', 'test-token');
+      FieldSync.WIEDERHOLEN_MS = [600];
+      const el = document.querySelector(sel);
+      el.value = '4.444';
+      await saveData();
+      const badge = () => (document.getElementById('syncBadge') || {}).textContent || '';
+      const direkt = [FieldSync.ungesendet('engineBuildLog'), badge()];
+      await new Promise((res) => setTimeout(res, 2000));
+      return { feld: el.dataset.field, direkt, spaeter: [FieldSync.ungesendet('engineBuildLog'), badge()] };
+    }, TIPPFELD);
+    const cloud = JSON.parse(gist[DATEN]);
+    await d.close();
+    assertEqual(r.direkt[0], true, 'Merkzeichen nach der Ablehnung');
+    assert(/Nicht hochgeladen/.test(r.direkt[1]), 'Anzeige nach der Ablehnung: ' + r.direkt[1]);
+    assertEqual(cloud[r.feld], '4.444', 'Wert in der Cloud nach dem Nachholen');
+    assertEqual(r.spaeter[0], false, 'Merkzeichen nach dem Nachholen');
+    assert(!/Nicht hochgeladen/.test(r.spaeter[1]), 'Anzeige nach dem Nachholen: ' + r.spaeter[1]);
+  });
+
+  await test(file + ': Liegengebliebenes wird beim Oeffnen hochgeladen', async () => {
+    // 2026-10-24/25: die Werte des iPads lagen nur dort; Oeffnen holte nur.
+    const gist = fremdeCloud();
+    const ctx = await browser.newContext();
+    await ctx.addInitScript(() => {
+      if (sessionStorage.getItem('vorbereitet')) return;
+      sessionStorage.setItem('vorbereitet', '1');
+      localStorage.setItem('gh_token', 'test-token');
+      localStorage.setItem('engineBuildLog', JSON.stringify({
+        liegengeblieben: '0.0145', _fieldTimes: { liegengeblieben: Date.now() - 5000 } }));
+      localStorage.setItem('engineBuildLog_ungesendet', '1');
+    });
+    const page = await ctx.newPage();
+    await stubGitHub(page, { gistFiles: gist, onGistWrite: (files) => {
+      for (const [n, f] of Object.entries(files)) gist[n] = f.content;
+    } });
+    await page.goto(base + '/' + file);
+    await page.waitForFunction(() => typeof dataLoaded !== 'undefined' && dataLoaded === true, null, { timeout: 30000 });
+    await page.waitForTimeout(1500);
+    const merk = await page.evaluate(() => FieldSync.ungesendet('engineBuildLog'));
+    const cloud = JSON.parse(gist[DATEN]);
+    await ctx.close();
+    assertEqual(cloud.liegengeblieben, '0.0145', 'Liegengebliebener Wert in der Cloud');
+    assertEqual(cloud.fremdes_feld, 'vom anderen Geraet', 'Fremdes Feld in der Cloud');
+    assertEqual(merk, false, 'Merkzeichen nach dem Hochladen');
+  });
+}
+
 } finally {
   await browser.close();
   server.close();
