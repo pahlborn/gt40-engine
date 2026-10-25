@@ -5415,36 +5415,20 @@
         localStorage.setItem('engineBuildLog', JSON.stringify(merged));
         updateSaveStatus();
         if (isGistConfigured()) {
-            try {
-                var t = getGistConfig().token;
-                var getRes = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
-                    headers: { 'Authorization': 'Bearer ' + t }
-                });
-                if (getRes.ok) {
-                    var gist = await getRes.json();
-                    var file = gist.files && gist.files[GIST_FILENAME];
-                    if (file) {
-                        var remote = JSON.parse(file.content);
-                        merged = Object.assign({}, remote, myData);
-                        merged._savedAt = new Date().toISOString();
-                    }
-                }
-                var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
-                    method: 'PATCH',
-                    headers: { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(merged, null, 2) } } })
-                });
-                if (res.ok) {
-                    localStorage.setItem('engineBuildLog', JSON.stringify(merged));
-                } else {
-                    // Rohtext zuerst: .json() verschluckt alles, was kein JSON ist,
-                    // und genau dann steht die Ursache im Klartext da.
-                    var rohAntwort = ''; try { rohAntwort = await res.text(); } catch(e2) {}
-                    var errMsg = ''; try { errMsg = JSON.parse(rohAntwort).message || ''; } catch(e2) {}
-                    showToast('Sync-Fehler: ' + (errMsg || 'Status ' + res.status), { sticky: true, isError: true,
-                        detail: { quelle: 'saveData', status: res.status, statusText: res.statusText, antwort: rohAntwort, url: res.url } });
-                }
-            } catch (e) { showToast('Sync-Fehler: ' + e.message, { sticky: true, isError: true, detail: { quelle: 'saveData', stack: e.stack } }); }
+            // Lesen - mischen - schreiben, fuer alle drei Seiten an einer Stelle
+            // (field-sync.js, Regel 10). Bis v100 stand hier Object.assign(remote,
+            // myData): die Seite gewann ganz, ihre leeren Felder ueberschrieben
+            // fremde Werte, die Zeitstempel gingen verloren, und das Ergebnis
+            // ersetzte den lokalen Speicher - samt ungesicherter Werte der
+            // anderen Seiten. Bei einem Lesefehler wurde trotzdem geschrieben.
+            var r = await FieldSync.cloudAbgleichen({ token: getGistConfig().token,
+                gistId: FIXED_GIST_ID, datei: GIST_FILENAME, speicherKey: 'engineBuildLog' });
+            if (!r.ok) {
+                showToast('Sync-Fehler: ' + r.fehler, { sticky: true, isError: true,
+                    detail: Object.assign({}, r.detail || {}, { quelle: 'saveData' }) });
+            } else if (r.lokalGeaendert) {
+                isLoading = true; applyData(r.gemischt); isLoading = false;
+            }
         }
     }
 

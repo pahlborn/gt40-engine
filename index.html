@@ -1718,28 +1718,28 @@
     // ==== GIST API ====
     async function saveToGist() {
         const t = getGistConfig().token; if (!t) return false;
-        try {
-            const res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
-                method: 'PATCH', headers: { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ files: { [GIST_FILENAME]: { content: localStorage.getItem('engineBuildLog') || '{}' } } })
-            });
-            if (!res.ok) {
-                var rohAntwort = ''; try { rohAntwort = await res.text(); } catch(e) {}
-                var errText = ''; try { errText = JSON.parse(rohAntwort).message || ''; } catch(e) {}
-                _gistError = 'Status ' + res.status + (errText ? ': ' + errText : '');
-                _gistErrorDetail = { quelle: 'saveToGist', status: res.status, statusText: res.statusText, antwort: rohAntwort, url: res.url };
-                return false;
-            }
-            _gistError = ''; _gistErrorDetail = null;
-            return true;
-        } catch (err) { _gistError = err.message; return false; }
+        // Lesen - mischen - schreiben, fuer alle drei Seiten an einer Stelle
+        // (field-sync.js, Regel 10). Bis v100 ging hier der lokale Speicher
+        // ungelesen in den Gist: was dieses Geraet nicht kannte, war danach
+        // aus der Cloud weg.
+        const r = await FieldSync.cloudAbgleichen({ token: t, gistId: FIXED_GIST_ID,
+            datei: GIST_FILENAME, speicherKey: 'engineBuildLog' });
+        if (!r.ok) { _gistError = r.fehler; _gistErrorDetail = r.detail; return false; }
+        if (r.lokalGeaendert) { isLoading = true; applyData(r.gemischt); isLoading = false; }
+        _gistError = ''; _gistErrorDetail = null;
+        return true;
     }
     async function loadFromGist() {
         const t = getGistConfig().token; if (!t) return false;
         try {
             isLoading = true;
             const res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { headers: { 'Authorization': 'Bearer ' + t } });
-            if (!res.ok) { isLoading = false; return false; }
+            if (!res.ok) {
+                var roh = ''; try { roh = await res.text(); } catch(e) {}
+                _gistError = 'Status ' + res.status + ' beim Lesen';
+                _gistErrorDetail = { quelle: 'loadFromGist', status: res.status, antwort: roh };
+                isLoading = false; return false;
+            }
             const gist = await res.json();
             const file = gist.files[GIST_FILENAME];
             if (!file) { isLoading = false; return false; }
@@ -1751,7 +1751,10 @@
             applyData(merged);
             localStorage.setItem('engineBuildLog', JSON.stringify(merged));
             isLoading = false; return true;
-        } catch (err) { isLoading = false; return false; }
+        } catch (err) {
+            _gistError = err.message; _gistErrorDetail = { quelle: 'loadFromGist', stack: err.stack };
+            isLoading = false; return false;
+        }
     }
     async function syncFromCloud() {
         if (!isGistConfigured()) { openSettings(); return; }

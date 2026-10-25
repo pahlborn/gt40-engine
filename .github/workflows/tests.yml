@@ -6,10 +6,15 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Alle Jobs auf ubuntu-24.04 statt ubuntu-latest: GitHub hat latest auf 26.04
+# weitergedreht, und Playwright 1.56.1 installiert dort keinen Chromium
+# ("Playwright does not support chromium on ubuntu26.04-x64") - die
+# Browser-Tests brachen nach elf Sekunden ab, vor dem ersten Test. Wer das
+# Image hochzieht, zieht Playwright mit.
 jobs:
   browser-tests:
     name: Browser-Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     steps:
@@ -118,7 +123,7 @@ jobs:
   # zweimal passiert. Braucht die Historie, deshalb fetch-depth: 0.
   versionsdisziplin:
     name: Versionsdisziplin
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
 
     steps:
@@ -139,7 +144,7 @@ jobs:
   smoke-live:
     name: Smoke-Test gegen die Live-Seite
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     continue-on-error: true
     needs: browser-tests

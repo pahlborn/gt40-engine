@@ -78,6 +78,7 @@ const TINY_JPEG = Buffer.from(
  *   opts.tree      - Tree-Antwort (Default: Fixture); null => Netzwerkfehler (offline)
  *   opts.gistFiles - { "<dateiname>": "<inhalt>" } fuer GET /gists/<id>
  *   opts.onGistWrite - Callback fuer PATCH /gists/<id>, bekommt das files-Objekt
+ *   opts.gistGetStatus - HTTP-Status fuer GET /gists/<id> (Lesefehler nachstellen)
  */
 export async function stubGitHub(page, opts = {}) {
   const state = { treeRequests: 0, gistWrites: [] };
@@ -111,6 +112,10 @@ export async function stubGitHub(page, opts = {}) {
       state.gistWrites.push(files);
       if (opts.onGistWrite) opts.onGistWrite(files);
       return route.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
+    }
+    if (opts.gistGetStatus) {
+      return route.fulfill({ status: opts.gistGetStatus, contentType: 'application/json',
+                             body: '{"message":"Stub-Lesefehler"}' });
     }
     const files = {};
     for (const [name, content] of Object.entries(opts.gistFiles || {})) {

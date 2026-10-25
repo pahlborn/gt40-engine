@@ -78,10 +78,13 @@ await test('Leeren wird mit einem Zeitstempel versehen', async () => {
 suite('Merge: ein geloeschtes Feld kommt nicht aus der Cloud zurueck');
 
 await test('Juengeres Leeren gewinnt gegen aelteren Wert', async () => {
+  // Seit v101 nur, wenn das Leeren nach dem Stichtag gestempelt wurde - die
+  // Stempel davor stammen ueberwiegend aus dem Fehler, der jedes angezeigte
+  // Feld stempelte (siehe die Suite zum Stichtag weiter unten).
   const p = await openPage('specs.html');
   const merged = await p.page.evaluate(() => FieldSync.mergeRecords(
-    { crank_endplay: '0.006', _fieldTimes: { crank_endplay: 1000 }, _savedAt: '2026-01-01T00:00:00Z' },
-    { crank_endplay: '',      _fieldTimes: { crank_endplay: 2000 }, _savedAt: '2026-01-02T00:00:00Z' }
+    { crank_endplay: '0.006', _fieldTimes: { crank_endplay: FieldSync.LEER_STICHTAG + 1000 }, _savedAt: '2026-11-01T00:00:00Z' },
+    { crank_endplay: '',      _fieldTimes: { crank_endplay: FieldSync.LEER_STICHTAG + 2000 }, _savedAt: '2026-11-02T00:00:00Z' }
   ).crank_endplay);
   assertEqual(merged, '', 'Der geloeschte Wert wurde ueberschrieben');
   await p.close();
@@ -131,6 +134,129 @@ await test('Checkbox abwaehlen ueberlebt den Merge', async () => {
   ).chk_clay_check);
   assertEqual(m, false, 'Das Abwaehlen wurde rueckgaengig gemacht');
   await p.close();
+});
+
+// ---------------------------------------------------------------------------
+suite('Stichtag: alte Leer-Stempel loeschen keine Werte (v101)');
+
+await test('Ein Leer-Stempel vor dem Stichtag schlaegt keinen Wert - in beiden Richtungen', async () => {
+  // Im Gist lagen 204 leere Felder mit Zeitstempel, in Bloecken von 77 und
+  // 109 Feldern derselben Minute - je ein Seitenaufruf. Mit "juengerer
+  // Stempel gewinnt" haetten sie die Werte eines anderen Geraets geloescht.
+  // Der Testfall nimmt den Wert absichtlich AELTER als das Leer: genau dann
+  // waere der Fehler sichtbar (Regel 6).
+  const p = await openPage('specs.html');
+  const r = await p.page.evaluate(() => {
+    const vor = FieldSync.LEER_STICHTAG - 60000;
+    const wert = { x: '0.006', _fieldTimes: { x: vor - 1000 } };
+    const leer = { x: '',      _fieldTimes: { x: vor } };
+    return [FieldSync.mergeRecords(leer, wert).x, FieldSync.mergeRecords(wert, leer).x];
+  });
+  assertEqual(r, ['0.006', '0.006'], 'Wert nach dem Mischen (Cloud leer / lokal leer)');
+  await p.close();
+});
+
+await test('Ein Leer ohne eigenen Stempel zaehlt nicht, auch mit neuem _savedAt', async () => {
+  const p = await openPage('specs.html');
+  const r = await p.page.evaluate(() => FieldSync.mergeRecords(
+    { x: '0.006', _fieldTimes: { x: FieldSync.LEER_STICHTAG + 10 } },
+    { x: '', y: '1', _fieldTimes: { y: FieldSync.LEER_STICHTAG + 99 }, _savedAt: '2030-01-01T00:00:00Z' }
+  ).x);
+  assertEqual(r, '0.006', 'Ein Rueckfall auf _savedAt hat den Wert geloescht');
+  await p.close();
+});
+
+await test('Ein nie ausgefuelltes Feld bekommt keinen Zeitstempel', async () => {
+  const p = await openPage('specs.html');
+  const t = await p.page.evaluate(() => {
+    const r = FieldSync.mergeIntoExisting({}, { neu_leer: '', neu_haken: false }, { recordClears: true });
+    return [r._fieldTimes.neu_leer, r._fieldTimes.neu_haken];
+  });
+  assertEqual(t, [undefined, undefined], 'Zeitstempel fuer nie gesetzte Felder');
+  await p.close();
+});
+
+// ---------------------------------------------------------------------------
+suite('Speichern liest vor dem Schreiben (v101)');
+
+/** Seite mit nachgebautem Gist, der sich Geschriebenes merkt. */
+async function openMitGist(file, gistFiles, extra = {}) {
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  const stub = await stubGitHub(page, Object.assign({
+    gistFiles,
+    onGistWrite: (files) => {
+      for (const [n, f] of Object.entries(files)) gistFiles[n] = f.content;
+    }
+  }, extra));
+  await page.goto(base + '/' + file);
+  await page.waitForFunction(() => typeof dataLoaded !== 'undefined' && dataLoaded === true,
+    null, { timeout: 30000 });
+  return { ctx, page, errors, stub, close: () => ctx.close() };
+}
+
+const DATEN = 'engine-build-log-data.json';
+const fremdeCloud = () => ({ [DATEN]: JSON.stringify({
+  fremdes_feld: 'vom anderen Geraet', _fieldTimes: { fremdes_feld: Date.now() - 60000 } }) });
+
+/** Ein Wert in ein Eingabefeld der Seite, dann speichern wie per autoSave. */
+const EINTRAGEN_UND_SPEICHERN = async () => {
+  localStorage.setItem('gh_token', 'test-token');
+  const el = document.querySelector('input[data-field]:not([readonly]):not([type=checkbox])');
+  el.value = '1.234';
+  await saveData();
+  return el.dataset.field;
+};
+
+for (const file of PAGES) {
+  await test(file + ': Werte des anderen Geraets bleiben in der Cloud', async () => {
+    // Bis v100 schrieben index und specs den lokalen Speicher ungelesen in den
+    // Gist, build-log mischte mit Object.assign. Felder, die dieses Geraet
+    // nicht kannte, waren danach aus der Cloud weg.
+    const gist = fremdeCloud();
+    const d = await openMitGist(file, gist);
+    const feld = await d.page.evaluate(EINTRAGEN_UND_SPEICHERN);
+    const cloud = JSON.parse(gist[DATEN]);
+    const fehler = d.errors.slice();
+    await d.close();
+    assertEqual(fehler, [], 'Fehler auf der Seite');
+    assertEqual(cloud.fremdes_feld, 'vom anderen Geraet', 'Fremdes Feld in der Cloud');
+    assertEqual(cloud[feld], '1.234', 'Eigener Wert in der Cloud');
+  });
+
+  await test(file + ': scheitert das Lesen, wird nicht geschrieben', async () => {
+    // Ohne gelesenen Stand waere jedes Schreiben wieder ein blindes.
+    const d = await openMitGist(file, fremdeCloud(), { gistGetStatus: 500 });
+    await d.page.evaluate(EINTRAGEN_UND_SPEICHERN);
+    await d.page.waitForTimeout(200);
+    const schreibvorgaenge = d.stub.gistWrites.filter((f) => DATEN in f).length;
+    await d.close();
+    assertEqual(schreibvorgaenge, 0, 'Schreibzugriffe trotz Lesefehler');
+  });
+}
+
+await test('build-log: Speichern loescht keine lokalen Werte anderer Seiten', async () => {
+  // Object.assign(remote, myData) ersetzte den lokalen Speicher: was eine
+  // andere Seite auf diesem Geraet eingetragen, aber noch nicht hochgeladen
+  // hatte, war weg.
+  const gist = fremdeCloud();
+  const d = await openMitGist('build-log.html', gist);
+  const lokal = await d.page.evaluate(async () => {
+    const log = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
+    log.nur_auf_specs = 'lokal, nicht hochgeladen';
+    log._fieldTimes = Object.assign({}, log._fieldTimes, { nur_auf_specs: Date.now() });
+    localStorage.setItem('engineBuildLog', JSON.stringify(log));
+    localStorage.setItem('gh_token', 'test-token');
+    await saveData();
+    return JSON.parse(localStorage.getItem('engineBuildLog')).nur_auf_specs;
+  });
+  const cloud = JSON.parse(gist[DATEN]);
+  await d.close();
+  assertEqual(lokal, 'lokal, nicht hochgeladen', 'Lokaler Wert einer anderen Seite');
+  assertEqual(cloud.nur_auf_specs, 'lokal, nicht hochgeladen', 'Derselbe Wert in der Cloud');
+  assertEqual(cloud.fremdes_feld, 'vom anderen Geraet', 'Fremdes Feld in der Cloud');
 });
 
 // ---------------------------------------------------------------------------

@@ -13,6 +13,19 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v101',
+      date: '2026-10-25',
+      time: '05:47',
+      title: 'Zwei Geraete loeschen sich nichts mehr',
+      changes: [
+        { type: 'verbessert', text: 'index und specs schrieben die Messwerte in die Cloud, ohne den Cloud-Stand vorher zu lesen. Was dieses Geraet nicht kannte - etwa ein Wert, den das iPad inzwischen eingetragen hatte -, war danach aus der Cloud weg. Jetzt wird vor jedem Schreiben gelesen und feldweise gemischt.' },
+        { type: 'verbessert', text: 'build-log las zwar vorher, mischte aber so, dass die ganze Seite gewann: ihre leeren Felder ueberschrieben fremde Werte, und das Ergebnis ersetzte den lokalen Speicher - samt der Werte, die auf index oder specs eingetragen, aber noch nicht hochgeladen waren. Jetzt dieselbe feldweise Mischung wie auf den anderen Seiten.' },
+        { type: 'verbessert', text: 'Scheitert das Lesen aus der Cloud, wird nicht mehr geschrieben. Vorher ging in dem Fall der rein lokale Stand hoch.' },
+        { type: 'verbessert', text: 'Ein leeres Feld bekam beim blossen Anzeigen einen Zeitstempel. Im Cloud-Stand lagen dadurch 204 leere Felder mit Stempel, in Bloecken von 77 und 109 Feldern derselben Minute. Weil beim Mischen der juengere Stempel gewann, konnten sie echte Werte eines anderen Geraets loeschen. Felder, die nie einen Wert hatten, werden nicht mehr gestempelt, und Leer-Stempel von vor dem 26.10.2026 schlagen keinen Wert mehr. Was danach bewusst geleert wird, bleibt leer und wandert auf die anderen Geraete.' },
+        { type: 'intern', text: 'Lesen, mischen, schreiben steht jetzt einmal in field-sync.js (cloudAbgleichen) statt in drei unterschiedlichen Fassungen (Regel 10). Dieselbe Korrektur hat das Schwesterprojekt jerico in v30 und v32 gebraucht; die Stichtag-Regel gilt in beiden gleich. Vor der Aenderung wurde der Gist vollstaendig gesichert.' }
+      ]
+    },
+    {
       version: 'v100',
       date: '2026-10-07',
       time: '22:17',
