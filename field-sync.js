@@ -146,6 +146,20 @@
   var LEER_STICHTAG = Date.parse('2026-10-26T00:00:00Z');
 
   /**
+   * Ob ein gestempeltes Leer ueberhaupt einen Wert schlagen darf.
+   *
+   * Ausgesetzt seit v103, bis die Stempel verlaesslich sind. Die Statusknoepfe
+   * schreiben alte Werte ("false", "true") beim Anzeigen um; beim naechsten
+   * Speichern - egal welches Feld - wurde daraus ein frisch gestempeltes Leer.
+   * Ab dem Stichtag haette das "erledigt" eines anderen Geraets geloescht,
+   * ohne dass jemand den Knopf beruehrt hat (nachgerechnet am 2026-10-25, im
+   * Gist standen 109 solche Altwerte). Solange das nicht behoben ist, gewinnt
+   * wie vor dem Stichtag immer der Wert. Ein bewusst geleertes Feld wandert
+   * dadurch nicht auf andere Geraete - das war bis heute ohnehin so.
+   */
+  var LEER_LOESCHT = false;
+
+  /**
    * Cloud- und lokalen Datensatz zusammenfuehren. Pro Feld gewinnt der
    * juengere Zeitstempel - mit einer Ausnahme:
    *
@@ -196,7 +210,7 @@
         // Nur ein ausdruecklicher Stempel zaehlt, kein Rueckfall auf _savedAt.
         var leerStempel = cLeer ? cloudTimes[k] : localTimes[k];
         var wertZeit = cLeer ? lt : ct;
-        var leerZaehlt = leerStempel !== undefined && leerStempel >= LEER_STICHTAG
+        var leerZaehlt = LEER_LOESCHT && leerStempel !== undefined && leerStempel >= LEER_STICHTAG
           && leerStempel > wertZeit;
         var nimmCloud = cLeer ? leerZaehlt : !leerZaehlt;
         if (nimmCloud) { merged[k] = cVal; mergedTimes[k] = ct; }
@@ -336,6 +350,7 @@
     DEVICES_KEY: DEVICES_KEY,
     DEVICE_KEY: DEVICE_KEY,
     LEER_STICHTAG: LEER_STICHTAG,
+    LEER_LOESCHT: LEER_LOESCHT,
     isBlank: isBlank,
     kern: kern,
     cloudAbgleichen: cloudAbgleichen,
