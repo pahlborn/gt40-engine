@@ -522,6 +522,77 @@ await test('Alle drei Seiten laden ohne Page-Errors', async () => {
   }
 });
 
+// ---------------------------------------------------------------------------
+suite('Statusknopf: von erledigt zurueck auf offen (v104)');
+
+await test('Ein erledigter Schritt laesst sich wieder auf offen und in Arbeit stellen - auch mit Cloud', async () => {
+  // 2026-10-25, Schritt 27 am iPad: "offen" war ein leerer Wert. Seit v103
+  // schlaegt ein Leer keinen Wert, also holte der Abgleich sofort "erledigt"
+  // zurueck - der Knopf liess sich nicht mehr umstellen.
+  const vorhin = Date.now() - 60000;
+  const gist = { [DATEN]: JSON.stringify({ p1_timing_set: 'done', _fieldTimes: { p1_timing_set: vorhin } }) };
+  const d = await openMitGist('build-log.html', gist);
+  const schritte = await d.page.evaluate(async (t) => {
+    localStorage.setItem('engineBuildLog', JSON.stringify({ p1_timing_set: 'done', _fieldTimes: { p1_timing_set: t } }));
+    localStorage.setItem('gh_token', 'test-token');
+    applyData(JSON.parse(localStorage.getItem('engineBuildLog')));
+    renderAllStepStatus();
+    const btn = document.querySelector('.step-status[data-field="p1_timing_set"]');
+    const stand = [];
+    for (let i = 0; i < 3; i++) {
+      cycleStepStatus(btn);
+      clearTimeout(autoSaveTimer);
+      await saveData();
+      stand.push(Findings.normalizeStatus(btn.value) || 'offen');
+    }
+    return stand;
+  }, vorhin);
+  const cloud = JSON.parse(gist[DATEN]);
+  await d.close();
+  assertEqual(schritte, ['offen', 'wip', 'done'], 'Knopf nach drei Tipps');
+  assertEqual(cloud.p1_timing_set, 'done', 'Cloud nach drei Tipps');
+});
+
+await test('Ein alter Status "false" bleibt beim Speichern eines anderen Felds unberuehrt', async () => {
+  // Bis v103 schrieb das Anzeigen "false" auf leer um; das naechste Speichern
+  // stempelte daraus ein Leeren, das niemand gemacht hatte.
+  const p = await openPage('build-log.html');
+  const r = await p.page.evaluate(async () => {
+    const sept = Date.parse('2026-09-20T00:00:00Z');
+    localStorage.setItem('engineBuildLog', JSON.stringify({ p1_timing_set: 'false', _fieldTimes: { p1_timing_set: sept } }));
+    applyData(JSON.parse(localStorage.getItem('engineBuildLog')));
+    renderAllStepStatus();
+    const btn = document.querySelector('.step-status[data-field="p1_timing_set"]');
+    document.querySelector('[data-field="p1_pd_cyl1"]').value = '0.0130';
+    await saveData();
+    const log = JSON.parse(localStorage.getItem('engineBuildLog'));
+    return [log.p1_timing_set, log._fieldTimes.p1_timing_set === sept, btn.getAttribute('aria-label')];
+  });
+  await p.close();
+  assertEqual(r, ['false', true, 'Status: offen'], 'Wert / Zeitstempel unveraendert / Anzeige');
+});
+
+await test('Offen kommt in der Cloud an und schlaegt dort ein aelteres erledigt', async () => {
+  const vorhin = Date.now() - 60000;
+  const gist = { [DATEN]: JSON.stringify({ p1_timing_set: 'done', _fieldTimes: { p1_timing_set: vorhin } }) };
+  const d = await openMitGist('build-log.html', gist);
+  const r = await d.page.evaluate(async (t) => {
+    localStorage.setItem('engineBuildLog', JSON.stringify({ p1_timing_set: 'done', _fieldTimes: { p1_timing_set: t } }));
+    localStorage.setItem('gh_token', 'test-token');
+    applyData(JSON.parse(localStorage.getItem('engineBuildLog')));
+    renderAllStepStatus();
+    const btn = document.querySelector('.step-status[data-field="p1_timing_set"]');
+    cycleStepStatus(btn);
+    clearTimeout(autoSaveTimer);
+    await saveData();
+    return [Findings.normalizeStatus(btn.value), btn.getAttribute('aria-label')];
+  }, vorhin);
+  const cloud = JSON.parse(gist[DATEN]);
+  await d.close();
+  assertEqual(r, ['', 'Status: offen'], 'Knopf nach einem Tipp');
+  assertEqual(['done', 'wip', true, 'true', 'on'].includes(cloud.p1_timing_set), false, 'Status in der Cloud noch erledigt/in Arbeit: ' + JSON.stringify(cloud.p1_timing_set));
+});
+
 } finally {
   await browser.close();
   server.close();

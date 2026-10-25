@@ -44,7 +44,10 @@ await test('Der Knopf schaltet offen -> in Arbeit -> erledigt -> offen', async (
     for (let i = 0; i < 3; i++) { cycleStepStatus(btn); out.push(btn.value); }
     return out;
   });
-  assertEqual(werte, ['', 'wip', 'done', ''], 'Reihenfolge der Stufen');
+  // Seit v104 ist "offen" nach einem Tipp ein eigener Wert ('offen'), kein
+  // leerer: ein Leer schlaegt beim Abgleich keinen Wert (v103), und der
+  // Schritt liess sich sonst nicht mehr zuruecksetzen. Unberuehrt bleibt er ''.
+  assertEqual(werte, ['', 'wip', 'done', 'offen'], 'Reihenfolge der Stufen');
   await p.close();
 });
 
