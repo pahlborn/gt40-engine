@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v108',
+      date: '2026-10-25',
+      time: '21:40',
+      title: 'Ein veralteter Stand schlaegt keinen gestempelten Wert mehr',
+      changes: [
+        { type: 'fix', text: 'Felder ohne eigenen Zeitstempel (29 im Gist, darunter der Kolbenueberstand) wurden nach dem Speicherzeitpunkt des ganzen Datensatzes entschieden: ein Geraet mit veraltetem Stand, das irgendein anderes Feld speicherte, gewann sie alle. Jetzt gewinnt der gestempelte Wert; ein Feld ohne Stempel macht keine Aussage darueber, wann es geaendert wurde.' },
+        { type: 'fix', text: 'Speicherte man waehrend einer Tipp-Serie, konnte die Nachpruefung aus v107 die halb getippten Werte vorzeitig hochladen. Steht ein gebuendeltes Hochladen an, uebernimmt jetzt dieses das Nachpruefen (wie jerico v39).' },
+        { type: 'intern', text: 'field-sync.js: mergeRecords ohne Rueckfall auf _savedAt, sobald eine Seite einen Stempel hat; der Gewinner ohne Stempel bekommt keinen erfundenen. fieldTime entfaellt. Zwei Tests; Gegenprobe mit dem alten Stand: beide rot, der veraltete Wert 100000 gewinnt. Die 29 Felder werden nach der Auslieferung einmal im Gist gestempelt.' }
+      ]
+    },
+    {
       version: 'v107',
       date: '2026-10-25',
       time: '20:50',

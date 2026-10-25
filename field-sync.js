@@ -80,12 +80,6 @@
 
   function isBlank(v) { return v === undefined || v === '' || v === null; }
 
-  /** Zeitstempel eines Feldes, mit Rueckfall auf den Zeitstempel des ganzen Datensatzes. */
-  function fieldTime(data, times, key, fallback) {
-    if (times && times[key] !== undefined) return times[key];
-    return Object.prototype.hasOwnProperty.call(data, key) ? fallback : -1;
-  }
-
   /**
    * Aktuelle Feldwerte in den bestehenden Datensatz uebernehmen.
    *
@@ -211,8 +205,14 @@
         continue;
       }
 
-      var ct = fieldTime(cloudData, cloudTimes, k, cloudFallback);
-      var lt = fieldTime(localData, localTimes, k, localFallback);
+      // Hat nur eine Seite einen Stempel, gewinnt sie (gt40-engine v108, jerico
+      // v40). Bis dahin galt fuer die Seite ohne Stempel der Zeitpunkt des
+      // ganzen Datensatzes (_savedAt): ein Geraet mit veraltetem Altbestand,
+      // das irgendein anderes Feld speicherte, schlug damit den gestempelten
+      // Wert. Ein Feld ohne Stempel ist Altbestand und macht keine Aussage
+      // darueber, wann es zuletzt geaendert wurde.
+      var ct = hasC ? cloudTimes[k] : -1;
+      var lt = hasL ? localTimes[k] : -1;
 
       var cLeer = isBlank(cVal), lLeer = isBlank(lVal);
       if (cLeer !== lLeer) {
@@ -222,14 +222,14 @@
         var leerZaehlt = LEER_LOESCHT && leerStempel !== undefined && leerStempel >= LEER_STICHTAG
           && leerStempel > wertZeit;
         var nimmCloud = cLeer ? leerZaehlt : !leerZaehlt;
-        if (nimmCloud) { merged[k] = cVal; mergedTimes[k] = ct; }
-        else { merged[k] = lVal; mergedTimes[k] = lt; }
+        if (nimmCloud) { merged[k] = cVal; if (ct >= 0) mergedTimes[k] = ct; }
+        else { merged[k] = lVal; if (lt >= 0) mergedTimes[k] = lt; }
         if (merged[k] === undefined) delete merged[k];
         continue;
       }
 
-      if (ct >= lt) { merged[k] = cVal; mergedTimes[k] = ct; }
-      else { merged[k] = lVal; mergedTimes[k] = lt; }
+      if (ct >= lt) { merged[k] = cVal; if (ct >= 0) mergedTimes[k] = ct; }
+      else { merged[k] = lVal; if (lt >= 0) mergedTimes[k] = lt; }
       if (merged[k] === undefined) delete merged[k];
     }
 
@@ -429,7 +429,10 @@
       if (r.geschrieben && _hl.nachpruefungen < einstellung('NACHPRUEFEN_MAX', NACHPRUEFEN_MAX)) {
         _hl.nachpruefungen++;
         clearTimeout(_hl.pruefTimer);
-        _hl.pruefTimer = setTimeout(function () { _hl.pruefTimer = null; starten(); },
+        // Steht schon ein gebuendeltes Hochladen an (es wird getippt), prueft
+        // dieses ohnehin nach - eine eigene Nachpruefung luede die halb
+        // getippten Werte vorzeitig hoch.
+        _hl.pruefTimer = setTimeout(function () { _hl.pruefTimer = null; if (!_hl.timer) starten(); },
           einstellung('NACHPRUEFEN_MS', NACHPRUEFEN_MS));
       } else if (!r.geschrieben) {
         _hl.nachpruefungen = 0;

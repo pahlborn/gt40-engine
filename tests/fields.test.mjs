@@ -771,6 +771,40 @@ await test('Speichern zwei Geraete fast gleichzeitig, kommen beide Aenderungen i
   assertEqual(cloud.fremdes_feld, 'vom anderen Geraet', 'Fremdes Feld erhalten');
 });
 
+// ---------------------------------------------------------------------------
+suite('Felder ohne Zeitstempel (v108)');
+
+await test('Ein gestempelter Wert schlaegt Altbestand ohne Stempel - auch wenn der Datensatz juenger ist', async () => {
+  // 2026-10-25: 29 Felder mit Wert hatten im Gist keinen Stempel (v100 hatte
+  // sie beim Schreiben verworfen), darunter der Kolbenueberstand. Bis v107
+  // galt fuer sie der Zeitpunkt des ganzen Datensatzes: ein Geraet mit
+  // veraltetem Stand, das irgendein Feld speicherte, gewann alle.
+  const p = await openPage('specs.html');
+  const r = await p.page.evaluate(() => {
+    const gestempelt = { p1_pd_cyl2: '0.0140', _fieldTimes: { p1_pd_cyl2: Date.parse('2026-10-25T20:00:00Z') },
+      _savedAt: '2026-10-25T20:00:00Z' };
+    const veraltet = { p1_pd_cyl2: '100000', anderes: '1', _fieldTimes: { anderes: Date.parse('2026-10-26T09:00:00Z') },
+      _savedAt: '2026-10-26T09:00:00Z' };
+    return [FieldSync.mergeRecords(gestempelt, veraltet).p1_pd_cyl2, FieldSync.mergeRecords(veraltet, gestempelt).p1_pd_cyl2];
+  });
+  await p.close();
+  assertEqual(r, ['0.0140', '0.0140'], 'Wert nach dem Mischen (gestempelt in der Cloud / lokal)');
+});
+
+await test('Gewinnt Altbestand ohne Stempel, bekommt er keinen erfundenen Stempel', async () => {
+  // Bis v107 bekam der Gewinner den Zeitpunkt des Datensatzes als Stempel -
+  // aus "unbekannt" wurde so eine Aussage.
+  const p = await openPage('specs.html');
+  const r = await p.page.evaluate(() => {
+    const m = FieldSync.mergeRecords(
+      { x: '', _fieldTimes: { x: Date.parse('2026-10-20T00:00:00Z') } },
+      { x: 'Altbestand', _savedAt: '2026-10-25T00:00:00Z' });
+    return [m.x, m._fieldTimes.x];
+  });
+  await p.close();
+  assertEqual(r, ['Altbestand', undefined], 'Wert / Stempel');
+});
+
 } finally {
   await browser.close();
   server.close();
