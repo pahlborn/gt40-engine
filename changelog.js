@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v103',
+      date: '2026-10-25',
+      time: '15:56',
+      title: 'Ein leeres Feld loescht vorerst keinen Wert eines anderen Geraets',
+      changes: [
+        { type: 'fix', text: 'Ab dem 26.10. haette ein Statusknopf das "erledigt" eines anderen Geraets loeschen koennen, ohne dass ihn jemand beruehrt: Alte Werte ("false") werden beim Anzeigen umgeschrieben, und beim naechsten Speichern - egal welches Feld - wurde daraus ein frisch gestempeltes Leeren. Bis die Zeitstempel verlaesslich sind, gewinnt beim Abgleich wieder immer der eingetragene Wert. Der Preis ist derselbe wie bis heute: ein bewusst geleertes Feld bekommt beim naechsten Abgleich seinen Wert zurueck, wenn die Cloud noch einen hat.' },
+        { type: 'intern', text: 'Schalter FieldSync.LEER_LOESCHT (aus). Zwei Tests halten fest, dass ein junges Leer und ein Status-Altwert keinen Wert schlagen; beide werden rot, sobald der Schalter wieder an ist. Dieselbe Massnahme in jerico v35.' }
+      ]
+    },
+    {
       version: 'v102',
       date: '2026-10-25',
       time: '08:22',

@@ -77,16 +77,35 @@ await test('Leeren wird mit einem Zeitstempel versehen', async () => {
 // ---------------------------------------------------------------------------
 suite('Merge: ein geloeschtes Feld kommt nicht aus der Cloud zurueck');
 
-await test('Juengeres Leeren gewinnt gegen aelteren Wert', async () => {
-  // Seit v101 nur, wenn das Leeren nach dem Stichtag gestempelt wurde - die
-  // Stempel davor stammen ueberwiegend aus dem Fehler, der jedes angezeigte
-  // Feld stempelte (siehe die Suite zum Stichtag weiter unten).
+await test('Solange Leeren ausgesetzt ist, schlaegt auch ein junges Leer keinen Wert (v103)', async () => {
+  // Bis v102 gewann hier das Leer, wenn es nach dem Stichtag gestempelt war.
+  // Seit v103 ist das ausgesetzt (FieldSync.LEER_LOESCHT, Begruendung in
+  // field-sync.js): die Stempel sind noch nicht verlaesslich.
   const p = await openPage('specs.html');
-  const merged = await p.page.evaluate(() => FieldSync.mergeRecords(
+  const r = await p.page.evaluate(() => [FieldSync.LEER_LOESCHT, FieldSync.mergeRecords(
     { crank_endplay: '0.006', _fieldTimes: { crank_endplay: FieldSync.LEER_STICHTAG + 1000 }, _savedAt: '2026-11-01T00:00:00Z' },
     { crank_endplay: '',      _fieldTimes: { crank_endplay: FieldSync.LEER_STICHTAG + 2000 }, _savedAt: '2026-11-02T00:00:00Z' }
-  ).crank_endplay);
-  assertEqual(merged, '', 'Der geloeschte Wert wurde ueberschrieben');
+  ).crank_endplay]);
+  assertEqual(r, [false, '0.006'], 'Schalter / Wert nach dem Mischen');
+  await p.close();
+});
+
+await test('Ein Status-Altwert "false" loescht nach dem Stichtag kein "erledigt" eines anderen Geraets (v103)', async () => {
+  // Nachgerechnet am 2026-10-25: Die Seite zeigt "false" als offen ('') an.
+  // Speichert das Geraet danach irgendein anderes Feld, wird daraus ein frisch
+  // gestempeltes Leer. Ab dem Stichtag haette es das "done" eines anderen
+  // Geraets geschlagen, das niemand angefasst hat.
+  const p = await openPage('specs.html');
+  const r = await p.page.evaluate(() => {
+    const sept = Date.parse('2026-09-20T00:00:00Z');
+    const laptop = FieldSync.mergeIntoExisting(
+      { p1_timing_set: 'false', _fieldTimes: { p1_timing_set: sept } },
+      { p1_timing_set: '', anderes_feld: '42' },
+      { now: FieldSync.LEER_STICHTAG + 8 * 3600000 });
+    const ipad = { p1_timing_set: 'done', _fieldTimes: { p1_timing_set: sept }, _savedAt: '2026-10-24T18:00:00Z' };
+    return [FieldSync.mergeRecords(laptop, ipad).p1_timing_set, FieldSync.mergeRecords(ipad, laptop).p1_timing_set];
+  });
+  assertEqual(r, ['done', 'done'], 'Status nach dem Mischen (Laptop in der Cloud / iPad in der Cloud)');
   await p.close();
 });
 
