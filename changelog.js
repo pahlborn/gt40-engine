@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v104',
+      date: '2026-10-25',
+      time: '16:45',
+      title: 'Ein erledigter Schritt laesst sich wieder zuruecksetzen',
+      changes: [
+        { type: 'fix', text: 'Ein Statusknopf auf "erledigt" liess sich nicht mehr auf "offen" stellen: "offen" war ein leerer Wert, und seit v103 schlaegt ein leerer Wert beim Abgleich keinen eingetragenen - der Abgleich holte "erledigt" sofort zurueck. "Offen" ist jetzt ein eigener Wert und setzt sich wie jede andere Eingabe nach Aktualitaet durch.' },
+        { type: 'fix', text: 'Das Anzeigen schreibt alte Statuswerte ("false") nicht mehr um. Bis v103 wurde daraus beim naechsten Speichern - egal welches Feld - ein Leeren, das niemand gemacht hatte.' },
+        { type: 'intern', text: 'Drei Tests: erledigt -> offen -> in Arbeit -> erledigt mit Cloud, offen kommt in der Cloud an, ein alter Status bleibt unberuehrt. Gegenprobe: alle drei rot ohne die Aenderung.' }
+      ]
+    },
+    {
       version: 'v103',
       date: '2026-10-25',
       time: '15:56',

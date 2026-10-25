@@ -5554,16 +5554,30 @@
     // Drei Stufen statt an/aus: eine Checkbox kann "in Arbeit" nicht abbilden,
     // ein Umschalter genauso wenig. Der Knopf schaltet bei jedem Klick weiter.
     // Gespeichert wird der Wert ueber das normale Feld-System (data-field).
+    //
+    // "Offen" wird als eigener Wert gespeichert, nicht als leer. Bis v103 war
+    // es leer - und ein Leer schlaegt beim Abgleich keinen Wert (v103,
+    // FieldSync.LEER_LOESCHT). Ein erledigter Schritt liess sich darum nicht
+    // mehr zuruecksetzen: der Abgleich holte "erledigt" sofort zurueck
+    // (Schritt 27 am iPad, 2026-10-25). Als Wert mit eigenem Zeitstempel
+    // gewinnt "offen" wie jede andere Eingabe nach Aktualitaet.
+    var STATUS_OFFEN = 'offen';
     function cycleStepStatus(btn) {
-        btn.value = Findings.nextStatus(btn.value);
+        btn.value = Findings.nextStatus(btn.value) || STATUS_OFFEN;
         _paintStepStatus(btn);
         autoSave();
         updateProgress();
     }
+    // Alte Werte ("false", "offen") bleiben, wie sie gespeichert sind. Bis
+    // v103 schrieb das Anzeigen "false" auf leer um, und das naechste
+    // Speichern - egal welches Feld - stempelte daraus ein Leeren, das niemand
+    // gemacht hatte (Fehlerquelle 1 der Pruefung vom 2026-10-25).
     function _paintStepStatus(btn) {
-        var v = Findings.normalizeStatus(btn.value);
-        btn.value = v;
-        btn.setAttribute('value', v);
+        var roh = btn.value;
+        var v = Findings.normalizeStatus(roh);
+        var wert = (v === '' && !FieldSync.isBlank(roh)) ? roh : v;
+        btn.value = wert;
+        btn.setAttribute('value', wert);
         btn.setAttribute('aria-label', 'Status: ' + Findings.statusLabel(v, document.documentElement.lang));
     }
     // Nach jedem Laden noetig: applyData() setzt nur .value, nicht das Attribut,
