@@ -13,6 +13,20 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v102',
+      date: '2026-10-25',
+      time: '08:22',
+      title: 'Was ein anderes Geraet eintraegt, ist auch zu sehen',
+      changes: [
+        { type: 'verbessert', text: 'Befunde und Galerie-Texte schrieben bei einem Lesefehler trotzdem - den rein lokalen Stand. Was nur das andere Geraet kannte, war danach aus der Cloud weg. Jetzt wird ohne gelesenen Stand nicht geschrieben, und der Fehler steht im Protokoll statt nur in der Konsole.' },
+        { type: 'verbessert', text: 'Im Build Log stand das Holen aus der Cloud dreimal da, zwei Fassungen ohne Pruefung der Antwort und mit stillem Fehlerabfang. Keine holte die Galerie-Texte, und die Statusknoepfe zeichneten danach nicht neu. Jetzt eine Stelle fuer Laden, Zurueckholen, Herunterziehen und Verbindung - mit Messwerten, Befunden und Galerie-Texten.' },
+        { type: 'verbessert', text: 'Dashboard, Messwert-Spiegel und Gegenpruefungen liefen auf Uebersicht und Spezifikationen nur einmal beim Start - bevor die Werte aus der Cloud da waren - und danach nie wieder. Jetzt nach jedem Holen.' },
+        { type: 'verbessert', text: 'Abgeglichen wird auch beim Zurueckkehren aus dem Browser-Cache, und nach einem Funkloch werden Befunde und Galerie-Texte mit nachgeschoben, nicht nur die Messwerte. Fehler beim Holen im Hintergrund stehen im Protokoll; offline gilt nicht als Fehler.' },
+        { type: 'verbessert', text: 'Beschriftungen der Galerie werden nicht mehr aufgeraeumt, wenn die Bildliste aus dem Repository nur gekuerzt ankam - sie galten sonst als verwaist.' },
+        { type: 'intern', text: 'Befunde und Galerie folgen jetzt derselben Regel wie die Messwerte seit v101 und wie jerico seit v33.' }
+      ]
+    },
+    {
       version: 'v101',
       date: '2026-10-25',
       time: '05:47',

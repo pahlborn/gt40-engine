@@ -5236,23 +5236,53 @@
             el.textContent = 'Nicht verbunden';
         }
     }
-    async function syncFromCloud() {
-        if (!isGistConfigured()) { openSettings(); return; }
-        isLoading = true;
+    /**
+     * Holen: lesen und mischen, ohne zu schreiben - Messwerte, Befunde und
+     * Galerie-Texte aus einem Abruf. Eine Stelle fuer Laden, Zurueckholen,
+     * Herunterziehen und Verbindung (Regel 10). Bis v101 stand das dreimal
+     * da (syncFromCloud, loadData, _syncFromGist): zwei davon ohne Pruefung
+     * von r.ok und mit stillem catch, keine holte die Galerie-Texte, und die
+     * Statusknoepfe zeichneten nach dem Holen nicht neu.
+     *
+     * opts.still: im Hintergrund - Fehler ins Protokoll statt als Meldung,
+     * sonst meldete jedes Funkloch.
+     */
+    var _letzterAbgleich = 0;
+    async function syncFromCloud(opts) {
+        opts = opts || {};
+        var manuell = !opts.still;
+        if (!isGistConfigured()) { if (manuell) openSettings(); return false; }
+        _letzterAbgleich = Date.now();
+        var t = getGistConfig().token;
+        var war = isLoading; isLoading = true;
         try {
-            var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { headers: { 'Authorization': 'Bearer ' + getGistConfig().token } });
-            if (!res.ok) { isLoading = false; showToast('Sync-Fehler: Status ' + res.status, { sticky: true, isError: true }); return; }
+            var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { headers: { 'Authorization': 'Bearer ' + t }, cache: 'no-store' });
+            if (!res.ok) {
+                var roh = ''; try { roh = await res.text(); } catch (e2) {}
+                throw Object.assign(new Error('Status ' + res.status + ' beim Lesen'), { detail: { status: res.status, antwort: roh } });
+            }
             var gist = await res.json();
-            var file = gist.files && gist.files[GIST_FILENAME];
-            if (!file) { isLoading = false; return; }
-            var cloudData = JSON.parse(file.content);
-            var localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-            var merged = FieldSync.mergeRecords(cloudData, localData);
-            applyData(merged);
-            localStorage.setItem('engineBuildLog', JSON.stringify(merged));
-            if (await Findings.pull(gist, getGistConfig().token)) renderAllFindings();
-            isLoading = false; updateSaveStatus();
-        } catch (err) { isLoading = false; showToast('Sync-Fehler: ' + err.message, { sticky: true, isError: true }); }
+            var inhalt = await _readGistFile(gist, GIST_FILENAME, t);
+            if (inhalt) {
+                var merged = FieldSync.mergeRecords(JSON.parse(inhalt),
+                    JSON.parse(localStorage.getItem('engineBuildLog') || '{}'));
+                localStorage.setItem('engineBuildLog', JSON.stringify(merged));
+                applyData(merged);
+                renderAllStepStatus();
+            }
+            if (await Findings.pull(gist, t)) renderAllFindings();
+            if (typeof pullGalleryMeta === 'function' && await pullGalleryMeta(gist, t)
+                && typeof refreshGallery === 'function') refreshGallery(false);
+            updateSaveStatus();
+            return true;
+        } catch (err) {
+            var detail = Object.assign({}, err.detail || { stack: err.stack }, { quelle: 'syncFromCloud' });
+            if (manuell) showToast('Sync-Fehler: ' + err.message, { sticky: true, isError: true, detail: detail });
+            else if (typeof ErrorLog !== 'undefined') ErrorLog.add('Abgleich: ' + err.message, detail);
+            return false;
+        } finally {
+            isLoading = war;
+        }
     }
 
     // ==== COLLAPSE STATE ====
@@ -5439,47 +5469,15 @@
         dataLoaded = true;
         renderAllStepStatus();
         if (isGistConfigured()) {
-            fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
-                headers: { 'Authorization': 'Bearer ' + getGistConfig().token }
-            }).then(function(r) { return r.json(); }).then(function(gist) {
-                var file = gist.files && gist.files[GIST_FILENAME];
-                if (file) {
-                    var cloudData = JSON.parse(file.content);
-                    var localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-                    // Feldweise zusammenfuehren: der juengere Zeitstempel gewinnt,
-                    // ein geloeschtes Feld also auch (siehe field-sync.js).
-                    var merged = FieldSync.mergeRecords(cloudData, localData);
-                    applyData(merged);
-                    localStorage.setItem('engineBuildLog', JSON.stringify(merged));
-                    Findings.pull(gist, getGistConfig().token).then(function(ch) { if (ch) renderAllFindings(); });
-                }
-                isLoading = false; updateSaveStatus();
-            }).catch(function() { isLoading = false; });
+            syncFromCloud({ still: true }).then(function () { isLoading = false; updateSaveStatus(); });
         } else { isLoading = false; updateSaveStatus(); }
     }
-    function _syncFromGist() {
-        if (!isGistConfigured() || isLoading) return;
-        isLoading = true;
-        fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
-            headers: { 'Authorization': 'Bearer ' + getGistConfig().token }
-        }).then(function(r) { return r.json(); }).then(function(gist) {
-            var file = gist.files && gist.files[GIST_FILENAME];
-            if (file) {
-                var cloudData = JSON.parse(file.content);
-                var localData = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-                // Feldweise zusammenfuehren: der juengere Zeitstempel gewinnt,
-                // ein geloeschtes Feld also auch (siehe field-sync.js).
-                var merged = FieldSync.mergeRecords(cloudData, localData);
-                applyData(merged);
-                localStorage.setItem('engineBuildLog', JSON.stringify(merged));
-                Findings.pull(gist, getGistConfig().token).then(function(ch) { if (ch) renderAllFindings(); });
-            }
-            isLoading = false; updateSaveStatus();
-        }).catch(function() { isLoading = false; });
-    }
-    // Auto-Sync bei Fokus (Tab-Wechsel, App-Wechsel auf Mobilgeraeten)
+    // Auto-Sync bei Fokus (Tab-Wechsel, App-Wechsel auf Mobilgeraeten),
+    // hoechstens alle 30 Sekunden.
     document.addEventListener('visibilitychange', function() {
-        if (!document.hidden && isGistConfigured()) _syncFromGist();
+        if (document.hidden || !isGistConfigured() || isLoading) return;
+        if (Date.now() - _letzterAbgleich < 30000) return;
+        syncFromCloud({ still: true });
     });
 
     function autoSave() {
@@ -6334,6 +6332,7 @@
     });
     window.addEventListener('pageshow', function(e) {
         if (e.persisted) {
+            if (isGistConfigured() && !isLoading) syncFromCloud({ still: true });
             restoreBuildCollapseState();
             // If hash present, scroll to hash instead of saved position
             if (window.location.hash && window.location.hash.length > 1) {
@@ -6590,8 +6589,14 @@
             });
         }).catch(function() {});
     }
+    // Verbindung wieder da: alles nachschieben, nicht nur die Messwerte.
+    // Befunde und Galerie-Texte, die offline geaendert wurden, blieben bis
+    // v101 liegen, bis man dort wieder etwas aenderte.
     window.addEventListener('online', function () {
-        if (isGistConfigured()) saveData();
+        if (!isGistConfigured()) return;
+        saveData();
+        Findings.push();
+        if (typeof pushGalleryMeta === 'function') pushGalleryMeta();
     });
 </script>
 

@@ -8,7 +8,7 @@
 
 import { chromium } from 'playwright';
 import {
-  startServer, stubGitHub, suite, test, assert, assertEqual, summary
+  startServer, stubGitHub, TREE_FIXTURE, suite, test, assert, assertEqual, summary
 } from './helpers.mjs';
 
 const { server, base } = await startServer();
@@ -356,6 +356,143 @@ await test('Unveraenderte Felder bekommen keinen neuen Zeitstempel', async () =>
   });
   assert(same, 'Ein unveraendertes Feld wurde neu gestempelt');
   await p.close();
+});
+
+// ---------------------------------------------------------------------------
+suite('Holen und Nachziehen (v102)');
+
+const BEFUNDE = 'engine-build-findings.json';
+const FOTOS = 'engine-build-photos.json';
+
+/** Seite mit verbundenem Gist; Token vor dem Laden gesetzt. */
+async function verbunden(file, opts = {}) {
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  const gist = opts.gistFiles || (opts.gistFiles = {});
+  const stub = await stubGitHub(page, Object.assign({
+    onGistWrite: (files) => { for (const [n, f] of Object.entries(files)) gist[n] = f.content; }
+  }, opts));
+  await ctx.addInitScript(() => localStorage.setItem('gh_token', 'test-token'));
+  await page.goto(base + '/' + file);
+  await page.waitForFunction(() => typeof dataLoaded !== 'undefined' && dataLoaded === true,
+    null, { timeout: 30000 });
+  await page.waitForTimeout(600);
+  return { ctx, page, errors, stub, gist, close: () => ctx.close() };
+}
+
+await test('build-log: beim Oeffnen kommen Befunde und Galerie-Texte des anderen Geraets an', async () => {
+  // Bis v101 holte keine der drei Fassungen die Galerie-Texte.
+  const foto = 'shortblock/1700000000000_0.jpg';
+  const d = await verbunden('build-log.html', { gistFiles: {
+    [BEFUNDE]: JSON.stringify({ items: { b_ipad: { ch: 'p1', text: 'vom iPad', status: '', created: 1, m: 1 } } }),
+    [FOTOS]: JSON.stringify({ version: 2, meta: { [foto]: { caption: 'Beschriftung vom iPad', m: 1 } }, videos: {}, hero: {} })
+  } });
+  const r = await d.page.evaluate((k) => ({
+    befund: ((JSON.parse(localStorage.getItem('engineFindings') || '{}').items || {}).b_ipad || {}).text,
+    text: (_galleryMeta.meta[k] || {}).caption
+  }), foto);
+  const fehler = d.errors.slice();
+  await d.close();
+  assertEqual(fehler, [], 'Fehler auf der Seite');
+  assertEqual(r.befund, 'vom iPad', 'Befund nach dem Oeffnen');
+  assertEqual(r.text, 'Beschriftung vom iPad', 'Galerie-Text nach dem Oeffnen');
+});
+
+await test('build-log: nach dem Holen zeichnen die Statusknoepfe neu', async () => {
+  // Der Kommentar an renderAllStepStatus sagte "nach jedem Laden noetig" -
+  // nach dem Holen aus der Cloud lief es trotzdem nicht.
+  const d = await verbunden('build-log.html', { gistFiles: {
+    [DATEN]: JSON.stringify({ x: '1', _fieldTimes: { x: 1 } })
+  } });
+  const aufrufe = await d.page.evaluate(async () => {
+    let n = 0;
+    const echt = window.renderAllStepStatus;
+    window.renderAllStepStatus = function () { n++; return echt.apply(this, arguments); };
+    await syncFromCloud({ still: true });
+    return n;
+  });
+  await d.close();
+  assert(aufrufe > 0, 'renderAllStepStatus lief nach dem Holen nicht');
+});
+
+await test('build-log: ein Lesefehler im Hintergrund steht im Protokoll', async () => {
+  // Bis v101: r.json() ohne Pruefung von r.ok, dann ein leeres catch.
+  const d = await verbunden('build-log.html', { gistGetStatus: 500 });
+  const r = await d.page.evaluate(async () => {
+    ErrorLog.leeren();
+    const ok = await syncFromCloud({ still: true });
+    return { ok, eintraege: ErrorLog.alle().map((e) => e.nachricht) };
+  });
+  await d.close();
+  assertEqual(r.ok, false, 'Ergebnis');
+  assert(r.eintraege.some((m) => /Abgleich: Status 500/.test(m)), 'Kein Eintrag: ' + r.eintraege.join(' | '));
+});
+
+await test('build-log: scheitert das Lesen, schreiben Befunde und Galerie nicht', async () => {
+  // Bis v101 ging in dem Fall der rein lokale Stand hoch - wie in jerico bis v32.
+  const d = await verbunden('build-log.html', { gistGetStatus: 500 });
+  const r = await d.page.evaluate(async () => {
+    ErrorLog.leeren();
+    await Findings.push();
+    await pushGalleryMeta();
+    return ErrorLog.alle().map((e) => e.nachricht);
+  });
+  const schreibvorgaenge = d.stub.gistWrites.filter((w) => BEFUNDE in w || FOTOS in w).length;
+  await d.close();
+  assertEqual(schreibvorgaenge, 0, 'Schreibzugriffe trotz Lesefehler');
+  assert(r.some((m) => /Befunde/.test(m)) && r.some((m) => /Galerie/.test(m)),
+    'Fehler von Befunden/Galerie stehen nicht im Protokoll: ' + r.join(' | '));
+});
+
+for (const file of ['index.html', 'specs.html']) {
+  await test(file + ': nach dem Holen wird das Dashboard nachgezogen', async () => {
+    // Bis v101 lief updateBuildDashboard nur einmal beim Start - bevor die
+    // Cloud-Werte da waren.
+    const d = await verbunden(file, { gistFiles: {
+      [DATEN]: JSON.stringify({ x: '1', _fieldTimes: { x: 1 } })
+    } });
+    const aufrufe = await d.page.evaluate(async () => {
+      let n = 0;
+      const echt = window.updateBuildDashboard;
+      window.updateBuildDashboard = function () { n++; return echt.apply(this, arguments); };
+      holenImHintergrund();
+      await new Promise((r) => setTimeout(r, 600));
+      return n;
+    });
+    await d.close();
+    assert(aufrufe > 0, 'updateBuildDashboard lief nach dem Holen nicht');
+  });
+
+  await test(file + ': ein Lesefehler im Hintergrund steht im Protokoll', async () => {
+    const d = await verbunden(file, { gistGetStatus: 500 });
+    const r = await d.page.evaluate(async () => {
+      ErrorLog.leeren();
+      holenImHintergrund();
+      await new Promise((r) => setTimeout(r, 600));
+      return ErrorLog.alle().map((e) => e.nachricht);
+    });
+    await d.close();
+    assert(r.some((m) => /Abgleich: (Status|HTTP) 500/.test(m)), 'Kein Eintrag: ' + r.join(' | '));
+  });
+}
+
+await test('Ein gekuerztes Bild-Listing raeumt keine Beschriftungen weg', async () => {
+  const tree = JSON.parse(JSON.stringify(TREE_FIXTURE));
+  tree.truncated = true;
+  const key = 'shortblock/1600000000000_9.jpg';     // nicht im (gekuerzten) Listing
+  const d = await verbunden('specs.html', { tree });
+  await d.page.waitForFunction(() => typeof _treeFetchedAt !== 'undefined' && _treeFetchedAt > 0,
+    null, { timeout: 30000 });
+  await d.page.evaluate(async (k) => {
+    _galleryMeta.meta[k] = { caption: 'Bild jenseits des Listings', m: 1 };
+    saveGalleryMeta();
+    await pushGalleryMeta();
+  }, key);
+  const meta = JSON.parse(d.gist[FOTOS] || '{}').meta || {};
+  await d.close();
+  assert(meta[key], 'Die Beschriftung wurde bei gekuerztem Listing weggeraeumt');
 });
 
 await test('Alle drei Seiten laden ohne Page-Errors', async () => {

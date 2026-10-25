@@ -2937,14 +2937,42 @@
         isLoading = true;
         const raw = localStorage.getItem('engineBuildLog');
         if (raw) { try { applyData(JSON.parse(raw)); } catch(e) {} }
-        if (isGistConfigured()) await loadFromGist();
+        if (isGistConfigured()) {
+            if (await loadFromGist()) nachAbgleich(); else abgleichFehlerProtokollieren();
+        }
         isLoading = false; dataLoaded = true; updateSaveStatus();
     }
+    /**
+     * Nach einem Abgleich alles nachziehen, was aus den Messwerten gerechnet
+     * wird. Bis v101 liefen Spiegelung, Dashboard und Gegenpruefungen nur
+     * einmal beim Start - waehrend die Werte aus der Cloud noch unterwegs
+     * waren - und danach nie wieder.
+     */
+    function nachAbgleich() {
+        if (typeof Messwerte !== 'undefined') { try { Messwerte.spiegeln(); } catch (e) { console.warn('[Abgleich] Messwerte:', e.message); } }
+        try { updateBuildDashboard(); } catch (e) { console.warn('[Abgleich] Dashboard:', e.message); }
+        if (typeof runCrossChecks === 'function') { try { runCrossChecks(); } catch (e) { console.warn('[Abgleich] Cross-Checks:', e.message); } }
+    }
+    /** Fehler beim Holen im Hintergrund ins Protokoll - offline ist kein Fehler. */
+    function abgleichFehlerProtokollieren() {
+        if (navigator.onLine === false || !_gistError || typeof ErrorLog === 'undefined') return;
+        ErrorLog.add('Abgleich: ' + _gistError, Object.assign({}, _gistErrorDetail || {}, { quelle: 'loadFromGist' }));
+    }
+    function holenImHintergrund() {
+        if (!isGistConfigured() || isLoading) return;
+        loadFromGist().then(function(ok) {
+            if (ok) { updateSaveStatus(); nachAbgleich(); } else abgleichFehlerProtokollieren();
+        });
+    }
+    // Zurueck aus dem Browser-Cache: dort lief kein Ladevorgang.
+    window.addEventListener('pageshow', function(e) {
+        if (e.persisted) holenImHintergrund();
+    });
     // Auto-Sync bei Fokus (Tab-Wechsel, App-Wechsel auf Mobilgeraeten)
     document.addEventListener('visibilitychange', function() {
         if (document.hidden || isLoading) return;
         if (isGistConfigured()) {
-            loadFromGist().then(function(ok) { if (ok) updateSaveStatus(); });
+            holenImHintergrund();
         } else {
             // Ohne Token gibt es keine Messwerte, die Galerie aber schon.
             refreshGallery(true);
@@ -4673,8 +4701,12 @@
         }).catch(function() {});
     }
     // Automatisch syncen, wenn die Verbindung wiederkommt
+    // Verbindung wieder da: auch die Galerie-Texte nachschieben - bis v101
+    // blieben offline geaenderte Beschriftungen liegen.
     window.addEventListener('online', function () {
-        if (isGistConfigured()) saveData();
+        if (!isGistConfigured()) return;
+        saveData().then(nachAbgleich);
+        if (typeof pushGalleryMeta === 'function') pushGalleryMeta();
     });
 
 </script>

@@ -181,14 +181,16 @@ function scheduleMetaPush() {
 async function pushGalleryMeta() {
     var t = getGistConfig().token;
     if (!t) { console.warn('[Galerie] Kein Token - Metadaten bleiben lokal'); return false; }
+    // Ohne gelesenen Cloud-Stand wird nicht geschrieben. Bis v101 ging in dem
+    // Fall der rein lokale Stand hoch - Beschriftungen, die nur das andere
+    // Geraet kannte, waren danach aus der Cloud weg.
     try {
-        var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { headers: { 'Authorization': 'Bearer ' + t } });
-        if (res.ok) {
-            var gist = await res.json();
-            var content = await _readGistFile(gist, GIST_PHOTOS_FILE, t);
-            if (content) _galleryMeta = _mergeMeta(_normalizeMeta(JSON.parse(content)), _galleryMeta);
-        }
-    } catch(e) { console.warn('[Galerie] Cloud-Stand nicht lesbar, schreibe lokalen Stand:', e.message); }
+        var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID, { headers: { 'Authorization': 'Bearer ' + t }, cache: 'no-store' });
+        if (!res.ok) { _galerieMelden('Galerie-Texte: Cloud-Stand nicht lesbar (Status ' + res.status + ') - nichts geschrieben', { status: res.status }); return false; }
+        var gist = await res.json();
+        var content = await _readGistFile(gist, GIST_PHOTOS_FILE, t);
+        if (content) _galleryMeta = _mergeMeta(_normalizeMeta(JSON.parse(content)), _galleryMeta);
+    } catch(e) { _galerieMelden('Galerie-Texte: Cloud-Stand nicht lesbar - nichts geschrieben: ' + e.message, { stack: e.stack }); return false; }
     _pruneOrphanMeta();
     _galleryMeta.version = 2;
     saveGalleryMeta();
@@ -200,19 +202,41 @@ async function pushGalleryMeta() {
             headers: { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' },
             body: JSON.stringify({ files: payload })
         });
-        if (!wr.ok) { console.error('[Galerie] Metadaten-Sync fehlgeschlagen:', wr.status); return false; }
+        if (!wr.ok) { _galerieMelden('Galerie-Texte: Schreiben fehlgeschlagen (Status ' + wr.status + ')', { status: wr.status }); return false; }
         console.log('[Galerie] Metadaten-Sync OK');
         return true;
-    } catch(e) { console.error('[Galerie] Metadaten-Sync-Fehler:', e.message); return false; }
+    } catch(e) { _galerieMelden('Galerie-Texte: Schreiben fehlgeschlagen: ' + e.message, { stack: e.stack }); return false; }
+}
+
+// Fehler ins Protokoll - bis v101 standen sie nur in der Konsole.
+function _galerieMelden(text, detail) {
+    console.error('[Galerie] ' + text);
+    if (typeof ErrorLog !== 'undefined') ErrorLog.add(text, Object.assign({ quelle: 'gallery.js' }, detail || {}));
+}
+
+// Cloud-Stand der Beschriftungen hereinholen, ohne zu schreiben. Gibt true,
+// wenn sich lokal etwas geaendert hat. Bis v101 kamen Texte eines anderen
+// Geraets nur an, wenn man selbst etwas an der Galerie aenderte.
+async function pullGalleryMeta(gist, token) {
+    var content = await _readGistFile(gist, GIST_PHOTOS_FILE, token);
+    if (!content) return false;
+    var vorher = JSON.stringify(_galleryMeta);
+    _galleryMeta = _mergeMeta(_normalizeMeta(JSON.parse(content)), _galleryMeta);
+    saveGalleryMeta();
+    return JSON.stringify(_galleryMeta) !== vorher;
 }
 
 // Metadaten zu Dateien, die es im Repo nicht mehr gibt, wegwerfen.
 // Bewusst vorsichtig: ein frischer Upload von einem anderen Geraet darf hier
 // nicht mit weggeraeumt werden, nur weil unser Listing ihn noch nicht kennt.
 var PRUNE_GRACE_MS = 10 * 60 * 1000;
+var _treeTruncated = false;
 function _pruneOrphanMeta() {
     // Nur mit einem wirklich aktuellen Listing aufraeumen
     if (!_treeFetchedAt || (_nowMs() - _treeFetchedAt) > TREE_MAX_AGE_MS) return;
+    // ... und nur mit einem vollstaendigen: ein gekuerztes Listing kennt nicht
+    // alle Bilder, und ihre Beschriftungen galten sonst als verwaist.
+    if (_treeTruncated) return;
     if (!Object.keys(_repoFiles).length) return;
     var cutoff = _nowMs() - PRUNE_GRACE_MS;
     var removed = 0;
@@ -282,6 +306,7 @@ async function _fetchRepoTreeInner() {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         var et = res.headers.get('ETag'); if (et) _treeEtag = et;
         var data = await res.json();
+        _treeTruncated = !!data.truncated;
         if (data.truncated) console.warn('[Galerie] Repo-Listing gekuerzt - Galerie evtl. unvollstaendig');
         var files = {};
         (data.tree || []).forEach(function(e) {

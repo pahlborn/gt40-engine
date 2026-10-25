@@ -1910,14 +1910,35 @@
                 applyData(d);
             } catch(e) {}
         }
-        if (isGistConfigured()) await loadFromGist();
+        if (isGistConfigured()) {
+            if (await loadFromGist()) nachAbgleich(); else abgleichFehlerProtokollieren();
+        }
         isLoading = false; dataLoaded = true; updateSaveStatus();
+    }
+    /**
+     * Nach einem Abgleich alles nachziehen, was aus den Messwerten gerechnet
+     * wird. Bis v101 lief das Dashboard nur einmal beim Start - bevor die
+     * Werte aus der Cloud da waren - und danach nie wieder.
+     */
+    function nachAbgleich() {
+        try { updateBuildDashboard(); } catch (e) { console.warn('[Abgleich] Dashboard:', e.message); }
+        if (typeof Messwerte !== 'undefined') { try { Messwerte.spiegeln(); } catch (e) { console.warn('[Abgleich] Messwerte:', e.message); } }
+        if (typeof runCrossChecks === 'function') { try { runCrossChecks(); } catch (e) { console.warn('[Abgleich] Cross-Checks:', e.message); } }
+    }
+    /** Fehler beim Holen im Hintergrund ins Protokoll - offline ist kein Fehler. */
+    function abgleichFehlerProtokollieren() {
+        if (navigator.onLine === false || !_gistError || typeof ErrorLog === 'undefined') return;
+        ErrorLog.add('Abgleich: ' + _gistError, Object.assign({}, _gistErrorDetail || {}, { quelle: 'loadFromGist' }));
+    }
+    function holenImHintergrund() {
+        if (!isGistConfigured() || isLoading) return;
+        loadFromGist().then(function(ok) {
+            if (ok) { updateSaveStatus(); nachAbgleich(); } else abgleichFehlerProtokollieren();
+        });
     }
     // Auto-Sync bei Fokus (Tab-Wechsel, App-Wechsel auf Mobilgeraeten)
     document.addEventListener('visibilitychange', function() {
-        if (!document.hidden && isGistConfigured() && !isLoading) {
-            loadFromGist().then(function(ok) { if (ok) updateSaveStatus(); });
-        }
+        if (!document.hidden) holenImHintergrund();
     });
     let autoSaveTimer = null;
     // ==== POWER UNIT CONVERTER ====
@@ -4314,7 +4335,7 @@
     });
     // bfcache support
     window.addEventListener('pageshow', function(e) {
-        if (e.persisted) { restoreCollapseState(); restoreScrollPos(); }
+        if (e.persisted) { holenImHintergrund(); restoreCollapseState(); restoreScrollPos(); }
     });
 
     // ==== ESC to close panels ====
@@ -4398,7 +4419,7 @@
         }).catch(function() {});
     }
     window.addEventListener('online', function () {
-        if (isGistConfigured()) saveData();
+        if (isGistConfigured()) saveData().then(nachAbgleich);
     });
 </script>
 

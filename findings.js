@@ -99,15 +99,19 @@
   async function push() {
     var cfg = typeof getGistConfig === 'function' ? getGistConfig() : { token: '' };
     if (!cfg.token) return false;
+    // Ohne gelesenen Cloud-Stand wird nicht geschrieben. Bis v101 ging in dem
+    // Fall der rein lokale Stand hoch - Befunde, die nur das andere Geraet
+    // kannte, waren danach aus der Cloud weg.
     try {
       var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID,
-        { headers: { 'Authorization': 'Bearer ' + cfg.token } });
-      if (res.ok) {
-        var gist = await res.json();
-        var f = gist.files && gist.files[GIST_FILE];
-        if (f && f.content) _data = merge(JSON.parse(f.content), _data);
-      }
-    } catch (e) { console.warn('[Befunde] Cloud-Stand nicht lesbar:', e.message); }
+        { headers: { 'Authorization': 'Bearer ' + cfg.token }, cache: 'no-store' });
+      if (!res.ok) { melden('Befunde: Cloud-Stand nicht lesbar (Status ' + res.status + ') - nichts geschrieben', { status: res.status }); return false; }
+      var gist = await res.json();
+      var content = typeof _readGistFile === 'function'
+        ? await _readGistFile(gist, GIST_FILE, cfg.token)
+        : (gist.files && gist.files[GIST_FILE] ? gist.files[GIST_FILE].content : null);
+      if (content) _data = merge(JSON.parse(content), _data);
+    } catch (e) { melden('Befunde: Cloud-Stand nicht lesbar - nichts geschrieben: ' + e.message, { stack: e.stack }); return false; }
     save();
     try {
       var files = {};
@@ -117,9 +121,15 @@
         headers: { 'Authorization': 'Bearer ' + cfg.token, 'Content-Type': 'application/json' },
         body: JSON.stringify({ files: files })
       });
-      if (!wr.ok) { console.error('[Befunde] Sync fehlgeschlagen:', wr.status); return false; }
+      if (!wr.ok) { melden('Befunde: Schreiben fehlgeschlagen (Status ' + wr.status + ')', { status: wr.status }); return false; }
       return true;
-    } catch (e) { console.error('[Befunde] Sync-Fehler:', e.message); return false; }
+    } catch (e) { melden('Befunde: Schreiben fehlgeschlagen: ' + e.message, { stack: e.stack }); return false; }
+  }
+
+  /** Fehler ins Protokoll - bis v101 standen sie nur in der Konsole. */
+  function melden(text, detail) {
+    console.error('[Befunde] ' + text);
+    if (typeof ErrorLog !== 'undefined') ErrorLog.add(text, Object.assign({ quelle: 'findings.js' }, detail || {}));
   }
 
   /** Cloud-Stand hereinholen. Gibt true zurueck, wenn sich etwas geaendert hat. */
