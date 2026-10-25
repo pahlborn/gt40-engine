@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v110',
+      date: '2026-10-25',
+      time: '23:50',
+      title: 'Ein Import ueberschreibt nichts Neueres mehr',
+      changes: [
+        { type: 'fix', text: 'Der Import ueberschrieb alles mit dem Inhalt der Datei - auch Eingaben, die neuer waren als die Sicherung, samt ihrem Zeitstempel. Jetzt wirkt eine Sicherungsdatei wie die Daten eines weiteren Geraets: je Feld gewinnt der neuere Eintrag.' },
+        { type: 'fix', text: 'Im Build Log blieb ein Import auf diesem Geraet und kam nicht in die Cloud; Sicherungen der Uebersicht ({ fields: ... }) liess er unberuecksichtigt. Beides behoben.' },
+        { type: 'intern', text: 'importJSON auf allen drei Seiten ueber FieldSync.mergeRecords; Build Log ruft danach saveData. Sechs Tests (je Seite ohne und mit Verbindung); Gegenprobe mit den alten Seiten: je Seite einer rot.' }
+      ]
+    },
+    {
       version: 'v109',
       date: '2026-10-25',
       time: '22:45',

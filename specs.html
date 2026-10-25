@@ -3840,7 +3840,10 @@
                 if (imported.fields) {
                     // New format
                     const existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-                    const merged = Object.assign({}, existing, imported.fields);
+                    // Wie die Daten eines weiteren Geraets: je Feld gewinnt der neuere
+                    // Zeitstempel (v110). Bis v109 ueberschrieb Object.assign alles -
+                    // eine alte Sicherung schlug neuere Eingaben, Zeitstempel inklusive.
+                    const merged = FieldSync.mergeRecords(imported.fields, existing);
                     localStorage.setItem('engineBuildLog', JSON.stringify(merged));
                     applyData(merged);
                     if (imported.gallery_meta || imported.photos_main) {
@@ -3858,7 +3861,7 @@
                 } else {
                     // Old format (flat fields object)
                     const existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-                    const merged = Object.assign({}, existing, imported);
+                    const merged = FieldSync.mergeRecords(imported, existing);
                     localStorage.setItem('engineBuildLog', JSON.stringify(merged));
                     applyData(merged);
                 }
