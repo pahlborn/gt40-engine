@@ -337,6 +337,134 @@
     return { ok: true, gemischt: gemischt, lokalGeaendert: lokalGeaendert };
   }
 
+  // ---- Hochladen: buendeln, nacheinander, nachholen (v105) ----
+  //
+  // Bis v104 loeste jede Eingabe 0,5 s spaeter ein eigenes Lesen-Mischen-
+  // Schreiben aus, und die Vorgaenge liefen gleichzeitig. GitHub wies einen
+  // davon ab (409 "Gist cannot be updated", 2026-10-24 und -25) oder bremste
+  // das ganze Konto (403 "API rate limit exceeded", 2026-10-24 - von 20:47
+  // bis 21:01 entstanden rund 70 Gist-Staende). Ein gescheitertes Hochladen
+  // wurde nie wiederholt: die Werte blieben nur auf dem Geraet, die Anzeige
+  // sagte trotzdem "Cloud Sync".
+  //
+  // Jetzt: Tippen speichert lokal und merkt das Hochladen vor; hochgeladen
+  // wird nach BUENDELN_MS Ruhe. Es laeuft hoechstens ein Vorgang, was waehrend
+  // eines Laufs dazukommt, geht im naechsten mit. Scheitert er, bleibt das
+  // Merkzeichen "nicht hochgeladen" im Geraetespeicher stehen und der Vorgang
+  // wird nach WIEDERHOLEN_MS wiederholt - bei 403/429 fruehestens nach
+  // GEBREMST_MS. Geloescht wird das Merkzeichen erst, wenn ein Lauf gelungen
+  // ist und seitdem nichts Neues vorgemerkt wurde.
+
+  var BUENDELN_MS = 3000;
+  var WIEDERHOLEN_MS = [5000, 15000, 60000, 120000, 300000];
+  var GEBREMST_MS = 60000;
+
+  var _hl = { timer: null, wiederTimer: null, lauf: null, nochmal: false, auftrag: null, versuch: 0 };
+
+  function merkKey(speicherKey) { return speicherKey + '_ungesendet'; }
+
+  /** Liegt auf diesem Geraet etwas, das noch nicht in der Cloud ist? */
+  function ungesendet(speicherKey) {
+    try { return !!localStorage.getItem(merkKey(speicherKey)); } catch (e) { return false; }
+  }
+
+  function standMelden() {
+    try { global.dispatchEvent(new CustomEvent('fieldsync-stand')); } catch (e) {}
+  }
+
+  function markieren(o) {
+    try { localStorage.setItem(merkKey(o.speicherKey), Date.now() + ':' + Math.random().toString(36).slice(2, 8)); }
+    catch (e) {}
+    standMelden();
+  }
+
+  function einstellung(name, standard) {
+    var fs = global.FieldSync;
+    return fs && fs[name] !== undefined ? fs[name] : standard;
+  }
+
+  async function einLauf(o) {
+    var vorher = null;
+    try { vorher = localStorage.getItem(merkKey(o.speicherKey)); } catch (e) {}
+    var r = await cloudAbgleichen(o);
+    if (r.ok) {
+      _hl.versuch = 0;
+      try {
+        if (localStorage.getItem(merkKey(o.speicherKey)) === vorher) localStorage.removeItem(merkKey(o.speicherKey));
+      } catch (e) {}
+      if (o.nachher) { try { o.nachher(r); } catch (e) { console.warn('[Hochladen] nachher:', e.message); } }
+    } else {
+      _hl.versuch++;
+      var stufen = einstellung('WIEDERHOLEN_MS', WIEDERHOLEN_MS);
+      var warten = stufen[Math.min(_hl.versuch - 1, stufen.length - 1)];
+      var status = r.detail && r.detail.status;
+      if (status === 403 || status === 429) warten = Math.max(warten, einstellung('GEBREMST_MS', GEBREMST_MS));
+      r.versuch = _hl.versuch;
+      r.wiederholtIn = warten;
+      clearTimeout(_hl.wiederTimer);
+      _hl.wiederTimer = setTimeout(function () { _hl.wiederTimer = null; starten(); }, warten);
+      try { (o.fehler || fehlerMelden)(r); } catch (e) { console.warn('[Hochladen] fehler:', e.message); }
+    }
+    standMelden();
+    return r;
+  }
+
+  /**
+   * Eine Meldung pro Fehlerserie, jeder Fehlversuch im Protokoll. Offline ist
+   * kein Fehler - das Merkzeichen steht, und es wird nachgeholt.
+   */
+  function fehlerMelden(r) {
+    if (global.navigator && global.navigator.onLine === false) return;
+    var detail = Object.assign({}, r.detail || {}, { quelle: 'saveData', versuch: r.versuch });
+    var text = 'Sync-Fehler: ' + r.fehler;
+    if (r.versuch === 1 && typeof global.showToast === 'function') {
+      global.showToast(text + ' - wird automatisch wiederholt', { sticky: true, isError: true, detail: detail });
+    } else if (global.ErrorLog) {
+      global.ErrorLog.add(text, detail);
+    }
+  }
+
+  function starten() {
+    clearTimeout(_hl.timer); _hl.timer = null;
+    clearTimeout(_hl.wiederTimer); _hl.wiederTimer = null;
+    if (_hl.lauf) { _hl.nochmal = true; return _hl.lauf; }
+    _hl.lauf = (async function () {
+      try {
+        var r;
+        do { _hl.nochmal = false; r = await einLauf(_hl.auftrag); } while (_hl.nochmal && r.ok);
+        return r;
+      } finally { _hl.lauf = null; }
+    })();
+    return _hl.lauf;
+  }
+
+  /**
+   * Hochladen vormerken: nach BUENDELN_MS Ruhe wird hochgeladen. Fuer das
+   * Tippen - jede weitere Eingabe schiebt den Zeitpunkt hinaus.
+   * @param {{token, gistId, datei, speicherKey, nachher, fehler}} o
+   */
+  function vormerken(o) {
+    markieren(o);
+    _hl.auftrag = o;
+    clearTimeout(_hl.timer);
+    _hl.timer = setTimeout(function () { _hl.timer = null; starten(); },
+      einstellung('BUENDELN_MS', BUENDELN_MS));
+  }
+
+  /** Sofort hochladen (Speichern-Knopf, Netz wieder da). Ergebnis wie cloudAbgleichen. */
+  function jetztHochladen(o) {
+    markieren(o);
+    _hl.auftrag = o;
+    return starten();
+  }
+
+  /** Liegengebliebenes hochladen - nur wenn das Merkzeichen steht. */
+  function nachholen(o) {
+    if (!ungesendet(o.speicherKey)) return Promise.resolve(null);
+    _hl.auftrag = o;
+    return starten();
+  }
+
   /** Feldwerte der aktuellen Seite einsammeln. */
   function collectFields(root) {
     var out = {};
@@ -355,6 +483,13 @@
     isBlank: isBlank,
     kern: kern,
     cloudAbgleichen: cloudAbgleichen,
+    BUENDELN_MS: BUENDELN_MS,
+    WIEDERHOLEN_MS: WIEDERHOLEN_MS,
+    GEBREMST_MS: GEBREMST_MS,
+    vormerken: vormerken,
+    jetztHochladen: jetztHochladen,
+    nachholen: nachholen,
+    ungesendet: ungesendet,
     collectFields: collectFields,
     mergeIntoExisting: mergeIntoExisting,
     mergeRecords: mergeRecords,
