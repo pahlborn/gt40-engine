@@ -15,7 +15,7 @@
     {
       version: 'v110',
       date: '2026-10-25',
-      time: '23:50',
+      time: '21:53',
       title: 'Ein Import ueberschreibt nichts Neueres mehr',
       changes: [
         { type: 'fix', text: 'Der Import ueberschrieb alles mit dem Inhalt der Datei - auch Eingaben, die neuer waren als die Sicherung, samt ihrem Zeitstempel. Jetzt wirkt eine Sicherungsdatei wie die Daten eines weiteren Geraets: je Feld gewinnt der neuere Eintrag.' },
@@ -26,7 +26,7 @@
     {
       version: 'v109',
       date: '2026-10-25',
-      time: '22:45',
+      time: '21:06',
       title: 'Leeren geht wieder, Eingaben waehrend des Abgleichs bleiben',
       changes: [
         { type: 'fix', text: 'Ein Feld bewusst zu leeren geht wieder: Es bleibt leer und wandert auf die anderen Geraete. Seit v103 holte der Abgleich den alten Wert zurueck, weil nicht zu unterscheiden war, ob jemand geleert hatte oder das Feld nur leer angezeigt wurde. Jetzt zaehlt ein Leeren nur bei einem Feld, das man selbst beruehrt hat - durch Tippen, Auswaehlen oder Antippen.' },
@@ -37,7 +37,7 @@
     {
       version: 'v108',
       date: '2026-10-25',
-      time: '21:40',
+      time: '20:22',
       title: 'Ein veralteter Stand schlaegt keinen gestempelten Wert mehr',
       changes: [
         { type: 'fix', text: 'Felder ohne eigenen Zeitstempel (29 im Gist, darunter der Kolbenueberstand) wurden nach dem Speicherzeitpunkt des ganzen Datensatzes entschieden: ein Geraet mit veraltetem Stand, das irgendein anderes Feld speicherte, gewann sie alle. Jetzt gewinnt der gestempelte Wert; ein Feld ohne Stempel macht keine Aussage darueber, wann es geaendert wurde.' },
@@ -48,7 +48,7 @@
     {
       version: 'v107',
       date: '2026-10-25',
-      time: '20:50',
+      time: '19:57',
       title: 'Zwei Geraete gleichzeitig verlieren nichts mehr',
       changes: [
         { type: 'fix', text: 'Speicherten zwei Geraete fast gleichzeitig, konnte die Aenderung des einen in der Cloud fehlen - sie kam erst an, wenn dieses Geraet wieder etwas speicherte. Jetzt prueft jedes Geraet zwei Sekunden nach dem Hochladen nach und schreibt erneut, falls dabei etwas verloren ging.' },
@@ -58,7 +58,7 @@
     {
       version: 'v106',
       date: '2026-10-25',
-      time: '19:55',
+      time: '19:32',
       title: 'Ein alter Tab schreibt nicht mehr ueber Neueres',
       changes: [
         { type: 'fix', text: 'Ein vergessener Tab mit altem Code konnte seinen veralteten Stand ueber neuere Eintraege schreiben - so geschehen am 25.10. um 04:57. Jetzt traegt jeder Schreibvorgang die Version ein. Hat eine neuere Version geschrieben, schreibt ein aelterer Tab nicht mehr und laedt sich neu, sobald niemand tippt. Was dort eingetragen war, bleibt erhalten und geht danach hoch.' },
