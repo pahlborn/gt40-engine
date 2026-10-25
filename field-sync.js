@@ -154,8 +154,9 @@
    * Ab dem Stichtag haette das "erledigt" eines anderen Geraets geloescht,
    * ohne dass jemand den Knopf beruehrt hat (nachgerechnet am 2026-10-25, im
    * Gist standen 109 solche Altwerte). Solange das nicht behoben ist, gewinnt
-   * wie vor dem Stichtag immer der Wert. Ein bewusst geleertes Feld wandert
-   * dadurch nicht auf andere Geraete - das war bis heute ohnehin so.
+   * wie vor dem Stichtag immer der Wert. Der Preis ist derselbe wie bis
+   * heute: ein bewusst geleertes Feld bekommt beim naechsten Abgleich seinen
+   * Wert zurueck, wenn die Cloud noch einen hat. Dieselbe Massnahme in jerico v35.
    */
   var LEER_LOESCHT = false;
 
