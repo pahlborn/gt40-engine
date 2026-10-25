@@ -895,6 +895,61 @@ await test('Eine Eingabe waehrend eines Abgleichs wird gespeichert und nicht ueb
   assertEqual(r.lokal, '8.888', 'Lokal gespeichert');
 });
 
+// ---------------------------------------------------------------------------
+suite('Import wie ein weiteres Geraet (v110)');
+
+for (const file of PAGES) {
+  await test(file + ': ohne Verbindung ueberschreibt eine aeltere Sicherung keine neuere Eingabe', async () => {
+    // Mit Verbindung holte bis v109 der Abgleich den neueren Wert zufaellig
+    // zurueck. Ohne Verbindung blieb der aeltere stehen - mit dem Zeitstempel
+    // der Datei, also auch spaeter nicht mehr korrigierbar.
+    const p = await openPage(file);
+    const r = await p.page.evaluate(async (sel) => {
+      const el = document.querySelector(sel);
+      const f = el.dataset.field;
+      el.value = 'neu'; el.dispatchEvent(new Event('input', { bubbles: true }));
+      await saveData();
+      const frueher = Date.now() - 3600000;
+      const sicherung = { fields: { [f]: 'alt', _fieldTimes: { [f]: frueher }, _savedAt: new Date(frueher).toISOString() } };
+      importJSON({ target: { files: [new File([JSON.stringify(sicherung)], 'sicherung.json')], value: '' } });
+      await new Promise((res) => setTimeout(res, 1500));
+      const lokal = JSON.parse(localStorage.getItem('engineBuildLog'));
+      return { lokal: lokal[f], stempelNeuer: lokal._fieldTimes[f] > frueher, imFeld: el.value };
+    }, TIPPFELD);
+    await p.close();
+    assertEqual(r, { lokal: 'neu', stempelNeuer: true, imFeld: 'neu' }, 'Nach dem Import');
+  });
+
+  await test(file + ': eine aeltere Sicherung ueberschreibt nichts Neueres, Neues kommt in die Cloud', async () => {
+    // Bis v109 mischte der Import mit Object.assign: jeder Wert der Datei
+    // gewann, auch gegen eine spaetere Eingabe - samt deren Zeitstempel. Im
+    // Build Log blieb das Ergebnis ausserdem auf dem Geraet.
+    const gist = fremdeCloud();
+    const d = await openMitGist(file, gist);
+    const r = await d.page.evaluate(async (sel) => {
+      localStorage.setItem('gh_token', 'test-token');
+      const el = document.querySelector(sel);
+      const f = el.dataset.field;
+      el.value = 'neu'; el.dispatchEvent(new Event('input', { bubbles: true }));
+      await saveData();
+      const frueher = Date.now() - 3600000;
+      const sicherung = { fields: { [f]: 'alt', nur_in_der_datei: 'aus der Sicherung',
+        _fieldTimes: { [f]: frueher, nur_in_der_datei: frueher }, _savedAt: new Date(frueher).toISOString() } };
+      importJSON({ target: { files: [new File([JSON.stringify(sicherung)], 'sicherung.json')], value: '' } });
+      await new Promise((res) => setTimeout(res, 2500));
+      const lokal = JSON.parse(localStorage.getItem('engineBuildLog'));
+      return { f, lokal: lokal[f], neu: lokal.nur_in_der_datei, imFeld: el.value };
+    }, TIPPFELD);
+    const cloud = JSON.parse(gist[DATEN]);
+    await d.close();
+    assertEqual(r.lokal, 'neu', 'Neuere Eingabe lokal');
+    assertEqual(r.imFeld, 'neu', 'Neuere Eingabe im Feld');
+    assertEqual(r.neu, 'aus der Sicherung', 'Wert nur aus der Datei lokal');
+    assertEqual(cloud[r.f], 'neu', 'Neuere Eingabe in der Cloud');
+    assertEqual(cloud.nur_in_der_datei, 'aus der Sicherung', 'Wert aus der Datei in der Cloud');
+  });
+}
+
 } finally {
   await browser.close();
   server.close();

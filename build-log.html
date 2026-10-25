@@ -5563,9 +5563,16 @@
             try {
                 var imported = JSON.parse(e.target.result);
                 var existing = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
-                var merged = Object.assign({}, existing, imported);
+                // Wie die Daten eines weiteren Geraets: je Feld gewinnt der neuere
+                // Zeitstempel (v110). Bis v109 ueberschrieb Object.assign alles -
+                // eine alte Sicherung schlug neuere Eingaben, Zeitstempel inklusive.
+                // Nimmt auch die Sicherung der Uebersicht ({ fields: ... }).
+                var merged = FieldSync.mergeRecords(imported.fields || imported, existing);
                 localStorage.setItem('engineBuildLog', JSON.stringify(merged));
                 applyData(merged);
+                renderAllStepStatus();
+                // Bis v109 blieb der Import auf diesem Geraet.
+                saveData();
                 showToast('Import erfolgreich');
             } catch(err) { showToast('Import-Fehler: ' + err.message); }
         };
