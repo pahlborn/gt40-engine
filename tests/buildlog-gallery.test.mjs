@@ -369,6 +369,80 @@ await test('build-log.html laedt ohne Page-Errors', async () => {
   await p.close();
 });
 
+// ---------------------------------------------------------------------------
+suite('"Alle Fotos": scrollen, hinspringen, zurueckkommen (v111)');
+
+await test('"Alle Fotos" scrollt, und der Sprung aus einem Kapitel ist zu sehen', async () => {
+  // Bis v110 hatte der Inhalt keine Scroll-Eigenschaft, die Seite dahinter
+  // war gesperrt: was nicht auf den Bildschirm passte, war unerreichbar. Die
+  // Tests prueften nur, ob die Markierung gesetzt war - nicht, ob man den
+  // Abschnitt sieht (jerico, Regel 6: sichtbar heisst gemessen).
+  const p = await openBuildLog();
+  await p.page.setViewportSize({ width: 1024, height: 600 });
+  const r = await p.page.evaluate(() => {
+    oeffneGesamtgalerie();
+    document.getElementById('galerieLeereZeigen').checked = true;
+    renderGesamtgalerie();
+    const gruppen = [...document.querySelectorAll('#galerieGesamt .gg-gruppe')];
+    const letzte = gruppen[gruppen.length - 1].dataset.ggGruppe;
+    schliesseGesamtgalerie();
+    oeffneGesamtgalerie(letzte);
+    const box = document.getElementById('galerieGesamtInhalt');
+    const rect = document.getElementById('gg-' + letzte).getBoundingClientRect();
+    return { ueberlauf: box.scrollHeight > window.innerHeight + 100, gescrollt: box.scrollTop > 0,
+             sichtbar: rect.top >= 0 && rect.top < window.innerHeight };
+  });
+  await p.close();
+  assert(r.ueberlauf, 'Testaufbau: der Inhalt passt auf den Bildschirm');
+  assert(r.gescrollt, 'Der Inhalt laesst sich nicht scrollen');
+  assert(r.sichtbar, 'Der Abschnitt des Kapitels ist nicht zu sehen');
+});
+
+await test('Wer "Alle Fotos" aus einem Kapitel oeffnet und schliesst, steht wieder dort', async () => {
+  const p = await openBuildLog();
+  await p.page.setViewportSize({ width: 1024, height: 600 });
+  const r = await p.page.evaluate(async () => {
+    window.scrollTo(0, 1500);
+    const vorher = window.scrollY;
+    document.querySelector('[onclick="oeffneGesamtgalerie(\'phase1\')"]').click();
+    await new Promise((res) => setTimeout(res, 100));
+    schliesseGesamtgalerie();
+    await new Promise((res) => setTimeout(res, 100));
+    return { vorher, nachher: window.scrollY, gesperrt: document.body.style.position };
+  });
+  await p.close();
+  assert(r.vorher > 0, 'Testaufbau: Seite liess sich nicht scrollen');
+  assertEqual([r.nachher, r.gesperrt], [r.vorher, ''], 'Stand der Seite / Sperre nach dem Schliessen');
+});
+
+await test('Aus "Alle Fotos" in eine Kapitelgalerie und zurueck - dann zurueck auf die Seite', async () => {
+  // Bis v110 schloss der Wechsel "Alle Fotos" und gab die Seite frei; die
+  // Kapitelgalerie sperrte neu. Schliessen fuehrte dann auf die Seite statt
+  // zurueck in die Uebersicht.
+  const p = await openBuildLog();
+  await p.page.setViewportSize({ width: 1024, height: 600 });
+  const r = await p.page.evaluate(async (g) => {
+    window.scrollTo(0, 1500);
+    const vorher = window.scrollY;
+    oeffneGesamtgalerie(g);
+    document.querySelector('#gg-' + g + ' .gg-kachel').click();
+    await new Promise((res) => setTimeout(res, 200));
+    closeLightbox();
+    const gruppeOffen = document.getElementById('galleryOverlay').classList.contains('show');
+    closeGallery();
+    const ov = document.getElementById('galerieGesamt');
+    const rect = document.getElementById('gg-' + g).getBoundingClientRect();
+    const zurueck = { offen: ov.classList.contains('show'), sichtbar: rect.top >= 0 && rect.top < window.innerHeight };
+    schliesseGesamtgalerie();
+    await new Promise((res) => setTimeout(res, 100));
+    return { vorher, gruppeOffen, zurueck, nachher: window.scrollY, gesperrt: document.body.style.position };
+  }, MANY);
+  await p.close();
+  assert(r.gruppeOffen, 'Testaufbau: Kapitelgalerie hat sich nicht geoeffnet');
+  assertEqual(r.zurueck, { offen: true, sichtbar: true }, 'Nach dem Schliessen der Kapitelgalerie: "Alle Fotos" / Abschnitt sichtbar');
+  assertEqual([r.nachher, r.gesperrt], [r.vorher, ''], 'Stand der Seite / Sperre am Ende');
+});
+
 } finally {
   await browser.close();
   server.close();

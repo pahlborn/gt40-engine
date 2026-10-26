@@ -169,6 +169,9 @@ body.overlay-offen .fab-stack { display: none; }
 /* ==== GESAMTGALERIE (kapiteluebergreifend) ==== */
 /* Lesesicht ueber alle Fotogruppen, gegliedert nach Bauteil. Das Overlay
    teilt sich .gallery-overlay mit der Gruppengalerie, der Inhalt ist eigen. */
+/* Inhalt von "Alle Fotos": scrollt selbst, die Seite dahinter ist gesperrt.
+   min-height:0, sonst waechst ein Flex-Kind mit seinem Inhalt mit (v111). */
+.gg-inhalt { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 0 0.6rem 2rem; }
 .gg-bereich {
   margin: 1.1rem 0 0.4rem;
   font-size: 0.78rem;

@@ -950,6 +950,25 @@ for (const file of PAGES) {
   });
 }
 
+// ---------------------------------------------------------------------------
+suite('Eingaben erzeugen keine Fehler (v111)');
+
+for (const file of PAGES) {
+  await test(file + ': Tippen wirft keinen Fehler', async () => {
+    // 25./26.10.: auf specs.html warf jede Eingabe "runCrossChecks is not
+    // defined" - 48 Eintraege im Protokoll, jeder in den Gist gespiegelt.
+    const p = await openPage(file);
+    await p.page.evaluate((sel) => {
+      const el = document.querySelector(sel);
+      el.value = '0.0125'; el.dispatchEvent(new Event('input', { bubbles: true }));
+    }, TIPPFELD);
+    await p.page.waitForTimeout(900);
+    const fehler = p.errors.slice();
+    await p.close();
+    assertEqual(fehler, [], 'Fehler auf der Seite');
+  });
+}
+
 } finally {
   await browser.close();
   server.close();

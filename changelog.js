@@ -13,6 +13,18 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v111',
+      date: '2026-10-26',
+      time: '14:29',
+      title: 'Alle Fotos scrollt, zurueck woher man kam',
+      changes: [
+        { type: 'fix', text: '"Alle Fotos" liess sich nicht scrollen: was nicht auf den Bildschirm passte, war unerreichbar, und der Knopf "Fotos" in einem Kapitel sprang nicht sichtbar zu dessen Abschnitt. Jetzt scrollt die Uebersicht, und der Abschnitt des Kapitels steht oben.' },
+        { type: 'fix', text: 'Zurueck, woher man kam: Wer aus "Alle Fotos" in die Galerie eines Kapitels geht und sie schliesst, ist wieder in "Alle Fotos" bei diesem Kapitel. Wer "Alle Fotos" schliesst, steht wieder an der Stelle der Seite, von der er kam.' },
+        { type: 'fix', text: 'Auf den Spezifikationen warf jede Eingabe einen Fehler (runCrossChecks gibt es nur auf der Uebersicht). Gespeichert wurde trotzdem, aber jeder Fehler landete im Protokoll und damit als zusaetzlicher Schreibvorgang im Gist - 48 Eintraege am 25./26.10.' },
+        { type: 'intern', text: 'gallery.js: Seitensperre verschachtelbar, Ruecksprung in die Uebersicht, Scrollen im Inhalt statt in der gesperrten Seite; gallery.css .gg-inhalt. Sechs Tests messen Sichtbarkeit und Scrollstand statt gesetzter Klassen; Gegenprobe je Aenderung rot.' }
+      ]
+    },
+    {
       version: 'v110',
       date: '2026-10-25',
       time: '21:53',

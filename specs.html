@@ -3785,7 +3785,10 @@
         autoSaveTimer = setTimeout(() => {
             lokalSpeichern();
             if (isGistConfigured()) FieldSync.vormerken(hochladeAuftrag());
-            runCrossChecks();
+            // runCrossChecks gibt es nur auf der Uebersicht. Hier warf der
+            // Aufruf bei jeder Eingabe einen Fehler - 48 Eintraege am 25./26.10.,
+            // jeder davon ein Schreibvorgang in den Gist (v111).
+            if (typeof runCrossChecks === 'function') runCrossChecks();
         }, 500);
     }
     // Zeigt den juengsten Speicherzeitpunkt - Messwerte UND Galerie. Frueher
