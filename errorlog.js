@@ -139,6 +139,51 @@
    */
   function spiegelSetzen(fn) { spiegel = typeof fn === 'function' ? fn : null; }
 
+  /**
+   * Gist-Spiegel ueber den gemeinsamen Lauf (field-sync.js, gt40-engine
+   * v112, jerico v43). Ein Eintrag loest keinen eigenen Schreibvorgang mehr
+   * aus: er geht mit dem naechsten Lauf mit, spaetestens nach 5 Minuten, und
+   * wird mit den Eintraegen der anderen Geraete vereinigt.
+   *
+   * Bis dahin schrieb jeder Fehler sofort und ungelesen - der Spiegel ersetzte
+   * die Eintraege der anderen Geraete, und ein Fehler bei jeder Eingabe wurde
+   * zu einer Flut von Schreibvorgaengen, die selbst 409 ausloesten.
+   */
+  function gistKanal(datei) {
+    var fs = global.FieldSync;
+    if (!fs || !fs.dateiAnmelden || !datei) return false;
+    var KEY = datei + '_ausstehend';
+    fs.dateiAnmelden({
+      datei: datei,
+      ausstehend: function () { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } },
+      mischen: function (text) {
+        var cloud = [];
+        if (text) {
+          cloud = JSON.parse(text);
+          if (!Array.isArray(cloud)) throw new Error('Fehlerprotokoll in der Cloud ist keine Liste');
+        }
+        var gesehen = {}, vereint = [];
+        cloud.concat(lies()).forEach(function (e) {
+          if (!e) return;
+          var k = e.zeit + '|' + (e.geraet || '') + '|' + e.nachricht;
+          if (gesehen[k]) return;
+          gesehen[k] = 1;
+          vereint.push(e);
+        });
+        vereint.sort(function (a, b) { return String(a.zeit).localeCompare(String(b.zeit)); });
+        return JSON.stringify(vereint.slice(-200), null, 2);
+      },
+      erledigt: function (marke) {
+        try { if (localStorage.getItem(KEY) === marke) localStorage.setItem(KEY, ''); } catch (e) {}
+      }
+    });
+    spiegel = function () {
+      try { localStorage.setItem(KEY, fs.ausstehendMarke()); } catch (e) {}
+      fs.protokollVormerken();
+    };
+    return true;
+  }
+
   // --- Was sonst niemand sieht ---------------------------------------------
   // Ein Tippfehler in einer Funktion, die nur selten laeuft, landet heute
   // stumm in der Konsole. Auf einem Telefon sieht die niemand.
@@ -279,7 +324,7 @@
 
   global.ErrorLog = {
     add: add, alle: alle, leeren: leeren, alsText: alsText,
-    spiegelSetzen: spiegelSetzen, hooksSetzen: hooksSetzen,
+    spiegelSetzen: spiegelSetzen, gistKanal: gistKanal, hooksSetzen: hooksSetzen,
     zeigen: zeigen, kopieren: kopieren, herunterladen: herunterladen,
     leerenMitRueckfrage: leerenMitRueckfrage,
     SCHLUESSEL: SCHLUESSEL, MAX: MAX

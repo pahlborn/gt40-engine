@@ -171,14 +171,59 @@ function saveGalleryMeta() {
 // Schreibt die Metadaten in den Gist - vorher immer gegen den Cloud-Stand mergen,
 // damit parallele Aenderungen auf zwei Geraeten sich nicht gegenseitig loeschen.
 var _metaPushTimer = null;
+
+// ---- Hochladen ueber den gemeinsamen Lauf (gt40-engine v112, jerico v43) ----
+// Bis dahin las und schrieb diese Datei 0,8 s nach jeder Aenderung fuer sich,
+// neben Messwerten, Befunden und Fehlerprotokoll - zwei Schreibvorgaenge zur
+// selben Zeit ergaben 409. Jetzt geht sie im selben Lesen und Schreiben mit.
+var _metaAusstehendKey = GIST_PHOTOS_FILE + '_ausstehend';
+var _metaAngemeldet = false;
+function _metaAusstehendSetzen() {
+    try { localStorage.setItem(_metaAusstehendKey, window.FieldSync.ausstehendMarke()); } catch (e) {}
+}
+function _metaKanalAnmelden() {
+    var fs = window.FieldSync;
+    if (!fs || !fs.dateiAnmelden) return false;
+    if (_metaAngemeldet) return true;
+    fs.dateiAnmelden({
+        datei: GIST_PHOTOS_FILE,
+        ausstehend: function () { try { return localStorage.getItem(_metaAusstehendKey) || ''; } catch (e) { return ''; } },
+        mischen: function (text) {
+            if (text) _galleryMeta = _mergeMeta(_normalizeMeta(JSON.parse(text)), _galleryMeta);
+            _pruneOrphanMeta();
+            _galleryMeta.version = 2;
+            saveGalleryMeta();
+            return JSON.stringify(_galleryMeta);
+        },
+        erledigt: function (marke) {
+            try { if (localStorage.getItem(_metaAusstehendKey) === marke) localStorage.setItem(_metaAusstehendKey, ''); } catch (e) {}
+        }
+    });
+    _metaAngemeldet = true;
+    return true;
+}
+// field-sync.js laedt auf manchen Seiten nach dieser Datei.
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', _metaKanalAnmelden);
+else _metaKanalAnmelden();
+
 function scheduleMetaPush() {
     _galleryMeta.savedAt = _nowMs();
     saveGalleryMeta();
     updateSaveStatus();          // sonst bliebe das Datum im Header beim Foto-Speichern stehen
+    if (_metaKanalAnmelden()) { _metaAusstehendSetzen(); window.FieldSync.dateiVormerken(); return; }
     clearTimeout(_metaPushTimer);
-    _metaPushTimer = setTimeout(function() { pushGalleryMeta(); }, 800);
+    _metaPushTimer = setTimeout(function() { _pushGalleryMetaEigenstaendig(); }, 800);
 }
+/** Sofort hochladen - durch den gemeinsamen Lauf, wenn es ihn gibt. */
 async function pushGalleryMeta() {
+    if (_metaKanalAnmelden()) {
+        _metaAusstehendSetzen();
+        var r = await window.FieldSync.dateiJetzt();
+        return !!(r && r.ok);
+    }
+    return _pushGalleryMetaEigenstaendig();
+}
+async function _pushGalleryMetaEigenstaendig() {
     var t = getGistConfig().token;
     if (!t) { console.warn('[Galerie] Kein Token - Metadaten bleiben lokal'); return false; }
     // Ohne gelesenen Cloud-Stand wird nicht geschrieben. Bis v101 ging in dem

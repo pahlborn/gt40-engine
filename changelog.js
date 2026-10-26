@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v112',
+      date: '2026-10-26',
+      time: '15:23',
+      title: 'Ein Schreiber fuer alle Dateien',
+      changes: [
+        { type: 'fix', text: 'Messwerte, Befunde, Foto-Beschriftungen und Fehlerprotokoll schrieben jeder fuer sich in den Gist. Zwei Schreibvorgaenge zur selben Zeit lehnt GitHub ab (409), auch fuer verschiedene Dateien. Jetzt gehen alle Dateien eines Geraets in einem Lauf hoch: einmal lesen, je Datei mischen, einmal schreiben - mit Buendeln, Nachholen und Wiederholen fuer alle.' },
+        { type: 'fix', text: 'Das Fehlerprotokoll loest keinen eigenen Schreibvorgang mehr aus. Es geht mit dem naechsten Lauf mit, spaetestens nach 5 Minuten, und vereinigt die Eintraege aller Geraete - bisher ersetzte jeder Fehler das Protokoll der anderen, und ein Fehler bei jeder Eingabe wurde zu einer Flut von Schreibvorgaengen.' },
+        { type: 'intern', text: 'field-sync.js: weitere Dateien melden sich an (dateiAnmelden, Marke je Datei, auftragSetzen); findings.js, gallery.js und errorlog.js (gistKanal) laufen darueber, der Spiegel stand bisher in jeder Seite einzeln. Fuenf Tests; Gegenprobe mit dem alten Stand und je Mechanismus rot.' }
+      ]
+    },
+    {
       version: 'v111',
       date: '2026-10-26',
       time: '14:29',

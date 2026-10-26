@@ -90,13 +90,63 @@
     return out;
   }
 
-  function scheduleSync() {
-    save();
-    clearTimeout(_pushTimer);
-    _pushTimer = setTimeout(push, 800);
+  // ---- Hochladen ueber den gemeinsamen Lauf (gt40-engine v112, jerico v43) ----
+  //
+  // Bis dahin las und schrieb diese Datei 0,8 s nach jeder Aenderung fuer
+  // sich - neben den Messwerten, den Foto-Beschriftungen und dem
+  // Fehlerprotokoll. Zwei Schreibvorgaenge zur selben Zeit ergaben 409,
+  // auch fuer verschiedene Dateien. Jetzt meldet sich die Datei in
+  // field-sync.js an und geht im selben Lesen und Schreiben mit.
+  var AUSSTEHEND_KEY = GIST_FILE + '_ausstehend';
+  var _angemeldet = false;
+
+  function ausstehendSetzen() {
+    try { localStorage.setItem(AUSSTEHEND_KEY, global.FieldSync.ausstehendMarke()); } catch (e) {}
   }
 
+  function kanalAnmelden() {
+    var fs = global.FieldSync;
+    if (!fs || !fs.dateiAnmelden) return false;
+    if (_angemeldet) return true;
+    fs.dateiAnmelden({
+      datei: GIST_FILE,
+      ausstehend: function () { try { return localStorage.getItem(AUSSTEHEND_KEY) || ''; } catch (e) { return ''; } },
+      mischen: function (text) {
+        if (text) _data = merge(JSON.parse(text), _data);
+        save();
+        return JSON.stringify(_data);
+      },
+      erledigt: function (marke) {
+        try { if (localStorage.getItem(AUSSTEHEND_KEY) === marke) localStorage.setItem(AUSSTEHEND_KEY, ''); } catch (e) {}
+      }
+    });
+    _angemeldet = true;
+    return true;
+  }
+  // field-sync.js laedt auf manchen Seiten nach dieser Datei.
+  if (global.document && global.document.addEventListener) {
+    if (global.document.readyState === 'loading') global.document.addEventListener('DOMContentLoaded', kanalAnmelden);
+    else kanalAnmelden();
+  }
+
+  function scheduleSync() {
+    save();
+    if (kanalAnmelden()) { ausstehendSetzen(); global.FieldSync.dateiVormerken(); return; }
+    clearTimeout(_pushTimer);
+    _pushTimer = setTimeout(pushEigenstaendig, 800);
+  }
+
+  /** Sofort hochladen - durch den gemeinsamen Lauf, wenn es ihn gibt. */
   async function push() {
+    if (kanalAnmelden()) {
+      ausstehendSetzen();
+      var r = await global.FieldSync.dateiJetzt();
+      return !!(r && r.ok);
+    }
+    return pushEigenstaendig();
+  }
+
+  async function pushEigenstaendig() {
     var cfg = typeof getGistConfig === 'function' ? getGistConfig() : { token: '' };
     if (!cfg.token) return false;
     // Ohne gelesenen Cloud-Stand wird nicht geschrieben. Bis v101 ging in dem

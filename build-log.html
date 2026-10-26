@@ -5461,6 +5461,9 @@
             } };
     }
     window.addEventListener('fieldsync-stand', function () { updateSyncBadge(); });
+    // Befunde, Foto-Beschriftungen und Fehlerprotokoll laufen seit v112 durch
+    // denselben Lauf - so laden sie hoch (field-sync.js).
+    FieldSync.auftragSetzen(function () { return isGistConfigured() ? hochladeAuftrag() : null; });
     // Sofort speichern und hochladen (Speichern-Knopf, Netz wieder da). Die
     // Fehlermeldung kommt aus field-sync.js - einmal pro Fehlerserie.
     async function saveData() {
@@ -5535,20 +5538,11 @@
         if (opts.isError && typeof ErrorLog !== 'undefined') ErrorLog.add(msg, opts.detail);
     }
     // Das Protokoll liegt in errorlog.js und schreibt zuerst lokal. Der Gist
-    // ist nur der Spiegel - frueher stand der Eintrag ausschliesslich dort,
-    // und ausgerechnet beim Sync-Fehler kam er nie an.
-    function spiegleProtokollInGist(eintraege) {
-        if (!FIXED_GIST_ID || !navigator.onLine) return;
-        var cfg = getGistConfig(); if (!cfg.token) return;
-        var logFile = GIST_FILENAME.replace('.json', '-errors.json');
-        var files = {}; files[logFile] = { content: JSON.stringify(eintraege, null, 2) };
-        return fetch('https://api.github.com/gists/' + FIXED_GIST_ID, {
-            method: 'PATCH',
-            headers: { 'Authorization': 'Bearer ' + cfg.token, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ files: files })
-        }).catch(function () { /* lokal ist der Eintrag bereits sicher */ });
-    }
-    if (typeof ErrorLog !== 'undefined') ErrorLog.spiegelSetzen(spiegleProtokollInGist);
+    // ist nur der Spiegel - seit v112 ueber den gemeinsamen Lauf
+    // (ErrorLog.gistKanal): kein eigener Schreibvorgang, vereinigt mit den
+    // Eintraegen der anderen Geraete. Bis v111 stand hier in jeder Seite ein
+    // eigener Spiegel, der bei jedem Fehler ungelesen schrieb.
+    if (typeof ErrorLog !== 'undefined') ErrorLog.gistKanal(GIST_FILENAME.replace('.json', '-errors.json'));
 
     function exportJSON() {
         var data = JSON.parse(localStorage.getItem('engineBuildLog') || '{}');
