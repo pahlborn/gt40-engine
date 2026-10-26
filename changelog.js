@@ -13,6 +13,24 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v113',
+      date: '2026-10-26',
+      time: '16:35',
+      title: 'Wasserpumpe, Steuerdeckel, Timing Pointer',
+      changes: [
+        { type: 'fix', text: 'Wasserpumpe: Milodon 16230 entfaellt. Ihre Stutzen fuer Heizung und Bypass sind eingegossen, der nicht benoetigte Heizungsanschluss laesst sich damit nicht sauber verschliessen. Ersatz ist eine Edelbrock Victor Series mit geschraubten Stutzen, Kandidat 8841 - Teilenummer offen bis die Nabenhoehe der ausgebauten Pumpe gemessen ist.' },
+        { type: 'fix', text: 'Seitenangaben bei der Wasserpumpe stehen jetzt als Zylinderbank statt als Fahrzeugseite da. Die US-Katalogbegriffe passenger side und driver side gelten fuer Frontmotor im Linkslenker und sind auf einen Mittelmotor im Rechtslenker nicht uebertragbar.' },
+        { type: 'fix', text: 'Kopfstehbolzen: Der Build Log nannte 7/16"-14, die Spezifikationen 1/2-13 UNC. Ford schreibt fuer den M-6010-BOSS302 1/2-13 UNC vor (IS-1850-0427), damit war die 7/16-Angabe falsch. Die Stehbolzenlaengen 6.800" und 5.750" sind in keiner Quelle belegt und stehen jetzt als offen da - es ist das Teil, bei dem ein zu langer Bolzen im Sackloch den Block sprengt.' },
+        { type: 'fix', text: 'Pickup-zu-Wannenboden stand mit drei verschiedenen Werten da. Jetzt als Regel: es gilt die Herstellerangabe der verbauten Wanne-Pickup-Kombination, solange die Wanne offen ist mit Ford als Referenz (3/8"-7/16", IS-1850-0632).' },
+        { type: 'fix', text: 'Drehmoment der Balancer-Zentralschraube von 70-90 ft-lbs auf den belegten Ford-Wert 95 lb-ft geaendert, Gewinde 5/8-18 UNF ergaenzt (IS-1850-0632, gilt fuer die Ford-Schraube, nicht fuer eine ARP).' },
+        { type: 'fix', text: 'Kuehler-Position im Kuehlsystem-Abschnitt von Heck auf Frontbereich korrigiert.' },
+        { type: 'neu', text: 'Steuerdeckel als eigene Position: Edelbrock 4250 vorgesehen, Ford M-6059-D351 als Alternative mit ausdruecklicher BOSS-Freigabe. Die zwei unteren Schrauben sind beim BOSS-Block 3/8-16 UNC statt 5/16-18 - ein Nachmarkt-Deckel fuer Serienbloecke hat dort zu kleine Durchgangsloecher.' },
+        { type: 'neu', text: 'Timing Pointer neu aufgenommen. Er ist bei keinem der beiden Deckel im Lieferumfang und war am Altmotor nicht verbaut. Dazu ein Pflichtpunkt vor dem Motoreinbau: Sichtlinie zum Balancer im Chassis klaeren, Pointer-Position festlegen, gegen echten OT pruefen, Marken absetzen. Ohne das ist die Zuendkurve nicht einstellbar - ein Dial-Back-Stroboskop scheidet wegen der Mehrfachfunken der MSD Digital 6AL aus.' },
+        { type: 'neu', text: 'Kuehlkreislauf erfasst: elektrische Zusatzpumpe im Frontbereich als eigene Position (Typ offen, Durchlass im Stillstand zu klaeren), Ist-Weg des Kreislaufs, Bypass am oberen Stutzen, Heizungsruecklauf verschlossen, Ausgleichsbehaelter-Abgang hinter dem Kruemmer statt an der Pumpe.' },
+        { type: 'intern', text: 'Unbelegte Werte, die aus der Notion-Uebernahme stammten, sind entfernt oder als offen gekennzeichnet: Deckelschrauben-Drehmoment 12-18 ft-lbs, Wasserpumpen-Drehmoment 15-22 ft-lbs. Quellenlinks durchgaengig mit Dokumentnummer im title.' }
+      ]
+    },
+    {
       version: 'v112',
       date: '2026-10-26',
       time: '15:23',
