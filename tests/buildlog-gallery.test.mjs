@@ -261,7 +261,7 @@ await test('Ein Update laedt nicht neu, solange die Galerie offen ist', async ()
     window.__marker = 'vor-dem-reload';
     openGallery('p1_block_photos');
     await new Promise((r) => setTimeout(r, 200));
-    reloadWhenIdle();
+    Aktualisieren.neueVersion();     // seit v114 eine Stelle fuer alle Seiten
   });
   await p.page.waitForTimeout(2500);
   const nochDa = await p.page.evaluate(() => window.__marker || null);

@@ -469,6 +469,45 @@ await test('Alle drei Seiten laden ohne Page-Errors', async () => {
   }
 });
 
+// ---------------------------------------------------------------------------
+suite('Neue Versionen erreichen jede offene Seite (v114)');
+
+await test('Jede Seite laedt aktualisieren.js, nur dort wird der Service Worker angemeldet', async () => {
+  // Bis v113 stand die Pruefung in jeder Seite einzeln - drei Fassungen
+  // derselben Sache (Regel 10).
+  const ohne = PAGES.filter((f) => !/<script src="aktualisieren\.js"><\/script>/.test(fs.readFileSync(path.join(REPO_ROOT, f), 'utf8')));
+  const anmelder = fs.readdirSync(REPO_ROOT).filter((f) => /\.(html|js)$/.test(f) && f !== 'sw.js')
+    .filter((f) => /serviceWorker\.register\(/.test(fs.readFileSync(path.join(REPO_ROOT, f), 'utf8')));
+  const sw = fs.readFileSync(path.join(REPO_ROOT, 'sw.js'), 'utf8');
+  assertEqual(ohne, [], 'Seiten ohne aktualisieren.js');
+  assertEqual(anmelder, ['aktualisieren.js'], 'Dateien, die den Service Worker anmelden');
+  assert(/\/gt40-engine\/aktualisieren\.js/.test(sw), 'sw.js haelt aktualisieren.js nicht vor');
+});
+
+for (const file of PAGES) {
+  await test(file + ': eine neue Version laedt erst neu, wenn kein Feld mehr in Arbeit ist', async () => {
+    const p = await open(file);
+    const r = await p.page.evaluate(async () => {
+      window.__neu = 0;
+      Aktualisieren.neuLaden = () => { window.__neu++; };
+      // Ein eigenes, sichtbares Feld: auf dem Build Log ist beim Oeffnen alles
+      // zugeklappt, und ein verborgenes Feld bekommt keinen Fokus.
+      const el = document.createElement('input');
+      document.body.prepend(el);
+      el.focus();
+      if (document.activeElement !== el) return { testaufbau: 'kein Fokus' };
+      Aktualisieren.neueVersion();
+      await new Promise((res) => setTimeout(res, 1500));
+      const beimTippen = window.__neu;
+      el.blur();
+      await new Promise((res) => setTimeout(res, 1500));
+      return { beimTippen, danach: window.__neu };
+    });
+    await p.close();
+    assertEqual(r, { beimTippen: 0, danach: 1 }, 'Neu geladen waehrend / nach der Eingabe');
+  });
+}
+
 } finally {
   await browser.close();
   server.close();
