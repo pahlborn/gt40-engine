@@ -84,6 +84,10 @@ jobs:
 
         run: node tests/hauptlager.test.mjs
 
+      - name: Wasserpumpe, Steuerdeckel und Timing Pointer
+
+        run: node tests/wasserpumpe-steuerdeckel.test.mjs
+
       - name: Herkunft der Messwerte
 
         run: node tests/messwerte.test.mjs
