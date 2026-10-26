@@ -128,8 +128,12 @@ await test('Geraet mit leerer Galerie loescht den Cloud-Stand nicht', async () =
     _galleryMeta = { version: 2, meta: {}, videos: {}, hero: {} };   // leeres Geraet
     await pushGalleryMeta();
   });
-  assert(written, 'Es wurde nichts geschrieben');
-  assert(written.meta['shortblock/1700000000000_0.jpg'], 'Cloud-Eintrag wurde geloescht');
+  // Seit v112 schreibt der gemeinsame Lauf nur, was sich aendert. Ein leeres
+  // Geraet aendert nichts - dann wird nicht geschrieben. Schreibt es doch,
+  // muss der Cloud-Eintrag darin stehen.
+  assert(!written || written.meta['shortblock/1700000000000_0.jpg'], 'Cloud-Eintrag wurde geloescht');
+  const lokal = await d.page.evaluate(() => !!_galleryMeta.meta['shortblock/1700000000000_0.jpg']);
+  assert(lokal, 'Cloud-Eintrag kam auf dem leeren Geraet nicht an');
   await d.close();
 });
 

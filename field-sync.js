@@ -383,6 +383,29 @@
         detail: { quelle: 'cloudAbgleichen', eigene: global.APP_VERSION, neueste: cloud[VERSION_KEY] } };
     }
 
+    // Weitere Dateien mit ausstehenden Aenderungen - Befunde, Foto-
+    // Beschriftungen, Fehlerprotokoll - gehen im selben Schreibvorgang mit
+    // (gt40-engine v112, jerico v43). Bis dahin schrieb jede fuer sich, und
+    // zwei Schreibvorgaenge zur selben Zeit ergaben 409, auch fuer
+    // verschiedene Dateien. Ihr Cloud-Stand wird hier geholt, vor dem
+    // lokalen Stand der Messwerte - danach liegt kein await mehr dazwischen.
+    var mitDateien = [];
+    for (var di = 0; di < _dateien.length; di++) {
+      var dk = _dateien[di];
+      var marke = dk.ausstehend();
+      if (!marke) continue;
+      var df = gist.files && gist.files[dk.datei];
+      var dt = df ? df.content : null;
+      if (df && df.truncated) {
+        try {
+          var dr = await fetch(df.raw_url, { headers: auth, cache: 'no-store' });
+          if (!dr.ok) continue;          // diese Datei bleibt ausstehend
+          dt = await dr.text();
+        } catch (e) { continue; }
+      }
+      mitDateien.push({ k: dk, cloud: dt, marke: marke });
+    }
+
     // Zwischen Lesen des lokalen Stands und Zurueckschreiben liegt kein
     // await - eine Eingabe in dieser Zeit kann nicht verloren gehen.
     var lokal = JSON.parse(localStorage.getItem(o.speicherKey) || '{}');
@@ -391,10 +414,24 @@
     var lokalGeaendert = kern(gemischt) !== kern(lokal);
     localStorage.setItem(o.speicherKey, JSON.stringify(gemischt));
 
+    var files = {};
+    if (!cloud || kern(gemischt) !== kern(cloud)) files[o.datei] = { content: JSON.stringify(gemischt, null, 2) };
+    var gemischteDateien = [];
+    for (var mi = 0; mi < mitDateien.length; mi++) {
+      var md = mitDateien[mi], neu;
+      try { neu = md.k.mischen(md.cloud); }
+      catch (e) {
+        // Unlesbar: diese Datei nicht schreiben, sie bleibt ausstehend.
+        if (global.ErrorLog) global.ErrorLog.add('Abgleich: ' + md.k.datei + ' nicht mischbar - nicht geschrieben',
+          { quelle: 'cloudAbgleichen', stack: e.stack });
+        continue;
+      }
+      gemischteDateien.push(md);
+      if (neu != null && neu !== md.cloud) files[md.k.datei] = { content: neu };
+    }
+
     var geschrieben = false;
-    if (!cloud || kern(gemischt) !== kern(cloud)) {
-      var files = {};
-      files[o.datei] = { content: JSON.stringify(gemischt, null, 2) };
+    if (Object.keys(files).length) {
       try {
         var wr = await fetch(api, {
           method: 'PATCH',
@@ -412,7 +449,11 @@
         return fehler(e.message, { quelle: 'cloudAbgleichen', stack: e.stack });
       }
     }
-    return { ok: true, gemischt: gemischt, lokalGeaendert: lokalGeaendert, geschrieben: geschrieben };
+    for (var ei = 0; ei < gemischteDateien.length; ei++) {
+      // Nur, wenn seit dem Mischen nichts Neues vorgemerkt wurde.
+      try { gemischteDateien[ei].k.erledigt(gemischteDateien[ei].marke); } catch (e) {}
+    }
+    return { ok: true, gemischt: gemischt, lokalGeaendert: lokalGeaendert, geschrieben: geschrieben, gist: gist };
   }
 
   // ---- Hochladen: buendeln, nacheinander, nachholen (gt40-engine v105, jerico v37) ----
@@ -616,6 +657,59 @@
     return starten();
   }
 
+  // ---- Weitere Dateien im selben Lauf (gt40-engine v112, jerico v43) ----
+  //
+  // Befunde, Foto-Beschriftungen und Fehlerprotokoll melden sich hier an:
+  //   datei            Dateiname im Gist
+  //   ausstehend()     Marke der ausstehenden Aenderung, '' wenn keine
+  //   mischen(text)    Cloud-Stand (Text oder null) einmischen, lokal
+  //                    speichern, den zu schreibenden Text liefern
+  //   erledigt(marke)  nach gelungenem Lauf - nur loeschen, wenn die Marke
+  //                    noch dieselbe ist (sonst kam waehrenddessen Neues)
+  // Die Marke liefert ausstehendMarke(); speichern muss sie die Datei selbst.
+  // Die Seite nennt mit auftragSetzen(), wie hochgeladen wird; ohne
+  // Verbindung liefert die Funktion null, dann bleibt alles lokal.
+  var _dateien = [];
+  var _standardAuftrag = null;
+  var _protokollTimer = null;
+
+  function dateiAnmelden(k) {
+    for (var i = 0; i < _dateien.length; i++) {
+      if (_dateien[i].datei === k.datei) { _dateien[i] = k; return; }
+    }
+    _dateien.push(k);
+  }
+  function auftragSetzen(fn) { _standardAuftrag = fn; }
+  function ausstehendMarke() { return Date.now() + ':' + Math.random().toString(36).slice(2, 8); }
+  function standardAuftrag() {
+    var o = _standardAuftrag ? _standardAuftrag() : null;
+    return (o && o.token && o.gistId) ? o : null;
+  }
+  /** Befunde, Foto-Beschriftungen: vormerken wie eine Eingabe (gebuendelt). */
+  function dateiVormerken() {
+    var o = standardAuftrag();
+    if (o) vormerken(o);
+  }
+  /** Sofort hochladen, durch dieselbe Warteschlange. */
+  function dateiJetzt() {
+    var o = standardAuftrag();
+    return o ? jetztHochladen(o) : Promise.resolve(null);
+  }
+  /**
+   * Fehlerprotokoll: kein eigener Lauf, es geht mit dem naechsten mit -
+   * spaetestens nach PROTOKOLL_MS. Bis v111 schrieb jeder Fehler sofort in
+   * den Gist; ein Fehler bei jeder Eingabe wurde so zu einer Flut von
+   * Schreibvorgaengen (48 am 25./26.10.).
+   */
+  function protokollVormerken() {
+    if (_protokollTimer) return;
+    _protokollTimer = setTimeout(function () {
+      _protokollTimer = null;
+      var o = standardAuftrag();
+      if (o && !(global.navigator && global.navigator.onLine === false)) abgleichen(o);
+    }, einstellung('PROTOKOLL_MS', 300000));
+  }
+
   /** Feldwerte der aktuellen Seite einsammeln. */
   function collectFields(root) {
     var out = {};
@@ -647,6 +741,13 @@
     jetztHochladen: jetztHochladen,
     nachholen: nachholen,
     abgleichen: abgleichen,
+    dateiAnmelden: dateiAnmelden,
+    ausstehendMarke: ausstehendMarke,
+    auftragSetzen: auftragSetzen,
+    dateiVormerken: dateiVormerken,
+    dateiJetzt: dateiJetzt,
+    protokollVormerken: protokollVormerken,
+    _dateien: function () { return _dateien.slice(); },
     VERSION_KEY: VERSION_KEY,
     versionsNummer: versionsNummer,
     ungesendet: ungesendet,
