@@ -887,7 +887,12 @@ var _galleryScrollPos = 0;
 //
 // Zuverlaessig ist nur, den body selbst festzusetzen und den Scrollstand zu
 // merken. Ohne das negative top springt die Seite beim Oeffnen an den Anfang.
+//
+// Seit v111 verschachtelbar: Ist die Seite schon gesperrt (etwa "Alle Fotos"
+// -> Gruppengalerie), bleibt der gemerkte Stand der Seite stehen. Vorher
+// ueberschrieb die zweite Sperre ihn mit 0 - beim Verlassen landete man oben.
 function sperreSeite() {
+    if (seiteIstGesperrt()) return;
     _galleryScrollPos = window.scrollY || window.pageYOffset || 0;
     var b = document.body;
     b.style.position = 'fixed';
@@ -899,6 +904,8 @@ function sperreSeite() {
 }
 
 function gibSeiteFrei() {
+    // Solange noch eine Galerie offen ist, bleibt die Seite gesperrt.
+    if (document.querySelector('.gallery-overlay.show')) return;
     var b = document.body;
     b.style.position = '';
     b.style.top = '';
@@ -1042,8 +1049,17 @@ function renderGallery(group) {
     _initDragDrop(group, grid);
 }
 
+// Zurueck, woher man kam (v111): Kam man aus "Alle Fotos", geht es dorthin
+// zurueck, auf den Abschnitt dieser Gruppe. Sonst an die Stelle der Seite.
+var _zurueckZurGesamt = null;
 function closeGallery() {
     document.getElementById('galleryOverlay').classList.remove('show');
+    if (_zurueckZurGesamt) {
+        var g = _zurueckZurGesamt;
+        _zurueckZurGesamt = null;
+        oeffneGesamtgalerie(g);
+        return;
+    }
     gibSeiteFrei();
 }
 
@@ -1791,7 +1807,10 @@ function _gesamtChrome() {
       + '</label>'
       + '<button class="gallery-close" onclick="schliesseGesamtgalerie()">&times;</button>'
       + '</div>'
-      + '<div id="galerieGesamtInhalt" style="padding:0 0.6rem 2rem;"></div>';
+      // Der Inhalt scrollt selbst - die Seite dahinter ist gesperrt. Bis
+      // v110 hatte er keine Scroll-Eigenschaft: was nicht auf den Bildschirm
+      // passte, war unerreichbar, und der Sprung zum Kapitel verpuffte.
+      + '<div id="galerieGesamtInhalt" class="gg-inhalt"></div>';
     document.body.appendChild(ov);
 }
 
@@ -1869,10 +1888,12 @@ function renderGesamtgalerie(fokus) {
     var t = document.getElementById('galerieGesamtTitel');
     if (t) t.textContent = 'Alle Fotos (' + gesamt + ')';
 
+    ziel.scrollTop = 0;
     if (fokus) {
         var el = document.getElementById('gg-' + fokus);
         if (el) {
-            el.scrollIntoView({ block: 'start' });
+            // Im Inhalt scrollen, nicht in der gesperrten Seite.
+            ziel.scrollTop = el.getBoundingClientRect().top - ziel.getBoundingClientRect().top + ziel.scrollTop;
             el.classList.add('gg-fokus');
             setTimeout(function() { el.classList.remove('gg-fokus'); }, 2000);
         }
@@ -1888,6 +1909,7 @@ function oeffneGesamtgalerie(fokus) {
 }
 
 function schliesseGesamtgalerie() {
+    _zurueckZurGesamt = null;
     var ov = document.getElementById('galerieGesamt');
     if (ov) ov.classList.remove('show');
     gibSeiteFrei();
@@ -1938,8 +1960,12 @@ function _gesamtHashSprung() {
 // Aus der Gesamtgalerie in die bestehende Gruppengalerie wechseln - dort
 // liegen Lightbox und Bearbeitung.
 function gesamtOeffneGruppe(gruppe, idx) {
-    schliesseGesamtgalerie();
+    // "Alle Fotos" nur ausblenden, die Seite bleibt gesperrt und ihr Stand
+    // gemerkt. Beim Schliessen der Gruppengalerie geht es hierher zurueck.
+    var ov = document.getElementById('galerieGesamt');
+    if (ov) ov.classList.remove('show');
     openGallery(gruppe);
+    _zurueckZurGesamt = gruppe;
     if (typeof idx === 'number' && typeof openLightbox === 'function') {
         setTimeout(function() { try { openLightbox(gruppe, idx); } catch (e) {} }, 0);
     }
