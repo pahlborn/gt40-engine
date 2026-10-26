@@ -500,6 +500,7 @@
     </style>
 <link rel="stylesheet" href="gallery.css">
 <script src="version.js"></script>
+<script src="aktualisieren.js"></script>
 <script src="changelog.js"></script>
 <script src="kapitel.js"></script>
     <script src="gallery.js"></script>
@@ -4744,37 +4745,8 @@
         });
     })();
 
-    // Nicht mitten in der Arbeit neu laden. Ein Foto-Upload stoesst einen
-    // Pages-Deploy an, der Sekunden spaeter genau hier landet - bisher wurde
-    // einem dabei die offene Galerie unter den Fingern weggezogen.
-    function reloadWhenIdle() {
-        var versuche = 0;
-        (function warte() {
-            var belegt = (typeof anyOverlayOpen === 'function' && anyOverlayOpen())
-                || (document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName));
-            if (!belegt || versuche > 600) { location.reload(); return; }   // spaetestens nach 10 min
-            versuche++;
-            setTimeout(warte, 1000);
-        })();
-    }
-
-    // ==== SERVICE WORKER ====
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').then(function(reg) {
-            // Check for updates every 60 seconds
-            setInterval(function() { reg.update(); }, 60000);
-            // When new SW is ready, reload page
-            reg.addEventListener('updatefound', function() {
-                var newSW = reg.installing;
-                if (newSW) newSW.addEventListener('statechange', function() {
-                    if (newSW.state === 'activated') {
-                        showToast('Update verfuegbar - Seite wird neu geladen...');
-                        setTimeout(function() { reloadWhenIdle(); }, 1500);
-                    }
-                });
-            });
-        }).catch(function() {});
-    }
+    // Neue Versionen: aktualisieren.js (seit v114 eine Stelle fuer alle Seiten,
+    // vorher stand die Pruefung in jeder Seite einzeln).
     // Automatisch syncen, wenn die Verbindung wiederkommt
     // Verbindung wieder da: auch die Galerie-Texte nachschieben - bis v101
     // blieben offline geaenderte Beschriftungen liegen.

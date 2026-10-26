@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v114',
+      date: '2026-10-26',
+      time: '17:26',
+      title: 'Neue Versionen: eine Stelle fuer alle Seiten',
+      changes: [
+        { type: 'verbessert', text: 'Eine offene Seite fragt jetzt auch beim Zurueckkehren - etwa am iPad aus einer anderen App - sofort nach einer neuen Version, nicht erst nach einer Minute. Neu geladen wird wie bisher erst, wenn kein Feld in Arbeit und keine Galerie offen ist; beim allerersten Besuch gar nicht.' },
+        { type: 'intern', text: 'Die Pruefung auf neue Versionen stand in jeder der drei Seiten einzeln (Regel 10). Jetzt steht sie einmal in aktualisieren.js, wortgleich mit jerico und alignment; nur dort wird der Service Worker angemeldet. Vier Tests; Gegenprobe ohne Warten und mit zweiter Anmeldung rot.' }
+      ]
+    },
+    {
       version: 'v113',
       date: '2026-10-26',
       time: '16:35',
