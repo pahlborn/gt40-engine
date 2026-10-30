@@ -133,3 +133,18 @@ belegten Warnungen daneben, der Vorbehalt klein am Ende nach zwoelf Zeilen
 Arithmetik. In ein paar Monaten haette das jemand als Befund gelesen. v100 hat
 ihn wieder entfernt. Fuer jedes andere Stueck derselben Sitzung gab es einen
 Test, fuer diesen Kasten keinen - das war das uebersehene Signal.
+
+## 12. GitHub-Zugang: ein Baustein fuer alle drei Apps
+
+Token pruefen und mit dem Gist verbinden steht nur in `github-zugang.js`,
+wortgleich mit jerico und alignment. Die Pruefsumme steht in
+`tests/github-zugang.test.mjs`; wer den Baustein aendert, zieht alle drei
+Repos nach.
+
+**Warum:** v119. Bis v118 stand das Verbinden auf jeder der drei Seiten in
+eigener Fassung. Eine gescheiterte Suche galt als "nicht gefunden", und die
+Seite legte einen zweiten Gist an. Dazu wurde der Token gespeichert, bevor er
+geprueft war - in Safari teilen ihn gt40, jerico und alignment. Peters
+Vorgabe vom 2026-10-30: Was ein Token koennen muss, steht fest, bevor eine
+App auf einen Fehler stoesst. Der Dialog nennt es vorher, und beim Verbinden
+werden zuerst Konto und Haken geprueft.

@@ -8,9 +8,29 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { chromium } from 'playwright';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const REPO_ROOT = path.resolve(HERE, '..');
+
+/**
+ * Browser starten. CHROMIUM_PATH erlaubt einen vorinstallierten Browser.
+ * Wortgleich mit jerico und alignment - die gemeinsame Testdatei
+ * tests/github-zugang.test.mjs (v119) braucht in allen drei Repos dieselben
+ * Hilfen.
+ */
+export function browserStarten(opts = {}) {
+  const pfad = process.env.CHROMIUM_PATH;
+  return chromium.launch(pfad ? { executablePath: pfad, ...opts } : opts);
+}
+
+/**
+ * Kontext fuer einen Test. Der Service Worker bleibt aus - sonst laufen die
+ * Requests der Seite an page.route() vorbei (jerico v25).
+ */
+export function neuerKontext(browser, opts = {}) {
+  return browser.newContext({ serviceWorkers: 'block', ...opts });
+}
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
