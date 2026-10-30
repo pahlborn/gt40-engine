@@ -15,6 +15,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { chromium } from 'playwright';
 import {
   REPO_ROOT, startServer, stubGitHub, suite, test, assert, assertEqual, summary
@@ -24,8 +25,8 @@ const { server, base } = await startServer();
 const browser = await chromium.launch();
 const SEITEN = ['index.html', 'specs.html', 'build-log.html'];
 
-await import(path.join(REPO_ROOT, 'reference.js'));
-await import(path.join(REPO_ROOT, 'exkurs-engine.js'));
+await import(pathToFileURL(path.join(REPO_ROOT, 'reference.js')).href);
+await import(pathToFileURL(path.join(REPO_ROOT, 'exkurs-engine.js')).href);
 const REFERENCE = globalThis.REFERENCE;
 const EXKURS = globalThis.EXKURS_ENGINE;
 
@@ -94,8 +95,15 @@ await test('Jeder Drehmomentwert nennt eine Einheit', async () => {
   const gruppe = REFERENCE.gruppen.find((g) => g.spalten.indexOf('Drehmoment') !== -1);
   assert(gruppe, 'Keine Gruppe mit Drehmoment-Spalte gefunden');
   const k = gruppe.spalten.indexOf('Drehmoment');
+  // Ausgenommen ist eine Zelle, die ausdruecklich offen ist und keine Zahl
+  // traegt (Regel 5: unbelegt steht als offen da, GT40-V113-F004/F005).
+  // Entities wie &#9888; zaehlen dabei nicht als Zahl.
+  const offenOhneZahl = (c) => {
+    const text = c.replace(/<[^>]+>/g, ' ').replace(/&#?\w+;/g, ' ');
+    return /\boffen\b/.test(text) && !/\d/.test(text);
+  };
   const ohne = gruppe.zeilen
-    .filter((z) => !/ft-lbs|Nm/.test(z[k]))
+    .filter((z) => !/ft-lbs|Nm/.test(z[k]) && !offenOhneZahl(z[k]))
     .map((z) => z[k]);
   assertEqual(ohne.length, 0, 'Ohne Einheit: ' + ohne.join(' | '));
 });
