@@ -125,6 +125,9 @@ jobs:
       - name: Kopfstehbolzen - Anzugswert offen
         run: node tests/kopfanzug.test.mjs
 
+      - name: GitHub-Zugang (Token pruefen, verbinden)
+        run: node tests/github-zugang.test.mjs
+
   # Wer eine ausgelieferte Datei aendert, zaehlt die Version hoch. Sonst gehen
   # zwei verschiedene Staende unter derselben Nummer raus - genau so ist v54
   # zweimal passiert. Braucht die Historie, deshalb fetch-depth: 0.

@@ -433,6 +433,7 @@
 <script src="findings.js"></script>
 <script src="kapitel.js"></script>
     <script src="gallery.js"></script>
+<script src="github-zugang.js"></script>
 <script src="field-sync.js"></script>
 <script src="errorlog.js"></script>
 <script src="validation.js"></script>
@@ -5054,8 +5055,8 @@
         <label for="deviceName" style="font-size:0.78rem;font-weight:600;">Ger&auml;tename</label>
         <input type="text" id="deviceName" placeholder="z.B. iPad Werkstatt" style="width:100%;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.82rem;margin:0.3rem 0 0.5rem;" oninput="if(typeof FieldSync!=='undefined')FieldSync.setDeviceName(this.value)">
         <label for="ghToken" style="font-size:0.78rem;font-weight:600;">GitHub Personal Access Token</label>
-        <input type="password" id="ghToken" placeholder="github_pat_..." style="width:100%;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.82rem;margin:0.3rem 0;">
-        <div style="font-size:0.7rem;color:var(--text-light);margin-bottom:0.5rem;">GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens<br>Berechtigung: <strong>Gists (Read and Write)</strong></div>
+        <input type="password" id="ghToken" placeholder="ghp_..." style="width:100%;padding:0.4rem 0.5rem;border:1px solid var(--border);border-radius:6px;font-size:0.82rem;margin:0.3rem 0;">
+        <div data-token-vorgabe style="font-size:0.7rem;color:var(--text-light);margin-bottom:0.5rem;"></div>
         <div style="display:flex;gap:0.4rem;justify-content:flex-end;">
             <button onclick="disconnectGist()" style="padding:0.4rem 0.8rem;border:1px solid #e53e3e;background:white;color:#e53e3e;border-radius:6px;cursor:pointer;font-size:0.78rem;">Trennen</button>
             <button onclick="closeSettings()" style="padding:0.4rem 0.8rem;border:1px solid var(--border);background:white;color:var(--text);border-radius:6px;cursor:pointer;font-size:0.78rem;">Abbrechen</button>
@@ -5111,32 +5112,6 @@
     function getGistConfig() { return { token: localStorage.getItem('gh_token') || '' }; }
     function isGistConfigured() { return getGistConfig().token.length > 0 && !!FIXED_GIST_ID; }
 
-    async function findGistByFilename(token) {
-        var page = 1;
-        while (page <= 5) {
-            var res = await fetch('https://api.github.com/gists?per_page=100&page=' + page,
-                { headers: { 'Authorization': 'Bearer ' + token } });
-            if (!res.ok) return null;
-            var gists = await res.json();
-            if (gists.length === 0) break;
-            for (var i = 0; i < gists.length; i++) {
-                if (gists[i].files && gists[i].files[GIST_FILENAME]) return gists[i].id;
-            }
-            page++;
-        }
-        return null;
-    }
-    async function createGist(token) {
-        var files = {};
-        files[GIST_FILENAME] = { content: localStorage.getItem('engineBuildLog') || '{}' };
-        var res = await fetch('https://api.github.com/gists', {
-            method: 'POST',
-            headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ description: 'GT40 Engine Build - Geraeteabgleich', public: false, files: files })
-        });
-        if (!res.ok) return null;
-        return (await res.json()).id;
-    }
 
     // ==== TOOL MENU ====
     function toggleToolMenu() {
@@ -5167,27 +5142,27 @@
         var sm = document.getElementById('settingsModal');
         if (sm) sm.addEventListener('click', function(e) { if (e.target === this) closeSettings(); });
     });
+    // Pruefen, suchen, anlegen und speichern macht github-zugang.js - wortgleich
+    // in gt40, jerico und alignment (v119). Bis v118 stand das auf jeder der
+    // drei Seiten in eigener Fassung, mit einem Fehler: eine gescheiterte Suche
+    // galt als "nicht gefunden", und die Seite legte einen zweiten Gist an.
+    GithubZugang.einrichten({
+        app: 'gt40',
+        datei: GIST_FILENAME,
+        beschreibung: 'GT40 Engine Build - Geraeteabgleich',
+        gistIdKey: GIST_ID_KEY,
+        pflicht: ['gist'],
+        zusatz: { public_repo: 'Fotos hochladen' },
+        bekannteId: LEGACY_GIST_ID,
+        startInhalt: function () { return localStorage.getItem('engineBuildLog') || '{}'; }
+    });
     async function saveSettings() {
         var tokEl = document.getElementById('ghToken');
-        var token = tokEl ? tokEl.value.trim() : '';
-        if (!token) { showToast('Bitte Token eingeben!', { sticky: true, isError: true }); return; }
-        try {
-            showToast('Verbinde...');
-            const res = await fetch('https://api.github.com/user', { headers: { 'Authorization': 'Bearer ' + token } });
-            if (!res.ok) { showToast('Token ungueltig!', { sticky: true, isError: true }); return; }
-            const user = await res.json();
-            localStorage.setItem('gh_token', token);
-            showToast('Suche Gist...');
-            var gid = await findGistByFilename(token);
-            if (!gid) {
-                showToast('Lege neuen Gist an...');
-                gid = await createGist(token);
-                if (!gid) { showToast('Gist konnte nicht erstellt werden', { sticky: true, isError: true }); return; }
-            }
-            localStorage.setItem(GIST_ID_KEY, gid);
-            FIXED_GIST_ID = gid;
-            updateSyncBadge(); updateConnectionStatus(); closeSettings();
-        } catch (err) { showToast('Verbindungsfehler: ' + err.message, { sticky: true, isError: true }); }
+        var r = await GithubZugang.verbinden(tokEl ? tokEl.value : '', { melden: showToast });
+        updateConnectionStatus();
+        if (!r.ok) return;
+        FIXED_GIST_ID = r.gistId;
+        updateSyncBadge(); updateConnectionStatus(); closeSettings();
     }
     function disconnectGist() {
         localStorage.removeItem('gh_token');

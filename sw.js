@@ -1,10 +1,11 @@
-var CACHE_NAME = 'boss302-v118';
+var CACHE_NAME = 'boss302-v119';
 var urlsToCache = [
   '/gt40-engine/',
   '/gt40-engine/index.html',
   '/gt40-engine/build-log.html',
   '/gt40-engine/specs.html',
   '/gt40-engine/field-sync.js',
+  '/gt40-engine/github-zugang.js',
   '/gt40-engine/aktualisieren.js',
   '/gt40-engine/errorlog.js',
   '/gt40-engine/validation.js',
