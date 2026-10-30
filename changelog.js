@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v117',
+      date: '2026-10-30',
+      time: '17:45',
+      title: 'Kopfstehbolzen: Endwert offen, alte Anzugswerte entfernt',
+      changes: [
+        { type: 'fix', text: 'Build Log und Nachschlagekarte nannten fuer die Kopfstehbolzen ARP 154-4003 drei Stufen 35-55-80 ft-lbs (obere Reihe) und 70 ft-lbs (untere Reihe). Die ARP-Anleitung 154-4003 nennt dagegen drei gleiche Stufen bis zu einem Wert fuer alle Bolzen. Welcher Satz verbaut ist und welche Beipackanweisung gilt, ist offen. Deshalb steht der Endwert jetzt als offen da - in Schmier-, Anzugs- und Nachziehschritt und in der Karte -, mit Warnung vor dem Anziehen und Verweis auf die ARP-Anleitung. Kein Ersatzwert. Gefunden in der Pruefung GT40-V113-PRUEFUNG (#68).' },
+        { type: 'fix', text: 'Mit den alten Stufen entfallen auch die daran haengenden Angaben ohne Quelle: 5 Minuten Wartezeit zwischen den Stufen, der Tipp "lange und kurze Bolzen haben unterschiedliche Endwerte", die Werte im Anzugsdiagramm und die Zahlen-Platzhalter in den Eingabefeldern.' },
+        { type: 'intern', text: 'Neuer Test kopfanzug.test.mjs. Gegenprobe rot: alter Stand, Stufe-3-Satz mit 80 ft-lbs, Platzhalter mit Zahl, Nachziehwert, englische und deutsche Kartenzeile, ARP-Zahl als Endwert, Warnung entfernt, Warnung hinter der Vorgehensweise.' }
+      ]
+    },
+    {
       version: 'v116',
       date: '2026-10-30',
       time: '09:57',
