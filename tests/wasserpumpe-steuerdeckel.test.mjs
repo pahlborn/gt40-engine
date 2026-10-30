@@ -161,11 +161,45 @@ await test('Die Balancer-Zentralschraube traegt den belegten Ford-Wert', async (
     'Der unbelegte Wert 70-90 ft-lbs steht weiter da');
   const i = specs.indexOf('Drehmoment Zentralschraube');
   assert(i > 0, 'Die Zeile fehlt');
-  const zeile = specs.slice(i, i + 700);
+  const zeile = specs.slice(i, specs.indexOf('</div>', i));
   assert(/95 ft-lbs/.test(zeile), 'Der Ford-Wert 95 lb-ft fehlt');
   assert(/src-link doc/.test(zeile), 'Der Wert traegt keine belegte Quelle');
   assert(/ARP/.test(zeile),
     'Der Vorbehalt fehlt, dass der Wert fuer die Ford-Schraube gilt und nicht fuer eine ARP');
+});
+
+await test('Der Ford-Balancerwert ist Quellenabschrift, keine Anweisung', async () => {
+  // GT40-V113-F006 (#73): 95 lb-ft steht bei Ford fuer den Crate-Motor
+  // M-6007-X2302E. Dass Schraube, Scheibe und Kurbelwelle des verbauten
+  // Aufbaus dieselben sind, ist nicht belegt. Darum: in den Spezifikationen
+  // der Wert mit Herkunft und OFFEN davor, an Arbeitsschritt und Karte gar
+  // keine Zahl. Und der alte Wert 70-90 nirgends mehr.
+  const i = specs.indexOf('Drehmoment Zentralschraube');
+  const wert = specs.slice(i, specs.indexOf('</div>', i)).replace(/^.*?<span class="spec-value">/, '');
+  assert(/^<strong>OFFEN<\/strong>/.test(wert), 'specs: der Wert steht nicht hinter OFFEN');
+  assert(/M-6007-X2302E/.test(wert.replace(/<a [^>]*>.*$/, '')),
+    'specs: sichtbar fehlt, fuer welchen Motor Ford den Wert nennt');
+  assert(/nicht belegt/.test(wert), 'specs: der Vorbehalt zur Uebertragung fehlt');
+
+  const a = buildlog.indexOf('<div class="step-card" id="p3_balancer"');
+  assert(a > 0, 'Schritt p3_balancer fehlt');
+  const karte = buildlog.slice(a, buildlog.indexOf('<div class="step-card"', a + 10));
+  const z = (karte.match(/<span>Balancer Bolt[^<]*<\/span><span class="spec-val">(.*?)<\/span>/) || [])[1];
+  assert(z !== undefined, 'Anzugszeile im Balancer-Schritt fehlt');
+  assert(!/\d/.test(z) && /offen/.test(z), 'Balancer-Schritt: kein offen-Vermerk oder Zahl im Wert: ' + z);
+
+  await import(pathToFileURL(path.join(REPO_ROOT, 'reference.js')).href);
+  const g = globalThis.REFERENCE.gruppen.find((x) => x.id === 'ref-torque');
+  for (const [feld, name, vermerk] of [['zeilen', /Zentralschraube/, /offen/], ['zeilenEN', /balancer center bolt/, /open/]]) {
+    const r = g[feld].filter((x) => name.test(x[0]));
+    assert(r.length === 1, feld + ': genau eine Balancer-Zeile erwartet, gefunden ' + r.length);
+    const text = r[0][1].replace(/<[^>]+>/g, ' ').replace(/&#?\w+;/g, ' ');
+    assert(!/\d/.test(text) && vermerk.test(text), feld + ': Zahl oder fehlender offen-Vermerk: ' + text.trim());
+  }
+
+  for (const [name, h] of [['build-log.html', buildlog], ['reference.js', fs.readFileSync(path.join(REPO_ROOT, 'reference.js'), 'utf8')]]) {
+    assert(!/70&ndash;90 ft-lbs/.test(h), name + ': der unbelegte Wert 70-90 ft-lbs steht weiter da');
+  }
 });
 
 // ---------------------------------------------------------------------------
