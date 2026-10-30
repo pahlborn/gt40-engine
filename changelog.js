@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v118',
+      date: '2026-10-30',
+      time: '18:20',
+      title: 'Kopfstehbolzen: Laengen, Toleranz und Anzahl offen',
+      changes: [
+        { type: 'fix', text: 'Die Spezifikationen nannten fuer die Kopfstehbolzen 5.000" und 3.250" Gesamtlaenge, der Build Log erklaerte die Laengen fuer offen, schlug im Eingabefeld aber 6.800 und 5.750 vor. Dazu standen eine Toleranz von +-0.010" und 4 lange/6 kurze Bolzen je Kopf. Keine gepruefte ARP-, AFR- oder Ford-Unterlage traegt diese Angaben. Laenge, Anzahl und Toleranz stehen jetzt als offen da; die Zuordnung zu den Bohrungen erfolgt nach Beipackanweisung und Gewindetiefe. Gefunden in der Pruefung GT40-V113-PRUEFUNG (#69).' },
+        { type: 'intern', text: 'kopfanzug.test.mjs um vier Tests erweitert. Gegenprobe rot: alter Stand, nur die kurze Laenge in den Spezifikationen, nur die Stueckzahl, nur die Toleranz, nur ein Platzhalter, Stueckzahl je Kopf im Text, fehlender Herkunftshinweis.' }
+      ]
+    },
+    {
       version: 'v117',
       date: '2026-10-30',
       time: '17:45',
