@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v120',
+      date: '2026-10-30',
+      time: '19:04',
+      title: 'Balancer-Zentralschraube: Ford-Wert als Quelle, Anwendung offen',
+      changes: [
+        { type: 'fix', text: 'Build Log und Nachschlagekarte nannten fuer die Balancer-Zentralschraube weiter 70-90 ft-lbs, die Spezifikationen 95 ft-lbs. Die 95 lb-ft stehen bei Ford (IS-1850-0632, S. 24) fuer den Crate-Motor M-6007-X2302E mit demselben Block und Daempfer - dass Schraube, Scheibe und Kurbelwelle des verbauten Aufbaus dieselben sind, ist nicht belegt. Jetzt: in den Spezifikationen der Ford-Wert mit Herkunft und OFFEN davor, im Arbeitsschritt und in der Karte "offen - Schraube/Scheibe identifizieren". 70-90 ist ueberall entfernt. Gefunden in der Pruefung GT40-V113-PRUEFUNG (#73).' },
+        { type: 'intern', text: 'Neuer Test in wasserpumpe-steuerdeckel.test.mjs; der alte Balancer-Test prueft die ganze Zeile statt 700 Zeichen. Gegenprobe rot: alter Stand, nur Build Log oder nur englische Karte mit 70-90, Spezifikation ohne OFFEN, 95 im Arbeitsschritt oder in der Karte, Motorbezug entfernt.' }
+      ]
+    },
+    {
       version: 'v119',
       date: '2026-10-30',
       time: '18:35',
