@@ -23,6 +23,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { REPO_ROOT, suite, test, assert, summary } from './helpers.mjs';
 
 function lies(f) { return fs.readFileSync(path.join(REPO_ROOT, f), 'utf8'); }
@@ -130,6 +131,29 @@ await test('Das Wasserpumpen-Drehmoment steht nicht mehr als Zahl da', async () 
   assert(j > 0, 'Der Wasserpumpen-Schritt fehlt im Build Log');
   assert(!/15&ndash;22 ft-lbs/.test(buildlog.slice(j, j + 6000)),
     'build-log.html: 15-22 ft-lbs fuer die Wasserpumpe steht weiter da');
+});
+
+await test('Die Nachschlagekarte fuehrt Deckel- und Pumpenmoment als offen, nicht als Zahl', async () => {
+  // GT40-V113-F004/F005 (#71/#72): v113 hat beide Werte auf den Seiten
+  // entfernt, in reference.js standen sie weiter - die Karte ist das, was an
+  // der Werkbank aufgeschlagen wird. Geprueft wird die Zeile selbst, deutsch
+  // und englisch: keine Zahl in der Momentspalte, ein offen-Vermerk statt.
+  await import(pathToFileURL(path.join(REPO_ROOT, 'reference.js')).href);
+  const g = globalThis.REFERENCE.gruppen.find((x) => x.id === 'ref-torque');
+  assert(g, 'Die Gruppe ref-torque fehlt in reference.js');
+  const faelle = [
+    ['zeilen', /Steuergeh&auml;usedeckel/, /offen/],
+    ['zeilen', /&ndash; Wasserpumpe$/, /offen/],
+    ['zeilenEN', /Timing cover$/, /open/],
+    ['zeilenEN', /&ndash; Water pump$/, /open/]
+  ];
+  for (const [feld, name, vermerk] of faelle) {
+    const z = g[feld].filter((r) => name.test(r[0]));
+    assert(z.length === 1, feld + ': genau eine Zeile ' + name + ' erwartet, gefunden ' + z.length);
+    assert(!/\d\s*ft-lbs|\d\s*Nm/.test(z[0][1]),
+      feld + ' ' + name + ': steht weiter als Zahl da (' + z[0][1] + ') - keine Quelle traegt den Wert');
+    assert(vermerk.test(z[0][1]), feld + ' ' + name + ': der offen-Vermerk fehlt');
+  }
 });
 
 await test('Die Balancer-Zentralschraube traegt den belegten Ford-Wert', async () => {

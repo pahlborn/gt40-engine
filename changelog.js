@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v115',
+      date: '2026-10-30',
+      time: '09:22',
+      title: 'Nachschlagekarte: Deckel- und Pumpenmoment offen',
+      changes: [
+        { type: 'fix', text: 'Die Nachschlagekarte (Anzugswerte) nannte fuer die Steuergehaeusedeckel-Schrauben noch 12-18 ft-lbs und fuer die Wasserpumpe 15-22 ft-lbs, obwohl v113 beide Werte auf den Seiten als unbelegt entfernt hatte. Beide stehen jetzt auch dort als offen, deutsch und englisch. Gefunden in der Pruefung GT40-V113-PRUEFUNG (#71, #72).' },
+        { type: 'intern', text: 'Neuer Test prueft die Kartenzeilen selbst. Gegenprobe rot: alter Stand, nur die englische Pumpenzeile zurueck, Zahl in Nm statt ft-lbs, doppelte Zeile.' }
+      ]
+    },
+    {
       version: 'v114',
       date: '2026-10-26',
       time: '17:26',
