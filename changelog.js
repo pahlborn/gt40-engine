@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v116',
+      date: '2026-10-30',
+      time: '09:57',
+      title: 'Wasserpumpe: Messblatt und offene Anschluesse',
+      changes: [
+        { type: 'fix', text: 'Milodon entfällt nach ausdruecklicher optischer Owner-Entscheidung; Backplate der alten Pumpe ist vom Owner bestaetigt. Keine Behauptung technischer Unverschliessbarkeit.' },
+        { type: 'fix', text: '8841 bleibt Kandidat: Herstellerunterlagen widersprechen sich bei 5.40/5.42 Zoll; 5-3/4 Zoll bestaetigt diesen Typ nicht. Quellen und offene Anschlusszuordnung sichtbar dokumentiert (#70).' },
+        { type: 'neu', text: 'Ausfuellbares Messblatt in den Spezifikationen: Kennnummer, Nabenhoehe samt Messbezug, Anschlussdaten und Leitungsendpunkte fuer die spaetere Kuehlkreislaufzeichnung. Vorhandenes Speichersystem, keine vorbelegten Messwerte.' }
+      ]
+    },
+    {
       version: 'v115',
       date: '2026-10-30',
       time: '09:22',

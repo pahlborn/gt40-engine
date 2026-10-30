@@ -200,6 +200,31 @@ await test('Der Pflichtpunkt Zugang zur Zuendeinstellung steht im Build Log', as
     'Die Kontrolle gegen echten OT fehlt');
 });
 
+// v116: Owner-Auswahl und der offene Messauftrag duerfen nicht zur Teilefreigabe werden.
+suite('Pumpenauswahl bleibt bis zur Identifikation offen');
+
+await test('8841 wird nicht durch 5-3/4 Zoll bestaetigt; beide Herstellerfassungen bleiben sichtbar', async () => {
+  const block = specs.slice(specs.indexOf('Wasserpumpe &ndash; Edelbrock Victor'), specs.indexOf('Elektrische Zusatzpumpe (Frontbereich)'));
+  assert(!/5-3\/4(?:&quot;|")[^<]{0,50}best&auml;tigt/.test(block), 'Die falsche Messwert-Teilefreigabe ist zurueck');
+  assert(/Quellenkonflikt:/.test(block) && /5\.40/.test(block) && /5\.42/.test(block), 'Der Herstellerkonflikt ist nicht sichtbar');
+  for (const name of ['8844.pdf','88433.pdf']) assert(block.includes('href="https://edelbrock-instructions-v1.s3.amazonaws.com/edelbrock/'+name+'"'), 'Originalquelle fehlt: '+name);
+  assert(/Backplate vorhanden<\/strong>/.test(block) && /von Peter am 2026-10-30 best&auml;tigt/.test(block), 'Owner-Bestaetigung der Backplate fehlt');
+  assert(/Owner-Entscheidung/.test(block) && /optisch unerw&uuml;nscht/.test(block), 'Milodon-Auswahlentscheidung fehlt');
+  assert(!/l&auml;sst sich damit nicht sauber verschlie/.test(block), 'Technische Unverschliessbarkeit wird weiter behauptet');
+});
+
+await test('Anschlusslage und E-Pumpeneinbindung werden nicht als gepruefte Verbindungen ausgegeben', async () => {
+  const start=specs.indexOf('K&uuml;hlkreislauf &ndash; Ist-Aufbau');
+  const block=specs.slice(start,specs.indexOf('id="waterpump-measurements"',start));
+  for (const label of ['Weg','Bypass','Heizungsanschluss']) {
+    const line=block.split('\n').find(x=>x.includes('spec-label">'+label+'</span>'));
+    assert(line && /<strong>OFFEN:<\/strong>/.test(line), 'Ungepruefte Verbindung ohne sichtbaren Vorbehalt: '+label);
+  }
+  const step=buildlog.slice(buildlog.indexOf('id="p3_waterpump"'),buildlog.indexOf('id="p3_intake"'));
+  assert(!/Upper small port = bypass to the thermostat housing, do not plug/.test(step), 'Ungepruefte Montagevorgabe noch vorhanden');
+  assert(step.includes('specs.html#waterpump-measurements'), 'Montageschritt verweist nicht auf Messblatt');
+});
+
 } finally {
   process.exit(summary());
 }
