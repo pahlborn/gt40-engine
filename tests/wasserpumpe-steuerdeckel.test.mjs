@@ -222,7 +222,13 @@ await test('Anschlusslage und E-Pumpeneinbindung werden nicht als gepruefte Verb
   }
   const step=buildlog.slice(buildlog.indexOf('id="p3_waterpump"'),buildlog.indexOf('id="p3_intake"'));
   assert(!/Upper small port = bypass to the thermostat housing, do not plug/.test(step), 'Ungepruefte Montagevorgabe noch vorhanden');
-  assert(step.includes('specs.html#waterpump-measurements'), 'Montageschritt verweist nicht auf Messblatt');
+  assert(!step.includes('specs.html#waterpump-measurements'), 'Verweis auf das verworfene Messblatt ist zurueck');
+});
+
+await test('Das verworfene Pumpenmessblatt und seine zusaetzlichen Messaufforderungen bleiben entfernt', async () => {
+  assert(!/id="waterpump-measurements"/.test(specs), 'Das verworfene Messblatt ist zurueck');
+  assert(!/data-field="(?:waterpump|cooling)_/.test(specs), 'Zusaetzliche Pumpen-/Kuehlkreislauf-Messfelder sind zurueck');
+  assert(!/Beide Messfl&auml;chen, montierte Backplate und Dichtung im Messbezug dokumentieren/.test(specs), 'Die verworfene Messaufforderung ist zurueck');
 });
 
 } finally {

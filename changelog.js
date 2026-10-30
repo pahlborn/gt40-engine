@@ -13,6 +13,15 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v120',
+      date: '2026-10-30',
+      time: '19:08',
+      title: 'Pumpenmessblatt entfernt',
+      changes: [
+        { type: 'fix', text: 'Das ueberdimensionierte Pumpenmessblatt mit seinen 16 Zusatzfeldern und Messaufforderungen auf Peters Wunsch entfernt. Backplate-Bestaetigung und Milodon-Ausschluss bleiben dokumentiert; die Pumpenteilenummer ist noch abzulesen.' }
+      ]
+    },
+    {
       version: 'v119',
       date: '2026-10-30',
       time: '18:35',
