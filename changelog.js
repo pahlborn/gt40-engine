@@ -15,12 +15,12 @@
     {
       version: 'v124',
       date: '2026-10-31',
-      time: '17:05',
+      time: '17:13',
       title: 'Cam Degreeing: drei Messungen mit Mittelwert, Abweichung und Werkzeug-Exkurs',
       changes: [
         { type: 'neu', text: 'Phase 2 Schritt 6: drei unabhängige ICL-Messdurchgänge direkt am Einlassnocken. Mittelwert, Sollabweichung (früher/später), Spannweite und Vollständigkeit werden ohne pauschale Freigabetoleranz berechnet.' },
         { type: 'fix', text: 'Die alten Felder p2_open050/p2_close050 werden als Durchgang 1 übernommen. Die Winkel liegen 0,050 Zoll unter dem Nockenmaximum; sie sind keine @0,050-Ventilsteuerzeiten über dem Grundkreis.' },
-        { type: 'neu', text: 'Ausführlicher Exkurs mit vorhandenen Werkzeugen (Moroso 62191, Summit SUM-900061-S, Trick Flow TFS-90000-16, Proform 66838), OT-Methode und Primärquellen. Rocker-Übersetzung und ICL werden getrennt erklärt.' }
+        { type: 'neu', text: 'Ausführlicher Exkurs mit Ford-M-6268-A302-Zahnradverstellung, wiederholter ICL-Prüfung bis zur Freigabe, Kontrolle nach Testfahrten und vorhandenen Werkzeugen (Moroso 62191, Summit SUM-900061-S, Trick Flow TFS-90000-16, Proform 66838), OT-Methode und Primärquellen. Rocker-Übersetzung und ICL werden getrennt erklärt.' }
       ]
     },
     {
