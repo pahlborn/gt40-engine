@@ -63,6 +63,7 @@
      '" placeholder="z. B. A2" style="width:100px" oninput="autoSave()"></label> '+
      '<label>Zugehörige Zahnradmarkierung: <input type="text" data-field="p2_degree_mark_'+n+
      '" placeholder="z. B. A2" style="width:100px" oninput="autoSave()"></label>'+
+     '<label>Anlass: <input type="text" data-field="p2_degree_reason_'+n+'" placeholder="OT neu / Advance / Retard" style="width:180px" oninput="autoSave()"></label>'+
      '<div style="overflow-x:auto"><table style="width:100%;min-width:410px"><thead><tr><th>Messung</th><th>Vor −0,050"</th><th>Nach −0,050"</th><th>ICL</th></tr></thead><tbody>'+
      rows+'</tbody></table></div>'+
      '<div><strong>Mittel:</strong> <span id="cam-cycle-'+n+'-average">—</span>; <strong>Abweichung:</strong> <span id="cam-cycle-'+n+'-delta">—</span>; <strong>Spannweite:</strong> <span id="cam-cycle-'+n+'-spread">—</span></div>'+
