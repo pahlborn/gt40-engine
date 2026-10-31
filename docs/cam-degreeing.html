@@ -3,187 +3,355 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Exkurs: Cam Degreeing – GT40 BOSS 302</title>
+<meta name="theme-color" content="#12243a">
+<title>Cam Degreeing – Visuelle Werkstattanleitung · GT40</title>
 <style>
-:root{color-scheme:light;--ink:#202c3a;--muted:#526275;--blue:#17476f;--line:#d5e0e9;--bg:#f3f6f9}
-*{box-sizing:border-box}body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);margin:0;line-height:1.65}
-header{background:var(--blue);color:#fff;padding:1rem max(1rem,calc((100% - 920px)/2))}header a{color:#fff}
-main{max-width:920px;margin:auto;padding:1.4rem 1rem 4rem}h1{line-height:1.2}h2{margin-top:2rem;color:var(--blue)}h3{margin-top:1.1rem}
-section{background:#fff;padding:1.3rem 1.5rem;margin:1.2rem 0;border:1px solid var(--line);border-radius:9px}
-a{color:#125d93}p,li{max-width:78ch}li{margin:.55rem 0}small,.subtle{color:var(--muted)}
-table{border-collapse:collapse;width:100%;margin:1rem 0}td,th{border-bottom:1px solid var(--line);padding:.65rem;text-align:left;vertical-align:top}
-th{background:#edf3f8}code{font-size:.93em;background:#eef3f8;padding:.12em .3em;border-radius:3px}
-.formula{font-size:1.2rem;background:#edf3f8;border-radius:6px;padding:1rem}
-.caution{border-left:4px solid #bf7622;padding:.7rem 1rem;background:#fff8ed}
-@media(max-width:650px){section{padding:1rem}table{font-size:.88rem}}
+:root{--navy:#12243a;--deep:#0b1728;--ink:#17293a;--muted:#56697b;--line:#dce4ec;--paper:#f3f6f9;--white:#fff;--blue:#166eaa;--cyan:#0f8c99;--amber:#e98d23;--amber-bg:#fff5e7;--ok:#167a65;--ok-bg:#e7f6ef;--grey:#eef2f6}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+a{color:#12659e}a:hover{text-decoration-thickness:2px}
+button{font:inherit}h1,h2,h3,p{margin-top:0}h1{font-size:clamp(2rem,4.8vw,3.1rem);line-height:1.1;letter-spacing:-.045em}h2{font-size:clamp(1.25rem,2.6vw,1.65rem);letter-spacing:-.025em;line-height:1.3}h3{font-size:1.01rem}p{margin-bottom:.75rem}
+.shell{max-width:1120px;padding:0 24px;margin:auto}.topbar{background:var(--navy);color:#eef5fa}.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:15px;padding-bottom:15px;font-size:.84rem}
+.topbar a{color:#fff;text-decoration:none}.topbrand{font-weight:800;letter-spacing:.09em}.toptrail{opacity:.75}
+.hero{background:linear-gradient(115deg,#12243a 0%,#183957 100%);color:#fff;padding:45px 0 34px}.hero-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(290px,1fr);gap:34px;align-items:center}
+.eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:#89dce2;margin-bottom:13px}.hero p{color:#cbdde9;font-size:1.08rem;max-width:58ch}.hero .micro{font-size:.8rem;color:#a8bdce}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#ffffff12;border:1px solid #ffffff2b;border-radius:12px;padding:16px}.stat span{font-size:.76rem;color:#cbdde9;display:block}.stat strong{font-size:2rem;letter-spacing:-.04em;line-height:1.2}.stat.ist strong{color:#ffd08e}.summary-foot{grid-column:1/-1;background:#fff3;border-radius:8px;padding:12px 14px;font-size:.82rem;color:#f6e4c9}
+.mainlink{display:inline-block;background:#fff;color:#123a5d;padding:10px 14px;border-radius:7px;font-weight:750;text-decoration:none;margin-top:9px;font-size:.88rem}
+.quicknav{position:sticky;top:0;z-index:8;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 4px 12px #12243a09}
+.quicknav-inner{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding-top:9px;padding-bottom:9px}
+.quicknav a{display:flex;gap:8px;align-items:center;justify-content:center;text-align:center;text-decoration:none;color:#3e5368;font-weight:700;font-size:.79rem;border-radius:7px;padding:9px 5px}.quicknav a:hover,.quicknav a:focus-visible{background:#eaf2f7;color:var(--blue)}.quicknav b{color:var(--cyan);font-size:.9rem}
+main{padding-top:22px;padding-bottom:70px}.tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.tools .tooltitle{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-weight:800;color:var(--muted);margin-right:7px}
+.tool{font-size:.78rem;display:flex;gap:8px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:30px;padding:8px 12px;color:var(--ink);font-weight:650;text-decoration:none}
+.tool i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--cyan)}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:0;margin-bottom:16px;background:var(--white);border:1px solid var(--line);border-radius:14px;overflow:hidden;scroll-margin-top:95px;box-shadow:0 2px 9px #12243a05}
+.stage-copy{padding:27px 28px 24px}.stage-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}.num{font-size:.91rem;font-weight:850;background:#e5f1f3;color:#086b78;border-radius:9px;padding:7px 10px}.stage h2{margin-bottom:0}
+.lead{font-size:.98rem;color:var(--muted);margin-bottom:15px;line-height:1.5}
+.actions{padding-left:20px;margin:0}.actions li{margin-bottom:10px;padding-left:4px}.actions li::marker{font-weight:750;color:var(--cyan)}
+.mini{font-size:.85rem;color:var(--muted)}.visual{background:#eaf1f5;border-left:1px solid var(--line);padding:18px 18px 14px;display:flex;flex-direction:column;justify-content:center;min-width:0}.visual svg{width:100%;height:auto;display:block}.figcap{color:#577083;text-align:center;font-size:.75rem;margin:6px 0 0}
+strong{font-weight:780}.note{padding:11px 13px;border-left:3px solid var(--amber);background:var(--amber-bg);border-radius:4px;font-size:.86rem;margin:14px 0 0}.note.ok{border-color:var(--ok);background:var(--ok-bg)}
+details{margin:14px 0 0;border-top:1px solid var(--line);padding-top:11px;font-size:.88rem}details summary{cursor:pointer;font-weight:750;color:var(--blue);padding:3px 0}details[open] summary{margin-bottom:10px}details ol,details ul{padding-left:22px;margin:8px 0}details li{margin-bottom:7px}
+.svgtxt{font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:13px;fill:#273f53}.svgtiny{font-size:11px;fill:#516b81}.svgstrong{font-size:14px;font-weight:800;fill:#122f46}.svgamber{fill:#b56d0d}.svgcyan{fill:#0d8799}.svgwhite{fill:#fff}
+.measure-example{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:8px;margin-top:14px;background:#f0f6fa;padding:13px;border-radius:9px;text-align:center}
+.measure-example span{font-size:.72rem;display:block;color:#6a7f91}.measure-example strong{font-size:1.35rem}.measure-example em{color:#87a0b2;font-style:normal;font-weight:800}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.compare div{padding:11px;border-radius:9px;background:#ecf5f7}.compare .shift{background:#fff0dc}.compare span{font-size:.74rem;display:block}.compare strong{font-size:1.35rem}
+.flowchart{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;align-items:stretch;margin:14px 0}.flowchart .flowbox{border:1px solid var(--line);background:#fff;border-radius:9px;text-align:center;padding:13px 8px;font-size:.82rem;font-weight:750}.flowchart .flowbox b{display:block;font-size:.7rem;letter-spacing:.04em;color:#0a8290;margin-bottom:3px}
+.finish{background:#102b40;color:#fff;padding:26px 28px;border-radius:13px;margin-top:19px}.finish h2{color:#fff;margin-bottom:12px}.finish .finish-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.finish-item{background:#ffffff14;border-radius:9px;padding:12px;font-size:.86rem}.finish-item strong{color:#a9e2db}
+.footgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}.compact{background:#fff;border:1px solid var(--line);border-radius:12px;padding:21px}.compact h2{font-size:1.08rem}.compact p,.compact li{font-size:.86rem;color:#43576b}.compact ul{padding-left:18px}.compact li{margin-bottom:6px}
+.refs{margin-top:20px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-radius:10px;font-size:.8rem;color:#506477}.refs summary{font-size:.9rem}.refs li{margin-bottom:5px}.back-bottom{margin-top:18px;display:inline-block;font-weight:750}
+@media(max-width:760px){.shell{padding:0 16px}.hero{padding:30px 0 25px}.hero-grid{grid-template-columns:1fr;gap:20px}.stat{padding:13px}.stat strong{font-size:1.85rem}.quicknav a{display:grid;gap:2px;font-size:.7rem}.stage{grid-template-columns:1fr}.stage-copy{padding:20px}.visual{border-left:0;border-top:1px solid var(--line);padding:10px 12px 12px}.visual svg{max-height:315px}.footgrid{grid-template-columns:1fr}.finish{padding:21px}.finish .finish-grid{grid-template-columns:1fr}.tools .tooltitle{width:100%}.flowchart{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:390px){.quicknav a{font-size:.63rem}.quicknav b{font-size:.81rem}.measure-example strong{font-size:1.08rem}.hero .micro{font-size:.7rem}}
+@media print{.quicknav{position:static}.hero{background:#fff;color:var(--ink)}.hero p{color:var(--ink)}.stat{border-color:#ddd}.stat span,.stat strong{color:var(--ink)!important}.summary-foot{color:var(--ink);background:#eee}.stage{break-inside:avoid}.visual{background:#f5f5f5}.finish{background:#fff;color:var(--ink);border:1px solid #ddd}.finish h2,.finish-item strong{color:var(--ink)}.finish-item{border:1px solid #ddd}}
 </style>
 </head>
 <body>
-<header><a href="../build-log.html#p2_step6">← GT40 Build Log · Phase 2 / Schritt 6</a></header>
-<main>
-<h1>Cam Degreeing – Nockenwelle exakt einmessen</h1>
-<p class="subtle">Exkurs für den TSC GT40, Ford Performance M-6009-302 / COMP Cams 35-518-8. Messmethode: Intake Centerline direkt am Einlassnocken von Zylinder 1.</p>
-<section>
-<h2>1. Was wird bestimmt – und wozu?</h2>
-<p>Die <strong>Intake Centerline (ICL)</strong> beschreibt, bei welchem Kurbelwellenwinkel <strong>nach dem oberen Totpunkt (ATDC)</strong> die Mitte des Einlassnockenhubs liegt. Die Nockenwelle dreht nur mit halber Kurbelwellendrehzahl. Deshalb beziehen sich alle hier angegebenen Winkel auf die <strong>Kurbelwelle</strong>, nicht auf die Nockenwelle.</p>
-<p>Für die dokumentierte COMP 35-518-8 nennt der Hersteller <strong>108° ATDC ICL</strong> und <strong>112° LSA</strong>. Die beiden Werte sind verschieden: Die LSA ist eine feste Eigenschaft der Nockenwelle; durch das Verdrehen des Steuertriebs ändert sich die Einbauposition (ICL), nicht die LSA.</p>
-<p>Ein größerer gemessener ICL-Wert als 108° bedeutet eine <strong>spätere / retardierte</strong> Einbauposition. Ein kleinerer Wert bedeutet eine <strong>frühere / vorverlegte</strong> Einbauposition. Der Vergleich ist erst aussagekräftig, wenn echter OT und Messmethode verifiziert sind.</p>
-</section>
-<section>
-<h2>2. Deine Werkzeuge – klar getrennte Aufgaben</h2>
-<table>
-<thead><tr><th>Werkzeug</th><th>Hierfür verwendest du es</th></tr></thead>
-<tbody>
-<tr><td><a href="https://www.moroso.com/18-degree-pro-wheel-for-engine-stand-use62191/">Moroso 62191 Pro Degree Wheel, 18"</a></td><td>Kurbelwellenwinkel ablesen. Gradscheibe fest auf der Kurbelwelle, Zeiger fest am Motorblock.</td></tr>
-<tr><td><a href="https://www.summitracing.com/parts/SUM-900061-S">Summit SUM-900061-S</a> plus Messuhr aus <a href="https://www.trickflow.com/search/brand/trick-flow-specialties/product-line/trick-flow-cam-degree-kits/part-type/camshaft-degree-kits">Trick Flow TFS-90000-16</a></td><td><strong>Echten oberen Totpunkt am Kolben</strong> von Zylinder 1 bestimmen. Der Summit-Brückenhalter liegt stabil auf dem Blockdeck.</td></tr>
-<tr><td><a href="https://www.summitracing.com/parts/PRO-66838">Proform 66838</a></td><td>Später direkt in die <strong>Einlassstößelbohrung von Zylinder 1</strong> einsetzen und die Hubkurve der Nockenwelle messen – ohne Kipphebel, Stößelstange und hydraulischen Stößel.</td></tr>
-</tbody>
-</table>
-<p class="caution"><strong>Proform-Taststück:</strong> Der 66838 wird mit getrennten Taststücken für Flat-Tappet- und Rollennockenwellen geliefert. Für die COMP 35-518-8 muss die <strong>Rollennocken-Ausführung</strong> eingesetzt werden. Welche der beiden beiliegenden Kontaktformen das in deinem konkreten Satz ist, ist noch nicht zweifelsfrei identifiziert; nicht anhand „flach“ oder „Kegel“ raten.</p>
-</section>
-<section>
-<h2>3. Echten OT mit Summit-Brücke und Trick-Flow-Messuhr bestimmen</h2>
-<p><strong>Warum?</strong> Rund um den höchsten Kolbenstand bewegt sich der Kolben nur wenig. Den scheinbaren Höchststand der Messuhr als 0° zu nehmen, kann daher einen systematischen Winkelfehler erzeugen. Zwei gleiche Kolbenhöhen vor und nach OT bestimmen den Mittelpunkt genauer.</p>
-<ol>
-<li><strong>Gradscheibe montieren.</strong> Moroso 62191 fest mit der Kurbelwelle verbinden; einen starren Zeiger am Block anbringen. Die Scheibe darf sich nicht unabhängig von der Kurbelwelle drehen.</li>
-<li><strong>Messuhr aufbauen.</strong> Summit-Brücke über Zylinder 1 sicher auf dem sauberen Blockdeck auflegen, Trick-Flow-Messuhr so befestigen, dass der Taster stabil auf dem Kolbenboden anliegt und nicht verkantet. Genügend Messweg in beide Richtungen lassen.</li>
-<li><strong>Vorläufigen OT suchen.</strong> Kurbelwelle vorsichtig um den höchsten Kolbenstand drehen, maximale Kolbenhöhe feststellen und Messuhr dort auf 0 stellen. Dieser Punkt dient <em>nur als Höhenreferenz</em>, noch nicht als bestätigter 0°-Winkel.</li>
-<li><strong>Erste gleiche Höhe erfassen.</strong> In normaler Motordrehrichtung an die Position <strong>0,030" (0,762 mm) unter der maximalen Kolbenhöhe vor OT</strong> heranfahren. Winkel notieren.</li>
-<li><strong>Zweite gleiche Höhe erfassen.</strong> Weiter in normaler Motordrehrichtung über OT hinaus bis <strong>genau derselben Kolbenhöhe nach OT</strong> drehen. Winkel notieren.</li>
-<li><strong>Winkelmitte als echten OT verwenden.</strong> Die Winkelposition genau zwischen diesen zwei Punkten ist wahrer OT. Zeiger bzw. Gradscheibe so korrigieren, dass dort 0° steht, <strong>ohne die Kurbelwelle beim Justieren zu verdrehen</strong>.</li>
-<li><strong>Kontrollieren.</strong> Die Messung an beiden 0,030"-Kolbenhöhen wiederholen. Vor und nach OT müssen nun gleiche Winkelabstände erscheinen. Wenn nicht, Aufbau und Bezug nochmals korrigieren.</li>
-</ol>
-<p class="caution"><strong>Nicht verwechseln:</strong> Die 0,030" in diesem Abschnitt beziehen sich auf die <strong>Kolbenhöhe relativ zu OT</strong>, entsprechend dem Ford-Messbeispiel „Checking Camshaft Timing“. In Abschnitt 4 werden andere 0,050" an der <strong>Nockenhubkurve relativ zum Hubmaximum</strong> gemessen.</p>
-</section>
-<section>
-<h2>4. Intake Centerline mit Proform 66838 messen</h2>
-<p><strong>Warum direkt an der Nocke?</strong> Die Messung vermeidet Einflüsse von Kipphebelübersetzung, Stößelstangengeometrie und hydraulischem Stößelspiel. Sie bestimmt unmittelbar die Nockenmitte bezogen auf den zuvor festgelegten echten Kurbelwellen-OT.</p>
-<ol>
-<li><strong>Werkzeug vorbereiten.</strong> Summit-Brücke/Messuhr entfernen. Proform 66838 mit dem geeigneten <strong>Rollennocken-Taststück</strong> in die Einlassstößelbohrung von Zylinder 1 einsetzen, sicher fixieren und Leichtgängigkeit sowie Messweg überprüfen. Der Tastkontakt muss zur Nocke passen.</li>
-<li><strong>Maximalen Nockenhub finden.</strong> Die Kurbelwelle in ihrer normalen Drehrichtung drehen, bis die Proform-Messuhr den höchsten Hub erreicht. Die Messuhr hier auf <strong>0</strong> stellen – das bedeutet jetzt „Hubmaximum“, nicht OT.</li>
-<li><strong>Vor den ersten Messpunkt zurückdrehen.</strong> Gemäß COMP-Cams-Anleitung zunächst etwa 0,100" vom Maximalhub zurückgehen und dann <strong>wieder in normaler Motordrehrichtung</strong> an den Messpunkt 0,050" <strong>unterhalb des Maximums auf der ansteigenden Flanke</strong> heranfahren. So wird der Steuertrieb in konsistenter Richtung belastet.</li>
-<li><strong>Ersten Kurbelwellenwinkel notieren.</strong> Moroso-Gradscheibe ablesen: <strong>„vor Maximum −0,050"“</strong>.</li>
-<li><strong>Zweiten Winkel notieren.</strong> In derselben normalen Drehrichtung über das Hubmaximum bis 0,050" <strong>unterhalb des Maximums auf der abfallenden Flanke</strong> weiterdrehen. Wert als <strong>„nach Maximum −0,050"“</strong> notieren.</li>
-<li><strong>ICL berechnen.</strong> Die Winkelmitte aus den beiden Ablesungen ist die Intake Centerline. Für eine über 360° hinauslaufende Skala wird die zweite Ablesung erst auf denselben fortlaufenden Winkelkreis gebracht.</li>
-<li><strong>Dreimal unabhängig messen.</strong> Die Kurbelwelle zwischen den Durchgängen erneut weit genug in Motordrehrichtung bewegen, das Hubmaximum wiederfinden und die zwei 0,050"-Punkte neu anfahren. <strong>OT-Zeiger und Gradscheibe dabei nicht neu justieren.</strong></li>
-</ol>
-<div class="formula">(Winkel vor Maximum + Winkel nach Maximum) ÷ 2 = ICL</div>
-<p><strong>Dein bisheriger erster Durchgang:</strong> (65° + 154°) ÷ 2 = <strong>109,5° ATDC</strong>. Gegenüber 108° Soll sind das <strong>+1,5° (später)</strong>. Der Befund bleibt bis zur erneuten OT-Prüfung vorläufig.</p>
-<p class="caution"><strong>Wichtige Unterscheidung:</strong> Das „0,050" unter dem Maximum“ für die ICL-Mittelpunktmethode ist <strong>nicht</strong> die Herstellerangabe „Duration @ 0,050"“. Letztere verwendet einen Bezug von 0,050" Hub <strong>über dem Grundkreis</strong> und beschreibt eine andere Messung.</p>
-<p><a href="../build-log.html#p2_step6"><strong>Zurück zu den drei Eingabedurchgängen im Build-Log</strong></a></p>
+<div class="topbar"><div class="shell topbar-inner">
+  <span class="topbrand">GT40 · ENGINE BUILD</span>
+  <a class="toptrail" href="../build-log.html#p2_step6">← Build-Log / Phase 2 / Schritt 6</a>
+</div></div>
+<header class="hero"><div class="shell hero-grid">
+  <div>
+    <p class="eyebrow">Werkstattanleitung · Ford 302 · COMP 35-518-8</p>
+    <h1>Nockenwelle<br>exakt einmessen.</h1>
+    <p>Fünf klare Schritte. Drei Messungen pro Runde. Nach jeder Verstellung erneut messen – bis der Einbauwert stimmt.</p>
+    <a class="mainlink" href="../build-log.html#p2_step6">Messwerte im Build-Log eingeben ↗</a>
+    <p class="micro">Messung direkt am Einlassnocken von Zylinder 1 · alle Winkel = Kurbelwellengrad nach OT (ATDC)</p>
+  </div>
+  <div class="summary" aria-label="Beispiel der bisherigen Messwerte">
+    <div class="stat"><span>ICL Soll · COMP</span><strong>108°</strong></div>
+    <div class="stat ist"><span>Bisherige Messung</span><strong>109,5°</strong></div>
+    <div class="summary-foot"><strong>+1,5° zu spät.</strong> Erst echten OT bestätigen – anschließend neue Messrunde beginnen. Die bisherige Messung ist noch <strong>nicht</strong> freigegeben.</div>
+  </div>
+</div></header>
+<nav class="quicknav" aria-label="Schritte der Anleitung"><div class="shell quicknav-inner">
+<a href="#ot"><b>01</b> OT finden</a><a href="#messen"><b>02</b> Messen</a><a href="#bewerten"><b>03</b> Bewerten</a><a href="#verstellen"><b>04</b> Verstellen</a><a href="#abschluss"><b>05</b> Nachmessen</a>
+</div></nav>
+<main class="shell">
+<div class="tools" aria-label="Vorhandene Messwerkzeuge">
+<span class="tooltitle">Deine Werkzeuge</span>
+<span class="tool"><i></i> Moroso 62191 · Gradscheibe</span>
+<span class="tool"><i></i> Summit SUM-900061-S · Brücke</span>
+<span class="tool"><i></i> Trick Flow TFS-90000-16 · Messuhr</span>
+<span class="tool"><i></i> Proform 66838 · Cam Checker</span>
+</div>
+
+<section class="stage" id="ot">
+  <div class="stage-copy">
+    <div class="stage-head"><span class="num">01</span><h2>Echten OT bestimmen</h2></div>
+    <p class="lead">Nicht den höchsten Zeigerausschlag schätzen: zwei <strong>gleiche Kolbenhöhen</strong> links und rechts von OT nehmen.</p>
+    <ol class="actions">
+      <li>Moroso-Gradscheibe mit starrem Zeiger montieren. Messuhr über der Summit-Brücke auf Kolben 1 positionieren.</li>
+      <li>Dieselbe Kolbenhöhe <strong>vor und nach OT</strong> ablesen, z. B. jeweils 0,030" unter dem Maximum.</li>
+      <li>Winkelmitte bestimmen, Gradscheibe auf <strong>0° OT</strong> justieren und gegenprüfen.</li>
+    </ol>
+    <div class="note">Nach jeder Demontage oder Verstellung von Gradscheibe/Zeiger: <strong>OT erneut überprüfen.</strong></div>
+    <details><summary>Warum zwei gleiche Höhen? · Messfehler vermeiden</summary>
+      <p>Im Bereich um OT bewegt sich der Kolben nur wenig. Ein einzelner Höchstpunkt lässt sich daher ungenau bestimmen. Bei zwei gleichen Kolbenhöhen ergibt die Mitte ihrer Kurbelwellenwinkel den echten OT. Für den offenen Block wird hier deine Messuhrbrücke verwendet; COMP zeigt alternativ die Kolbenstopp-Methode.</p>
+      <p>Die Messuhr muss senkrecht und stabil stehen; beide Höhen sind mit identischem Aufbau zu messen. Die Gradscheibe darf sich bei der Justierung nicht relativ zur Kurbelwelle verschieben.</p>
+    </details>
+  </div>
+  <figure class="visual" aria-label="Schematische Zeichnung für Messuhr und gleiche Kolbenhöhe" style="margin:0">
+    <svg viewBox="0 0 550 350" role="img" aria-labelledby="tdc-title tdc-desc">
+      <title id="tdc-title">Kolben-OT mit Messuhr und gleichen Kolbenhöhen</title>
+      <desc id="tdc-desc">Links Messuhr auf einer Brücke über Kolben 1. Rechts zwei gleiche Kolbenhöhen vor und nach OT, deren Winkelmitte der echte OT ist.</desc>
+      <rect x="30" y="24" width="220" height="286" rx="12" fill="#dce8ef"/>
+      <path d="M62 94h155v203H62z" fill="#f8fbfc" stroke="#9bb3c6" stroke-width="5"/>
+      <path d="M64 208H215" stroke="#b0c2cf" stroke-dasharray="6 6" stroke-width="2"/>
+      <path d="M75 189h130v48H75z" fill="#9fb5c4" stroke="#3c657c" stroke-width="3" rx="4"/>
+      <path d="M83 201h114M83 209h114" stroke="#e8f0f5" stroke-width="3"/>
+      <path d="M140 237v42" stroke="#677f91" stroke-width="13" stroke-linecap="round"/>
+      <path d="M53 84h173" stroke="#244b66" stroke-width="12" stroke-linecap="round"/>
+      <path d="M140 85V151" stroke="#0d8799" stroke-width="5"/>
+      <circle cx="140" cy="51" r="38" fill="#fff" stroke="#0d8799" stroke-width="4"/>
+      <circle cx="140" cy="51" r="3" fill="#0d8799"/>
+      <path d="M140 51l20 -24" stroke="#d78a29" stroke-width="4" stroke-linecap="round"/>
+      <path d="M140 20v7M110 30l5 5M170 30l-5 5M108 58l7-2M173 58l-7-2" stroke="#7598ad" stroke-width="2"/>
+      <text x="140" y="323" text-anchor="middle" class="svgstrong">Zylinder 1</text>
+      <text x="257" y="80" class="svgtiny">Messuhr / Brücke</text>
+      <path d="M250 84L187 74" stroke="#7896a9" stroke-width="1.5"/>
+      <text x="276" y="40" class="svgstrong">Winkelmitte = OT</text>
+      <path d="M299 249A110 110 0 0 1 509 249" fill="none" stroke="#a8c0ce" stroke-width="4" stroke-linecap="round"/>
+      <path d="M404 249v-101" stroke="#0d8799" stroke-width="3" stroke-dasharray="7 7"/>
+      <line x1="404" y1="249" x2="342" y2="165" stroke="#d18b30" stroke-width="4"/>
+      <line x1="404" y1="249" x2="466" y2="165" stroke="#d18b30" stroke-width="4"/>
+      <circle cx="342" cy="165" r="7" fill="#d18b30"/>
+      <circle cx="466" cy="165" r="7" fill="#d18b30"/>
+      <text x="404" y="138" text-anchor="middle" class="svgcyan" font-weight="800">0°</text>
+      <text x="328" y="155" text-anchor="middle" class="svgtiny">vor OT</text>
+      <text x="480" y="155" text-anchor="middle" class="svgtiny">nach OT</text>
+      <path d="M314 282h180" stroke="#a7bdcb" stroke-width="3" stroke-linecap="round"/>
+      <path d="M327 269h150" stroke="#0d8799" stroke-width="6" stroke-linecap="round"/>
+      <text x="404" y="310" text-anchor="middle" class="svgstrong">gleiche Kolbenhöhe</text>
+      <text x="404" y="332" text-anchor="middle" class="svgtiny">Schematisch · Winkel nicht maßstäblich</text>
+    </svg>
+    <figcaption class="figcap">Summit-Brücke + Trick-Flow-Messuhr. 0° wird über zwei identische Höhen verifiziert.</figcaption>
+  </figure>
 </section>
 
-<section>
-<h2>5. Deine Ford-M-6268-A302-Steuerkette: Advance oder Retard einstellen</h2>
-<p>Im GT40-Projekt ist <strong>Ford Performance M-6268-A302</strong> dokumentiert. Es handelt sich um eine <strong>Doppelrollen-Steuerkette mit neun Keilnutpositionen am Kurbelwellenrad</strong>. Ford bestätigt <strong>0° (Grundstellung)</strong> sowie Verstellpositionen bis <strong>±8° Kurbelwinkel in 2°-Schritten</strong>. Die exakten Kennzeichen auf dem tatsächlich eingebauten Zahnrad müssen abgelesen und mit Fords Montageanweisung abgeglichen werden; Beispiele wie „A2“ sind keine Ersatzbestätigung für die vorliegende Markierung. Ein Schritt von <strong>2° Kurbelwinkel</strong> entspricht <strong>1° Nockenwellenwinkel</strong>.</p>
-<p><strong>Sehr wichtig:</strong> Die Keilnut legt fest, in welcher Winkelposition das kleine Zahnrad auf dem Kurbelwellenzapfen sitzt. Die dazugehörige <em>Steuermarkierung am Zahnradumfang</em> legt die korrekte Zuordnung zum Nockenwellenrad fest. Beide Markierungen müssen zur <strong>selben gewählten Position</strong> gehören. Keinesfalls die A2-Keilnut mit der „0“-Markierung als Bezug montieren.</p>
-<table>
-<thead><tr><th>Wenn die aktuelle ICL ...</th><th>Dann ...</th><th>Warum?</th></tr></thead>
-<tbody>
-<tr><td>größer als Soll ist</td><td><strong>Advance</strong> – Nockenwelle früher stellen (ICL verringern)</td><td>Die Einlassnocke erreicht den Mittelpunkt früher nach Kolben-OT</td></tr>
-<tr><td>kleiner als Soll ist</td><td><strong>Retard</strong> – Nockenwelle später stellen (ICL erhöhen)</td><td>Die Einlassnocke erreicht den Mittelpunkt später nach Kolben-OT</td></tr>
-<tr><td>innerhalb der Hersteller-Orientierung liegt</td><td><strong>Keine automatische Verstellung</strong>; Messung, Gradangaben und mechanische Voraussetzungen bestätigen</td><td>Jede unnötige Veränderung erzeugt neue Montagerisiken und erfordert eine vollständige Nachprüfung</td></tr>
-</tbody></table>
-<p class="formula">Abweichung = ICL gemessen − ICL Soll. &nbsp; + = zu spät → Advance. &nbsp; − = zu früh → Retard.</p>
-<p>Die <a href="https://performanceparts.ford.com/download/pdfs/CheckingCamshaftTiming.pdf">Ford-Anleitung „Checking Camshaft Timing“</a> nennt als allgemeine Orientierung: Die gemessene Centerline soll innerhalb <strong>1° Kurbelwinkel</strong> des Nockenwellenhersteller-Sollwerts liegen. Das ist eine Installationsorientierung, <strong>keine Piston-to-Valve-Freigabe</strong> oder Garantie gegen Messtoleranzen.</p>
-<h3>Beispiel A: Dein aktueller Befund (noch vor erneuter OT-Kontrolle)</h3>
-<ol>
-<li>Du hast 65° und 154° abgelesen. ICL = (65 + 154) / 2 = <strong>109,5° ATDC</strong>.</li>
-<li>COMP verlangt <strong>108° ATDC</strong>. Die Abweichung ist <strong>+1,5°</strong>, also 1,5° zu <strong>spät</strong>.</li>
-<li>Wenn dein Ford-Kurbelwellenrad derzeit tatsächlich auf <strong>„0“</strong> steht, könnte eine Korrektur auf die zueinander passende <strong>A2-Keilnut und A2-Zahnradmarkierung</strong> die ICL rechnerisch um 2° auf <strong>107,5°</strong> verändern. Das ist <em>nur eine Rechenvorhersage</em>.</li>
-<li>Nach der Umstellung müssen beide Räder und die Kette wieder richtig sitzen; anschließend den Motor <strong>von Hand zweimal vollständig durchdrehen</strong> und die drei ICL-Messungen erneut durchführen. <strong>Nur der neue Messwert</strong> entscheidet.</li>
-<li>Wenn drei verlässliche Messungen beispielsweise 107,5° ergeben, ist die Sollabweichung −0,5°. Das liegt innerhalb der von Ford genannten 1°-Orientierung. Weitere mechanische Checks bleiben trotzdem offen.</li>
-</ol>
-<h3>Beispiel B: Der Motor steht zu früh</h3>
-<p>Gemessen seien beispielsweise <strong>105,5°</strong> bei 108° Soll. Abweichung = −2,5°. Die Nockenwelle erreicht ihre Mitte zu früh. Die Korrekturrichtung ist <strong>Retard</strong>; ein Schritt von +2° Kurbelwinkel ergäbe rechnerisch 107,5°. Die tatsächliche neue Stellung hängt von der bisherigen Markierung ab und muss am echten Bauteil korrekt gewählt und nachgemessen werden.</p>
-<h3>Beispiel C: Soll getroffen, aber Messungen streuen stark</h3>
-<p>Die drei Läufe ergeben 106°, 108° und 110°. Der Mittelwert ist exakt 108°, die Spannweite aber 4°. <strong>Keine Einstellfreigabe</strong>: Vor jeder Zahnradverstellung die Messuhr, Taststückführung, den festen Zeiger und die Messrichtung kontrollieren. Ein passender Mittelwert kann unzuverlässige Einzelmessungen nicht ausgleichen.</p>
-<p class="caution"><strong>Achtung bei der 2°-Angabe:</strong> Der verstellte <em>Kurbelwellenwinkel</em> beträgt 2°. Dies sind <em>1° tatsächliche Nockenwellenrotation</em>, weil sich die Nockenwelle mit halber Kurbelwellengeschwindigkeit dreht. Die hier berechnete ICL ist stets in Kurbelwellengraden angegeben.</p>
+<section class="stage" id="messen">
+  <div class="stage-copy">
+    <div class="stage-head"><span class="num">02</span><h2>Nockenmitte messen</h2></div>
+    <p class="lead">Proform 66838 direkt in die <strong>#1-Einlassstößelbohrung</strong> einsetzen. Keine Kipphebelübersetzung im Messweg.</p>
+    <ol class="actions">
+      <li><strong>Rollennocken-Taststück</strong> des Proform-Satzes identifizieren; korrekt an der Nocke anlegen.</li>
+      <li>Maximalhub suchen, Messuhr dort auf <strong>0</strong> stellen.</li>
+      <li>Zuerst zurück auf ca. 0,100", dann in normaler Drehrichtung den Punkt <strong>0,050" unterhalb des Maximums</strong> anfahren: Winkel A.</li>
+      <li>Über das Maximum weiter bis nochmals 0,050" unter Maximum: Winkel B. <strong>3× wiederholen.</strong></li>
+    </ol>
+    <div class="note">Die beiden 0,050"-Punkte liegen <strong>unter dem Nockenmaximum</strong> – nicht 0,050" über dem Grundkreis (Steuerzeitenangabe).</div>
+    <details><summary>Messrichtung, Taststück und drei Wiederholungen</summary>
+      <p>Bei jeder Messung den ansteigenden Messpunkt aus gleicher Drehrichtung anfahren, damit das Spiel im Steuertrieb reproduzierbar belastet wird. Das originale COMP-Verfahren: vom Maximum etwa 0,100" zurück und dann wieder vorwärts zu 0,050" vor Maximum.</p>
+      <p>Wenn du nach der OT-Kontrolle eine neue Winkelreferenz gesetzt hast, <strong>neue Messrunde</strong> im Build-Log anlegen. Die alte, unbestätigte Messung 65°/154° bleibt historisch erhalten und wird nicht mit der neuen Reihe gemittelt.</p>
+    </details>
+    <div class="measure-example" aria-label="Rechenbeispiel aus vorhandener Messung">
+      <div><span>Winkel A</span><strong>65°</strong></div><em>+</em>
+      <div><span>Winkel B</span><strong>154°</strong></div><em>÷2</em>
+      <div><span>ICL</span><strong>109,5°</strong></div>
+    </div>
+  </div>
+  <figure class="visual" aria-label="Schema der Nockenhubkurve mit zwei gleich hohen Messpunkten" style="margin:0">
+    <svg viewBox="0 0 550 345" role="img" aria-labelledby="cam-title cam-desc">
+      <title id="cam-title">Intake-Centerline-Methode am Nockenhub</title>
+      <desc id="cam-desc">Schematische Nockenhubkurve mit Höchstpunkt bei 109,5° und zwei Ablesungen 65° und 154° auf der gleichen Höhe 0,050 Zoll unter dem Maximum.</desc>
+      <rect x="22" y="14" width="508" height="298" rx="12" fill="#f8fbfc"/>
+      <path d="M50 278H513" stroke="#a9bac8" stroke-width="2"/>
+      <path d="M65 278V46" stroke="#a9bac8" stroke-width="2"/>
+      <text x="54" y="39" class="svgtiny">Nockenhub</text>
+      <text x="495" y="303" class="svgtiny">KW-Winkel</text>
+      <path d="M78 276 C160 276 165 202 218 149 C246 121 263 71 287 70 C316 70 331 122 356 149 C403 205 425 276 506 276" fill="none" stroke="#0d8799" stroke-width="6" stroke-linecap="round"/>
+      <path d="M82 149H478" stroke="#d4913a" stroke-width="2.5" stroke-dasharray="8 6"/>
+      <line x1="218" y1="149" x2="218" y2="279" stroke="#d4913a" stroke-width="2" stroke-dasharray="5 5"/>
+      <line x1="356" y1="149" x2="356" y2="279" stroke="#d4913a" stroke-width="2" stroke-dasharray="5 5"/>
+      <line x1="287" y1="70" x2="287" y2="278" stroke="#0d8799" stroke-width="2.5" stroke-dasharray="6 5"/>
+      <circle cx="218" cy="149" r="7" fill="#d4913a" stroke="#fff" stroke-width="2"/>
+      <circle cx="356" cy="149" r="7" fill="#d4913a" stroke="#fff" stroke-width="2"/>
+      <circle cx="287" cy="70" r="7" fill="#0d8799" stroke="#fff" stroke-width="2"/>
+      <rect x="82" y="165" width="126" height="48" rx="6" fill="#fff3df"/>
+      <text x="96" y="184" class="svgamber" font-size="12">−0,050" vom</text>
+      <text x="96" y="201" class="svgamber" font-size="12">Maximum</text>
+      <text x="218" y="304" text-anchor="middle" class="svgstrong">65°</text>
+      <text x="287" y="304" text-anchor="middle" class="svgcyan" font-weight="800">109,5°</text>
+      <text x="356" y="304" text-anchor="middle" class="svgstrong">154°</text>
+      <text x="287" y="48" text-anchor="middle" class="svgcyan" font-weight="800">Maximum</text>
+      <text x="218" y="135" text-anchor="middle" class="svgamber" font-size="12">A</text>
+      <text x="356" y="135" text-anchor="middle" class="svgamber" font-size="12">B</text>
+      <text x="274" y="335" class="svgtiny" text-anchor="middle">Schematisch · Flankenform nicht maßstäblich</text>
+    </svg>
+    <figcaption class="figcap">Zwei gleich hohe Punkte ergeben die ICL: (A + B) ÷ 2. COMP Intake Centerline Method.</figcaption>
+  </figure>
 </section>
-<section>
-<h2>6. Vollständiger Korrekturzyklus – bis die Arbeit abgeschlossen ist</h2>
-<ol>
-<li><strong>OT bestätigen.</strong> Bei abgenommenem Kopf (wie bei deinem aktuellen Aufbau) die Summit-Messuhrenbrücke und Trick-Flow-Messuhr verwenden. Gleiche Kolbenhöhen vor/nach OT erfassen und daraus den echten OT einstellen. Die Gradscheibe soll danach nicht bei jedem Messdurchgang erneut verstellt werden. <strong>Wenn für die Kettenkorrektur Gradscheibe oder Zeiger gelöst bzw. verstellt werden, muss beim Wiederaufbau der echte OT erneut überprüft und die 0°-Referenz wiederhergestellt werden.</strong></li>
-<li><strong>Proform-Taster verifizieren.</strong> Nur mit sicher identifiziertem Rollennocken-Kontaktstück arbeiten. Der Messuhrweg muss stimmen; die Messuhr darf nicht am Hubmaximum anschlagen.</li>
-<li><strong>Nach überprüftem OT neue Dreierreihe beginnen.</strong> Der historische Altbefund 65°/154° wurde vor der endgültigen OT-Prüfung aufgenommen: ihn nicht mit nachkalibrierten Werten mitteln. Dafür direkt eine <em>neue Messrunde</em> anlegen. Die steigende und fallende Flanke jeweils bei 0,050" unter dem Maximalhub ablesen, immer mit gleichsinniger Annäherung an die Messpunkte. Drei neue Wertepaare eintragen. Die Anwendung berechnet ICL/Mittel/Spannweite automatisch.</li>
-<li><strong>Entscheiden, nicht vorschnell umstellen.</strong> Wenn drei Messungen nicht reproduzierbar sind, zuerst die Messmethode korrigieren. Wenn sie reproduzierbar sind, Abweichung mit COMP Cam Card und Fords ±1°-Orientierung vergleichen.</li>
-<li><strong>Ist eine Verstellung nötig?</strong> Korrekturrichtung aus Soll minus Ist ableiten. Zunächst die <em>aktuell tatsächlich verwendete</em> Keilnut <strong>und die zugehörige Zahnradmarkierung getrennt</strong> dokumentieren. Am Ford-M-6268-A302-Rad eine verifizierte neue Kombination aus Keilnut <strong>und passender Zahnradmarkierung</strong> wählen. Die App zeigt die Richtung, wählt aus Sicherheitsgründen aber keine Zahnradstellung selbst.</li>
-<li><strong>Steuertrieb zerlegen und neu positionieren.</strong> Kurbel- und Nockenwellenrad samt Kette gemäß <a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6268-A302.PDF">Ford IS-1850-0400</a> abnehmen und mit der ausgewählten Markierung wieder montieren. Auf korrekte Passung der Stirnräder, Anlaufscheibe, Passstift-/Schraubenlänge, Kettenführung und Freigängigkeit achten. Die Ausrichtung der Zahnradmarken und der gewählten Keilnut vor dem Drehen prüfen.</li>
-<li><strong>Befestigung nach verbauter Hardware.</strong> Ford IS-1850-0400 nennt <strong>40–45 lb-ft für einen 3/8"-Nockenwellenbolzen</strong> mit Schraubensicherung. Im GT40 ist aber <strong>ARP 254-1001</strong> dokumentiert: Die tatsächlich vorhandene ARP-Schraube, Gewinde, Scheibe, Schmiermittel und zugehörige ARP-Anweisung müssen vor dem endgültigen Anziehen geprüft werden. Fords Zahlenwert ist <strong>nicht ohne Weiteres als ARP-Montagevorgabe</strong> zu übernehmen.</li>
-<li><strong>Mechanik vorsichtig kontrollieren.</strong> Mit allen dafür erforderlichen Teilen korrekt montiert, Kurbelwelle langsam und ohne Starter <strong>zwei volle Kurbelwellenumdrehungen von Hand</strong> drehen (Ford IS-1850-0400). Bei unerwartetem Widerstand <strong>sofort anhalten</strong>. Markierungen, Kettenlauf und Bauteilabstände erneut kontrollieren. Zwei Umdrehungen allein ersetzen keine Piston-to-Valve-Messung.</li>
-<li><strong>Neue Einstellrunde anlegen.</strong> Im Build-Log „Neue Messrunde nach OT-Prüfung / Advance / Retard“ betätigen; die vorherigen drei Messungen bleiben unverändert im Gist. Neue Zahnradmarkierung dokumentieren und erneut <strong>drei</strong> ICL-Messungen durchführen. Mittelwert, Abweichung und Spannweite neu bewerten.</li>
-<li><strong>Schleife wiederholen</strong>, falls Messergebnis oder mechanische Voraussetzungen nicht passen. Kein „geschätztes“ Nachstellen, kein Weiterbauen allein aufgrund des theoretischen Verstellbetrags.</li>
-<li><strong>Finale Dokumentation.</strong> Tatsächliche Zahnradmarkierung, drei finale Winkelpaare, Soll-/Ist-ICL, Mittelwert, Spannweite, nachgewiesenen OT, verwendetes Rollentaststück und Kontrolle nach zwei Kurbelwellenumdrehungen abhaken. Schritt 6 erst dann manuell auf „erledigt“ stellen. <strong>Kolben-Ventil-Abstand, Ventilfeder-/Retainer-Abstände, Montage der Köpfe und weiterer Ventiltrieb sind gesonderte Freigabepunkte</strong>; sie müssen vor dem Motorstart ebenfalls abgeschlossen sein.</li>
-</ol>
-<p class="caution"><strong>Wenn eine Markierung nicht eindeutig lesbar ist:</strong> Nicht anhand einer generischen Abbildung erraten, welcher Zahn oder welche Keilnut gemeint ist. Die originale Ford-Anweisung und das vorliegende Zahnrad sind maßgeblich. Die tatsächliche Zahnradstellung muss vor einem neuen Probelauf visuell eindeutig bestätigt sein.</p>
+
+<section class="stage" id="bewerten">
+  <div class="stage-copy">
+    <div class="stage-head"><span class="num">03</span><h2>Messung bewerten</h2></div>
+    <p class="lead">Das Build-Log berechnet automatisch Einzelwerte, Mittelwert, Spannweite und Abweichung zum Soll.</p>
+    <div class="compare">
+      <div><span>ICL Soll</span><strong>108°</strong></div>
+      <div class="shift"><span>Beispiel Ist − Soll</span><strong>+1,5°</strong></div>
+    </div>
+    <ol class="actions">
+      <li><strong>Ist größer als Soll?</strong> Nocke zu spät → <strong>ADVANCE</strong> (ICL kleiner).</li>
+      <li><strong>Ist kleiner als Soll?</strong> Nocke zu früh → <strong>RETARD</strong> (ICL größer).</li>
+      <li><strong>Streuung hoch?</strong> Erst Messaufbau prüfen. Kein Zahnrad verstellen, nur weil der Mittelwert passt.</li>
+    </ol>
+    <div class="note ok">Ford nennt <strong>±1° Kurbelwinkel</strong> als Orientierung zur empfohlenen ICL. Keine Freigabe für Kolben-Ventil-Abstand oder übrigen Ventiltrieb.</div>
+    <details><summary>Was bedeutet „zu früh“ oder „zu spät“ beim Fahren?</summary>
+      <p><strong>Advance:</strong> Ventilereignisse früher; tendenziell stärkerer unterer Drehzahlbereich, möglicherweise geringerer Einlassventil-Kolben-Abstand.</p>
+      <p><strong>Retard:</strong> Ventilereignisse später; tendenziell Verlagerung der Leistungscharakteristik zu höheren Drehzahlen, möglicherweise geringerer Auslassventil-Kolben-Abstand.</p>
+      <p>Eine Abweichung von 1,5° bedeutet <em>nicht</em> automatisch Schaden oder messbaren Leistungsverlust. Entscheidend sind verlässliche Messwerte, die Hersteller-Vorgabe und die mechanische Freigängigkeit.</p>
+    </details>
+  </div>
+  <figure class="visual" aria-label="Vergleich von Ziel- und Messwert auf einer Winkelskala" style="margin:0">
+    <svg viewBox="0 0 550 275" role="img" aria-labelledby="dev-title dev-desc">
+      <title id="dev-title">Soll-Ist-Abweichung: 108° und 109,5°</title>
+      <desc id="dev-desc">Winkelskala 104 bis 112 Grad. Ziel 108 Grad, orientierender Bereich 107 bis 109 Grad, bisherige Messung 109,5 Grad außerhalb des Bereichs.</desc>
+      <rect x="25" y="18" width="500" height="235" rx="12" fill="#f8fbfc"/>
+      <text x="42" y="51" class="svgstrong">ICL · Grad nach OT (ATDC)</text>
+      <rect x="221" y="111" width="109" height="52" rx="5" fill="#d5f0e9"/>
+      <line x1="56" y1="138" x2="493" y2="138" stroke="#728da2" stroke-width="4" stroke-linecap="round"/>
+      <g font-family="system-ui" fill="#546e82" font-size="12" text-anchor="middle">
+      <text x="56" y="185">104°</text><text x="165" y="185">106°</text><text x="275" y="185">108°</text><text x="385" y="185">110°</text><text x="493" y="185">112°</text></g>
+      <path d="M275 87V164" stroke="#0c8f82" stroke-width="4"/>
+      <path d="M357 101V164" stroke="#cb8028" stroke-width="4"/>
+      <circle cx="275" cy="138" r="8" fill="#0c8f82" stroke="#fff" stroke-width="3"/>
+      <circle cx="357" cy="138" r="8" fill="#cb8028" stroke="#fff" stroke-width="3"/>
+      <text x="275" y="76" text-anchor="middle" class="svgcyan" font-weight="800">SOLL 108°</text>
+      <text x="376" y="88" text-anchor="middle" class="svgamber" font-weight="800">IST 109,5°</text>
+      <text x="275" y="219" text-anchor="middle" class="svgtiny">Grün: ±1° als Ford-Orientierung</text>
+      <text x="275" y="237" text-anchor="middle" class="svgtiny">Beispielwert – erst OT neu prüfen</text>
+    </svg>
+    <figcaption class="figcap">Größere ICL = später. Kleinere ICL = früher.</figcaption>
+  </figure>
 </section>
-<section>
-<h2>7. Warum nach jeder Korrektur neu messen?</h2>
-<p>Die Versatzmarkierungen am Zahnrad sind <strong>Nennstellungen</strong>. Die reale ICL berücksichtigt zusätzlich Ketten-/Zahnradgeometrie, Nockenwellenschliff, Toleranzen und den gemessenen OT-Bezug. Das rechnerische Ergebnis „109,5° − 2° = 107,5°“ ist eine Erwartung, keine Messung. Genau deshalb fordert auch Ford nach der Korrektur eine erneute Prüfung der Steuerzeiten.</p>
-<p><strong>Wiederholbarkeit gegen Genauigkeit:</strong> Dreimal 109,5° mit einem falsch justierten OT bleiben dreimal falsch. Drei Läufe prüfen nur das Ablesen; die OT-Bestimmung, das Taststück und die mechanische Bauteilzuordnung sind eigenständig zu validieren.</p>
+
+<section class="stage" id="verstellen">
+  <div class="stage-copy">
+    <div class="stage-head"><span class="num">04</span><h2>Ford-Steuertrieb korrigieren</h2></div>
+    <p class="lead"><strong>Ford Performance M-6268-A302:</strong> neun Stellungen, jeweils 2° Kurbelwinkel, insgesamt ±8°.</p>
+    <ol class="actions">
+      <li><strong>Aktuelle Stellung dokumentieren:</strong> verwendete <em>Keilnut</em> und <em>passende Zahnradmarke</em> getrennt notieren.</li>
+      <li>Falls erforderlich, in Richtung <strong>Advance</strong> oder <strong>Retard</strong> verstellen – stets <strong>zugehörige Keilnut UND Markierung</strong> verwenden.</li>
+      <li>Räder und Kette gemäß Ford montieren, ARP-Schrauben nach <strong>passender ARP-Anweisung</strong> sichern und anziehen.</li>
+      <li>Kurbelwelle <strong>2 volle Umdrehungen von Hand</strong> drehen. Bei Widerstand sofort stoppen.</li>
+    </ol>
+    <div class="note">Die Grafik rechts ist <strong>keine zahn- oder markierungsgenaue Montagezeichnung</strong>. Die echten Symbole direkt am M-6268-A302-Rad und in Fords Montageblatt abgleichen.</div>
+    <details><summary>Beispiel +1,5° → warum ein 2°-Schritt möglich ist</summary>
+      <p>Wäre die bestätigte ICL <strong>109,5°</strong> und die aktuelle Stellung bekannt, könnte eine relative <strong>Advance-Verstellung um 2° Kurbelwinkel</strong> rechnerisch <strong>107,5°</strong> ergeben. Das wäre gegenüber 108° Soll um −0,5° verschoben. Dies ist nur eine <strong>Rechenvoraussage</strong>, keine bestätigte Markierungswahl und kein Ersatz für die Nachmessung.</p>
+      <p>Ford fordert die zueinander passende Keilnut und Zahnradmarke. Die Anzugsvorgabe aus dem Ford-Blatt gilt für die dort beschriebene Standardschraube; die verbaute <strong>ARP 254-1001</strong> benötigt die zugehörige Montageanweisung. Ebenfalls Dowel-/Unterlegscheibenabstand, Nockenwellenendspiel und korrekte Passung prüfen.</p>
+      <p><a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6268-A302.PDF" target="_blank" rel="noopener">Ford IS-1850-0400 – Original-Montageanleitung (PDF)</a></p>
+    </details>
+  </div>
+  <figure class="visual" aria-label="Prinzipdarstellung der Steuerkette und getrennter Markierungen" style="margin:0">
+    <svg viewBox="0 0 550 366" role="img" aria-labelledby="gear-title gear-desc">
+      <title id="gear-title">Ford-Doppelrollensteuertrieb: Markierung und Keilnut müssen zusammenpassen</title>
+      <desc id="gear-desc">Schematische Kette um ein großes oberes Nockenwellenrad und ein kleineres unteres Kurbelwellenrad. Markierungen stehen einander gegenüber. Eine separate Zeichnung zeigt die Keilnut und die passende Zahnradmarke, ohne die echte Position vorzugeben.</desc>
+      <rect x="18" y="16" width="514" height="325" rx="12" fill="#f8fbfc"/>
+      <path d="M136 109L157 265Q273 336 389 265L411 109" fill="none" stroke="#90a9bc" stroke-width="18" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M136 109L157 265Q273 336 389 265L411 109" fill="none" stroke="#566f83" stroke-width="3" stroke-dasharray="3 9" stroke-linecap="round"/>
+      <circle cx="274" cy="123" r="111" fill="#afc0ce" stroke="#3c637b" stroke-width="6"/>
+      <circle cx="274" cy="123" r="90" fill="#e7eff3" stroke="#688ba2" stroke-width="3"/>
+      <circle cx="274" cy="123" r="32" fill="#fff" stroke="#7895a7" stroke-width="3"/>
+      <circle cx="274" cy="283" r="58" fill="#afc0ce" stroke="#3c637b" stroke-width="5"/>
+      <circle cx="274" cy="283" r="34" fill="#e7eff3" stroke="#688ba2" stroke-width="3"/>
+      <circle cx="274" cy="283" r="14" fill="#fff" stroke="#7895a7" stroke-width="3"/>
+      <path d="M274 224v18" stroke="#d68522" stroke-width="7" stroke-linecap="round"/>
+      <path d="M274 222v22" stroke="#fff" stroke-width="2"/>
+      <path d="M274 210v-12" stroke="#d68522" stroke-width="6" stroke-linecap="round"/>
+      <path d="M273 268v-13" stroke="#0b8799" stroke-width="5" stroke-linecap="round"/>
+      <path d="M266 267h16" stroke="#0b8799" stroke-width="5" stroke-linecap="round"/>
+      <text x="57" y="83" class="svgstrong">Nockenwellenrad</text>
+      <path d="M185 88L206 94" stroke="#7896aa" stroke-width="1.5"/>
+      <text x="345" y="314" class="svgstrong">Kurbelwellenrad</text>
+      <path d="M346 303L320 297" stroke="#7896aa" stroke-width="1.5"/>
+      <rect x="32" y="181" width="164" height="54" rx="7" fill="#fff2df" stroke="#f2d9b2"/>
+      <text x="46" y="202" class="svgamber" font-size="12" font-weight="800">Timing-Markierung</text>
+      <text x="46" y="218" class="svgtiny">muss zur Keilnut passen</text>
+      <path d="M196 206L267 210" stroke="#c6872f" stroke-width="2"/>
+      <rect x="375" y="180" width="143" height="54" rx="7" fill="#e5f4f7" stroke="#b7dce4"/>
+      <text x="389" y="202" class="svgcyan" font-size="12" font-weight="800">Keilnut / Index</text>
+      <text x="389" y="219" class="svgtiny">gewählte Stellung</text>
+      <path d="M375 208L290 264" stroke="#0d8799" stroke-width="2"/>
+      <text x="274" y="358" text-anchor="middle" class="svgtiny">Prinzipdarstellung – keine Montageposition ableiten!</text>
+    </svg>
+    <figcaption class="figcap">Nicht einfach „irgendeine A-Markierung“ wählen. Ford-Paarung am Originalteil überprüfen.</figcaption>
+  </figure>
 </section>
-<section>
-<h2>8. Was geschieht, wenn man trotz Abweichung nichts korrigiert?</h2>
-<p>Die Nockenwelle arbeitet weiterhin – nur etwas früher oder später im Verhältnis zu den Kolben. Die <strong>LSA der Nockenwelle bleibt unverändert</strong>; die gesamten Einlass- und Auslassereignisse verschieben sich gemeinsam.</p>
+
+<section class="stage" id="abschluss">
+  <div class="stage-copy">
+    <div class="stage-head"><span class="num">05</span><h2>Nachmessen bis es stimmt</h2></div>
+    <p class="lead">Ein eingestellter Versatz ist nur eine <strong>Nennstellung</strong>. Erst die anschließende Messung bestätigt den tatsächlichen Wert.</p>
+    <ol class="actions">
+      <li><strong>OT-Referenz</strong> nach Demontage/Justierung erneut kontrollieren.</li>
+      <li>Im Build-Log <strong>neue Messrunde</strong> anlegen, Zahnradstellung und Grund dokumentieren.</li>
+      <li>ICL <strong>dreimal</strong> unabhängig messen; Mittelwert und Spannweite beurteilen.</li>
+      <li>Wenn nicht plausibel oder außerhalb Soll: Messaufbau prüfen, ggf. <strong>Schritt 04 wiederholen</strong>.</li>
+    </ol>
+    <div class="note ok"><strong>Fertig erst nach finaler Messung:</strong> drei reproduzierbare Ablesungen, passender ICL-Wert, korrekte Markierungen, handgedrehter Motor ohne Widerstand. PTV und Ventiltrieb separat freigeben.</div>
+    <details><summary>Warum dreimal – und was gehört in das Protokoll?</summary>
+      <p>Die Spannweite der drei ICL-Werte beschreibt nur die <strong>Wiederholbarkeit</strong>. Drei gleiche Werte können trotzdem einen systematisch falschen OT haben. Jede Einstellrunde verwendet deshalb dieselbe verifizierte Winkelreferenz; nach neuem OT wird eine <strong>neue</strong> Reihe gestartet.</p>
+      <p>Das Build-Log protokolliert je Runde die drei Winkelpaare, die Einzel-ICL-Werte, Mittelwert, Abweichung, Spannweite, Keilnut, Timing-Markierung und Anlass. Die alte Messung 65°/154° wird nicht überschrieben.</p>
+    </details>
+  </div>
+  <figure class="visual" aria-label="Abfolge aus Messen, Verstellen und erneutem Messen" style="margin:0">
+    <svg viewBox="0 0 550 335" role="img" aria-labelledby="loop-title loop-desc">
+      <title id="loop-title">Geschlossener Prüfzyklus bis zur Endfreigabe</title>
+      <desc id="loop-desc">Zunächst drei Messungen, anschließend Sollwertvergleich. Bei Abweichung Zahnrad verstellen und wieder drei Messungen. Bei passender Messung Endkontrollen vor dem Zusammenbau.</desc>
+      <rect x="21" y="17" width="508" height="300" rx="12" fill="#f8fbfc"/>
+      <rect x="167" y="36" width="216" height="58" rx="9" fill="#d7eef1" stroke="#0d8799" stroke-width="2"/>
+      <text x="275" y="59" text-anchor="middle" class="svgstrong">3 × ICL messen</text>
+      <text x="275" y="78" text-anchor="middle" class="svgtiny">Mittelwert + Spannweite</text>
+      <path d="M275 94v34" stroke="#7193a5" stroke-width="3"/><path d="M267 122l8 9 8-9" fill="none" stroke="#7193a5" stroke-width="3"/>
+      <path d="M275 127l110 58-110 58-110-58z" fill="#e6eef3" stroke="#6a8ea4" stroke-width="2"/>
+      <text x="275" y="179" text-anchor="middle" class="svgstrong">Plausibel und</text>
+      <text x="275" y="196" text-anchor="middle" class="svgstrong">im Zielbereich?</text>
+      <path d="M165 185H61V65H154" stroke="#d48d32" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M146 57l9 8-9 8" fill="none" stroke="#d48d32" stroke-width="3"/>
+      <rect x="25" y="139" width="125" height="34" rx="6" fill="#fff1db"/>
+      <text x="87" y="161" text-anchor="middle" class="svgamber" font-size="12" font-weight="800">NEIN → korrigieren</text>
+      <path d="M385 185H482V259H383" stroke="#158670" stroke-width="3" fill="none"/>
+      <path d="M393 251l-9 8 9 8" stroke="#158670" stroke-width="3" fill="none"/>
+      <rect x="398" y="139" width="112" height="34" rx="6" fill="#e4f5ed"/>
+      <text x="454" y="161" text-anchor="middle" fill="#167a65" font-size="12" font-weight="800">JA → prüfen</text>
+      <rect x="171" y="258" width="212" height="47" rx="8" fill="#e4f5ed" stroke="#16927f" stroke-width="2"/>
+      <text x="277" y="278" text-anchor="middle" class="svgstrong">Finale Kontrollen</text>
+      <text x="277" y="295" text-anchor="middle" class="svgtiny">Marken · 2 Umdrehungen · PTV extra</text>
+      <path d="M275 243v15" stroke="#a5b5bf" stroke-dasharray="4 4" stroke-width="2"/>
+    </svg>
+    <figcaption class="figcap">Kein „einmal einstellen und hoffen“: jede Änderung führt zu einer neuen Messrunde.</figcaption>
+  </figure>
+</section>
+
+<section class="finish" aria-labelledby="finish-title">
+<h2 id="finish-title">Abschluss am Motor – Kurzcheck</h2>
+<div class="finish-grid">
+  <div class="finish-item"><strong>MESSUNG</strong><br>Echter OT kontrolliert, korrektes Rollennocken-Taststück, drei wiederholbare ICL-Werte.</div>
+  <div class="finish-item"><strong>STEUERTRIEB</strong><br>Ford-Keilnut/Marke dokumentiert, Schraubenvorgaben korrekt, zwei KW-Umdrehungen von Hand.</div>
+  <div class="finish-item"><strong>VOR DEM MOTORSTART</strong><br>Kolben-Ventil-Abstand, Ventilfedern, Retainer und übrige Freigängigkeiten gesondert prüfen.</div>
+</div>
+<a class="mainlink" href="../build-log.html#p2_step6">Zu Phase 2 / Schritt 6 und Abschlussstatus ↗</a>
+</section>
+
+<div class="footgrid">
+<section class="compact"><h2>1,5:1 oder 1,6:1 Rocker?</h2>
+<p><strong>Die ICL bleibt gleich</strong>, solange du wie hier direkt an der Nocke misst. Die Kipphebelübersetzung verändert den <strong>Ventilhub</strong>, nicht die Winkelposition der Nockenwelle. Mit deinen COMP 1632-16 (1,6:1) müssen Ventil-/Kolben- und Federabstände gesondert geprüft werden.</p>
+</section>
+<section class="compact"><h2>Nach Testfahrten neu degreen?</h2>
+<p><strong>Normalerweise nein.</strong> Eine routinemäßige vollständige ICL-Messung am eingebauten GT40 ist nicht erforderlich. Nach Steuertrieb-/Nockenwellenänderungen oder bei begründetem Verdacht auf veränderte Steuerzeiten erneut prüfen. Zündung, Öldruck und Betriebsverhalten werden separat kontrolliert.</p>
+</section>
+</div>
+<details class="refs"><summary>Herstellerquellen und technische Einschränkungen</summary>
 <ul>
-<li><strong>Advance (frühere Ereignisse):</strong> Einlass öffnet und schließt früher; tendenziell kann das nutzbare Drehmoment bei geringerer Drehzahl steigen. Der minimale Einlassventil-Kolben-Abstand kann <strong>abnehmen</strong>, während der Auslassabstand tendenziell zunimmt.</li>
-<li><strong>Retard (spätere Ereignisse):</strong> Einlass schließt später; die Drehmoment-/Leistungskurve kann sich tendenziell zu höheren Drehzahlen verlagern. Der minimale Auslassventil-Kolben-Abstand kann <strong>abnehmen</strong>.</li>
-<li><strong>Eine kleine Abweichung ist nicht automatisch ein Motorschaden.</strong> Ob sie relevant ist, lässt sich nicht allein aus 1,5° ableiten. Eine falsch große Verstellung oder ungenügender Kolben-Ventil-Abstand kann hingegen gravierende Schäden verursachen. Keine Leistungsvorhersage ohne reale Motorkonfiguration und Messung.</li>
+<li><a href="https://performanceparts.ford.com/part/M-6268-A302" target="_blank" rel="noopener">Ford Performance M-6268-A302</a> – neun Positionen, 2°-Schritte, ±8° Kurbelwinkel.</li>
+<li><a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6268-A302.PDF" target="_blank" rel="noopener">Ford Racing IS-1850-0400</a> – passende Keilnut/Zahnradmarke, Montage, zwei KW-Umdrehungen von Hand; Angaben zur Standardschraube nicht ungeprüft für ARP verwenden.</li>
+<li><a href="https://performanceparts.ford.com/download/pdfs/CheckingCamshaftTiming.pdf" target="_blank" rel="noopener">Ford, Checking Camshaft Timing</a> – Winkelbezug und Hersteller-Orientierung.</li>
+<li><a href="https://www.compcams.com/amfile/file/download/file/2004/product/31764/" target="_blank" rel="noopener">COMP Cams – Intake Centerline Method</a> – 0,050" auf beiden Seiten des Maximalhubs und Annäherung aus normaler Drehrichtung.</li>
+<li><a href="https://www.compcams.com/xtreme-energy-computer-controlled-224-232-hydraulic-roller-cam-for-ford-5-0l.html" target="_blank" rel="noopener">COMP 35-518-8</a> – Herstellerangaben; die individuelle Cam Card des verbauten Exemplars bleibt maßgeblich.</li>
 </ul>
-<p>Für diese Wirkungsrichtungen gibt es eine <a href="https://www.compcams.com/cam-timing-lobe-separation-angle/">Herstellerdarstellung von COMP Cams zu Advanced/Retarded Timing</a>. Die von COMP empfohlene ICL 108° ist die Zielvorgabe für die dokumentierte 35-518-8, nicht die nominelle LSA 112°.</p>
-</section>
-<section>
-<h2>9. Muss nach Einbau und Trackdays erneut degreed werden?</h2>
-<table><thead><tr><th>Zeitpunkt</th><th>Empfohlene Maßnahme und Grund</th></tr></thead><tbody>
-<tr><td><strong>Vor Montage des Steuerdeckels / endgültigem Zusammenbau</strong></td><td>Ja: finale ICL nach letzter Kettenposition und Anzug der Bauteile messen, Freigängigkeit prüfen und dokumentieren. Hier ist der Zugang am einfachsten.</td></tr>
-<tr><td><strong>Nach Einbau in den GT40, ohne Auffälligkeiten</strong></td><td>Keine routinemäßige neue Cam-Degreeing-Messung. Bei unverändertem Steuertrieb ist die dokumentierte statische Nockenposition normalerweise weiterhin maßgeblich.</td></tr>
-<tr><td><strong>Nach erstem Start und Testfahrten</strong></td><td>Regelmäßige Betriebs-/Einbauprüfungen (Öldruck, Zündung nach passender MSD-Messmethode, Temperatur, Undichtigkeiten und Geräusche) ja; vollständiges Cam Degreeing nicht routinemäßig.</td></tr>
-<tr><td><strong>Nach Austausch/Öffnen des Steuertriebs oder einer veränderten Nockenwelle</strong></td><td>Cam Degreeing erneut durchführen, weil die mechanische Winkelzuordnung verändert sein kann. Auch bei geänderter Ritzel-/Keilnutposition.</td></tr>
-<tr><td><strong>Bei begründetem Verdacht auf veränderte Steuerzeiten</strong></td><td>Zunächst die Symptome und andere Ursachen diagnostizieren. Bei Hinweisen auf Zahnrad-/Kettenverschleiß, beschädigte Passfeder, falsch montierten Steuertrieb oder ungewöhnliche Steuerzeitabweichung direkt mechanisch prüfen; gegebenenfalls neu einmessen.</td></tr>
-</tbody></table>
-<p><strong>Am eingebauten GT40-Motor:</strong> Eine erneute direkte Messung erfordert Zugang zur Stirnseite, zur Kurbelwelle für die Gradscheibe und zur betreffenden Stößelbohrung. Je nach Einbausituation sind dafür Teile von Ansaugung, Ventiltrieb und Steuerdeckel zu demontieren. Eine Prüfung des Zündzeitpunkts mit dem Stroboskop ist <strong>keine</strong> Messung der Nockenwellen-ICL und ersetzt diese nicht.</p>
-</section>
-<section>
-<h2>10. Was wird automatisch ausgewertet?</h2>
-<table>
-<thead><tr><th>Anzeige im Build-Log</th><th>Bedeutung</th></tr></thead>
-<tbody>
-<tr><td>ICL je Durchgang</td><td>Mittelpunkt aus den beiden Winkelwerten dieses Durchgangs</td></tr>
-<tr><td>Mittelwert</td><td>Arithmetisches Mittel der vollständig eingetragenen Durchgänge; vor 3/3 ausdrücklich <em>vorläufig</em></td></tr>
-<tr><td>Abweichung vom Soll</td><td>Mittelwert minus eingegebener Soll-ICL. Positiv = später/retardiert; negativ = früher/vorverlegt</td></tr>
-<tr><td>Spannweite</td><td>Höchster minus niedrigster gemessener ICL-Wert; bei nur einem Durchgang nicht ausgewiesen</td></tr>
-</tbody>
-</table>
-<p>Die Spannweite bewertet die <strong>Wiederholbarkeit</strong> der Ablesung. Sie beweist <strong>nicht</strong> den richtigen OT oder den richtigen Tastkontakt. Die Anwendung zeigt daher bewusst keinen pauschalen Gut-/Schlecht-Wert.</p>
-</section>
-<section>
-<h2>11. Haben 1,5:1- oder 1,6:1-Rocker Einfluss auf die ICL?</h2>
-<p><strong>Nein, wenn direkt in der Stößelbohrung gemessen wird.</strong> Die Nocke und ihre Winkelposition ändern sich nicht, wenn später ein anderer Kipphebel eingebaut wird. Geändert wird der Ventilhub – und damit die mechanisch zu prüfende Ventiltriebgeometrie.</p>
-<table>
-<thead><tr><th>COMP 35-518-8</th><th>Einlass</th><th>Auslass</th></tr></thead>
-<tbody>
-<tr><td>Nockenhub laut COMP</td><td>0,348"</td><td>0,354"</td></tr>
-<tr><td>Rechnerischer Ventilhub, 1,5:1</td><td>0,522"</td><td>0,531"</td></tr>
-<tr><td>Ventilhub laut COMP, 1,6:1</td><td>0,555"</td><td>0,565"</td></tr>
-</tbody>
-</table>
-<p>Die vorgesehenen <strong>COMP 1632-16</strong> sind 1,6:1-Roller-Rocker mit 7/16"-Stehbolzenaufnahme. Vor dem Zusammenbau sind Kolben-Ventil-Abstand, Coil Bind, Retainer-/Ventilschaftdichtungsabstand und Freigängigkeit des Ventiltriebs zu überprüfen. Aus der ICL-Messung folgt hierfür keine automatische Freigabe.</p>
-</section>
-<section>
-<h2>12. Primärquellen und Messreferenzen</h2>
-<ul>
-<li><a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6268-A302.PDF">Ford Racing IS-1850-0400 – M-6268-A302</a>: Originalanleitung mit zugehöriger Keilnut/Zahnradmarkierung, Montage und Zweiumdrehungsprüfung.</li>
-<li><a href="https://performanceparts.ford.com/download/pdfs/CheckingCamshaftTiming.pdf">Ford Racing, Checking Camshaft Timing</a>: OT-Kontrolle, ICL-Methode, ±1°-Orientierung und Nachmessung nach Verstellung.</li>
-<li><a href="https://www.compcams.com/cam-timing-lobe-separation-angle/">COMP Cams, Effects of Altering Camshaft Timing</a>: Auswirkungen von Advance und Retard auf Ventil-Kolben-Abstände und Kennlinien.</li>
-<li><a href="https://compcams.com/pub/media/productattach/1/4/145.pdf">COMP Cams, Installation &amp; Degreeing Instructions, Part #145</a> – Intake-Centerline-Methode, Messpunkte 0,050" unter Maximum, Drehrichtung, Mittelwert.</li>
-<li><a href="https://www.compcams.com/xtreme-energy-computer-controlled-224-232-hydraulic-roller-cam-for-ford-5-0l.html">COMP Cams 35-518-8</a> – ICL 108°, LSA 112°, Nocken- und Ventilhub.</li>
-<li><a href="https://www.compcams.com/valve-timing-tutorial/">COMP Cams, Valve Timing Tutorial</a> – Hubbezug und Kipphebelübersetzung.</li>
-<li><a href="https://www.proformparts.com/images/Ryan_Desktop/Promotions/Catalog/2023_Proform_Catalog_edition_V12_Final.pdf">Proform-Katalog, Camshaft Lobe Indicator Tools</a> – 66838, zwei unterschiedliche Taststücke.</li>
-<li><a href="https://www.hpacademy.com/courses/how-to-degree-a-cam/practical-skills-finding-true-tdc">HP Academy, Finding True TDC</a> – Messuhr und gleiche Kolbenhöhe vor/nach OT.</li>
-<li><a href="https://www.summitracing.com/parts/SUM-900061-S">Summit SUM-900061-S</a> und <a href="https://www.moroso.com/18-degree-pro-wheel-for-engine-stand-use62191/">Moroso 62191</a> – verwendete Messmittel.</li>
-</ul>
-<p class="subtle">Diese Anleitung ersetzt weder die konkrete COMP Cam Card der verbauten Nockenwelle noch die Prüfung aller mechanischen Freigängigkeiten am tatsächlichen Motor.</p>
-</section>
+<p>Alle drei technischen Zeichnungen sind <strong>eigene schematische Erläuterungen</strong>, keine maßstäbliche Komponenten- oder Montagezeichnung. Kontrollwerte und tatsächliche Montagepositionen sind ausschließlich am Motor und anhand der passenden Herstellerunterlagen freizugeben.</p>
+</details>
+<a class="back-bottom" href="../build-log.html#p2_step6">← Zurück zum GT40-Build-Log</a>
 </main>
 </body>
 </html>
