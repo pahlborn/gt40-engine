@@ -66,3 +66,15 @@ test('Exkurs trennt echten OT von Nockenmaximum und belegt die Quelle', () => {
   assert.match(exkurs, /compcams\.com/);
   assert.match(exkurs, /1632-16/);
 });
+
+test('DE/EN definieren denselben Messbezug unter dem Maximum', () => {
+  const start = html.indexOf('id="p2_step6"');
+  const end = html.indexOf('id="p2_step7"',start);
+  const block = html.slice(start,end);
+  const en = [...block.matchAll(/<span class="en">([\s\S]*?)<\/span>/g)].map(m=>m[1]).join(' ');
+  assert.match(en,/equal piston heights/);
+  assert.match(en,/correctly identified roller-cam follower/);
+  assert.match(en,/below peak lobe lift/);
+  assert.doesNotMatch(en,/install piston stop|lifter rise on each side/);
+  assert.match(exkurs,/href="https:\/\/performanceparts\.ford\.com\/part\/M-6268-A302"/);
+});

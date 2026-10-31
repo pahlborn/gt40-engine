@@ -189,8 +189,10 @@ await test('Der widerspruechliche Pickup-Abstand ist als strittig gekennzeichnet
   // Beide berufen sich auf Ford. Unmarkiert stuenden zwei Sollwerte gegeneinander.
   const i = specs.indexOf('Abstand zum Wannenboden');
   assert(i > 0, 'Die Zeile fehlt');
-  const zeile = specs.slice(i, i + 900);
+  const zeile = specs.slice(i, specs.indexOf('</div>',i));
   assert(/src-link unverified/.test(zeile), 'Der Widerspruch ist nicht gekennzeichnet');
+  assert(/IS-1850-0632/.test(zeile) && /IS-1850-0229/.test(zeile), 'Beide Ford-Kontexte muessen sichtbar sein');
+  assert(/OPEN/.test(zeile) && /ungekl/.test(zeile), 'DE/EN-Anwendbarkeitsvorbehalt fehlt');
   assert(!/lt\. Ford Performance/.test(zeile),
     'Die Zeile beruft sich weiter allein auf Ford, obwohl Ford zwei Werte nennt');
 });

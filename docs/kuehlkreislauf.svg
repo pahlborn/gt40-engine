@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 760" role="img" aria-labelledby="title description">
+  <title id="title">GT40 — dokumentierter Kühlkreislauf</title>
+  <desc id="description">Hauptweg nach Owner-Angabe vom 26.10.2026: Kühler zur mechanischen Pumpe, durch Block und Köpfe, zum Ansaugkrümmer und Thermostatbereich, zurück zum Kühler. Entlüftung vom oberen Kühleranschluss und separater Abgang am Rohr hinter dem Krümmer zum Ausgleichsbehälter. Überlauf zum Recovery-Behälter. E-Pumpe ist im Frontbereich vorhanden, aber nicht einer Leitung zugeordnet. Bypass und Heizungsanschluss bleiben offen. Kein maßstäblicher Montageplan.</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8Z" fill="#235b81"/></marker></defs>
+  <style>text{font-family:Arial,sans-serif;fill:#162a38} .node{fill:#f1f6fa;stroke:#456379;stroke-width:2} .main{fill:none;stroke:#235b81;stroke-width:3;marker-end:url(#arrow)} .known{fill:none;stroke:#456379;stroke-width:2} .open{fill:#fff8e8;stroke:#9b6a18;stroke-width:2;stroke-dasharray:8 6} .unknown{fill:none;stroke:#9b6a18;stroke-width:2;stroke-dasharray:8 6} .label{font-size:18px} .small{font-size:16px} .head{font-size:26px;font-weight:bold}</style>
+  <rect width="1000" height="760" fill="white"/>
+  <text x="35" y="40" class="head">GT40 · Kühlkreislauf</text>
+  <text x="35" y="70" class="label">Dokumentierter Stand nach Owner-Angaben vom 26.10.2026</text>
+  <text x="35" y="97" class="small">Schematisch, nicht maßstäblich. Kein vollständig nachverfolgener Ist-Montageplan.</text>
+  <g id="radiator"><rect class="node" x="35" y="155" width="180" height="80" rx="10"/><text x="125" y="188" text-anchor="middle" class="label">Kühler</text><text x="125" y="215" text-anchor="middle" class="small">Frontbereich</text></g>
+  <g id="mechanical-pump"><rect class="node" x="285" y="155" width="180" height="80" rx="10"/><text x="375" y="188" text-anchor="middle" class="label">Mechanische</text><text x="375" y="215" text-anchor="middle" class="label">Pumpe</text></g>
+  <g id="engine"><rect class="node" x="535" y="155" width="180" height="80" rx="10"/><text x="625" y="201" text-anchor="middle" class="label">Block / Köpfe</text></g>
+  <g id="manifold"><rect class="node" x="785" y="155" width="180" height="80" rx="10"/><text x="875" y="184" text-anchor="middle" class="label">Ansaugkrümmer /</text><text x="875" y="208" text-anchor="middle" class="label">Thermostatbereich</text></g>
+  <path id="r-to-p" data-from="radiator" data-to="mechanical-pump" class="main" d="M215 195H285"/>
+  <path id="p-to-e" data-from="mechanical-pump" data-to="engine" class="main" d="M465 195H535"/>
+  <path id="e-to-m" data-from="engine" data-to="manifold" class="main" d="M715 195H785"/>
+  <path id="m-to-r" data-from="manifold" data-to="radiator" class="main" d="M875 155V125H125V155"/>
+  <text x="485" y="119" text-anchor="middle" class="small">Rückweg zum Kühler</text>
+  <g id="expansion"><rect class="node" x="275" y="350" width="245" height="85" rx="10"/><text x="397" y="382" text-anchor="middle" class="label">Ausgleichsbehälter</text><text x="397" y="409" text-anchor="middle" class="small">höchster Punkt · Druckdeckel</text></g>
+  <g id="pipe"><rect class="node" x="620" y="350" width="305" height="85" rx="10"/><text x="772" y="383" text-anchor="middle" class="label">Rohr hinter dem Krümmer</text><text x="772" y="410" text-anchor="middle" class="small">berichteter Behälterabgang</text></g>
+  <path id="vent" data-from="radiator" data-to="expansion" class="known" d="M35 175H20V390H275"/>
+  <text x="40" y="285" class="small">oberer Kühleranschluss</text><text x="40" y="311" class="small">3/8″ Entlüftungsleitung</text>
+  <path id="pipe-to-tank" data-from="pipe" data-to="expansion" class="known" d="M620 392H520"/>
+  <text x="550" y="338" class="small">Abgang nicht an der Pumpen-Saugseite</text>
+  <g id="recovery"><rect class="node" x="275" y="505" width="245" height="70" rx="10"/><text x="397" y="534" text-anchor="middle" class="label">Recovery-Behälter</text><text x="397" y="559" text-anchor="middle" class="small">drucklos</text></g>
+  <path id="overflow" data-from="expansion" data-to="recovery" class="main" d="M397 435V505"/><text x="415" y="480" class="small">Überlauf</text>
+  <g id="electric-pump"><rect class="open" x="620" y="505" width="305" height="95" rx="10"/><text x="772" y="533" text-anchor="middle" class="label">E-Pumpe · Frontbereich</text><text x="772" y="560" text-anchor="middle" class="small">manuell zuschaltbar · Typ offen</text><text x="772" y="584" text-anchor="middle" class="small">Leitung / Flussrichtung OFFEN</text></g>
+  <path id="bypass" data-from="manifold" data-to="mechanical-pump" class="unknown" d="M875 235V270H375V235"/>
+  <rect x="411" y="254" width="410" height="39" fill="white"/>
+  <text x="425" y="271" class="small">Bypass: bisher so beschrieben,</text><text x="425" y="291" class="small">Endpunkte und Funktion OFFEN</text>
+  <text x="35" y="642" class="label">Durchgezogene Pfeile: berichteter Hauptweg / Überlauf</text>
+  <text x="35" y="670" class="label">Linien ohne Pfeil: berichtete Verbindung, keine dauerhafte Flussrichtung bestätigt</text>
+  <text x="35" y="698" class="label">Gestrichelt: ungeklärt. E-Pumpe bewusst keiner Leitung zugeordnet.</text>
+  <text x="35" y="732" class="small">Heizungsanschluss / Verschluss und Thermostat-Ausführung offen. Keine Montagefreigabe aus dieser Zeichnung.</text>
+</svg>

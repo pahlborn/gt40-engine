@@ -1057,8 +1057,8 @@
                 <div class="spec-line"><span>Max. Warpage (Verzug)</span><span class="spec-val">&le; 0.003&quot; (0.076 mm) over length</span></div>
                 <div class="spec-line"><span>Method</span><span class="spec-val">Straightedge diagonal + crosswise, 6 positions</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>LH max:</label><input type="text" data-field="p1_flat_lh" data-validate="numeric" placeholder=".001" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>RH max:</label><input type="text" data-field="p1_flat_rh" data-validate="numeric" placeholder=".001" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Bank 5&ndash;8 (LH) max:</label><input type="text" data-field="p1_flat_lh" data-validate="numeric" placeholder=".001" oninput="autoSave()" style="width:55px;"></div>
+                    <div><label>Bank 1&ndash;4 (RH) max:</label><input type="text" data-field="p1_flat_rh" data-validate="numeric" placeholder=".001" oninput="autoSave()" style="width:55px;"></div>
                 </div>
             </div>
         </div>
@@ -1087,10 +1087,10 @@
                 <div class="spec-line"><span>Tolerance</span><span class="spec-val">&plusmn; 1 cc</span></div>
                 <div class="spec-line"><span>Sample Size</span><span class="spec-val">Min. 2 chambers per head</span></div>
                 <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>LH #1:</label><input type="text" data-field="p1_cc_lh1" data-validate="numeric" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
-                    <div><label>LH #2:</label><input type="text" data-field="p1_cc_lh2" data-validate="numeric" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
-                    <div><label>RH #1:</label><input type="text" data-field="p1_cc_rh1" data-validate="numeric" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
-                    <div><label>RH #2:</label><input type="text" data-field="p1_cc_rh2" data-validate="numeric" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
+                    <div><label>Bank 5&ndash;8 (LH), Probe 1:</label><input type="text" data-field="p1_cc_lh1" data-validate="numeric" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
+                    <div><label>Bank 5&ndash;8 (LH), Probe 2:</label><input type="text" data-field="p1_cc_lh2" data-validate="numeric" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
+                    <div><label>Bank 1&ndash;4 (RH), Probe 1:</label><input type="text" data-field="p1_cc_rh1" data-validate="numeric" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
+                    <div><label>Bank 1&ndash;4 (RH), Probe 2:</label><input type="text" data-field="p1_cc_rh2" data-validate="numeric" placeholder="58.0" oninput="autoSave()" style="width:50px;"></div>
                 </div>
             </div>
             <div class="guide-block guide-full"><h4 class="tips">Practical Tips</h4><ul>
@@ -1681,7 +1681,7 @@
                 <li><span class="de">Nockenwelle eingebaut und Steuertrieb montiert</span><span class="en">Camshaft installed and timing set in place</span></li>
                 <li><span class="de">Ein COMP Hydraulik-Roller-Stoessel (aus 16er-Set) bereit</span><span class="en">One COMP hydraulic roller lifter (from set of 16) ready</span></li>
                 <li><span class="de">Kurbelwelle drehen bis #1 Einlassnocken auf Grundkreis steht</span><span class="en">Rotate crank so #1 intake lobe is on base circle (Grundkreis)</span></li>
-                <li><span class="de">#1 Einlass-Stoesselbohrung identifizieren (Beifahrerseite, vorne)</span><span class="en">Identify #1 intake lifter bore (passenger side, front)</span></li>
+                <li><span class="de">#1 Einlass-Stoesselbohrung identifizieren (Bank 1&ndash;4, an der Steuerdeckelseite)</span><span class="en">Identify #1 intake lifter bore (cylinder 1&ndash;4 bank, timing-cover end)</span></li>
             </ul></div>
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
                 <li><span class="de">Montagepaste (COMP #106 oder gleichwertig)</span><span class="en">Assembly lube (COMP #106 or equivalent)</span></li>
@@ -1782,16 +1782,16 @@
             </div>
             <div class="guide-block guide-full"><h4 class="prereq">Procedure (6 Steps)</h4><ul>
                 <li><span class="de"><strong>1.</strong> Moroso 62191 fest auf der Kurbelwelle montieren, Zeiger am Block</span><span class="en"><strong>1.</strong> Mount degree wheel on crank snout, pointer on block</span></li>
-                <li><span class="de"><strong>2.</strong> Echten OT mit Summit-Brücke und Trick-Flow-Messuhr finden: zwei <em>gleiche Kolbenhöhen</em> vor/nach OT; Winkelmitte = OT, 0° einstellen und kontrollieren</span><span class="en"><strong>2.</strong> Find true TDC: install piston stop, rotate crank against stop (both directions), split the difference = TDC</span></li>
-                <li><span class="de"><strong>3.</strong> Proform 66838 mit korrekt identifiziertem Rollennocken-Taststück in #1 Einlassstößelbohrung einsetzen</span><span class="en"><strong>3.</strong> Place dial indicator on #1 intake lifter</span></li>
-                <li><span class="de"><strong>4.</strong> In Motordrehrichtung Nockenmaximum suchen, Proform-Messuhr dort auf Null stellen</span><span class="en"><strong>4.</strong> Slowly rotate crank, find max lift point</span></li>
-                <li><span class="de"><strong>5.</strong> Vor Maximum zurückgehen, dann in Motordrehrichtung bei 0,050" (1,27 mm) <em>unter dem Maximum</em> auf der aufsteigenden und abfallenden Flanke die Winkel ablesen</span><span class="en"><strong>5.</strong> Read degree wheel at .050" (1.27 mm) lifter rise on each side of max lift</span></li>
-                <li><span class="de"><strong>6.</strong> Mittelpunkt = ICL; mit derselben OT-Justierung zweimal wiederholen; Mittelwert, Abweichung und Spannweite stehen oben</span><span class="en"><strong>6.</strong> Midpoint = Intake Centerline (ICL)</span></li>
+                <li><span class="de"><strong>2.</strong> Echten OT mit Summit-Brücke und Trick-Flow-Messuhr finden: zwei <em>gleiche Kolbenhöhen</em> vor/nach OT; Winkelmitte = OT, 0° einstellen und kontrollieren</span><span class="en"><strong>2.</strong> Find true TDC with the Summit bridge and Trick Flow indicator: record equal piston heights before/after TDC, split the angles, set zero and recheck</span></li>
+                <li><span class="de"><strong>3.</strong> Proform 66838 mit korrekt identifiziertem Rollennocken-Taststück in #1 Einlassstößelbohrung einsetzen</span><span class="en"><strong>3.</strong> Insert Proform 66838 in the #1 intake lifter bore using the correctly identified roller-cam follower; do not measure hydraulic-plunger movement</span></li>
+                <li><span class="de"><strong>4.</strong> In Motordrehrichtung Nockenmaximum suchen, Proform-Messuhr dort auf Null stellen</span><span class="en"><strong>4.</strong> Rotate in normal engine direction, find peak lobe lift and zero the Proform indicator at the peak</span></li>
+                <li><span class="de"><strong>5.</strong> Vor Maximum zurückgehen, dann in Motordrehrichtung bei 0,050" (1,27 mm) <em>unter dem Maximum</em> auf der aufsteigenden und abfallenden Flanke die Winkel ablesen</span><span class="en"><strong>5.</strong> Back up before the peak, then approach both readings in normal engine direction at 0.050" (1.27 mm) <em>below peak lobe lift</em> on the rising and falling flanks</span></li>
+                <li><span class="de"><strong>6.</strong> Mittelpunkt = ICL; mit derselben OT-Justierung zweimal wiederholen; Mittelwert, Abweichung und Spannweite stehen oben</span><span class="en"><strong>6.</strong> Midpoint = Intake Centerline (ICL). Repeat twice with the same TDC setup; mean, deviation and spread are shown above</span></li>
             </ul></div>
             <div class="warning-box"><strong>EVERY camshaft must be degreed!</strong> Die berechnete Sollabweichung ist kein Freigabekriterium. Erst echten OT, korrektes Rollennocken-Taststück und Wiederholbarkeit prüfen.</div>
             <div class="guide-block"><h4 class="photo">Photo Documentation (Fotodokumentation)</h4><ul>
                 <li><span class="de">Gradscheibe mit Zeiger bei OT</span><span class="en">Degree wheel with pointer at TDC</span></li>
-                <li><span class="de">Messuhr-Ablesung bei 0,050" Oeffnen und Schliessen</span><span class="en">Dial indicator reading at .050" opening and closing</span></li>
+                <li><span class="de">Messuhr und Gradscheibe auf beiden Flanken bei 0,050" unter dem Nockenmaximum</span><span class="en">Indicator and degree-wheel readings on both flanks at 0.050" below peak lobe lift</span></li>
             </ul>
             <div class="comp-photo-strip build-thumbs" data-comp-gallery="p2_degree_photos" data-thumbs="4">
                 <div class="thumb-row"></div>
@@ -2244,7 +2244,7 @@
         <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ul>
             <li><span class="de"><strong>1. Dichtungsausrichtung:</strong> Seitendichtungen + Enddichtungen trocken auf Block legen &ndash; alle Schraubenbohrungen muessen mit Wanne fluchten</span><span class="en"><strong>1. Gasket alignment:</strong> Lay side gaskets + end seals dry on block &ndash; verify all bolt holes align with pan</span></li>
             <li><span class="de"><strong>2. Pan clearance:</strong> Set pan in place &ndash; check that pickup tube and pump body clear pan interior (Saugr&uuml;ssel und Pumpe d&uuml;rfen Wanne innen nicht ber&uuml;hren)</span><span class="en"><strong>2. Pan clearance:</strong> Set pan in place &ndash; check that pickup tube and pump body clear pan interior</span></li>
-            <li><span class="de"><strong>3. Pickup-zu-Wannenboden:</strong> Von Saugrohr-Sieb-Unterseite bis Wannen-Innenboden messen. Es gilt die Herstellerangabe der verbauten Wanne-Pickup-Kombination; solange die Wanne offen ist, dient Ford als Referenz: 3/8&quot;&ndash;7/16&quot; (9,5&ndash;11,1 mm). <strong>Achtung:</strong> Ford nennt an anderer Stelle 1/2&quot; &plusmn; 1/16&quot; &ndash; der Widerspruch ist offen</span><span class="en"><strong>3. Pickup-to-pan bottom:</strong> Measure from bottom of pickup screen to inside bottom of pan. The spec of the actual pan/pickup combination applies; while the pan is undecided, Ford is the reference: 3/8&quot;&ndash;7/16&quot; (9.5&ndash;11.1 mm)</span></li>
+            <li><span class="de"><strong>3. Pickup-zu-Wannenboden:</strong> Von der Sieb-Unterseite zum Wannen-Innenboden messen. <strong>OFFEN:</strong> Herstellerangabe der tats&auml;chlichen Wanne-Pickup-Kombination vor Montage kl&auml;ren. Zwei Ford-Referenzen, keine Freigabe f&uuml;r diesen Aufbau: <a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6007-X2302E.PDF" target="_blank">IS-1850-0632, S. 15: 3/8&quot;&ndash;7/16&quot;</a>; <a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6009-363.PDF" target="_blank">IS-1850-0229, S. 1: 1/2&quot; &plusmn; 1/16&quot;</a>. Unterschiedliche Baugruppen-Kontexte; Anwendbarkeit hier ungekl&auml;rt.</span><span class="en"><strong>3. Pickup-to-pan bottom:</strong> Measure from pickup screen bottom to inside pan floor. <strong>OPEN:</strong> Establish the actual pan/pickup manufacturer specification before assembly. Ford references conflict in different assembly contexts: <a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6007-X2302E.PDF" target="_blank">IS-1850-0632, p. 15: 3/8&quot;&ndash;7/16&quot;</a>; <a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6009-363.PDF" target="_blank">IS-1850-0229, p. 1: 1/2&quot; &plusmn; 1/16&quot;</a>. Neither is a validated target for this build.</span></li>
             <li><span class="de"><strong>4. Oelmessstab-Rohr:</strong> Pruefen ob Oelmessstab-Aufnahme mit Block oder Wanne fluchtet</span><span class="en"><strong>4. Dipstick tube:</strong> Verify dipstick tube boss aligns with block or pan provision</span></li>
             <li><span class="de"><strong>5. Windage Tray:</strong> Falls Canton-Wanne Windage Tray enthaelt, Freigang zu Kurbel-Gegengewichten pruefen &ndash; min. 1/4&quot; (6,4 mm)</span><span class="en"><strong>5. Windage tray:</strong> If Canton pan includes windage tray, check clearance to crank counterweights &ndash; min. 1/4&quot; (6.4 mm)</span></li>
             <li><span class="de"><strong>6. Ablassschraube:</strong> Pruefen ob Ablassschraube zugaenglich und in korrekter Position fuers Chassis</span><span class="en"><strong>6. Drain plug:</strong> Verify drain plug is accessible and in correct position for chassis</span></li>
@@ -2261,7 +2261,7 @@
 <div class="step-card" id="p2_step19">
     <div class="step-header">
         <button type="button" class="step-status" data-field="p2_pickup" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
-        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">19. Pickup-to-Pan Bottom: 1/4"&ndash;3/8" (6.4&ndash;9.5 mm)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">19. Pickup-to-Pan Bottom &ndash; Herstellervorgabe offen / manufacturer specification open</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="hidden" data-field="p2_pickup_n" data-legacy-note="p2_pickup">
@@ -2272,10 +2272,10 @@
             <li><span class="de">Knetmasse &ndash; alternative Messmethode</span><span class="en">Modeling clay (Knetmasse) &ndash; alternative measurement method</span></li>
         </ul></div>
         <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
-            <div class="spec-line"><span>Pickup-to-Pan Bottom</span><span class="spec-val">3/8&quot;&ndash;7/16&quot; (Ford-Referenz, strittig)</span></div>
-            <div class="spec-line"><span>Ideal</span><span class="spec-val">5/16&quot; (8 mm)</span></div>
+            <div class="spec-line"><span>Pickup-to-Pan Bottom</span><span class="spec-val">OFFEN / OPEN &ndash; actual pan/pickup manufacturer specification</span></div>
+            <p><span class="de"><strong>OFFEN:</strong> Herstellerangabe der tats&auml;chlichen Wanne-Pickup-Kombination vor Montage kl&auml;ren. Zwei Ford-Referenzen, keine Freigabe f&uuml;r diesen Aufbau: <a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6007-X2302E.PDF" target="_blank">IS-1850-0632, S. 15: 3/8&quot;&ndash;7/16&quot;</a>; <a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6009-363.PDF" target="_blank">IS-1850-0229, S. 1: 1/2&quot; &plusmn; 1/16&quot;</a>. Unterschiedliche Baugruppen-Kontexte; Anwendbarkeit hier ungekl&auml;rt.</span><span class="en"><strong>OPEN:</strong> Establish the actual pan/pickup manufacturer specification before assembly. Ford references conflict in different assembly contexts: <a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6007-X2302E.PDF" target="_blank">IS-1850-0632, p. 15: 3/8&quot;&ndash;7/16&quot;</a>; <a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6009-363.PDF" target="_blank">IS-1850-0229, p. 1: 1/2&quot; &plusmn; 1/16&quot;</a>. Neither is a validated target for this build.</span></p>
             <div class="guide-input-row" style="margin-top:0.4rem;">
-                <div><label>Measured:</label><input type="text" data-field="pickup_to_pan" placeholder='5/16"' oninput="autoSave()" style="width:65px;"></div>
+                <div><label>Measured:</label><input type="text" data-field="pickup_to_pan" placeholder='Istwert / measured' oninput="autoSave()" style="width:65px;"></div>
             </div>
         </div>
         <div class="guide-block guide-full"><h4 class="measure">Procedure (Vorgehensweise)</h4><ul>
@@ -2283,11 +2283,11 @@
             <li><span class="de"><strong>Methode B (Knetmasse):</strong> Knetmasse auf Wannenboden legen, Wanne auf Block setzen, abnehmen und komprimierte Knetmasse messen</span><span class="en"><strong>Method B (Clay):</strong> Place modeling clay on pan floor, set pan on block, remove and measure compressed clay thickness</span></li>
             <li><span class="de"><strong>Methode C (Draht):</strong> Draht auf bekannte Laenge biegen, durch Ablassbohrung bis zum Pickup einfuehren &ndash; Abstand berechnen</span><span class="en"><strong>Method C (Wire):</strong> Bend wire to known length, insert through drain hole to touch pickup &ndash; calculate distance</span></li>
         </ul></div>
-        <div class="warning-box"><strong>CRITICAL for oil starvation prevention!</strong> Too close (&lt;1/4&quot;) = cavitation &amp; oil aeration under load. Too far (&gt;3/8&quot;) = air ingestion during hard cornering/acceleration when oil level drops. (Zu nah = Kavitation. Zu weit = Luft ansaugen bei Kurvenfahrt.)</div>
+            <p><span class="de">Kein universelles Idealma&szlig;: erst Wanne und Pickup zuordnen, dann gegen deren Herstellervorgabe pr&uuml;fen.</span><span class="en">No universal ideal clearance: identify the pan/pickup combination, then check its manufacturer specification.</span></p>
         <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
             <li><span class="de">Bei falschem Abstand: Saugrohr vorsichtig biegen (nur kleine Anpassungen!) oder anderen Pickup verwenden</span><span class="en">If clearance is wrong, bend pickup tube carefully (small adjustments only!) or use a different pickup</span></li>
             <li><span class="de">Dies ist das KRITISCHSTE Oelsystem-Mass &ndash; in Phase 3 vor endgueltiger Wannenmontage nochmals pruefen</span><span class="en">This is the MOST critical oil system dimension &ndash; recheck in Phase 3 before final pan installation</span></li>
-            <li><span class="de">Mittelmotor/Rennwagen: eher naeher (1/4&quot;) um Freilegen unter G-Kraeften zu vermeiden</span><span class="en">Mid-engine/track cars: err toward closer (1/4&quot;) to prevent uncovering under G-loads</span></li>
+            <p><span class="de">Kein universelles Idealma&szlig;: erst Wanne und Pickup zuordnen, dann gegen deren Herstellervorgabe pr&uuml;fen.</span><span class="en">No universal ideal clearance: identify the pan/pickup combination, then check its manufacturer specification.</span></p>
         </ul></div>
     </div></div>
 </div>
@@ -2435,7 +2435,7 @@
         <div class="guide-block guide-full"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
             <li><span class="de"><strong>Label everything!</strong> Lifters, pushrods, and rockers must return to their exact positions (Alles beschriften! Lifter, Pushrods und Kipphebel m&uuml;ssen exakt an ihren Platz zur&uuml;ck)</span><span class="en"><strong>Label everything!</strong> Lifters, pushrods, and rockers must return to their exact positions</span></li>
             <li><span class="de">Alle blanken Metallflaechen (Kurbelwellenzapfen, Nocken) mit Oel oder Montagepaste gegen Oberflaechenrost schuetzen</span><span class="en">Coat all bare metal surfaces (crank journals, cam lobes) with oil or assembly lube to prevent surface rust</span></li>
-            <li><span class="de">Hardware nach Position eintueten: &quot;LH Kopfmuttern&quot;, &quot;Steuerdeckel-Schrauben&quot; usw.</span><span class="en">Bag hardware per location: &quot;LH Head Nuts&quot;, &quot;Timing Cover Bolts&quot;, etc.</span></li>
+            <li><span class="de">Hardware nach Position eintueten: &quot;Kopfmuttern Bank 5&ndash;8 (Motor-LH)&quot;, &quot;Steuerdeckel-Schrauben&quot; usw.</span><span class="en">Bag hardware per location: &quot;Head nuts, cylinder 5&ndash;8 bank (engine LH)&quot;, &quot;Timing Cover Bolts&quot;, etc.</span></li>
             <li><span class="de">Probedichtung (Fel-Pro 1011) entfernen und entsorgen &ndash; NICHT wiederverwendbar</span><span class="en">Remove and discard mock-up gasket (Fel-Pro 1011) &ndash; NOT reusable</span></li>
             <li><span class="de">Teile sauber und trocken in staubfreier Umgebung bis Phase 3 lagern</span><span class="en">Store parts clean and dry in a dust-free area until Phase 3</span></li>
         </ul></div>
@@ -2798,9 +2798,10 @@
     <div class="findings" data-findings="p3_pickup"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="measure">Pickup-to-Pan Clearance (Abstand Pickup&ndash;Wannenboden)</h4>
-            <div class="spec-line"><span>Target Clearance (Sollabstand)</span><span class="spec-val">1/4"&ndash;3/8" (6.4&ndash;9.5 mm)</span></div>
+            <div class="spec-line"><span>Target Clearance (Sollabstand)</span><span class="spec-val">OFFEN / OPEN &ndash; actual pan/pickup manufacturer specification</span></div>
+            <p><span class="de"><strong>OFFEN:</strong> Herstellerangabe der tats&auml;chlichen Wanne-Pickup-Kombination vor Montage kl&auml;ren. Zwei Ford-Referenzen, keine Freigabe f&uuml;r diesen Aufbau: <a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6007-X2302E.PDF" target="_blank">IS-1850-0632, S. 15: 3/8&quot;&ndash;7/16&quot;</a>; <a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6009-363.PDF" target="_blank">IS-1850-0229, S. 1: 1/2&quot; &plusmn; 1/16&quot;</a>. Unterschiedliche Baugruppen-Kontexte; Anwendbarkeit hier ungekl&auml;rt.</span><span class="en"><strong>OPEN:</strong> Establish the actual pan/pickup manufacturer specification before assembly. Ford references conflict in different assembly contexts: <a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6007-X2302E.PDF" target="_blank">IS-1850-0632, p. 15: 3/8&quot;&ndash;7/16&quot;</a>; <a href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6009-363.PDF" target="_blank">IS-1850-0229, p. 1: 1/2&quot; &plusmn; 1/16&quot;</a>. Neither is a validated target for this build.</span></p>
             <div class="guide-input-row" style="margin-top:0.4rem;">
-                <div><label>Measured (Gemessen):</label><input type="text" data-field="p3_pickup_clr" placeholder='e.g. 5/16"' oninput="autoSave()"></div>
+                <div><label>Measured (Gemessen):</label><input type="text" data-field="p3_pickup_clr" placeholder='Istwert / measured' oninput="autoSave()"></div>
             </div>
         </div>
         <div class="guide-block"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
@@ -3115,10 +3116,10 @@
         </div>
         <div class="guide-block"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
             <li><span class="de">Oil the seal lip before installation &ndash; do not fold it! (Dichtlippe &ouml;len &ndash; nicht umknicken!)</span><span class="en">Oil the seal lip before installation &ndash; do not fold it!</span></li>
-            <li><span class="de">Die zwei unteren Schrauben sind beim BOSS-Block 3/8-16 UNC, nicht 5/16-18 wie beim Serienblock. Ein Nachmarkt-Deckel f&uuml;r Serienbl&ouml;cke hat dort zu kleine Durchgangsl&ouml;cher &ndash; vor der Montage pr&uuml;fen</span><span class="en">On the BOSS block the two lower bolts are 3/8-16 UNC, not 5/16-18 as on a production block. An aftermarket cover made for production blocks has undersized through-holes there &ndash; check before assembly</span></li>
+            <li><span class="de">Die zwei unteren Schrauben sind beim BOSS-Block 3/8-16 UNC, nicht 5/16-18 wie beim Serienblock. Durchgangsl&ouml;cher des konkreten Deckels vor der Montage auf Freigang pr&uuml;fen; nicht pauschal als passend oder zu klein annehmen</span><span class="en">On the BOSS block the two lower bolts are 3/8-16 UNC, not 5/16-18 as on a production block. Check through-holes in the actual cover for clearance before assembly; do not assume that every aftermarket cover fits or is undersized</span></li>
             <li><span class="de">Schraubenl&auml;ngen beim Probeaufbau notieren &ndash; Ford-Deckel verwenden oft mehrere L&auml;ngen</span><span class="en">Note bolt lengths during mock-up &ndash; Ford covers often use several lengths</span></li>
         </ul></div>
-        <div class="warning-box guide-full"><strong>Pflicht vor dem Motoreinbau &ndash; Zugang zur Z&uuml;ndeinstellung.</strong> Im GT40 zeigt die Motorstirnseite zur Kabine, der Balancer liegt hinter der Trennwand. Solange der Motor drau&szlig;en ist: Sichtlinie am Chassis kl&auml;ren, danach die Pointer-Position (11 oder 2 Uhr) festlegen, Zeiger gegen echten OT pr&uuml;fen (Kolbenstopp, Phase 2) und die Marken 0&deg;, 14&deg; und 36&deg; farblich absetzen. Wird das &uuml;bersprungen, steht der Erststart mit einer Z&uuml;ndung an, die niemand pr&uuml;fen kann &ndash; bei 9.68:1 und 98 ROZ.</div>
+        <div class="warning-box guide-full"><strong>Pflicht vor dem Motoreinbau &ndash; Zugang zur Z&uuml;ndeinstellung.</strong> <span class="de">Mit Pumpe, Schl&auml;uchen und Riemenscheiben die ablesbare 11- oder 2-Uhr-Stelle am GT40 bestimmen. Danach fertigen Pointer ausw&auml;hlen: MSD 89889 ist ein 11-Uhr-Kandidat; MSD 89888 sitzt bei 10 Uhr und passt damit nicht unmittelbar zu den dokumentierten 11-/2-Uhr-Skalen. Milodon 65781/65782 sind 11-/2-Uhr-Alternativen f&uuml;r 6.325&ndash;7.074 Zoll Balancer. Mechanischen Freigang pr&uuml;fen und die Nullstellung gegen den echten OT (Kolbenstopp bzw. gepr&uuml;fte OT-Messung, Phase 2) abgleichen.</span><span class="en">With pump, hoses and pulleys present, establish whether the 11 or 2 o'clock position can be read in the GT40. Then select a ready-made pointer: MSD 89889 is an 11 o'clock candidate; MSD 89888 is at 10 o'clock, not directly matched to the documented 11/2 o'clock scales. Milodon 65781/65782 are 11/2 o'clock alternatives for 6.325&ndash;7.074 inch dampers. Check clearance and verify pointer zero against true TDC (piston stop or verified TDC measurement, Phase 2).</span> <a href="specs.html#sec8">Teile und Herstellerquellen / parts and manufacturer sources</a></div>
     </div></div>
 </div>
 
@@ -3333,7 +3334,7 @@
                 </ul>
             </div>
             <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
-                <li><span class="de">Ford 302 Zuendfolge: 1-5-4-2-6-3-7-8, Verteiler dreht gegen den Uhrzeigersinn</span><span class="en">Ford 302 firing order: 1-5-4-2-6-3-7-8, distributor rotates counter-clockwise (gegen Uhrzeigersinn)</span></li>
+                <li><span class="de">Z&uuml;ndfolge der dokumentierten Nockenwelle COMP 35-518-8: <strong>1-3-7-2-6-5-4-8</strong> (351W/HO-Folge, COMP-Prefix 35) &ndash; nicht die Standard-302-Folge 1-5-4-2-6-3-7-8. Vor dem Verkabeln die Kennung der verbauten Nockenwelle best&auml;tigen. Verteiler dreht gegen den Uhrzeigersinn <a class="src-link doc" href="https://www.compcams.com/ford-technical-info" target="_blank" onclick="event.stopPropagation()" title="COMP Cams, Ford Technical Info, General Tips - Firing Order, Small Block &amp; SVO: The later 5.0 engine and all 351 engines are designed to use the 1-3-7-2-6-5-4-8 firing order. This is the firing order for all prefix 35 cams. (1-5-4-2-6-3-7-8 gilt fuer Prefix 31.)"></a></span><span class="en">Firing order of the documented camshaft COMP 35-518-8: <strong>1-3-7-2-6-5-4-8</strong> (351W/HO order, COMP prefix 35) &ndash; not the standard 302 order 1-5-4-2-6-3-7-8. Confirm the part number of the installed cam before wiring. Distributor rotates counter-clockwise</span></li>
                 <li><span class="de"><strong>Der verbaute MSD 8479 hat eine Unterdruckdose.</strong> Die Verstellung passiert im <strong>Verteiler</strong>, nicht in der Z&uuml;ndbox: Grundz&uuml;ndung + Fliehkraftverstellung (Federn und Anschlagbuchse) + gegebenenfalls Unterdruckverstellung. Die Digital 6AL setzt <strong>nur den Drehzahlbegrenzer</strong> &ndash; ihre beiden Drehschalter haben mit dem Z&uuml;ndzeitpunkt nichts zu tun.</span><span class="en"><strong>The fitted MSD 8479 has a vacuum advance canister.</strong> Advance happens in the <strong>distributor</strong>, not in the ignition box: initial timing + centrifugal advance (springs and stop bushing) + vacuum advance where used. The Digital 6AL only sets the <strong>rev limiter</strong> &ndash; its two rotary switches have nothing to do with ignition timing.</span></li>
                 <li><span class="de">Das Verteiler-Zahnrad greift schraeg in das Nocken-Zahnrad &ndash; Verteilerfinger dreht sich ~15&deg; beim Einsetzen. Entsprechend vorhalten</span><span class="en">The distributor gear meshes with the cam gear at a helical angle &ndash; rotor rotates ~15&deg; as it drops in. Pre-offset accordingly</span></li>
                 <li><span class="de">Ansaugspinne am Verteilerfuss markieren um zu pruefen ob er sich beim Transport nicht verdreht hat</span><span class="en">Mark the intake manifold at the distributor base so you can verify it hasn&rsquo;t rotated during transport/handling</span></li>
@@ -3995,7 +3996,7 @@
         </ul></div>
         <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
             <li><span class="de">10&ndash;12&deg; ist ein sicherer Startwert gegen R&uuml;ckschlag &ndash; nach dem Motorstart mit der Blitzlampe nachstellen (<strong>einfache Ausf&uuml;hrung</strong>, siehe Kapitel 16)</span><span class="en">10&ndash;12&deg; is a safe starting point &ndash; adjust with timing light after engine is running</span></li>
-            <li><span class="de">Zuendfolge pruefen: 1-5-4-2-6-3-7-8 (Ford 302) &ndash; Kabel muessen an korrekten Verteilerkappe-Anschluessen sitzen</span><span class="en">Verify firing order: 1-5-4-2-6-3-7-8 (Ford 302) &ndash; wires must be in correct cap terminals</span></li>
+            <li><span class="de">Z&uuml;ndfolge pr&uuml;fen: <strong>1-3-7-2-6-5-4-8</strong> (dokumentierte Nockenwelle COMP 35-518-8, nicht die 302-Folge) &ndash; Kabel m&uuml;ssen an den richtigen Anschl&uuml;ssen der Verteilerkappe sitzen <a class="src-link doc" href="https://www.compcams.com/ford-technical-info" target="_blank" onclick="event.stopPropagation()" title="COMP Cams, Ford Technical Info, General Tips - Firing Order, Small Block &amp; SVO: The later 5.0 engine and all 351 engines are designed to use the 1-3-7-2-6-5-4-8 firing order. This is the firing order for all prefix 35 cams. (1-5-4-2-6-3-7-8 gilt fuer Prefix 31.)"></a></span><span class="en">Verify firing order: <strong>1-3-7-2-6-5-4-8</strong> (documented cam COMP 35-518-8, not the 302 order) &ndash; wires must be in correct cap terminals</span></li>
             <li><span class="de">MSD Magnetischer Pickup: keine Prueflampe noetig &ndash; Verteilerfinger einfach auf #1 bei statischer Zuendposition ausrichten</span><span class="en">MSD magnetic pickup: no test light needed &ndash; just align rotor to #1 at static timing position</span></li>
         </ul></div>
     </div></div>
@@ -4088,10 +4089,11 @@
     <div class="findings" data-findings="p4_wiring"></div>
     <div class="step-guide"><div class="guide-grid">
         <div class="guide-block"><h4 class="measure">Firing Order &amp; Cylinder Layout (Z&uuml;ndfolge)</h4>
-            <div class="spec-line"><span>Ford 302 Firing Order</span><span class="spec-val">1-5-4-2-6-3-7-8</span></div>
+            <div class="spec-line"><span>Firing Order (COMP 35-518-8)</span><span class="spec-val">1-3-7-2-6-5-4-8 &ndash; 351W/HO-Folge, nicht 302; Kennung der verbauten Nockenwelle best&auml;tigen <a class="src-link doc" href="https://www.compcams.com/ford-technical-info" target="_blank" onclick="event.stopPropagation()" title="COMP Cams, Ford Technical Info, General Tips - Firing Order, Small Block &amp; SVO: The later 5.0 engine and all 351 engines are designed to use the 1-3-7-2-6-5-4-8 firing order. This is the firing order for all prefix 35 cams. (1-5-4-2-6-3-7-8 gilt fuer Prefix 31.)"></a></span></div>
             <div class="spec-line"><span>Distributor Rotation</span><span class="spec-val">Counter-clockwise (gegen Uhrzeigersinn)</span></div>
-            <div class="spec-line"><span>Cylinder Layout (right bank)</span><span class="spec-val">1-2-3-4 (front to rear)</span></div>
-            <div class="spec-line"><span>Cylinder Layout (left bank)</span><span class="spec-val">5-6-7-8 (front to rear)</span></div>
+            <p><span class="de">Motorstirnseite = Steuerdeckel, R&uuml;ckseite = Schwungrad. LH/RH gilt vom Schwungrad zum Steuerdeckel blickend; Zylindernummern laufen je Bank von der Steuerdeckelseite nach hinten.</span><span class="en">Engine front = timing cover, rear = flywheel. Engine LH/RH is viewed from the flywheel toward the timing cover; each bank is numbered from the timing-cover end toward the flywheel.</span> <a href="https://edelbrock-instructions-v1.s3.amazonaws.com/edelbrock/5021.pdf" target="_blank">Edelbrock 5021, p. 2, fig. 3</a></p>
+            <div class="spec-line"><span>Cylinder Layout (engine RH, bank 1&ndash;4)</span><span class="spec-val">1-2-3-4 (front to rear)</span></div>
+            <div class="spec-line"><span>Cylinder Layout (engine LH, bank 5&ndash;8)</span><span class="spec-val">5-6-7-8 (front to rear)</span></div>
         </div>
         <div class="guide-block"><h4 class="prereq">Wiring Checklist</h4><ul>
             <li><span class="de">&#9744; MSD 6AL Box: dickes rotes Kabel an Batterie + (12V abgesichert)</span><span class="en">&#9744; MSD 6AL box: heavy red wire to battery + (12V fused)</span></li>
