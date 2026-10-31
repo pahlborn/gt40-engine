@@ -34,7 +34,7 @@
     };
   }
   function fmt(v) {
-    return v===null ? '—' : v.toFixed(2).replace('.',',').replace(/0$/,'').replace(/,$/,'');
+    return v===null ? '—' : String(Number(v.toFixed(2))).replace('.',',');
   }
   function feld(name) { return global.document && global.document.querySelector('[data-field="'+name+'"]'); }
   function eingabe(name) { var el=feld(name); return el ? el.value : ''; }
@@ -125,7 +125,7 @@
         : '3/3 gemessen; außerhalb der Ford-Orientierung ±1°. OT und Messung prüfen; ggf. Stellung am Kurbelwellenrad korrigieren und neue Einstellrunde beginnen.');
     // Alter ICL-Wert bleibt erhalten, bis die aktuelle Runde wieder Messwerte hat.
     var actual=feld('p2_icl_actual');
-    if(actual && res.mittel!==null) actual.value=fmt(res.mittel);
+    if(actual) actual.value=res.mittel===null?'':fmt(res.mittel);
     return res;
   }
   function onInput() {
