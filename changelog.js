@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v125',
+      date: '2026-10-31',
+      time: '17:17',
+      title: 'Cam Degreeing – vollständig einmessen und nachstellen',
+      changes: [
+        { type: 'neu', text: 'Drei ICL-Messungen je Einstellrunde; automatische Berechnung von Mittelwert, Abweichung, Advance/Retard-Richtung und Spannweite. Historische Einstellrunden mit Keilnut und korrespondierender Zahnradmarkierung.' },
+        { type: 'neu', text: 'Exkurs: echter OT, Proform 66838, Moroso 62191, Summit SUM-900061-S, Trick Flow TFS-90000-16, Ford M-6268-A302, vollständiger Korrekturzyklus mit Nachmessung und Kontrollen nach Trackdays.' },
+        { type: 'intern', text: 'Neue Rechen- und Browsernachweise; bestehende Felder aus dem Gist bleiben erhalten. v124 Netzwerkfehlerkorrektur unverändert.' }
+      ]
+    },
+    {
       version: 'v124',
       date: '2026-10-31',
       time: '16:50',
