@@ -128,7 +128,7 @@
         : '3/3 gemessen; außerhalb der Ford-Orientierung ±1°. OT und Messung prüfen; ggf. Stellung am Kurbelwellenrad korrigieren und neue Einstellrunde beginnen.');
     // Alter ICL-Wert bleibt erhalten, bis die aktuelle Runde wieder Messwerte hat.
     var actual=feld('p2_icl_actual');
-    if(actual) actual.value=res.mittel===null?'':fmt(res.mittel);
+    if(actual && res.komplett && res.mittel!==null) actual.value=fmt(res.mittel);
     return res;
   }
   function onInput() {
