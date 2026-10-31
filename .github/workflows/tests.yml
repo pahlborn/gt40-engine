@@ -41,6 +41,9 @@ jobs:
       - name: Messwert-Feld-Tests
         run: node tests/fields.test.mjs
 
+      - name: Cam Degreeing – drei Messungen und Datenbestand
+        run: node tests/cam-degreeing.test.mjs
+
       - name: UI-Tests (Version, Sync-Datum, Galerie-Beschriftung)
         run: node tests/ui.test.mjs
 
