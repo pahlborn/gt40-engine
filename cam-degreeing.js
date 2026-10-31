@@ -59,8 +59,10 @@
     }
     return '<div class="cam-round-extra" style="margin-top:1.15rem;padding:.8rem;border:1px solid #c7d6e2;border-radius:5px" data-cam-cycle="'+n+'">'+
      '<h4 style="margin:.1rem 0 .6rem">Einstellrunde '+n+' (nach Korrektur)</h4>'+
-     '<label>Verwendete Keilnut + zugehörige Zahnradmarkierung: <input type="text" data-field="p2_degree_setting_'+n+
-     '" placeholder="z. B. A2 – nach Sichtprüfung" style="width:180px" oninput="autoSave()"></label>'+
+     '<label>Verwendete Keilnut: <input type="text" data-field="p2_degree_setting_'+n+
+     '" placeholder="z. B. A2" style="width:100px" oninput="autoSave()"></label> '+
+     '<label>Zugehörige Zahnradmarkierung: <input type="text" data-field="p2_degree_mark_'+n+
+     '" placeholder="z. B. A2" style="width:100px" oninput="autoSave()"></label>'+
      '<div style="overflow-x:auto"><table style="width:100%;min-width:410px"><thead><tr><th>Messung</th><th>Vor −0,050"</th><th>Nach −0,050"</th><th>ICL</th></tr></thead><tbody>'+
      rows+'</tbody></table></div>'+
      '<div><strong>Mittel:</strong> <span id="cam-cycle-'+n+'-average">—</span>; <strong>Abweichung:</strong> <span id="cam-cycle-'+n+'-delta">—</span>; <strong>Spannweite:</strong> <span id="cam-cycle-'+n+'-spread">—</span></div>'+
