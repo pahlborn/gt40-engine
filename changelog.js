@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v127',
+      date: '2026-10-31',
+      time: '18:05',
+      title: 'Cam Degreeing – visuelle Werkstattanleitung',
+      changes: [
+        { type: 'verbessert', text: 'Exkurs auf fünf sichtbare Arbeitsschritte mit fünf technischen SVG-Schemata verdichtet: OT, Nockenhub, Soll-Ist-Abweichung, Ford-Steuertrieb und Korrekturschleife. Herstellervorgaben verlinkt, Zusatzwissen eingeklappt, mobile und Druckdarstellung.' },
+        { type: 'verbessert', text: 'Im Build Log Phase 2, Schritt 6: visuelle Fünf-Schritt-Übersicht und direkter Link oberhalb der Messwerte. Messlogik und Gist-Felder bleiben unverändert; die neuen v126-Prüfkorrekturen und Kühlkreis-Dokumentation bleiben erhalten.' },
+        { type: 'intern', text: 'Neue statische und Browserprüfungen für fünf SVGs, visuelle Navigation, Smartphonebreiten 360/390px und ursprüngliche Messwerte zusätzlich zu allen v126-Tests.' }
+      ]
+    },
+    {
       version: 'v126',
       date: '2026-10-31',
       time: '17:45',
