@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v123',
+      date: '2026-10-31',
+      time: '07:19',
+      title: 'Zuendfolge: 1-3-7-2-6-5-4-8 fuer die dokumentierte Nockenwelle',
+      changes: [
+        { type: 'fix', text: 'Die Spezifikationen ordnen der COMP 35-518-8 die 351W/HO-Folge 1-3-7-2-6-5-4-8 zu. Der Build Log (Verteiler, statische Zuendung, Verkabelung) und die Fehlersuche nannten weiter die Standard-302-Folge 1-5-4-2-6-3-7-8. COMP: Prefix 31 = 1-5-4-2-6-3-7-8, Prefix 35 = 1-3-7-2-6-5-4-8. Alle Stellen nennen jetzt 1-3-7-2-6-5-4-8 mit COMP-Quelle und dem Hinweis, die Kennung der verbauten Nockenwelle vor dem Verkabeln zu bestaetigen. Gefunden in der Pruefung GT40-V113-PRUEFUNG (#74), zuvor schon im Fachreview #44.' },
+        { type: 'intern', text: 'Neuer Test zuendfolge.test.mjs: jede achtstellige Zuendfolge auf den Seiten ist die dieses Motors oder ausdruecklich verneint. Gegenprobe rot: alter Stand, je eine alte Stelle einzeln zurueck, neue 302-Folge ohne Verneinung, fehlende COMP-Quelle.' }
+      ]
+    },
+    {
       version: 'v122',
       date: '2026-10-31',
       time: '06:08',
