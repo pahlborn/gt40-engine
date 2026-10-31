@@ -78,3 +78,23 @@ test('DE/EN definieren denselben Messbezug unter dem Maximum', () => {
   assert.doesNotMatch(en,/install piston stop|lifter rise on each side/);
   assert.match(exkurs,/href="https:\/\/performanceparts\.ford\.com\/part\/M-6268-A302"/);
 });
+
+test('Visuelle Anleitung ist kompakt, bebildert, navigierbar und weiterhin quellenbasiert', () => {
+  assert.equal((exkurs.match(/class="stage"/g) || []).length, 5, 'genau fünf Arbeitsschritte');
+  assert((exkurs.match(/<svg\b/g) || []).length >= 5, 'mindestens fünf erklärende Zeichnungen');
+  assert((exkurs.match(/<desc\b/g) || []).length >= 5, 'SVG-Bildbeschreibungen für Barrierefreiheit');
+  for (const key of ['ot','messen','bewerten','verstellen','abschluss']) {
+    assert(exkurs.includes('id="' + key + '"'), 'Schritt ' + key + ' erreichbar');
+    assert(exkurs.includes('href="#' + key + '"'), 'Sprungnavigation für ' + key);
+  }
+  for (const source of ['M-6268-A302','TFS-90000-16','SUM-900061-S','Proform 66838','Moroso 62191']) {
+    assert(exkurs.includes(source), source + ' als dokumentiertes Werkzeug/Teil');
+  }
+  assert(exkurs.includes('unterhalb des Maximums'), 'korrekter .050-Referenzpunkt');
+  assert(exkurs.includes('Kolbenhöhe'), 'echter OT via gleiche Kolbenhöhen');
+  assert(exkurs.includes('compcams.com'), 'COMP-Primärquelle');
+  assert(exkurs.includes('1632-16'), 'Rocker-Erklärung');
+  assert(exkurs.includes('keine zahn- oder markierungsgenaue Montagezeichnung'), 'Montagegrafik als Schema gekennzeichnet');
+  assert(exkurs.includes('neue Messrunde'), 'keine Vermischung unterschiedlich referenzierter Messungen');
+  assert(exkurs.includes('2 volle Umdrehungen'), 'Ford-Durchdrehprüfung');
+});
