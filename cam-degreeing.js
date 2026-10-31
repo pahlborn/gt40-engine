@@ -141,8 +141,8 @@
     var current=Number(c.value)||1;
     if(current>=20){text('cam-add-round-state','Mehr als 20 Runden nicht vorgesehen.');return;}
     var res=render();
-    if(!res || !res.komplett) {
-      text('cam-add-round-state','Vorher alle drei Messungen der laufenden Runde abschließen.');
+    if(!res || res.anzahl===0) {
+      text('cam-add-round-state','Vorher mindestens ein vollständiges Winkelpaar erfassen.');
       return;
     }
     var n=current+1;
