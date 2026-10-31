@@ -261,7 +261,8 @@ await test('Anschlusslage und E-Pumpeneinbindung werden nicht als gepruefte Verb
 
 await test('Das verworfene Pumpenmessblatt und seine zusaetzlichen Messaufforderungen bleiben entfernt', async () => {
   assert(!/id="waterpump-measurements"/.test(specs), 'Das verworfene Messblatt ist zurueck');
-  assert(!/data-field="(?:waterpump|cooling)_/.test(specs), 'Zusaetzliche Pumpen-/Kuehlkreislauf-Messfelder sind zurueck');
+  const pumpFields=specs.match(/data-field="(?:waterpump|cooling)_[^"]+"/g)||[];
+  assert(pumpFields.every(x=>x==='data-field="waterpump_identifier"'), 'Zusaetzliche Pumpen-/Kuehlkreislauf-Messfelder sind zurueck');
   assert(!/Beide Messfl&auml;chen, montierte Backplate und Dichtung im Messbezug dokumentieren/.test(specs), 'Die verworfene Messaufforderung ist zurueck');
 });
 

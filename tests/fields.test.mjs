@@ -1072,6 +1072,37 @@ await test('Ein Befund, der waehrend eines Laufs dazukommt, geht nicht verloren'
 });
 
 
+suite('Zwei Kennnummern statt Pumpen-Messblatt');
+async function pruefeKennnummern(p) {
+    for(const [key,value] of [['arp_kit_number','QA-ARP-Nummer'],['waterpump_identifier','QA-Pumpenkennung']]) {
+      const input=p.page.locator('[data-field="'+key+'"]');
+      assertEqual(await input.count(),1,'Ein Kennnummernfeld '+key);
+      assertEqual(await input.inputValue(),'','Keine angenommene Istnummer '+key);
+      if(!await input.isVisible()) await input.locator('xpath=ancestor::div[contains(@class,"comp-box")]').locator('.comp-toggle').click();
+      await input.fill(value);
+      await p.page.waitForFunction(({key,value})=>JSON.parse(localStorage.getItem('engineBuildLog')||'{}')[key]===value,{key,value});
+    }
+    await p.page.reload(); await p.page.waitForFunction(()=>dataLoaded===true);
+    assertEqual(await p.page.locator('[data-field="arp_kit_number"]').inputValue(),'QA-ARP-Nummer','ARP laden');
+    assertEqual(await p.page.locator('[data-field="waterpump_identifier"]').inputValue(),'QA-Pumpenkennung','Pumpe laden');
+    assertEqual(await p.page.locator('#waterpump-measurements').count(),0,'Kein Messblatt');
+    assertEqual(p.errors,[],'Seitenfehler');
+}
+await test('ARP-Satznummer und Pumpenkennnummer sind leer, frei eingebbar und nach Neuladen erhalten', async()=>{
+  const p=await openPage('specs.html');
+  try {await pruefeKennnummern(p);} finally {await p.close();}
+});
+await test('Gegenprobe: ein fehlendes Kennnummernfeld wird erkannt', async()=>{
+  const p=await openPage('specs.html');
+  try {
+    await p.page.locator('[data-field="arp_kit_number"]').evaluate(el=>el.remove());
+    let fehler;try {await pruefeKennnummern(p);} catch(e){fehler=e;}
+    assert(fehler && /Ein Kennnummernfeld arp_kit_number/.test(fehler.message),'Fehlendes Feld muss am Feldnachweis scheitern');
+    console.log('        GEGENPROBE ROT: '+fehler.message);
+  } finally {await p.close();}
+});
+
+
 } finally {
   await browser.close();
   server.close();
