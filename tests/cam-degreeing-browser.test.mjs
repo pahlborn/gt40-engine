@@ -118,6 +118,36 @@ try {
     assertEqual(a.errors.length,0,'Browserfehler: '+a.errors.join(' | '));
     await a.ctx.close();
   });
+
+  await test('Eine neue unvollständige OT-Messrunde bewahrt den historischen ICL-Wert',async()=>{
+    const a=await seite({p2_icl_target:'108',p2_open050:'65',p2_close050:'154',
+      p2_icl_actual:'109,5', _savedAt:'2026-10-31T13:21:58.847Z'});
+    await a.p.evaluate(()=>CamDegreeing.addRound());
+    await a.p.evaluate(()=>{
+      const set=(key,value)=>{
+        const el=document.querySelector('[data-field="'+key+'"]');
+        el.value=value;el.dispatchEvent(new Event('input',{bubbles:true}));
+      };
+      set('p2_degree_reason_2','OT erneut überprüft');
+      set('p2_degree_cycle_2_m1_vor','64');
+      set('p2_degree_cycle_2_m1_nach','152');
+    });
+    await a.p.waitForTimeout(900);
+    const d=await a.p.evaluate(()=>({
+      mean:document.getElementById('cam-icl-average').textContent,
+      count:document.getElementById('cam-runs-count').textContent,
+      previous:JSON.parse(localStorage.getItem('engineBuildLog')).p2_icl_actual,
+      old:JSON.parse(localStorage.getItem('engineBuildLog')).p2_open050,
+      reason:JSON.parse(localStorage.getItem('engineBuildLog')).p2_degree_reason_2
+    }));
+    assertEqual(d.mean,'108° ATDC','vorläufiger neuer Mittelwert sichtbar');
+    assertEqual(d.count,'Einstellrunde 2: 1 / 3 Messungen vollständig','unvollständig markiert');
+    assertEqual(d.previous,'109,5','historischer Istwert nicht überschrieben');
+    assertEqual(d.old,'65','historisches Winkelpaar nicht überschrieben');
+    assertEqual(d.reason,'OT erneut überprüft','Anlass gespeichert');
+    assertEqual(a.errors.length,0,'Browserfehler: '+a.errors.join(' | '));
+    await a.ctx.close();
+  });
 } finally {
   await browser.close();
   await new Promise(resolve => server.close(resolve));
