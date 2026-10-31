@@ -1730,6 +1730,9 @@
                 <div class="spec-line"><span>Lobe Separation Angle (LSA)</span><span class="spec-val">112&deg;</span></div>
                 <div class="spec-line"><span>Valve Lift Int/Exh</span><span class="spec-val">0.555" / 0.565" (14.10 / 14.35 mm)</span></div>
                 <div id="cam-degreeing-repetitions" style="margin-top:.75rem">
+<input type="hidden" data-field="p2_degree_round_count" value="1">
+<div class="guide-input-row"><div><label>Runde 1: verwendete Keilnut + zugehörige Zahnradmarkierung:</label>
+<input type="text" data-field="p2_degree_setting_1" placeholder="0 / A... / R... – ablesen" oninput="autoSave()" style="width:170px"></div></div>
 <p class="de" style="margin:.3rem 0 .65rem"><strong>Drei unabhängige ICL-Messungen</strong> — Ablesung jeweils 0,050" <em>unter dem Nockenmaximum</em>, nicht bei 0,050" Hub über dem Grundkreis.</p>
 <p class="en" style="margin:.3rem 0 .65rem"><strong>Three independent ICL passes.</strong> Each reading is 0.050" <em>below peak lobe lift</em>, not at 0.050" tappet rise above the base circle.</p>
 <div style="overflow-x:auto">
@@ -1759,8 +1762,19 @@
 <div><strong>Mittelwert:</strong> <span id="cam-icl-average">—</span></div>
 <div><strong>Abweichung vom Soll:</strong> <span id="cam-icl-deviation">—</span></div>
 <div><strong>Spannweite (Wiederholbarkeit):</strong> <span id="cam-icl-spread">—</span></div>
+<div><strong>Prüfrichtung:</strong> <span id="cam-icl-correction">—</span></div>
 <div id="cam-measure-state" style="font-size:.8rem;color:#805526">Messreihe noch nicht vollständig.</div>
 </div>
+<div id="cam-degreeing-extra-rounds"></div>
+<p style="margin:.8rem 0 .3rem"><button type="button" onclick="CamDegreeing.addRound()" style="padding:.45rem .8rem;border:1px solid #6786a0;border-radius:4px;cursor:pointer">+ Neue Einstellrunde nach Advance/Retard</button></p>
+<p id="cam-add-round-state" style="font-size:.8rem;color:#805526">Alle früheren Einstellrunden bleiben gespeichert. Pro neuer Zahnradstellung wieder drei Messungen durchführen.</p>
+<div class="guide-input-row">
+<label><input type="checkbox" data-field="p2_degree_true_tdc_checked" onchange="autoSave()"> Echter OT mit identischer Kolbenhöhe vor/nach OT geprüft</label>
+<label><input type="checkbox" data-field="p2_degree_tip_checked" onchange="autoSave()"> Roller-Nocken-Taster korrekt identifiziert</label>
+<label><input type="checkbox" data-field="p2_degree_marks_checked" onchange="autoSave()"> Zahnrad-Keilnut und dazugehörige Timing-Markierung geprüft</label>
+<label><input type="checkbox" data-field="p2_degree_two_turns_checked" onchange="autoSave()"> Nach letzter Änderung zwei komplette KW-Umdrehungen per Hand, ohne Kontakt</label>
+</div>
+<p style="font-size:.8rem;color:#805526"><strong>Abschluss:</strong> Erst nach finaler Zahnradposition, drei wiederholbaren Messungen, Vergleich mit Cam Card und überprüften Markierungen Schritt manuell als erledigt markieren. Piston-to-Valve-Clearance und übrige Ventiltriebfreigaben bleiben eigenständige Pflichtprüfungen vor dem Motorstart.</p>
 <p class="de" style="margin-top:.7rem"><a href="docs/cam-degreeing.html" target="_blank" rel="noopener"><strong>Exkurs: Cam Degreeing – Erklärung, deine Werkzeuge, OT-Methode und die Gründe für jeden Schritt</strong></a></p>
 <p class="en" style="margin-top:.7rem"><a href="docs/cam-degreeing.html" target="_blank" rel="noopener"><strong>Detailed cam degreeing guide (German) with tools, TDC method and references</strong></a></p>
 </div>
@@ -5436,6 +5450,7 @@
     }
     function applyData(data) {
         migrateData(data);
+        if (typeof CamDegreeing !== 'undefined') CamDegreeing.ensureFromData(data);
         document.querySelectorAll('[data-field]').forEach(function(el) {
             // Was der Nutzer gerade eingibt und noch nicht gespeichert ist,
             // ueberschreibt ein Abgleich nicht (v109).
