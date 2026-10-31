@@ -148,6 +148,53 @@ try {
     assertEqual(a.errors.length,0,'Browserfehler: '+a.errors.join(' | '));
     await a.ctx.close();
   });
+  await test('Visueller Exkurs lädt, navigiert und passt auf Desktop und Smartphone', async()=>{
+    for (const width of [1280, 390, 360]) {
+      const ctx=await browser.newContext({viewport:{width,height:850}});
+      const p=await ctx.newPage();
+      const errors=[];
+      p.on('pageerror',e=>errors.push(e.message));
+      const resp=await p.goto(base+'/docs/cam-degreeing.html');
+      assert(resp && resp.ok(),'HTML erreichbar');
+      await p.waitForLoadState('domcontentloaded');
+      const m=await p.evaluate(()=>({
+        width:document.documentElement.scrollWidth,
+        viewport:window.innerWidth,
+        svg:document.querySelectorAll('svg[role="img"]').length,
+        missingDescriptions:[...document.querySelectorAll('svg[role="img"]')].filter(el=>!el.querySelector('desc')).length,
+        stage:document.querySelectorAll('section.stage').length,
+        nav:[...document.querySelectorAll('.quicknav a')].length,
+        details:[...document.querySelectorAll('details')].filter(x=>x.open).length
+      }));
+      assert(m.width<=m.viewport+2,'keine horizontale Überbreite bei '+width+'px: '+m.width);
+      assertEqual(m.svg,5,'fünf SVG-Schemata');
+      assertEqual(m.missingDescriptions,0,'SVGs beschrieben');
+      assertEqual(m.stage,5,'fünf Schritte');
+      assertEqual(m.nav,5,'fünf Sprungmarken');
+      assertEqual(m.details,0,'Details initial eingeklappt');
+      await p.locator('.quicknav a[href="#verstellen"]').click();
+      assertEqual(new URL(p.url()).hash,'#verstellen','Sprung zur Zahnradkorrektur');
+      await p.locator('section#verstellen details summary').click();
+      const opened=await p.locator('section#verstellen details').evaluate(el=>el.open);
+      assert(opened,'weiterführende Montageinformationen lassen sich einblenden');
+      assertEqual(errors.length,0,'Browserfehler: '+errors.join(' | '));
+      await ctx.close();
+    }
+  });
+  await test('Build-Log führt früh sichtbar zur visuellen Anleitung',async()=>{
+    const a=await seite({p2_icl_target:'108',p2_open050:'65',p2_close050:'154',
+      p2_icl_actual:'109,5', _savedAt:'2026-10-31T13:21:58.847Z'});
+    const r=await a.p.evaluate(()=>{
+      const step=document.querySelector('#p2_step6');
+      const nav=step.querySelector('.cam-visual-entrance a');
+      return {href:nav?.getAttribute('href'),txt:nav?.textContent,old:document.querySelector('[data-field="p2_open050"]').value};
+    });
+    assertEqual(r.href,'docs/cam-degreeing.html','Zugriff aus Schritt 6');
+    assert(r.txt.includes('OT') && r.txt.includes('3× messen'),'schneller Überblick');
+    assertEqual(r.old,'65','Messwerte unverändert');
+    assertEqual(a.errors.length,0,'Browserfehler: '+a.errors.join(' | '));
+    await a.ctx.close();
+  });
 } finally {
   await browser.close();
   await new Promise(resolve => server.close(resolve));
