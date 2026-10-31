@@ -1719,7 +1719,7 @@
     <div class="step-guide">
         <div class="cam-visual-entrance" style="margin:0 0 .85rem;border:1px solid #9cc9d5;border-radius:9px;overflow:hidden;background:#f4f9fb">
           <a href="docs/cam-degreeing.html" target="_blank" rel="noopener" style="display:block;background:#153a56;color:#fff;padding:.85rem 1rem;text-decoration:none;font-weight:750;font-size:.92rem">Visuelle Werkstattanleitung öffnen: OT → 3× messen → bewerten → verstellen → erneut messen ↗</a>
-          <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;padding:9px 8px;text-align:center;font-size:.68rem;line-height:1.3;font-weight:650;color:#17536d">
+          <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;padding:9px 8px;text-align:center;font-size:.77rem;line-height:1.4;font-weight:650;color:#17536d">
             <span style="padding:6px 2px;background:#e2f0f3;border-radius:4px">01<br>OT</span>
             <span style="padding:6px 2px;background:#e2f0f3;border-radius:4px">02<br>Messen</span>
             <span style="padding:6px 2px;background:#e2f0f3;border-radius:4px">03<br>Bewerten</span>
@@ -1732,6 +1732,7 @@
 <li>Moroso 62191 &ndash; 18" Pro Degree Wheel und fester Zeiger</li>
 <li>Summit SUM-900061-S &ndash; Messuhrenbrücke für Kolben-OT</li>
 <li>Trick Flow TFS-90000-16 &ndash; Messuhr für Kolben-OT</li>
+<li>Alternativ bei montiertem Kopf: <strong>passender Kolbenstopper / Piston Stop</strong> im Zündkerzenloch, nur zum Finden des echten OT</li>
 <li>Proform 66838 &ndash; Cam Checker mit <strong>Rollennocken-Taststück</strong> direkt in der #1-Einlassstößelbohrung</li>
 </ul></div>
             <div class="guide-block"><h4 class="measure">Target Values &ndash; COMP XE274HR</h4>
@@ -1768,19 +1769,20 @@
 <div><label>ICL target (° ATDC):</label><input type="text" inputmode="decimal" data-field="p2_icl_target" placeholder="108" oninput="CamDegreeing.onInput()" style="width:62px"></div>
 <div><label>Letzter vollständig gemessener ICL:</label><input type="text" data-field="p2_icl_actual" readonly title="Wird erst nach drei vollständigen Messungen der aktuellen Runde aktualisiert; bis dahin bleibt der bisher gespeicherte Wert erhalten." style="width:66px;background:#edf3f8"></div>
 </div>
-<div style="padding:.6rem;border:1px solid #c6d5e2;border-radius:5px;margin-top:.5rem;line-height:1.6">
-<div><span id="cam-runs-count">0 / 3 Messungen vollständig</span></div>
-<div><strong>Mittelwert:</strong> <span id="cam-icl-average">—</span></div>
-<div><strong>Abweichung vom Soll:</strong> <span id="cam-icl-deviation">—</span></div>
-<div><strong>Spannweite (Wiederholbarkeit):</strong> <span id="cam-icl-spread">—</span></div>
-<div><strong>Prüfrichtung:</strong> <span id="cam-icl-correction">—</span></div>
-<div id="cam-measure-state" style="font-size:.8rem;color:#805526">Messreihe noch nicht vollständig.</div>
+<div style="padding:.55rem .7rem;border:1px solid #c6d5e2;border-radius:5px;margin-top:.5rem;line-height:1.5">
+<div style="font-weight:650;margin-bottom:.2rem">Auswertung der aktuellen Messrunde</div>
+<div style="font-size:.85rem;color:#576b7b;margin-bottom:.4rem"><span id="cam-runs-count">0 / 3 Messungen vollständig</span></div>
+<div class="spec-line"><span>ICL Mittelwert</span><span class="spec-val" id="cam-icl-average">—</span></div>
+<div class="spec-line"><span>Abweichung vom Soll</span><span class="spec-val" id="cam-icl-deviation">—</span></div>
+<div class="spec-line"><span>Spannweite (Wiederholbarkeit)</span><span class="spec-val" id="cam-icl-spread">—</span></div>
+<div class="spec-line"><span>Korrekturrichtung</span><span class="spec-val" id="cam-icl-correction">—</span></div>
+<div id="cam-measure-state" style="font-size:.82rem;color:#805526;margin-top:.35rem">Messreihe noch nicht vollständig.</div>
 </div>
 <div id="cam-degreeing-extra-rounds"></div>
 <p style="margin:.8rem 0 .3rem"><button type="button" onclick="CamDegreeing.addRound()" style="padding:.45rem .8rem;border:1px solid #6786a0;border-radius:4px;cursor:pointer">+ Neue Messrunde nach OT-Prüfung / Advance / Retard</button></p>
 <p id="cam-add-round-state" style="font-size:.8rem;color:#805526">Alle früheren Messrunden bleiben gespeichert. Nach neuer OT-Kalibrierung eine neue Dreierreihe beginnen, damit der noch unbestätigte Altwert nicht mit neuen Messungen gemittelt wird. Nach Zahnradverstellung ebenfalls neue Runde.</p>
 <div class="guide-input-row">
-<label><input type="checkbox" data-field="p2_degree_true_tdc_checked" onchange="autoSave()"> Echter OT mit identischer Kolbenhöhe vor/nach OT geprüft</label>
+<label><input type="checkbox" data-field="p2_degree_true_tdc_checked" onchange="autoSave()"> Echter OT mit Messuhr oder Kolbenstopper verifiziert</label>
 <label><input type="checkbox" data-field="p2_degree_tip_checked" onchange="autoSave()"> Roller-Nocken-Taster korrekt identifiziert</label>
 <label><input type="checkbox" data-field="p2_degree_marks_checked" onchange="autoSave()"> Zahnrad-Keilnut und dazugehörige Timing-Markierung geprüft</label>
 <label><input type="checkbox" data-field="p2_degree_two_turns_checked" onchange="autoSave()"> Nach letzter Änderung zwei komplette KW-Umdrehungen per Hand, ohne Kontakt</label>
@@ -1792,7 +1794,7 @@
             </div>
             <div class="guide-block guide-full"><h4 class="prereq">Procedure (6 Steps)</h4><ul>
                 <li><span class="de"><strong>1.</strong> Moroso 62191 fest auf der Kurbelwelle montieren, Zeiger am Block</span><span class="en"><strong>1.</strong> Mount degree wheel on crank snout, pointer on block</span></li>
-                <li><span class="de"><strong>2.</strong> Echten OT mit Summit-Brücke und Trick-Flow-Messuhr finden: zwei <em>gleiche Kolbenhöhen</em> vor/nach OT; Winkelmitte = OT, 0° einstellen und kontrollieren</span><span class="en"><strong>2.</strong> Find true TDC with the Summit bridge and Trick Flow indicator: record equal piston heights before/after TDC, split the angles, set zero and recheck</span></li>
+                <li><span class="de"><strong>2.</strong> Echten OT bestimmen: <em>gleiche Kolbenhöhen</em> mit Messuhr oder bei montiertem Kopf mit passendem Kolbenstopper im Zündkerzenloch. Beide Stopppunkte nur von Hand anfahren, Stopper entfernen, Winkelmitte = OT, 0° kontrollieren</span><span class="en"><strong>2.</strong> Find true TDC with equal piston heights (dial indicator) or with a compatible spark-plug-hole piston stop (head installed). Rotate by hand only, remove stop before continuing, set zero and recheck</span></li>
                 <li><span class="de"><strong>3.</strong> Proform 66838 mit korrekt identifiziertem Rollennocken-Taststück in #1 Einlassstößelbohrung einsetzen</span><span class="en"><strong>3.</strong> Insert Proform 66838 in the #1 intake lifter bore using the correctly identified roller-cam follower; do not measure hydraulic-plunger movement</span></li>
                 <li><span class="de"><strong>4.</strong> In Motordrehrichtung Nockenmaximum suchen, Proform-Messuhr dort auf Null stellen</span><span class="en"><strong>4.</strong> Rotate in normal engine direction, find peak lobe lift and zero the Proform indicator at the peak</span></li>
                 <li><span class="de"><strong>5.</strong> Vor Maximum zurückgehen, dann in Motordrehrichtung bei 0,050" (1,27 mm) <em>unter dem Maximum</em> auf der aufsteigenden und abfallenden Flanke die Winkel ablesen</span><span class="en"><strong>5.</strong> Back up before the peak, then approach both readings in normal engine direction at 0.050" (1.27 mm) <em>below peak lobe lift</em> on the rising and falling flanks</span></li>
