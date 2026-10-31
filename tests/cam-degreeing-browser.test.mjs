@@ -12,7 +12,7 @@ async function seite(initial) {
   p.on('pageerror', e => errors.push(e.message));
   await stubGitHub(p);
   if (initial) await p.addInitScript(data => {
-    localStorage.setItem('engineBuildLog', JSON.stringify(data));
+    if (!localStorage.getItem('engineBuildLog')) localStorage.setItem('engineBuildLog', JSON.stringify(data));
   }, initial);
   await p.goto(base + '/build-log.html');
   await p.waitForFunction(() => typeof CamDegreeing === 'object' && dataLoaded === true);
@@ -152,4 +152,4 @@ try {
   await browser.close();
   await new Promise(resolve => server.close(resolve));
 }
-summary();
+process.exit(summary());

@@ -13,26 +13,26 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
-      "version": "v126",
-      "date": "2026-10-31",
-      "time": "17:45",
-      "title": "Prueffolgen abgeschlossen: Zuendfolge, Motorbezug, Pickup, Pointer und Kuehlkreis",
-      "changes": [
+      version: 'v126',
+      date: '2026-10-31',
+      time: '17:45',
+      title: 'Prueffolgen abgeschlossen: Zuendfolge, Motorbezug, Pickup, Pointer und Kuehlkreis',
+      changes: [
         {
-          "type": "fix",
-          "text": "Widersprueche aus #74/#75/#76 korrigiert: Zuendfolge fuer dokumentierte COMP 35-518-8 konsistent, Zylinderbaenke statt Fahrer-/Beifahrerseite, Pickup-Vorgabe an tatsaechliche Wanne/Pickup gebunden. Beide Ford-Kontexte sichtbar; keine unbelegte Universal- oder Idealzahl."
+          type: 'fix',
+          text: 'Widersprueche aus #74/#75/#76 korrigiert: Zuendfolge fuer dokumentierte COMP 35-518-8 konsistent, Zylinderbaenke statt Fahrer-/Beifahrerseite, Pickup-Vorgabe an tatsaechliche Wanne/Pickup gebunden. Beide Ford-Kontexte sichtbar; keine unbelegte Universal- oder Idealzahl.'
         },
         {
-          "type": "fix",
-          "text": "Cam-Degreeing-Kurzanleitung DE/EN auf denselben Messbezug unter dem Nockenmaximum gebracht; Ford-Quelle fuer Verstellschritte direkt verlinkt."
+          type: 'fix',
+          text: 'Cam-Degreeing-Kurzanleitung DE/EN auf denselben Messbezug unter dem Nockenmaximum gebracht; Ford-Quelle fuer Verstellschritte direkt verlinkt.'
         },
         {
-          "type": "feature",
-          "text": "Timing-Pointer-Auswahl im Build mit Herstellerbelegen ergaenzt. Neues exakt gezeichnetes Kuehlkreislauf-Schema nach Owner-Angaben; E-Pumpen-Einbindung, Bypass und Heizungsanschluss bleiben sichtbar offen. Kein Pumpenmessblatt."
+          type: 'neu',
+          text: 'Timing-Pointer-Auswahl im Build mit Herstellerbelegen ergaenzt. Neues exakt gezeichnetes Kuehlkreislauf-Schema nach Owner-Angaben; E-Pumpen-Einbindung, Bypass und Heizungsanschluss bleiben sichtbar offen. Kein Pumpenmessblatt.'
         },
         {
-          "type": "intern",
-          "text": "Die sechs in #78 reproduzierten Testluecken geschlossen. Zusaetzliche Gegenproben erkennen alte Pickup-Sollzeilen, falschen Bankbezug, vertauschte Pointerwinkel und erfundene gesicherte E-Pumpenverbindungen. Keine physische Montagefreigabe aus Texttests."
+          type: 'intern',
+          text: 'Die sechs in #78 reproduzierten Testluecken geschlossen. Zusaetzliche Gegenproben erkennen alte Pickup-Sollzeilen, falschen Bankbezug, vertauschte Pointerwinkel und erfundene gesicherte E-Pumpenverbindungen. Keine physische Montagefreigabe aus Texttests.'
         }
       ]
     },
