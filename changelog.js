@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v126',
+      date: '2026-10-31',
+      time: '17:55',
+      title: 'Cam Degreeing – visuelle Werkstattanleitung',
+      changes: [
+        { type: 'verbessert', text: 'Exkurs auf fünf Schritte verdichtet: OT, Nockenhub, Auswertung, Ford-Steuertrieb und Korrekturschleife. Fünf eigene SVG-Zeichnungen mit technischen Beschriftungen, klarer Sprungnavigation und ausgeklappten Hauptanweisungen; Hintergründe auf Wunsch einblendbar.' },
+        { type: 'verbessert', text: 'Im Build Log Phase 2 / Schritt 6 erscheint jetzt der visuelle Ablauf als direkter Einstieg vor dem Messblatt. Bestehende Messwerte, Rundenauswertung und Gist-Speicherung bleiben unverändert.' },
+        { type: 'intern', text: 'Browserprüfungen für Smartphonebreiten (360/390px), Desktop, Zeichnungen, Ankerlinks und Erhalt der historischen Messwerte erweitert.' }
+      ]
+    },
+    {
       version: 'v125',
       date: '2026-10-31',
       time: '17:17',
