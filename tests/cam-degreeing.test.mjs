@@ -31,7 +31,7 @@ test('Drei Wiederholungen: Mittel, Sollabweichung und Spannweite', () => {
   assert.equal(r.komplett, true);
   assert.equal(r.mittel, 109.5);
   assert.equal(r.abweichung, 1.5);
-  assert.equal(r.spannweite, .5);
+  assert.equal(r.spannweite, 1);
 });
 test('Kommawert und Winkelkreis 360°', () => {
   assert.equal(zahl('108,5'), 108.5);
