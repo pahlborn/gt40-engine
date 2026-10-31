@@ -13,6 +13,15 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v123',
+      date: '2026-10-31',
+      time: '07:41',
+      title: 'ARP- und Pumpenkennnummer eintragen',
+      changes: [
+        { type: 'neu', text: 'Je ein leeres Eingabefeld fuer die vorhandene ARP-Satznummer und die Kennnummer der alten Wasserpumpe. Bestehendes automatisches Speichern, kein zusaetzliches Messblatt und keine angenommenen Teilenummern.' }
+      ]
+    },
+    {
       version: 'v122',
       date: '2026-10-31',
       time: '06:08',

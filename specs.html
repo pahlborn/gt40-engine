@@ -1018,6 +1018,7 @@
                     <div class="spec-item"><span class="spec-label">Muttern</span><span class="spec-value">6-Point (Hex) Nuts + geh&auml;rtete Unterlegscheiben</span></div>
                     <div class="spec-item"><span class="spec-label">Lange Bolzen</span><span class="spec-value">L&auml;nge und Anzahl <strong>OFFEN</strong> &ndash; am Satz messen <a class="src-link unverified" title="Frueher 5.000&quot; und 3.250&quot; Gesamtlaenge, ohne Quelle (entfernt 2026-10-30, GT40-V113-F002). Die ARP-Anleitung 154-4003 verlangt eine Laengen- und Passungspruefung, nennt aber keine Laengen. Ford M-6014-BOSS ist ein anderes Kit fuer andere Koepfe und belegt diese Laengen nicht."></a></span></div>
                     <div class="spec-item"><span class="spec-label">Kurze Bolzen</span><span class="spec-value">L&auml;nge und Anzahl <strong>OFFEN</strong> &ndash; am Satz messen <a class="src-link unverified" title="Frueher 5.000&quot; und 3.250&quot; Gesamtlaenge, ohne Quelle (entfernt 2026-10-30, GT40-V113-F002). Die ARP-Anleitung 154-4003 verlangt eine Laengen- und Passungspruefung, nennt aber keine Laengen. Ford M-6014-BOSS ist ein anderes Kit fuer andere Koepfe und belegt diese Laengen nicht."></a></span></div>
+                    <div class="form-group"><label for="arp_kit_number">ARP-Satznummer am vorhandenen Satz</label><input id="arp_kit_number" type="text" data-field="arp_kit_number" placeholder="Noch nicht abgelesen" oninput="autoSave()"></div>
                     <div class="comp-photo-strip" data-comp-gallery="headbolts"><img class="comp-hero" src="img/arp-154-4003.jpg" data-default-src="img/arp-154-4003.jpg" onclick="oeffneGesamtgalerie('headbolts')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="oeffneGesamtgalerie('headbolts')">&#128444; <span id="headbolts-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('headbolts')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
@@ -1340,6 +1341,7 @@
                     <div class="spec-item"><span class="spec-label">Durchfluss / F&ouml;rderh&ouml;he</span><span class="spec-value"><strong>OFFEN</strong> &ndash; Edelbrock ver&ouml;ffentlicht f&uuml;r die Stra&szlig;en-Victor keine Werte <a class="src-link unverified" title="Edelbrock nennt Durchflusstabellen nur fuer die Circle-Track-Pumpen 8816 und 8833, nicht fuer die Strassenversionen. Eine Foerderhoehe nennt Edelbrock in keinem Fall. Fuer die Frage, ob der Aufbau bei den langen GT40-Leitungen reicht, liegt damit keine Grundlage vor."></a></span></div>
                     <div class="spec-item"><span class="spec-label">Drehmoment</span><span class="spec-value"><strong>OFFEN</strong> &ndash; Herstellerangabe einholen <a class="src-link unverified" title="Der frueher hier stehende Wert 15-22 ft-lbs stammte aus der Notion-Uebernahme ohne Validierung und wurde 2026-10-26 entfernt."></a></span></div>
                     <div class="info-box"><strong>Altpumpe:</strong> <strong>Backplate vorhanden</strong> &ndash; von Peter am 2026-10-30 best&auml;tigt. Die Teilenummer ist noch abzulesen.</div>
+                    <div class="form-group"><label for="waterpump_identifier">Kennnummer der vorhandenen Wasserpumpe</label><input id="waterpump_identifier" type="text" data-field="waterpump_identifier" placeholder="Noch nicht abgelesen" oninput="autoSave()"></div>
                     <div class="comp-photo-strip" data-comp-gallery="waterpump"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="oeffneGesamtgalerie('waterpump')">&#128444; <span id="waterpump-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('waterpump')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
                 </div>
             </div>
@@ -4165,6 +4167,9 @@
 
     // Comprehensive DE->EN dictionary for full page translation
     var i18nDict = {
+        'ARP-Satznummer am vorhandenen Satz':'ARP kit number on the actual kit',
+        'Kennnummer der vorhandenen Wasserpumpe':'Identifier on the existing water pump',
+        'Noch nicht abgelesen':'Not yet read',
         // == NAV & UI ==
         '\u00dcbersicht':'Overview', 'Spezifikationen':'Specifications', 'Referenz':'Reference',
         'Alles einklappen':'Collapse all', 'Alles aufklappen':'Expand all',
