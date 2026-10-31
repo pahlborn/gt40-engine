@@ -18,6 +18,8 @@
       time: '06:08',
       title: 'Der Pfeil am Schritt ist wieder ein Pfeil',
       changes: [
+        { type: 'fix', text: 'Umlaute statt Umschreibungen in den Meldungen beim Verbinden: "Prüfe Token", "Für den Cloud-Sync", "Gerät" usw.' },
+        { type: 'intern', text: 'github-zugang.js nur in sichtbaren Texten geaendert, wortgleich mit alignment v28 (neue Pruefsumme); neuer Test gegen ae/oe/ue-Umschreibungen in den Meldungen, Gegenprobe rot.' },
         { type: 'fix', text: 'Am Schritt steht wieder ein Pfeil statt "BC", und er zeigt, ob die Anleitung auf- oder zugeklappt ist: zugeklappt nach unten, aufgeklappt nach oben. Der Pfeil-Code war beim Bearbeiten zu einem Steuerzeichen und "BC" geworden; gedreht hatte er sich auch vorher nicht.' },
         { type: 'intern', text: 'Ursache der fehlenden Drehung: transform wirkt nicht auf ein inline-Element, und ::after ist ohne Angabe inline (wie in jerico). Zwei neue Tests in ui.test.mjs: jeder drehende ::after-Pfeil ist nicht inline (mit sichtbaren Schritten und Zaehlung), und der Schritt-Pfeil ist ein Pfeil; beide Gegenproben rot.' }
       ]

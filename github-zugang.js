@@ -171,11 +171,11 @@
     if (!token) { melden('Bitte Token eingeben.', FEHLER()); return { ok: false }; }
 
     try {
-      melden('Pruefe Token...');
+      melden('Prüfe Token …');
       var res = await holen('/user', token);
       if (!res.ok) {
         var f0 = await fehlerAus(res);
-        melden(fehlerText(f0.status === 401 ? 'Token ungueltig, abgelaufen oder widerrufen'
+        melden(fehlerText(f0.status === 401 ? 'Token ungültig, abgelaufen oder widerrufen'
           : 'GitHub hat den Token nicht angenommen', f0), FEHLER({ quelle: 'user', status: f0.status, antwort: f0.antwort, url: f0.url }));
         return { ok: false };
       }
@@ -184,8 +184,8 @@
       if (b.haken) {
         var fehlen = fehlt(b.haken, _cfg.pflicht);
         if (fehlen.length) {
-          melden(b.text + '. Fuer den Cloud-Sync fehlt der Haken "' + fehlen.join('", "') + '". '
-            + 'GitHub: Settings > Developer settings > Personal access tokens > Tokens (classic) > Token oeffnen > '
+          melden(b.text + '. Für den Cloud-Sync fehlt der Haken "' + fehlen.join('", "') + '". '
+            + 'GitHub: Settings > Developer settings > Personal access tokens > Tokens (classic) > Token öffnen > '
             + 'Haken setzen > Update token. Der Token bleibt dabei derselbe.',
             FEHLER({ quelle: 'haken', konto: b.konto, art: b.art, haken: b.haken, fehlt: fehlen }));
           return { ok: false, bild: b };
@@ -197,7 +197,7 @@
         if (b.haken && fehlt(b.haken, [h]).length) {
           hinweise.push(zusatz[h] + ' geht mit diesem Token nicht: Haken "' + h + '" fehlt.');
         } else if (!b.haken) {
-          hinweise.push(zusatz[h] + ': bei diesem Token nicht pruefbar (braucht "Contents: Read and write").');
+          hinweise.push(zusatz[h] + ': bei diesem Token nicht prüfbar (braucht "Contents: Read and write").');
         }
       });
 
@@ -210,15 +210,15 @@
         return { ok: false, bild: b };
       }
       if (s.fremd) {
-        melden('Der Datenspeicher dieser App gehoert Konto ' + s.fremd + ', der Token aber ' + b.text
+        melden('Der Datenspeicher dieser App gehört Konto ' + s.fremd + ', der Token aber ' + b.text
           + '. Bitte einen Token von ' + s.fremd + ' verwenden.', FEHLER({ quelle: 'fremd', konto: b.konto, besitzer: s.fremd }));
         return { ok: false, bild: b };
       }
 
       var id = s.id;
       if (!id) {
-        if (!fragen(b.text + '.\n\nUnter diesem Konto ist kein Datenspeicher fuer ' + _cfg.app + ' zu sehen. '
-          + 'Neu anlegen ist nur beim allerersten Geraet richtig. Ist ein anderes Geraet schon verbunden, '
+        if (!fragen(b.text + '.\n\nUnter diesem Konto ist kein Datenspeicher für ' + _cfg.app + ' zu sehen. '
+          + 'Neu anlegen ist nur beim allerersten Gerät richtig. Ist ein anderes Gerät schon verbunden, '
           + 'hier abbrechen und dort den Token vergleichen.'
           + (b.art === 'fein' ? ' Bei einem fine-grained Token ohne die Berechtigung "Gists" sieht die Liste immer leer aus.' : '')
           + '\n\nNeu anlegen?')) {

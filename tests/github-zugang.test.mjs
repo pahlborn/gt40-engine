@@ -20,7 +20,7 @@ const SEITE = 'index.html';
 // Pruefsumme von github-zugang.js (Inhalt ohne Zeilenenden). Dieselbe Zahl
 // steht in allen drei Repos. Aendert sich der Baustein, wird dieser Test rot:
 // dann die Aenderung in alle drei uebernehmen und die Zahl ueberall ersetzen.
-const WORTGLEICH = '7b3b107533fbe991';
+const WORTGLEICH = '78ef50384375ecdd';
 
 const { server, base } = await startServer();
 const browser = await browserStarten();
@@ -121,6 +121,16 @@ await test('github-zugang.js ist wortgleich mit gt40 und jerico (Pruefsumme)', a
   const t = fs.readFileSync(path.join(REPO_ROOT, 'github-zugang.js'), 'utf8').replace(/\r\n/g, '\n');
   const summe = crypto.createHash('sha256').update(t).digest('hex').slice(0, 16);
   assertEqual(summe, WORTGLEICH, 'Baustein geaendert - in allen drei Repos uebernehmen und WORTGLEICH ueberall ersetzen');
+});
+
+await test('sichtbare Texte mit Umlauten, nicht mit ae/oe/ue', async () => {
+  // Bis v27/v45/v119 stand in den Meldungen "Pruefe Token", "Geraet" usw.
+  // Geprueft werden die Zeichenketten im Code, nicht die Kommentare.
+  const t = fs.readFileSync(path.join(REPO_ROOT, 'github-zugang.js'), 'utf8').replace(/\r\n/g, '\n');
+  const code = t.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  const literale = code.match(/'(?:[^'\\\n]|\\.)*'/g) || [];
+  const falsch = literale.filter((l) => /(Pruef|pruef|Aender|aender|Geraet|geraet|\bfuer\b|\bFuer\b|ueber|Ueber|oeffn|gehoert|ungueltig|Rueck|rueck|moeglich)/.test(l));
+  assertEqual(falsch, [], 'Umschreibungen statt Umlaute');
 });
 
 await test('nur der Baustein speichert den Token und sucht oder legt Gists an', async () => {
