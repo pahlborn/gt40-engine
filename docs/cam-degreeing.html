@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exkurs: Cam Degreeing – GT40 BOSS 302</title>
+<style>
+:root{color-scheme:light;--ink:#202c3a;--muted:#526275;--blue:#17476f;--line:#d5e0e9;--bg:#f3f6f9}
+*{box-sizing:border-box}body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);margin:0;line-height:1.65}
+header{background:var(--blue);color:#fff;padding:1rem max(1rem,calc((100% - 920px)/2))}header a{color:#fff}
+main{max-width:920px;margin:auto;padding:1.4rem 1rem 4rem}h1{line-height:1.2}h2{margin-top:2rem;color:var(--blue)}h3{margin-top:1.1rem}
+section{background:#fff;padding:1.3rem 1.5rem;margin:1.2rem 0;border:1px solid var(--line);border-radius:9px}
+a{color:#125d93}p,li{max-width:78ch}li{margin:.55rem 0}small,.subtle{color:var(--muted)}
+table{border-collapse:collapse;width:100%;margin:1rem 0}td,th{border-bottom:1px solid var(--line);padding:.65rem;text-align:left;vertical-align:top}
+th{background:#edf3f8}code{font-size:.93em;background:#eef3f8;padding:.12em .3em;border-radius:3px}
+.formula{font-size:1.2rem;background:#edf3f8;border-radius:6px;padding:1rem}
+.caution{border-left:4px solid #bf7622;padding:.7rem 1rem;background:#fff8ed}
+@media(max-width:650px){section{padding:1rem}table{font-size:.88rem}}
+</style>
+</head>
+<body>
+<header><a href="../build-log.html#p2_step6">← GT40 Build Log · Phase 2 / Schritt 6</a></header>
+<main>
+<h1>Cam Degreeing – Nockenwelle exakt einmessen</h1>
+<p class="subtle">Exkurs für den TSC GT40, Ford Performance M-6009-302 / COMP Cams 35-518-8. Messmethode: Intake Centerline direkt am Einlassnocken von Zylinder 1.</p>
+<section>
+<h2>1. Was wird bestimmt – und wozu?</h2>
+<p>Die <strong>Intake Centerline (ICL)</strong> beschreibt, bei welchem Kurbelwellenwinkel <strong>nach dem oberen Totpunkt (ATDC)</strong> die Mitte des Einlassnockenhubs liegt. Die Nockenwelle dreht nur mit halber Kurbelwellendrehzahl. Deshalb beziehen sich alle hier angegebenen Winkel auf die <strong>Kurbelwelle</strong>, nicht auf die Nockenwelle.</p>
+<p>Für die dokumentierte COMP 35-518-8 nennt der Hersteller <strong>108° ATDC ICL</strong> und <strong>112° LSA</strong>. Die beiden Werte sind verschieden: Die LSA ist eine feste Eigenschaft der Nockenwelle; durch das Verdrehen des Steuertriebs ändert sich die Einbauposition (ICL), nicht die LSA.</p>
+<p>Ein größerer gemessener ICL-Wert als 108° bedeutet eine <strong>spätere / retardierte</strong> Einbauposition. Ein kleinerer Wert bedeutet eine <strong>frühere / vorverlegte</strong> Einbauposition. Der Vergleich ist erst aussagekräftig, wenn echter OT und Messmethode verifiziert sind.</p>
+</section>
+<section>
+<h2>2. Deine Werkzeuge – klar getrennte Aufgaben</h2>
+<table>
+<thead><tr><th>Werkzeug</th><th>Hierfür verwendest du es</th></tr></thead>
+<tbody>
+<tr><td><a href="https://www.moroso.com/18-degree-pro-wheel-for-engine-stand-use62191/">Moroso 62191 Pro Degree Wheel, 18"</a></td><td>Kurbelwellenwinkel ablesen. Gradscheibe fest auf der Kurbelwelle, Zeiger fest am Motorblock.</td></tr>
+<tr><td><a href="https://www.summitracing.com/parts/SUM-900061-S">Summit SUM-900061-S</a> plus Messuhr aus <a href="https://www.trickflow.com/search/brand/trick-flow-specialties/product-line/trick-flow-cam-degree-kits/part-type/camshaft-degree-kits">Trick Flow TFS-90000-16</a></td><td><strong>Echten oberen Totpunkt am Kolben</strong> von Zylinder 1 bestimmen. Der Summit-Brückenhalter liegt stabil auf dem Blockdeck.</td></tr>
+<tr><td><a href="https://www.summitracing.com/parts/PRO-66838">Proform 66838</a></td><td>Später direkt in die <strong>Einlassstößelbohrung von Zylinder 1</strong> einsetzen und die Hubkurve der Nockenwelle messen – ohne Kipphebel, Stößelstange und hydraulischen Stößel.</td></tr>
+</tbody>
+</table>
+<p class="caution"><strong>Proform-Taststück:</strong> Der 66838 wird mit getrennten Taststücken für Flat-Tappet- und Rollennockenwellen geliefert. Für die COMP 35-518-8 muss die <strong>Rollennocken-Ausführung</strong> eingesetzt werden. Welche der beiden beiliegenden Kontaktformen das in deinem konkreten Satz ist, ist noch nicht zweifelsfrei identifiziert; nicht anhand „flach“ oder „Kegel“ raten.</p>
+</section>
+<section>
+<h2>3. Echten OT mit Summit-Brücke und Trick-Flow-Messuhr bestimmen</h2>
+<p><strong>Warum?</strong> Rund um den höchsten Kolbenstand bewegt sich der Kolben nur wenig. Den scheinbaren Höchststand der Messuhr als 0° zu nehmen, kann daher einen systematischen Winkelfehler erzeugen. Zwei gleiche Kolbenhöhen vor und nach OT bestimmen den Mittelpunkt genauer.</p>
+<ol>
+<li><strong>Gradscheibe montieren.</strong> Moroso 62191 fest mit der Kurbelwelle verbinden; einen starren Zeiger am Block anbringen. Die Scheibe darf sich nicht unabhängig von der Kurbelwelle drehen.</li>
+<li><strong>Messuhr aufbauen.</strong> Summit-Brücke über Zylinder 1 sicher auf dem sauberen Blockdeck auflegen, Trick-Flow-Messuhr so befestigen, dass der Taster stabil auf dem Kolbenboden anliegt und nicht verkantet. Genügend Messweg in beide Richtungen lassen.</li>
+<li><strong>Vorläufigen OT suchen.</strong> Kurbelwelle vorsichtig um den höchsten Kolbenstand drehen, maximale Kolbenhöhe feststellen und Messuhr dort auf 0 stellen. Dieser Punkt dient <em>nur als Höhenreferenz</em>, noch nicht als bestätigter 0°-Winkel.</li>
+<li><strong>Erste gleiche Höhe erfassen.</strong> In normaler Motordrehrichtung an die Position <strong>0,050" (1,27 mm) unter der maximalen Kolbenhöhe vor OT</strong> heranfahren. Winkel notieren.</li>
+<li><strong>Zweite gleiche Höhe erfassen.</strong> Weiter in normaler Motordrehrichtung über OT hinaus bis <strong>genau derselben Kolbenhöhe nach OT</strong> drehen. Winkel notieren.</li>
+<li><strong>Winkelmitte als echten OT verwenden.</strong> Die Winkelposition genau zwischen diesen zwei Punkten ist wahrer OT. Zeiger bzw. Gradscheibe so korrigieren, dass dort 0° steht, <strong>ohne die Kurbelwelle beim Justieren zu verdrehen</strong>.</li>
+<li><strong>Kontrollieren.</strong> Die Messung an beiden 0,050"-Kolbenhöhen wiederholen. Vor und nach OT müssen nun gleiche Winkelabstände erscheinen. Wenn nicht, Aufbau und Bezug nochmals korrigieren.</li>
+</ol>
+<p class="caution"><strong>Nicht verwechseln:</strong> Die 0,050" in diesem Abschnitt beziehen sich auf die <strong>Kolbenhöhe relativ zu OT</strong>. In Abschnitt 4 werden andere 0,050" an der <strong>Nockenhubkurve relativ zum Hubmaximum</strong> gemessen.</p>
+</section>
+<section>
+<h2>4. Intake Centerline mit Proform 66838 messen</h2>
+<p><strong>Warum direkt an der Nocke?</strong> Die Messung vermeidet Einflüsse von Kipphebelübersetzung, Stößelstangengeometrie und hydraulischem Stößelspiel. Sie bestimmt unmittelbar die Nockenmitte bezogen auf den zuvor festgelegten echten Kurbelwellen-OT.</p>
+<ol>
+<li><strong>Werkzeug vorbereiten.</strong> Summit-Brücke/Messuhr entfernen. Proform 66838 mit dem geeigneten <strong>Rollennocken-Taststück</strong> in die Einlassstößelbohrung von Zylinder 1 einsetzen, sicher fixieren und Leichtgängigkeit sowie Messweg überprüfen. Der Tastkontakt muss zur Nocke passen.</li>
+<li><strong>Maximalen Nockenhub finden.</strong> Die Kurbelwelle in ihrer normalen Drehrichtung drehen, bis die Proform-Messuhr den höchsten Hub erreicht. Die Messuhr hier auf <strong>0</strong> stellen – das bedeutet jetzt „Hubmaximum“, nicht OT.</li>
+<li><strong>Vor den ersten Messpunkt zurückdrehen.</strong> Gemäß COMP-Cams-Anleitung zunächst etwa 0,100" vom Maximalhub zurückgehen und dann <strong>wieder in normaler Motordrehrichtung</strong> an den Messpunkt 0,050" <strong>unterhalb des Maximums auf der ansteigenden Flanke</strong> heranfahren. So wird der Steuertrieb in konsistenter Richtung belastet.</li>
+<li><strong>Ersten Kurbelwellenwinkel notieren.</strong> Moroso-Gradscheibe ablesen: <strong>„vor Maximum −0,050"“</strong>.</li>
+<li><strong>Zweiten Winkel notieren.</strong> In derselben normalen Drehrichtung über das Hubmaximum bis 0,050" <strong>unterhalb des Maximums auf der abfallenden Flanke</strong> weiterdrehen. Wert als <strong>„nach Maximum −0,050"“</strong> notieren.</li>
+<li><strong>ICL berechnen.</strong> Die Winkelmitte aus den beiden Ablesungen ist die Intake Centerline. Für eine über 360° hinauslaufende Skala wird die zweite Ablesung erst auf denselben fortlaufenden Winkelkreis gebracht.</li>
+<li><strong>Dreimal unabhängig messen.</strong> Die Kurbelwelle zwischen den Durchgängen erneut weit genug in Motordrehrichtung bewegen, das Hubmaximum wiederfinden und die zwei 0,050"-Punkte neu anfahren. <strong>OT-Zeiger und Gradscheibe dabei nicht neu justieren.</strong></li>
+</ol>
+<div class="formula">(Winkel vor Maximum + Winkel nach Maximum) ÷ 2 = ICL</div>
+<p><strong>Dein bisheriger erster Durchgang:</strong> (65° + 154°) ÷ 2 = <strong>109,5° ATDC</strong>. Gegenüber 108° Soll sind das <strong>+1,5° (später)</strong>. Der Befund bleibt bis zur erneuten OT-Prüfung vorläufig.</p>
+<p class="caution"><strong>Wichtige Unterscheidung:</strong> Das „0,050" unter dem Maximum“ für die ICL-Mittelpunktmethode ist <strong>nicht</strong> die Herstellerangabe „Duration @ 0,050"“. Letztere verwendet einen Bezug von 0,050" Hub <strong>über dem Grundkreis</strong> und beschreibt eine andere Messung.</p>
+<p><a href="../build-log.html#p2_step6"><strong>Zurück zu den drei Eingabedurchgängen im Build-Log</strong></a></p>
+</section>
+<section>
+<h2>5. Was wird automatisch ausgewertet?</h2>
+<table>
+<thead><tr><th>Anzeige im Build-Log</th><th>Bedeutung</th></tr></thead>
+<tbody>
+<tr><td>ICL je Durchgang</td><td>Mittelpunkt aus den beiden Winkelwerten dieses Durchgangs</td></tr>
+<tr><td>Mittelwert</td><td>Arithmetisches Mittel der vollständig eingetragenen Durchgänge; vor 3/3 ausdrücklich <em>vorläufig</em></td></tr>
+<tr><td>Abweichung vom Soll</td><td>Mittelwert minus eingegebener Soll-ICL. Positiv = später/retardiert; negativ = früher/vorverlegt</td></tr>
+<tr><td>Spannweite</td><td>Höchster minus niedrigster gemessener ICL-Wert; bei nur einem Durchgang nicht ausgewiesen</td></tr>
+</tbody>
+</table>
+<p>Die Spannweite bewertet die <strong>Wiederholbarkeit</strong> der Ablesung. Sie beweist <strong>nicht</strong> den richtigen OT oder den richtigen Tastkontakt. Die Anwendung zeigt daher bewusst keinen pauschalen Gut-/Schlecht-Wert.</p>
+</section>
+<section>
+<h2>6. Haben 1,5:1- oder 1,6:1-Rocker Einfluss auf die ICL?</h2>
+<p><strong>Nein, wenn direkt in der Stößelbohrung gemessen wird.</strong> Die Nocke und ihre Winkelposition ändern sich nicht, wenn später ein anderer Kipphebel eingebaut wird. Geändert wird der Ventilhub – und damit die mechanisch zu prüfende Ventiltriebgeometrie.</p>
+<table>
+<thead><tr><th>COMP 35-518-8</th><th>Einlass</th><th>Auslass</th></tr></thead>
+<tbody>
+<tr><td>Nockenhub laut COMP</td><td>0,348"</td><td>0,354"</td></tr>
+<tr><td>Rechnerischer Ventilhub, 1,5:1</td><td>0,522"</td><td>0,531"</td></tr>
+<tr><td>Ventilhub laut COMP, 1,6:1</td><td>0,555"</td><td>0,565"</td></tr>
+</tbody>
+</table>
+<p>Die vorgesehenen <strong>COMP 1632-16</strong> sind 1,6:1-Roller-Rocker mit 7/16"-Stehbolzenaufnahme. Vor dem Zusammenbau sind Kolben-Ventil-Abstand, Coil Bind, Retainer-/Ventilschaftdichtungsabstand und Freigängigkeit des Ventiltriebs zu überprüfen. Aus der ICL-Messung folgt hierfür keine automatische Freigabe.</p>
+</section>
+<section>
+<h2>7. Primärquellen und Messreferenzen</h2>
+<ul>
+<li><a href="https://compcams.com/pub/media/productattach/1/4/145.pdf">COMP Cams, Installation &amp; Degreeing Instructions, Part #145</a> – Intake-Centerline-Methode, Messpunkte 0,050" unter Maximum, Drehrichtung, Mittelwert.</li>
+<li><a href="https://www.compcams.com/xtreme-energy-computer-controlled-224-232-hydraulic-roller-cam-for-ford-5-0l.html">COMP Cams 35-518-8</a> – ICL 108°, LSA 112°, Nocken- und Ventilhub.</li>
+<li><a href="https://www.compcams.com/valve-timing-tutorial/">COMP Cams, Valve Timing Tutorial</a> – Hubbezug und Kipphebelübersetzung.</li>
+<li><a href="https://www.proformparts.com/images/Ryan_Desktop/Promotions/Catalog/2023_Proform_Catalog_edition_V12_Final.pdf">Proform-Katalog, Camshaft Lobe Indicator Tools</a> – 66838, zwei unterschiedliche Taststücke.</li>
+<li><a href="https://www.hpacademy.com/courses/how-to-degree-a-cam/practical-skills-finding-true-tdc">HP Academy, Finding True TDC</a> – Messuhr und gleiche Kolbenhöhe vor/nach OT.</li>
+<li><a href="https://www.summitracing.com/parts/SUM-900061-S">Summit SUM-900061-S</a> und <a href="https://www.moroso.com/18-degree-pro-wheel-for-engine-stand-use62191/">Moroso 62191</a> – verwendete Messmittel.</li>
+</ul>
+<p class="subtle">Diese Anleitung ersetzt weder die konkrete COMP Cam Card der verbauten Nockenwelle noch die Prüfung aller mechanischen Freigängigkeiten am tatsächlichen Motor.</p>
+</section>
+</main>
+</body>
+</html>
