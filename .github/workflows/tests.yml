@@ -131,6 +131,12 @@ jobs:
       - name: Kopfstehbolzen - Anzugswert offen
         run: node tests/kopfanzug.test.mjs
 
+      - name: Zuendfolge der dokumentierten Nockenwelle
+        run: node tests/zuendfolge.test.mjs
+
+      - name: Prueffolgen Motorbezug, Pickup und Kuehlkreis
+        run: node tests/prueffolgen.test.mjs
+
       - name: GitHub-Zugang (Token pruefen, verbinden)
         run: node tests/github-zugang.test.mjs
 

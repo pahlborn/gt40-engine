@@ -39,11 +39,11 @@ suite('Wasserpumpe: Milodon ist keine gesetzte Wahl mehr');
 
 await test('Keine Seite fuehrt die Milodon 16230 noch als verbaute Pumpe', async () => {
   for (const [name, h] of [['specs.html', specs], ['build-log.html', buildlog], ['index.html', index]]) {
-    const treffer = h.match(/Milodon[^<]{0,40}16230/g) || [];
+    const treffer = h.matchAll(/Milodon[^<]{0,40}16230/g);
     // Erwaehnung im Verwerfungs-Hinweis ist erlaubt, eine Fuehrung als
     // Komponente nicht.
     for (const t of treffer) {
-      const i = h.indexOf(t);
+      const i = t.index;
       const umfeld = h.slice(Math.max(0, i - 400), i + 200);
       assert(/entf&auml;llt|entfaellt|nicht mehr|verworfen/i.test(umfeld),
         name + ': Milodon 16230 steht ohne Verwerfungs-Hinweis da (' + t + ')');
@@ -82,9 +82,10 @@ await test('Die zwei unteren 3/8-16-Schrauben stehen mit Ford-Quelle da', async 
 });
 
 await test('Der Build Log warnt vor zu kleinen Durchgangsloechern im Nachmarkt-Deckel', async () => {
-  const i = buildlog.indexOf('p3_timing_cover');
+  const i = buildlog.indexOf('<div class="step-card" id="p3_timing_cover"');
   assert(i > 0, 'Der Timing-Cover-Schritt fehlt');
-  const schritt = buildlog.slice(i, i + 9000);
+  const schritt = buildlog.slice(i, buildlog.indexOf('<div class="step-card"',i+10));
+  assert(/Durchgangsl&ouml;cher/.test(schritt) && /through-holes/.test(schritt), 'Die DE/EN-Durchgangsloch-Pruefpflicht fehlt');
   assert(/3\/8-16 UNC/.test(schritt), 'Die BOSS-Besonderheit steht nicht im Montageschritt');
 });
 
@@ -101,12 +102,13 @@ await test('Die 7/16-Angabe ist aus dem Build Log verschwunden', async () => {
 });
 
 await test('Die Stehbolzenlaengen sind als offen gekennzeichnet, nicht als Sollwert', async () => {
-  const i = buildlog.indexOf('Long Studs');
-  assert(i > 0, 'Die Laengenzeile fehlt');
-  const block = buildlog.slice(i, i + 600);
-  assert(!/6\.800&quot; \(172\.72 mm\)/.test(block),
-    'Die Laenge 6.800" steht weiter als Sollwert da, obwohl keine Quelle sie traegt');
-  assert(/offen/i.test(block), 'Die Laengen sind nicht als offen gekennzeichnet');
+  for (const [name, length] of [['Long Studs','6.800'],['Short Studs','5.750']]) {
+    const line = buildlog.split('\n').find(l=>l.includes('<span>'+name));
+    assert(line, name+': Zeile fehlt');
+    const value = line.split('<span class="spec-val">')[1]?.split('</span>')[0];
+    assert(value && /offen/i.test(value), name+': Laenge nicht offen');
+    assert(!value.includes(length), name+': unbelegte Laenge steht als Sollwert da');
+  }
 });
 
 // ---------------------------------------------------------------------------
@@ -163,8 +165,8 @@ await test('Die Balancer-Zentralschraube traegt den belegten Ford-Wert', async (
   assert(i > 0, 'Die Zeile fehlt');
   const zeile = specs.slice(i, specs.indexOf('</div>', i));
   assert(/95 ft-lbs/.test(zeile), 'Der Ford-Wert 95 lb-ft fehlt');
-  assert(/src-link doc/.test(zeile), 'Der Wert traegt keine belegte Quelle');
-  assert(/ARP/.test(zeile),
+  assert(zeile.includes('href="https://performanceparts.ford.com/download/instructionsheets/FORDINSTSHTM-6007-X2302E.PDF"'), 'Falsches oder fehlendes Ford-Quellenziel');
+  assert(/Gilt NICHT fuer eine ARP-Schraube/.test(zeile),
     'Der Vorbehalt fehlt, dass der Wert fuer die Ford-Schraube gilt und nicht fuer eine ARP');
 });
 
@@ -209,8 +211,9 @@ await test('Der Pointer steht als eigene, offene Position da', async () => {
   const i = specs.indexOf('Timing Pointer (Z&uuml;ndmarken-Zeiger)');
   assert(i > 0, 'Der Timing-Pointer-Abschnitt fehlt');
   const block = specs.slice(i, i + 6000);
-  assert(/im Lieferumfang/.test(block),
-    'Dass der Pointer bei keinem Deckel mitgeliefert wird, steht nirgends');
+  assert(/Beim Edelbrock 4250 nicht im Lieferumfang/.test(block), 'Edelbrock-Nichtlieferung fehlt');
+  assert(/Ford M-6059-D351: Lieferumfang ungekl/.test(block), 'Ford-Lieferumfang wird als geklaert behauptet');
+  assert(!/Weder beim|Sowohl beim/.test(block), 'Unbelegte gemeinsame Lieferumfangsaussage');
   assert(/M-6059-D351/.test(block) && /4250/.test(block),
     'Es steht nicht da, dass das fuer beide Deckel gilt - Ford wie Edelbrock');
   assert(/OFFEN/.test(block), 'Die offenen Punkte sind nicht als offen gekennzeichnet');
