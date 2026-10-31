@@ -62,7 +62,16 @@
       neueVersion();
     });
     nav.serviceWorker.register('sw.js').then(function (reg) {
-      function pruefen() { try { reg.update(); } catch (e) {} }
+      // update() liefert ein Promise. Ohne Netz (Ruhezustand, Funkloch) wird es
+      // abgelehnt - try/catch faengt das nicht. Bis zum 2026-10-31 stand jede
+      // solche Pruefung als "unhandledrejection" im Fehlerprotokoll und ging
+      // mit in die Cloud. Die naechste Pruefung kommt ohnehin nach PRUEF_MS.
+      function pruefen() {
+        try {
+          var p = reg.update();
+          if (p && typeof p.catch === 'function') p.catch(function () {});
+        } catch (e) {}
+      }
       setInterval(pruefen, PRUEF_MS);
       global.document.addEventListener('visibilitychange', function () {
         if (!global.document.hidden) pruefen();
