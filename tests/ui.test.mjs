@@ -562,6 +562,48 @@ await test('der Schritt-Pfeil ist ein Pfeil', async () => {
   assertEqual(inhalt, '"\u25BC"', 'Inhalt des Pfeils');
 });
 
+
+// ---------------------------------------------------------------------------
+suite('aktualisieren.js: eine gescheiterte Versionspruefung ist kein Fehler');
+
+await test('aktualisieren.js ist wortgleich mit den Schwesterprojekten (Pruefsumme)', async () => {
+  // Dieselbe Zahl steht in gt40-engine, jerico und alignment. Wer die Datei
+  // aendert, uebernimmt die Aenderung in alle drei und ersetzt die Zahl.
+  const crypto = await import('node:crypto');
+  const t = fs.readFileSync(path.join(REPO_ROOT, 'aktualisieren.js'), 'utf8').replace(/\r\n/g, '\n');
+  assertEqual(crypto.createHash('sha256').update(t).digest('hex').slice(0, 16), '79d600c070070c13', 'Pruefsumme');
+});
+
+await test('ohne Netz landet die Versionspruefung nicht im Fehlerprotokoll', async () => {
+  // 30./31.10.: "Failed to update a ServiceWorker" stand nachts in allen drei
+  // Fehlerprotokollen - reg.update() ohne Netz, abgelehntes Promise, nicht
+  // abgefangen. Jeder Eintrag ging zudem mit in die Cloud.
+  const ctx = await browser.newContext({ serviceWorkers: 'block' });
+  await ctx.addInitScript(() => {
+    window.__updates = 0;
+    const reg = { update() { window.__updates++; return Promise.reject(new TypeError('Failed to update a ServiceWorker for scope')); } };
+    Object.defineProperty(navigator, 'serviceWorker', { configurable: true,
+      value: { controller: null, addEventListener() {}, register: () => Promise.resolve(reg) } });
+  });
+  const page = await ctx.newPage();
+  const abgelehnt = [];
+  page.on('console', (m) => { if (/Failed to update/.test(m.text())) abgelehnt.push(m.text()); });
+  await page.goto(base + '/index.html');
+  await page.waitForTimeout(500);
+  const r = await page.evaluate(async () => {
+    let unbehandelt = 0;
+    window.addEventListener('unhandledrejection', () => { unbehandelt++; });
+    document.dispatchEvent(new Event('visibilitychange'));
+    await new Promise((res) => setTimeout(res, 400));
+    const log = (window.ErrorLog && ErrorLog.alle) ? ErrorLog.alle() : [];
+    return { updates: window.__updates, unbehandelt,
+             eintraege: log.filter((e) => /ServiceWorker/.test(String(e.nachricht || ''))).length };
+  });
+  await ctx.close();
+  assert(r.updates > 0, 'Testaufbau: update() wurde nie aufgerufen');
+  assertEqual([r.unbehandelt, r.eintraege], [0, 0], 'unbehandelte Ablehnungen / Eintraege im Fehlerprotokoll');
+});
+
 } finally {
   await browser.close();
   server.close();

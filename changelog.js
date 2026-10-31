@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v124',
+      date: '2026-10-31',
+      time: '16:50',
+      title: 'Kein Netz ist kein Fehler',
+      changes: [
+        { type: 'fix', text: 'Ohne Netz (Ruhezustand, Funkloch) landete die Suche nach einer neuen Version als Fehler "Failed to update a ServiceWorker" im Fehlerprotokoll und ging mit in die Cloud. Das ist kein Fehler - die naechste Pruefung kommt nach einer Minute. Das Protokoll zeigt jetzt nur noch echte Fehler, und die Cloud bekommt weniger unnoetige Schreibvorgaenge.' },
+        { type: 'intern', text: 'aktualisieren.js: die Ablehnung von reg.update() wird abgefangen (try/catch faengt kein abgelehntes Promise). Wortgleich in gt40, jerico und alignment; zwei Tests in ui.test.mjs (Verhalten ohne Netz, Pruefsumme der Datei), Gegenprobe rot.' }
+      ]
+    },
+    {
       version: 'v123',
       date: '2026-10-31',
       time: '07:41',
