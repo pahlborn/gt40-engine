@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <script defer src="cam-degreeing.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1718,33 +1719,61 @@
     <div class="step-guide">
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
-                <li><span class="de">Gradscheibe &ge; 9" (229 mm) Durchmesser</span><span class="en">Degree wheel &ge; 9" (229 mm) diameter</span></li>
-                <li><span class="de">Zeiger, am Block montiert</span><span class="en">Pointer, mounted to block</span></li>
-                <li><span class="de">Messuhr mit Stoessel-Adapter</span><span class="en">Dial indicator with lifter adapter</span></li>
-                <li><span class="de">Kolbenstopp (Stahl oder Gummi)</span><span class="en">Piston stop (steel or rubber)</span></li>
-                <li><span class="de">Prueffeder (leichte Feder, ersetzt Ventilfeder)</span><span class="en">Checking spring (light spring, replaces valve spring)</span></li>
-            </ul></div>
+<li>Moroso 62191 &ndash; 18" Pro Degree Wheel und fester Zeiger</li>
+<li>Summit SUM-900061-S &ndash; Messuhrenbrücke für Kolben-OT</li>
+<li>Trick Flow TFS-90000-16 &ndash; Messuhr für Kolben-OT</li>
+<li>Proform 66838 &ndash; Cam Checker mit <strong>Rollennocken-Taststück</strong> direkt in der #1-Einlassstößelbohrung</li>
+</ul></div>
             <div class="guide-block"><h4 class="measure">Target Values &ndash; COMP XE274HR</h4>
-                <div class="spec-line"><span>Intake Centerline (ICL)</span><span class="spec-val">Per cam card (laut Cam Card)</span></div>
+                <div class="spec-line"><span>Intake Centerline (ICL)</span><span class="spec-val">108&deg; ATDC (COMP 35-518-8)</span></div>
                 <div class="spec-line"><span>Duration @.050" Int/Exh</span><span class="spec-val">224&deg; / 232&deg;</span></div>
                 <div class="spec-line"><span>Lobe Separation Angle (LSA)</span><span class="spec-val">112&deg;</span></div>
                 <div class="spec-line"><span>Valve Lift Int/Exh</span><span class="spec-val">0.555" / 0.565" (14.10 / 14.35 mm)</span></div>
-                <div class="guide-input-row" style="margin-top:0.4rem;">
-                    <div><label>ICL target:</label><input type="text" data-field="p2_icl_target" placeholder="" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>ICL actual:</label><input type="text" data-field="p2_icl_actual" placeholder="" oninput="autoSave()" style="width:55px;"></div>
-                    <div><label>Open @.050:</label><input type="text" data-field="p2_open050" placeholder="&deg;" oninput="autoSave()" style="width:50px;"></div>
-                    <div><label>Close @.050:</label><input type="text" data-field="p2_close050" placeholder="&deg;" oninput="autoSave()" style="width:50px;"></div>
-                </div>
+                <div id="cam-degreeing-repetitions" style="margin-top:.75rem">
+<p class="de" style="margin:.3rem 0 .65rem"><strong>Drei unabhängige ICL-Messungen</strong> — Ablesung jeweils 0,050" <em>unter dem Nockenmaximum</em>, nicht bei 0,050" Hub über dem Grundkreis.</p>
+<p class="en" style="margin:.3rem 0 .65rem"><strong>Three independent ICL passes.</strong> Each reading is 0.050" <em>below peak lobe lift</em>, not at 0.050" tappet rise above the base circle.</p>
+<div style="overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;min-width:425px;font-size:.82rem">
+<thead><tr style="text-align:left"><th style="padding:.3rem">Run</th><th style="padding:.3rem">Vor Max. −0.050"</th><th style="padding:.3rem">Nach Max. −0.050"</th><th style="padding:.3rem">ICL (ATDC)</th></tr></thead>
+<tbody>
+<tr><td style="padding:.3rem">1 (Altbestand)</td>
+<td><input aria-label="Messung 1 vor Maximum" type="text" inputmode="decimal" data-field="p2_open050" placeholder="°" oninput="CamDegreeing.onInput()" style="width:66px"></td>
+<td><input aria-label="Messung 1 nach Maximum" type="text" inputmode="decimal" data-field="p2_close050" placeholder="°" oninput="CamDegreeing.onInput()" style="width:66px"></td>
+<td><strong id="cam-icl-run-1">—</strong></td></tr>
+<tr><td style="padding:.3rem">2</td>
+<td><input aria-label="Messung 2 vor Maximum" type="text" inputmode="decimal" data-field="p2_degree_r2_vor" placeholder="°" oninput="CamDegreeing.onInput()" style="width:66px"></td>
+<td><input aria-label="Messung 2 nach Maximum" type="text" inputmode="decimal" data-field="p2_degree_r2_nach" placeholder="°" oninput="CamDegreeing.onInput()" style="width:66px"></td>
+<td><strong id="cam-icl-run-2">—</strong></td></tr>
+<tr><td style="padding:.3rem">3</td>
+<td><input aria-label="Messung 3 vor Maximum" type="text" inputmode="decimal" data-field="p2_degree_r3_vor" placeholder="°" oninput="CamDegreeing.onInput()" style="width:66px"></td>
+<td><input aria-label="Messung 3 nach Maximum" type="text" inputmode="decimal" data-field="p2_degree_r3_nach" placeholder="°" oninput="CamDegreeing.onInput()" style="width:66px"></td>
+<td><strong id="cam-icl-run-3">—</strong></td></tr>
+</tbody></table>
+</div>
+<div class="guide-input-row" style="margin-top:.55rem">
+<div><label>ICL target (° ATDC):</label><input type="text" inputmode="decimal" data-field="p2_icl_target" placeholder="108" oninput="CamDegreeing.onInput()" style="width:62px"></div>
+<div><label>ICL actual (mean):</label><input type="text" data-field="p2_icl_actual" readonly title="Automatisch aus den vollständigen Messungen berechnet" style="width:66px;background:#edf3f8"></div>
+</div>
+<div style="padding:.6rem;border:1px solid #c6d5e2;border-radius:5px;margin-top:.5rem;line-height:1.6">
+<div><span id="cam-runs-count">0 / 3 Messungen vollständig</span></div>
+<div><strong>Mittelwert:</strong> <span id="cam-icl-average">—</span></div>
+<div><strong>Abweichung vom Soll:</strong> <span id="cam-icl-deviation">—</span></div>
+<div><strong>Spannweite (Wiederholbarkeit):</strong> <span id="cam-icl-spread">—</span></div>
+<div id="cam-measure-state" style="font-size:.8rem;color:#805526">Messreihe noch nicht vollständig.</div>
+</div>
+<p class="de" style="margin-top:.7rem"><a href="docs/cam-degreeing.html" target="_blank" rel="noopener"><strong>Exkurs: Cam Degreeing – Erklärung, deine Werkzeuge, OT-Methode und die Gründe für jeden Schritt</strong></a></p>
+<p class="en" style="margin-top:.7rem"><a href="docs/cam-degreeing.html" target="_blank" rel="noopener"><strong>Detailed cam degreeing guide (German) with tools, TDC method and references</strong></a></p>
+</div>
             </div>
             <div class="guide-block guide-full"><h4 class="prereq">Procedure (6 Steps)</h4><ul>
-                <li><span class="de"><strong>1.</strong> Gradscheibe auf Kurbelwellenstumpf montieren, Zeiger am Block</span><span class="en"><strong>1.</strong> Mount degree wheel on crank snout, pointer on block</span></li>
-                <li><span class="de"><strong>2.</strong> Echten OT finden: Kolbenstopp einbauen, Kurbel gegen Stopp drehen (beide Richtungen), Mitte = OT</span><span class="en"><strong>2.</strong> Find true TDC: install piston stop, rotate crank against stop (both directions), split the difference = TDC</span></li>
-                <li><span class="de"><strong>3.</strong> Messuhr auf #1 Einlass-Stoessel setzen</span><span class="en"><strong>3.</strong> Place dial indicator on #1 intake lifter</span></li>
-                <li><span class="de"><strong>4.</strong> Kurbel langsam drehen, maximalen Hubpunkt finden</span><span class="en"><strong>4.</strong> Slowly rotate crank, find max lift point</span></li>
-                <li><span class="de"><strong>5.</strong> Gradscheibe bei 0,050" (1,27 mm) Stoesselerhebung auf jeder Seite des Max-Hubs ablesen</span><span class="en"><strong>5.</strong> Read degree wheel at .050" (1.27 mm) lifter rise on each side of max lift</span></li>
-                <li><span class="de"><strong>6.</strong> Mittelpunkt = Intake Centerline (ICL)</span><span class="en"><strong>6.</strong> Midpoint = Intake Centerline (ICL)</span></li>
+                <li><span class="de"><strong>1.</strong> Moroso 62191 fest auf der Kurbelwelle montieren, Zeiger am Block</span><span class="en"><strong>1.</strong> Mount degree wheel on crank snout, pointer on block</span></li>
+                <li><span class="de"><strong>2.</strong> Echten OT mit Summit-Brücke und Trick-Flow-Messuhr finden: zwei <em>gleiche Kolbenhöhen</em> vor/nach OT; Winkelmitte = OT, 0° einstellen und kontrollieren</span><span class="en"><strong>2.</strong> Find true TDC: install piston stop, rotate crank against stop (both directions), split the difference = TDC</span></li>
+                <li><span class="de"><strong>3.</strong> Proform 66838 mit korrekt identifiziertem Rollennocken-Taststück in #1 Einlassstößelbohrung einsetzen</span><span class="en"><strong>3.</strong> Place dial indicator on #1 intake lifter</span></li>
+                <li><span class="de"><strong>4.</strong> In Motordrehrichtung Nockenmaximum suchen, Proform-Messuhr dort auf Null stellen</span><span class="en"><strong>4.</strong> Slowly rotate crank, find max lift point</span></li>
+                <li><span class="de"><strong>5.</strong> Vor Maximum zurückgehen, dann in Motordrehrichtung bei 0,050" (1,27 mm) <em>unter dem Maximum</em> auf der aufsteigenden und abfallenden Flanke die Winkel ablesen</span><span class="en"><strong>5.</strong> Read degree wheel at .050" (1.27 mm) lifter rise on each side of max lift</span></li>
+                <li><span class="de"><strong>6.</strong> Mittelpunkt = ICL; mit derselben OT-Justierung zweimal wiederholen; Mittelwert, Abweichung und Spannweite stehen oben</span><span class="en"><strong>6.</strong> Midpoint = Intake Centerline (ICL)</span></li>
             </ul></div>
-            <div class="warning-box"><strong>EVERY camshaft must be degreed!</strong> Manufacturing tolerances can mean 2&ndash;4&deg; deviation. This significantly changes engine character.</div>
+            <div class="warning-box"><strong>EVERY camshaft must be degreed!</strong> Die berechnete Sollabweichung ist kein Freigabekriterium. Erst echten OT, korrektes Rollennocken-Taststück und Wiederholbarkeit prüfen.</div>
             <div class="guide-block"><h4 class="photo">Photo Documentation (Fotodokumentation)</h4><ul>
                 <li><span class="de">Gradscheibe mit Zeiger bei OT</span><span class="en">Degree wheel with pointer at TDC</span></li>
                 <li><span class="de">Messuhr-Ablesung bei 0,050" Oeffnen und Schliessen</span><span class="en">Dial indicator reading at .050" opening and closing</span></li>
@@ -5415,6 +5444,7 @@
             if (v !== undefined) { if (el.type === 'checkbox') el.checked = v; else el.value = v; }
         });
         updateProgress();
+        if (typeof CamDegreeing !== "undefined") CamDegreeing.render();
     }
 
     function lokalSpeichern() {
