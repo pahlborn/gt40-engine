@@ -44,6 +44,9 @@ jobs:
       - name: Cam Degreeing – drei Messungen und Datenbestand
         run: node tests/cam-degreeing.test.mjs
 
+      - name: Cam Degreeing – Browser, Einstellrunden und Datenspeicherung
+        run: node tests/cam-degreeing-browser.test.mjs
+
       - name: UI-Tests (Version, Sync-Datum, Galerie-Beschriftung)
         run: node tests/ui.test.mjs
 
