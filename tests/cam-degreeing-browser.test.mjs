@@ -167,10 +167,14 @@ try {
         details:[...document.querySelectorAll('details')].filter(x=>x.open).length
       }));
       assert(m.width<=m.viewport+2,'keine horizontale Überbreite bei '+width+'px: '+m.width);
-      assertEqual(m.svg,5,'fünf SVG-Schemata');
+      assertEqual(m.svg,6,'sechs SVG-Schemata, zwei OT-Methoden');
       assertEqual(m.missingDescriptions,0,'SVGs beschrieben');
       assertEqual(m.stage,5,'fünf Schritte');
       assertEqual(m.nav,5,'fünf Sprungmarken');
+      const ot=await p.locator('#ot').innerText();
+      assert(ot.includes('A · Messuhr auf dem Kolben'),'Methode A lesbar');
+      assert(ot.includes('B · Kolbenstopper / Piston Stop / OT-Finder'),'Methode B lesbar');
+      assert(ot.includes('Stopper entfernen'),'Stopper vor dem Drehen entfernen');
       assertEqual(m.details,0,'Details initial eingeklappt');
       await p.locator('.quicknav a[href="#verstellen"]').click();
       assertEqual(new URL(p.url()).hash,'#verstellen','Sprung zur Zahnradkorrektur');

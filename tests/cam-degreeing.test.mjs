@@ -67,6 +67,22 @@ test('Exkurs trennt echten OT von Nockenmaximum und belegt die Quelle', () => {
   assert.match(exkurs, /1632-16/);
 });
 
+test('OT mit Messuhr und mit passendem Kolbenstopper sind getrennte Verfahren', () => {
+  assert.match(exkurs, /A · Messuhr auf dem Kolben/);
+  assert.match(exkurs, /B · Kolbenstopper \/ Piston Stop \/ OT-Finder/);
+  assert.match(exkurs, /im Zündkerzenloch/);
+  assert.match(exkurs, /beide Ventile geschlossen/);
+  assert.match(exkurs, /Nie mit Anlasser oder Gewalt/);
+  assert.match(exkurs, /Stopper <strong>entfernen<\/strong>/);
+  assert.match(exkurs, /Winkelmitte/);
+  assert.match(exkurs, /compcams\.com\/pub\/media\/productattach\/1\/4\/145\.pdf/);
+  assert.match(html, /Echter OT mit Messuhr oder Kolbenstopper verifiziert/);
+  assert.match(html, /compatible spark-plug-hole piston stop/);
+  assert.match(html, /class="spec-line"><span>ICL Mittelwert/);
+  assert.doesNotMatch(exkurs, /Deine Werkzeuge|Mit deinen COMP|hier deine Messuhrbrücke/);
+  assert.equal((exkurs.match(/<svg\b/g) || []).length, 6);
+});
+
 test('DE/EN definieren denselben Messbezug unter dem Maximum', () => {
   const start = html.indexOf('id="p2_step6"');
   const end = html.indexOf('id="p2_step7"',start);

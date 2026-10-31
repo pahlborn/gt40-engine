@@ -13,6 +13,18 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v128',
+      date: '2026-10-31',
+      time: '18:51',
+      title: 'Cam Degreeing – Kolbenstopper als OT-Alternative',
+      changes: [
+        { type: 'neu', text: 'Echten OT alternativ zur Messuhr auch mit passendem Kolbenstopper im Zündkerzenloch ermitteln (Piston Stop / TDC Stop); sichere Bedienung nur von Hand, beidseitiger Anschlag und Entfernen vor der weiteren Messung. COMP-Anleitung als Primärquelle.' },
+        { type: 'verbessert', text: 'Cam-Degreeing-Exkurs sprachlich entpersonalisiert. GT40-Konfiguration und Hersteller-Sollwerte bleiben als klar bezeichnetes Beispiel; Fahrzeuge mit anderem Steuertrieb benötigen passende eigene Vorgaben.' },
+        { type: 'verbessert', text: 'Phase 2 Schritt 6: zwei OT-Möglichkeiten und kompakte Auswertung im bestehenden spec-line-Stil. Keine Änderung an globaler Typografie, anderen Projekten oder Gist-Datenfeldern.' },
+        { type: 'intern', text: 'Sechstes SVG für Kolbenstopper sowie zusätzliche Browser- und Unit-Tests auf sicherer Anwendung und Datenkompatibilität.' }
+      ]
+    },
+    {
       version: 'v127',
       date: '2026-10-31',
       time: '18:05',
