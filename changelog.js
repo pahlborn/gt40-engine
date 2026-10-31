@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v122',
+      date: '2026-10-31',
+      time: '06:08',
+      title: 'Der Pfeil am Schritt ist wieder ein Pfeil',
+      changes: [
+        { type: 'fix', text: 'Am Schritt steht wieder ein Pfeil statt "BC", und er zeigt, ob die Anleitung auf- oder zugeklappt ist: zugeklappt nach unten, aufgeklappt nach oben. Der Pfeil-Code war beim Bearbeiten zu einem Steuerzeichen und "BC" geworden; gedreht hatte er sich auch vorher nicht.' },
+        { type: 'intern', text: 'Ursache der fehlenden Drehung: transform wirkt nicht auf ein inline-Element, und ::after ist ohne Angabe inline (wie in jerico). Zwei neue Tests in ui.test.mjs: jeder drehende ::after-Pfeil ist nicht inline (mit sichtbaren Schritten und Zaehlung), und der Schritt-Pfeil ist ein Pfeil; beide Gegenproben rot.' }
+      ]
+    },
+    {
       version: 'v121',
       date: '2026-10-30',
       time: '19:16',

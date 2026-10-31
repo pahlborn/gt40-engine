@@ -508,6 +508,60 @@ for (const file of PAGES) {
   });
 }
 
+
+// ---------------------------------------------------------------------------
+suite('Aufklapp-Pfeile zeigen den Zustand');
+
+await test('jeder Pfeil, der sich drehen soll, dreht sich wirklich', async () => {
+  // Peter, 2026-10-30: "der Pfeil zeigt immer nach unten" - dass sich ein
+  // Schritt aufklappen laesst, war so nicht zu sehen. transform wirkt nicht
+  // auf ein inline-Element, und ::after ist ohne Angabe inline. Gemessen wird
+  // jeder ::after-Pfeil mit Drehung, auch die der Abschnitte und Tipp-Kaesten.
+  //
+  // In einem verborgenen Bereich erzeugt der Browser kein ::after - die erste
+  // Fassung dieses Tests mass deshalb keinen einzigen Schritt-Pfeil und blieb
+  // in der Gegenprobe gruen (Regel 6/7c). Darum: Schritte sichtbar machen,
+  // die Abschnittskoepfe aber zugeklappt lassen, und mitzaehlen.
+  const fehler = [];
+  let schrittPfeile = 0;
+  for (const file of PAGES) {
+    const p = await open(file);
+    const r = await p.page.evaluate(() => {
+      document.querySelectorAll('.guide-toggle').forEach((t) => {
+        t.classList.add('open');
+        for (let n = t.parentElement; n; n = n.parentElement) {
+          if (!n.matches('.section-header')) n.classList.remove('collapsed');
+          if (n.style && n.style.display === 'none') n.style.display = '';
+        }
+      });
+      document.querySelectorAll('details').forEach((d) => { d.open = true; });
+      const out = [];
+      let schritt = 0;
+      for (const el of document.querySelectorAll('*')) {
+        const cs = getComputedStyle(el, '::after');
+        if (cs.content === 'none' || cs.transform === 'none') continue;
+        if (el.classList.contains('guide-toggle')) schritt++;
+        if (cs.display === 'inline') out.push(String(el.className || el.tagName));
+      }
+      return { out: [...new Set(out)], schritt };
+    });
+    await p.close();
+    schrittPfeile += r.schritt;
+    for (const k of r.out) fehler.push(file + ': ' + k);
+  }
+  assert(schrittPfeile > 0, 'Kein einziger Schritt-Pfeil gemessen - der Test prueft nichts');
+  assertEqual(fehler, [], 'Pfeile, deren Drehung nicht wirkt');
+});
+
+await test('der Schritt-Pfeil ist ein Pfeil', async () => {
+  // gt40-engine bis v121: statt \25BC stand dort ein Steuerzeichen und "BC".
+  const p = await open('build-log.html');
+  const inhalt = await p.page.evaluate(() =>
+    getComputedStyle(document.querySelector('.step-header .guide-toggle'), '::after').content);
+  await p.close();
+  assertEqual(inhalt, '"\u25BC"', 'Inhalt des Pfeils');
+});
+
 } finally {
   await browser.close();
   server.close();
