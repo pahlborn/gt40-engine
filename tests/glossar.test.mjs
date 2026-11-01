@@ -27,7 +27,8 @@ const SEITEN = ['build-log.html', 'index.html', 'specs.html'];
 // Bei einer bewussten Erweiterung hier mitziehen.
 // 144 -> 151 mit v76: Kategorie 19 "Fahrwerk, Bremsen & Reifen (Setup)".
 // 151 -> 152 mit v86: Lambda-Eintrag.
-const ERWARTETE_EINTRAEGE = 152;
+// 152 -> 153 mit v129: Camshaft Break-in Flat Tappet vs Roller.
+const ERWARTETE_EINTRAEGE = 153;
 // Ebenso fest verdrahtet - stand vorher zweimal als nackte 18 im Code.
 const ERWARTETE_KATEGORIEN = 19;
 function lies(f) { return fs.readFileSync(path.join(REPO_ROOT, f), 'utf8'); }
@@ -127,6 +128,32 @@ await test('Kolbenunterstand traegt das vollstaendige Messverfahren', async () =
     'Schritt zur OT-Bestaetigung fehlt');
   assert(/Thrust &amp; Anti-Thrust/.test(js),
     'Messung an Druck- und Gegenseite fehlt');
+});
+
+await test('Camshaft Break-in ist als eigene, zweisprachige Glossarregel vorhanden',async()=>{
+  const js=lies('glossar.js');
+  assert(js.includes('Nockenwellen-Einlaufen (Flat Tappet vs. Roller)'), 'Glossarbegriff fehlt');
+  assert(js.includes('data-fidx="240"') && js.includes('data-fidx="241"'),'Textfelder fehlen');
+  assert(js.includes('Flat-Tappet-Nocken mit Doppelfedern'),'DE Erklärung fehlt');
+  assert(js.includes('flat-tappet camshafts'),'EN Erklärung fehlt');
+  assert(js.includes('Pr&uuml;ffedern'),'Trennung von Messfedern fehlt');
+  assert(js.includes('COMP Cams #145, p. 4'),'Originalquelle fehlt');
+  const html=lies('build-log.html');
+  const phase4=html.slice(html.indexOf('id="phase4"'),html.indexOf('id="phase5"'));
+  assert(phase4.includes('COMP #145'),'Quelle am Erststart fehlt');
+  assert(phase4.includes('inneren AFR-8605-Ventilfedern'),'GT40 Bezug fehlt');
+  assert(phase4.includes('noch <strong>fachlich zu validieren</strong>'),'Hochdrehzahl-Erststart noch offen');
+  const pushrod=html.slice(html.indexOf('id="p2_step10"'),html.indexOf('id="p2_step11"'));
+  const plates=html.slice(html.indexOf('id="p2_step9"'),html.indexOf('id="p2_step10"'));
+  assert(plates.includes('AFR 1399 sind Stud-Mount-K'), 'AFR 1399 Stud-Mount-Korrektur fehlt');
+  assert(!plates.includes('pedestal-mount rockers'), 'alte AFR-Sockel-Annahme darf nicht bleiben');
+  assert(pushrod.includes('leichte Checking Springs'),'Prueffeder-Warnung bei Pushrod fehlt');
+  assert(pushrod.includes('Verbogene Pr&uuml;fst&ouml;&szlig;elstangen ersetzen'),'verbogenen Checker nicht weiterverwenden');
+  const p3Start=html.indexOf('id="p3_rockers"');
+  const preload=html.slice(p3Start,html.indexOf('<!-- Step 18:',p3Start));
+  assert(preload.includes('revidierte Morel-Anleitung'),'HLT Originalquelle fehlt');
+  assert(preload.includes('0,006&ndash;0,010&quot;'),'HLT Feeler-Bereich fehlt');
+  assert(!preload.includes('1/4&ndash;1/2 turn (Umdrehung)'),'Pauschal-Preload darf nicht als Sollwert erscheinen');
 });
 
 // ---------------------------------------------------------------------------

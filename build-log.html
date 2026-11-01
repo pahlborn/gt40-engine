@@ -1897,7 +1897,7 @@
             </ol></div>
             <div class="guide-block"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
                 <li><span class="de">Guide plates prevent pushrod side-loading on valve tips &ndash; critical for valve guide longevity (verhindert seitliche Belastung der Ventilf&uuml;hrungen)</span><span class="en">Guide plates prevent pushrod side-loading on valve tips &ndash; critical for valve guide longevity</span></li>
-                <li><span class="de">AFR 1399 verwenden Sockel-Kipphebel &ndash; Kompatibilitaet Fuehrungsplatte mit Bolzenabstand pruefen</span><span class="en">AFR 1399 heads use pedestal-mount rockers &ndash; verify guide plate is compatible with stud spacing</span></li>
+                <li><span class="de"><strong>AFR 1399 sind Stud-Mount-K&ouml;pfe</strong> (keine Sockel-/Pedestal-Kipphebel). F&uuml;hrungsplatten, AFR #6411 Stehbolzen und COMP 1632-16 auf Paarung und freien St&ouml;&szlig;elstangenlauf pr&uuml;fen. Quelle: AFR 1399 Hersteller-Produktdaten.</span><span class="en"><strong>AFR 1399 uses stud-mount rockers</strong>, not pedestal mount. Verify guide plates, AFR #6411 studs and COMP 1632-16 fit together and allow free pushrod travel. Source: AFR 1399 manufacturer specifications.</span></li>
                 <li><span class="de">Bei Kontakt Stoeselstange-Schlitzkante: falscher Fuehrungsplatten-Typ, falsche Stoeselstangenlaenge oder schiefer Stehbolzen</span><span class="en">If pushrod contacts slot edge: wrong guide plate type, incorrect pushrod length, or misaligned rocker stud</span></li>
                 <li><span class="de">Fuehrungsplatten beim Probeaufbau NICHT fest anziehen &ndash; nur handfest, finales Drehmoment in Phase 3</span><span class="en">Do NOT fully torque guide plates during mock-up &ndash; finger-tight only, final torque in Phase 3</span></li>
                 <li><span class="de">Manche Motorenbauer markieren die Stoeselstange leicht mit Filzstift um Fuehrungsplatten-Kontaktspuren zu pruefen</span><span class="en">Some builders lightly scuff pushrod with marker to check for guide plate contact marks</span></li>
@@ -1916,6 +1916,10 @@
     <input type="hidden" data-field="p2_pushrod_n" data-legacy-note="p2_pushrod">
     <div class="findings" data-findings="p2_pushrod"></div>
     <div class="step-guide">
+        <div class="info-box" style="margin:0 0 .6rem">
+<span class="de"><strong>Pr&uuml;ffedern verwenden:</strong> Eine verstellbare Pr&uuml;fst&ouml;&szlig;elstange ist nicht f&uuml;r die volle Federlast der AFR-8605-Doppelfedern als Belastungstest gedacht. F&uuml;r die Geometriepr&uuml;fung geeignete <strong>leichte Checking Springs</strong> nach Herstellerverfahren verwenden. Verbogene Pr&uuml;fst&ouml;&szlig;elstangen ersetzen und zus&auml;tzlich F&uuml;hrungsplattenkontakt, Sitz der Enden und Kipphebelausrichtung pr&uuml;fen; die Biegungsursache ist noch offen. COMP Valve Train Geometry / Checking Springs 4758-2.</span>
+<span class="en"><strong>Use checking springs:</strong> Do not treat an adjustable checking pushrod as a full-load test against the AFR 8605 dual valve springs. Use appropriate low-tension checking springs for the geometry mock-up. Replace bent checking pushrods and inspect guideplate contact, seating and rocker alignment; the cause is not yet proven. COMP Valve Train Geometry / Checking Springs 4758-2.</span>
+        </div>
         <div class="guide-grid">
             <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
                 <li><span class="de">CNC-TC6878 Pruef-Stoeselstange (verstellbar)</span><span class="en">CNC-TC6878 Checking Pushrod (adjustable)</span></li>
@@ -3062,23 +3066,27 @@
 <div class="step-card" id="p3_rockers">
     <div class="step-header">
         <button type="button" class="step-status" data-field="p3_rockers" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
-        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">17. Rockers + Preload (1/4&ndash;1/2 turn, on base circle! / Kipphebel + Vorspannung, auf Grundkreis!)</span>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">17. Rockers + Preload (Morel 5327 HLT &ndash; spezifische Einstellmethode)</span>
         <span class="guide-toggle" onclick="toggleGuide(this)"></span>
     </div>
     <input type="hidden" data-field="p3_rockers_n" data-legacy-note="p3_rockers">
     <div class="findings" data-findings="p3_rockers"></div>
-    <div class="step-guide"><div class="guide-grid">
+    <div class="step-guide">
+        <div class="warning-box" style="margin:0 0 .6rem">
+<span class="de"><strong>Montagehinweis Morel 5327 HLT:</strong> Die pauschale Vorgabe &bdquo;1/4&ndash;1/2 Umdrehung ab Nullspiel&ldquo; ist <strong>keine verifizierte Einstellung</strong> f&uuml;r diesen Limited-Travel-St&ouml;&szlig;el. Die <a href="https://johncalliesinc.com/pdf/Adjusting%20Hydraulic%20Limited%20Travel%20Lifters%28REV%29.pdf" target="_blank" rel="noopener">revidierte Morel-Anleitung</a> fordert ein Bottom-out-/F&uuml;hlerlehren-Verfahren. F&uuml;r Gusseisenblock und Aluminiumkopf nennt sie kalt (70 &deg;F) <strong>0,006&ndash;0,010&quot;</strong> ausgehend vom unteren Plunger-Anschlag. <strong>Nicht</strong> mit gew&ouml;hnlichem Ventilspiel verwechseln. Ausf&uuml;hrlicher Aufbau, Polylock-Sicherung und ARP-Stud-Anzug werden im geplanten Exkurs dokumentiert; bis dahin keine pauschale Freigabe.</span>
+<span class="en"><strong>Morel 5327 HLT:</strong> The generic 1/4&ndash;1/2 turn past zero lash is <strong>not a verified setting</strong> for this Limited Travel lifter. The <a href="https://johncalliesinc.com/pdf/Adjusting%20Hydraulic%20Limited%20Travel%20Lifters%28REV%29.pdf" target="_blank" rel="noopener">revised Morel instructions</a> specify a bottomed-plunger feeler-gauge method: for cast-iron block and aluminum heads, at 70&deg;F, <strong>0.006&ndash;0.010&quot;</strong> from the bottom of plunger travel, <strong>not</strong> ordinary valve lash. Full rocker/Polylock/ARP-stud procedure remains to be documented; no generic installation release.</span>
+        </div><div class="guide-grid">
         <div class="guide-block guide-full"><h4 class="prereq">Preload Procedure (Vorspannungs-Prozedur) &ndash; 7 Steps</h4><ul>
             <li><span class="de"><strong>1.</strong> Rotate crank so this valve&rsquo;s lifter sits on base circle (Grundkreis) &ndash; lobe pointing away from lifter (Nocken zeigt weg vom Lifter)</span><span class="en"><strong>1.</strong> Rotate crank so this valve&rsquo;s lifter sits on base circle (Grundkreis) &ndash; lobe pointing away from lifter</span></li>
             <li><span class="de"><strong>2.</strong> Polylock handfest auf Kipphebel-Stehbolzen drehen</span><span class="en"><strong>2.</strong> Thread polylock onto rocker stud by hand</span></li>
             <li><span class="de"><strong>3.</strong> Spin pushrod with one hand while tightening polylock with the other (Pushrod drehen w&auml;hrend Polylock angezogen wird)</span><span class="en"><strong>3.</strong> Spin pushrod with one hand while tightening polylock with the other</span></li>
             <li><span class="de"><strong>4.</strong> Nullspiel = Stoesselstange hoert gerade auf zu drehen</span><span class="en"><strong>4.</strong> Zero lash = pushrod just stops spinning</span></li>
-            <li><span class="de"><strong>5.</strong> Ab Nullspiel: <strong>1/4 bis 1/2 Umdrehung weiter = Vorspannung</strong></span><span class="en"><strong>5.</strong> From zero lash: <strong>1/4 to 1/2 turn further = preload</strong></span></li>
+            <li><span class="de"><strong>5.</strong> <strong>Statt pauschaler Umdrehungen:</strong> spezielles Morel-5327-HLT-Verfahren mit F&uuml;hlerlehre und Plunger-Endanschlag nach Herstelleranleitung; siehe Warnhinweis</span><span class="en"><strong>5.</strong> <strong>No generic turns:</strong> use the Morel 5327 HLT feeler-gauge procedure referenced above</span></li>
             <li><span class="de"><strong>6.</strong> Tighten lock nut &ndash; polylock holds position (Kontermutter anziehen &ndash; Polylock h&auml;lt Position)</span><span class="en"><strong>6.</strong> Tighten lock nut &ndash; polylock holds position</span></li>
             <li><span class="de"><strong>7.</strong> Repeat for all 16 valves (F&uuml;r alle 16 Ventile wiederholen)</span><span class="en"><strong>7.</strong> Repeat for all 16 valves</span></li>
         </ul></div>
         <div class="guide-block"><h4 class="measure">Target Value (Sollwert)</h4>
-            <div class="spec-line"><span>Preload Morel 5327 HLT (Vorspannung)</span><span class="spec-val">1/4&ndash;1/2 turn (Umdrehung)</span></div>
+            <div class="spec-line"><span>Preload Morel 5327 HLT (Vorspannung)</span><span class="spec-val">Morel HLT 5327: 0.006&ndash;0.010&quot; (Feeler, cold, iron/aluminum; bottom-out method)</span></div>
         </div>
         <div class="guide-block"><h4 class="tips">EO/IC Method (EO/IC-Methode)</h4><ul>
             <li><span class="de"><strong>When exhaust valve opens (EO)</strong>, set intake preload on same cylinder (Wenn Auslassventil &ouml;ffnet, Einlass-Vorspannung einstellen)</span><span class="en"><strong>When exhaust valve opens (EO)</strong>, set intake preload on same cylinder</span></li>
@@ -3710,7 +3718,7 @@
     <div class="phase-num">4</div>
     <div class="phase-info">
         <h2>First Start &amp; Break-In (Erststart &amp; Einfahren)</h2>
-        <p>Hydraulic roller does NOT need 20-min break-in &ndash; rollers run correctly from start</p>
+        <p><span class="de"><strong>Hydraulic Roller:</strong> Die COMP-Anweisung &bdquo;innere Ventilfedern f&uuml;r 30 Min. ausbauen&ldquo; gilt f&uuml;r <strong>Flat-Tappet-Nocken</strong>, nicht f&uuml;r diesen Rollen-Nocken. Grund: Die Rolle rollt statt auf dem Nocken zu gleiten. Quelle: COMP #145, S. 4.</span><span class="en"><strong>Hydraulic roller:</strong> COMP's 30-minute inner-spring-removal break-in applies to <strong>flat-tappet cams</strong>, not this roller cam: rolling rather than sliding contact. Source: COMP #145, p. 4.</span></p>
     </div>
     <span class="phase-toggle" id="toggle_phase4body">&#9660;</span>
 </div>
@@ -3718,6 +3726,10 @@
 <div class="progress-text" id="progText4">0 / 0</div>
 
 <div class="phase-body collapsed" id="phase4body">
+<div class="info-box" style="margin:.55rem 0 .8rem">
+  <span class="de"><strong>Einlaufverfahren unterscheiden:</strong> F&uuml;r COMP 35-518-8 (Hydraulic Roller) ist das Entfernen der inneren AFR-8605-Ventilfedern zum klassischen Flat-Tappet-Cam-Break-in <strong>nicht vorgesehen</strong>. Das ist nicht mit dem Austausch gegen leichte <em>Pr&uuml;ffedern</em> beim Messen der Kipphebelgeometrie zu verwechseln. Vor&ouml;len, kontrollierter Erststart und thermisches Einlaufen neuer Ventilfedern bleiben eigene Aufgaben. Die weiter unten genannte pauschale 20&ndash;30-Minuten-Hochdrehzahlprozedur ist f&uuml;r diese Roller-Konfiguration noch <strong>fachlich zu validieren</strong>. <a href="https://compcams.com/pub/media/productattach/1/4/145.pdf" target="_blank" rel="noopener">COMP Cams #145, S. 4</a>.</span>
+  <span class="en"><strong>Different break-in procedures:</strong> Removing the inner AFR 8605 valve springs for traditional flat-tappet cam break-in is <strong>not required</strong> for COMP 35-518-8 hydraulic roller. This is unrelated to fitting light checking springs for rocker geometry work. Oil priming, controlled first start and valve spring heat cycling are separate tasks. The generic 20&ndash;30-minute high-rpm instruction below still <strong>requires application-specific review</strong>. <a href="https://compcams.com/pub/media/productattach/1/4/145.pdf" target="_blank" rel="noopener">COMP Cams #145, p. 4</a>.</span>
+</div>
 
 <!-- ===== Subphase 4a – Before Start ===== -->
 <div class="subphase">4a &ndash; Before Start (Vor dem Start)</div>
