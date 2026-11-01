@@ -72,6 +72,52 @@ await test('Die Fehlersuche nennt dieselbe Folge', async () => {
   assert(n >= 2, 'docs/troubleshooting.html: ' + DIESE + ' erwartet in Warnung und Kabelabschnitt, gefunden ' + n + 'x');
 });
 
+suite('Zuendfolge-Bild im Verkabelungsschritt');
+
+// Das Bild steht als Inline-SVG im Schritt (eine Bilddatei laesst sich aus
+// dem Firmennetz nicht hochladen; Inline haelt es zudem offline verfuegbar).
+function bild() {
+  const k = karte(lies('build-log.html'), 'p4_wiring_card');
+  const a = k.indexOf('<svg class="zf"');
+  assert(a > 0, 'Zuendfolge-Bild (svg.zf) fehlt im Schritt p4_wiring_card');
+  return k.slice(a, k.indexOf('</svg>', a) + 6);
+}
+
+await test('Das Bild nennt fuer jeden Zylinder die richtige Stelle in der Zuendfolge', async () => {
+  // Ein falsch beschrifteter Zylinder im Bild waere schlimmer als gar kein
+  // Bild. Jede Zylindergruppe traegt ihre Nummer und "k. Zuendung"; k muss
+  // die Position in 1-3-7-2-6-5-4-8 sein.
+  const svg = bild();
+  assert(/<title id="zf-title">Z&#252;ndfolge 1-3-7-2-6-5-4-8/.test(svg), 'Titel nennt nicht ' + DIESE);
+  const reihe = DIESE.split('-').map(Number);
+  const pos = {};
+  for (let z = 1; z <= 8; z++) {
+    const g = (svg.match(new RegExp('<g id="zf-zyl-' + z + '">(.*?)</g>')) || [])[1];
+    assert(g, 'Zylinder ' + z + ' fehlt im Bild');
+    const nr = (g.match(/class="nr">(\d)</) || [])[1];
+    const k = (g.match(/class="folge">(\d)\./) || [])[1];
+    assert(Number(nr) === z, 'Gruppe zf-zyl-' + z + ' ist mit ' + nr + ' beschriftet');
+    assert(Number(k) === reihe.indexOf(z) + 1,
+      'Zylinder ' + z + ' zuendet laut Bild als ' + k + '., laut Folge als ' + (reihe.indexOf(z) + 1) + '.');
+    pos[z] = { x: Number(g.match(/cx="(\d+)"/)[1]), y: Number(g.match(/cy="(\d+)"/)[1]) };
+  }
+  // Lage wie in der Sollzeile: Bank 1-4 = RH oben, je Bank vorn (links) beginnend.
+  for (const z of [1, 2, 3, 4]) assert(pos[z].y < pos[z + 4].y, 'Zylinder ' + z + ' liegt nicht auf der oberen (RH-)Bank');
+  for (const z of [1, 2, 3, 5, 6, 7]) assert(pos[z].x < pos[z + 1].x, 'Zylinder ' + z + ' liegt nicht vor ' + (z + 1));
+  assert(/Rechte Motorseite \(RH\)/.test(svg) && /Linke Motorseite \(LH\)/.test(svg), 'Bankbeschriftung fehlt');
+  assert(/gegen den Uhrzeigersinn/.test(svg), 'Drehrichtung des Verteilers fehlt');
+});
+
+await test('Die Bild-Styles gelten nur im Bild, nicht fuer die ganze Seite', async () => {
+  // Ein <style> im Inline-SVG wirkt auf das ganze Dokument. Ohne .zf davor
+  // wuerde etwa "text{...}" jede andere Grafik der Seite umfaerben.
+  const css = (bild().match(/<style>([\s\S]*?)<\/style>/) || [])[1];
+  assert(css, 'Style-Block fehlt');
+  const regeln = css.split('}').map((r) => r.trim()).filter(Boolean);
+  const offen = regeln.filter((r) => !r.startsWith('.zf '));
+  assert(offen.length === 0, 'Nicht auf .zf begrenzt: ' + offen.join(' | '));
+});
+
 } finally {
   process.exit(summary());
 }

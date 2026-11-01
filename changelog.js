@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v130',
+      date: '2026-11-01',
+      time: '06:35',
+      title: 'Zuendfolge als Bild im Verkabelungsschritt',
+      changes: [
+        { type: 'neu', text: 'Der Verkabelungsschritt (Kabel, Leitungen, Masse, Zuendfolge) zeigt die Zylinderlage und die Zuendfolge 1-3-7-2-6-5-4-8 als Bild: Blick von oben, Steuerdeckel vorn, rechte Bank 1-4, linke Bank 5-8, Verteiler gegen den Uhrzeigersinn; an jedem Zylinder steht, als wievielter er zuendet. Gezeichnet nach der Vorlage von Peter, mit den Begriffen dieser Seite und ohne Luefter.' },
+        { type: 'intern', text: 'Bild als Inline-SVG im Schritt, Styles auf das Bild begrenzt. zuendfolge.test.mjs prueft Zuendstelle jedes Zylinders, Lage der Baenke, Beschriftung und die Begrenzung der Styles. Gegenprobe rot: Bild fehlt, Zylinder 2 falsch beschriftet, Baenke vertauscht, Titel mit 302-Folge, Drehrichtung fehlt, Style ohne Begrenzung.' }
+      ]
+    },
+    {
       version: 'v129',
       date: '2026-11-01',
       time: '06:09',
