@@ -41,8 +41,8 @@
         spaltenEN: ['Connection', 'Torque', 'Lubricant'],
         breiten: ['auto', '190px', '210px'],
         zeilen: [
-          ['<em>Short Block</em> &ndash; Hauptlagerdeckel obere Reihe (1&ndash;5)', '80 ft-lbs (108 Nm)', '30wt &Ouml;l'],
-          ['<em>Short Block</em> &ndash; Hauptlagerdeckel untere Reihe (6&ndash;10)', '70 ft-lbs (95 Nm)', '30wt &Ouml;l + Thread Sealant'],
+          ['<em>Short Block</em> &ndash; Hauptlagerschrauben innen 1/2&quot;-13 (Deckel 1&ndash;5)<br><span style="color:#718096;">zuerst; Ford-Schrauben &ndash; ARP-Studs: eigene Werte, siehe Build Log</span>', '100 ft-lbs (136 Nm)', '30wt &Ouml;l'],
+          ['<em>Short Block</em> &ndash; Hauptlagerschrauben au&szlig;en 3/8&quot;-16, schr&auml;g (Deckel 2&ndash;4)<br><span style="color:#718096;">erst nach den inneren</span>', '35 ft-lbs (47 Nm)', '30wt &Ouml;l'],
           ['<em>Short Block</em> &ndash; &Ouml;lkanalstopfen -4 AN', '8&ndash;10 ft-lbs (11&ndash;14 Nm)', 'Teflonband'],
           ['<em>Short Block</em> &ndash; Thrust Plate', '9&ndash;12 ft-lbs (12&ndash;16 Nm)', 'trocken'],
           ['<em>Steuertrieb</em> &ndash; Nockenwellenschraube (ARP 254-1001)', '25&ndash;30 ft-lbs (34&ndash;41 Nm)', 'ARP Ultra-Torque'],
@@ -62,8 +62,8 @@
           ['<em>Antriebsstrang</em> &ndash; Schwungradschrauben', '75&ndash;85 ft-lbs (102&ndash;115 Nm)', 'trocken']
         ],
         zeilenEN: [
-          ['<em>Short Block</em> &ndash; Main bearing caps upper row (1&ndash;5)', '80 ft-lbs (108 Nm)', '30wt oil'],
-          ['<em>Short Block</em> &ndash; Main bearing caps lower row (6&ndash;10)', '70 ft-lbs (95 Nm)', '30wt oil + thread sealant'],
+          ['<em>Short Block</em> &ndash; Main cap bolts inner 1/2&quot;-13 (caps 1&ndash;5)<br><span style="color:#718096;">first; Ford bolts &ndash; ARP studs: own values, see build log</span>', '100 ft-lbs (136 Nm)', '30wt oil'],
+          ['<em>Short Block</em> &ndash; Main cap bolts outer 3/8&quot;-16, splayed (caps 2&ndash;4)<br><span style="color:#718096;">only after the inner ones</span>', '35 ft-lbs (47 Nm)', '30wt oil'],
           ['<em>Short Block</em> &ndash; Oil gallery plugs -4 AN', '8&ndash;10 ft-lbs (11&ndash;14 Nm)', 'Teflon tape'],
           ['<em>Short Block</em> &ndash; Thrust plate', '9&ndash;12 ft-lbs (12&ndash;16 Nm)', 'dry'],
           ['<em>Timing drive</em> &ndash; Cam bolt (ARP 254-1001)', '25&ndash;30 ft-lbs (34&ndash;41 Nm)', 'ARP Ultra-Torque'],
@@ -98,8 +98,8 @@
         breiten: ['38%', 'auto'],
         zeilen: [
           ['<strong>ARP Ultra-Torque</strong>', 'Nockenwellenschraube, Kopfstehbolzen (beide Reihen)'],
-          ['<strong>Thread Sealant</strong>', 'Hauptlagerdeckel untere Reihe und Kopfstehbolzen untere Reihe &ndash; beide reichen in den Wassermantel'],
-          ['<strong>30wt &Ouml;l</strong>', 'Hauptlagerdeckel, beide Reihen'],
+          ['<strong>Thread Sealant</strong>', 'Kopfstehbolzen, die in den Wassermantel reichen &ndash; auf das Blockgewinde (ARP-Anleitung)'],
+          ['<strong>30wt &Ouml;l</strong>', 'Hauptlagerschrauben (Ford), innen und au&szlig;en'],
           ['<strong>Motor&ouml;l</strong>', '&Ouml;lpumpe an Block, Ansaugspinne'],
           ['<strong>Teflonband</strong>', '&Ouml;lkanalstopfen -4 AN'],
           ['<strong>Anti-Seize</strong>', 'Z&uuml;ndkerzen &ndash; nur aufs Gewinde, nicht auf den Dichtsitz'],
@@ -107,8 +107,8 @@
         ],
         zeilenEN: [
           ['<strong>ARP Ultra-Torque</strong>', 'Cam bolt, head studs (both rows)'],
-          ['<strong>Thread Sealant</strong>', 'Main cap lower row and head studs lower row &ndash; both reach into the water jacket'],
-          ['<strong>30wt oil</strong>', 'Main bearing caps, both rows'],
+          ['<strong>Thread Sealant</strong>', 'Head studs that reach into the water jacket &ndash; on the block threads (ARP instructions)'],
+          ['<strong>30wt oil</strong>', 'Main cap bolts (Ford), inner and outer'],
           ['<strong>Engine oil</strong>', 'Oil pump to block, intake manifold'],
           ['<strong>Teflon tape</strong>', 'Oil gallery plugs -4 AN'],
           ['<strong>Anti-seize</strong>', 'Spark plugs &ndash; threads only, not on the sealing surface'],

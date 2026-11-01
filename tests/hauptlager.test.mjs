@@ -18,6 +18,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { REPO_ROOT, suite, test, assert, assertEqual, summary } from './helpers.mjs';
 
 const specs = fs.readFileSync(path.join(REPO_ROOT, 'specs.html'), 'utf8');
@@ -123,6 +124,51 @@ await test('Die unbekannte Laenge ist als offen gekennzeichnet, nicht geraten', 
   assert(/messen|Techline/.test(eintrag), 'Es fehlt, wie man an die Laenge kommt');
   assert(!/\b\d\.\d{2,3}&quot; lang|Laenge 1\.|Laenge 2\./.test(eintrag),
     'Es steht eine Laenge da, die nirgends belegt ist');
+});
+
+await test('Die Pickliste sagt, wie die Laenge zu messen ist, ohne eine Zahl vorzugeben', async () => {
+  // Peter muss die sechs Schrauben bestellen (01.11.). Ohne Messanleitung
+  // bleibt "Laenge offen" eine Sackgasse; mit erfundener Zahl waere es Regel 5.
+  const i = pickliste.indexOf('data-id="s-mainouter"');
+  const eintrag = pickliste.slice(i, pickliste.indexOf('</li>', i));
+  assert(/So messen:/.test(eintrag), 'Die Messanleitung fehlt');
+  assert(/schraegen Achse/.test(eintrag) && /Grund der Gewindebohrung/.test(eintrag),
+    'Es fehlt, wo gemessen wird (schraege Achse bis zum Bohrungsgrund)');
+  assert(/Scheibendicke/.test(eintrag) && /darf nicht aufsitzen/.test(eintrag),
+    'Scheibe oder Bodenabstand fehlen in der Rechnung');
+  assert(/bestaetigen lassen/.test(eintrag), 'Der Hinweis, Eingriff/Bodenabstand bestaetigen zu lassen, fehlt');
+  const ohneTags = eintrag.replace(/<[^>]+>/g, ' ');
+  assert(!/\d+(\.\d+)?\s*(&quot;|"|mm|inch|Zoll)\s*(lang|Laenge|Eingriff|Abstand)/i.test(ohneTags),
+    'In der Messanleitung steht eine Laenge oder ein Mass als Vorgabe');
+});
+
+suite('Nachschlagekarte: Hauptlager wie im Ford-Datenblatt');
+
+await test('Die Karte nennt innen 100 und aussen 35 lb-ft mit 30W-Oel, nichts anderes', async () => {
+  // Bis v130 stand in reference.js "obere Reihe 1-5 80 ft-lbs / untere Reihe
+  // 6-10 70 ft-lbs + Thread Sealant" - das Muster der Kopfstehbolzen, nicht
+  // der Hauptlager. Ford (IS-1850-0427): 100 lb-ft innen, 35 lb-ft aussen,
+  // 30wt oil. Dichtmittel gehoert nicht an die Hauptlagerschrauben.
+  await import(pathToFileURL(path.join(REPO_ROOT, 'reference.js')).href);
+  const g = globalThis.REFERENCE.gruppen.find((x) => x.id === 'ref-torque');
+  for (const [feld, muster, innen, aussen, oel] of [
+    ['zeilen', /Hauptlager/, /innen/, /au&szlig;en/, /30wt &Ouml;l/],
+    ['zeilenEN', /Main cap/, /inner/, /outer/, /30wt oil/]]) {
+    const z = g[feld].filter((r) => muster.test(r[0]));
+    assertEqual(z.length, 2, feld + ': Anzahl Hauptlagerzeilen');
+    assert(innen.test(z[0][0]) && /1\/2&quot;-13/.test(z[0][0]), feld + ': erste Zeile ist nicht innen 1/2-13');
+    assert(aussen.test(z[1][0]) && /3\/8&quot;-16/.test(z[1][0]), feld + ': zweite Zeile ist nicht aussen 3/8-16');
+    assert(/^100 ft-lbs \(136 Nm\)$/.test(z[0][1]), feld + ': innen nicht 100 ft-lbs: ' + z[0][1]);
+    assert(/^35 ft-lbs \(47 Nm\)$/.test(z[1][1]), feld + ': aussen nicht 35 ft-lbs: ' + z[1][1]);
+    for (const r of z) {
+      assert(oel.test(r[2]) && !/Sealant|sealant/.test(r[2]), feld + ': Betriebsmittel falsch: ' + r[2]);
+    }
+  }
+  const b = globalThis.REFERENCE.gruppen.find((x) => x.id === 'ref-lubes');
+  for (const feld of ['zeilen', 'zeilenEN']) {
+    const s = b[feld].find((r) => /Thread Sealant/.test(r[0]));
+    assert(s && !/Hauptlager|Main cap|main cap/.test(s[1]), feld + ': Thread Sealant wird weiter den Hauptlagern zugeordnet');
+  }
 });
 
 await test('Oelwanne und Pickup sind als noch nicht entschieden markiert', async () => {

@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v131',
+      date: '2026-11-01',
+      time: '07:05',
+      title: 'Hauptlager: Nachschlagekarte wie Ford, Messanleitung fuer die Bestellung',
+      changes: [
+        { type: 'fix', text: 'Die Nachschlagekarte nannte fuer die Hauptlagerdeckel "obere Reihe 1-5: 80 ft-lbs, untere Reihe 6-10: 70 ft-lbs + Thread Sealant" - das Muster der Kopfstehbolzen, nicht der Hauptlager. Ford (Datenblatt M-6010-BOSS302): innen 1/2"-13 100 lb-ft, aussen 3/8"-16 schraeg 35 lb-ft, beide mit 30W-Oel, innen zuerst. So stehen sie jetzt in der Karte, deutsch und englisch, wie schon in Spezifikationen und Build Log. Auch in der Betriebsmittel-Tabelle wird Dichtmittel nicht mehr den Hauptlagern zugeordnet.' },
+        { type: 'neu', text: 'Pickliste, aeussere Hauptlagerschrauben: Anleitung, wie die Laenge vor der Bestellung gemessen wird (entlang der schraegen Achse bis zum Bohrungsgrund, Deckeldicke, Scheibe, Bodenabstand). Keine Laenge vorgegeben - Eingriff und Bodenabstand von Ford oder ARP bestaetigen lassen. ARP-Kits 154-5610/5611 mit Stand 01.11.: Sumpflage, Inhalt, Preis, Lieferbarkeit, ARP-Anzugswerte und der ARP-Hinweis zum Pruefen bzw. Ausrichtbohren der Lagergasse.' },
+        { type: 'intern', text: 'Zwei Tests in hauptlager.test.mjs. Gegenprobe rot: alter Stand, nur englische Aussenzeile mit 70, Dichtmittel an der Innenzeile, Reihenfolge vertauscht, alte Dichtmittel-Zuordnung, Messanleitung entfernt, vorgegebene Laenge.' }
+      ]
+    },
+    {
       version: 'v130',
       date: '2026-11-01',
       time: '06:35',
