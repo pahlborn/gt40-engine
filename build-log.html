@@ -1916,6 +1916,8 @@
     <input type="hidden" data-field="p2_pushrod_n" data-legacy-note="p2_pushrod">
     <div class="findings" data-findings="p2_pushrod"></div>
     <div class="step-guide">
+        <p><a class="exkurs-link" href="docs/pushrod-geometrie.html">Visuell: St&ouml;&szlig;elstangenl&auml;nge und Rocker-Geometrie &rarr;</a></p>
+
         <div class="info-box" style="margin:0 0 .6rem">
 <span class="de"><strong>Pr&uuml;ffedern verwenden:</strong> Eine verstellbare Pr&uuml;fst&ouml;&szlig;elstange ist nicht f&uuml;r die volle Federlast der AFR-8605-Doppelfedern als Belastungstest gedacht. F&uuml;r die Geometriepr&uuml;fung geeignete <strong>leichte Checking Springs</strong> nach Herstellerverfahren verwenden. Verbogene Pr&uuml;fst&ouml;&szlig;elstangen ersetzen und zus&auml;tzlich F&uuml;hrungsplattenkontakt, Sitz der Enden und Kipphebelausrichtung pr&uuml;fen; die Biegungsursache ist noch offen. COMP Valve Train Geometry / Checking Springs 4758-2.</span>
 <span class="en"><strong>Use checking springs:</strong> Do not treat an adjustable checking pushrod as a full-load test against the AFR 8605 dual valve springs. Use appropriate low-tension checking springs for the geometry mock-up. Replace bent checking pushrods and inspect guideplate contact, seating and rocker alignment; the cause is not yet proven. COMP Valve Train Geometry / Checking Springs 4758-2.</span>
@@ -1925,25 +1927,12 @@
                 <li><span class="de">CNC-TC6878 Pruef-Stoeselstange (verstellbar)</span><span class="en">CNC-TC6878 Checking Pushrod (adjustable)</span></li>
                 <li><span class="de">Caliper (Messschieber) to read length</span><span class="en">Caliperto read length</span></li>
             </ul></div>
-            <div class="guide-block guide-full"><h4 class="prereq">Procedure (9 Steps)</h4><ul>
-                <li><span class="de"><strong>1.</strong> Nockenwelle auf Grundkreis drehen &ndash; Stoessel im Tal</span><span class="en"><strong>1.</strong> Rotate cam to base circle &ndash; lifter in valley</span></li>
-                <li><span class="de"><strong>2.</strong> Pruef-Stoesselstange auf geschaetzte Laenge einstecken</span><span class="en"><strong>2.</strong> Insert checking pushrod at estimated length</span></li>
-                <li><span class="de"><strong>3.</strong> Kipphebel montieren, Einstellmutter auf Nullspiel anziehen</span><span class="en"><strong>3.</strong> Install rocker, tighten adjusting nut to zero lash</span></li>
-                <li><span class="de"><strong>4.</strong> Ventilschaft-Ende mit Filzstift einfaerben</span><span class="en"><strong>4.</strong> Color valve stem tip with felt-tip marker</span></li>
-                <li><span class="de"><strong>5.</strong> Ventil durch vollen Hub fuehren (Nockenwelle von Hand drehen)</span><span class="en"><strong>5.</strong> Cycle valve through full lift (rotate cam by hand)</span></li>
-                <li><strong>6.</strong> Read sweep pattern on valve stem:
-                    <ul>
-                        <li><span class="de"><strong>Schmales Band mittig</strong> = korrekt</span><span class="en"><strong>Narrow band centered</strong> = correct</span></li>
-                        <li><span class="de"><strong>Band nach aussen versetzt (Auslass)</strong> = Stoesselstange zu lang</span><span class="en"><strong>Band offset outward (exhaust)</strong> = pushrod too long</span></li>
-                        <li><span class="de"><strong>Band nach innen versetzt (Mitte)</strong> = Stoesselstange zu kurz</span><span class="en"><strong>Band offset inward (center)</strong> = pushrod too short</span></li>
-                        <li><span class="de"><strong>Breites Band</strong> = falsche Laenge &ndash; Ventilfuehrung leidet!</span><span class="en"><strong>Wide band</strong> = wrong length &ndash; valve guide suffers!</span></li>
-                    </ul>
-                </li>
-                <li><span class="de"><strong>7.</strong> Pruef-Stoesselstange anpassen und Schritte 4&ndash;6 wiederholen</span><span class="en"><strong>7.</strong> Adjust checking pushrod and repeat steps 4&ndash;6</span></li>
-                <li><span class="de"><strong>8.</strong> Endgueltige Pruef-Stoesselstangen-Laenge ablesen</span><span class="en"><strong>8.</strong> Read final checking pushrod length</span></li>
-                <li><span class="de"><strong>9.</strong> Einlass und Auslass GETRENNT messen &ndash; Laengen koennen abweichen!</span><span class="en"><strong>9.</strong> Measure intake and exhaust SEPARATELY &ndash; lengths may differ!</span></li>
-            </ul></div>
-            <div class="warning-box"><strong>Correct pushrod length depends on lifter, block deck, head, gasket, rocker, and valve.</strong> There is NO standard value &ndash; ALWAYS measure! AFR-K&ouml;pfe haben leicht nach innen gestellte Rockergeometrie &ndash; Pushrod-L&auml;nge unbedingt mit Checking Pushrod ermitteln, nicht sch&auml;tzen.</div>
+            <div class="guide-block guide-full"><h4 class="prereq">Messaufbau und Ablauf (Setup and procedure)</h4><ol>
+                <li><span class="de"><strong>Vor der L&auml;ngenmessung:</strong> geeignete Pr&uuml;ffedern und einen vom Lifterhersteller best&auml;tigten Sitzh&ouml;henbezug herstellen. Beim Morel 5327 ist der konkrete Pr&uuml;faufbau noch zu best&auml;tigen; bis dahin keine Bestelll&auml;nge ableiten.</span><span class="en"><strong>Before measuring:</strong> use suitable checking springs and a lifter-manufacturer-confirmed seat-height reference. The exact Morel 5327 mock-up still needs confirmation; do not derive an order length until then.</span></li>
+                <li><span class="de">Beide Checker-Enden korrekt einsetzen; Rocker ausrichten, Madenschraube zur&uuml;ckdrehen. Ein nachgebender Plunger darf die L&auml;nge nicht verf&auml;lschen.</span><span class="en">Seat both checker ends, align rocker and back off set screw. Uncontrolled plunger movement must not alter the reference.</span></li>
+                <li><span class="de">Kontaktbild und Bewegung &uuml;ber den gesamten Hub beobachten; Freigang pr&uuml;fen. Nur entlastet nachstellen und erneut messen. Ein mittiges Band allein best&auml;tigt keine korrekte L&auml;nge.</span><span class="en">Inspect contact pattern, motion and clearance over full lift. Adjust only when unloaded and repeat. A centered pattern alone does not confirm the correct length.</span></li>
+                <li><span class="de">Einlass und Auslass getrennt messen. Actual / Theoretical / Gauge Length und die Lieferantenkonvention dokumentieren; CNC-TC6878-Messmethode vor Bestellung best&auml;tigen.</span><span class="en">Measure intake and exhaust separately. Record actual/theoretical/gauge length and supplier convention; confirm the CNC-TC6878 measurement method before ordering.</span></li>
+            </ol><p><a href="docs/pushrod-geometrie.html#protokoll">Druckbare Kontrollkarte / Printable record &rarr;</a></p></div>
             <div class="guide-block"><h4 class="measure">Measurement Entry</h4>
                 <div class="guide-input-row">
                     <div><label>Intake length:</label><input type="text" data-field="pushrod_intake" placeholder='e.g. 7.100"' oninput="autoSave()" style="width:70px;"></div>
@@ -1958,7 +1947,7 @@
             </div>
             <div class="guide-block"><h4 class="release">Release Criteria (Freigabe)</h4><ul>
                 <li><span class="de">Einlass- und Auslass-Laengen dokumentiert</span><span class="en">Intake and exhaust lengths documented</span></li>
-                <li><span class="de">Sweep-Check (naechster Schritt) bestaetigt die Laenge</span><span class="en">Sweep check (next step) confirms the length</span></li>
+                <li><span class="de">Definierter Sitzbezug, Bewegungspruefung und Bestellkonvention bestaetigt</span><span class="en">Seat-height reference, motion check and order convention confirmed</span></li>
             </ul></div>
             <div class="guide-block"><h4 class="time">Time Estimate</h4><ul><li>~60 min.</li></ul></div>
         </div>
@@ -1975,19 +1964,16 @@
     <input type="hidden" data-field="p2_sweep_n" data-legacy-note="p2_sweep">
     <div class="findings" data-findings="p2_sweep"></div>
     <div class="step-guide">
+        <p><a class="exkurs-link" href="docs/pushrod-geometrie.html#kontakt">Visuell: Kontaktbild, Bewegung und Freigang gemeinsam beurteilen &rarr;</a></p>
+
         <div class="guide-grid">
-            <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
-                <li><span class="de">Ventilschaft-Ende komplett mit Filzstift (Edding/Sharpie) einf&auml;rben.</span><span class="en">Color entire valve stem tip with felt-tip marker (Sharpie).</span></li>
-                <li><span class="de">Kipphebel montieren und Preload einstellen.</span><span class="en">Install rocker and set preload.</span></li>
-                <li><span class="de">Nockenwelle eine volle Umdrehung von Hand drehen (Ventil durchl&auml;uft vollen Hub).</span><span class="en">Rotate camshaft one full revolution by hand (valve goes through full lift).</span></li>
-                <li><span class="de">Kontaktmuster auf dem Ventilschaft ablesen:</span><span class="en">Read contact pattern on valve stem:</span></li>
-            </ol>
-            <ul>
-                <li><span class="de"><strong>Schmales Band, mittig</strong> = St&ouml;&szlig;elstangenl&auml;nge korrekt</span><span class="en"><strong>Narrow band, centered</strong> = pushrod length correct</span></li>
-                <li><span class="de"><strong>Band nach au&szlig;en versetzt</strong> = St&ouml;&szlig;elstange zu lang</span><span class="en"><strong>Band offset outward</strong> = pushrod too long</span></li>
-                <li><span class="de"><strong>Band nach innen versetzt</strong> = St&ouml;&szlig;elstange zu kurz</span><span class="en"><strong>Band offset inward</strong> = pushrod too short</span></li>
-                <li><span class="de"><strong>Breites Band</strong> = falsche L&auml;nge &ndash; Ventilf&uuml;hrung leidet!</span><span class="en"><strong>Wide band</strong> = wrong length &ndash; valve guide suffers!</span></li>
-            </ul></div>
+            <div class="guide-block guide-full"><h4 class="procedure">Kontaktbild pr&uuml;fen (Contact-pattern check)</h4><ol>
+                <li><span class="de">Geeignete Pr&uuml;ffedern und definierten Lifter-Sitzbezug aus Schritt 10 best&auml;tigen. Keine finale HLT-Einstellung als Ersatz f&uuml;r den ungekl&auml;rten Pr&uuml;faufbau verwenden.</span><span class="en">Confirm checking springs and defined lifter seat-height reference from step 10. Final HLT adjustment does not replace a verified mock-up method.</span></li>
+                <li><span class="de">Ventilspitze markieren, beide Pushrod-Enden und Rockerausrichtung pr&uuml;fen.</span><span class="en">Mark valve tip and check pushrod seating and rocker alignment.</span></li>
+                <li><span class="de">Motor von Hand in normaler Laufrichtung durch den vollen Hub drehen; bei unerwartetem Widerstand stoppen. Geschlossen / halber Hub / voller Hub beobachten.</span><span class="en">Turn by hand in normal running direction through full lift; stop at unexpected resistance. Observe closed / mid-lift / full lift.</span></li>
+                <li><span class="de">Breite, Lage und Verlauf des Kontaktbands sowie Freigang dokumentieren. <strong>Kein pauschales &bdquo;mittig = korrekt&ldquo; oder &bdquo;innen/au&szlig;en = zu kurz/lang&ldquo;.</strong> Herstellergeometrie mitbeurteilen.</span><span class="en">Record pattern width, position, motion and clearance. <strong>No universal centered=correct or inward/outward=short/long rule.</strong> Assess the actual manufacturer geometry.</span></li>
+                <li><span class="de">Entlastet korrigieren, neu markieren und nachpr&uuml;fen. Einlass/Auslass getrennt fotografieren.</span><span class="en">Correct unloaded, remark and recheck. Photograph intake and exhaust separately.</span></li>
+            </ol></div>
             <div class="guide-block"><h4 class="photo">Photo Documentation</h4><ul>
                 <li><span class="de">Sweep pattern on valve stem (document both good and bad patterns)</span><span class="en">Sweep pattern on valve stem (document both good and bad patterns)</span></li>
             </ul>
@@ -3072,19 +3058,19 @@
     <input type="hidden" data-field="p3_rockers_n" data-legacy-note="p3_rockers">
     <div class="findings" data-findings="p3_rockers"></div>
     <div class="step-guide">
+        <p><a class="exkurs-link" href="docs/rocker-hlt-einstellung.html">Visuell: Stud, Rocker, Polylock und Morel-HLT einstellen &rarr;</a></p>
+
         <div class="warning-box" style="margin:0 0 .6rem">
-<span class="de"><strong>Montagehinweis Morel 5327 HLT:</strong> Die pauschale Vorgabe &bdquo;1/4&ndash;1/2 Umdrehung ab Nullspiel&ldquo; ist <strong>keine verifizierte Einstellung</strong> f&uuml;r diesen Limited-Travel-St&ouml;&szlig;el. Die <a href="https://johncalliesinc.com/pdf/Adjusting%20Hydraulic%20Limited%20Travel%20Lifters%28REV%29.pdf" target="_blank" rel="noopener">revidierte Morel-Anleitung</a> fordert ein Bottom-out-/F&uuml;hlerlehren-Verfahren. F&uuml;r Gusseisenblock und Aluminiumkopf nennt sie kalt (70 &deg;F) <strong>0,006&ndash;0,010&quot;</strong> ausgehend vom unteren Plunger-Anschlag. <strong>Nicht</strong> mit gew&ouml;hnlichem Ventilspiel verwechseln. Ausf&uuml;hrlicher Aufbau, Polylock-Sicherung und ARP-Stud-Anzug werden im geplanten Exkurs dokumentiert; bis dahin keine pauschale Freigabe.</span>
-<span class="en"><strong>Morel 5327 HLT:</strong> The generic 1/4&ndash;1/2 turn past zero lash is <strong>not a verified setting</strong> for this Limited Travel lifter. The <a href="https://johncalliesinc.com/pdf/Adjusting%20Hydraulic%20Limited%20Travel%20Lifters%28REV%29.pdf" target="_blank" rel="noopener">revised Morel instructions</a> specify a bottomed-plunger feeler-gauge method: for cast-iron block and aluminum heads, at 70&deg;F, <strong>0.006&ndash;0.010&quot;</strong> from the bottom of plunger travel, <strong>not</strong> ordinary valve lash. Full rocker/Polylock/ARP-stud procedure remains to be documented; no generic installation release.</span>
+<span class="de"><strong>Montagehinweis Morel 5327 HLT:</strong> Die pauschale Vorgabe &bdquo;1/4&ndash;1/2 Umdrehung ab Nullspiel&ldquo; ist <strong>keine verifizierte Einstellung</strong> f&uuml;r diesen Limited-Travel-St&ouml;&szlig;el. Die <a href="https://johncalliesinc.com/pdf/Adjusting%20Hydraulic%20Limited%20Travel%20Lifters%28REV%29.pdf" target="_blank" rel="noopener">revidierte Morel-Anleitung</a> fordert ein Bottom-out-/F&uuml;hlerlehren-Verfahren. F&uuml;r Gusseisenblock und Aluminiumkopf nennt sie kalt (70 &deg;F) <strong>0,006&ndash;0,010&quot;</strong> ausgehend vom unteren Plunger-Anschlag. <strong>Nicht</strong> mit gew&ouml;hnlichem Ventilspiel verwechseln. Montage und HLT-Verfahren stehen im verlinkten Exkurs. Die genaue Stud-/ARP-Zuordnung m&uuml;ssen vor der endg&uuml;ltigen Montage best&auml;tigt sein.</span>
+<span class="en"><strong>Morel 5327 HLT:</strong> The generic 1/4&ndash;1/2 turn past zero lash is <strong>not a verified setting</strong> for this Limited Travel lifter. The <a href="https://johncalliesinc.com/pdf/Adjusting%20Hydraulic%20Limited%20Travel%20Lifters%28REV%29.pdf" target="_blank" rel="noopener">revised Morel instructions</a> specify a bottomed-plunger feeler-gauge method: for cast-iron block and aluminum heads, at 70&deg;F, <strong>0.006&ndash;0.010&quot;</strong> from the bottom of plunger travel, <strong>not</strong> ordinary valve lash. See the linked guide; confirm the exact stud/ARP specification before final assembly.</span>
         </div><div class="guide-grid">
-        <div class="guide-block guide-full"><h4 class="prereq">Preload Procedure (Vorspannungs-Prozedur) &ndash; 7 Steps</h4><ul>
-            <li><span class="de"><strong>1.</strong> Rotate crank so this valve&rsquo;s lifter sits on base circle (Grundkreis) &ndash; lobe pointing away from lifter (Nocken zeigt weg vom Lifter)</span><span class="en"><strong>1.</strong> Rotate crank so this valve&rsquo;s lifter sits on base circle (Grundkreis) &ndash; lobe pointing away from lifter</span></li>
-            <li><span class="de"><strong>2.</strong> Polylock handfest auf Kipphebel-Stehbolzen drehen</span><span class="en"><strong>2.</strong> Thread polylock onto rocker stud by hand</span></li>
-            <li><span class="de"><strong>3.</strong> Spin pushrod with one hand while tightening polylock with the other (Pushrod drehen w&auml;hrend Polylock angezogen wird)</span><span class="en"><strong>3.</strong> Spin pushrod with one hand while tightening polylock with the other</span></li>
-            <li><span class="de"><strong>4.</strong> Nullspiel = Stoesselstange hoert gerade auf zu drehen</span><span class="en"><strong>4.</strong> Zero lash = pushrod just stops spinning</span></li>
-            <li><span class="de"><strong>5.</strong> <strong>Statt pauschaler Umdrehungen:</strong> spezielles Morel-5327-HLT-Verfahren mit F&uuml;hlerlehre und Plunger-Endanschlag nach Herstelleranleitung; siehe Warnhinweis</span><span class="en"><strong>5.</strong> <strong>No generic turns:</strong> use the Morel 5327 HLT feeler-gauge procedure referenced above</span></li>
-            <li><span class="de"><strong>6.</strong> Tighten lock nut &ndash; polylock holds position (Kontermutter anziehen &ndash; Polylock h&auml;lt Position)</span><span class="en"><strong>6.</strong> Tighten lock nut &ndash; polylock holds position</span></li>
-            <li><span class="de"><strong>7.</strong> Repeat for all 16 valves (F&uuml;r alle 16 Ventile wiederholen)</span><span class="en"><strong>7.</strong> Repeat for all 16 valves</span></li>
-        </ul></div>
+        <div class="guide-block guide-full"><h4 class="prereq">HLT-Einstellung und Sicherung (Adjustment and locking)</h4><ol>
+            <li><span class="de">Stud-/Rocker-/Polylock-Identit&auml;t und Montagebedingungen best&auml;tigen. Pushrods korrekt in beiden Pfannen, Polylocks zun&auml;chst lose, Madenschrauben zur&uuml;ckgedreht.</span><span class="en">Confirm hardware identity and installation conditions. Seat pushrods at both ends, install polylocks loosely with set screws backed off.</span></li>
+            <li><span class="de">Je Zylinder Grundkreis nach EO/IC herstellen: Auslass beginnt zu &ouml;ffnen &rarr; Einlass; Einlass nach Vollhub etwa halb bis zwei Drittel abgesunken &rarr; Auslass (COMP PN151, S. 2&ndash;3).</span><span class="en">Find base circle per cylinder: exhaust just begins opening &rarr; intake; intake past full lift, roughly 1/2&ndash;2/3 back down &rarr; exhaust (COMP PN151, pp. 2&ndash;3).</span></li>
+            <li><span class="de">Morel-HLT-5327-F&uuml;hlerlehrenverfahren vom unteren Plungeranschlag anwenden, nicht generische Umdrehungen nach Nullspiel. Werkstoffkombination und kalten Zustand beachten.</span><span class="en">Use the Morel HLT 5327 bottom-out feeler-gauge method, not generic turns past zero lash. Confirm materials and cold condition.</span></li>
+            <li><span class="de">Polylockk&ouml;rper mit Schl&uuml;ssel halten, innere Madenschraube nach COMP-Anweisung sichern; anschlie&szlig;end Einstellung nachkontrollieren. Kein Stud-Drehmoment auf Polylock &uuml;bertragen.</span><span class="en">Hold polylock body with wrench, secure inner set screw per COMP instructions and recheck adjustment. Stud torque is not a polylock torque.</span></li>
+            <li><span class="de">Alle 16 Ventile getrennt dokumentieren. Bei unklarem Plungeranschlag, falschem Sitz oder Widerstand anhalten.</span><span class="en">Record all 16 valves separately. Stop at uncertain plunger bottoming, incorrect seating or resistance.</span></li>
+        </ol></div>
         <div class="guide-block"><h4 class="measure">Target Value (Sollwert)</h4>
             <div class="spec-line"><span>Preload Morel 5327 HLT (Vorspannung)</span><span class="spec-val">Morel HLT 5327: 0.006&ndash;0.010&quot; (Feeler, cold, iron/aluminum; bottom-out method)</span></div>
         </div>
@@ -4080,23 +4066,21 @@
     </div>
     <input type="hidden" data-field="p4_preload_recheck_n" data-legacy-note="p4_preload_recheck">
     <div class="findings" data-findings="p4_preload_recheck"></div>
-    <div class="step-guide"><div class="guide-grid">
+    <div class="step-guide">
+        <p><a class="exkurs-link" href="docs/rocker-hlt-einstellung.html#hlt">Nachpr&uuml;fen mit derselben Morel-HLT-Methode wie Phase 3 &rarr;</a></p>
+<div class="guide-grid">
         <div class="guide-block"><h4 class="measure">Target Value (Sollwert)</h4>
-            <div class="spec-line"><span>Preload Morel 5327 HLT</span><span class="spec-val">1/2 turn past zero lash (1/2 Umdrehung nach Nullspiel)</span></div>
+            <div class="spec-line"><span>Preload Morel 5327 HLT</span><span class="spec-val">Morel HLT: Bottom-out-/F&uuml;hlerlehrenverfahren; siehe Exkurs</span></div>
             <div class="spec-line"><span>Engine Temperature</span><span class="spec-val">Cold (Kalt)</span></div>
         </div>
-        <div class="guide-block"><h4 class="prereq">Procedure (Vorgehensweise)</h4><ul>
-            <li><span class="de"><strong>1.</strong> Kurbel drehen bis Stoessel auf Nocken-Grundkreis steht</span><span class="en"><strong>1.</strong> Rotate crank so valve&rsquo;s lifter is on base circle (Nocken-Grundkreis)</span></li>
-            <li><span class="de"><strong>2.</strong> Polylock-Madenschraube loesen, Einstellmutter leicht zurueckdrehen</span><span class="en"><strong>2.</strong> Loosen polylock set screw, back off adjusting nut slightly</span></li>
-            <li><span class="de"><strong>3.</strong> Stoesselstange drehen waehrend Einstellmutter wieder angezogen wird</span><span class="en"><strong>3.</strong> Spin pushrod while re-tightening adjusting nut</span></li>
-            <li><span class="de"><strong>4.</strong> Nullspiel = Stoesselstange hoert gerade auf frei zu drehen</span><span class="en"><strong>4.</strong> Zero lash = pushrod just stops spinning freely</span></li>
-            <li><span class="de"><strong>5.</strong> Ab Nullspiel: 1/2 Umdrehung weiter = Vorspannung</span><span class="en"><strong>5.</strong> From zero lash: 1/2 turn further = preload</span></li>
-            <li><span class="de"><strong>6.</strong> Polylock-Madenschraube festziehen &ndash; pruefen dass Mutter sich nicht bewegt hat</span><span class="en"><strong>6.</strong> Lock polylock set screw &ndash; recheck that nut did not move</span></li>
-            <li><span class="de"><strong>7.</strong> Fuer ALLE 16 Ventile wiederholen mit EO/IC-Methode</span><span class="en"><strong>7.</strong> Repeat for ALL 16 valves using EO/IC method</span></li>
-        </ul></div>
+        <div class="guide-block"><h4 class="prereq">Nachpr&uuml;fung (Recheck)</h4><ol>
+            <li><span class="de">Kalten Zustand und passende Herstellerrevision best&auml;tigen, betreffenden Lifter per EO/IC auf Grundkreis bringen.</span><span class="en">Confirm cold condition and correct manufacturer revision; put the lifter on base circle using EO/IC.</span></li>
+            <li><span class="de">Mit demselben <strong>Morel-5327-HLT-Bottom-out-/F&uuml;hlerlehrenverfahren</strong> wie in Phase 3 kontrollieren. Keine zus&auml;tzliche halbe Umdrehung ab Nullspiel.</span><span class="en">Recheck using the same <strong>Morel 5327 HLT bottom-out/feeler-gauge method</strong> as phase 3. Do not add a generic half-turn from zero lash.</span></li>
+            <li><span class="de">Falls Korrektur n&ouml;tig: Madenschraube l&ouml;sen, korrekt einstellen, Polylockk&ouml;rper beim Sichern halten und nachmessen. Alle 16 Ventile dokumentieren.</span><span class="en">If correction is needed: release set screw, adjust correctly, hold polylock body while locking and recheck. Record all 16 valves.</span></li>
+        </ol></div>
         <div class="guide-block guide-full"><h4 class="tips">Tips (Praxis-Tipps)</h4><ul>
             <li><span class="de">Teile koennen sich seit Phase-3-Montage verschoben haben &ndash; vor Erststart immer nachpruefen</span><span class="en">Parts may have shifted since Phase 3 assembly &ndash; always recheck before first start</span></li>
-            <li><span class="de">EO/IC-Methode verwenden: wenn Auslass oeffnet &rarr; Einlass einstellen; wenn Einlass schliesst &rarr; Auslass einstellen</span><span class="en">Use EO/IC method: when exhaust opens &rarr; set intake; when intake closes &rarr; set exhaust</span></li>
+            <li><span class="de">EO/IC-Methode verwenden: wenn Auslass oeffnet &rarr; Einlass einstellen; wenn Einlass nach Vollhub etwa halb bis zwei Drittel abgesunken ist &rarr; Auslass einstellen</span><span class="en">Use EO/IC method: when exhaust opens &rarr; set intake; when intake is roughly 1/2&ndash;2/3 down after full lift &rarr; set exhaust</span></li>
             <li><span class="de">Wenn eine Stoesselstange locker sitzt oder sich nicht drehen will &ndash; vor dem Starten untersuchen!</span><span class="en">If any pushrod feels loose or doesn&rsquo;t want to spin &ndash; investigate before starting!</span></li>
         </ul></div>
     </div></div>

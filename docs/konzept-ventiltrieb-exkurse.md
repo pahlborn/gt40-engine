@@ -1,6 +1,6 @@
 # Konzept – Visuelle Werkstattanleitung Ventiltrieb (GT40 BOSS 302)
 
-**Status:** Konzept / zur fachlichen Freigabe; noch kein ausführbarer Exkurs und keine geänderte Messlogik.  
+**Status:** Zwei visuelle Exkurse implementiert (v133-Kandidat); unabhängige Prüfung noch offen. Keine geänderte Messlogik. Bauteilspezifische Restlücken sind vor den jeweiligen Aktionen sichtbar gesperrt.  
 **Baseline:** GT40 Build-Log v128, Ford Performance M-6009-302 / AFR 1399 + Upgrade 8605/6411/8600 / COMP 35-518-8 + 1632-16 / Morel 5327 / CNC-TC6878.  
 **Geltungsbereich:** ausschließlich GT40, Phase 2 Schritte 10–12 und Phase 3 Schritt 17; Querverweise auf Phase 1 Ventilfedern und Phase 4 Erststart. Kein Eingriff in andere Repositories.
 
@@ -17,7 +17,7 @@ Die Dokumentation soll das bestehende GT40-Konzept *Wissen/Physik → konkrete K
 1. **Vorbereitung und Sicherheitsprüfung:** Zylinderkopf, Ventile, Ventilschaftlängen, Führungsplatten, AFR 6411 Stehbolzen und COMP 1632-16 kontrollieren. **AFR 1399 ist Stud-Mount**, nicht Pedestal-Mount (AFR Originaldaten; diesbezügliche alte Aussage in Phase 2 Schritt 9 wurde im kleinen Korrektur-PR berichtigt). Genauen Zustand und Teilenummer des Prüfstößels dokumentieren; den verbogenen CNC-TC6878 nicht weiter einsetzen. **Ursache der Biegung noch ungeklärt:** hohe Federlast, Verkanten, unvollständig sitzende Enden, Kontakt in Führungsplatte oder falsche Einstellung getrennt prüfen.
 2. **Prüffedern montieren:** Nach Herstelleranleitung geeignete leichte Checking Springs an den zu prüfenden Ventilen verwenden, statt die 8605-Doppelfedern gegen eine verstellbare Prüfstößelstange zu belasten. Sicherung von Ventil, Federteller und Keilen prüfen. Das probeweise Weglassen der inneren *Betriebsfeder* wird nicht pauschal als gleichwertige Lösung deklariert; nur nach Prüfung von Restfederkraft, Retainer und Freigängigkeiten.
 3. **Hydraulikstößel beim Messen:** Definierter Hub- und Stößelstangensitz-Bezug erforderlich. Ein zusammengedrückter Morel-5327-Kolben verschiebt den Längenbezug. Mit leichtem Prüffedersatz ist die Messung schonender; dennoch wird die Messmethode vor Ausführung gegen die konkrete 5327-Konstruktion abgeglichen (ggf. mechanisch fixierter Prüf-Lifter mit identischer Sitzhöhe). Keine Schätzung.
-4. **Rocker korrekt aufsetzen:** Korrekt passende Stößelstangenenden in Lifter und Kipphebelpfanne, Führungsplatte ohne Berührung, flache Trunnion-Seite des Rockers gemäß COMP-PN151, Polylock lose mit zurückgedrehter Madenschraube. Für die Geometriemessung nur soweit verspannen, dass der Prüfaufbau definiert bleibt; keine finale Preload an dieser Stelle.
+4. **Rocker korrekt aufsetzen:** Korrekt passende Stößelstangenenden in Lifter und Kipphebelpfanne, Führungsplatte ohne Berührung, flache Trunnion-Seite um die Studbohrung nach oben gemäß COMP-Herstellerkatalog 2011, Druckseite 410 (PDF-Seite 412); diese Anweisung steht nicht in PN151, Polylock lose mit zurückgedrehter Madenschraube. Für die Geometriemessung nur soweit verspannen, dass der Prüfaufbau definiert bleibt; keine finale Preload an dieser Stelle.
 5. **Geometrie ermitteln:** Einlass und Auslass getrennt bei geschlossenem Ventil, mittlerem Hub und maximalem Hub prüfen. Eine mit Filzstift markierte Ventilschaftspitze gibt das Kontaktbild; zusätzlich Sweep-Breite, Lage, Freigang und mögliche Side-Loading-Effekte dokumentieren. Ein schmaler Verlauf allein ist **kein pauschales Alleinkriterium**, die reale Rollengeometrie am Ventil ist maßgeblich.
 6. **Länge iterativ verändern:** Verstellbare Prüfstößelstange nur bei entlastetem Aufbau verstellen, erneut drehen/prüfen und den passenden Wert nachvollziehbar ermitteln. Drei wiederholte Kontrollen je Ventiltyp als Qualitätsmaß, keine erfundene Toleranz.
 7. **Bestelllänge bestimmen:** Theoretical vs Actual vs Gauge Length sauber unterscheiden. COMP nennt für sein eigenes Messsystem .140-Zoll-Gauge-Kugeldurchmesser; **nicht** blind auf den CNC-TC6878 oder Lieferanten übertragen. Messmethode und bestellte Längenkonvention ausweisen. Geprüfte Daten getrennt für Einlass und Auslass im Build-Log speichern.
@@ -84,11 +84,17 @@ Die Dokumentation soll das bestehende GT40-Konzept *Wissen/Physik → konkrete K
 7. **AFR Installationsunterlagen / AFR 1399, AFR #6411 Upgrade:** Originalteile und tatsächliche Stud-Untergruppe vor einer Drehmomentvorgabe identifizieren. https://www.airflowresearch.com/customer-support-installation-instructions/
 8. **ARP-Rocker-Stud-Anweisungen:** nur für tatsächlich identifizierte ARP-Teilenummer verwenden (generische ARP-Blätter sind kein Nachweis für AFR #6411). https://arp-bolts.com/
 
-## 8. Explizit offen (nicht raten)
+## 8. Implementierungsstand und explizit offen (nicht raten)
+
+- `docs/pushrod-geometrie.html` und `docs/rocker-hlt-einstellung.html`: je fünf Schritte, acht eigene SVG-Schemata insgesamt, EO/IC-Umschaltung, druckbare Kontrollkarten; gemeinsame lokale CSS-Datei. Querverweise aus Build-Log und Übersicht sowie Offline-Precache ergänzt.
+- Keine neuen Gist-/Messfelder; vorhandene Felder, Status und Galerien bleiben erhalten. Druckkarte statt neuer Speicherung.
+- Trunnion-Orientierung belegt: COMP-Herstellerkatalog 2011, Druckseiten 315 (1632-16) und 410 (Troubleshooting Rocker Arms 3), historische Originalkopie unter https://www.survivalmotorsports.com/files/COMP_Cat_2011-IW.pdf . Flache Fläche oben, Polylock plan/rechtwinklig, Freigang zum Rockerkörper prüfen. Quellenzuordnung PN151 oben korrigiert.
+- Weiterhin nicht freigegeben: konkrete Morel-5327-Prüfsitzhöhe für die Längenmessung und genaue AFR6411/ARP-Stud-Montagezuordnung. Die jeweiligen Seiten zeigen die Grenze direkt vor der Aktion.
+
 
 - Stimmt die genaue Kennzeichnung/ARP-Unterteilenummer der eingebauten AFR #6411 Stehbolzen? Welche zugehörige AFR-/ARP-Montageanweisung und welches Schmiermittel wurden geliefert?
 - Welche Ventilfeder-Bauart / Federhälften und Retainer-Konfiguration sind am **tatsächlichen AFR-Kopf** montiert? Leichte Prüffedern für den Mock-up besorgen/prüfen, statt nur die innere 8605-Feder zu entfernen.
 - Ist der beschädigte Prüfstößel noch unverformt an der Messspitze/Gewindeführung? Bei Verbiegung ersetzen.
 - Welcher hydraulische Morel-5327-Messaufbau bildet die relevante Sitzhöhe des Lifters ohne unkontrollierte Plungerbewegung exakt ab?
-- Quelle und zulässiges Sicherungsverfahren des Polylocks für den konkret gelieferten COMP-1632-16-Satz prüfen.
+- Sicherungsprinzip aus COMP PN151 dokumentiert; abweichende tatsächlich gelieferte Polylock-Ausführung gesondert prüfen. Kein numerisches Madenschrauben-Drehmoment aus einer allgemeinen Tabelle übernehmen.
 - Vor Umbau des Erststart-Schritts ausdrücklich klären, ob separate Hersteller-Vorgaben für Verteilerzahnrad, Lager und Feder-Wärmezyklus bestehen; kein Flat-Tappet-Missverständnis.
