@@ -65,6 +65,9 @@ jobs:
       - name: "Vergaser: Zerlegen, Synchronisieren, Bedueusung"
         run: node tests/carb-tuning.test.mjs
 
+      - name: Ventiltrieb - visuelle Exkurse und Montagegrenzen
+        run: node tests/ventiltrieb.test.mjs
+
       - name: Exkurs-Seiten und Verlinkung
         run: node tests/exkurse.test.mjs
 

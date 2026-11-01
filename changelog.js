@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v133',
+      date: '2026-11-01',
+      time: '08:50',
+      title: 'Ventiltrieb: zwei visuelle Werkstattexkurse',
+      changes: [
+        { type: 'neu', text: 'Zwei verknuepfte Exkurse mit eigenen technischen Schemata: Prueffedern, definierter Lifter-Messbezug, Rocker-Geometrie und Bestelllaenge; daneben Stud/Rocker/Polylock, EO/IC und die spezielle Morel-5327-HLT-Einstellung. Je fuenf Arbeitsschritte und druckbare Kontrollkarten, ohne neue Speicherung oder Gist-Zugriffe.' },
+        { type: 'fix', text: 'Phase 2 beurteilt das Kontaktbild zusammen mit Bewegung und Freigang. Phase 3 und die Preload-Nachpruefung in Phase 4 verwenden konsistent das spezifische HLT-Verfahren statt pauschaler Umdrehungen nach Nullspiel. Offene bauteilspezifische Montage- und Sitzhoehenfragen sind direkt vor dem betreffenden Schritt sichtbar; keine erfundenen Anzugswerte.' }
+      ]
+    },
+    {
       version: 'v132',
       date: '2026-11-01',
       time: '07:17',

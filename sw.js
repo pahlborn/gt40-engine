@@ -1,4 +1,4 @@
-var CACHE_NAME = 'boss302-v132';
+var CACHE_NAME = 'boss302-v133';
 var urlsToCache = [
   '/gt40-engine/',
   '/gt40-engine/index.html',
@@ -7,6 +7,9 @@ var urlsToCache = [
   '/gt40-engine/field-sync.js',
   '/gt40-engine/cam-degreeing.js',
   '/gt40-engine/docs/cam-degreeing.html',
+  '/gt40-engine/docs/pushrod-geometrie.html',
+  '/gt40-engine/docs/rocker-hlt-einstellung.html',
+  '/gt40-engine/docs/ventiltrieb.css',
   '/gt40-engine/docs/kuehlkreislauf.svg',
   '/gt40-engine/github-zugang.js',
   '/gt40-engine/aktualisieren.js',
