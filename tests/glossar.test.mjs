@@ -144,6 +144,9 @@ await test('Camshaft Break-in ist als eigene, zweisprachige Glossarregel vorhand
   assert(phase4.includes('inneren AFR-8605-Ventilfedern'),'GT40 Bezug fehlt');
   assert(phase4.includes('noch <strong>fachlich zu validieren</strong>'),'Hochdrehzahl-Erststart noch offen');
   const pushrod=html.slice(html.indexOf('id="p2_step10"'),html.indexOf('id="p2_step11"'));
+  const plates=html.slice(html.indexOf('id="p2_step9"'),html.indexOf('id="p2_step10"'));
+  assert(plates.includes('AFR 1399 sind Stud-Mount-K'), 'AFR 1399 Stud-Mount-Korrektur fehlt');
+  assert(!plates.includes('pedestal-mount rockers'), 'alte AFR-Sockel-Annahme darf nicht bleiben');
   assert(pushrod.includes('leichte Checking Springs'),'Prueffeder-Warnung bei Pushrod fehlt');
   assert(pushrod.includes('Verbogene Pr&uuml;fst&ouml;&szlig;elstangen ersetzen'),'verbogenen Checker nicht weiterverwenden');
   const preload=html.slice(html.indexOf('id="p3_rockers"'),html.indexOf('<!-- Step 18:'));
