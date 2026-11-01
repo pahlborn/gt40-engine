@@ -9,6 +9,7 @@
 //
 // Lokal: npm test
 
+import fs from 'node:fs';
 import { chromium } from 'playwright';
 import {
   startServer, stubGitHub, suite, test, assert, assertEqual, summary
@@ -342,6 +343,62 @@ await test('Die Uebernahme passiert nicht zweimal', async () => {
   });
   assertEqual(n, 1, 'Befunde nach mehrfacher Uebernahme');
   await p.close();
+});
+
+// ---------------------------------------------------------------------------
+suite('Begriff: Notiz statt Befund');
+
+// Peter, 2026-11-01: "befund ist kein gutes wort: nennen wir es ueberall und
+// uebergreifend bitte notiz". Umbenannt ist nur der sichtbare Text. Die
+// internen Namen (findings.js, Findings, engineFindings, data-findings,
+// Gist-Datei) bleiben - sonst waeren gespeicherte Eintraege weg.
+await test('Liste, Knopf, Platzhalter und Entfernen heissen Notiz / Note', async () => {
+  const p = await openBuildLog();
+  const r = await p.page.evaluate(() => {
+    const ch = document.querySelector('.findings[data-findings]').dataset.findings;
+    Findings.add(ch, '');
+    const lesen = (lang) => {
+      document.documentElement.lang = lang;
+      renderFindings(ch);
+      const box = document.querySelector('.findings[data-findings="' + ch + '"]');
+      return [
+        box.querySelector('.findings-head').textContent.replace(/\s+/g, ' '),
+        box.querySelector('.fx-add').textContent,
+        box.querySelector('.fx-row input[type="text"]').placeholder,
+        box.querySelector('.fx-del').title
+      ];
+    };
+    return { de: lesen('de'), en: lesen('en') };
+  });
+  assert(/Notizen/.test(r.de[0]), 'Kopf DE: ' + r.de[0]);
+  assertEqual(r.de.slice(1), ['+ Notiz', 'Notiz...', 'Notiz entfernen'], 'DE');
+  assert(/Notes/.test(r.en[0]), 'Kopf EN: ' + r.en[0]);
+  assertEqual(r.en.slice(1), ['+ Note', 'Note...', 'Remove note'], 'EN');
+  await p.close();
+});
+
+await test('Kein sichtbares "Befund" / "finding" mehr in den Seiten', async () => {
+  // Alte Changelog-Eintraege bleiben, wie sie freigegeben wurden. "TDC
+  // finding" ist das Suchen des OT, kein Eintrag.
+  const dateien = ['build-log.html', 'index.html', 'specs.html']
+    .concat(fs.readdirSync('docs').filter((f) => f.endsWith('.html')).map((f) => 'docs/' + f));
+  const treffer = [];
+  for (const f of dateien) {
+    const sichtbar = fs.readFileSync(f, 'utf8')
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<!--[\s\S]*?-->/g, ' ')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/TDC finding/g, ' ');
+    const m = sichtbar.match(/[^\n]{0,40}(Befund|\bfindings?\b)[^\n]{0,40}/gi);
+    if (m) treffer.push(f + ': ' + m.join(' | ').trim());
+  }
+  // Texte, die erst im Skript entstehen (Kopf, Knopf, Rueckfrage, Fehlerprotokoll)
+  for (const f of ['build-log.html', 'findings.js']) {
+    const m = fs.readFileSync(f, 'utf8').match(/['"](Befund|Finding|Remove finding)[^'"]*['"]/g);
+    if (m) treffer.push(f + ' (Skript): ' + m.join(' | '));
+  }
+  assertEqual(treffer, [], 'Noch sichtbar');
 });
 
 await test('build-log.html laedt ohne Page-Errors', async () => {

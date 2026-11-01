@@ -155,13 +155,13 @@
     try {
       var res = await fetch('https://api.github.com/gists/' + FIXED_GIST_ID,
         { headers: { 'Authorization': 'Bearer ' + cfg.token }, cache: 'no-store' });
-      if (!res.ok) { melden('Befunde: Cloud-Stand nicht lesbar (Status ' + res.status + ') - nichts geschrieben', { status: res.status }); return false; }
+      if (!res.ok) { melden('Notizen: Cloud-Stand nicht lesbar (Status ' + res.status + ') - nichts geschrieben', { status: res.status }); return false; }
       var gist = await res.json();
       var content = typeof _readGistFile === 'function'
         ? await _readGistFile(gist, GIST_FILE, cfg.token)
         : (gist.files && gist.files[GIST_FILE] ? gist.files[GIST_FILE].content : null);
       if (content) _data = merge(JSON.parse(content), _data);
-    } catch (e) { melden('Befunde: Cloud-Stand nicht lesbar - nichts geschrieben: ' + e.message, { stack: e.stack }); return false; }
+    } catch (e) { melden('Notizen: Cloud-Stand nicht lesbar - nichts geschrieben: ' + e.message, { stack: e.stack }); return false; }
     save();
     try {
       var files = {};
@@ -171,9 +171,9 @@
         headers: { 'Authorization': 'Bearer ' + cfg.token, 'Content-Type': 'application/json' },
         body: JSON.stringify({ files: files })
       });
-      if (!wr.ok) { melden('Befunde: Schreiben fehlgeschlagen (Status ' + wr.status + ')', { status: wr.status }); return false; }
+      if (!wr.ok) { melden('Notizen: Schreiben fehlgeschlagen (Status ' + wr.status + ')', { status: wr.status }); return false; }
       return true;
-    } catch (e) { melden('Befunde: Schreiben fehlgeschlagen: ' + e.message, { stack: e.stack }); return false; }
+    } catch (e) { melden('Notizen: Schreiben fehlgeschlagen: ' + e.message, { stack: e.stack }); return false; }
   }
 
   /** Fehler ins Protokoll - bis v101 standen sie nur in der Konsole. */

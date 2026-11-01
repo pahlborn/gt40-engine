@@ -83,7 +83,7 @@ await test('Unbelegte Sollwerte sind als solche gekennzeichnet', async () => {
   // dass zuerst erfasst und nur bei Befund korrigiert wird.
   assert(/Ist-Ma&szlig; wird beim Zerlegen erfasst/.test(guide),
     'Schwimmerstand im Guide nicht entschaerft');
-  assert(/Korrigiert wird nur bei einem Befund/.test(guide),
+  assert(/Korrigiert wird nur bei einer Auff&auml;lligkeit/.test(guide),
     'Vorrang der vorhandenen Einstellung fehlt');
   assert(/Ist-Ma&szlig; dokumentieren/.test(ts), 'Schwimmerstand im Troubleshooting nicht entschaerft');
   // Nadelventil: Groesse ist unbekannt, nicht "typisch 200".

@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v132',
+      date: '2026-11-01',
+      time: '07:17',
+      title: 'Befund heißt jetzt Notiz',
+      changes: [
+        { type: 'verbessert', text: 'Befund heißt jetzt Notiz - überall in der App. Im Build Log heißt die Liste je Schritt "Notizen", der Knopf "+ Notiz"; englisch "Notes" / "+ Note". Auch Anleitungstexte, Specs und Exkurse sagen Notiz statt Befund; wo es um ein Prüfergebnis ging, steht jetzt Mängel, Auffälligkeit, Symptom oder Ergebnis.' },
+        { type: 'intern', text: 'Nur der sichtbare Text ist umbenannt. Interne Namen (findings.js, Speicher- und Gist-Schlüssel, data-findings) bleiben, damit gespeicherte Notizen erhalten bleiben. Alte Changelog-Einträge bleiben unverändert. Ein Test hält fest, dass kein sichtbares "Befund" zurückkommt.' }
+      ]
+    },
+    {
       version: 'v131',
       date: '2026-11-01',
       time: '07:05',
