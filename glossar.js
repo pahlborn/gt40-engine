@@ -563,14 +563,14 @@
                 <div class="glossary-field" data-fidx="133"><span class="glossary-field-label">Was ist das?</span> Die tats&auml;chliche Position der Nockenwelle wird mit Gradscheibe und Messuhr exakt vermessen.</div>
                 <div class="glossary-field" data-fidx="134"><span class="glossary-field-label">Einfach gesagt:</span> Wir verlassen uns nicht nur auf die Kettenmarkierungen, sondern messen nach.
                 <div class="glossary-field"><span class="glossary-field-label">Wie messen?</span> 1. Gradscheibe (Degree Wheel) an der Kurbelwelle befestigen. 2. Zeiger (Pointer) am Block fixieren. 3. OT exakt finden (Positive-Stop-Methode). 4. Messuhr auf den Einlass-Lifter von Zylinder 1 setzen. 5. Kurbel drehen bis Einlassventil auf maximalen Hub steht. 6. Intake Centerline Wert auf Gradscheibe ablesen. 7. Mit Hersteller-Angabe vergleichen. 8. Abweichung: Verstellbares Nockenwellenrad (Adjustable Timing Set) nutzen.</div>
+            </div>
+            </div>
             <div class="glossary-entry" data-search="cam break in einlaufen flat tappet flachstoessel roller nockenwelle inner valve springs innere ventilfedern federausbau einlaufphase">
                 <div class="glossary-term" data-de="Nockenwellen-Einlaufen (Flat Tappet vs. Roller)" data-en="Camshaft Break-in (Flat Tappet vs. Roller)">Nockenwellen-Einlaufen (Flat Tappet vs. Roller)</div>
                 <div class="glossary-field" data-fidx="240"></div>
                 <div class="glossary-field" data-fidx="241"></div>
             </div>
 
-            </div>
-            </div>
         </div>
 
         <!-- 9. Steuertrieb -->
