@@ -27,7 +27,8 @@ const SEITEN = ['build-log.html', 'index.html', 'specs.html'];
 // Bei einer bewussten Erweiterung hier mitziehen.
 // 144 -> 151 mit v76: Kategorie 19 "Fahrwerk, Bremsen & Reifen (Setup)".
 // 151 -> 152 mit v86: Lambda-Eintrag.
-const ERWARTETE_EINTRAEGE = 152;
+// 152 -> 153 mit v129: Camshaft Break-in Flat Tappet vs Roller.
+const ERWARTETE_EINTRAEGE = 153;
 // Ebenso fest verdrahtet - stand vorher zweimal als nackte 18 im Code.
 const ERWARTETE_KATEGORIEN = 19;
 function lies(f) { return fs.readFileSync(path.join(REPO_ROOT, f), 'utf8'); }
@@ -127,6 +128,21 @@ await test('Kolbenunterstand traegt das vollstaendige Messverfahren', async () =
     'Schritt zur OT-Bestaetigung fehlt');
   assert(/Thrust &amp; Anti-Thrust/.test(js),
     'Messung an Druck- und Gegenseite fehlt');
+});
+
+await test('Camshaft Break-in ist als eigene, zweisprachige Glossarregel vorhanden',async()=>{
+  const js=lies('glossar.js');
+  assert(js.includes('Nockenwellen-Einlaufen (Flat Tappet vs. Roller)'), 'Glossarbegriff fehlt');
+  assert(js.includes('data-fidx="240"') && js.includes('data-fidx="241"'),'Textfelder fehlen');
+  assert(js.includes('Flat-Tappet-Nocken mit Doppelfedern'),'DE Erklärung fehlt');
+  assert(js.includes('flat-tappet camshafts'),'EN Erklärung fehlt');
+  assert(js.includes('Pr&uuml;ffedern'),'Trennung von Messfedern fehlt');
+  assert(js.includes('COMP Cams #145, p. 4'),'Originalquelle fehlt');
+  const html=lies('build-log.html');
+  const phase4=html.slice(html.indexOf('id="phase4"'),html.indexOf('id="phase5"'));
+  assert(phase4.includes('COMP #145'),'Quelle am Erststart fehlt');
+  assert(phase4.includes('inneren AFR-8605-Ventilfedern'),'GT40 Bezug fehlt');
+  assert(phase4.includes('noch <strong>fachlich zu validieren</strong>'),'Hochdrehzahl-Erststart noch offen');
 });
 
 // ---------------------------------------------------------------------------
