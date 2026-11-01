@@ -183,6 +183,30 @@ await test('Oelwanne und Pickup sind als noch nicht entschieden markiert', async
     'Die Kandidaten fuer die Wanne sind nicht genannt');
 });
 
+await test('Fuer den Canton-Testlauf stehen Wannenschrauben und Fuehrungsbolzen auf der Liste', async () => {
+  // Peter, 01.11.: Canton 15-630S kommt zuerst fuer den Testlauf; sie wird
+  // ohne Schrauben geliefert, und im GT40 laesst sich die Wanne nur
+  // aufgebockt montieren - daher die zwei Fuehrungsbolzen.
+  const eintrag = (id) => {
+    const i = pickliste.indexOf('data-id="' + id + '"');
+    assert(i > 0, 'Eintrag fehlt: ' + id);
+    return pickliste.slice(i, pickliste.indexOf('</li>', i));
+  };
+  assert(/Testlauf/.test(eintrag('s-pan')) && /Canton 15-630S/.test(eintrag('s-pan')),
+    'Der Canton-Testlauf steht nicht bei der Wanne');
+  const schrauben = eintrag('s-panbolts');
+  assert(/Hardware Included: No/.test(schrauben), 'Beleg, dass Canton ohne Schrauben kommt, fehlt');
+  const fuehrung = eintrag('s-panguides');
+  assert(/2 St&uuml;ck/.test(fuehrung) && /gegen&uuml;berliegenden Ecken/.test(fuehrung),
+    'Fuehrungsbolzen: Anzahl oder Lage fehlt');
+  assert(/aufgebockt/.test(fuehrung), 'Der Grund (Wanne nur aufgebockt montierbar) fehlt');
+  for (const [name, e] of [['s-panbolts', schrauben], ['s-panguides', fuehrung]]) {
+    const text = e.replace(/<[^>]+>/g, ' ');
+    assert(!/\d+\/\d+&quot;-\d+|\d+\/\d+"-\d+|\d+(\.\d+)?\s*(ft-lbs|lb-ft|Nm)/.test(text),
+      name + ': Gewinde oder Anzugsmoment ohne Beleg vorgegeben');
+  }
+});
+
 suite('Oelwannen-Vergleich (v95)');
 
 const vergleich = fs.readFileSync(path.join(REPO_ROOT, 'docs', 'oelwanne-vergleich.html'), 'utf8');
