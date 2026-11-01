@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <script defer src="cam-degreeing.js"></script>
+<script defer src="hauptlager-mass.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -785,6 +786,59 @@
     </div>
 </div>
 
+<!-- Step 7a: Outer main cap bolts - measure length before ordering -->
+<div class="step-card" id="p1_step7a">
+    <div class="step-header">
+        <button type="button" class="step-status" data-field="p1_main_outer_len" value="" onclick="cycleStepStatus(this)" title="Status: offen / in Arbeit / erledigt"></button>
+        <span class="step-title" onclick="toggleGuide(this.parentElement.querySelector('.guide-toggle'))">7a. Outer Main Cap Bolts &ndash; measure length before ordering (&Auml;u&szlig;ere Hauptlagerschrauben &ndash; L&auml;nge messen)</span>
+        <span class="guide-toggle" onclick="toggleGuide(this)"></span>
+    </div>
+    <input type="hidden" data-field="p1_main_outer_len_n" data-legacy-note="p1_main_outer_len">
+    <div class="findings" data-findings="p1_main_outer_len"></div>
+    <div class="step-guide">
+        <div class="guide-grid">
+            <div class="warning-box guide-full"><span class="de"><strong>Warum dieser Schritt:</strong> Am Block fehlen die sechs &auml;u&szlig;eren, schr&auml;gen Schrauben der Deckel 2, 3 und 4. Ford nennt Gewinde und G&uuml;te, aber keine L&auml;nge. Ohne sie darf das Hauptlagerspiel (Schritt 8) nicht freigegeben werden. Erst messen, dann bestellen.</span><span class="en"><strong>Why this step:</strong> The six outer, splayed bolts of caps 2, 3 and 4 are missing. Ford gives thread and grade but no length. Main bearing clearance (step 8) cannot be signed off without them. Measure first, then order.</span></div>
+            <div class="guide-block"><h4 class="prereq">Prerequisites (Voraussetzungen)</h4><ul>
+                <li><span class="de">Gewinde der &auml;u&szlig;eren Bohrungen nachgeschnitten und ausgeblasen (Schritt 2) &ndash; Sp&auml;ne am Grund verf&auml;lschen die Tiefe</span><span class="en">Outer holes chased and blown out (step 2) &ndash; chips at the bottom falsify the depth</span></li>
+                <li><span class="de">Deckel 2, 3 und 4 aufgesetzt, innere Schrauben auf 100 lb-ft (136 Nm) mit 30W-&Ouml;l</span><span class="en">Caps 2, 3 and 4 fitted, inner bolts at 100 lb-ft (136 Nm) with 30wt oil</span></li>
+            </ul></div>
+            <div class="guide-block"><h4 class="tools">Tools (Werkzeuge)</h4><ul>
+                <li><span class="de">Messschieber mit Tiefenma&szlig;</span><span class="en">Caliper with depth rod</span></li>
+                <li><span class="de">Gerader Draht oder d&uuml;nner Stab, ca. 15 cm, und ein Filzstift</span><span class="en">Straight wire or thin rod, approx. 15 cm, and a marker</span></li>
+            </ul></div>
+            <div class="guide-block"><h4 class="measure">Target Values (Sollwerte)</h4>
+                <div class="spec-line"><span>Gewinde / G&uuml;te</span><span class="spec-val">3/8&quot;-16 UNC, Grade 8 HCS (Ford) &ndash; gleichwertig 10.9</span></div>
+                <div class="spec-line"><span>Anzahl</span><span class="spec-val">6 (Deckel 2, 3, 4 je RH und LH)</span></div>
+                <div class="spec-line"><span>Anzug</span><span class="spec-val">35 lb-ft (47 Nm), 30W-&Ouml;l, nach den inneren</span></div>
+                <div class="spec-line"><span>L&auml;nge</span><span class="spec-val">offen &ndash; wird hier bestimmt</span></div>
+            </div>
+            <div class="guide-block guide-full"><h4 class="procedure">Vorgehensweise (Procedure)</h4><ol>
+                <li><span class="de"><strong>Tiefe T je Bohrung:</strong> Draht entlang der schr&auml;gen Bohrung bis zum Grund einf&uuml;hren, an der Auflagefl&auml;che des Deckels (wo Scheibe oder Schraubenkopf aufliegt) markieren, herausziehen, Markierung bis Spitze messen. Alle sechs Bohrungen eintragen &ndash; gerechnet wird mit der k&uuml;rzesten.</span><span class="en"><strong>Depth T per hole:</strong> Push the wire along the splayed hole to the bottom, mark it at the cap seat (where washer or bolt head sits), pull out, measure mark to tip. Enter all six holes &ndash; the shortest one counts.</span></li>
+                <li><span class="de"><strong>Deckeldicke D:</strong> L&auml;nge der Bohrung durch den Deckel entlang derselben Achse, von der Auflagefl&auml;che bis zur Trennfuge Deckel/Block.</span><span class="en"><strong>Cap thickness D:</strong> length of the hole through the cap along the same axis, from the seat to the cap/block parting line.</span></li>
+                <li><span class="de"><strong>Scheibe s:</strong> Dicke der vorgesehenen Scheibe, 0 ohne Scheibe.</span><span class="en"><strong>Washer s:</strong> thickness of the planned washer, 0 without washer.</span></li>
+                <li><span class="de"><strong>Bodenabstand c:</strong> wie viel Luft die Schraubenspitze zum Bohrungsgrund behalten soll &ndash; von Ford Techline oder ARP best&auml;tigen lassen und eintragen. Hier steht bewusst keine Zahl.</span><span class="en"><strong>Bottom clearance c:</strong> how much gap the bolt tip must keep to the bottom of the hole &ndash; have Ford Techline or ARP confirm it and enter it. Deliberately no number here.</span></li>
+                <li><span class="de"><strong>Ergebnis ablesen:</strong> gr&ouml;&szlig;te L&auml;nge = k&uuml;rzeste T + s &minus; c. Die n&auml;chste lieferbare L&auml;nge darunter w&auml;hlen und als L eintragen; der Gewindeeingriff L &minus; s &minus; D erscheint dann. Den n&ouml;tigen Eingriff ebenfalls best&auml;tigen lassen.</span><span class="en"><strong>Read the result:</strong> maximum length = shortest T + s &minus; c. Pick the next available length below it and enter it as L; thread engagement L &minus; s &minus; D then appears. Have the required engagement confirmed as well.</span></li>
+            </ol></div>
+            <div class="guide-block guide-full"><h4 class="measure">Messwerte (Measurements, inch)</h4>
+                <div class="guide-input-row"><div><label>T Deckel 2 RH:</label><input type="text" inputmode="decimal" data-field="p1_mo_t2rh" data-validate="numeric" placeholder="inch" oninput="HauptlagerMass.onInput()" style="width:70px;"></div><div><label>T Deckel 2 LH:</label><input type="text" inputmode="decimal" data-field="p1_mo_t2lh" data-validate="numeric" placeholder="inch" oninput="HauptlagerMass.onInput()" style="width:70px;"></div><div><label>T Deckel 3 RH:</label><input type="text" inputmode="decimal" data-field="p1_mo_t3rh" data-validate="numeric" placeholder="inch" oninput="HauptlagerMass.onInput()" style="width:70px;"></div></div>
+                <div class="guide-input-row"><div><label>T Deckel 3 LH:</label><input type="text" inputmode="decimal" data-field="p1_mo_t3lh" data-validate="numeric" placeholder="inch" oninput="HauptlagerMass.onInput()" style="width:70px;"></div><div><label>T Deckel 4 RH:</label><input type="text" inputmode="decimal" data-field="p1_mo_t4rh" data-validate="numeric" placeholder="inch" oninput="HauptlagerMass.onInput()" style="width:70px;"></div><div><label>T Deckel 4 LH:</label><input type="text" inputmode="decimal" data-field="p1_mo_t4lh" data-validate="numeric" placeholder="inch" oninput="HauptlagerMass.onInput()" style="width:70px;"></div></div>
+                <div class="guide-input-row"><div><label>Deckeldicke D:</label><input type="text" inputmode="decimal" data-field="p1_mo_cap" data-validate="numeric" placeholder="inch" oninput="HauptlagerMass.onInput()" style="width:70px;"></div><div><label>Scheibe s:</label><input type="text" inputmode="decimal" data-field="p1_mo_washer" data-validate="numeric" placeholder="inch" oninput="HauptlagerMass.onInput()" style="width:70px;"></div><div><label>Bodenabstand c:</label><input type="text" inputmode="decimal" data-field="p1_mo_clear" data-validate="numeric" placeholder="Ford/ARP" oninput="HauptlagerMass.onInput()" style="width:70px;"></div><div><label>Gew&auml;hlte L&auml;nge L:</label><input type="text" inputmode="decimal" data-field="p1_mo_len" data-validate="numeric" placeholder="inch" oninput="HauptlagerMass.onInput()" style="width:70px;"></div></div>
+                <div class="spec-line"><span>Gemessene Bohrungen</span><span class="spec-val" id="mo-gemessen">0 / 6</span></div>
+                <div class="spec-line"><span>K&uuml;rzeste Tiefe T</span><span class="spec-val" id="mo-tmin">&ndash;</span></div>
+                <div class="spec-line"><span>Gr&ouml;&szlig;te L&auml;nge unter Kopf</span><span class="spec-val" id="mo-lmax">&ndash;</span></div>
+                <div class="spec-line"><span>Gewindeeingriff bei L</span><span class="spec-val" id="mo-eingriff">&ndash;</span></div>
+                <div id="mo-hinweis"></div>
+                <div class="guide-input-row" style="margin-top:0.4rem;"><div><label>Bestellt am:</label><input type="text" data-field="p1_mo_order_date" placeholder="TT.MM.JJJJ" oninput="autoSave()" style="width:110px;"></div><div><label>Bestellt bei / Teilenummer:</label><input type="text" data-field="p1_mo_order_ref" placeholder="H&auml;ndler, Nummer" oninput="autoSave()" style="width:200px;"></div></div>
+            </div>
+            <div class="guide-block guide-full"><h4 class="tips">Practical Tips (Praxis-Tipps)</h4><ul>
+                <li><span class="de">Die Bohrungen stehen schr&auml;g &ndash; mit dem Tiefenma&szlig; des Messschiebers misst man leicht schief und zu kurz. Der Draht folgt der Bohrung von selbst.</span><span class="en">The holes are splayed &ndash; a caliper depth rod easily measures at an angle and too short. A wire follows the hole by itself.</span></li>
+                <li><span class="de">Jede Bohrung zweimal messen; weichen die Werte ab, liegt meist ein Span am Grund.</span><span class="en">Measure each hole twice; if values differ, there is usually a chip at the bottom.</span></li>
+                <li><span class="de">Ein, zwei Schrauben Reserve mitbestellen &ndash; eine f&auml;llt immer unters Auto.</span><span class="en">Order one or two spare bolts &ndash; one always ends up under the car.</span></li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
 <!-- Step 8: Main Bearing Clearance – Plastigage (MIGRATED) -->
 <div class="step-card" id="p1_step8">
     <div class="step-header">
@@ -814,7 +868,7 @@
                 <li><span class="de">Plastigage-Streifen auf Hauptlagerzapfen &ndash; ueber gesamte Breite, <strong>NICHT auf Oelkanal</strong></span><span class="en">Plastigage strip on main journal &ndash; across full width, <strong>NOT on oil channel</strong></span></li>
                 <li><span class="de">Lagerdeckel aufsetzen. <strong>Reihenfolge: zuerst die inneren 1/2&quot;-13 auf 100 lb-ft (136 Nm), danach die aeusseren 3/8&quot;-16 auf 35 lb-ft (47 Nm)</strong> &ndash; jeweils mit 30W-Oel am Gewinde. <strong>KURBELWELLE NICHT DREHEN!</strong></span><span class="en">Main cap on. <strong>Sequence: inner 1/2&quot;-13 to 100 lb-ft (136 Nm) first, then outer 3/8&quot;-16 to 35 lb-ft (47 Nm)</strong> &ndash; both with 30wt oil on the threads. <strong>DO NOT ROTATE CRANK!</strong></span></li>
                 <li><span class="de">Die aeusseren Schrauben der Deckel 2, 3 und 4 stehen <strong>schraeg (splayed)</strong>. Sie ziehen den Deckel nicht nur nach unten, sondern auch seitlich in den Blocksattel. Werden sie vor den inneren angezogen, sitzt der Deckel seitlich versetzt fest &ndash; die Lagergasse wird dann beim Anziehen der inneren Schrauben verspannt. Deshalb immer innen vor aussen.</span><span class="en">The outer bolts on caps 2, 3 and 4 are <strong>splayed</strong>. They pull the cap sideways into the block saddle as well as down. Tightened before the inner bolts, the cap locks in a laterally offset position and the main bore is distorted when the inner bolts follow. Always inner before outer.</span></li>
-                <li><span class="de"><strong style="color:#c53030;">Blockierend an diesem Motor:</strong> die aeusseren Schrauben fehlen (6 Stueck, 3/8&quot;-16 UNC, Grade 8). Ohne sie darf das Lagerspiel nicht freigegeben werden &ndash; mit nur den inneren Schrauben gemessen ist der Wert nicht der des fertigen Motors. Siehe Pickliste.</span><span class="en"><strong style="color:#c53030;">Blocking on this engine:</strong> the outer bolts are missing (6 off, 3/8&quot;-16 UNC, grade 8). Bearing clearance must not be signed off without them &ndash; measured with the inner bolts only, the value is not that of the finished engine. See pick list.</span></li>
+                <li><span class="de"><strong style="color:#c53030;">Blockierend an diesem Motor:</strong> die aeusseren Schrauben fehlen (6 Stueck, 3/8&quot;-16 UNC, Grade 8). Ohne sie darf das Lagerspiel nicht freigegeben werden &ndash; mit nur den inneren Schrauben gemessen ist der Wert nicht der des fertigen Motors. L&auml;nge messen: Schritt 7a.</span><span class="en"><strong style="color:#c53030;">Blocking on this engine:</strong> the outer bolts are missing (6 off, 3/8&quot;-16 UNC, grade 8). Bearing clearance must not be signed off without them &ndash; measured with the inner bolts only, the value is not that of the finished engine. See pick list.</span></li>
                 <li><span class="de">Werden stattdessen ARP-Studs verbaut, gelten <strong>ARPs eigene Werte mit Ultra-Torque</strong>, nicht Fords 100/35 lb-ft mit 30W-Oel. Beides zu mischen &ndash; innen Ford, aussen ARP &ndash; ist nicht zulaessig: andere Vorspannung, anderes Schmiermittel. Die ARP-Teilenummer haengt zudem an der Sumpflage der noch nicht entschiedenen Oelwanne (154-5610 Rear / 154-5611 Front).</span><span class="en">If ARP studs are fitted instead, <strong>ARP’s own figures with Ultra-Torque</strong> apply, not Ford’s 100/35 lb-ft with 30wt oil. Mixing the two &ndash; Ford inside, ARP outside &ndash; is not permissible: different clamp load, different lubricant. The ARP part number also depends on the sump position of the oil pan, which is not yet decided (154-5610 rear / 154-5611 front).</span></li>
                 <li><span class="de">Deckel abnehmen, Quetschbreite mit Skala vergleichen &rarr; Lagerspiel</span><span class="en">Remove cap, compare crushed width to scale &rarr; bearing clearance</span></li>
                 <li><span class="de">Wert notieren, alle Plastigage-Rueckstaende entfernen</span><span class="en">Record value, remove all Plastigage residue</span></li>
@@ -5516,6 +5570,7 @@
         });
         updateProgress();
         if (typeof CamDegreeing !== "undefined") CamDegreeing.render();
+        if (typeof HauptlagerMass !== "undefined") HauptlagerMass.render();
     }
 
     function lokalSpeichern() {

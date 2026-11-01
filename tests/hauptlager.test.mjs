@@ -183,19 +183,24 @@ await test('Oelwanne und Pickup sind als noch nicht entschieden markiert', async
     'Die Kandidaten fuer die Wanne sind nicht genannt');
 });
 
-await test('Fuer den Canton-Testlauf stehen Wannenschrauben und Fuehrungsbolzen auf der Liste', async () => {
-  // Peter, 01.11.: Canton 15-630S kommt zuerst fuer den Testlauf; sie wird
-  // ohne Schrauben geliefert, und im GT40 laesst sich die Wanne nur
-  // aufgebockt montieren - daher die zwei Fuehrungsbolzen.
+await test('Fuer den Canton-Testaufbau stehen Wannenschrauben und Fuehrungsbolzen auf der Liste', async () => {
+  // Peter, 01.11.: Die Canton 15-630S vom alten Motor ist samt Pickup
+  // vorhanden und am Fahrzeug geprueft; sie kommt fuer den ersten
+  // Testaufbau drauf. Im GT40 laesst sich die Wanne nur aufgebockt
+  // montieren - daher die zwei Fuehrungsbolzen.
   const eintrag = (id) => {
     const i = pickliste.indexOf('data-id="' + id + '"');
     assert(i > 0, 'Eintrag fehlt: ' + id);
     return pickliste.slice(i, pickliste.indexOf('</li>', i));
   };
-  assert(/Testlauf/.test(eintrag('s-pan')) && /Canton 15-630S/.test(eintrag('s-pan')),
-    'Der Canton-Testlauf steht nicht bei der Wanne');
+  const wanne = eintrag('s-pan');
+  assert(/Testaufbau/.test(wanne) && /Canton 15-630S vom alten Motor/.test(wanne),
+    'Der Canton-Testaufbau steht nicht bei der Wanne');
+  assert(/samt Pickup vorhanden/.test(wanne) && /class="price">vorhanden</.test(wanne),
+    'Die Wanne steht nicht als vorhanden (mit Pickup) da, sondern als Kauf');
+  assert(/vorhanden/.test(eintrag('s-pickup')), 'Pickup fuer den Testaufbau nicht als vorhanden markiert');
   const schrauben = eintrag('s-panbolts');
-  assert(/Hardware Included: No/.test(schrauben), 'Beleg, dass Canton ohne Schrauben kommt, fehlt');
+  assert(/vom alten Motor/.test(schrauben), 'Wannenschrauben: Hinweis auf die vorhandenen fehlt');
   const fuehrung = eintrag('s-panguides');
   assert(/2 St&uuml;ck/.test(fuehrung) && /gegen&uuml;berliegenden Ecken/.test(fuehrung),
     'Fuehrungsbolzen: Anzahl oder Lage fehlt');
