@@ -149,7 +149,8 @@ await test('Camshaft Break-in ist als eigene, zweisprachige Glossarregel vorhand
   assert(!plates.includes('pedestal-mount rockers'), 'alte AFR-Sockel-Annahme darf nicht bleiben');
   assert(pushrod.includes('leichte Checking Springs'),'Prueffeder-Warnung bei Pushrod fehlt');
   assert(pushrod.includes('Verbogene Pr&uuml;fst&ouml;&szlig;elstangen ersetzen'),'verbogenen Checker nicht weiterverwenden');
-  const preload=html.slice(html.indexOf('id="p3_rockers"'),html.indexOf('<!-- Step 18:'));
+  const p3Start=html.indexOf('id="p3_rockers"');
+  const preload=html.slice(p3Start,html.indexOf('<!-- Step 18:',p3Start));
   assert(preload.includes('revidierte Morel-Anleitung'),'HLT Originalquelle fehlt');
   assert(preload.includes('0,006&ndash;0,010&quot;'),'HLT Feeler-Bereich fehlt');
   assert(!preload.includes('1/4&ndash;1/2 turn (Umdrehung)'),'Pauschal-Preload darf nicht als Sollwert erscheinen');
