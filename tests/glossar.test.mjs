@@ -143,6 +143,13 @@ await test('Camshaft Break-in ist als eigene, zweisprachige Glossarregel vorhand
   assert(phase4.includes('COMP #145'),'Quelle am Erststart fehlt');
   assert(phase4.includes('inneren AFR-8605-Ventilfedern'),'GT40 Bezug fehlt');
   assert(phase4.includes('noch <strong>fachlich zu validieren</strong>'),'Hochdrehzahl-Erststart noch offen');
+  const pushrod=html.slice(html.indexOf('id="p2_step10"'),html.indexOf('id="p2_step11"'));
+  assert(pushrod.includes('leichte Checking Springs'),'Prueffeder-Warnung bei Pushrod fehlt');
+  assert(pushrod.includes('Verbogene Pr&uuml;fst&ouml;&szlig;elstangen ersetzen'),'verbogenen Checker nicht weiterverwenden');
+  const preload=html.slice(html.indexOf('id="p3_rockers"'),html.indexOf('<!-- Step 18:'));
+  assert(preload.includes('revidierte Morel-Anleitung'),'HLT Originalquelle fehlt');
+  assert(preload.includes('0,006&ndash;0,010&quot;'),'HLT Feeler-Bereich fehlt');
+  assert(!preload.includes('1/4&ndash;1/2 turn (Umdrehung)'),'Pauschal-Preload darf nicht als Sollwert erscheinen');
 });
 
 // ---------------------------------------------------------------------------
