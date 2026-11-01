@@ -13,6 +13,15 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v132',
+      date: '2026-11-01',
+      time: '08:07',
+      title: 'Build Log: CRLF wiederhergestellt',
+      changes: [
+        { type: 'fix', text: '20 einzelne LF-Zeilenenden in build-log.html auf CRLF vereinheitlicht; Inhalt unveraendert (Regel 4).' }
+      ]
+    },
+    {
       version: 'v131',
       date: '2026-11-01',
       time: '07:05',
