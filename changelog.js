@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v129',
+      date: '2026-11-01',
+      time: '06:09',
+      title: 'Flat-Tappet-Break-in vs Hydraulic Roller; Ventiltrieb-Konzept',
+      changes: [
+        { type: 'klarstellung', text: 'Phase 4: COMP-Feder-Entlastung mit Ausbau innerer Ventilfedern für das klassische 30-minütige Cam-Break-in gilt bei Flat-Tappet-Nocken, nicht bei COMP 35-518-8 Hydraulic Roller. Rollen- statt Gleitkontakt erklärt; Prüffedern für Montagegeometrie sind getrennt.' },
+        { type: 'verbessert', text: 'Gemeinsames Glossar (DE/EN): eigener Begriff Nockenwellen-Einlaufen, Quelle COMP #145 S. 4; allgemeine Erststart-20–30-Minuten-Vorgabe für konkrete Roller-Konfiguration weiterhin zur fachlichen Prüfung markiert.' },
+        { type: 'neu', text: 'Konzeptdokument docs/konzept-ventiltrieb-exkurse.md: visuelle Folgeexkurse Prüfstößelstangenlänge/Kipphebelgeometrie und AFR/ARP-Studs, COMP-Polylocks sowie Morel 5327 Limited-Travel-Einstellung. Noch keine Montageanleitung oder Datenmodelländerung.' }
+      ]
+    },
+    {
       version: 'v128',
       date: '2026-10-31',
       time: '18:51',
