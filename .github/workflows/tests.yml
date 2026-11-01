@@ -137,6 +137,9 @@ jobs:
       - name: Zuendfolge der dokumentierten Nockenwelle
         run: node tests/zuendfolge.test.mjs
 
+      - name: Hauptlager - Laenge der aeusseren Schrauben
+        run: node tests/hauptlager-mass.test.mjs
+
       - name: Prueffolgen Motorbezug, Pickup und Kuehlkreis
         run: node tests/prueffolgen.test.mjs
 

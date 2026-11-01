@@ -13,6 +13,17 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v134',
+      date: '2026-11-01',
+      time: '09:12',
+      title: 'Hauptlager: Messschritt fuer die aeusseren Schrauben; Testaufbau mit der vorhandenen Canton-Wanne',
+      changes: [
+        { type: 'neu', text: 'Neuer Schritt 7a im Build Log (Phase 1, vor dem Hauptlagerspiel): Laenge der sechs fehlenden aeusseren Hauptlagerschrauben messen, bevor sie bestellt werden. Eingabefelder fuer die Tiefe jeder Bohrung, Deckeldicke, Scheibe, Bodenabstand und gewaehlte Laenge; die Seite rechnet die groesste Laenge und den Gewindeeingriff und warnt, wenn die gewaehlte Schraube aufsitzen wuerde. Fuer Bodenabstand und noetigen Eingriff steht bewusst keine Zahl da - die bestaetigen Ford oder ARP. Dazu Felder fuer Bestelldatum und Haendler/Teilenummer.' },
+        { type: 'fix', text: 'Pickliste: Die Canton 15-630S ist die Wanne vom alten Motor, samt Pickup vorhanden und am Fahrzeug geprueft - sie reicht fuer den ersten Testaufbau. Sie steht jetzt als vorhanden da, nicht als Kauf; die Wannenschrauben ebenfalls zuerst die vom alten Motor.' },
+        { type: 'intern', text: 'Rechnung in hauptlager-mass.js (Regel 10), neu gerechnet bei Eingabe und nach jedem Abgleich (Regel 8). Neuer Test hauptlager-mass.test.mjs (Rechnung, Schritt, Browser mit Neuladen). Gegenprobe rot: falsche Formel, kein Neurechnen nach Abgleich, Feld ohne Neurechnen, Script fehlt, Bodenabstand mit Zahl, sw.js ohne Modul, Warnung fehlt.' }
+      ]
+    },
+    {
       version: 'v133',
       date: '2026-11-01',
       time: '08:27',
