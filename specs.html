@@ -972,9 +972,9 @@
                     <div class="spec-item"><span class="spec-label">Body OD</span><span class="spec-value">.875"</span></div>
                     <div class="spec-item"><span class="spec-label">Roller OD</span><span class="spec-value">.700"</span></div>
                     <div class="spec-item"><span class="spec-label">Bauform</span><span class="spec-value">Link Bar (Retro-Fit)</span></div>
-                    <div class="spec-item"><span class="spec-label">Max. Federdruck</span><span class="spec-value">Seat: 100&ndash;250 lbs | Open: 285&ndash;650 lbs</span></div>
+                    <div class="spec-item"><span class="spec-label">Federkr&auml;fte, Morel-HLT-Familie</span><span class="spec-value"><a href="https://johncalliesinc.com/pdf/Types%20of%20Hydraulic%20Lifters.pdf">Morel-Empfehlungsbereich</a> &ndash; geschlossen: 100&ndash;250 lbf, ge&ouml;ffnet: 285&ndash;650 lbf</span></div>
                     <div class="spec-item"><span class="spec-label">Max. Drehzahl</span><span class="spec-value">6.500&ndash;7.000+ U/min</span></div>
-                    <div class="spec-item"><span class="spec-label">Preload</span><span class="spec-value">1/4 bis 1/2 Umdrehung nach Nullspiel (HLT: weniger Preload!)</span></div>
+                    <div class="spec-item"><span class="spec-label">HLT-Ersteinstellung</span><span class="spec-value"><a href="docs/rocker-hlt-einstellung.html#hlt">0,006&ndash;0,010&quot; F&uuml;hlerlehre</a> zwischen Rockerrolle und Ventilspitze bei 70 &deg;F (Gusseisenblock, Aluk&ouml;pfe). Lifter auf Grundkreis, Plunger am unteren Anschlag.</span></div>
                     <div class="spec-item"><span class="spec-label">Menge</span><span class="spec-value">16 St&uuml;ck</span></div>
                     <div class="info-box" style="margin-top:0.3rem;"><strong>Hinweis:</strong> Bei 302-Blocks m&uuml;ssen die Zylinderkoepfe abgenommen werden, um die Lifter einzubauen!</div>
                     <div class="comp-photo-strip" data-comp-gallery="lifters"><img class="comp-hero" src="img/morel-5327.jpg" data-default-src="img/morel-5327.jpg" onclick="oeffneGesamtgalerie('lifters')"><div class="comp-photo-actions"><button class="comp-photo-btn" onclick="oeffneGesamtgalerie('lifters')">&#128444; <span id="lifters-count">0</span> Fotos</button><button class="comp-photo-btn" onclick="addPhoto('lifters')">&#128247; Foto hinzuf&uuml;gen</button><button class="comp-photo-btn" onclick="addYouTube(this.closest('[data-comp-gallery]').dataset.compGallery)" style="border-color:rgba(255,0,0,0.3);">&#9654; YouTube</button></div></div>
@@ -1037,11 +1037,12 @@
                 <input type="text" data-field="pushrod_actual" data-validate="numeric" placeholder='z.B. 7.100"' oninput="autoSave()">
             </div>
             <div class="form-group">
-                <label>Kipphebel-Vorspannung (Lifter Preload) <span class="tolerance">Empf.: 1/4 bis 1/2 Umdrehung nach Nullspiel</span></label>
-                <input type="text" data-field="lifter_preload" placeholder="z.B. 1/2 Umdrehung" oninput="autoSave()">
+                <label>Morel 5327 HLT &ndash; verwendete F&uuml;hlerlehre <span class="tolerance">0,006&ndash;0,010&quot; bei 70 &deg;F</span></label>
+                <input type="text" data-field="lifter_preload" placeholder="F&uuml;hlerlehrendicke in Zoll" oninput="autoSave()">
+                <small>Fr&uuml;here Eintr&auml;ge in Umdrehungen sind historische Notizen. Bei einer neuen HLT-Pr&uuml;fung die verwendete Blattdicke in Zoll dokumentieren.</small>
             </div>
 
-            <a class="guide-link" href="build-log.html#p2_step10">&#128214; Anleitung: Pushrod-L&auml;nge &amp; Lifter Preload einstellen &nearr;</a>
+            <a class="guide-link" href="build-log.html#p2_step10">&#128214; Anleitung: Pushrod-L&auml;nge ermitteln &nearr;</a> <a class="guide-link" href="docs/rocker-hlt-einstellung.html#hlt">&#128214; Anleitung: Morel 5327 HLT einstellen &nearr;</a>
 
             <div class="section-comment">
                 <label>Kommentar zu Ventiltrieb</label>

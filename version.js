@@ -14,8 +14,8 @@
  */
 (function (global) {
   'use strict';
-  global.APP_VERSION = 'v134';
-  global.APP_BUILT = '2026-11-01T09:12:00+01:00';
+  global.APP_VERSION = 'v135';
+  global.APP_BUILT = '2026-11-09T17:25:41+01:00';
 
   // Liefert "TT.MM.JJJJ, hh:mm" - ohne Sekunden, die helfen hier niemandem. Bewusst
   // ohne new Date(): der Zeitstempel soll ueberall gleich aussehen und nicht

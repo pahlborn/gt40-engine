@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v135',
+      date: '2026-11-09',
+      time: '17:25',
+      title: 'Ventiltrieb: Morel 5327 HLT einheitlich einstellen',
+      changes: [
+        { type: 'fix', text: 'Rocker-Exkurs, Specs, Build-Log, Startseite und Fehlersuche verwenden die revidierte Morel-Vorgabe fuer Gusseisenblock und Alukoepfe: 0,006–0,010 Zoll Fuehlerlehre bei 70 °F, zwischen Rockerrolle und Ventilspitze, auf dem Grundkreis mit Plunger am unteren Anschlag. Die Nachpruefung nach dem Kopfnachziehen verweist auf dieselbe Methode.' },
+        { type: 'fix', text: 'Montageschmierung und empfohlene Federkraefte nach Morel fuer die HLT-Familie eingeordnet. Der Pushrod-Exkurs verlinkt die separate HLT-Endeinstellung.' }
+      ]
+    },
+    {
       version: 'v134',
       date: '2026-11-01',
       time: '09:12',

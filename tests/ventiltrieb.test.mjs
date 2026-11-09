@@ -42,6 +42,24 @@ await test('Build-Log ersetzt die falschen Einzelregeln und erhaelt bestehende M
     assert(html.includes('data-field="'+field+'"'), 'Bestehendes Datenfeld fehlt: '+field);
   }
 });
+await test('5327-HLT-Einstellvorgabe gilt auch in Specs, Fehlersuche und nach Kopf-Nachziehen', () => {
+  const guide = 'href="' + b + '#hlt"';
+  const specs = read('specs.html');
+  const troubleshooting = read('docs/troubleshooting.html');
+  const build = read('build-log.html');
+  const recheck = card(build, 'p4_retorque_card');
+  for (const [name, html] of [
+    ['Specs', specs], ['Fehlersuche', troubleshooting], ['Kopfnachziehen', recheck]
+  ]) {
+    assert(!/1\/4 bis 1\/2 Umdrehung|1\/2 Umdrehung nach Nullspiel|1\/2 turn past zero lash|Exhaust Closing \/ Intake Opening/.test(html), 'Alte HLT-Einstellung in ' + name);
+    assert(html.includes(name === 'Fehlersuche' ? 'href="rocker-hlt-einstellung.html#hlt"' : guide), 'HLT-Verweis fehlt in ' + name);
+  }
+  assert(specs.includes('data-field="lifter_preload" placeholder="F&uuml;hlerlehrendicke in Zoll"'), 'Messfeld oder Einheit der HLT-Fuehlerlehre fehlt');
+  assert(troubleshooting.includes('0,006&ndash;0,010&quot; F&uuml;hlerlehre') && troubleshooting.includes('am unteren Anschlag'), 'Fehlersuche zeigt den HLT-Messbezug nicht');
+  const preparation = card(build, 'p1_step12');
+  assert(preparation.includes('10W-30') && preparation.includes('&Ouml;lbad in frischem, sauberem Motor&ouml;l ist optional'), 'Morel-Montageschmierung fehlt');
+  assert(!preparation.includes('min. 24h'), 'Unbelegte Oelbad-Dauer');
+});
 await test('Beide Seiten im Index und Offline-Precache, ohne eigene Datenspeicherung', () => {
   for(const f of [a,b]) {
     assert(read('index.html').includes('href="'+f+'"'), 'Indexlink fehlt: '+f);
