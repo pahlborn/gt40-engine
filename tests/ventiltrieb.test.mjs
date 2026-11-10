@@ -26,6 +26,25 @@ await test('Endmontage verlangt Betriebsfedern und trennt HLT-Methode von Ventil
   assert(html.includes('Händlerhost, historische Originalkopie') && html.includes('nicht aus PN151'), 'Trunnion-Quelle falsch zugeordnet');
   assert(html.includes('genaue ARP-Unterteilenummer') && html.includes('Keine pauschalen ARP-Drehmomente'), 'Stud-Montagefrage faelschlich freigegeben');
 });
+await test('Marker-Messung mit definierter Pfannenhoehe und getrennter HLT-Einstellung', () => {
+  const pushrod = read(a);
+  const hlt = read(b);
+  const section = (html, id) => html.split('id="' + id + '"')[1]?.split('</section>')[0] || '';
+  const setup = section(pushrod, 'bezug');
+  const sweep = section(pushrod, 'kontakt');
+  const order = section(pushrod, 'laenge');
+  const adjustment = section(hlt, 'hlt');
+  assert(setup.includes('vorgesehenen Einbauhöhe') && setup.includes('Eine solche Messung ist eine Vorprobe'), 'Dichtungshoehe fehlt als Voraussetzung fuer das Bestellmass');
+  assert(sweep.includes('Permanentmarker') && sweep.includes('bestätigter Pfannenhöhe') && sweep.includes('kein axiales Spiel'), 'Marker-Ablauf ohne gesicherten Nullspiel-Bezug');
+  const setupRocker = sweep.indexOf('den Rocker über den Polylock einstellen');
+  const secureRocker = sweep.indexOf('Prüfstellung am Polylock sichern');
+  const rotateCrank = sweep.indexOf('Motor von Hand in normaler Laufrichtung');
+  assert(setupRocker >= 0 && secureRocker > setupRocker && rotateCrank > secureRocker, 'Rocker vor dem Durchdrehen auf Nullspiel einstellen und sichern');
+  assert(sweep.includes('zwei Kurbelwellenumdrehungen') && sweep.includes('Randabstand'), 'Vollstaendiger Hub oder Randabstand fehlt');
+  assert(sweep.includes('Für jede neue Länge den Rocker erneut auf Nullspiel einstellen'), 'Nullspiel muss nach jedem Laengenwechsel neu eingestellt werden');
+  assert(order.includes('keinen belegten pauschalen Vorspannungsaufschlag') && order.includes('rocker-hlt-einstellung.html#hlt'), 'Bestellmass mit Morel-Vorspannung vermischt');
+  assert(adjustment.includes('0,006–0,010″') && adjustment.includes('keine pauschale HLT-Vorspannung'), 'Revidierte HLT-Einstellung oder Grenze der Umdrehungsmethode fehlt');
+});
 await test('Build-Log ersetzt die falschen Einzelregeln und erhaelt bestehende Messfelder', () => {
   const html = read('build-log.html');
   for (const [id, link] of [['p2_step10',a], ['p2_step11',a+'#kontakt'], ['p3_rockers',b], ['p4_preload_recheck_card',b+'#hlt']]) {
