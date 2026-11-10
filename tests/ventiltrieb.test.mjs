@@ -60,6 +60,19 @@ await test('5327-HLT-Einstellvorgabe gilt auch in Specs, Fehlersuche und nach Ko
   assert(preparation.includes('10W-30') && preparation.includes('&Ouml;lbad in frischem, sauberem Motor&ouml;l ist optional'), 'Morel-Montageschmierung fehlt');
   assert(!preparation.includes('min. 24h'), 'Unbelegte Oelbad-Dauer');
 });
+await test('Morel-Archiv stellt PDF und Uebersetzung getrennt von der Einstellvorgabe bereit', () => {
+  const html = read(b);
+  const adjustment = html.split('id="hlt"')[1]?.split('id="sichern"')[0] || '';
+  const archive = html.split('id="morel-herstellerblatt"')[1]?.split('</section>')[0] || '';
+  const original = 'morel-hlt-einstellung-archiv-2023.pdf';
+  assert(adjustment.includes('0,006–0,010″') && !adjustment.includes('0,006–0,009″'), 'Archivwert in der aktiven Einstellanweisung');
+  assert(adjustment.includes('href="#morel-herstellerblatt"'), 'Einstellschritt verweist nicht auf die Originalquelle');
+  const note = archive.indexOf('Archivfassung mit früheren Einstellwerten');
+  const link = archive.indexOf('href="' + original + '"');
+  assert(note >= 0 && link > note && archive.slice(note, link).includes('href="#hlt"'), 'Archivhinweis muss vor dem PDF-Link zur aktiven Anweisung fuehren');
+  assert(archive.includes('<details>') && archive.includes('Deutsche Übersetzung der Archivfassung') && archive.includes('0,006–0,009″'), 'Historische Uebersetzung fehlt');
+  assert(fs.readFileSync(path.join(REPO_ROOT, 'docs', original)).subarray(0, 5).toString() === '%PDF-', 'Original ist kein PDF');
+});
 await test('Beide Seiten im Index und Offline-Precache, ohne eigene Datenspeicherung', () => {
   for(const f of [a,b]) {
     assert(read('index.html').includes('href="'+f+'"'), 'Indexlink fehlt: '+f);
