@@ -13,6 +13,16 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v137',
+      date: '2026-11-10',
+      time: '06:45',
+      title: 'Ventiltrieb: Marker-Messung und Morel-Einstellung',
+      changes: [
+        { type: 'neu', text: 'Der Pushrod-Exkurs zeigt den Marker-Test, den Bezug der Lifterpfanne und den Messaufbau mit Kopfdichtung. Das Bestellmaß folgt aus der geprüften Geometrie und der Maßdefinition des Lieferanten.' },
+        { type: 'verbessert', text: 'Der HLT-Exkurs erklärt den unteren Plungeranschlag, die kalte Morel-Vorgabe und die Zuordnung der Ford-Kipphebel COMP 1632-16 und 1631-16.' }
+      ]
+    },
+    {
       version: 'v136',
       date: '2026-11-10',
       time: '06:16',
