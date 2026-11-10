@@ -13,6 +13,15 @@
   // Neueste Version zuerst.
   var RELEASES = [
     {
+      version: 'v136',
+      date: '2026-11-10',
+      time: '06:16',
+      title: 'Morel HLT: Herstellerblatt und deutsche Übersetzung',
+      changes: [
+        { type: 'neu', text: 'Der Rocker-Exkurs enthält das englische Original-PDF und die deutsche Übersetzung der älteren Morel-Anweisung. Ein Hinweis trennt die Archivwerte von der revidierten GT40-Einstellvorgabe.' }
+      ]
+    },
+    {
       version: 'v135',
       date: '2026-11-09',
       time: '17:25',
